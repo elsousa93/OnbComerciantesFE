@@ -1,0 +1,19 @@
+<h1 id="tableLabel">{{'Title'|translate}}</h1>
+
+<p *ngIf="!stores"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stores">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Teste (C)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let store of stores">
+      <td>{{ store.id }}</td>
+      <td>{{ store.teste }}</td>
+    </tr>
+  </tbody>
+</table>
+<button  (click)="onCickAdd()" class="btn btn-primary">Adicionar Loja</button>

@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "newClientNr": 8875,
+    "nipc": 509111000,
+    "docType": "Certidão",
+    "docNr": "2",
+    "flagAutCol": true,
+    "crcCode": "1001",
+    "socialDenomination": "Santos e Co."
+  },
+  {
+    "id": 2,
+    "newClientNr": 8876,
+    "nipc":  509890098,
+    "docType": "ID",
+    "docNr": "1",
+    "flagAutCol": true,
+    "crcCode": "2002",
+    "socialDenomination": "C&A"
+  }
+
+]

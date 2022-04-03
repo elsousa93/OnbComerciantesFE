@@ -1,0 +1,36 @@
+<p>client works!</p>
+<h1 id="tableLabel">Clients Data</h1>
+
+<p>This component demonstrates fetching Clients data.</p>
+
+<p *ngIf="!clients"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="clients">
+  <thead>
+    <tr>
+      <th>ID - interno</th>
+      <th>N. Cliente</th>
+      <th>Tipo de Doumento</th>
+      <th>N. Documento</th>
+      <th>Flag Autorização de Recolha</th>
+      <th>Codigo CRC</th>
+      <th>Denominação Social</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of clients">
+      <td>{{ client.id }}</td>
+      <td>{{ client.newClientNr }}</td>
+      <td>{{ client.docType }}</td>
+      <td>{{ client.docNr }}</td>
+      <td>{{ client.flagAutCol }}</td>
+      <td>{{ client.crcCode }}</td>
+      <td>{{ client.socialDenomination }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p> Pesquise: </p>
+<app-drop-down (nameEmitter)="receiveSearchValue($event)"></app-drop-down>
+
+
