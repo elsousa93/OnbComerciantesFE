@@ -1,0 +1,27 @@
+<h1 id="tableLabel">{{'TitleStores'|translate}}</h1>
+
+<p *ngIf="!stores"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stores">
+  <thead>
+    <tr>
+      <th>{{'NameStores'|translate}}</th>
+      <th>{{'ActivityStores'|translate}}</th>
+      <th>{{'SubActivityStores'|translate}}</th>
+      <th>{{'ZoneStores'|translate}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="clickable" *ngFor="let store of stores" [routerLink]="['/add-store/', store.id]">
+      <td>{{ store.nameEstab}}</td>
+      <td>{{ store.activityEstab }}</td>
+      <td>{{ store.subActivityEstab }}</td>
+      <td>{{ store.zoneEstab }}</td>
+    </tr>
+  </tbody>
+</table>
+<button (click)="onCickAdd()" class="btn btn-primary">Adicionar Loja</button>
+<br />
+<br />
+<button class="btn btn-primary">Continuar</button>
+

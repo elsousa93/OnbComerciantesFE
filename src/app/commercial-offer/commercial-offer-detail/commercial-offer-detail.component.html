@@ -1,0 +1,63 @@
+<p>commercial-offer-detail works!</p>
+
+<div class="form">
+  <div *ngFor="let selectionReplicate of selectionsReplicate; let idx = index">
+    <input type="radio" name="selectedReplicate" value="{{selectionReplicate}}" [checked]="(idx === 1)" (change)="radoChangehandler($event)" />{{selectionReplicate}}
+  </div>
+
+  <div *ngIf="selectedOption==='Sim'">
+
+    <br />
+    <br />
+
+    <form #FormCommercialOffer="ngForm" (ngSubmit)="submit(FormCommercialOffer)">
+      <label for="ConfigName">Nome da Configuração</label>
+      <input #configId="ngModel" required minlength="5" maxlength="100" type="text" name="configId" class="form-control" [(ngModel)]="commOffer.ConfigID">
+      <span *ngIf="configId.touched && configId.invalid" class="error-block">
+        <span>Número da configuração inválido:</span>
+        <span *ngIf="configId.errors?.['required']"> obrigatório</span>
+        <span *ngIf="configId.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+      </span>
+      <br />
+      <br />
+      <label for="ConfigName">Numero de terminais</label>
+      <input #nrTerminals="ngModel" required minlength="5" maxlength="100" type="text" name="nrTerminals" class="form-control" [(ngModel)]="numberofTerminals">
+      <span *ngIf="nrTerminals.touched && nrTerminals.invalid" class="error-block">
+        <span>Número de terminais invalido:</span>
+        <span *ngIf="nrTerminals.errors?.['required']"> obrigatório</span>
+        <span *ngIf="nrTerminals.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+      </span>
+      <button class="btn btn-primary" type="button" (click)="incrementCounter()">+</button>
+      <button class="btn btn-primary" type="button" (click)="decrementCounter()">-</button>
+      <br />
+      <br />
+      <div *ngFor="let selectionSolutionType of selectionsSolutionType">
+        <input type="radio" name="selectedSolutionType" value="{{selectionSolutionType}}" [(ngModel)]="commOffer.solutionType" />{{selectionSolutionType}}
+      </div>
+      <br />
+      <br />
+      <div *ngFor="let selectedBrand of selectedBrands; let idx = index">
+        <input type="checkbox" value="{{selectedBrand.field}}" name="{{selectedBrand}}" [checked]="selectedBrand.selected" [disabled]="selectedBrand.editable" (change)="onChangeBrand($event)" />{{selectedBrand.field}}
+      </div>
+      <br />
+      <div *ngFor="let selectedPackage of selectedPackages; let idx = index">
+        <input type="checkbox" value="{{selectedPackage.field}}" name="{{selectedPackage}}" [checked]="selectedPackage.selected" [disabled]="selectedPackage.editable" (change)="onChangePackage($event)" />{{selectedPackage.field}}
+      </div>
+      <br />
+      <div *ngFor="let selectedAdditionalInfo of selectedAdditionalInfos; let idx = index">
+        <input type="checkbox" value="{{selectedAdditionalInfo.field}}" name="{{selectedAdditionalInfo}}" [checked]="selectedAdditionalInfo.selected" [disabled]="selectedAdditionalInfo.editable" (change)="onChangeAdditionalInfo($event)" />{{selectedAdditionalInfo.field}}
+      </div>
+      <br />
+      <div class="form-group col-12">
+        <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="selectedOption==='Não'">
+    bbbbb
+  </div>
+  <br />
+  <br />
+  <p>Selecionaste: {{selectedOption}}</p>
+</div>

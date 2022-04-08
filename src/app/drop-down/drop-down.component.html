@@ -1,0 +1,14 @@
+<div class="card">
+  <form [formGroup]="listValue">
+    <select class="form-select" formControlName="listFiles" (click)="changeListElement($event)">
+      <option value="">Selecione</option>
+      <option *ngFor="let listFiles of listF" value={{listFiles.code}}>{{listFiles.type}}</option>
+    </select>
+    <p>{{listCode}}</p>
+
+    <label for="n-doc">Número do Documento: </label>
+    <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)" formControlName="n-doc">
+    <button type="button" (click)="sendToParent()">enviar para o component Client</button>
+  </form>
+  <p>Valor pesquisado: {{displayValueSearch}}</p>
+</div>

@@ -1,0 +1,54 @@
+<p>add-store works!</p>
+property detail is {{stroreId}}
+
+<div class="form">
+  <form #FormStores="ngForm" (ngSubmit)="submit(FormStores)">
+    <div class="form-group">
+      <div class="input-form-group">
+        <label for="storeName">Nome da loja</label>
+        <input #storeName="ngModel" required minlength="5" maxlength="100" type="text" name="storeName" class="form-control" [(ngModel)]="store.nameEstab">
+        <span *ngIf="storeName.touched && storeName.invalid" class="error-block">
+          <span>Número do documento invalido:</span>
+          <span *ngIf="storeName.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeName.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeActivity">Atividade</label>
+        <input #storeActivity="ngModel" required minlength="5" maxlength="100" type="text" name="storeActivity" class="form-control" [(ngModel)]="store.activityEstab">
+        <span *ngIf="storeActivity.touched && storeActivity.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeActivity.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeActivity.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeSubactivity">Subatividade</label>
+        <input #storeSubactivity="ngModel" required minlength="5" maxlength="100" type="text" name="storeSubactivity" class="form-control" [(ngModel)]="store.subActivityEstab">
+        <span *ngIf="storeSubactivity.touched && storeSubactivity.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeSubactivity.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeSubactivity.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeZone">Zona</label>
+        <input #storeZone="ngModel" required minlength="5" maxlength="100" type="text" name="storeZone" class="form-control" [(ngModel)]="store.zoneEstab">
+        <span *ngIf="storeZone.touched && storeZone.invalid" class="error-block">
+          <span>Zona invalida:</span>
+          <span *ngIf="storeZone.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeZone.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+    </div>
+    <div class="form-group col-12">
+      <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+    </div>
+  </form>
+  <div class="form-group col-12">
+    <button (click)="onCickCancel()" class="btn btn-primary">Cancelar</button>
+  </div>
+  <div class="form-group col-12">
+    <button (click)="onCickDelete()" class="btn btn-primary">Eliminar</button>
+  </div>
+</div>

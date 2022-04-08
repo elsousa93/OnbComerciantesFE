@@ -1,0 +1,55 @@
+<p>comprovativos works!</p>
+<h1 id="tableLabel">Comprovativos Data</h1>
+
+<p>This component demonstrates fetching Comprovativos data.</p>
+
+<p *ngIf="!comprovativos"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="comprovativos">
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>Interveniente</th>
+      <th>Data Validade</th>
+      <th>Data Entrega</th>
+      <th>Status</th>
+      <th>Denominação Social</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let comp of comprovativos">
+      <td>{{ comp.id }}</td>
+      <td>{{ comp.interveniente }}</td>
+      <td>{{ comp.dtValidade }}</td>
+      <td>{{ comp.dtEntrada }}</td>
+      <td>{{ comp.status }}</td>
+      <td>{{ comp.socialDenomination }}</td>
+      <td>
+        <a #delete class="btn btn-default" style="display:none;">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Apagar"></span>
+        </a>
+      </td>
+      <td>
+        <a #search class="btn btn-default" style="display:none;">
+          <span class="glyphicon glyphicon-search" aria-hidden="true" title="Visualizar"></span>
+        </a>
+      </td>
+      <td>
+        <a #download class="btn btn-default" style="display:none;">
+          <span class="glyphicon glyphicon-save" aria-hidden="true" title="Download"></span>
+        </a>
+      </td>
+      <td>
+        <a class="btn btn-link" (click)="detalhes(comp.id)" role="button" style="color: blue;">Checklist de Documentos >>> </a>
+        <!--a class="btn btn-link" [routerLink]="['/app-comprovativos', comp.id]" routerLink="/app-comprovativos" role="button" style="color: blue;">Checklist de Documentos >>></a-->
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="col-lg-12" style="text-align: right;">
+  <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
+  <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,comprovativos)" style="display: none" accept=".pdf">
+</div>
+
+

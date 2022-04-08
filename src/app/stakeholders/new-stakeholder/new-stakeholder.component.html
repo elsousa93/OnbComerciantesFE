@@ -1,0 +1,64 @@
+
+
+<p>new-stakeholder works!</p>
+<div class="container">
+
+  <form #stake="ngForm" (ngSubmit)="submit(stake.value)">
+    <div class="form-group">
+      <label form="stakeholderType">Tipo de interveniente: </label> <br />
+      <input type="text" name="stakeholderType" placeholder="" class="form-control" ngModel>
+    </div>
+    <div class="form-group">
+      <label form="stakeholderType">NIF do Interveniente: </label> <br />
+      <input type="text" name="nif" placeholder="" class="form-control" ngModel>
+    </div>
+    <div class="form-group">
+      <label form="stakeholderType">Nome do Interveniente: </label> <br />
+      <input type="text" name="clientName" placeholder="" class="form-control" ngModel>
+    </div>
+
+    Recolha eletrónica dos dados do Cartão de Cidadão?
+    
+    Tipo do Documento:
+    <div class="form-group">
+      <input type="text" name="documentType" placeholder="Cartão de Cidadão" class="form-control" ngModel> <br />
+    </div>
+
+    País do documento:
+    <div class="form-group">
+      <input type="text" name="DocumentCountry" placeholder="Portugal" class="form-control" ngModel> <br />
+
+    </div>
+    <!-- Button raises an event The EventEmiiter will relay data to the parent -->
+  <button class="btn-primary" (click)="submit(stake.value) " type="submit">Submit</button>
+   
+    {{ stake.value | json }}
+  </form>
+
+  <label for="item-input">Add an item:</label>
+  <input type="text" id="item-input" #newItem>
+  <button type="button" (click)="addNewItem(newItem.value)">Add to parent's list</button>
+
+
+</div>
+
+
+
+
+
+
+<br>
+<br>
+<br>
+
+Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+
+
+
+<form>
+  <button type="submit">Ler Cartão de Cidadão</button>
+
+</form>
+<p>
+
+</p>
