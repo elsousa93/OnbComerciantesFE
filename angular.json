@@ -75,7 +75,7 @@
             },
             "development": {
               "browserTarget": "OnbComerciantesFE:build:development",
-              "port": 7269
+              "port": 7270
             }
           },
           "defaultConfiguration": "development"
