@@ -1,11 +1,23 @@
 export interface ICommercialOffer {
   id: number;
   solutionType: string;
-  ConfigID: string;
+  configID: string;
   numberOfTerminals: number;
-  CommePack: {
-    Brands: {},
-    Packages: {},
-    AdditionalInfo: {}
-  };
+  brands: {
+    fieldName: string,
+    selected: boolean,
+    editable: boolean
+  }[],
+  packages: {
+    fieldName: string,
+    selected: boolean,
+    editable: boolean
+  }[],
+  additionalInfo: {
+    fieldName: string,
+    selected: boolean,
+    editable: boolean
+  }[],
+  terminalType: string;
+  communicationType: string;
 };

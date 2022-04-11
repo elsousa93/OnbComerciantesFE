@@ -9,14 +9,15 @@ import { Istore } from '../IStore.interface';
   styleUrls: ['./add-store.component.css']
 })
 
-  //If the storeId value is -1 it means that it is a new store to be added
+  //This component allows to add a new store or edit the main configutarion of a store
+  //If the storeId value is -1 it means that it is a new store to be added - otherwise the storeId corresponds to the id of the store to edit
 
 export class AddStoreComponent implements OnInit {
 
+  /*Variable declaration*/
   public stroreId: number = 0;
-  store: Istore = { id: -1 } as Istore
+  store: Istore = { id: -1, iban: "" } as Istore
   public clientID: number = 12345678;
-
   public totalUrl: string = "";
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
@@ -26,18 +27,14 @@ export class AddStoreComponent implements OnInit {
     //WS call - Get the fields for the specific store if we are not creatig a new store
     if (this.stroreId != -1) {
       http.get<Istore>(baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
-        console.log(result);
         this.store = result;
       }, error => console.error(error));
     }
-
   }
 
-  
   ngOnInit(): void {
     //Get Id from the store
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
-
   }
 
   //When canceling the create new store feature the user must navigate back to store list
@@ -45,36 +42,26 @@ export class AddStoreComponent implements OnInit {
     this.route.navigate(['store-comp']);
   }
 
+  //Call instruction to delete from the back-end
   onCickDelete() {
-    console.log("Store ID: " + this.stroreId);
-    
     if (this.stroreId != -1) {
-      console.log("delete:" + this.stroreId);
       this.http.delete<Istore>(this.baseUrl + 'bestores/DeleteStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
-        console.log(result);
       }, error => console.error(error));
     }
-
     this.route.navigate(['store-comp']);
   }
 
   //Submit form to Back-end
   submit(FormStores: any) {
-    console.log("Store ID: " + this.stroreId);
-
     if (this.stroreId == -1) {
-      console.log("post:" + this.stroreId);
-      this.http.post<Istore>(this.baseUrl + 'bestores/PostStore/' + this.clientID, this.store).subscribe(result => {
-        console.log(result);
+      this.http.post<number>(this.baseUrl + 'bestores/PostStore/' + this.clientID, this.store).subscribe(result => {
+        this.stroreId = result;
+        this.route.navigate(['add-store-iban/' + this.stroreId]);
       }, error => console.error(error));
     } else {
-      console.log("put");
       this.http.put<Istore>(this.baseUrl + 'bestores/PutStoreById/' + this.clientID + '/' + this.stroreId, this.store).subscribe(result => {
-        console.log(result);
+        this.route.navigate(['add-store-iban/' + this.stroreId]);
       }, error => console.error(error));
     }
-
-    this.route.navigate(['store-comp']);
-
   }
 }

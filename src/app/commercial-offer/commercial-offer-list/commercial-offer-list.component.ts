@@ -13,6 +13,11 @@ export class CommercialOfferListComponent implements OnInit {
   public stores: Istore[] = [];
   public clientID: number = 12345678;
 
+  /*Is it supposed to relicate the Commercial offert from another store?*/
+  selectionsReplicate = ['Não', 'Sim'];
+  /*Default case*/
+  selectedOption = 'Não';
+
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
     http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
@@ -23,5 +28,10 @@ export class CommercialOfferListComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  onCickContinue() {
+    this.route.navigate(['commercial-offert-pricing']);
+  }
+
 
 }

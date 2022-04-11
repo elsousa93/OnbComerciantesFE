@@ -4,4 +4,5 @@ export interface Istore {
   activityEstab: string;
   subActivityEstab: string;
   zoneEstab: string;
+  iban: string;
 };
