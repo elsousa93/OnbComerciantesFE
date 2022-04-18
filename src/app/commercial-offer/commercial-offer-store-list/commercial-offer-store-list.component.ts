@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Istore } from '../../store/IStore.interface';
-import { ICommercialOffer } from '../ICommercialOffer.interface';
+import { ICommercialOffer } from '../ICommercialOffer';
 
 @Component({
   selector: 'app-commercial-offer-store-list',
