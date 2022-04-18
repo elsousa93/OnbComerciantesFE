@@ -16,9 +16,13 @@ export class AddStoreComponent implements OnInit {
 
   /*Variable declaration*/
   public stroreId: number = 0;
-  store: Istore = { id: -1, iban: "" } as Istore
+  store: Istore = {
+    id: -1, nameEstab: "", country: "", postalCode: "", address: "", fixedIP: "", postalLocality: "", emailContact: "", cellphoneIndic: "", cellphoneNumber: "", turisticZone: false, activityEstab: "", subActivityEstab: "", zoneEstab: "", subZoneEstab: "", iban: ""} as Istore
   public clientID: number = 12345678;
   public totalUrl: string = "";
+
+  public zonasTuristicas: string[] = ["Não", "Sim"];
+  defaultZonaTuristica: number = 0;
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
 
@@ -28,6 +32,15 @@ export class AddStoreComponent implements OnInit {
     if (this.stroreId != -1) {
       http.get<Istore>(baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
         this.store = result;
+        //Controles the default value of the turistic zone radio button
+        if (this.store.turisticZone == true) {
+          this.defaultZonaTuristica = 1;
+          this.store.turisticZone = true;
+        } else {
+          this.defaultZonaTuristica = 0;
+          this.store.turisticZone = false;
+        }
+        
       }, error => console.error(error));
     }
   }
@@ -49,6 +62,18 @@ export class AddStoreComponent implements OnInit {
       }, error => console.error(error));
     }
     this.route.navigate(['store-comp']);
+  }
+
+  //Controles the result of the turistic zone radio button
+  radoChangehandler($event: any) {
+    console.log($event.target.value);
+    if ($event.target.value == "Sim") {
+      this.store.turisticZone = true;
+      console.log("Sim");
+    } else {
+      this.store.turisticZone = false;
+      console.log("Não");
+    }
   }
 
   //Submit form to Back-end
