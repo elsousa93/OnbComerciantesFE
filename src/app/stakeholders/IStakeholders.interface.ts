@@ -1,23 +1,34 @@
 
     export interface IStakeholders    {
+       stakeholderType: string,
+       nif: number,
+       clientName: string,
+       clientNr: number,
+       electronicCollectFlag: boolean,
+       documentType: string,
+       documentCountry: string,
 
-      contract: Number,
-      associatedToContract: Boolean,
-      flagSignedContract: Boolean,
-      clientNr: Number,             //ID
-      clientName: String,
-      nif: Number,
-      elegivel: Boolean
-      stakeholderType: String,
-      documentType: String,
-      electronicCollectFlag: Boolean,
+       flagAssociado: boolean,
+       flagProcurador: boolean,
+       flagRecolhaEletronica: boolean,
+       tipoDocumento: string,
+       paisDocumentoID: string,
+       nrDocumentoID: number,
+       primeiranacionalidade: string,
+       dtValidadeID: number,
+       paisNIFEstrangeiro: string,
+       indicadorNIFPaisEstrangeiro: string,
+       nifEstrangeiro: number
 
-      /*De futuro os proximos serao lidos do CC*/
-      DocumentCountry: String,
-      stakeholderName: String,
-      stakeholderIdNr: Number,
-      stakeholderNIF: String,
-      stakeholderBirthdate: Number,
-      stakeholderAddress: String,
-      stakeholderPostcode: Number
+       flagElectableStakeholder : boolean,
+       flagValidStakeholder:boolean,
+       callingCodeStakeholder: string,
+       phoneStakeholder: number,
+       emailStakeholder: string,
+       hourContractStart: number,
+       hourContractEnd: number,
+       schoolingStakeholder: string,
+       maritalStatusStakeholder: string,
+       finEstateStakeholder: number,
+       monthlyEarnsStakeholder: number
   }

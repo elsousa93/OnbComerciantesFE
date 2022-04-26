@@ -1,0 +1,127 @@
+<button class="btn" routerLink="/info-declarativa">Comerciante</button>
+ <button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+ <button class="btn">Assinatura Digital</button> <br><br>
+
+
+<!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação -->
+
+<div class="container">
+  <form #contactForm="ngForm">
+    <div class="form-group">
+      <label for="nameClient">Nome do Cliente:</label>
+
+      <input required ngModel #nameClient="ngModel" name="nameClient" type="text" id="nameClient" class="form-control" [(ngModel)]="newClient.nameClient">
+      <div class="alert alert-danger" *ngIf="nameClient.touched && !nameClient.valid">
+        is required.
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="container" style="display: flex">
+  <div class="country-code-dropdown">
+    <p>Indicativo:</p>
+    <form [formGroup]="listValue">
+      <select class="form-select" formControlName="codes" (click)="changeListElement(callingCodeLandClient, $event)" id="callingCodeLandClient" [(ngModel)]="newClient.callingCodeLandClient">
+        <option value="">Indicativo:</option>
+        <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+      </select>
+      <p>{{callingCodeLandClient}}</p>
+    </form>
+  </div>
+
+
+
+  <div class="form-group">
+    <label for="phoneLandClient">Telefone Fixo 1:</label>
+
+    <input required ngModel #phoneLandClient="ngModel" name="phoneLandClient" type="text" id="phoneLandClient" class="form-control" [(ngModel)]="newClient.phoneLandClient">
+    <div class="alert alert-danger" *ngIf="phoneLandClient.touched && !phoneLandClient.valid">
+      is required.
+    </div>
+  </div>
+
+</div>
+
+<div class="container" style="display: flex">
+  <div class="country-code-dropdown">
+    <p>Indicativo:</p>
+    <select class="form-select" formControlName="codes" (click)="changeListElement(callingCodeMobileClient,$event)" id="callingCodeMobileClient" [(ngModel)]="newClient.callingCodeMobileClient">
+      <option value="">Indicativo:</option>
+      <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+    </select>
+    <p>{{callingCodeMobileClient}}</p>
+
+  </div>
+
+
+
+  <div class="form-group">
+    <label for="mobilePhoneClient">Telemóvel:</label>
+
+    <input required ngModel #mobilePhoneClient="ngModel" name="mobilePhoneClient" type="text" id="mobilePhoneClient" class="form-control" [(ngModel)]="newClient.mobilePhoneClient">
+    <div class="alert alert-danger" *ngIf="mobilePhoneClient.touched && !mobilePhoneClient.valid">
+      is required.
+    </div>
+  </div>
+
+</div>
+
+
+<div class="container">
+
+    <div class="form-group">
+      <label for="emailClient">Email:</label>
+
+      <input required ngModel #emailClient="ngModel" name="emailClient" type="text" id="emailClient" class="form-control" [(ngModel)]="newClient.emailClient">
+      <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
+        is required.
+      </div>
+    </div>
+ 
+</div>
+
+
+<div class="container" style= "display: flex">
+
+  <div class="country-code-dropdown">
+    <p>Indicativo:</p>
+    <select class="form-select" formControlName="codes" (click)="changeListElement(callingCodeFaxClient, $event)" id="callingCodeFaxClient" [(ngModel)]="newClient.callingCodeFaxClient">
+      <option value="">Indicativo do Fax:</option>
+      <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+    </select>
+    <p>{{IndicativoFaxCliente}}</p>
+
+  </div>
+
+
+
+  <div class="form-group">
+    <label for="faxClient">Fax:</label>
+
+    <input required ngModel #faxClient="ngModel" name="faxClient" type="text" id="faxClient" class="form-control" [(ngModel)]="newClient.faxClient">
+    <div class="alert alert-danger" *ngIf="faxClient.touched && !faxClient.valid">
+      is required.
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="container">
+ 
+    <div class="form-group">
+      <label for="billingEmail">Email Faturação:</label>
+
+      <input required ngModel #billingEmail="ngModel" name="billingEmail" type="text" id="billingEmail" class="form-control" [(ngModel)]="newClient.billingEmail">
+      <div class="alert alert-danger" *ngIf="billingEmail.touched && !billingEmail.valid">
+        is required.
+      </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>

@@ -1,59 +1,77 @@
 
 
 <p>new-stakeholder works!</p>
+
+
 <div class="container">
 
-  <form #stake="ngForm" (ngSubmit)="submit(stake.value)">
+  <form #contactForm="ngForm" (ngSubmit)="submit(contactForm.value)">
     <div class="form-group">
-      <label form="stakeholderType">Tipo de interveniente: </label> <br />
-      <input type="text" name="stakeholderType" placeholder="" class="form-control" ngModel>
-    </div>
-    <div class="form-group">
-      <label form="stakeholderType">NIF do Interveniente: </label> <br />
-      <input type="text" name="nif" placeholder="" class="form-control" ngModel>
-    </div>
-    <div class="form-group">
-      <label form="stakeholderType">Nome do Interveniente: </label> <br />
-      <input type="text" name="clientName" placeholder="" class="form-control" ngModel>
+      <label for="stakeholderType">stakeholderType</label>
+      <textarea required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control" [(ngModel)]="newStake.stakeholderType"></textarea>
+      <div class="alert alert-danger" *ngIf="stakeholderType.touched && !stakeholderType.valid">
+        stakeholderType is required.
+      </div>
     </div>
 
-    Recolha eletrónica dos dados do Cartão de Cidadão?
-    
-    Tipo do Documento:
     <div class="form-group">
-      <input type="text" name="documentType" placeholder="Cartão de Cidadão" class="form-control" ngModel> <br />
+      <label for="stakeholderType">nif</label>
+      <textarea required ngModel #nif="ngModel" name="nif" id="nif" class="form-control" [(ngModel)]="newStake.nif"></textarea>
+      <div class="alert alert-danger" *ngIf="nif.touched && !nif.valid">
+        nif is required.
+      </div>
     </div>
 
-    País do documento:
     <div class="form-group">
-      <input type="text" name="DocumentCountry" placeholder="Portugal" class="form-control" ngModel> <br />
-
+      <label for="clientName">Client Name</label>
+      <input required minlength="2" maxlength="100" ngModel #clientName="ngModel" name="clientName" type="text" id="clientName" class="form-control" [(ngModel)]="newStake.clientName">
+      <div class="alert alert-danger" *ngIf="clientName.touched && !clientName.valid">
+        <div *ngIf="clientName.errors && clientName.errors['required']">Client Name is required.</div>
+        <div *ngIf="clientName.errors && clientName.errors['minlength']">Client Name must have at least 2 characters.</div>
+        <div *ngIf="clientName.errors && clientName.errors['maxlength']">Clients Name has a maximum of 100 characters.</div>
+      </div>
     </div>
-    <!-- Button raises an event The EventEmiiter will relay data to the parent -->
-  <button class="btn-primary" (click)="submit(stake.value) " type="submit">Submit</button>
-   
-    {{ stake.value | json }}
+
+    <div class="form-group">
+      <label for="electronicCollectFlag">electronic Collect Flag</label>
+      <input required ngModel name="electronicCollectFlag" type="radio" value=true #electronicCollectFlag="ngModel" [value]="true" id="electronicCollectFlag" [(ngModel)]="newStake.electronicCollectFlag">
+      <label for="sim">Sim</label>
+
+      <input required ngModel name="electronicCollectFlag" type="radio" value=false #electronicCollectFlag="ngModel" [value]="false" id="electronicCollectFlag" [(ngModel)]="newStake.electronicCollectFlag">
+      <label for="nao">Não</label>
+
+      <div class="alert alert-danger" *ngIf="!electronicCollectFlag.touched && !electronicCollectFlag.valid">
+        electronicCollectFlag is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="documentType">document Type</label>
+      <textarea required ngModel #documentType="ngModel" name="documentType" id="documentType" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.documentType"></textarea>
+      <div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
+        documentType is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="documentCountry"> País do documento:</label>
+      <textarea required ngModel #documentCountry="ngModel" name="documentCountry" id="documentCountry" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.documentCountry"></textarea>
+      <div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
+        documentCountry is required.
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit" [class.disabled]="!contactForm.valid">Submit</button>
+
   </form>
 
-  <label for="item-input">Add an item:</label>
-  <input type="text" id="item-input" #newItem>
-  <button type="button" (click)="addNewItem(newItem.value)">Add to parent's list</button>
-
-
 </div>
-
-
-
-
-
 
 <br>
 <br>
 <br>
 
 Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
-
-
 
 <form>
   <button type="submit">Ler Cartão de Cidadão</button>

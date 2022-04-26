@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Client } from './Client.interface'
 
 @Component({
   selector: 'app-client',
@@ -12,7 +13,8 @@ export class ClientComponent implements OnInit {
   //public clientsForSearch: Client[] = [];
   public searchParameter: any;
   public result: any;
-  
+
+
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients').subscribe(result => {
@@ -22,21 +24,16 @@ export class ClientComponent implements OnInit {
   }
   receiveSearchValue(box: string) {
     console.warn("VALOR RECEBIDO no Client", box);
-   // this.searchParameter.push(box);
+    // this.searchParameter.push(box);
     this.searchParameter = (box);
   }
 
   ngOnInit(): void {
   }
 
-}
+  submit(form: any) {
 
-interface Client {
-  id: Number,
-  newClientNr: Number,
-  docType: String,
-  docNr: String,
-  flagAutCol: Boolean,
-  crcCode: String,
-  socialDenomination: String
+
+  }
+
 }

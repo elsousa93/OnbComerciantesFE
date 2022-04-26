@@ -1,7 +1,3 @@
-
-
-
-
 <p>stakeholders works!</p>
 
 <h1 id="tableLabel">Intervenientes / Stakeholders Data</h1>
@@ -12,10 +8,84 @@
 <!-- Aqui aparecem infos do child // os novos stakeholders -->
 
 
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakes">
+  <thead>
+    <tr>
+      <th>stakeholderType</th>
+      <th>nif</th>
+      <th>clientName</th>
+      <th>clientNr</th>
+      <th>electronicCollectFlag</th>
+      <th>documentType</th>
+      <th>documentCountry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="clickable" *ngFor="let stake of stakes">
+      <th>{{stake.stakeholderType}}</th>
+      <th>{{stake.nif}}</th>
+      <th>{{stake.clientName}}</th>
+      <th>{{stake.clientNr}}</th>
+      <th>{{stake.electronicCollectFlag}}</th>
+      <th>{{stake.documentType}}</th>
+      <th>{{stake.documentCountry}}</th>
+      <th>
+        <button class="btn btn-info" (click)="toggleShow(stake)">
+          <span class="glyphicon glyphicon-pencil"></span>More Info
+        </button>
 
+        <button class="btn btn-primary" [routerLink]="['/add-stakeholder/', stake.nif]">
+          <span class="glyphicon glyphicon-pencil"></span>Edit
+        </button>
 
-<p *ngIf="!stakeholder"><em>Loading...</em></p>
+        <button class="btn btn-danger">
+          <span class="glyphicon glyphicon-trash"></span>Remove
+        </button>
+      </th>
+
+    </tr>
+  </tbody>
+</table>
 
 <button (click)="onClickNew()" routerLink="/add-stakeholder">Add new stakeholder</button>
 
 
+<div *ngIf="isShown" class="row container-fluid" id="divshow">
+  Div Content
+
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeShow">
+
+    <thead>
+      <tr>
+        <th>flagAssociado</th>
+        <th>flagProcurador</th>
+        <th>flagRecolhaEletronica</th>
+        <th>tipoDocumento </th>
+        <th>paisDocumentoID </th>
+        <th>nrDocumentoID </th>
+        <th>primeiranacionalidade </th>
+        <th>dtValidadeID </th>
+        <th>paisNIFEstrangeiro </th>
+        <th>indicadorNIFPaisEstrangeiro </th>
+        <th> nifEstrangeiro</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr class="table table-striped" *ngFor="let stake of stakeShow">
+
+        <th>{{stake.flagAssociado}}</th>
+        <th>{{stake.flagProcurador}}</th>
+        <th>{{stake.flagRecolhaEletronica}}</th>
+        <th>{{stake.tipoDocumento}}</th>
+        <th>{{stake.paisDocumentoID}}</th>
+        <th>{{stake.nrDocumentoID}}</th>
+        <th>{{stake.primeiranacionalidade}}</th>
+        <th>{{stake.dtValidadeID}}</th>
+        <th>{{stake.paisNIFEstrangeiro}}</th>
+        <th>{{stake.indicadorNIFPaisEstrangeiro}}</th>
+        <th>{{stake.nifEstrangeiro}}</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
