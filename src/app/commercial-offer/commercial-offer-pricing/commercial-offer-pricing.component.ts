@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IPricing } from '../IPricing.interface';
 
 @Component({
   selector: 'app-commercial-offer-pricing',
@@ -7,9 +8,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommercialOfferPricingComponent implements OnInit {
 
+  prices: IPricing[] = [
+    {
+      package: "teste 1",
+      denomination: "teste 2",
+      value: 10.3,
+      tsc: 0.2,
+      editable: true
+    },
+    {
+      package: "Tarifa",
+      denomination: "Denominação",
+      value: 0.35,
+      tsc: 0.8,
+      editable: false
+    }
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  editPricing(index: number) {
+    console.log(index)
+    console.log(this.prices)
+    //code for editing
+
   }
 
 }

@@ -1,5 +1,18 @@
-<app-nav-menu></app-nav-menu>
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+<body>
+  <span class="form-inline">
+    <select class="form-control"
+            #selectedLang
+            (change)="switchLanguage(selectedLang.value)">
+      <option *ngFor="let language of translate.getLangs()"
+              [value]="language"
+              [selected]="language === translate.currentLang">
+        {{ language}}
+      </option>
 
+    </select>
+  </span>
+  <app-nav-menu></app-nav-menu>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</body>

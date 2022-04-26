@@ -14,6 +14,84 @@ property detail is {{stroreId}}
         </span>
       </div>
       <div class="input-form-group">
+        <label for="storeCountry">País</label>
+        <input #storeCountry="ngModel" required minlength="5" maxlength="100" type="text" name="storeCountry" class="form-control" [(ngModel)]="store.country">
+        <span *ngIf="storeCountry.touched && storeCountry.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeCountry.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeCountry.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storePostalCode">Código Postal</label>
+        <input #storePostalCode="ngModel" required minlength="5" maxlength="100" type="text" name="storePostalCode" class="form-control" [(ngModel)]="store.postalCode">
+        <span *ngIf="storePostalCode.touched && storePostalCode.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storePostalCode.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storePostalCode.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeAddress">Morada</label>
+        <input #storeAddress="ngModel" required minlength="5" maxlength="100" type="text" name="storeAddress" class="form-control" [(ngModel)]="store.address">
+        <span *ngIf="storeAddress.touched && storeAddress.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeAddress.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeAddress.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeFixedIp">Endereço de IP Fixo</label>
+        <input #storeFixedIp="ngModel" required minlength="5" maxlength="100" type="text" name="storeFixedIp" class="form-control" [(ngModel)]="store.fixedIP">
+        <span *ngIf="storeFixedIp.touched && storeFixedIp.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeFixedIp.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeFixedIp.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storePostalLocality">Localidade Postal</label>
+        <input #storePostalLocality="ngModel" required minlength="5" maxlength="100" type="text" name="storePostalLocality" class="form-control" [(ngModel)]="store.postalLocality">
+        <span *ngIf="storePostalLocality.touched && storePostalLocality.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storePostalLocality.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storePostalLocality.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeEmailContact">E-mail Contacto</label>
+        <input #storeEmailContact="ngModel" required minlength="5" maxlength="100" type="text" name="storeEmailContact" class="form-control" [(ngModel)]="store.emailContact">
+        <span *ngIf="storeEmailContact.touched && storeEmailContact.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeEmailContact.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeEmailContact.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeCellphoneIndic">Indicador de Telemóvel/Telefone</label>
+        <input #storeCellphoneIndic="ngModel" required minlength="2" maxlength="100" type="text" name="storeCellphoneIndic" class="form-control" [(ngModel)]="store.cellphoneIndic">
+        <span *ngIf="storeCellphoneIndic.touched && storeCellphoneIndic.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeCellphoneIndic.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeCellphoneIndic.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <div class="input-form-group">
+        <label for="storeCellphoneNumber">Número de Telemóvel/Telefone</label>
+        <input #storeCellphoneNumber="ngModel" required minlength="5" maxlength="100" type="text" name="storeCellphoneNumber" class="form-control" [(ngModel)]="store.cellphoneNumber">
+        <span *ngIf="storeCellphoneNumber.touched && storeCellphoneNumber.invalid" class="error-block">
+          <span>Atividade invalida:</span>
+          <span *ngIf="storeCellphoneNumber.errors?.['required']"> obrigatório</span>
+          <span *ngIf="storeCellphoneNumber.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+        </span>
+      </div>
+      <br />
+      <p><b>Zona Turistica?</b></p>
+      <div *ngFor="let zonaTuristicas of zonasTuristicas; let idx = index">
+        <input type="radio" name="zonaTuristicas" value="{{zonaTuristicas}}" [checked]="(idx === defaultZonaTuristica)" (change)="radoChangehandler($event)" />{{zonaTuristicas}}
+      </div>
+      <br />
+      <div class="input-form-group">
         <label for="storeActivity">Atividade</label>
         <input #storeActivity="ngModel" required minlength="5" maxlength="100" type="text" name="storeActivity" class="form-control" [(ngModel)]="store.activityEstab">
         <span *ngIf="storeActivity.touched && storeActivity.invalid" class="error-block">
