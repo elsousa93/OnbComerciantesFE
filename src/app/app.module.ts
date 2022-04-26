@@ -30,6 +30,9 @@ import { CommercialOfferDetailComponent } from './commercial-offer/commercial-of
 import { CommercialOfferStoreListComponent } from './commercial-offer/commercial-offer-store-list/commercial-offer-store-list.component';
 import { CommercialOfferTerminalConfigComponent } from './commercial-offer/commercial-offer-terminal-config/commercial-offer-terminal-config.component';
 import { CommercialOfferPricingComponent } from './commercial-offer/commercial-offer-pricing/commercial-offer-pricing.component';
+import { InfoDeclarativaComponent } from './client/info-declarativa/info-declarativa.component';
+import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declarativa-stakeholder/info-declarativa-stakeholder.component';
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -55,7 +58,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CommercialOfferStoreListComponent,
     CommercialOfferTerminalConfigComponent,
     CommercialOfferPricingComponent,
-    StoreIbanComponent
+    StoreIbanComponent,
+    InfoDeclarativaComponent,
+    InfoDeclarativaStakeholderComponent,
+
+   
   ],
   imports: [
     BrowserModule,
@@ -69,6 +76,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'client', component: ClientComponent },
+      { path: 'client/:id', component: ClientComponent },
       { path: 'drop-down', component: DropDownComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
      // { path: 'stakeholders/:contractSearch', component: StakeholdersComponent },
@@ -83,6 +91,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-store-list/:stroreid', component: CommercialOfferStoreListComponent },
       { path: 'commercial-offert-terminal-config/:stroreid/:commofid', component: CommercialOfferTerminalConfigComponent },
       { path: 'commercial-offert-pricing', component: CommercialOfferPricingComponent },
+      { path: 'info-declarativa', component: InfoDeclarativaComponent },
+      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent }
+      
     ]),
     TranslateModule.forRoot({
       loader: {

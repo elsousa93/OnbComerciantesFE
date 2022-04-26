@@ -1,0 +1,109 @@
+<button class="btn" routerLink="/info-declarativa">Comerciante</button>
+<button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+<button class="btn">Assinatura Digital</button>
+<br>
+<br>
+
+<!--
+
+       flagElectableStakeholder : boolean,
+       flagValidStakeholder:boolean,
+       callingCodeStakeholder: string,
+       phoneStakeholder: number,
+       emailStakeholder: string,
+       hourContractStar: number,
+       hourContractEnd: number,
+       schoolingStakeholder: string,
+       maritalStatusStakeholder: string,
+       finEstateStakeholder: number,
+       monthlyEarnsStakeholder: number
+
+
+  -->
+
+<p>- Inserir tabela - </p>
+<p><strong>Contactos</strong></p>
+<p>Preencha pelo menos 1 contacto</p>
+
+
+
+<div class="container" style="display: flex">
+  <div class="country-code-dropdown">
+    <p>Indicativo:</p>
+    <form [formGroup]="formContactos">
+      <select class="form-select" formControlName="formContactos" (click)="changeListElement(callingCodeStakeholder, $event)" id="callingCodeStakeholder" [(ngModel)]="newStakeholder.callingCodeStakeholder">
+        <option value="">Indicativo:</option>
+        <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+      </select>
+      <p>{{callingCodeStakeholder}}</p>
+    </form>
+  </div>
+
+
+
+  <div class="form-group">
+    <label for="phoneStakeholder">Telefone:</label>
+
+    <input required ngModel #phoneStakeholder="ngModel" name="phoneStakeholder" type="text" id="phoneStakeholder" class="form-control" [(ngModel)]="newStakeholder.phoneStakeholder">
+    <div class="alert alert-danger" *ngIf="phoneStakeholder.touched && !phoneStakeholder.valid">
+      is required.
+    </div>
+  </div>
+
+</div>
+
+
+<div class="form-group">
+  <label for="emailStakeholder">Email:</label>
+
+  <input required ngModel #emailStakeholder="ngModel" name="emailStakeholder" type="text" id="emailStakeholder" class="form-control" [(ngModel)]="newStakeholder.emailStakeholder">
+  <div class="alert alert-danger" *ngIf="emailStakeholder.touched && !emailStakeholder.valid">
+    is required.
+  </div>
+</div>
+
+
+<div class="form-group">
+  <label for="hourContractStart">Melhor hora de início:</label>
+
+  <input required ngModel #hourContractStart="ngModel" name="hourContractStart" type="text" id="hourContractStart" class="form-control" [(ngModel)]="newStakeholder.hourContractStart">
+  <div class="alert alert-danger" *ngIf="hourContractStart.touched && !hourContractStart.valid">
+    hourContractStart is required.
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="hourContractEnd">Melhor hora de fim:</label>
+
+  <input required ngModel #hourContractEnd="ngModel" name="hourContractEnd" type="text" id="hourContractEnd" class="form-control" [(ngModel)]="newStakeholder.hourContractEnd">
+  <div class="alert alert-danger" *ngIf="hourContractEnd.touched && !hourContractEnd.valid">
+    hourContractEnd is required.
+  </div>
+</div>
+
+<p><strong>Dados Pessoais</strong>:</p>
+
+<div class="schooling-drop-down" formGroupName="formSchooling">
+  <label for="schoolingStakeholder">Grau de Instrução:</label>
+  <form [formGroup]="formSchooling">
+    <select class="form-select" formControlName="schoolingStakeholder" (click)="changeListElementSchool(schoolingStakeholder, $event)" id="schoolingStakeholder" [(ngModel)]="newStakeholder.schoolingStakeholder">
+      <option value="disabled">Grau de Instrução:</option>
+      <option *ngFor="let SchoolingData of ListaSchoolingStatus" value={{SchoolingData.schooling}}>{{SchoolingData.schooling}} </option>
+    </select>
+    <p>{{schoolingStakeholder}}</p>
+  </form>
+</div>
+
+
+<div class="marital-drop-down" formGroupName="formMarital">
+  <label for="maritalStatusStakeholder">Estado civil:</label>
+  <form [formGroup]="formMarital">
+    <select class="form-select" formControlName="maritalStatusStakeholder" (click)="changeListElementMarital(maritalStatusStakeholder, $event)" id="maritalStatusStakeholder" [(ngModel)]="newStakeholder.maritalStatusStakeholder">
+      <option value="disabled">Estado civil:</option>
+      <option *ngFor="let maritalStatus of ListaMaritalStatus" value={{maritalStatus.maritalOption}}>{{maritalStatus.maritalOption}} </option>
+    </select>
+    <p>{{maritalStatusStakeholder}}</p>
+  </form>
+</div>
+
+<!-- add more-->
