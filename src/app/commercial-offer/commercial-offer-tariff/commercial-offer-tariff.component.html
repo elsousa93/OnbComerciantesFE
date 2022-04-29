@@ -1,0 +1,27 @@
+<p>commercial-offer-tariff works!</p>
+
+<table border="1">
+  <thead>
+    <tr>
+      <td>Nome</td>
+      <td>Tipologia</td>
+      <td>Seleção</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let price of prices; let i= index;">
+      <td>
+        <input type="text" [(ngModel)]="price.package" [disabled]="true">
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="price.denomination" [disabled]="true">
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="price.value" [disabled]="true">
+      </td>
+      <td>
+      </td>
+    </tr>
+  </tbody>
+</table>

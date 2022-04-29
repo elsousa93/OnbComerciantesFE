@@ -32,6 +32,7 @@ import { CommercialOfferTerminalConfigComponent } from './commercial-offer/comme
 import { CommercialOfferPricingComponent } from './commercial-offer/commercial-offer-pricing/commercial-offer-pricing.component';
 import { InfoDeclarativaComponent } from './client/info-declarativa/info-declarativa.component';
 import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declarativa-stakeholder/info-declarativa-stakeholder.component';
+import { CommercialOfferTariffComponent } from './commercial-offer/commercial-offer-tariff/commercial-offer-tariff.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -61,6 +62,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     StoreIbanComponent,
     InfoDeclarativaComponent,
     InfoDeclarativaStakeholderComponent,
+    CommercialOfferTariffComponent,
 
    
   ],
@@ -91,6 +93,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-store-list/:stroreid', component: CommercialOfferStoreListComponent },
       { path: 'commercial-offert-terminal-config/:stroreid/:commofid', component: CommercialOfferTerminalConfigComponent },
       { path: 'commercial-offert-pricing', component: CommercialOfferPricingComponent },
+      { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent }
       

@@ -30,7 +30,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   onCickContinue() {
-    this.route.navigate(['commercial-offert-pricing']);
+    this.route.navigate(['commercial-offert-tariff']);
   }
 
 
