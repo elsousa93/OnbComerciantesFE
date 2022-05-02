@@ -1,8 +1,9 @@
-<p>client works!</p>
+
 <h1 id="tableLabel">Clients Data</h1>
 
 <p>This component demonstrates fetching Clients data.</p>
 
+<br><p>All clients in the JSON file:</p>
 
 <p *ngIf="!clients"><em>Loading...</em></p>
 
@@ -32,6 +33,126 @@
 </table>
 
 <p> Pesquise: </p>
-<!--app-drop-down (nameEmitter)="receiveSearchValue($event)"></app-drop-down-->
+<!---
+
+ <app-drop-down (nameEmitter)="receiveSearchValue($event)"></app-drop-down>
+
+  [formGroup]="searchClient"
+
+
+   <button type="button" (click)="sendToParent()">enviar para o component Client</button>
+-->
+
+<div>
+  <form>
+    <label>Número do Documento: </label>
+    <input formControlName="n-doc" id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"> Enter para refresh
+  </form>
+  <p>Valor pesquisado: {{displayValueSearch}}</p>
+
+
+  <div>
+    <div *ngIf="hasClient" class="row container-fluid" id="divshow">
+     
+
+      <div class='table table-striped' aria-labelledby="tableLabel" *ngIf="hasClient">
+
+        <label for="newClientNr">Novo Cliente: </label>
+        <input required minlength="2" maxlength="100" ngModel #newClientNr="ngModel" name="newClientNr" type="text" id="newClientNr" class="form-control" [(ngModel)]="newClient.newClientNr" readonly>
+
+        <label for="newClientNr">Tipo de Documento: </label>
+        <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text" id="docType" class="form-control" [(ngModel)]="newClient.docType" readonly>
+
+        <label for="docNr">Número do Documento: </label>
+        <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr" class="form-control" [(ngModel)]="newClient.docNr" readonly>
+
+
+        <div class="form-group">
+          <label for="flagAutCol">Autoriza a recolha de informação da Certidão de Registo Comercial disponíve no portal o Instituto do Registo Notarial?</label><br>
+          <input required ngModel name="flagAutCol" type="radio" value=true #flagAutCol="ngModel" [value]="true" id="flagAutCol" [(ngModel)]="newClient.flagAutCol">
+          <label for="sim">Sim</label> <br>
+
+          <input required ngModel name="flagAutCol" type="radio" value=false #flagAutCol="ngModel" [value]="false" id="flagAutCol" [(ngModel)]="newClient.flagAutCol">
+          <label for="nao">Não</label>
+        </div>
+
+
+        <label for="crcCode">Código de Certidão do Registo Comercial: </label>
+        <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text" id="crcCode" class="form-control" [(ngModel)]="newClient.crcCode" readonly>
+
+        <label for="socialDenomination">Denominação Social:* </label>
+        <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel" name="socialDenomination" type="text" id="socialDenomination" class="form-control" [(ngModel)]="newClient.socialDenomination" readonly>
+
+        <p> Caracterização Social da Empresa:</p>
+
+        <label for="crcCode">Código de Certidão do Registo Comercial: </label>
+        <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text" id="crcCode" class="form-control" [(ngModel)]="newClient.crcCode" readonly>
+        (Aplicável apenas quando a Natureza Jurídica for Sociedade Comercial)
+
+        <table>
+          <tbody>
+            <tr>
+              <td class="tg-0lax">
+                <label for="natJuridicaN1">Natureza Jurídica N1:</label>
+                <input required minlength="2" maxlength="100" ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" type="text" id="natJuridicaN1" class="form-control" [(ngModel)]="newClient.natJuridicaN1" readonly>
+              </td>
+              <td class="tg-0lax">
+                <label for="natJuridicaNIFNIPC">NIF/NIPC:</label>
+                <input required minlength="2" maxlength="100" ngModel #natJuridicaNIFNIPC="ngModel" name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control" [(ngModel)]="newClient.natJuridicaNIFNIPC" readonly>
+              </td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">
+                <label for="natJuridicaN2">Natureza Jurídica N2: </label>
+                <input required minlength="2" maxlength="100" ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" type="text" id="natJuridicaN2" class="form-control" [(ngModel)]="newClient.natJuridicaN2" readonly>
+              </td>
+              <td class="tg-0lax">
+              <td class="tg-0lax">
+                <label for="socialDenomination">Denominação Social:* </label>
+                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel" name="socialDenomination" type="text" id="socialDenomination" class="form-control" [(ngModel)]="newClient.socialDenomination" readonly>
+              </td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">
+                <label for="caePrincipal">CAE Principal: </label>
+                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel" name="caePrincipal" type="text" id="socialDenomination" class="form-control" [(ngModel)]="newClient.socialDenomination" readonly>
+
+              </td>
+              <td class="tg-0lax">
+
+              </td>
+            </tr>
+            <tr>
+              <td class="tg-0lax"></td>
+              <td class="tg-0lax"></td>
+            </tr>
+          </tbody>
+        </table>
+
+     
+
+      
+
+        <label for="categoriaComerciante">Categoria do Comerciante: </label>
+        <input required minlength="2" maxlength="100" ngModel #categoriaComerciante="ngModel" name="categoriaComerciante" type="text" id="categoriaComerciante" class="form-control" [(ngModel)]="newClient.categoriaComerciante" readonly>
+
+
+        <label for="categoriaComerciante">NIPC do Grupo/Franchise: </label>
+        <input required minlength="2" maxlength="100" ngModel #categoriaComerciante="ngModel" name="categoriaComerciante" type="text" id="categoriaComerciante" class="form-control" [(ngModel)]="newClient.categoriaComerciante" readonly>
+
+
+
+      </div>
+    </div>
+
+
+
+  </div> <!---Fim do form-->
+
+
+
+
+
+</div>
 
 
