@@ -14,8 +14,9 @@ export interface Client {
   categoriaComerciante: String,
   categoriaNIPC: Number,
   caePrincipal: String,
-  caeSecundário1: String,
-  caeSecundário2: String,
+  caeSecundario1: String,
+  caeSecundario2: String,
+  caeSecundario3: String;
   ramoPrincipal: String,
   ramoSecundario1: String,
   ramoSecundario2: String,
