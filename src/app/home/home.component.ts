@@ -5,9 +5,7 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrls: [
     'dmxAppConnect/dmxAnimateCSS/animate.min.css',
-    'css/style.css',
-    'bootstrap/5/css/bootstrap.min.css',
-    
+    'css/style.css'    
   ]
 })
 export class HomeComponent {
