@@ -8,27 +8,6 @@ export interface Client {
   crcCode: String,
   socialDenomination: String,
 
-  natJuridicaN1: String,
-  natJuridicaNIFNIPC: Number,
-  natJuridicaN2: String,
-  categoriaComerciante: String,
-  categoriaNIPC: Number,
-  caePrincipal: String,
-  caeSecundario1: String,
-  caeSecundario2: String,
-  caeSecundario3: String;
-  ramoPrincipal: String,
-  ramoSecundario1: String,
-  ramoSecundario2: String,
-  ramoSecundario3: String,
-
-  dataConst: String,
-  paisSedeSocial: String,
-  localidadeSedeSocial: String,
-  cpSedeSocial: String,
-  moradaSedeSocial: String,
-
-
   nameClient: String,
   callingCodeLandClient: String,
   phoneLandClient: Number,

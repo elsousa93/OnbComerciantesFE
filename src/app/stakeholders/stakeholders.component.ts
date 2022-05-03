@@ -58,13 +58,9 @@ export class StakeholdersComponent implements OnInit {
      
    this.stakeShow.push(stake);
      
-   // GetByid(nif, 0) 
-  }
-
-  showEdit(stakenif: number) {
-    console.log("show edit");
-    this.route.navigate(['/add-stakeholder/', stakenif]);
-  }
+   // GetByid(nif, 0)
+       
+   }
 
 }
 
