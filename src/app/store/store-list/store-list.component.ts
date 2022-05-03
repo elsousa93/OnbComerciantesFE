@@ -33,4 +33,8 @@ export class StoreComponent{
     this.route.navigate(['add-store/-1']);
   }
 
+  onCickContinue() {
+    this.route.navigate(['commercial-offert-list']);
+  }
+
 }
