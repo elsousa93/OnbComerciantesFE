@@ -1,9 +1,6 @@
-
-
 <h1 id="tableLabel">Intervenientes</h1>
 
 <p>All the stakeholders in the contract.</p>
-
 
 <!-- Aqui aparecem infos do child // os novos stakeholders -->
 
@@ -39,7 +36,8 @@
           <span class="glyphicon glyphicon-pencil"></span>Edit
         </button>
 
-        <button class="btn btn-danger">
+
+        <button class="btn btn-danger" (click) = "onClickDelete(stake.nif, stake.clientNr)">
           <span class="glyphicon glyphicon-trash"></span>Remove
         </button>
       </th>

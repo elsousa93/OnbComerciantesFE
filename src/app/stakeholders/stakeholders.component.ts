@@ -53,6 +53,11 @@ export class StakeholdersComponent implements OnInit {
     this.route.navigate(['/add-stakeholder/', stakeNif]);
   }
 
+  onClickDelete(stakeNif, clientNr) {
+    console.log("delete");
+    this.route.navigate(['/add-stakeholder/', stakeNif, clientNr, 'delete']);
+
+  }
 
   toggleShow(stake: IStakeholders) {
    //clear the array

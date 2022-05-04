@@ -48,6 +48,7 @@ export class NewStakeholderComponent implements OnInit {
   //@Output()  newStakeholderAdded = new EventEmitter<any>();
     stringJson: any;
 
+
   submit(form: any) {
     this.newStake.stakeholderType = form.stakeholderType;
     this.newStake.nif = form.nif;
@@ -90,5 +91,20 @@ export class NewStakeholderComponent implements OnInit {
         console.log("EditStakeholderById");
         console.log(result);
       }, error => console.error(error));
+
+    //Delete 
+    this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
+     +this.newStake.nif+ this.newStake.clientNr +'/delete').subscribe(result => {
+      }, error => console.error(error));
+
+
+
   }//Fim do submit
+
+  onClickDelete(nif, clientNr) {
+    this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
+      +this.newStake.nif +'/'+ this.newStake.clientNr + '/delete').subscribe(result => {
+      }, error => console.error(error));
+    this.route.navigate(['stakeholders']);
+  }
 }
