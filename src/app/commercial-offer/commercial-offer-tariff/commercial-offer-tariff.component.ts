@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPricing } from '../IPricing.interface';
+import { ITariff } from '../ITariff.interface';
 
 @Component({
   selector: 'app-commercial-offer-tariff',
@@ -9,44 +11,21 @@ import { IPricing } from '../IPricing.interface';
 })
 export class CommercialOfferTariffComponent implements OnInit {
 
-  constructor(private route: Router) { }
+  prices: ITariff[] = [];
+  public clientID: number = 12345678;
 
+  selectedTarif: string = "";
+  selectedNonTarif: string = "";
 
-  prices: IPricing[] = [
-    {
-      package: "teste 1",
-      denomination: "teste 2",
-      value: 10.3,
-      tsc: 0.2,
-      editable: false
-    },
-    {
-      package: "Tarifa",
-      denomination: "Denominação",
-      value: 0.35,
-      tsc: 0.8,
-      editable: false
-    },
-    {
-      package: "Tarifa",
-      denomination: "Denominação 2",
-      value: 0.35,
-      tsc: 0.8,
-      editable: false
-    },
-    {
-      package: "teste 1",
-      denomination: "teste 3",
-      value: 10.3,
-      tsc: 0.2,
-      editable: false
-    }
-  ];
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+    http.get<ITariff[]>(baseUrl + 'becommercialoffer/GetTariff/' + this.clientID).subscribe(result => {
+      this.prices = result;
+      console.log(this.prices)
+      this.selectedTarif = this.prices.findIndex(x => x.package === 'Tarifa').toString();
+      this.selectedNonTarif = this.prices.findIndex(x => x.package != 'Tarifa').toString();
 
-
-  selectedTarif: string = this.prices.findIndex(x => x.package === 'Tarifa').toString();
-  
-  selectedNonTarif: string = this.prices.findIndex(x => x.package != 'Tarifa').toString();
+    }, error => console.error(error));
+  }
 
   ngOnInit(): void {
     console.log(this.prices)
@@ -59,10 +38,15 @@ export class CommercialOfferTariffComponent implements OnInit {
 
   onCickContinue() {
     console.log(this.selectedTarif)
-    this.prices[this.selectedTarif].editable = true;
-    this.prices[this.selectedNonTarif].editable = true;
+    this.prices[this.selectedTarif].selected = true;
+    this.prices[this.selectedNonTarif].selected = true;
     console.log(this.prices);
-    this.route.navigate(['commercial-offert-pricing']);
+
+    /*Submit tariff*/
+    this.http.post<number>(this.baseUrl + 'becommercialoffer/PostTariff/' + this.clientID , this.prices).subscribe(result => {
+      console.log(result);
+      this.route.navigate(['commercial-offert-pricing']);
+    }, error => console.error(error));
   }
 
 }
