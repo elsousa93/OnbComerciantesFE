@@ -18,6 +18,7 @@ export class ClientComponent implements OnInit {
   public displayValueSearch: any;
 
   hasClient: boolean = false;
+  showWarning: boolean = false;
 
   newClient: Client = {  } as Client;
 
@@ -35,16 +36,13 @@ export class ClientComponent implements OnInit {
     }, error => console.error(error));
   }
 
-
   receiveSearchValue(box: string) {
     console.warn("VALOR RECEBIDO no Client", box);
     // this.searchParameter.push(box);
     this.searchParameter = (box);
   }
 
-
-  // Search de um cliente -------------------------
-
+// Search for a client
   getValueSearch(val: string) {
     console.warn("client.component recebeu: ", val)
     this.displayValueSearch = val;
@@ -53,9 +51,16 @@ export class ClientComponent implements OnInit {
       this.newClient = result;
     }, error => console.error(error));
     console.log(this.newClient);
+
+    if (this.newClient.newClientNr == 0) {
+      //There is no client - Show the warning and erase the 
+      this.toggleShowWarning(true);
+      this.hasClient == false;
+    } else {
+      this.toggleShowWarning(false);
+    }
     console.warn("get enviado: ", val)
     this.sendClient(this.newClient);
-
     return this.newClient;
 
   }
@@ -63,29 +68,31 @@ export class ClientComponent implements OnInit {
     this.nameEmitter.emit(this.displayValueSearch);
   }
 
+  toggleShowWarning(value: Boolean) {
+    //There is no client
+    if (value == true) {
+      this.showWarning = true
+    } else {
+      this.showWarning = false
+    }
+  }
+
   sendClient(client: Client) {
     //clear the array
     this.clientsForSearch = [];
     this.hasClient = true;
     console.log(this.clientsForSearch);
-
     this.clientsForSearch.push(client);
 
-
+    if (client.newClientNr == 0) {
+      this.hasClient = false;
+    }
   }
-
-  //------------------------------------------------
-
-
-  getStore
-
 
   ngOnInit(): void {
   }
 
   submit(form: any) {
-
-
   }
 
 }

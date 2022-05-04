@@ -1,6 +1,7 @@
 
 export interface Client {
   id: Number,
+  clientTypology: String,
   newClientNr: Number,
   docType: String,
   docNr: String,
@@ -27,6 +28,15 @@ export interface Client {
   localidadeSedeSocial: String,
   cpSedeSocial: String,
   moradaSedeSocial: String,
+
+  franchiseName: String;
+  groupNIPC: Number,
+  expectableAnualInvoicing: String,
+  services: String,
+  transactionsAverage: Number,
+  preferenceDocuments: String,
+  preferenceContacts: String,
+  destinationCountries: String,
 
 
   nameClient: String,
