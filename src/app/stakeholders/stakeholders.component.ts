@@ -48,6 +48,10 @@ export class StakeholdersComponent implements OnInit {
     this.route.navigate(['/add-stakeholder']);
   }
 
+  onClickEdit(stakeNif) {
+    console.log("edit");
+    this.route.navigate(['/add-stakeholder/', stakeNif]);
+  }
 
 
   toggleShow(stake: IStakeholders) {

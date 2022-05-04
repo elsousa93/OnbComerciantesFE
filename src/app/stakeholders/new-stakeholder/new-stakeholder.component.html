@@ -1,13 +1,10 @@
 
 
-<p>new-stakeholder works!</p>
-
-
 <div class="container">
 
   <form #contactForm="ngForm" (ngSubmit)="submit(contactForm.value)">
     <div class="form-group">
-      <label for="stakeholderType">stakeholderType</label>
+      <label for="stakeholderType">Tipo de Interveniente</label>
       <textarea required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control" [(ngModel)]="newStake.stakeholderType"></textarea>
       <div class="alert alert-danger" *ngIf="stakeholderType.touched && !stakeholderType.valid">
         stakeholderType is required.
@@ -15,7 +12,7 @@
     </div>
 
     <div class="form-group">
-      <label for="stakeholderType">nif</label>
+      <label for="stakeholderType">NIF</label>
       <textarea required ngModel #nif="ngModel" name="nif" id="nif" class="form-control" [(ngModel)]="newStake.nif"></textarea>
       <div class="alert alert-danger" *ngIf="nif.touched && !nif.valid">
         nif is required.
@@ -23,7 +20,7 @@
     </div>
 
     <div class="form-group">
-      <label for="clientName">Client Name</label>
+      <label for="clientName">Nome do Cliente</label>
       <input required minlength="2" maxlength="100" ngModel #clientName="ngModel" name="clientName" type="text" id="clientName" class="form-control" [(ngModel)]="newStake.clientName">
       <div class="alert alert-danger" *ngIf="clientName.touched && !clientName.valid">
         <div *ngIf="clientName.errors && clientName.errors['required']">Client Name is required.</div>
@@ -33,7 +30,7 @@
     </div>
 
     <div class="form-group">
-      <label for="electronicCollectFlag">electronic Collect Flag</label>
+      <label for="electronicCollectFlag">Recolha eletrónica</label>
       <input required ngModel name="electronicCollectFlag" type="radio" value=true #electronicCollectFlag="ngModel" [value]="true" id="electronicCollectFlag" [(ngModel)]="newStake.electronicCollectFlag">
       <label for="sim">Sim</label>
 
@@ -46,7 +43,7 @@
     </div>
 
     <div class="form-group">
-      <label for="documentType">document Type</label>
+      <label for="documentType">Tipo de Docuemnto</label>
       <textarea required ngModel #documentType="ngModel" name="documentType" id="documentType" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.documentType"></textarea>
       <div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
         documentType is required.

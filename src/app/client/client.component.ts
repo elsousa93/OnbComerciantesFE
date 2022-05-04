@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { docType } from './docType'
 
 @Component({
   selector: 'app-client',
@@ -17,6 +17,10 @@ export class ClientComponent implements OnInit {
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
+
+  ListaDocType = docType;
+  formDocType!: FormGroup;
+  docType?: string = "";
 
   hasClient: boolean = false;
   showWarning: boolean = false;
@@ -95,6 +99,10 @@ export class ClientComponent implements OnInit {
   }
 
   submit(form: any) {
+  }
+  changeListElementDocType(variavel: string, e: any) {
+    console.log(e.target.value)
+    this.docType = e.target.value;
   }
 
 }

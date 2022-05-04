@@ -1,6 +1,6 @@
-<p>stakeholders works!</p>
 
-<h1 id="tableLabel">Intervenientes / Stakeholders Data</h1>
+
+<h1 id="tableLabel">Intervenientes</h1>
 
 <p>All the stakeholders in the contract.</p>
 
@@ -11,13 +11,14 @@
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakes">
   <thead>
     <tr>
-      <th>stakeholderType</th>
-      <th>nif</th>
-      <th>clientName</th>
-      <th>clientNr</th>
-      <th>electronicCollectFlag</th>
-      <th>documentType</th>
-      <th>documentCountry</th>
+      <th>Tipo de Interveniente</th>
+      <th>NIF</th>
+      <th>Nome do Cliente</th>
+      <th>Número do Cliente</th>
+      <th>Recolha Eletrónica</th>
+      <th>Tipo de Documento</th>
+      <th>País do Documento</th>
+      <th>Opções</th>
     </tr>
   </thead>
   <tbody>
@@ -34,7 +35,7 @@
           <span class="glyphicon glyphicon-pencil"></span>More Info
         </button>
 
-        <button class="btn btn-primary" [routerLink]="['/add-stakeholder/', stake.nif]">
+        <button class="btn btn-primary" (click) ="onClickEdit(stake.nif)">
           <span class="glyphicon glyphicon-pencil"></span>Edit
         </button>
 
@@ -57,14 +58,20 @@
 
     <thead>
       <tr>
-        <th>flagAssociado</th>
-        <th>flagProcurador</th>
-        <th>flagRecolhaEletronica</th>
-        <th>tipoDocumento </th>
-        <th>paisDocumentoID </th>
-        <th>nrDocumentoID </th>
-        <th>primeiranacionalidade </th>
-        <th>dtValidadeID </th>
+        <th>Associado ao Contrato</th>
+        <th>Procurador</th>
+        <th>Recolha Eletronica</th>
+        <th>Tipo de Docuemnto </th>
+        <th>País do Documento de ID </th>
+        <th>
+          Nº Documento de Identificação (1ª Nacionalidade):*
+        </th>
+        <th>
+          País de Documento de Identificação (1ª Nacionalidade):*
+        </th>
+        <th>
+          Data de Validade Doc. de Identificação (1ª Nacionalidade):
+        </th>
         <th>paisNIFEstrangeiro </th>
         <th>indicadorNIFPaisEstrangeiro </th>
         <th> nifEstrangeiro</th>

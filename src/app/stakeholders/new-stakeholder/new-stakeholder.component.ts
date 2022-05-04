@@ -29,7 +29,7 @@ export class NewStakeholderComponent implements OnInit {
 
     this.ngOnInit();
  
-    console.log("dentro do construtor", this.newStake.nif);
+    console.log(this.newStake.nif);
 
     if (this.newStake.nif != 0) {
       http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.nif ).subscribe(result => {

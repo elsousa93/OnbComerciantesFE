@@ -77,6 +77,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'stakeholders', component: StakeholdersComponent },
      // { path: 'stakeholders/:contractSearch', component: StakeholdersComponent },
       { path: 'add-stakeholder', component: NewStakeholderComponent },
+      { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
+      { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
       { path: 'store-comp', component: StoreComponent },
