@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPricing } from '../IPricing.interface';
 
@@ -25,8 +26,15 @@ export class CommercialOfferPricingComponent implements OnInit {
       editable: false
     }
   ];
+  public clientID: number = 12345678;
 
-  constructor(private route: Router) { }
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+    http.get<IPricing[]>(baseUrl + 'becommercialoffer/GetPricing/' + this.clientID).subscribe(result => {
+      this.prices = result;
+      console.log(this.prices)
+
+    }, error => console.error(error));
+  }
 
   ngOnInit(): void {
   }
@@ -39,7 +47,12 @@ export class CommercialOfferPricingComponent implements OnInit {
   }
 
   onCickContinue() {
-    this.route.navigate(['info-declarativa']);
+    
+    /*Submit Pricing*/
+    this.http.post<number>(this.baseUrl + 'becommercialoffer/PostPricing/' + this.clientID, this.prices).subscribe(result => {
+      console.log(result);
+      this.route.navigate(['info-declarativa']);
+    }, error => console.error(error));
   }
 
 }
