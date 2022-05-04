@@ -30,16 +30,14 @@
       <th>{{stake.documentType}}</th>
       <th>{{stake.documentCountry}}</th>
       <th>
-        <div>
-          <button class="btn btn-info" (click)="toggleShow(stake)">
-            <span class="glyphicon glyphicon-pencil"></span>More Info
-          </button>
-        </div>
-        <div>
-          <button class="btn btn-primary" (click)="showEdit(stake.nif)">
-            <span class="glyphicon glyphicon-pencil"></span>Edit
-          </button>
-        </div>
+        <button class="btn btn-info" (click)="toggleShow(stake)">
+          <span class="glyphicon glyphicon-pencil"></span>More Info
+        </button>
+
+        <button class="btn btn-primary" [routerLink]="['/add-stakeholder/', stake.nif]">
+          <span class="glyphicon glyphicon-pencil"></span>Edit
+        </button>
+
         <button class="btn btn-danger">
           <span class="glyphicon glyphicon-trash"></span>Remove
         </button>
@@ -90,5 +88,4 @@
       </tr>
     </tbody>
   </table>
-
 </div>

@@ -1,5 +1,5 @@
-<p>store-iban works!</p>
-
+<h1>Definir Iban</h1>
+<br />
 <p><b>Pretende utilizar o IBAN do comerciante?</b></p>
 <div *ngFor="let selectionReplicate of selectionsReplicate; let idx = index">
   <input type="radio" name="selectedReplicate" value="{{selectionReplicate}}" [checked]="(idx === 0)" (change)="radoChangehandler($event)" />{{selectionReplicate}}

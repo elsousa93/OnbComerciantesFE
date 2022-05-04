@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IPricing } from '../IPricing.interface';
 
 @Component({
@@ -25,7 +26,7 @@ export class CommercialOfferPricingComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private route: Router) { }
 
   ngOnInit(): void {
   }
@@ -35,6 +36,10 @@ export class CommercialOfferPricingComponent implements OnInit {
     console.log(this.prices)
     //code for editing
 
+  }
+
+  onCickContinue() {
+    this.route.navigate(['info-declarativa']);
   }
 
 }

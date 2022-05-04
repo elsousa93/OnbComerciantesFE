@@ -1,5 +1,6 @@
-<p>commercial-offer-tariff works!</p>
-
+<h1>Seleção de Pacotes</h1>
+<br />
+<h3>Preçário Tarifas</h3>
 <table border="1">
   <thead>
     <tr>
@@ -8,20 +9,56 @@
       <td>Seleção</td>
     </tr>
   </thead>
-
   <tbody>
     <tr *ngFor="let price of prices; let i= index;">
-      <td>
-        <input type="text" [(ngModel)]="price.package" [disabled]="true">
-      </td>
-      <td>
-        <input type="text" [(ngModel)]="price.denomination" [disabled]="true">
-      </td>
-      <td>
-        <input type="text" [(ngModel)]="price.value" [disabled]="true">
-      </td>
-      <td>
-      </td>
+      <ng-container *ngIf="price.package === 'Tarifa'">
+        <td>
+          <input type="text" [(ngModel)]="price.package" [disabled]="true">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="price.denomination" [disabled]="true">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="price.value" [disabled]="true">
+        </td>
+        <td>
+          <input type="radio" name="priceTariff" value="{{i}}" [(ngModel)]="selectedTarif" />
+        </td>
+      </ng-container>
     </tr>
   </tbody>
 </table>
+<br />
+<br />
+<h3>Preçário Mensalidades</h3>
+<table border="1">
+  <thead>
+    <tr>
+      <td>Nome</td>
+      <td>Tipologia</td>
+      <td>Seleção</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let price of prices; let i= index;">
+      <ng-container *ngIf="price.package != 'Tarifa'">
+        <td>
+          <input type="text" [(ngModel)]="price.package" [disabled]="true">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="price.denomination" [disabled]="true">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="price.value" [disabled]="true">
+        </td>
+        <td>
+          <input type="radio" name="priceNonTarif" value="{{i}}" [(ngModel)]="selectedNonTarif" />
+        </td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+<br />
+<div class="form-group col-12">
+  <button (click)="onCickContinue()" class="btn btn-primary">Continuar</button>
+</div>

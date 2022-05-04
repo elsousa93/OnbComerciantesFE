@@ -1,8 +1,6 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Client } from './Client.interface';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Inject, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Client } from './Client.interface'
 
 @Component({
   selector: 'app-client',
@@ -12,25 +10,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 export class ClientComponent implements OnInit {
   public clients: Client[] = [];
-  public clientsForSearch: Client[] = [];
+  //public clientsForSearch: Client[] = [];
   public searchParameter: any;
   public result: any;
-  public displayValueSearch: any;
 
   hasClient: boolean = false;
   showWarning: boolean = false;
 
-  newClient: Client = {  } as Client;
-
-  @Output() nameEmitter = new EventEmitter<string>();
-    //clientID: string;
-
-  constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) {
-
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     console.log(baseUrl);
-    http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
+    http.get<Client[]>(baseUrl + 'BEClients').subscribe(result => {
       console.log(result);
       this.clients = result;
     }, error => console.error(error));
