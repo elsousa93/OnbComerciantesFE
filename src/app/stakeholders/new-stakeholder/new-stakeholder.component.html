@@ -1,23 +1,22 @@
+<!---
+   <input required ngModel name="clientTypology" type="radio" value=true #clientTypology="ngModel" id="clientTypology">
+    <label for="empresa">Empresa</label>
+    <br>
+  -->
 
-
+<h1>Interveniente</h1>
 <div class="container">
 
   <form #contactForm="ngForm" (ngSubmit)="submit(contactForm.value)">
     <div class="form-group">
       <label for="stakeholderType">Tipo de Interveniente</label>
-      <textarea required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control" [(ngModel)]="newStake.stakeholderType"></textarea>
+      <input required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control" [(ngModel)]="newStake.stakeholderType">
       <div class="alert alert-danger" *ngIf="stakeholderType.touched && !stakeholderType.valid">
-        stakeholderType is required.
+        O parâmetro "tipo de interveniente" é obrigatório.
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="stakeholderType">NIF</label>
-      <textarea required ngModel #nif="ngModel" name="nif" id="nif" class="form-control" [(ngModel)]="newStake.nif"></textarea>
-      <div class="alert alert-danger" *ngIf="nif.touched && !nif.valid">
-        nif is required.
-      </div>
-    </div>
+
 
     <div class="form-group">
       <label for="clientName">Nome do Cliente</label>
@@ -42,40 +41,146 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="documentType">Tipo de Docuemnto</label>
-      <textarea required ngModel #documentType="ngModel" name="documentType" id="documentType" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.documentType"></textarea>
-      <div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
-        documentType is required.
+
+
+
+    <div>
+      <p><b>Identificação do Interveniente</b></p>
+
+      <div class="form-group">
+        <label for="flagAssociado">Associado ao Contracto:*</label>
+        <input required ngModel name="flagAssociado" type="radio" value=true #flagAssociado="ngModel" [value]="true" id="flagAssociado" [(ngModel)]="newStake.flagAssociado">
+        <label for="sim">Sim</label>
+
+        <input required ngModel name="flagAssociado" type="radio" value=false #flagAssociado="ngModel" [value]="false" id="flagAssociado" [(ngModel)]="newStake.flagAssociado">
+        <label for="nao">Não</label>
+
+        <div class="alert alert-danger" *ngIf="!flagAssociado.touched && !flagAssociado.valid">
+          flagAssociado is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="flagProcurador">Procurador:*</label>
+        <input required ngModel name="flagProcurador" type="radio" value=true #flagProcurador="ngModel" [value]="true" id="flagProcurador" [(ngModel)]="newStake.flagProcurador">
+        <label for="sim">Sim</label>
+
+        <input required ngModel name="flagProcurador" type="radio" value=false #flagProcurador="ngModel" [value]="false" id="flagProcurador" [(ngModel)]="newStake.flagProcurador">
+        <label for="nao">Não</label>
+
+        <div class="alert alert-danger" *ngIf="!flagProcurador.touched && !flagProcurador.valid">
+          flagProcurador is required.
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="flagRecolhaEletronica">
+          Pretende efetuar a Atualização Eletrónica dos Dados utilizando o Cartão de Cidadão?:*
+        </label>
+        <input required ngModel name="flagRecolhaEletronica" type="radio" value=true #flagRecolhaEletronica="ngModel" [value]="true" id="flagRecolhaEletronica" [(ngModel)]="newStake.flagRecolhaEletronica">
+        <label for="sim">Sim</label>
+
+        <input required ngModel name="flagRecolhaEletronica" type="radio" value=false #flagRecolhaEletronica="ngModel" [value]="false" id="flagRecolhaEletronica" [(ngModel)]="newStake.flagRecolhaEletronica">
+        <label for="nao">Não</label>
+
+        <div class="alert alert-danger" *ngIf="!flagRecolhaEletronica.touched && !flagRecolhaEletronica.valid">
+          flagRecolhaEletronica is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="documentType">
+          Tipo de Documento de Identificação (1ª Nacionalidade):*
+        </label>
+        <input required ngModel #documentType="ngModel" name="documentType" id="documentType" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.documentType">
+        <div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
+          documentType is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="documentCountry">
+          País do Documento de Identificação (1ª Nacionalidade):*
+        </label>
+        <input required ngModel #documentCountry="ngModel" name="documentCountry" id="documentCountry" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.documentCountry">
+        <div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
+          documentCountry is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="nrDocumentoID">
+          Nº Documento de Identificação (1ª Nacionalidade):*
+        </label>
+        <input required ngModel #nrDocumentoID="ngModel" name="nrDocumentoID" id="nrDocumentoID" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.nrDocumentoID">
+        <div class="alert alert-danger" *ngIf="nrDocumentoID.touched && !nrDocumentoID.valid">
+          nrDocumentoID is required.
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="dateDocumentID">
+          Data do documento de Identificação (1ª Nacionalidade):*
+        </label>
+        <input required ngModel #dateDocumentID="ngModel" name="dateDocumentID" id="dateDocumentID" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.dateDocumentID">
+        <div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
+          dataDocumentoID is required.
+        </div>
       </div>
     </div>
 
+    <p><b>Identificação do Interveniente II</b></p>
     <div class="form-group">
-      <label for="documentCountry"> País do documento:</label>
-      <textarea required ngModel #documentCountry="ngModel" name="documentCountry" id="documentCountry" cols="30" rows="10" class="form-control" [(ngModel)]="newStake.documentCountry"></textarea>
-      <div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
-        documentCountry is required.
+      <label for="stakeholderNif">NIF</label>
+      <input required ngModel #stakeholderNif="ngModel" name="stakeholderNif" id="stakeholderNif" class="form-control" [(ngModel)]="newStake.stakeholderNif">
+      <div class="alert alert-danger" *ngIf="stakeholderNif.touched && !stakeholderNif.valid">
+        O parâmetro "NIF" é obrigatório.
+      </div>
+      <label for="roleStakeholder">Cargo</label>
+      <input required ngModel #roleStakeholder="ngModel" name="roleStakeholder" id="roleStakeholder" class="form-control" [(ngModel)]="newStake.roleStakeholder">
+      <div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
+        O parâmetro "Cargo" é obrigatório.
+      </div>
+      <label for="roleStakeholder">Morada Fiscal</label>
+      <input required ngModel #streetAdressStakeholder="ngModel" name="streetAdressStakeholder" id="streetAdressStakeholder" class="form-control" [(ngModel)]="newStake.streetAdressStakeholder">
+      <div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
+        O parâmetro "Morada Fiscal" é obrigatório.
+      </div>
+      <label for="postCodeAdressStakeholder">Código postal</label>
+      <input required ngModel #postCodeAdressStakeholder="ngModel" name="postCodeAdressStakeholder" id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="newStake.postCodeAdressStakeholder">
+      <div class="alert alert-danger" *ngIf="postCodeAdressStakeholder.touched && !postCodeAdressStakeholder.valid">
+        O parâmetro "Código postal" é obrigatório.
+      </div>
+      <label for="areaBillingAdressStakeholder">Área</label>
+      <input required ngModel #areaBillingAdressStakeholder="ngModel" name="areaBillingAdressStakeholder" id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="newStake.areaBillingAdressStakeholder">
+      <div class="alert alert-danger" *ngIf="areaBillingAdressStakeholder.touched && !areaBillingAdressStakeholder.valid">
+        O parâmetro "Código postal" é obrigatório.
+      </div>
+      <label for="countryBillingAdressStakeholder">País da morada fiscal</label>
+      <input required ngModel #countryBillingAdressStakeholder="ngModel" name="countryBillingAdressStakeholder" id="countryBillingAdressStakeholder" class="form-control" [(ngModel)]="newStake.countryBillingAdressStakeholder">
+      <div class="alert alert-danger" *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
+        O parâmetro "Código postal" é obrigatório.
       </div>
     </div>
 
-    <button class="btn btn-primary" type="submit" [class.disabled]="!contactForm.valid">Submit</button>
-
+    <button class="btn btn-primary" type="submit" [class.disabled]="!contactForm.valid">Submeter</button>
+     
   </form>
-
 </div>
 
 <br>
 <br>
+
+<button (click)="onClickDelete(newStake.stakeholderNif, newStake.clientNr)" class="btn btn-primary">Eliminar</button>
+
 <br>
-
-<button (click)="onClickDelete(newStake.nif, newStake.clientNr)" class="btn btn-primary">Eliminar</button>
-
+<br>
+<br>
 Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
 
 <form>
   <button type="submit">Ler Cartão de Cidadão</button>
-
 </form>
-<p>
 
-</p>

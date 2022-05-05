@@ -20,7 +20,7 @@ export class NewStakeholderComponent implements OnInit {
   public displayValueSearch = "";
 
   newStake: IStakeholders = {
-    nif: 0
+    stakeholderNif: 0
   } as IStakeholders
 
   constructor(private router: ActivatedRoute,
@@ -29,10 +29,10 @@ export class NewStakeholderComponent implements OnInit {
 
     this.ngOnInit();
  
-    console.log(this.newStake.nif);
+    console.log(this.newStake.stakeholderNif);
 
-    if (this.newStake.nif != 0) {
-      http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.nif ).subscribe(result => {
+    if (this.newStake.stakeholderNif != 0) {
+      http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.stakeholderNif ).subscribe(result => {
         console.log(result);
         this.newStake = result;
       }, error => console.error(error));
@@ -41,8 +41,8 @@ export class NewStakeholderComponent implements OnInit {
 
    ngOnInit(): void {
      //Get Id from the store
-     this.newStake.nif = Number(this.router.snapshot.params['nif']);
-     console.log(this.newStake.nif);
+     this.newStake.stakeholderNif = Number(this.router.snapshot.params['nif']);
+     console.log(this.newStake.stakeholderNif);
   }
 
   //@Output()  newStakeholderAdded = new EventEmitter<any>();
@@ -51,7 +51,7 @@ export class NewStakeholderComponent implements OnInit {
 
   submit(form: any) {
     this.newStake.stakeholderType = form.stakeholderType;
-    this.newStake.nif = form.nif;
+    this.newStake.stakeholderNif = form.nif;
     this.newStake.clientName = form.clientName;
     this.newStake.clientNr = form.clientNr;
     this.newStake.electronicCollectFlag = form.electronicCollectFlag;
@@ -62,8 +62,7 @@ export class NewStakeholderComponent implements OnInit {
     this.newStake.paisDocumentoID = form.paisDocumentoID;
     this.newStake.nrDocumentoID = form.nrDocumentoID;
     this.newStake.primeiranacionalidade = form.primeiranacionalidade;
-    this.newStake.dtValidadeID = form.dtValidadeID;
-    this.newStake.primeiranacionalidade = form.primeiranacionalidade;
+    this.newStake.dateDocumentID = form.dtValidadeID;
     this.newStake.paisNIFEstrangeiro = form.paisNIFEstrangeiro;
     this.newStake.indicadorNIFPaisEstrangeiro = form.indicadorNIFPaisEstrangeiro;
     this.newStake.nifEstrangeiro = form.nifEstrangeiro;
@@ -81,20 +80,20 @@ export class NewStakeholderComponent implements OnInit {
     }
 
     this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/PostNewStakeholder/'
-      + this.newStake.nif, this.newStake).subscribe(result => {
+      + this.newStake.stakeholderNif, this.newStake).subscribe(result => {
         console.log(result);
       }, error => console.error(error));
 
     //Edit EditStakeholderById
     this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/EditStakeholderById/'
-      + this.newStake.nif + '/edit', this.newStake).subscribe(result => {
+      + this.newStake.stakeholderNif + '/edit', this.newStake).subscribe(result => {
         console.log("EditStakeholderById");
         console.log(result);
       }, error => console.error(error));
 
-    //Delete 
+    //Delete --
     this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
-     +this.newStake.nif+ this.newStake.clientNr +'/delete').subscribe(result => {
+     +this.newStake.stakeholderNif+ this.newStake.clientNr +'/delete').subscribe(result => {
       }, error => console.error(error));
 
 
@@ -103,7 +102,7 @@ export class NewStakeholderComponent implements OnInit {
 
   onClickDelete(nif, clientNr) {
     this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
-      +this.newStake.nif +'/'+ this.newStake.clientNr + '/delete').subscribe(result => {
+      +this.newStake.stakeholderNif +'/'+ this.newStake.clientNr + '/delete').subscribe(result => {
       }, error => console.error(error));
     this.route.navigate(['stakeholders']);
   }

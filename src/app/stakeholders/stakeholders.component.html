@@ -1,9 +1,6 @@
 <h1 id="tableLabel">Intervenientes</h1>
 
-<p>All the stakeholders in the contract.</p>
-
-<!-- Aqui aparecem infos do child // os novos stakeholders -->
-
+<p>Todos os intervenientes no contracto.</p>
 
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakes">
   <thead>
@@ -20,37 +17,37 @@
   </thead>
   <tbody>
     <tr class="clickable" *ngFor="let stake of stakes">
-      <th>{{stake.stakeholderType}}</th>
-      <th>{{stake.nif}}</th>
-      <th>{{stake.clientName}}</th>
-      <th>{{stake.clientNr}}</th>
-      <th>{{stake.electronicCollectFlag}}</th>
-      <th>{{stake.documentType}}</th>
-      <th>{{stake.documentCountry}}</th>
-      <th>
+      <td>{{stake.stakeholderType}}</td>
+      <td>{{stake.stakeholderNif}}</td>
+      <td>{{stake.clientName}}</td>
+      <td>{{stake.clientNr}}</td>
+      <td>{{stake.electronicCollectFlag}}</td>
+      <td>{{stake.documentType}}</td>
+      <td>{{stake.documentCountry}}</td>
+      <td>
         <button class="btn btn-info" (click)="toggleShow(stake)">
           <span class="glyphicon glyphicon-pencil"></span>More Info
         </button>
 
-        <button class="btn btn-primary" (click) ="onClickEdit(stake.nif)">
+        <button class="btn btn-primary" (click) ="onClickEdit(stake.stakeholderNif)">
           <span class="glyphicon glyphicon-pencil"></span>Edit
         </button>
 
 
-        <button class="btn btn-danger" (click) = "onClickDelete(stake.nif, stake.clientNr)">
+        <button class="btn btn-danger" (click) = "onClickDelete(stake.stakeholderNif, stake.clientNr)">
           <span class="glyphicon glyphicon-trash"></span>Remove
         </button>
-      </th>
+      </td>
 
     </tr>
   </tbody>
 </table>
 
-<button (click)="onClickNew()" routerLink="/add-stakeholder">Add new stakeholder</button>
+<button (click)="onClickNew()" routerLink="/add-stakeholder">Adicionar Interveniente</button>
 
 
 <div *ngIf="isShown" class="row container-fluid" id="divshow">
-  Div Content
+
 
   <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeShow">
 
@@ -61,17 +58,11 @@
         <th>Recolha Eletronica</th>
         <th>Tipo de Docuemnto </th>
         <th>País do Documento de ID </th>
-        <th>
-          Nº Documento de Identificação (1ª Nacionalidade):*
-        </th>
-        <th>
-          País de Documento de Identificação (1ª Nacionalidade):*
-        </th>
-        <th>
-          Data de Validade Doc. de Identificação (1ª Nacionalidade):
-        </th>
-        <th>paisNIFEstrangeiro </th>
-        <th>indicadorNIFPaisEstrangeiro </th>
+        <th>Nº Documento de Identificação (1ª Nacionalidade):*</th>
+        <th>País de Documento de Identificação (1ª Nacionalidade):*</th>
+        <th>Data de Validade Doc. de Identificação (1ª Nacionalidade):</th>
+        <th>paisNIFEstrangeiro</th>
+        <th>indicadorNIFPaisEstrangeiro</th>
         <th> nifEstrangeiro</th>
       </tr>
     </thead>
@@ -86,7 +77,7 @@
         <th>{{stake.paisDocumentoID}}</th>
         <th>{{stake.nrDocumentoID}}</th>
         <th>{{stake.primeiranacionalidade}}</th>
-        <th>{{stake.dtValidadeID}}</th>
+        <th>{{stake.dateDocumentID}}</th>
         <th>{{stake.paisNIFEstrangeiro}}</th>
         <th>{{stake.indicadorNIFPaisEstrangeiro}}</th>
         <th>{{stake.nifEstrangeiro}}</th>
@@ -94,3 +85,48 @@
     </tbody>
   </table>
 </div>
+
+<br><br><br>
+
+<p><b>Adição de Outros Intervenientes</b></p>
+<p>Por favor, pesquise o Interveniente. (Para intervenientes já existentes na base de dados UNICRE)</p>
+
+<div id="pesquisa">
+  <!-- (ngSubmit)=""-->
+  <form #contactForm="ngForm">
+    <div class="form-group">
+      <label for="stakeholderType">Tipo de Interveniente</label>
+      <input required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="tipoDocumento">Tipo de Documento:</label>
+      <input required ngModel #tipoDocumento="ngModel" name="tipoDocumento" type="text" id="tipoDocumento" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="documentCountry">País do Documento:</label>
+      <input required ngModel #documentCountry="ngModel" name="documentCountry" type="text" id="documentCountry" class="form-control">
+    </div>
+  </form>
+
+  <!-- Cria FORM diferente ?-->
+    <label for="flagRecolhaEletronica">
+      Recolha eletrónica dos dados do Cartão de Cidadão?
+      Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
+
+    </label>
+    <input required ngModel name="flagRecolhaEletronica" type="radio" value=true #flagRecolhaEletronica="ngModel" [value]="true" id="flagRecolhaEletronica">
+    <label for="sim">Sim</label>
+
+    <input required ngModel name="flagRecolhaEletronica" type="radio" value=false #flagRecolhaEletronica="ngModel" [value]="false" id="flagRecolhaEletronica">
+    <label for="nao">Não</label>
+
+</div>
+
+<div>
+  Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+  <form>
+    <button type="submit">Ler Cartão de Cidadão</button>
+  </form>
+</div>
+
+
