@@ -10,25 +10,12 @@ import { IPricing } from '../IPricing.interface';
 })
 export class CommercialOfferPricingComponent implements OnInit {
 
-  prices: IPricing[] = [
-    {
-      package: "teste 1",
-      denomination: "teste 2",
-      value: 10.3,
-      tsc: 0.2,
-      editable: true
-    },
-    {
-      package: "Tarifa",
-      denomination: "Denominação",
-      value: 0.35,
-      tsc: 0.8,
-      editable: false
-    }
-  ];
+  /*Pricing Object*/
+  prices: IPricing[] = [];
   public clientID: number = 12345678;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+    /*Get pricing information*/
     http.get<IPricing[]>(baseUrl + 'becommercialoffer/GetPricing/' + this.clientID).subscribe(result => {
       this.prices = result;
       console.log(this.prices)
@@ -39,6 +26,7 @@ export class CommercialOfferPricingComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /*Edit pricing button*/
   editPricing(index: number) {
     console.log(index)
     console.log(this.prices)
@@ -46,6 +34,7 @@ export class CommercialOfferPricingComponent implements OnInit {
 
   }
 
+  /*Controls the continue button*/
   onCickContinue() {
     
     /*Submit Pricing*/

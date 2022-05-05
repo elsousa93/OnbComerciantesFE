@@ -11,7 +11,7 @@ import { ITariff } from '../ITariff.interface';
 })
 export class CommercialOfferTariffComponent implements OnInit {
 
-  prices: ITariff[] = [];
+  tariffs: ITariff[] = [];
   public clientID: number = 12345678;
 
   selectedTarif: string = "";
@@ -19,31 +19,31 @@ export class CommercialOfferTariffComponent implements OnInit {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
     http.get<ITariff[]>(baseUrl + 'becommercialoffer/GetTariff/' + this.clientID).subscribe(result => {
-      this.prices = result;
-      console.log(this.prices)
-      this.selectedTarif = this.prices.findIndex(x => x.package === 'Tarifa').toString();
-      this.selectedNonTarif = this.prices.findIndex(x => x.package != 'Tarifa').toString();
+      this.tariffs = result;
+      console.log(this.tariffs)
+      this.selectedTarif = this.tariffs.findIndex(x => x.package === 'Tarifa').toString();
+      this.selectedNonTarif = this.tariffs.findIndex(x => x.package != 'Tarifa').toString();
 
     }, error => console.error(error));
   }
 
   ngOnInit(): void {
-    console.log(this.prices)
+    console.log(this.tariffs)
     console.log(this.selectedTarif)
   }
 
   onChangeCheckbox($event: any) {
-    console.log(this.prices)
+    console.log(this.tariffs)
   }
 
   onCickContinue() {
     console.log(this.selectedTarif)
-    this.prices[this.selectedTarif].selected = true;
-    this.prices[this.selectedNonTarif].selected = true;
-    console.log(this.prices);
+    this.tariffs[this.selectedTarif].selected = true;
+    this.tariffs[this.selectedNonTarif].selected = true;
+    console.log(this.tariffs);
 
     /*Submit tariff*/
-    this.http.post<number>(this.baseUrl + 'becommercialoffer/PostTariff/' + this.clientID , this.prices).subscribe(result => {
+    this.http.post<number>(this.baseUrl + 'becommercialoffer/PostTariff/' + this.clientID, this.tariffs).subscribe(result => {
       console.log(result);
       this.route.navigate(['commercial-offert-pricing']);
     }, error => console.error(error));

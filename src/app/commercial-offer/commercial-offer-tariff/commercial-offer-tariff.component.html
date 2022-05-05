@@ -10,16 +10,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let price of prices; let i= index;">
-      <ng-container *ngIf="price.package === 'Tarifa'">
+    <tr *ngFor="let tariff of tariffs; let i= index;">
+      <ng-container *ngIf="tariff.package === 'Tarifa'">
         <td>
-          <input type="text" [(ngModel)]="price.package" [disabled]="true">
+          <input type="text" [(ngModel)]="tariff.package" [disabled]="true">
         </td>
         <td>
-          <input type="text" [(ngModel)]="price.denomination" [disabled]="true">
+          <input type="text" [(ngModel)]="tariff.denomination" [disabled]="true">
         </td>
         <td>
-          <input type="text" [(ngModel)]="price.value" [disabled]="true">
+          <input type="text" [(ngModel)]="tariff.value" [disabled]="true">
         </td>
         <td>
           <input type="radio" name="priceTariff" value="{{i}}" [(ngModel)]="selectedTarif" />
@@ -40,16 +40,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let price of prices; let i= index;">
-      <ng-container *ngIf="price.package != 'Tarifa'">
+    <tr *ngFor="let tariff of tariffs; let i= index;">
+      <ng-container *ngIf="tariff.package != 'Tarifa'">
         <td>
-          <input type="text" [(ngModel)]="price.package" [disabled]="true">
+          <input type="text" [(ngModel)]="tariff.package" [disabled]="true">
         </td>
         <td>
-          <input type="text" [(ngModel)]="price.denomination" [disabled]="true">
+          <input type="text" [(ngModel)]="tariff.denomination" [disabled]="true">
         </td>
         <td>
-          <input type="text" [(ngModel)]="price.value" [disabled]="true">
+          <input type="text" [(ngModel)]="tariff.value" [disabled]="true">
         </td>
         <td>
           <input type="radio" name="priceNonTarif" value="{{i}}" [(ngModel)]="selectedNonTarif" />
