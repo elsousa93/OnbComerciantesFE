@@ -64,9 +64,10 @@ export class CommercialOfferDetailComponent implements OnInit {
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
     this.ngOnInit();
-
+    /*In the case of beeing n exising offer*/
     if (this.commofid != -1) {
       http.get<ICommercialOffer>(baseUrl + 'becommercialoffer/GetOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid).subscribe(result => {
+        /*Get commercial offer information*/
         this.commOffer = result;
         this.selectedBrands = this.commOffer.brands;
         this.selectedAdditionalInfos = this.commOffer.additionalInfo;
@@ -75,6 +76,7 @@ export class CommercialOfferDetailComponent implements OnInit {
       }, error => console.error(error));
     }
 
+    /*Get all the stores*/
     http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
       this.stores = result;

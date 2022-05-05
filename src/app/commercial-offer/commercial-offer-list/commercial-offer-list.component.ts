@@ -19,6 +19,7 @@ export class CommercialOfferListComponent implements OnInit {
   selectedOption = 'Não';
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
+    /*Get stores list*/
     http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
       this.stores = result;

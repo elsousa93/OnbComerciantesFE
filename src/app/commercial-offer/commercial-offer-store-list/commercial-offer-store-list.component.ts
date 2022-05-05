@@ -11,6 +11,7 @@ import { ICommercialOffer } from '../ICommercialOffer';
 })
 export class CommercialOfferStoreListComponent implements OnInit {
 
+  /*Commercial Offer Object*/
   public comercialOffers: ICommercialOffer[] = [];
   public clientID: number = 12345678;
 
@@ -34,12 +35,13 @@ export class CommercialOfferStoreListComponent implements OnInit {
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
 
     this.ngOnInit();
-
+    /*Get all offers for that specific store*/
     http.get<ICommercialOffer[]>(baseUrl + 'becommercialoffer/GetAllOffersByStores/' + this.clientID + '/' + this.stroreId).subscribe(result => {
       console.log(result);
       this.comercialOffers = result;
     }, error => console.error(error));
 
+    /*Get the list of all stores*/
     http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
       this.stores = result;
@@ -47,11 +49,12 @@ export class CommercialOfferStoreListComponent implements OnInit {
 
   }
 
-
+  /*Controlles the add store button*/
   onCickAdd() {
     this.route.navigate(['commercial-offert-detail/' + this.stroreId + '/-1']);
   }
 
+  /*Controlles the return button*/
   onCickReturn() {
     this.route.navigate(['commercial-offert-list']);
   }
@@ -62,6 +65,7 @@ export class CommercialOfferStoreListComponent implements OnInit {
     console.log(this.selectedOption)
   }
 
+  /*Submits the form*/
   submit(FormCommercialOffer: any) {
     /*Case when the offer is NOT replicated from another store*/
     if (this.selectedOption == 'Não') {
