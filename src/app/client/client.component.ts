@@ -20,7 +20,7 @@ export class ClientComponent implements OnInit {
 
   ListaDocType = docType;
   formDocType!: FormGroup;
-  docType?: string = "";
+  docType?: string = "Outro";
 
   hasClient: boolean = false;
   showWarning: boolean = false;
@@ -100,7 +100,7 @@ export class ClientComponent implements OnInit {
 
   submit(form: any) {
   }
-  changeListElementDocType(variavel: string, e: any) {
+  changeListElementDocType(docType, e: any) {
     console.log(e.target.value)
     this.docType = e.target.value;
   }
