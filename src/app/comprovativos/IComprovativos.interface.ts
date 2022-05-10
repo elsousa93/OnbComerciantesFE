@@ -15,5 +15,7 @@ export interface IComprovativos {
     nomeInterveniente: String,
     flagComprovativoDocID: Boolean,
     flagComprovativoFiscalInter: Boolean,
-    flagProcuracao: Boolean
+    flagProcuracao: Boolean,
+    filename: String,
+    url: String
 };

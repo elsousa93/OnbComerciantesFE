@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { UploadService } from './comprovativos/services/upload.services';
+import { ComprovativosService } from './comprovativos/services/comprovativos.services';
 import { HttpUtilService } from './comprovativos/services/http.services';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,8 @@ import { CommercialOfferPricingComponent } from './commercial-offer/commercial-o
 import { InfoDeclarativaComponent } from './client/info-declarativa/info-declarativa.component';
 import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declarativa-stakeholder/info-declarativa-stakeholder.component';
 import { CommercialOfferTariffComponent } from './commercial-offer/commercial-offer-tariff/commercial-offer-tariff.component';
-
+import { NewclientComponent } from './newclient/newClientList/newclient.component';
+import { NewClientByIdComponent } from './newclient/newClientById/newclientbyid.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -59,19 +60,21 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaComponent,
     InfoDeclarativaStakeholderComponent,
     CommercialOfferTariffComponent,
-
-   
+    NewclientComponent,
+    NewClientByIdComponent
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     CommonModule,
     ModalModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
+      { path: 'newclient', component: NewclientComponent },
+      { path: 'newclientbyid/:id', component: NewClientByIdComponent },
       { path: 'client/:id', component: ClientComponent },
       { path: 'drop-down', component: DropDownComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
@@ -103,7 +106,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [UploadService, HttpUtilService],
+  providers: [ComprovativosService, HttpUtilService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

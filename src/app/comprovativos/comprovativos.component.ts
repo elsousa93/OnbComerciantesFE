@@ -1,45 +1,44 @@
 import { HttpClient } from '@angular/common/http';
+import { HostListener } from '@angular/core';
 import { ElementRef, Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { numbers } from '@material/checkbox';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
 import { CheckDocumentsComponent } from './check-documents/check-documents.component';
 import { IComprovativos } from './IComprovativos.interface';
-import { UploadService } from './services/upload.services';
+import { ComprovativosService } from './services/comprovativos.services';
 
 
 @Component({
-  //moduleId: module.id,
   selector: 'app-comprovativos',
   templateUrl: './comprovativos.component.html'
 })
 export class ComprovativosComponent implements OnInit {
   public comprovativos: IComprovativos[] = [];
   public result: any;
+  public id: number = 0;
 
   file?: File;
   localUrl: any;
   fileName: any;
-  @ViewChild('delete') deleteButton: ElementRef | any;
-  @ViewChild('search') searchButton: ElementRef | any;
-  @ViewChild('download') downloadButton: ElementRef | any;
   urlImage: string | any;
+  mostrar: boolean = false;
+  deleteModalRef: BsModalRef | undefined;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: ActivatedRoute, private uploadService: UploadService, private renderer: Renderer2, private modalService: BsModalService) {
-    http.get<IComprovativos[]>(baseUrl + `BEComprovativos`).subscribe(result => {
+  @ViewChild('deleteModal') deleteModal;
+  constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
+   private modalService: BsModalService) {
+    http.get<IComprovativos[]>(baseUrl + `BEComprovativos/`).subscribe(result => {
       this.comprovativos = result;
-      
     }, error => console.error(error));
   }
 
   ngOnInit(): void {
-    console.log(Number(this.router.snapshot.params['id']))
+    
   }
-/*
-  onSelect(comp: any) {
-    this.router.navigate(['/upload', comp.id]);
-  }
-*/
 
   selectFile(event: any, comp: any) {
     this.file = <File>event.target.files[0];
@@ -53,46 +52,20 @@ export class ComprovativosComponent implements OnInit {
           this.localUrl = event.target.result;
         }
         reader.readAsDataURL(event.target.files[0]);
-        this.uploadFile();
+        this.uploadFile(comp[0].id);
       }
     } else {
       alert("Verifique o tipo / tamanho do ficheiro");
     }   
   }
 
-  uploadFile() {
+  uploadFile(id: any) {
     if (this.file != undefined) {
-      this.uploadService.uploadFile(this.file).subscribe((data) => {
+      this.compService.uploadFile(this.file, id).subscribe(data => {
         if (data != null) {
-          //Botão download
-          this.downloadButton.nativeElement.style.display = "block";
-          this.downloadButton.nativeElement.addEventListener("click", function (name: any) {
-            const el = name;
-            const fileName = new Blob([data], { type: 'image/jpg' });
-            console.log(data.imgName);
-            const blob = window.URL.createObjectURL(fileName);
-            const link = document.createElement('a');
-
-            console.log(blob);
-            link.href = blob;
-            link.download = data.imgName;
-            link.click();
-            window.URL.revokeObjectURL(blob);
-            link.remove();
-              
-          });
-          
-          //Botão visualizar
-          this.searchButton.nativeElement.style.display = 'block';
-          this.searchButton.nativeElement.target = '_Blank';
-          this.searchButton.nativeElement.href = data.urlImagem;
-          
-          //Botão apagar
-          this.deleteButton.nativeElement.style.display = 'block';
-          this.deleteButton.nativeElement.addEventListener("click", function (id: any) {
-              location.reload();
-          });
-          alert("Upload efetuado!")
+          alert("Upload efetuado!");
+          var elemento = document.getElementById(id);
+          this.load();
         }
      
       },
@@ -104,9 +77,47 @@ export class ComprovativosComponent implements OnInit {
       alert("Selecione um arquivo!")
     }
   }
+
+  load() {
+    location.reload()
+  }
   
-  detalhes(id:Number){
-    const bsModalRef: BsModalRef = this.modalService.show(CheckDocumentsComponent);
+  search(url: any, imgName: any){
+    window.open(url+imgName, '_blank' , 
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;
+      `);
+    
+  }
+
+  download(url: any, imgName: any){
+    const fileName = new Blob([imgName], { type: 'application/pdf;base64'});
+    const blob = window.URL.createObjectURL(fileName);
+    const link = document.createElement('a');
+    link.href = blob;
+    link.download = imgName;
+    link.click();
+  }
+
+  onDelete(id: any){
+    this.deleteModalRef =this.modalService.show(this.deleteModal, {class: 'modal-sm'});
+  }
+  
+  confirmDelete(id: any) {
+    this.compService.delFile(id)
+    //this.compService.deleteFile(id);
+    this.deleteModalRef?.hide();
+  }
+ 
+  declineDelete(){
+    this.deleteModalRef?.hide();
+  }
+  
+  openModalWithComponent(ident: any) {
+    this.modalService.show(CheckDocumentsComponent);
   }
 }
 
