@@ -30,7 +30,7 @@ export class NewClientByIdComponent implements OnInit {
     console.log(this.clientNr);
 
     if (this.clientNr != -1) {
-      http.get<Client>(baseUrl + 'BEClients/GetClientByNewClientNr/' + this.clientNr).subscribe(result => {
+      http.get<Client>(baseUrl + 'BEClients/GetNewClientNr/' + this.clientNr).subscribe(result => {
         this.client = result;
       }, error => console.error(error));
     }

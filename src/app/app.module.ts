@@ -33,6 +33,7 @@ import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declara
 import { CommercialOfferTariffComponent } from './commercial-offer/commercial-offer-tariff/commercial-offer-tariff.component';
 import { NewclientComponent } from './newclient/newClientList/newclient.component';
 import { NewClientByIdComponent } from './newclient/newClientById/newclientbyid.component';
+import { ReadcardComponent } from './readcard/readcard.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -61,7 +62,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaStakeholderComponent,
     CommercialOfferTariffComponent,
     NewclientComponent,
-    NewClientByIdComponent
+    NewClientByIdComponent,
+    ReadcardComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -95,7 +97,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-pricing', component: CommercialOfferPricingComponent },
       { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
-      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent }
+      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
+      { path: 'readcardcc', component: ReadcardComponent }
       
     ]),
     TranslateModule.forRoot({
