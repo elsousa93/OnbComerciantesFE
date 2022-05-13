@@ -27,6 +27,7 @@ export class NewclientComponent implements OnInit {
   hasClient: boolean = false;
   showWarning: boolean = false;
   showButtons: boolean = false;
+  btnSeguinte: boolean = false;
   newClient: Client = {} as Client;
 
   @Output() nameEmitter = new EventEmitter<string>();
@@ -55,7 +56,7 @@ export class NewclientComponent implements OnInit {
     this.activateButtons(true);
     this.displayValueSearch = val;
 
-    this.http.get<Client>(this.baseUrl + 'BEClients/GetClientByNewClientNr/' + this.displayValueSearch).subscribe(result => {
+    this.http.get<Client>(this.baseUrl + 'BEClients/GetNewClientNr/' + this.displayValueSearch).subscribe(result => {
       this.newClient = result;
     }, error => console.error(error));
     console.log(this.newClient);
@@ -118,6 +119,14 @@ export class NewclientComponent implements OnInit {
       this.showButtons = true
     } else {
       this.showButtons = false
+    }
+  }
+
+  aButtons(id: boolean){
+    if (id == true) {
+      this.btnSeguinte = true
+    } else {
+      this.btnSeguinte = false
     }
   }
 }

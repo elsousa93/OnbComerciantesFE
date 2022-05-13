@@ -7,6 +7,11 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  isLoggedIn : string | null = "false"
+
+  constructor() {
+    this.isLoggedIn = localStorage.getItem('isLoggedIn');
+  }
 
   collapse() {
     this.isExpanded = false;

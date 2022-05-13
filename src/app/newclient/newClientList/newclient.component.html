@@ -53,15 +53,17 @@
                                 <tbody>
                                     <tr>
                                         <input type="hidden" name="id" id="id" value={{newClient.newClientNr}}>
-                                        <td><input type="radio" value={{newClient.docType}}><br></td>
+                                        <td><input type="radio" value={{newClient.docType}} (click)="aButtons(true)"><br></td>
                                         <td>{{newClient.newClientNr}}</td>
                                         <td>{{newClient.docType}}</td>
                                         <td>{{newClient.docNr}}</td>
                                     </tr>
                                 </tbody>
-                                <button (click)="obterSelecionado(newClient.newClientNr)">Seguinte</button>
                             </table>
                         </form>
+                        <div *ngIf="btnSeguinte" >
+                          <button (click)="obterSelecionado(newClient.newClientNr)">Seguinte</button>
+                        </div>
                     </div>
                 </div>
             </div>
