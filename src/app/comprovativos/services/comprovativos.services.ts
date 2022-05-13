@@ -7,7 +7,7 @@ import { HttpUtilService } from './http.services';
 @Injectable({
   providedIn: 'root'
 })
-export class UploadService {
+export class ComprovativosService {
   API_URL:string = '';
   
 
@@ -15,14 +15,18 @@ export class UploadService {
     this.API_URL = baseUrl;
    }
 
-  uploadFile(file: File) {
+  uploadFile(file: File, id: any) {
     const formData: FormData = new FormData();
     formData.append('image', file);
 
-    return this.http.post( this.API_URL + `upload`, formData)
+    return this.http.put( this.API_URL + `ServicesComprovativos/`+ id, formData)
       .pipe(map(this.httpUtil.extrairDados))
       .pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(10))),
         catchError(this.httpUtil.processarErros));
+  }
+
+  delFile(id: any){
+    this.http.delete(this.API_URL + `ServicesComprovativos/ServicesComprovativos/`+  id).pipe(take(1))
   }
 }

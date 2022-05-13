@@ -1,7 +1,7 @@
 
     export interface IStakeholders    {
        stakeholderType: string,
-       nif: number,
+       stakeholderNif: number,
        clientName: string,
        clientNr: number,
        electronicCollectFlag: boolean,
@@ -14,8 +14,16 @@
        tipoDocumento: string,
        paisDocumentoID: string,
        nrDocumentoID: number,
+       dateDocumentID :number,
        primeiranacionalidade: string,
-       dtValidadeID: number,
+
+        // identificacao de intervenientes part 2
+       roleStakeholder: string,
+       streetAdressStakeholder: string,
+       postCodeAdressStakeholder: string,
+       areaBillingAdressStakeholder: string,
+       countryBillingAdressStakeholder: string,
+
        paisNIFEstrangeiro: string,
        indicadorNIFPaisEstrangeiro: string,
        nifEstrangeiro: number

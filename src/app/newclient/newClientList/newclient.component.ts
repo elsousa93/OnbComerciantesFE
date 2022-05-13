@@ -1,17 +1,19 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Client } from './Client.interface';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { EventEmitter } from '@angular/core';
+import { Inject } from '@angular/core';
+import { Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { docType } from './docType'
+import { Client } from '../Iclient.interface';
+import { docType } from '../docType'
 
 @Component({
-  selector: 'app-client',
-  templateUrl: './client.component.html',
-  styleUrls: ['./client.component.css']
+  selector: 'app-newclient',
+  templateUrl: './newclient.component.html',
+  styleUrls: ['./newclient.component.css']
 })
-
-export class ClientComponent implements OnInit {
+export class NewclientComponent implements OnInit {
+  myVar1 = false;
   public clients: Client[] = [];
   public clientsForSearch: Client[] = [];
   public searchParameter: any;
@@ -19,12 +21,13 @@ export class ClientComponent implements OnInit {
   public displayValueSearch: any;
 
   ListaDocType = docType;
-  formDocType!: FormGroup;
+  
   docType?: string = "";
 
   hasClient: boolean = false;
   showWarning: boolean = false;
-
+  showButtons: boolean = false;
+  btnSeguinte: boolean = false;
   newClient: Client = {} as Client;
 
   @Output() nameEmitter = new EventEmitter<string>();
@@ -42,7 +45,6 @@ export class ClientComponent implements OnInit {
 
   }
 
-
   receiveSearchValue(box: string) {
     console.warn("VALOR RECEBIDO no Client", box);
     // this.searchParameter.push(box);
@@ -51,10 +53,10 @@ export class ClientComponent implements OnInit {
 
 // Search for a client
   getValueSearch(val: string) {
-    console.warn("client.component recebeu: ", val)
+    this.activateButtons(true);
     this.displayValueSearch = val;
 
-    this.http.get<Client>(this.baseUrl + 'BEClients/GetClientByNewClientNr/' + this.displayValueSearch).subscribe(result => {
+    this.http.get<Client>(this.baseUrl + 'BEClients/GetNewClientNr/' + this.displayValueSearch).subscribe(result => {
       this.newClient = result;
     }, error => console.error(error));
     console.log(this.newClient);
@@ -88,7 +90,6 @@ export class ClientComponent implements OnInit {
     //clear the array
     this.clientsForSearch = [];
     this.hasClient = true;
-    console.log(this.clientsForSearch);
     this.clientsForSearch.push(client);
 
     if (client.newClientNr == 0) {
@@ -97,13 +98,36 @@ export class ClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
   }
 
   submit(form: any) {
   }
+
   changeListElementDocType(docType, e: any) {
-    console.log(e.target.value)
+    this.activateButtons(true);
+    this.toggleShowWarning(true);
     this.docType = e.target.value;
   }
 
+  obterSelecionado(id: any){
+    this.route.navigate(['/newclientbyid/', id]);
+  }
+
+  activateButtons(id: boolean){
+    if (id == true) {
+      this.showButtons = true
+    } else {
+      this.showButtons = false
+    }
+  }
+
+  aButtons(id: boolean){
+    if (id == true) {
+      this.btnSeguinte = true
+    } else {
+      this.btnSeguinte = false
+    }
+  }
 }
+

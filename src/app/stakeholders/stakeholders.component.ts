@@ -67,7 +67,7 @@ export class StakeholdersComponent implements OnInit {
      
    this.stakeShow.push(stake);
      
-   // GetByid(nif, 0)
+   // GetByid(StakeholderNif, 0)
        
    }
 
