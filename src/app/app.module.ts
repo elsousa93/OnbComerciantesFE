@@ -31,6 +31,10 @@ import { CommercialOfferPricingComponent } from './commercial-offer/commercial-o
 import { InfoDeclarativaComponent } from './client/info-declarativa/info-declarativa.component';
 import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declarativa-stakeholder/info-declarativa-stakeholder.component';
 import { CommercialOfferTariffComponent } from './commercial-offer/commercial-offer-tariff/commercial-offer-tariff.component';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
+import {CookieService} from 'ngx-cookie-service'
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -59,11 +63,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaComponent,
     InfoDeclarativaStakeholderComponent,
     CommercialOfferTariffComponent,
+    LoginComponent,
+    DashboardComponent,
 
    
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     CommonModule,
     ModalModule.forRoot(),
     HttpClientModule,
@@ -82,7 +89,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
-      { path: 'store-comp', component: StoreComponent },
+      { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
       { path: 'add-store/:stroreid', component: AddStoreComponent },
       { path: 'add-store-iban/:stroreid', component: StoreIbanComponent },
       { path: 'commercial-offert-list', component: CommercialOfferListComponent },
@@ -92,7 +99,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-pricing', component: CommercialOfferPricingComponent },
       { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
-      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent }
+      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'login/:tokenid', component: LoginComponent },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
       
     ]),
     TranslateModule.forRoot({
@@ -103,7 +113,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [UploadService, HttpUtilService],
+  providers: [UploadService, HttpUtilService, AuthGuard, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

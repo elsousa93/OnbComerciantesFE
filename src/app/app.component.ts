@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent {
   title = 'app';
-  constructor(public translate: TranslateService, private http: HttpClient) {
+  constructor(public translate: TranslateService, private http: HttpClient, private cookie: CookieService) {
     translate.addLangs(['pt', 'en']);
     translate.setDefaultLang('pt');
   }
@@ -17,6 +18,8 @@ export class AppComponent {
   switchLanguage(lang: string) {
     this.translate.use(lang);
   }
+
+  setCookie() {
+    this.cookie.set("jwToken", "TokenExemplo")
+  }
 }
-
-
