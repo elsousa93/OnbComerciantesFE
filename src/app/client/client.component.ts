@@ -20,7 +20,7 @@ export class ClientComponent implements OnInit {
 
   ListaDocType = docType;
   formDocType!: FormGroup;
-  docType?: string = "";
+  docType?: string = "Outro";
 
   hasClient: boolean = false;
   showWarning: boolean = false;

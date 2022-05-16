@@ -47,10 +47,7 @@
 
 
 <div *ngIf="isShown" class="row container-fluid" id="divshow">
-
-
   <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeShow">
-
     <thead>
       <tr>
         <th>Associado ao Contrato</th>
@@ -69,7 +66,6 @@
 
     <tbody>
       <tr class="table table-striped" *ngFor="let stake of stakeShow">
-
         <th>{{stake.flagAssociado}}</th>
         <th>{{stake.flagProcurador}}</th>
         <th>{{stake.flagRecolhaEletronica}}</th>
@@ -84,6 +80,7 @@
       </tr>
     </tbody>
   </table>
+
 </div>
 
 <br><br><br>
@@ -93,7 +90,7 @@
 
 <div id="pesquisa">
   <!-- (ngSubmit)=""-->
-  <form #contactForm="ngForm">
+  <form #form="ngForm" (ngSubmit)="searchStakeholder(form)" novalidate>
     <div class="form-group">
       <label for="stakeholderType">Tipo de Interveniente</label>
       <input required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control">
@@ -103,22 +100,50 @@
       <input required ngModel #tipoDocumento="ngModel" name="tipoDocumento" type="text" id="tipoDocumento" class="form-control">
     </div>
     <div class="form-group">
-      <label for="documentCountry">País do Documento:</label>
-      <input required ngModel #documentCountry="ngModel" name="documentCountry" type="text" id="documentCountry" class="form-control">
+      <label for="stakeholderNif">Número do Documento:</label>
+      <input required ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif" class="form-control">
     </div>
+
+    {{form.value |json}}
+    <button class="btn btn-primary" type="submit">Pesquisar</button>
   </form>
 
+
+
+    <div *ngIf="isFoundStakeholderShown"  class="row container-fluid" id="divshow">
+      RESPOSTA:
+      {{stakeholdersByNIF | json}}
+      <table class='table table-striped'  aria-labelledby="tableLabel" *ngIf="stakeholdersByNIF">
+        <thead>
+          <tr>
+            <th>Tipo de Interveniente</th>
+            <th>NIF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table table-striped" *ngFor="let stakeP of stakeholdersByNIF">
+            <td>{{stakeP.stakeholderType}}</td>
+            <td>{{stakeP.stakeholderNif}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="refreshDiv()">Refresh</button>
+
+  
+  <br /> <br />
+
   <!-- Cria FORM diferente ?-->
-    <label for="flagRecolhaEletronica">
-      Recolha eletrónica dos dados do Cartão de Cidadão?
-      Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
+  <label for="flagRecolhaEletronica">
+    Recolha eletrónica dos dados do Cartão de Cidadão?
+    Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
 
-    </label>
-    <input required ngModel name="flagRecolhaEletronica" type="radio" value=true #flagRecolhaEletronica="ngModel" [value]="true" id="flagRecolhaEletronica">
-    <label for="sim">Sim</label>
+  </label>
+  <input required ngModel name="flagRecolhaEletronica" type="radio" value=true #flagRecolhaEletronica="ngModel" [value]="true" id="flagRecolhaEletronica">
+  <label for="sim">Sim</label>
 
-    <input required ngModel name="flagRecolhaEletronica" type="radio" value=false #flagRecolhaEletronica="ngModel" [value]="false" id="flagRecolhaEletronica">
-    <label for="nao">Não</label>
+  <input required ngModel name="flagRecolhaEletronica" type="radio" value=false #flagRecolhaEletronica="ngModel" [value]="false" id="flagRecolhaEletronica">
+  <label for="nao">Não</label>
 
 </div>
 

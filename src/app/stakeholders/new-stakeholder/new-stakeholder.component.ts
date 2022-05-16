@@ -66,6 +66,7 @@ export class NewStakeholderComponent implements OnInit {
     this.newStake.paisNIFEstrangeiro = form.paisNIFEstrangeiro;
     this.newStake.indicadorNIFPaisEstrangeiro = form.indicadorNIFPaisEstrangeiro;
     this.newStake.nifEstrangeiro = form.nifEstrangeiro;
+    this.newStake.dateDocumentID = form.dateDocumentID;
 
     console.log(this.newStake);
     console.log(typeof this.newStake);

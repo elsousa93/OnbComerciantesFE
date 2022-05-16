@@ -87,7 +87,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'client/:id', component: ClientComponent },
       { path: 'drop-down', component: DropDownComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
-     // { path: 'stakeholders/:contractSearch', component: StakeholdersComponent },
+      { path: 'stakeholders/:nif', component: StakeholdersComponent },
       { path: 'add-stakeholder', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
