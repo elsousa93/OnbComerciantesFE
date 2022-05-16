@@ -39,17 +39,15 @@ export class ClientComponent implements OnInit {
       console.log(result);
       this.clients = result;
     }, error => console.error(error));
-
   }
 
 
   receiveSearchValue(box: string) {
     console.warn("VALOR RECEBIDO no Client", box);
-    // this.searchParameter.push(box);
     this.searchParameter = (box);
   }
 
-// Search for a client
+  // Search for a client
   getValueSearch(val: string) {
     console.warn("client.component recebeu: ", val)
     this.displayValueSearch = val;

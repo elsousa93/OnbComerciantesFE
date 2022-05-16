@@ -95,11 +95,17 @@ export class StakeholdersComponent implements OnInit {
   searchStakeholder(form: any) {
    // stakeholderType: string, stakeholderNif: string
     this.newStake.stakeholderType = form.stakeholderType;
+
+    console.log("FORM stake: " + typeof (form.stakeholderType));
+    console.log(form.stakeholderType);
+
     this.newStake.stakeholderNif = form.stakeholderNif;
     this.newStake.clientName = form.clientName;
     this.newStake.clientNr = form.clientNr;
+
+    console.log("FORM" + form)
     this.stakeholdersByNIF.push(this.newStake);
-   // this.stakeholderNif = stkNif;
+   //this.stakeholderNif = stkNif;
 
       
     console.log("this " + form.value.stakeholderNif);
@@ -108,14 +114,13 @@ export class StakeholdersComponent implements OnInit {
       'bestakeholders/GetStakeholderByNIF/' + form.value.stakeholderNif ).subscribe(result => {
       console.log(result);
         this.stakeholdersByNIF = result;
+        console.log("RESULT " + result);
       }, error => console.error(error));
 
       if (this.stakeholdersByNIF != null) {
          this.isFoundStakeholderShown = true;
     }
-
-    console.log("hello");
- 
+    console.log(this.stakeholdersByNIF);
   }
 
   refreshDiv() {

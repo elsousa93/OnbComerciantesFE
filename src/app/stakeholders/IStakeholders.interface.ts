@@ -39,4 +39,4 @@
        maritalStatusStakeholder: string,
        finEstateStakeholder: number,
        monthlyEarnsStakeholder: number
-  }
+ }

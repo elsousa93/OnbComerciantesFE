@@ -37,7 +37,8 @@ import { ReadcardComponent } from './readcard/readcard.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
-import {CookieService} from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { PepComponent } from './pep/pep.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -64,10 +65,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     StoreIbanComponent,
     InfoDeclarativaComponent,
     InfoDeclarativaStakeholderComponent,
+    PepComponent,
     CommercialOfferTariffComponent,
     NewclientComponent,
     NewClientByIdComponent,
-    ReadcardComponent
+    ReadcardComponent,
     LoginComponent,
     DashboardComponent,
 
@@ -94,6 +96,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
+      { path: 'pep/:clientnr', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
       { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
@@ -109,7 +112,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'readcardcc', component: ReadcardComponent }
       
@@ -122,7 +125,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-    providers: [ComprovativosService, UploadService, HttpUtilService, AuthGuard, CookieService],
+    providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
