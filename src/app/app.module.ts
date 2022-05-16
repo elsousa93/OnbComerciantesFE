@@ -67,11 +67,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CommercialOfferTariffComponent,
     NewclientComponent,
     NewClientByIdComponent,
-    ReadcardComponent
+    ReadcardComponent,
     LoginComponent,
-    DashboardComponent,
-
-   
+    DashboardComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -109,8 +107,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
-      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'readcardcc', component: ReadcardComponent }
       
     ]),
@@ -122,7 +119,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-    providers: [ComprovativosService, UploadService, HttpUtilService, AuthGuard, CookieService],
+    providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
