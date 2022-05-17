@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="dmxAppConnect/dmxAppConnect.js"></script>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <!-- New Wappler Page -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="bootstrap/5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body is="dmx-app" id="teste">
+    <script src="bootstrap/5/js/bootstrap.bundle.min.js"></script>
+
+    <h1 id="tableLabel">Clients Data</h1>
+    <p *ngIf="!clients"><em>Loading...</em></p>
+
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="clients">
+        <thead>
+            <tr>
+                <th>ID - interno</th>
+                <th>N. Cliente</th>
+                <th>Tipo de Doumento</th>
+                <th>N. Documento</th>
+                <th>Flag Autorização de Recolha</th>
+                <th>Codigo CRC</th>
+                <th>Denominação Social</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let client of clients">
+                <td>{{ client.id }}</td>
+                <td>{{ client.newClientNr }}</td>
+                <td>{{ client.docType }}</td>
+                <td>{{ client.docNr }}</td>
+                <td>{{ client.flagAutCol }}</td>
+                <td>{{ client.crcCode }}</td>
+                <td>{{ client.socialDenomination }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!---
+
+ <app-drop-down (nameEmitter)="receiveSearchValue($event)"></app-drop-down>
+
+  [formGroup]="searchClient"
+
+
+   <button type="button" (click)="sendToParent()">enviar para o component Client</button>
+-->
+
+    <div>
+        <p><b>IDENTIFICAÇÃO DO COMERCIANTE</b></p>
+        <div class="form-group">
+            <label for="clientTypology">Qual a tipologia do Comerciante?*</label><br>
+
+            <input required ngModel name="clientTypology" type="radio" value=true #clientTypology="ngModel" id="clientTypology">
+            <label for="empresa">Empresa</label>
+            <br>
+
+            <input required ngModel name="clientTypology" type="radio" value=false #clientTypology="ngModel" id="clientTypology">
+            <label for="eni">ENI</label>
+
+        </div>
+        <p><b>Pesquise o Cliente:</b></p>
+        <div class="docType-drop-down" formGroupName="formDocType">
+            <label for="docType">Tipo de Documento:*</label>
+            <form [formGroup]="formDocType">
+                <select class="form-select" formControlName="formDocType" (click)="changeListElementDocType(docType, $event)" id="docType" [(ngModel)]="newClient.docType">
+                    <option value="disabled">Tipo de Documento:</option>
+                    <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>{{docType.docTypeOption}} </option>
+                </select>
+            </form>
+        </div>
+
+        <br>
+
+        <form>
+            <label>Número do Documento:* </label>
+            <input formControlName="n-doc" id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"> Enter
+        </form>
+        <p>Valor pesquisado: {{displayValueSearch}}</p>
+
+        <div *ngIf="showWarning" class="row container-fluid" id="divshow" text="red">
+            <b>Não existe Comerciante com esse número.</b>
+        </div>
+
+        <div>
+            <div *ngIf="hasClient" class="row container-fluid" id="divshow">
+
+
+                <div class='table table-striped' aria-labelledby="tableLabel" *ngIf="hasClient">
+
+                    <label for="newClientNr">Novo Cliente: </label>
+                    <input required minlength="2" maxlength="100" ngModel #newClientNr="ngModel" name="newClientNr" type="text" id="newClientNr" class="form-control" [(ngModel)]="newClient.newClientNr" readonly>
+
+                    <label for="newClientNr">Tipo de Documento: </label>
+                    <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text" id="docType" class="form-control" [(ngModel)]="newClient.docType" readonly>
+
+                    <label for="docNr">Número do Documento: </label>
+                    <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr" class="form-control" [(ngModel)]="newClient.docNr" readonly>
+
+
+                    <div class="form-group">
+                        <label for="flagAutCol">Autoriza a recolha de informação da Certidão de Registo Comercial disponíve no portal o Instituto do Registo Notarial?</label><br>
+                        <input required ngModel name="flagAutCol" type="radio" value=true #flagAutCol="ngModel" [value]="true" id="flagAutCol" [(ngModel)]="newClient.flagAutCol">
+                        <label for="sim">Sim</label> <br>
+
+                        <input required ngModel name="flagAutCol" type="radio" value=false #flagAutCol="ngModel" [value]="false" id="flagAutCol" [(ngModel)]="newClient.flagAutCol">
+                        <label for="nao">Não</label>
+                    </div>
+
+
+                    <label for="crcCode">Código de Certidão do Registo Comercial: </label>
+                    <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text" id="crcCode" class="form-control" [(ngModel)]="newClient.crcCode" readonly>
+
+                    <label for="socialDenomination">Denominação Social:* </label>
+                    <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel" name="socialDenomination" type="text" id="socialDenomination" class="form-control" [(ngModel)]="newClient.socialDenomination" readonly>
+
+                    <p> Caracterização Social da Empresa:</p>
+
+                    <label for="crcCode">Código de Certidão do Registo Comercial: </label>
+                    <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text" id="crcCode" class="form-control" [(ngModel)]="newClient.crcCode" readonly>
+                    (Aplicável apenas quando a Natureza Jurídica for Sociedade Comercial)
+
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="natJuridicaN1">Natureza Jurídica N1:</label>
+                                    <input required minlength="2" maxlength="100" ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" type="text" id="natJuridicaN1" class="form-control" [(ngModel)]="newClient.natJuridicaN1" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="natJuridicaNIFNIPC">NIF/NIPC:</label>
+                                    <input required minlength="2" maxlength="100" ngModel #natJuridicaNIFNIPC="ngModel" name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control" [(ngModel)]="newClient.natJuridicaNIFNIPC" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="natJuridicaN2">Natureza Jurídica N2: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" type="text" id="natJuridicaN2" class="form-control" [(ngModel)]="newClient.natJuridicaN2" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="socialDenomination">Denominação Social:* </label>
+                                    <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel" name="socialDenomination" type="text" id="socialDenomination" class="form-control" [(ngModel)]="newClient.socialDenomination" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="caePrincipal">CAE Principal: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel" name="caePrincipal" type="text" id="socialDenomination" class="form-control" [(ngModel)]="newClient.socialDenomination" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="ramoPrincipal">Ramo de Negócio de Objeto Social Principal*: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #ramoPrincipal="ngModel" name="ramoPrincipal" type="text" id="ramoPrincipal" class="form-control" [(ngModel)]="newClient.ramoPrincipal" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="caeSecundario1">CAE Secundário 1: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #caeSecundário1="ngModel" name="caeSecundario1" type="text" id="caeSecundario1" class="form-control" [(ngModel)]="newClient.caeSecundario1" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #ramoSecundario1="ngModel" name="ramoSecundario1" type="text" id="ramoSecundario1" class="form-control" [(ngModel)]="newClient.ramoSecundario1" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="caeSecundario2">CAE Secundário 2: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #caeSecundário2="ngModel" name="caeSecundario2" type="text" id="caeSecundario2" class="form-control" [(ngModel)]="newClient.caeSecundario2" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #ramoSecundario2="ngModel" name="ramoSecundario2" type="text" id="ramoSecundario2" class="form-control" [(ngModel)]="newClient.ramoSecundario2" readonly>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="caeSecundario3">CAE Secundário 3: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #caeSecundario3="ngModel" name="caeSecundario3" type="text" id="caeSecundario3" class="form-control" [(ngModel)]="newClient.caeSecundario3" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3" type="text" id="ramoSecundario3" class="form-control" [(ngModel)]="newClient.ramoSecundario3" readonly>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="dataConst">Data Constituição: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #dataConst="ngModel" name="dataConst" type="text" id="dataConst" class="form-control" [(ngModel)]="newClient.dataConst" readonly>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="paisSedeSocial">País da Sede Social: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #paisSedeSocial="ngModel" name="paisSedeSocial" type="text" id="paisSedeSocial" class="form-control" [(ngModel)]="newClient.paisSedeSocial" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="localidadeSedeSocial">Localidade da Sede Social: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #localidadeSedeSocial="ngModel" name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control" [(ngModel)]="newClient.localidadeSedeSocial" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="cpSedeSocial">Código-Postal da Sede Social: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #cpSedeSocial="ngModel" name="cpSedeSocial" type="text" id="paisSedeSocial" class="form-control" [(ngModel)]="newClient.cpSedeSocial" readonly>
+                                </td>
+                                <td class="tg-0lax">
+                                    <label for="moradaSedeSocial">Morada da Sede Social: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #moradaSedeSocial="ngModel" name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control" [(ngModel)]="newClient.moradaSedeSocial" readonly>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <p> Informação Complementar da Empresa:</p>
+
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="tg-0lax">
+                                    <label for="franchiseName"> Nome Francise:</label>
+                                    <input required minlength="2" maxlength="100" ngModel #franchiseName="ngModel" name="franchiseName" type="text" id="franchiseName" class="form-control" [(ngModel)]="newClient.franchiseName" readonly>
+                                </td>
+                                <td>
+                                    <label for="groupNIPC">NIPC do Grupo: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #groupNIPC="ngModel" name="groupNIPC" type="text" id="groupNIPC" class="form-control" [(ngModel)]="newClient.groupNIPC" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="expectableAnualInvoicing">Fauração Anual Expectável: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #expectableAnualInvoicing="ngModel" name="expectableAnualInvoicing" type="text" id="expectableAnualInvoicing" class="form-control" [(ngModel)]="newClient.expectableAnualInvoicing" readonly>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label for="preferenceDocuments"> Selecione a sua preferência de receção de documentação:</label><br>
+                                        <input required ngModel name="preferenceDocuments" type="radio" value="100digital" #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="newClient.preferenceDocuments">
+                                        <label for="100digital">100% Digital</label> <br>
+
+                                        <input required ngModel name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta" #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="newClient.preferenceDocuments">
+                                        <label for="documetacaoPorCarta">Documentação por carta</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="services">Produtos Vendidos/ Serviços Prestados*: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #services="ngModel" name="services" type="text" id="services" class="form-control" [(ngModel)]="newClient.services" readonly>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label for="preferenceDocuments">Selecione como preferia ser contactado:</label><br>
+                                        <input required ngModel name="preferenceDocuments" type="radio" value="chamada" #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="newClient.preferenceDocuments">
+                                        <label for="chamada">Chamada</label> <br>
+
+                                        <input required ngModel name="preferenceDocuments" type="radio" value="correio" #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="newClient.preferenceDocuments">
+                                        <label for="correio">Correio</label>
+
+                                        <input required ngModel name="preferenceDocuments" type="radio" value="email" #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="newClient.preferenceDocuments">
+                                        <label for="email">Email</label>
+
+                                        <input required ngModel name="preferenceDocuments" type="radio" value="SMS" #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="newClient.preferenceDocuments">
+                                        <label for="sms">SMS</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="transactionsAverage">Transações Média: </label>
+                                    <input required minlength="2" maxlength="100" ngModel #transactionsAverage="ngModel" name="transactionsAverage" type="text" id="transactionsAverage" class="form-control" [(ngModel)]="newClient.transactionsAverage" readonly>
+                                </td>
+                                <td>
+                                    <label for="destinationCountries">Países de Destino dos Produtos Serviços*:</label>
+                                    <input required minlength="2" maxlength="100" ngModel #destinationCountries="ngModel" name="destinationCountries" type="text" id="destinationCountries" class="form-control" [(ngModel)]="newClient.destinationCountries" readonly>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+
+        </div>
+        <!---Fim do form-->
+
+
+
+
+
+    </div>
+
+</body>
+
+</html>
