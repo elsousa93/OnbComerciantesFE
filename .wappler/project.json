@@ -30,5 +30,6 @@
       "ftpRemoteFolder": "/public_html/su2_x/",
       "remoteURL": "https://www.atomdel.pt/su2_x/"
     }
-  ]
+  ],
+  "activeGitRemote": "html"
 }
