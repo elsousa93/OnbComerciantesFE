@@ -1,187 +1,299 @@
-<p>pep works!</p>
-
 <h1>PEP</h1>
 <div class="container">
 
-  <form #contactForm="ngForm" (ngSubmit)="submit(PepForm.value)">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
     <div class="form-group">
-      <label for="pep12months">
-        É, ou foi nos últimos 12 meses, Pessoa Politicamente Exposta (PEP)?:
+      <label for="id"> id</label>
+      <input formControlName="id"
+             id="id"
+             type="number"
+             class="form-control">
+
+    </div>
+    <p>É, ou foi nos últimos 12 meses, Pessoa Politicamente Exposta (PEP)?: </p>
+    <div class="form-group">
+      <label>
+        Sim
+        <input formControlName="pep12months"
+               name="isVisiblePep12months"
+               [(ngModel)]="isVisiblePep12months"
+               id="true"
+               type="radio"
+               [value]="true"
+               class="form-control"
+               [checked]="isSelected" />
       </label>
 
-      <input required ngModel name="pep12months" type="radio" value=true #pep12months="ngModel" [value]="true" id="pep12months">
-      <label for="sim">Sim</label>
-
-      <input required ngModel name="pep12months" type="radio" value=false #pep12months="ngModel" [value]="false" id="pep12months">
-      <label for="nao">Não</label>
-
-      <div class="alert alert-danger" *ngIf="pep12months.touched && !pep12months.valid">
-        O parâmetro acima é obrigatório.
-      </div>
-      <div>
-        <!--Caso tenha sido PEP-->
-
-      </div>
-
-
-      <label for="pepFamiliarOf">
-        É familiar de uma Pessoa Politicamente Exposta (PEP)?:
+      <br><br>
+      <label>
+        Não
+        <input formControlName="pep12months"
+               name="isVisiblePep12months"
+               [(ngModel)]="isVisiblePep12months"
+               id="false"
+               type="radio"
+               value="0"
+               class="form-control" />
       </label>
+      <div class="showDiv" *ngIf="isVisiblePep12months == true">
 
-      <input required ngModel name="pepFamiliarOf" type="radio" value=true #pepFamiliarOf="ngModel" [value]="true" id="pepFamiliarOf">
-      <label for="sim">Sim</label>
-
-      <input required ngModel name="pepFamiliarOf" type="radio" value=false #pepFamiliarOf="ngModel" [value]="false" id="pepFamiliarOf">
-      <label for="nao">Não</label>
-
-      <div class="alert alert-danger" *ngIf="pepFamiliarOf.touched && !pepFamiliarOf.valid">
-        O parâmetro acima é obrigatório.
-      </div>
-      <div>
-        <!--Caso seja familiar de um PEP-->
-
-      </div>
-
-      <label for="pepRelations">
-        Mantém relações estreitas de natureza societária ou comercial com uma Pessoa Politicamente Exposta (PEP)?:
-
-      </label>
-
-      <input required ngModel name="pepRelations" type="radio" value=true #pepRelations="ngModel" [value]="true" id="pepRelations">
-      <label for="sim">Sim</label>
-
-      <input required ngModel name="pepRelations" type="radio" value=false #pepRelations="ngModel" [value]="false" id="pepRelations">
-      <label for="nao">Não</label>
-
-      <div class="alert alert-danger" *ngIf="pepRelations.touched && !pepRelations.valid">
-        O parâmetro acima é obrigatório.
-      </div>
-      <div>
-        <!--Caso mantenha relações estreitas com um PEP-->
-
-      </div>
-
-      <label for="pepPoliticalPublicJobs">
-        É, ou foi nos últimos 12 meses, titular de outros Cargos Políticos ou Públicos em território nacional?
-
-
-      </label>
-
-      <input required ngModel name="pepPoliticalPublicJobs" type="radio" value=true #pepPoliticalPublicJobs="ngModel" [value]="true" id="pepPoliticalPublicJobs">
-      <label for="sim">Sim</label>
-
-      <input required ngModel name="pepPoliticalPublicJobs" type="radio" value=false #pepPoliticalPublicJobs="ngModel" [value]="false" id="pepPoliticalPublicJobs">
-      <label for="nao">Não</label>
-
-      <div class="alert alert-danger" *ngIf="pepPoliticalPublicJobs.touched && !pepPoliticalPublicJobs.valid">
-        O parâmetro acima é obrigatório.
-      </div>
-
-      <div>
-        <!--Caso tenha sido titular nos ultimos meses de cargos politicos ou publicos -->
-
-      </div>
-
-    </div> <!--fecha formgroup-->
-
-
-    <div>
-      <p>Identificação do PEP relacionado</p>
-      <form #contactForm="ngForm" (ngSubmit)="submitPepRelated(contactForm.value)">
         <div class="form-group">
-          <label for="relatedPep_type">Tipo de PEP:</label>
-          <input required ngModel #relatedPep_type="ngModel" name="relatedPep_type" type="text" id="relatedPep_type" class="form-control" [(ngModel)]="newPep.relatedPep_type">
-          <div class="alert alert-danger" *ngIf="relatedPep_type.touched && !relatedPep_type.valid">
+          <label for="pepType">
+            Tipo de PEP:
+            <input formControlName="pepType"
+                   id="pepType"
+                   type="text"
+                   class="form-control" />
+          </label>
+
+          <!--<div class="alert alert-danger" *ngIf="pepType.touched && !pepType.valid">
             O parâmetro acima é obrigatório.
-          </div>
+          </div>-->
 
-          <label for="relatedPep_country">Em que País:</label>
-          <input required ngModel #relatedPep_country="ngModel" name="relatedPep_country" type="text" id="relatedPep_country" class="form-control" [(ngModel)]="newPep.relatedPep_country">
-          <div class="alert alert-danger" *ngIf="relatedPep_country.touched && !relatedPep_country.valid">
+          <label for="pepCountry">
+            Em que País:
+            <input formControlName="pepCountry"
+                   id="pepCountry"
+                   type="text"
+                   class="form-control">
+          </label>
+
+          <!--<div class="alert alert-danger" *ngIf="pepCountry.touched && !pepCountry.valid">
             O parâmetro acima é obrigatório.
-          </div>
+          </div>-->
 
 
-          <label for="relatedPep_sinceWhen">Desde Quando:</label>
-          <input required ngModel #relatedPep_sinceWhen="ngModel" name="relatedPep_sinceWhen" type="text" id="relatedPep_sinceWhen" class="form-control" [(ngModel)]="newPep.relatedPep_sinceWhen">
-          <div class="alert alert-danger" *ngIf="relatedPep_country.touched && !relatedPep_country.valid">
+          <label for="pepSinceWhen">
+            Desde Quando:
+            <input formControlName="pepSinceWhen"
+                   id="pepSinceWhen"
+                   type="text"
+                   class="form-control">
+          </label>
+          <!--<div class="alert alert-danger" *ngIf="pepSinceWhen.touched && !pepSinceWhen.valid">
             O parâmetro acima é obrigatório.
-          </div>
-
-          <label for="relatedPep_nif">NIF:</label>
-          <input required ngModel #relatedPep_nif="ngModel" name="relatedPep_nif" type="text" id="relatedPep_nif" class="form-control" [(ngModel)]="newPep.relatedPep_nif">
-          <div class="alert alert-danger" *ngIf="relatedPep_nif.touched && !relatedPep_nif.valid">
-            O parâmetro acima é obrigatório.
-          </div>
+          </div>-->
 
 
-          <label for="relatedPep_name">Nome:*</label>
-          <input required ngModel #relatedPep_name="ngModel" name="relatedPep_name" type="text" id="relatedPep_name" class="form-control" [(ngModel)]="newPep.relatedPep_name">
-          <div class="alert alert-danger" *ngIf="relatedPep_name.touched && !relatedPep_name.valid">
-            O parâmetro acima é obrigatório.
-          </div>
-
-
-          <label for="relatedPep_idNumber">Número do Documento de Identificação:</label>
-          <input required ngModel #relatedPep_idNumber="ngModel" idNumber="relatedPep_idNumber" type="text" id="relatedPep_idNumber" class="form-control" [(ngModel)]="newPep.relatedPep_idNumber">
-          <div class="alert alert-danger" *ngIf="relatedPep_idNumber.touched && !relatedPep_idNumber.valid">
-            O parâmetro acima é obrigatório.
-          </div>
-
-
-          <label for="relatedPep_idDocumentType">Tipo de Documento:*</label>
-          <input required ngModel #relatedPep_idDocumentType="ngModel" idDocumentType="relatedPep_idDocumentType" type="text" id="relatedPep_idDocumentType" class="form-control" [(ngModel)]="newPep.relatedPep_idDocumentType">
-          <div class="alert alert-danger" *ngIf="relatedPep_idDocumentType.touched && !relatedPep_idDocumentType.valid">
-            O parâmetro acima é obrigatório.
-          </div>
-
-          <label for="relatedPep_idDocumentValidity">Data de Validade do Documento:*</label>
-          <input required ngModel #relatedPep_idDocumentValidity="ngModel" idDocumentValidity="relatedPep_idDocumentValidity" type="text" id="relatedPep_idDocumentValidity" class="form-control" [(ngModel)]="newPep.relatedPep_idDocumentValidity">
-          <div class="alert alert-danger" *ngIf="relatedPep_idDocumentValidity.touched && !relatedPep_idDocumentValidity.valid">
-            O parâmetro acima é obrigatório.
-          </div>
-
-
-          <label for="relatedPep_idDocumentCountry">Pais do Documento de Identificação:*</label>
-          <input required ngModel #relatedPep_idDocumentCountry="ngModel" idDocumentCountry="relatedPep_idDocumentCountry" type="text" id="relatedPep_idDocumentCountry" class="form-control" [(ngModel)]="newPep.relatedPep_idDocumentCountry">
-          <div class="alert alert-danger" *ngIf="relatedPep_idDocumentCountry.touched && !relatedPep_idDocumentCountry.valid">
-            O parâmetro acima é obrigatório.
-          </div>
-
-
-
-          <label for="relatedPep_address">Morada:</label>
-          <input required ngModel #relatedPep_address="ngModel" address="relatedPep_address" type="text" id="relatedPep_address" class="form-control" [(ngModel)]="newPep.relatedPep_address">
-          <div class="alert alert-danger" *ngIf="relatedPep_address.touched && !relatedPep_address.valid">
-            O parâmetro acima é obrigatório.
-          </div>
-
-          <label for="relatedPep_addressLocation">Localização:</label>
-          <input required ngModel #relatedPep_addressLocation="ngModel" addressLocation="relatedPep_addressLocation" type="text" id="relatedPep_addressLocation" class="form-control" [(ngModel)]="newPep.relatedPep_addressLocation">
-          <div class="alert alert-danger" *ngIf="relatedPep_addressLocation.touched && !relatedPep_addressLocation.valid">
-            O parâmetro acima é obrigatório.
-          </div>
-
-          <label for="relatedPep_postalCode">Código Postal:</label>
-          <input required ngModel #relatedPep_postalCode="ngModel" postalCode="relatedPep_postalCode" type="text" id="relatedPep_postalCode" class="form-control" [(ngModel)]="newPep.relatedPep_postalCode">
-          <div class="alert alert-danger" *ngIf="relatedPep_postalCode.touched && !relatedPep_postalCode.valid">
-            O parâmetro acima é obrigatório.
-          </div>
         </div>
-
-        <label for="relatedPep_addressCountry">País da Morada:</label>
-        <input required ngModel #relatedPep_addressCountry="ngModel" addressCountry="relatedPep_addressCountry" type="text" id="relatedPep_addressCountry" class="form-control" [(ngModel)]="newPep.relatedPep_addressCountry">
-        <div class="alert alert-danger" *ngIf="relatedPep_addressCountry.touched && !relatedPep_addressCountry.valid">
-          O parâmetro acima é obrigatório.
-        </div>
+      </div>
+    </div> <!-- fecha form do pep12months-->
 
 
-      </form>
+
+    <p> É familiar de uma PEP?:</p>
+    <div class="form-group">
+      <label>
+        Sim
+        <input formControlName="pepFamiliarOf"
+               name="isVisiblePepFamiliarOf"
+               [(ngModel)]="isVisiblePepFamiliarOf"
+               id="true"
+               type="radio"
+               [value]="true"
+               class="form-control" />
+      </label>
+      <br><br>
+      <label>
+        Não
+        <input formControlName="pepFamiliarOf"
+               name="isVisiblePepFamiliarOf"
+               [(ngModel)]="isVisiblePepFamiliarOf"
+               id="false"
+               type="radio"
+               [value]="false"
+               class="form-control" />
+      </label>
+      <div class="form-group" *ngIf="isVisiblePepFamiliarOf == true">
+        <!-- Se for familiar de uma PEP--->
+        <label for="pepFamilyRelation"> Grau de Parentesco:</label>
+        <input formControlName="pepFamilyRelation"
+               pepSinceWhen="pepFamilyRelation"
+               type="text"
+               class="form-control" />
+
+      </div>
+
+    </div> <!--Fecha é familiar de uma PEP-->
+
+
+
+    <label>  Mantem relações de natureza societária ou comercial com uma PEP?:</label>
+    <div class="form-group">
+      <label>Sim</label>
+      <input formControlName="pepRelations"
+             name="isVisiblePepRelations"
+             [(ngModel)]="isVisiblePepRelations"
+             id="true"
+             type="radio"
+             [value]="true"
+             class="form-control" />
+      <br><br>
+      <label>Não</label>
+      <input formControlName="pepRelations"
+             name="isVisiblePepRelations"
+             [(ngModel)]="isVisiblePepRelations"
+             id="false"
+             type="radio"
+             [value]="false"
+             class="form-control" />
+
+      <div class="form-group" *ngIf="isVisiblePepRelations == true">
+        <!-- Se mantiver relações com uma PEP--->
+        <label for="pepTypeOfRelation">
+          Tipo de relação societária/comercial:*
+        </label>
+        <input formControlName="pepTypeOfRelation"
+               id="pepTypeOfRelation"
+               type="text"
+               class="form-control">
+      </div>
+    </div>
+
+    <label> É, ou foi nos últimos 12 meses, titular de outros Cargos Políticos ou Públicos em território nacional?</label>
+    <div class="form-group">
+      <label>Sim</label>
+      <input formControlName="pepPoliticalPublicJobs"
+             name="isVisiblePepPoliticalPublicJobs"
+             [(ngModel)]="isVisiblePepPoliticalPublicJobs"
+             type="radio"
+             [value]="true"
+             class="form-control" />
+      <br><br>
+      <label>Não</label>
+      <input formControlName="pepPoliticalPublicJobs"
+             name="isVisiblePepPoliticalPublicJobs"
+             [(ngModel)]="isVisiblePepPoliticalPublicJobs"
+             type="radio"
+             [value]="false"
+             class="form-control" />
+
+
+      <div class="form-group" *ngIf="isVisiblePepPoliticalPublicJobs == true">
+        <!-- Se tiver tido cargos políticos ou públicos--->
+        <label for="pepPoliticalPublicJobDesignation"> Cargo:*</label>
+        <input formControlName="pepPoliticalPublicJobDesignation"
+               id="pepPoliticalPublicJobDesignation"
+               type="text"
+               class="form-control">
+      </div>
     </div>
 
 
+    <div *ngIf="isVisiblePepFamiliarOf == true ||isVisiblePepRelations ==true ">
+      <p>Identificação do PEP relacionado</p>
+
+      <div class="form-group">
+        <label for="relatedPep_type">
+          Tipo de PEP:
+          <input name="relatedPep_type" type="text" id="relatedPep_type" class="form-control">
+        </label>
+         <!--<div class="alert alert-danger" *ngIf="relatedPep_type.touched && !relatedPep_type.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+        <label for="relatedPep_country">
+          Em que País:
+          <input  name="relatedPep_country" type="text" id="relatedPep_country" class="form-control">
+        </label>
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_country.touched && !relatedPep_country.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
 
 
+        <label for="relatedPep_sinceWhen">
+          Desde Quando:
+          <input name="relatedPep_sinceWhen" type="text" id="relatedPep_sinceWhen" class="form-control" [(ngModel)]="newPep.relatedPep_sinceWhen">
+        </label>
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_country.touched && !relatedPep_country.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+        <label for="relatedPep_nif">NIF:</label>
+        <input required ngModel #relatedPep_nif="ngModel" name="relatedPep_nif" type="text" id="relatedPep_nif" class="form-control" [(ngModel)]="newPep.relatedPep_nif">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_nif.touched && !relatedPep_nif.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+
+        <label for="relatedPep_name">Nome:*</label>
+        <input required ngModel #relatedPep_name="ngModel" name="relatedPep_name" type="text" id="relatedPep_name" class="form-control" [(ngModel)]="newPep.relatedPep_name">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_name.touched && !relatedPep_name.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+
+        <label for="relatedPep_idNumber">Número do Documento de Identificação:</label>
+        <input required ngModel #relatedPep_idNumber="ngModel" idNumber="relatedPep_idNumber" type="text" id="relatedPep_idNumber" class="form-control" [(ngModel)]="newPep.relatedPep_idNumber">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_idNumber.touched && !relatedPep_idNumber.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+
+        <label for="relatedPep_idDocumentType">Tipo de Documento:*</label>
+        <input required ngModel #relatedPep_idDocumentType="ngModel" idDocumentType="relatedPep_idDocumentType" type="text" id="relatedPep_idDocumentType" class="form-control" [(ngModel)]="newPep.relatedPep_idDocumentType">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_idDocumentType.touched && !relatedPep_idDocumentType.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+        <label for="relatedPep_idDocumentValidity">Data de Validade do Documento:*</label>
+        <input required ngModel #relatedPep_idDocumentValidity="ngModel" idDocumentValidity="relatedPep_idDocumentValidity" type="text" id="relatedPep_idDocumentValidity" class="form-control" [(ngModel)]="newPep.relatedPep_idDocumentValidity">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_idDocumentValidity.touched && !relatedPep_idDocumentValidity.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+
+        <label for="relatedPep_idDocumentCountry">Pais do Documento de Identificação:*</label>
+        <input required ngModel #relatedPep_idDocumentCountry="ngModel" idDocumentCountry="relatedPep_idDocumentCountry" type="text" id="relatedPep_idDocumentCountry" class="form-control" [(ngModel)]="newPep.relatedPep_idDocumentCountry">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_idDocumentCountry.touched && !relatedPep_idDocumentCountry.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+
+
+        <label for="relatedPep_address">Morada:</label>
+        <input required ngModel #relatedPep_address="ngModel" address="relatedPep_address" type="text" id="relatedPep_address" class="form-control" [(ngModel)]="newPep.relatedPep_address">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_address.touched && !relatedPep_address.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+        <label for="relatedPep_addressLocation">Localização:</label>
+        <input required ngModel #relatedPep_addressLocation="ngModel" addressLocation="relatedPep_addressLocation" type="text" id="relatedPep_addressLocation" class="form-control" [(ngModel)]="newPep.relatedPep_addressLocation">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_addressLocation.touched && !relatedPep_addressLocation.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+
+        <label for="relatedPep_postalCode">Código Postal:</label>
+        <input required ngModel #relatedPep_postalCode="ngModel" postalCode="relatedPep_postalCode" type="text" id="relatedPep_postalCode" class="form-control" [(ngModel)]="newPep.relatedPep_postalCode">
+        <!--<div class="alert alert-danger" *ngIf="relatedPep_postalCode.touched && !relatedPep_postalCode.valid">
+          O parâmetro acima é obrigatório.
+        </div>-->
+      </div>
+
+      <label for="relatedPep_addressCountry">País da Morada:</label>
+      <input required ngModel #relatedPep_addressCountry="ngModel" addressCountry="relatedPep_addressCountry" type="text" id="relatedPep_addressCountry" class="form-control" [(ngModel)]="newPep.relatedPep_addressCountry">
+      <!--<div class="alert alert-danger" *ngIf="relatedPep_addressCountry.touched && !relatedPep_addressCountry.valid">
+        O parâmetro acima é obrigatório.
+      </div>-->
+    </div>
+
+      <button type="button" (click)="submit()">Submit</button>
   </form>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
