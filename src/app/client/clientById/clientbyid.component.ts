@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Client } from '../Iclient.interface';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Client } from '../Client.interface';
 
 
 @Component({
   selector: 'app-client',
-  templateUrl: './newclientbyid.component.html',
-  styleUrls: ['./newclientbyid.component.css']
+  templateUrl: './clientbyid.component.html'
 })
 
-export class NewClientByIdComponent implements OnInit {
+export class ClientByIdComponent implements OnInit {
   
   /*Variable declaration*/
   public clientNr: number = 0;
@@ -30,7 +29,7 @@ export class NewClientByIdComponent implements OnInit {
     console.log(this.clientNr);
 
     if (this.clientNr != -1) {
-      http.get<Client>(baseUrl + 'BEClients/GetNewClientNr/' + this.clientNr).subscribe(result => {
+      http.get<Client>(baseUrl + 'BEClients/GetClientNr/' + this.clientNr).subscribe(result => {
         this.client = result;
       }, error => console.error(error));
     }

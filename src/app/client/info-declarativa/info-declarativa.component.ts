@@ -1,13 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Client } from '../Client.interface'
-import { ActivatedRoute, Route } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { codes } from './indicativo';
-import { ViewChild, EventEmitter, Output } from '@angular/core';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { EventEmitter, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-info-declarativa',

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StakeholdersComponent } from '../stakeholders.component';
 import { IStakeholders } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IReadCard } from './IReadCard.interface';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -18,6 +19,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class NewStakeholderComponent implements OnInit {
   public foo = 0;
   public displayValueSearch = "";
+
+  showBtnCC: boolean = false;
+  readcard:IReadCard[]= [];
+  showNoCC: boolean = true;
+  showYesCC: boolean = false;
 
   newStake: IStakeholders = {
     stakeholderNif: 0
@@ -98,7 +104,6 @@ export class NewStakeholderComponent implements OnInit {
       }, error => console.error(error));
 
 
-
   }//Fim do submit
 
   onClickDelete(nif, clientNr) {
@@ -107,4 +112,33 @@ export class NewStakeholderComponent implements OnInit {
       }, error => console.error(error));
     this.route.navigate(['stakeholders']);
   }
+
+  validateCC(validate: boolean){
+    if(validate == true){
+      this.showBtnCC = true;
+      this.showYesCC = true;
+      this.showNoCC = false;
+    }
+    else{
+      this.showBtnCC = false;
+      this.showYesCC = false;
+      this.showNoCC = true;
+    }
+      
+    
+  }
+
+  selectCC(){
+    this.http.get(this.baseUrl + `CitizenCard`).subscribe(result => {
+      if(result != null){
+        this.readcard = Object.keys(result).map(function (key) { return result[key]; });
+        this.showNoCC = false;
+        this.showYesCC = true;
+        console.log(this.readcard);
+      }else{
+        alert("Insira o cartão cidadão")
+      }
+    }, error => console.error("error"));
+  }
+  
 }
