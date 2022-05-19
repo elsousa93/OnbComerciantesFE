@@ -25,6 +25,8 @@
     "@material/checkbox": "^13.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
+    "bootstrap": "^5.1.3",
+    "jquery": "^3.6.0",
     "ngx-bootstrap": "^8.0.0",
     "ngx-bootstrap-modal": "^2.0.1",
     "ngx-cookie-service": "^13.2.1",
