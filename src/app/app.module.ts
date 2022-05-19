@@ -37,6 +37,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CookieService } from 'ngx-cookie-service';
 import { PepComponent } from './pep/pep.component';
+import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
+import { FooterComponent } from './footer/footer.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -65,7 +67,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PepComponent,
     CommercialOfferTariffComponent,
     ClientByIdComponent,
-    ReadcardComponent
+    ReadcardComponent,
+    NavMenuInternaComponent,
+    FooterComponent
   ],
   imports: [
     ReactiveFormsModule,
