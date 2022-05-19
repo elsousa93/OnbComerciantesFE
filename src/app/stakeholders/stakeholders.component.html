@@ -93,15 +93,15 @@
   <form #form="ngForm" (ngSubmit)="searchStakeholder(form)" novalidate>
     <div class="form-group">
       <label for="stakeholderType">Tipo de Interveniente</label>
-      <input required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control">
+      <input required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control" [(ngModel)]="newStake.stakeholderType">
     </div>
     <div class="form-group">
       <label for="tipoDocumento">Tipo de Documento:</label>
-      <input required ngModel #tipoDocumento="ngModel" name="tipoDocumento" type="text" id="tipoDocumento" class="form-control">
+      <input required ngModel #tipoDocumento="ngModel" name="tipoDocumento" type="text" id="tipoDocumento" class="form-control" [(ngModel)]="newStake.tipoDocumento">
     </div>
     <div class="form-group">
       <label for="stakeholderNif">Número do Documento:</label>
-      <input required ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif" class="form-control">
+      <input required ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif" class="form-control" [(ngModel)]="newStake.stakeholderNif">
     </div>
 
     {{form.value |json}}
@@ -110,18 +110,21 @@
 
 
 
-    <div *ngIf="isFoundStakeholderShown"  class="row container-fluid" id="divshow">
+   <div *ngIf="isFoundStakeholderShown"  class="row container-fluid" id="divshow">
       RESPOSTA:
       {{stakeholdersByNIF | json}}
-      <table class='table table-striped'  aria-labelledby="tableLabel" *ngIf="stakeholdersByNIF">
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeholdersByNIF">        
         <thead>
           <tr>
+            <th>Escolher</th>
             <th>Tipo de Interveniente</th>
             <th>NIF</th>
           </tr>
         </thead>
         <tbody>
           <tr class="table table-striped" *ngFor="let stakeP of stakeholdersByNIF">
+            <input type="hidden" name="id" id="id" value={{stakeP.stakeholderNif}}>
+            <td><input type="radio" value={{stakeP.stakeholderNif}}><br></td>
             <td>{{stakeP.stakeholderType}}</td>
             <td>{{stakeP.stakeholderNif}}</td>
           </tr>

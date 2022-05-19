@@ -16,7 +16,6 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ComprovativosComponent } from './comprovativos/comprovativos.component';
 import { ClientComponent } from './client/client.component';
-import { DropDownComponent } from './drop-down/drop-down.component';
 import { StakeholdersComponent } from './stakeholders/stakeholders.component';
 import { NewStakeholderComponent } from './stakeholders/new-stakeholder/new-stakeholder.component';
 import { CheckDocumentsComponent } from './comprovativos/check-documents/check-documents.component';
@@ -31,13 +30,15 @@ import { CommercialOfferPricingComponent } from './commercial-offer/commercial-o
 import { InfoDeclarativaComponent } from './client/info-declarativa/info-declarativa.component';
 import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declarativa-stakeholder/info-declarativa-stakeholder.component';
 import { CommercialOfferTariffComponent } from './commercial-offer/commercial-offer-tariff/commercial-offer-tariff.component';
-import { NewclientComponent } from './newclient/newClientList/newclient.component';
-import { NewClientByIdComponent } from './newclient/newClientById/newclientbyid.component';
+import { ClientByIdComponent } from './client/clientById/clientbyid.component';
 import { ReadcardComponent } from './readcard/readcard.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
-import {CookieService} from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { PepComponent } from './pep/pep.component';
+import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
+import { FooterComponent } from './footer/footer.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -51,7 +52,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     StoreComponent,
     ClientComponent,
     AddStoreComponent,
-    DropDownComponent,
     StakeholdersComponent,
     NewStakeholderComponent,
     ComprovativosComponent,
@@ -64,12 +64,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     StoreIbanComponent,
     InfoDeclarativaComponent,
     InfoDeclarativaStakeholderComponent,
+    PepComponent,
     CommercialOfferTariffComponent,
-    NewclientComponent,
-    NewClientByIdComponent,
+    ClientByIdComponent,
     ReadcardComponent,
-    LoginComponent,
-    DashboardComponent
+    NavMenuInternaComponent,
+    FooterComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -82,16 +82,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
-      { path: 'newclient', component: NewclientComponent },
-      { path: 'newclientbyid/:id', component: NewClientByIdComponent },
+      { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'client/:id', component: ClientComponent },
-      { path: 'drop-down', component: DropDownComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
       { path: 'stakeholders/:nif', component: StakeholdersComponent },
       { path: 'add-stakeholder', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
+      { path: 'pep', component: PepComponent },
+      { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
       { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
@@ -108,6 +108,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'readcardcc', component: ReadcardComponent }
       
     ]),

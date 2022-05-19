@@ -6,8 +6,7 @@ import { IReadCard } from './IReadCard.interface';
 
 @Component({
   selector: 'app-readcard',
-  templateUrl: './readcard.component.html',
-  styleUrls: ['./readcard.component.css']
+  templateUrl: './readcard.component.html'
 })
 export class ReadcardComponent implements OnInit {
   API_URL:string = '';
@@ -23,7 +22,6 @@ export class ReadcardComponent implements OnInit {
   obterSelecionado(){
     this.http.get(this.API_URL + `CitizenCard`).subscribe(result => {
         if(result != null){
-          console.log(result);
           this.readcard= Object.keys(result).map(function (key) { return result[key]; });
           
         }
