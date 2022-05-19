@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
     console.log('logout');
     this.authService.logout();
     window.location.reload();
-    this.router.navigate(['/login']);
     this.cookie.delete("jwToken")
+    this.router.navigate(['/login']);
    
   }
 

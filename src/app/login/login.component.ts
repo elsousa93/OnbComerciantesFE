@@ -64,6 +64,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.cookie.get("jwToken") === "" || this.cookie.get("jwToken") === "undefined" || this.cookie.get("jwToken") === null) {
+      this.cookie.delete("jwToken")
+      console.log("creating cookie 68")
       this.cookie.set("jwToken", this.router.snapshot.params['tokenid'])
       console.log(this.cookie.get("jwToken"))
     }
@@ -109,9 +111,12 @@ export class LoginComponent implements OnInit {
 
   chackInitiallogin() {
     this.ngOnInit();
+    console.log(this.cookie.get("jwToken"));
     if (this.cookie.get("jwToken") != "" && this.cookie.get("jwToken") !== "undefined" && this.cookie.get("jwToken") !== null) {
-      this.cookie.set("jwToken", "someRandomTokenCreated")
-      this.route.navigate(['dashboard']);
+      //this.cookie.delete("jwToken")
+      console.log("Cookie valid")
+      //this.cookie.set("jwToken", "someRandomTokenCreated")
+      //this.route.navigate(['dashboard']);
     } else {
       this.message = "Tem de efetuar pré-registo";
     }
@@ -142,20 +147,25 @@ export class LoginComponent implements OnInit {
   login() {
     console.log("inicio do login")
     if (this.f['userid'].value == this.model.userid && this.f['password'].value == this.model.password) {
+      this.cookie.delete("jwToken")
       console.log("dentro do if")
+      console.log("creating cookie 151")
       this.cookie.set("jwToken", "someRandomTokenCreated")
-      this.route.navigate(['dashboard']);
+      this.isLoggedIn = true;
+      //this.route.navigate(['dashboard']);
     } else {
+      this.isLoggedIn = false;
       this.message = "Please check your userid and password";
     }
   }
 
   onCickLogOut() {
+    this.cookie.delete("jwToken")
     localStorage.clear();
     this.isLoggedIn = false;
     this.route.navigate(['login']);
-    localStorage.setItem('isLoggedIn', "false");
-    window.location.reload();
+    //localStorage.setItem('isLoggedIn', "false");
+    //this.route.navigate(['dashboard']);
   }
 
 }
