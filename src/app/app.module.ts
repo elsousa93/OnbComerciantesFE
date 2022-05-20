@@ -70,6 +70,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ReadcardComponent,
     NavMenuInternaComponent,
+    LoginComponent,
+    DashboardComponent,
     FooterComponent,
     CircularProgressComponent
   ],
@@ -107,7 +109,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      { path: 'login', component: LoginComponent },
+      { path: 'login', component: LoginComponent},
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },

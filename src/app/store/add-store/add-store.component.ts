@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Istore } from '../IStore.interface';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-add-store',
@@ -24,7 +25,7 @@ export class AddStoreComponent implements OnInit {
   public zonasTuristicas: string[] = ["Não", "Sim"];
   defaultZonaTuristica: number = 0;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, public appComp: AppComponent) {
 
     this.ngOnInit();
 
@@ -46,6 +47,8 @@ export class AddStoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("Entrei On init")
+    this.appComp.updateNavBar("Adicionar Loja")
     //Get Id from the store
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
   }

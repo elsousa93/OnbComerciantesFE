@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  pageName: string = 'Teste';
   title = 'app';
   constructor(public translate: TranslateService, private http: HttpClient, private cookie: CookieService) {
     translate.addLangs(['pt', 'en']);
@@ -21,5 +22,10 @@ export class AppComponent {
 
   setCookie() {
     this.cookie.set("jwToken", "TokenExemplo")
+  }
+
+  updateNavBar(pageNameInput: string){
+    this.pageName = pageNameInput;
+    console.log(this.pageName);
   }
 }
