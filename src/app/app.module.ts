@@ -39,6 +39,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { PepComponent } from './pep/pep.component';
 import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
 import { FooterComponent } from './footer/footer.component';
+import { CircularProgressComponent } from './circular-progress/circular-progress.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -69,7 +70,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ReadcardComponent,
     NavMenuInternaComponent,
-    FooterComponent
+    FooterComponent,
+    CircularProgressComponent
   ],
   imports: [
     ReactiveFormsModule,
