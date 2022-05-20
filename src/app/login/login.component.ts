@@ -35,17 +35,12 @@ export class LoginComponent implements OnInit {
   /*ngOnInitOld() {
     //Are we reciving the token for the first time?
     console.log("Is logged in OnIni?: " + localStorage.getItem('isLoggedIn'));
-
     this.token = this.router.snapshot.params['tokenid'];
-
     console.log("Token 1: " + this.token);
-
     if (this.token === undefined || this.token === null) {
       console.log("Token 2: " + this.token);
-
       //local Storage - Remove
       this.token = localStorage.getItem('token');
-
       this.cookie.get("jwToken")
       console.log("Token vale: " + localStorage.getItem('token'));
       if (this.token === undefined || this.token === null) {
@@ -53,7 +48,6 @@ export class LoginComponent implements OnInit {
         this.token = "";
       }
     }
-
     this.loginForm = this.formBuilder.group({
       userid: ['', Validators.required],
       password: ['', Validators.required]
