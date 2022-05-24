@@ -34,12 +34,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.loginForm = this.formBuilder.group({
       userid: ['', Validators.required],
       password: ['', Validators.required]
     })
-
   }
 
   validateRecievedCookie() {
