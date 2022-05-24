@@ -1,1 +1,33 @@
-<p>process works!</p>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="allProcesses" style="margin-top: 20%;">
+  <thead>
+    <tr>
+      <th>Nº Pedido</th>
+      <th>Nº Contrato</th>
+      <th>Data do pedido</th>
+      <th>Nome comerciante</th>
+      <th></th>
+          
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="clickable" *ngFor="let process of allProcesses">
+      <td>{{process.processNumber}}</td>
+      <td>{{process.contractNumber === undefined ? "NaN" : process.contractNumber}} </td>
+      <td>{{process.requestDate === undefined ? "NaN" : process.requestDate}} </td>
+      <td>{{process.merchant.name}}</td>
+
+      <td>
+
+        <button class="btn btn-primary" >
+          <span class="glyphicon glyphicon-pencil"></span>Editar
+      </button>
+
+
+        <button class="btn btn-danger">
+          <span class="glyphicon glyphicon-trash"></span>Remover
+        </button>
+      </td>
+
+    </tr>
+  </tbody>
+</table>

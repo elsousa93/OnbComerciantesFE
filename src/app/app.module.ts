@@ -40,6 +40,7 @@ import { PepComponent } from './pep/pep.component';
 import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
 import { FooterComponent } from './footer/footer.component';
 import { CircularProgressComponent } from './circular-progress/circular-progress.component';
+import { ProcessComponent } from './process/process.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -73,7 +74,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LoginComponent,
     DashboardComponent,
     FooterComponent,
-    CircularProgressComponent
+    CircularProgressComponent,
+    ProcessComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -113,7 +115,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      { path: 'readcardcc', component: ReadcardComponent }
+      { path: 'readcardcc', component: ReadcardComponent },
+      { path: 'process', component: ProcessComponent }
       
     ]),
     TranslateModule.forRoot({
