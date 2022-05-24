@@ -6,7 +6,7 @@
       <th>Data do pedido</th>
       <th>Nome comerciante</th>
       <th></th>
-          
+
     </tr>
   </thead>
   <tbody>
@@ -18,9 +18,77 @@
 
       <td>
 
-        <button class="btn btn-primary" >
+        <button class="btn btn-primary">
           <span class="glyphicon glyphicon-pencil"></span>Editar
-      </button>
+        </button>
+
+
+        <button class="btn btn-danger">
+          <span class="glyphicon glyphicon-trash"></span>Remover
+        </button>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+<br />
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="allSuccessProcesses" style="margin-top: 20%;">
+  <thead>
+    <tr>
+      <th>Nº Pedido</th>
+      <th>Nº Contrato</th>
+      <th>Data do pedido</th>
+      <th>Nome comerciante</th>
+      <th></th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="clickable" *ngFor="let process of allSuccessProcesses">
+      <td>{{process.processNumber}}</td>
+      <td>{{process.contractNumber === undefined ? "NaN" : process.contractNumber}} </td>
+      <td>{{process.requestDate === undefined ? "NaN" : process.requestDate}} </td>
+      <td>{{process.merchant.name}}</td>
+
+      <td>
+
+        <button class="btn btn-primary">
+          <span class="glyphicon glyphicon-pencil"></span>Editar
+        </button>
+
+
+        <button class="btn btn-danger">
+          <span class="glyphicon glyphicon-trash"></span>Remover
+        </button>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+<br />
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="allIncompletedProcesses" style="margin-top: 20%;">
+  <thead>
+    <tr>
+      <th>Nº Pedido</th>
+      <th>Nº Contrato</th>
+      <th>Data do pedido</th>
+      <th>Nome comerciante</th>
+      <th></th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="clickable" *ngFor="let process of allIncompletedProcesses">
+      <td>{{process.processNumber}}</td>
+      <td>{{process.contractNumber === undefined ? "NaN" : process.contractNumber}} </td>
+      <td>{{process.requestDate === undefined ? "NaN" : process.requestDate}} </td>
+      <td>{{process.merchant.name}}</td>
+
+      <td>
+
+        <button class="btn btn-primary">
+          <span class="glyphicon glyphicon-pencil"></span>Editar
+        </button>
 
 
         <button class="btn btn-danger">
