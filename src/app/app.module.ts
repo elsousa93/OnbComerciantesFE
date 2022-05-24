@@ -41,6 +41,7 @@ import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.com
 import { FooterComponent } from './footer/footer.component';
 import { CircularProgressComponent } from './circular-progress/circular-progress.component';
 import { ProcessComponent } from './process/process.component';
+import { AcceptanceComponent } from './process/acceptance/acceptance.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -75,7 +76,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardComponent,
     FooterComponent,
     CircularProgressComponent,
-    ProcessComponent
+    ProcessComponent,
+    AcceptanceComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -116,8 +118,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'readcardcc', component: ReadcardComponent },
-      { path: 'process', component: ProcessComponent }
-      
+      { path: 'process', component: ProcessComponent },
+      { path: 'acceptance', component: AcceptanceComponent }
     ]),
     TranslateModule.forRoot({
       loader: {

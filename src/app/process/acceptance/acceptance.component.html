@@ -1,0 +1,80 @@
+<p class="text-primary">SELECIONE A FORMA DE ASSINATURA DE CONTRATO</p>
+<p> Selecione uma das opções </p>
+
+<label for="opt1">Assinatura em papel</label>
+<input id="opt1" [value]="1"
+         [(ngModel)]="isVisible"
+         name="isVisible"
+         type="radio"
+         [checked]="isSelected"
+       />
+         
+
+<label for="opt2">Assinatura eletrónica</label>
+<input id="opt2" [value]="0"
+         [(ngModel)]="isVisible"
+         name="isVisible"
+         type="radio"
+         [checked]="!isSelected"
+       /> 
+
+
+<p class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
+<table class='table table-striped' aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Nome do Cliente</th>
+      <th>NIF</th>
+      <th>Letra</th>
+      <th>Tipo de assinatura</th>
+      <th>Seleção</th>
+      <th>Tipo assinatura digital</th>
+      <th>Tipo de identificação </th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="clickable">
+      <td>BIJAL DE CANELA</td>
+      <td>123456789</td>
+      <td>A</td>
+      <td>ASSINA SOZINHO</td>
+      <td><input type="checkbox"/></td>
+      <td>
+        <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
+        <select *ngIf="isVisible == 0"><option>OTP</option></select>
+      </td>
+      <td><select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
+          <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-end">
+  <button class="btn btn-primary float-right">VALIDAR PODERES DE REPRESENTAÇÃO</button>
+</div>
+<h6>Observações:</h6>
+<input type="text" placeholder="Observações..." class="w-100"/>
+
+<div *ngIf="isVisible == 1" class="d-flex justify-content-between mt-3">
+  <button class="btn btn-primary">CARREGAR DIGITALIZADOS</button>
+  <button class="btn btn-primary">ANEXAR</button>
+</div>
+
+<div class="d-flex justify-content-end mt-3">
+  <button class="btn btn-primary" *ngIf="isVisible == 0">PLATAFORMA DE ASSINATURA DIGITAL</button>
+</div>
+
+<div class="d-block" *ngIf="isVisible == 1">
+  <div>
+    <input type="checkbox" id="1" />
+    <label for="1">Validou que os documentos necessários foram efetivamente os carregados?</label>
+  </div>
+
+  <div>
+    <input type="checkbox" id="2" />
+    <label for="2">Na presença do cliente? </label>
+  </div>
+</div>
