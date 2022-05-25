@@ -1,7 +1,38 @@
 {
+  "//Stores": "StoreElement",
   "TitleStores": "Lojas",
-  "NameStores": "Nome",
+  "NameStores": "Nome da loja",
   "ActivityStores": "Atividade",
   "SubActivityStores": " Sub Atividade",
-  "ZoneStores": "Zona"
+  "ZoneStores": "Zona",
+  "AddStore": "Adicionar Loja",
+  "EditStore": "Editar Loja",
+  "NameStore": "Nome da loja",
+  "DefineIbanStore": "Definir Iban",
+  "ContryStore": "País",
+  "PostalCodeStore": "Código Postal",
+  "AddressStore": "Morada",
+  "IPAddressStore": "Endereço de IP Fixo",
+  "LocaleStore": "Localidade Postal",
+  "EmailStore": "E-mail",
+  "CellIndStore": "Indicador de Telemóvel/Telefone",
+  "CellNrStore": "Número de Telemóvel/Telefone",
+  "IbanStore": "Iban da Loja",
+
+  "//Buttons": "ButtonComponents",
+  "Continue": "Continuar",
+  "Cancel": "Cancelar",
+  "Eliminate": "Eliminar",
+  "Save": "Guardar",
+
+  "//Messages": "MessageComponents",
+  "ReplicateAddStore": "Pretende replicar a morada do comerciante?",
+  "ReplicateContStore": "Pretende replicar os contactos do comerciante?",
+  "ReplicateIbanStore": "Pretende utilizar o IBAN do comerciante?",
+  "TuristicZoneStore": "Zona Turistica?",
+
+  "//Warnings": "WarningsComponents",
+  "WarningInvalid": "Campo inválido: ",
+  "WarningMandatory": "Obrigatório",
+  "Warning5to100char": "O campo deve ter entre 5 e 100 caracteres"
 }
