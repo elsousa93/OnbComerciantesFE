@@ -1,12 +1,12 @@
-<h1>Preçário</h1>
+<h1>{{'COPricing'|translate}}</h1>
 <br />
 <table border="1">
   <thead>
     <tr>
-      <td>Pacote</td>
-      <td>Denominação</td>
-      <td>Valor</td>
-      <td>TSC</td>
+      <td>{{'COPackage'|translate}}</td>
+      <td>{{'CODenomination'|translate}}</td>
+      <td>{{'COValue'|translate}}</td>
+      <td>{{'COTSC'|translate}}</td>
     </tr>
   </thead>
 
@@ -26,10 +26,10 @@
       </td>
       <td>
         <div>
-          <button (click)="editPricing(i)" [disabled]="!price.editable">Edit</button>
+          <button (click)="editPricing(i)" [disabled]="!price.editable">{{'Edit'|translate}}</button>
         </div>
       </td>
     </tr>
   </tbody>
 </table>
-<button (click)="onCickContinue()" class="btn btn-primary">Concluir Configuração da loja</button>
+<button (click)="onCickContinue()" class="btn btn-primary">{{'EndStoresConf'|translate}}</button>

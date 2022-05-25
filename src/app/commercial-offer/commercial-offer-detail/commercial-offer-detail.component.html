@@ -1,45 +1,44 @@
-<p>commercial-offer-detail works!</p>
-<h1>Detalhes da Oferta Comercial</h1>
+<h1>{{'CODetails'|translate}}</h1>
 <br />
 <div class="form">
   <form #FormCommercialOffer="ngForm" (ngSubmit)="submit(FormCommercialOffer)">
-    <label for="ConfigName"><b>Nome da Configuração:</b></label>
+    <label for="ConfigName"><b>{{'COConfigName'|translate}}</b></label>
     <input #configId="ngModel" required minlength="5" maxlength="100" type="text" name="configId" class="form-control" [(ngModel)]="commOffer.configID">
     <span *ngIf="configId.touched && configId.invalid" class="error-block">
-      <span>Número da configuração inválido:</span>
-      <span *ngIf="configId.errors?.['required']"> obrigatório</span>
-      <span *ngIf="configId.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+      <span>{{'WarningInvalid'|translate}}:</span>
+      <span *ngIf="configId.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
+      <span *ngIf="configId.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
     </span>
     <br />
     <br />
-    <label for="ConfigName"><b>Numero de terminais:</b></label>
+    <label for="ConfigName"><b>{{'CONumberTerminals'|translate}}</b></label>
     <input #nrTerminals="ngModel" required minlength="5" maxlength="100" type="text" name="nrTerminals" class="form-control" [(ngModel)]="numberofTerminals">
     <span *ngIf="nrTerminals.touched && nrTerminals.invalid" class="error-block">
-      <span>Número de terminais invalido:</span>
-      <span *ngIf="nrTerminals.errors?.['required']"> obrigatório</span>
-      <span *ngIf="nrTerminals.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
+      <span>{{'WarningInvalid'|translate}}</span>
+      <span *ngIf="nrTerminals.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
+      <span *ngIf="nrTerminals.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
     </span>
     <button class="btn btn-primary" type="button" (click)="incrementCounter()">+</button>
     <button class="btn btn-primary" type="button" (click)="decrementCounter()">-</button>
     <br />
     <br />
-    <label for="solutionType"><b>Tipo de solução:</b></label>
+    <label for="solutionType"><b>{{'COTypeSolutions'|translate}}</b></label>
     <div *ngFor="let selectionSolutionType of selectionsSolutionType">
       <input type="radio" name="selectedSolutionType" value="{{selectionSolutionType}}" [(ngModel)]="commOffer.solutionType" />{{selectionSolutionType}}
     </div>
     <br />
     <br />
-    <label for="brands"><b>Brands:</b></label>
+    <label for="brands"><b>{{'COBrands'|translate}}</b></label>
     <div *ngFor="let selectedBrand of selectedBrands; let idx = index">
       <input type="checkbox" value="{{selectedBrand.fieldName}}" name="{{selectedBrand}}" [checked]="selectedBrand.selected" [disabled]="selectedBrand.editable" (change)="onChangeBrand($event)" />{{selectedBrand.fieldName}}
     </div>
     <br />
-    <label for="package"><b>Pacotes</b></label>
+    <label for="package"><b>{{'COPackages'|translate}}</b></label>
     <div *ngFor="let selectedPackage of selectedPackages; let idx = index">
       <input type="checkbox" value="{{selectedPackage.fieldName}}" name="{{selectedPackage}}" [checked]="selectedPackage.selected" [disabled]="selectedPackage.editable" (change)="onChangePackage($event)" />{{selectedPackage.fieldName}}
     </div>
     <br />
-    <label for="additionalInfo"><b>Informações adicionais</b></label>
+    <label for="additionalInfo"><b>{{'COAdditionalInfo'|translate}}</b></label>
     <div *ngFor="let selectedAdditionalInfo of selectedAdditionalInfos; let idx = index">
       <input type="checkbox" value="{{selectedAdditionalInfo.fieldName}}" name="{{selectedAdditionalInfo}}" [checked]="selectedAdditionalInfo.selected" [disabled]="selectedAdditionalInfo.editable" (change)="onChangeAdditionalInfo($event)" />{{selectedAdditionalInfo.fieldName}}
     </div>
