@@ -18,6 +18,10 @@
   "CellIndStore": "Indicador de Telemóvel/Telefone",
   "CellNrStore": "Número de Telemóvel/Telefone",
   "IbanStore": "Iban da Loja",
+  "ReplicateAddStore": "Pretende replicar a morada do comerciante?",
+  "ReplicateContStore": "Pretende replicar os contactos do comerciante?",
+  "ReplicateIbanStore": "Pretende utilizar o IBAN do comerciante?",
+  "TuristicZoneStore": "Zona Turistica?",
 
   "//Buttons": "ButtonComponents",
   "Continue": "Continuar",
@@ -54,12 +58,6 @@
   "COTerminalType": "Tipo de terminal",
   "COCommType": "Tipo de comunucação",
   "COPrivateTerminal": "Os terminais serão defenidos com a sua entidade de apoio ao terminal",
-
-  "//Messages": "MessageComponents",
-  "ReplicateAddStore": "Pretende replicar a morada do comerciante?",
-  "ReplicateContStore": "Pretende replicar os contactos do comerciante?",
-  "ReplicateIbanStore": "Pretende utilizar o IBAN do comerciante?",
-  "TuristicZoneStore": "Zona Turistica?",
   "COReplicateProduts": "Pretende replicar produtos de outros establecimentos?",
   "COSelectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos( Loja de Representação)",
 
