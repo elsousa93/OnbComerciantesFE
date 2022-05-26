@@ -52,6 +52,7 @@ export class ComprovativosComponent implements OnInit {
           this.localUrl = event.target.result;
         }
         reader.readAsDataURL(event.target.files[0]);
+        console.log(comp[0].id);
         this.uploadFile(comp[0].id);
       }
     } else {
@@ -61,13 +62,13 @@ export class ComprovativosComponent implements OnInit {
 
   uploadFile(id: any) {
     if (this.file != undefined) {
+      console.log(id);
       this.compService.uploadFile(this.file, id).subscribe(data => {
         if (data != null) {
           alert("Upload efetuado!");
           var elemento = document.getElementById(id);
           this.load();
         }
-     
       },
         err => {
           console.error(err);

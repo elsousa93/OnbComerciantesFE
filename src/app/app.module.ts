@@ -119,7 +119,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'process', component: ProcessComponent },
-      { path: 'acceptance', component: AcceptanceComponent }
+      { path: 'acceptance/:submissionID', component: AcceptanceComponent }
     ]),
     TranslateModule.forRoot({
       loader: {

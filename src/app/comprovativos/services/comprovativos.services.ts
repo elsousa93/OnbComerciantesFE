@@ -16,9 +16,9 @@ export class ComprovativosService {
    }
 
   uploadFile(file: File, id: any) {
+    
     const formData: FormData = new FormData();
     formData.append('image', file);
-
     return this.http.put( this.API_URL + `ServicesComprovativos/`+ id, formData)
       .pipe(map(this.httpUtil.extrairDados))
       .pipe(

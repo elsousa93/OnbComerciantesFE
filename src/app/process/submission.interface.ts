@@ -1,4 +1,4 @@
-export interface Process {
+export interface Submission {
   merchant: {
     fiscalId: string,
     name: string
