@@ -337,6 +337,16 @@ main {
         background-color: #fff !important;
     }
 
+    .campo_form_coment_error{
+        border-color: #ff3c00;
+        color: red;
+        margin-top: 0px;
+        margin-bottom: 2px;
+        font-size: 20px;
+        background-color: #fff !important;
+    }
+    
+
     .texto-coment {
         font-size: 14px;
         color: #212529;
@@ -427,6 +437,18 @@ main {
         text-transform: uppercase;
         margin-bottom: 5px;
         padding-left: 0px
+    }
+
+    .titulo-form-error {
+        font-size: 13px;
+        color: red;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        padding-left: 0px
+    }
+
+    .titulo-error-align {
+        text-align: right;
     }
 
     .caixa_menu_footer {
