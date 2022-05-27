@@ -35,7 +35,7 @@ export class ClientComponent implements OnInit {
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router) {
-
+    this.activateButtons(true);
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
@@ -55,7 +55,7 @@ getValueSearch(val: string) {
   this.activateButtons(true);
   this.displayValueSearch = val;
 
-  this.http.get<Client>(this.baseUrl + 'BEClients/GetClientNr/' + this.displayValueSearch).subscribe(result => {
+  this.http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + this.displayValueSearch).subscribe(result => {
     this.newClient = result;
   }, error => console.error(error));
   console.log(this.newClient);
@@ -64,8 +64,10 @@ getValueSearch(val: string) {
     //There is no client - Show the warning and erase the 
     this.toggleShowWarning(true);
     this.hasClient == false;
+    console.log("hasClient 1" + this.hasClient);
   } else {
     this.toggleShowWarning(false);
+    console.log("hasClient 2" + this.hasClient);
   }
   console.warn("get enviado: ", val)
   this.sendClient(this.newClient);
@@ -129,7 +131,7 @@ getValueSearch(val: string) {
 
   changeListElementDocType(docType, e: any) {
     this.activateButtons(true);
-    this.toggleShowWarning(true);
+    this.toggleShowWarning(false);
     this.docType = e.target.value;
   }
 
@@ -152,4 +154,17 @@ getValueSearch(val: string) {
       this.showSeguinte = false
     }
   }
+
+  createNewClient(){
+    this.route.navigate(['/app-new-client/']);
+  }
+
+  close(){
+    this.route.navigate(['/']);
+  }
+
+  newSearch(){
+    location.reload();
+  }
+
 }

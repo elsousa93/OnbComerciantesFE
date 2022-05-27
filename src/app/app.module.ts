@@ -39,6 +39,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { PepComponent } from './pep/pep.component';
 import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
 import { FooterComponent } from './footer/footer.component';
+import { NewClientComponent } from './client/new-client/new-client.component';
+import { CircularProgressComponent } from './circular-progress/circular-progress.component';
+import { ProcessComponent } from './process/process.component';
+import { BannerHomeComponent } from './banner-home/banner-home.component';
+import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -69,7 +74,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ReadcardComponent,
     NavMenuInternaComponent,
-    FooterComponent
+    FooterComponent,
+    CircularProgressComponent,
+    ProcessComponent,
+    NewClientComponent,
+    BannerHomeComponent,
+    BarrazulHomeComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -93,6 +103,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
+      { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
       { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
       { path: 'add-store/:stroreid', component: AddStoreComponent },
@@ -109,7 +120,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      { path: 'readcardcc', component: ReadcardComponent }
+      { path: 'readcardcc', component: ReadcardComponent },
+      { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
+      { path: 'app-new-client', component: NewClientComponent }
+      
       
     ]),
     TranslateModule.forRoot({
