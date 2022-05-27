@@ -1,112 +1,142 @@
-
-
 <app-nav-menu-interna></app-nav-menu-interna>
-
-<div class="row bg-white">
-  <div class="offset-1 bg-white col-7 col-xxl-8">
-    <br><p><b>IDENTIFICAÇÃO DO COMERCIANTE</b></p>
-    <div class="form-group">
-      <label for="clientTypology">Qual a tipologia do Comerciante?*</label><br>
-
-      <input required ngModel name="clientTypology" type="radio" value=true #clientTypology="ngModel"
-        id="clientTypology" (click)="activateButtons(true)">
-      <label for="eni">Empresa</label><br>
-
-      <input required ngModel name="clientTypology" type="radio" value=false #clientTypology="ngModel"
-        id="clientTypology" (click)="activateButtons(true)">
-      <label for="eni">ENI</label>
+<div class="container">
+  <div class="row mb-xxl-5 mt-3">
+    <div class="offset-1 bg-white col-7 col-xxl-8">
+      <span class="mt-4 mb-4">
+        <h2 class="mt-4 text-primary">Qual a tipologia do Comerciante?*</h2>
+      </span>
+      <p class="mt-2">Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.</p>
     </div>
-    <div *ngIf="showButtons">
-      <div>
-        <b>Pesquise o Cliente:</b>
-        <div class="docType-drop-down">
-          <label for="docType">Tipo de Documento:*</label>
-          <form>
-            <select class="form-select" (click)="changeListElementDocType(docType, $event)" id="docType"
-              [(ngModel)]="newClient.docType">
-              <option value="disabled">Tipo de Documento:</option>
-              <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>{{docType.docTypeOption}}
-              </option>
-            </select>
-          </form>
+    <div class="col-3 col-xxl-2 mt-4 mb-4">
+      <circular-progress [percentage]="10"></circular-progress>
+    </div>
+
+    <div class="offset-1 bg-white col-7 col-xxl-10">
+      <div class="form-check">
+        <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
+          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
+        <label class="radio">EMPRESA</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
+          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
+        <label class="radio" for="radio2">ENI</label>
+      </div>
+      <div class="col-xxl col-6">
+        <p></p>
+        <div *ngIf="showButtons">
+          <div class="docType-drop-down">
+            <p class="titulo-form-simples">Tipo de Documento:*</p>
+            <form>
+              <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+                id="docType" [(ngModel)]="newClient.docType">
+                <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
+                  {{docType.docTypeOption}}
+                </option>
+              </select>
+              <br>
+              <div *ngIf="showWarningT  == true" text="red">
+                <div *ngIf="hasClientT == false">
+                  <p class="titulo-form-simples">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                      class="titulo-form-error">* {{ resultError }}</span>
+                  </p>
+                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"
+                    class="form-control campo_form_coment_error">
+                  <div class="row mb-xxl-0">
+                    <div class="col-xxl col-6 offset-xxl-1 col-xxl-3 mb-xl-0">
+                      <button id="btn5a2"
+                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR
+                        <i class="fas fa-search">&nbsp;</i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="showWarningT  == false">
+                <div *ngIf="hasClientT == true">
+                  <p class="titulo-form-simples ">Número do Documento:* </p>
+                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"
+                    class="form-control campo_form_coment">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-xxl col-6">
+          </div>
         </div>
       </div>
-      <form>
-        <label>Número do Documento:* </label>
-        <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"> Enter
-      </form>
-      <p>Valor pesquisado: {{displayValueSearch}}</p>
-    </div>
-
-
-    <div *ngIf="showWarning" class="row container-fluid" id="divshow" text="red">
-      <b>Não existe Comerciante com esse número.</b>
-    </div>
-
-    <div>
-      <div *ngIf="hasClient" class="row container-fluid" id="divshow">
-        <div class='table table-striped' aria-labelledby="tableLabel" *ngIf="hasClient">
-          <div ng-app="CadClientes" ng-controller="ClientesController">
-            <form #contactForm="ngForm">
-              <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="hasClient">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>ID - interno</th>
-                    <th>N. Cliente</th>
-                    <th>Tipo de Doumento</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <input type="hidden" name="id" id="id" value={{newClient.newClientNr}}>
-                    <td><input type="radio" value={{newClient.docType}} (click)="aButtons(true)"><br></td>
-                    <td>{{newClient.newClientNr}}</td>
-                    <td>{{newClient.docType}}</td>
-                    <td>{{newClient.docNr}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-            <div class="container" *ngIf="showSeguinte">
-              
-              <div class="row mb-xxl-5">
-                <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5"><button id="btn4a"
-                    class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg">SAIR&nbsp;<i
-                      class="fas fa-angle-down"></i></button>
-          
-                  <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"><i
-                      class="fas fa-angle-left"></i>&nbsp;VOLTAR</button>
-          
-                  <button id="btn5a"
-                    class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" (click)="obterSelecionado(newClient.newClientNr)">AVANÇAR&nbsp;<i
-                      class="fas fa-angle-right">&nbsp;</i></button>
+      <div class="col-xxl col-6 ps-0 pe-0">
+        <p></p>
+        <div *ngIf="showWarningT  == false">
+          <div *ngIf="hasClientT == true">
+            <div class="container">
+              <div class="row mb-xxl-0">
+                <div class="col-xxl col-6 offset-xxl-1 col-xxl-3 ">
+                  <button id="btn5a2"
+                    class="btn text-start bg-primary text-light btn-primary mt-3 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR
+                    <i class="fas fa-search">&nbsp;</i>
+                  </button>
                 </div>
-          
               </div>
-              
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="col-3 col-xxl-2 mt-4 mb-4">
-    <div class="skill">
-      <!--svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160px" height="160px">
-        <defs>
-          <linearGradient id="GradientColor">
-            <stop offset="0%" stop-color="#4b8fd6" />
-            <stop offset="100%" stop-color="#1e66b0" />
-          </linearGradient>
-        </defs>
-        <circle cx="80" cy="80" r="70" stroke-linecap="round" />
-      </svg-->
-
-
+  <div class="offset-xxl-1 col-xxl-10" *ngIf="hasClient == true">
+    <div class="table-responsive">
+      <form #contactForm="ngForm">
+        <table class="table">
+          <thead class="table-primary align-middle">
+            <tr class="align-middle">
+              <th scope="col" class="text-center"></th>
+              <th scope="col" class="text-center align-middle">ID - interno</th>
+              <th scope="col" class="text-center">Nº Cliente</th>
+              <th scope="col" class="text-center">Tipo de Doumento</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <input type="hidden" name="id" id="id" value={{newClient.newClientNr}}>
+              <th scope="row" class="text-center"><input type="radio" value={{newClient.docType}}
+                  (click)="aButtons(true)"></th>
+              <td class="text-center">{{newClient.newClientNr}}</td>
+              <td class="text-center">{{newClient.docType}}</td>
+              <td class="text-center">{{newClient.docNr}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
     </div>
-
-
+  </div>
+  <div class="container" *ngIf="showWarning">
+    <div *ngIf="hasClient == false" class="row" id="divshow" text="red">
+      <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
+        <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
+          (click)="newSearch()">NOVA PESQUISA&nbsp;
+          <i class="fas fa-search"></i>
+        </button>
+        <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+          (click)="createNewClient()">NOVO COMERCIANTE&nbsp;
+          <i class="far fa-user">&nbsp;</i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="hasClient == true">
+    <div class="row" *ngIf="showSeguinte">
+      <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
+        <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
+          (click)="close()">SAIR&nbsp;
+          <i class="fas fa-angle-down"></i>
+        </button>
+        <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+          (click)="obterSelecionado(newClient.newClientNr)">AVANÇAR&nbsp;
+          <i class="fas fa-angle-right">&nbsp;</i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
