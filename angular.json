@@ -30,16 +30,14 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
               "src/bootstrap/5/css/bootstrap.min.css",
-              "src/css/circulo_progresso.css"
+              "src/css/style.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "src/bootstrap/5/js/bootstrap.min.js",
               "src/bootstrap/5/js/bootstrap.bundle.min.js"
-              
-            ]
+              ]
           },
           "configurations": {
             "production": {

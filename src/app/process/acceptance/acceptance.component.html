@@ -59,8 +59,26 @@
 <input type="text" placeholder="Observações..." class="w-100"/>
 
 <div *ngIf="isVisible == 1" class="d-flex justify-content-between mt-3">
-  <button class="btn btn-primary">CARREGAR DIGITALIZADOS</button>
-  <button class="btn btn-primary">ANEXAR</button>
+  <div>
+    <button class="btn btn-primary" (click)="uploadFiles()">Carregar digitalizados</button>
+  </div>
+  <div>
+    <!--<button class="btn btn-primary">ANEXAR</button>-->
+    <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
+    <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,null)" style="display: none" accept=".pdf" multiple>
+  </div>
+  <div>
+    <a class="btn btn-primary" [href]="downloadPath" [download]="download">Download do documento</a>
+  </div>
+  <div *ngIf="files.length > 0">
+    <h2>Ficheiros anexados</h2>
+    <div>
+      <div *ngFor="let file of files">
+        <p>{{file.name}}</p>
+        <button (click)="removeFile(file)">Remove</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="d-flex justify-content-end mt-3">

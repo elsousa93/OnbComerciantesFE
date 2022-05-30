@@ -24,9 +24,11 @@ export class ClientComponent implements OnInit {
 
   hasClient: boolean = false;
   showWarning: boolean = false;
+  hasClientT: boolean = false;
+  showWarningT: boolean = false;
   showButtons: boolean = false;
   showSeguinte: boolean = false;
- 
+  resultError: string ="";
   newClient: Client = {} as Client;
 
   @Output() nameEmitter = new EventEmitter<string>();
@@ -35,12 +37,12 @@ export class ClientComponent implements OnInit {
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router) {
-
+    this.activateButtons(true);
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
-
+    
   }
 
 
@@ -55,7 +57,8 @@ getValueSearch(val: string) {
   this.activateButtons(true);
   this.displayValueSearch = val;
 
-  this.http.get<Client>(this.baseUrl + 'BEClients/GetClientNr/' + this.displayValueSearch).subscribe(result => {
+
+  this.http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + this.displayValueSearch).subscribe(result => {
     this.newClient = result;
   }, error => console.error(error));
   console.log(this.newClient);
@@ -63,9 +66,14 @@ getValueSearch(val: string) {
   if (this.newClient.newClientNr == 0) {
     //There is no client - Show the warning and erase the 
     this.toggleShowWarning(true);
+    this.showWarningT =true;
+    this.hasClientT =false;
     this.hasClient == false;
+    this.resultError = "Não existe Comerciante com esse número.";
   } else {
     this.toggleShowWarning(false);
+    this.showWarningT =false;
+    this.hasClientT =true;
   }
   console.warn("get enviado: ", val)
   this.sendClient(this.newClient);
@@ -122,6 +130,8 @@ getValueSearch(val: string) {
   }
 
   ngOnInit(): void {
+    this.showWarningT =false;
+    this.hasClientT =true;
   }
 
   submit(form: any) {
@@ -129,7 +139,7 @@ getValueSearch(val: string) {
 
   changeListElementDocType(docType, e: any) {
     this.activateButtons(true);
-    this.toggleShowWarning(true);
+    this.toggleShowWarning(false);
     this.docType = e.target.value;
   }
 
@@ -152,4 +162,17 @@ getValueSearch(val: string) {
       this.showSeguinte = false
     }
   }
+
+  createNewClient(){
+    this.route.navigate(['/app-new-client/']);
+  }
+
+  close(){
+    this.route.navigate(['/']);
+  }
+
+  newSearch(){
+    location.reload();
+  }
+
 }
