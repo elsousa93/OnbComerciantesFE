@@ -44,6 +44,7 @@ import { CircularProgressComponent } from './circular-progress/circular-progress
 import { ProcessComponent } from './process/process.component';
 import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
+import { FaseTitleComponent } from './fase-title/fase-title.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -80,7 +81,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NewClientComponent,
     BannerHomeComponent,
     LoginComponent,
-    BarrazulHomeComponent
+    BarrazulHomeComponent,
+    FaseTitleComponent
   ],
   imports: [
     ReactiveFormsModule,
