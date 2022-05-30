@@ -37,49 +37,17 @@
                 </option>
               </select>
               <br>
-              <div *ngIf="showWarningT  == true" text="red">
-                <div *ngIf="hasClientT == false">
-                  <p class="titulo-form-simples">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-                      class="titulo-form-error">* {{ resultError }}</span>
-                  </p>
-                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"
-                    class="form-control campo_form_coment_error">
-                  <div class="row mb-xxl-0">
-                    <div class="col-xxl col-6 offset-xxl-1 col-xxl-3 mb-xl-0">
-                      <button id="btn5a2"
-                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR
-                        <i class="fas fa-search">&nbsp;</i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="showWarningT  == false">
-                <div *ngIf="hasClientT == true">
-                  <p class="titulo-form-simples ">Número do Documento:* </p>
-                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"
-                    class="form-control campo_form_coment">
+              <div>
+                <div>
+                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                      [class]="errorMsg">{{ resultError }}</span></p>
+                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)" [class]="errorInput">
+                  <p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p>
                 </div>
               </div>
             </form>
           </div>
           <div class="col-xxl col-6">
-          </div>
-        </div>
-      </div>
-      <div class="col-xxl col-6 ps-0 pe-0">
-        <p></p>
-        <div *ngIf="showWarningT  == false">
-          <div *ngIf="hasClientT == true">
-            <div class="container">
-              <div class="row mb-xxl-0">
-                <div class="col-xxl col-6 offset-xxl-1 col-xxl-3 ">
-                  <button id="btn5a2"
-                    class="btn text-start bg-primary text-light btn-primary mt-3 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR
-                    <i class="fas fa-search">&nbsp;</i>
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

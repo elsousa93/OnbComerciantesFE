@@ -79,6 +79,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ProcessComponent,
     NewClientComponent,
     BannerHomeComponent,
+    LoginComponent,
     BarrazulHomeComponent
   ],
   imports: [

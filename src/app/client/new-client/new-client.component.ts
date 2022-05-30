@@ -79,7 +79,7 @@ export class NewClientComponent implements OnInit {
     this.stringJson = JSON.stringify(this.addNewClient);
     console.log("String json object :", this.stringJson);
 
-    this.http.post<Client>(this.baseUrl + 'BEClients/'+ this.stringJson,this.stringJson).subscribe(result => {
+    this.http.post<Client>(this.baseUrl + 'BEClients/',this.addNewClient).subscribe(result => {
       console.log(result);
     }, error => console.error(error));
 

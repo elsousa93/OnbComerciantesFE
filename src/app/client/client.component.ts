@@ -22,6 +22,9 @@ export class ClientComponent implements OnInit {
   formDocType!: FormGroup;
   docType?: string = "";
 
+  errorInput;
+  errorMsg;
+
   hasClient: boolean = false;
   showWarning: boolean = false;
   hasClientT: boolean = false;
@@ -42,7 +45,7 @@ export class ClientComponent implements OnInit {
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
-    
+    this.errorInput = "form-control campo_form_coment";
   }
 
 
@@ -69,14 +72,20 @@ getValueSearch(val: string) {
     this.showWarningT =true;
     this.hasClientT =false;
     this.hasClient == false;
-    this.resultError = "Não existe Comerciante com esse número.";
+    this.errorInput = "form-control campo_form_coment_error";
+    this.resultError = "*  Não existe Comerciante com esse número.";
+    this.errorMsg = "titulo-form-error";
   } else {
     this.toggleShowWarning(false);
+    this.errorInput = "form-control campo_form_coment";
+    this.errorMsg = "";
+    this.resultError = "";
     this.showWarningT =false;
     this.hasClientT =true;
   }
   console.warn("get enviado: ", val)
   this.sendClient(this.newClient);
+  console.log(this.newClient);
   return this.newClient;
 
 }
