@@ -1,1 +1,56 @@
-<p>submission works!</p>
+<h1>Submissões</h1>
+<p>Lista de submissões de um processo.</p>
+
+<div *ngIf="isTable">
+  
+  <div *ngFor="let megaitem of listContents">
+    <div *ngFor=" let item of megaitem">
+      <div><strong> Número de Processo: {{ item.processNumber }}</strong></div>
+      <div> ID de submissão: {{ item.submissionId }}</div>
+      <div>Tipo de submissão: {{ item.submissionType }}</div>
+      <div>Estado do Processo: {{ item.state }}</div>
+      <div>Género de processo: {{ item.processKind }}</div>
+      <div>Tipo de processo: {{ item.processType }}</div>
+      <div> Comerciante - ID Fiscal: {{ item.merchant.fiscalId }}</div>
+      <div> Comerciante - Nome: {{ item.merchant.name }}</div>
+      <br><br>
+    </div>
+
+    <!--{{submissionsList | json}} Atencao: Lista de lista -->
+  </div>
+</div>
+<!--<div>
+  <h1>Submissions</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>processNumber </th>
+        <th>submissionId </th>
+        <th>submissionType </th>
+        <th>state </th>
+        <th>processKind </th>
+        <th>processType </th>
+        <th>merchant.fiscalId </th>
+        <th>merchant.name </th>
+        <th>index </th>s
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of submissionsList; let i = index  ">
+
+        <td>{{ item[i].processNumber }}</td>
+        <td>{{ item[i].submissionId }}</td>
+        <td>{{ item[i].submissionType }}</td>
+        <td>{{ item[i].state }}</td>
+        <td>{{ item[i].processKind }}</td>
+        <td>{{ item[i].processType }}</td>
+        <td>{{ item[i].merchant.fiscalId }}</td>
+        <td>{{ item[i].merchant.name }}</td>
+        <td>{{ i }}</td>
+
+      </tr>
+    </tbody>
+  </table>
+  <br>  <br>
+  {{submissionsList | json}}
+</div>-->
