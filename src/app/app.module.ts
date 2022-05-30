@@ -38,6 +38,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CookieService } from 'ngx-cookie-service';
 import { PepComponent } from './pep/pep.component';
+import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
+import { FooterComponent } from './footer/footer.component';
+import { NewClientComponent } from './client/new-client/new-client.component';
+import { CircularProgressComponent } from './circular-progress/circular-progress.component';
+import { ProcessComponent } from './process/process.component';
+import { BannerHomeComponent } from './banner-home/banner-home.component';
+import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
 
 
@@ -70,7 +77,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ClientExtendedComponent,
     ReadcardComponent,
-    SubmissionComponent
+   
+    ReadcardComponent,
+    NavMenuInternaComponent,
+    FooterComponent,
+    CircularProgressComponent,
+    ProcessComponent,
+    NewClientComponent,
+    BannerHomeComponent,
+    LoginComponent,
+    BarrazulHomeComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -96,6 +112,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
+      { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
       { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
       { path: 'add-store/:stroreid', component: AddStoreComponent },
@@ -112,6 +129,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
+      
+      { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
+      { path: 'app-new-client', component: NewClientComponent }
+      
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent }

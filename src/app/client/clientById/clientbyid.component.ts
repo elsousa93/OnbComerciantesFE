@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
+import { TestScheduler } from 'rxjs/testing';
 
 
 @Component({
@@ -112,12 +113,11 @@ export class ClientByIdComponent implements OnInit {
   
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
     this.ngOnInit();
-    
-    console.log(this.clientNr);
-
     if (this.clientNr != -1) {
       http.get<Client>(baseUrl + 'BEClients/GetClientNr/' + this.clientNr).subscribe(result => {
         this.client = result;
+        console.log( this.client);
+
       }, error => console.error(error));
     }
   }
@@ -125,4 +125,13 @@ export class ClientByIdComponent implements OnInit {
   ngOnInit(): void {
     this.clientNr = Number(this.router.snapshot.params['id']);
   }
+
+  obterComprovativos(){
+    this.route.navigate(['/nav-interna/', "COMPROVATIVOS" ]);
+    this.route.navigate(['/comprovativos/', this.clientNr ]);
+  }
+  umdois(){
+   
+  }
+  
 }

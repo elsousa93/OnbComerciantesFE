@@ -1,0 +1,74 @@
+
+.style1 {}
+.style2 {
+    color: #343a40
+}
+p.mb-5 { 
+}
+.style3 {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 36px
+}
+.style4 {
+    margin-right: 1px
+}
+.style5 {
+    margin-bottom: 0px;
+    padding-top: 19px;
+    padding-bottom: 27px
+}
+.style6 {
+    padding-top: 0px
+}
+.style7 {
+    font-size: 12px;
+    color: #343a40
+}
+.style8 {
+    color: #495057
+}
+.style9 {
+    color: #495057
+}
+.style10 {
+    color: #495057
+}
+.style11 {
+    color: #495057
+}
+.style12 {
+    color: #495057
+}
+.style13 {
+    color: #495057
+}
+.style14 {
+    color: #495057
+}
+.style15 {
+    color: #495057
+}
+.style16 {
+    color: #495057
+}
+.style17 {
+    color: #495057
+}
+.style18 {
+    color: #495057
+}
+.style19 {
+    color: #495057
+}
+.style20 {
+    color: #495057
+}
+.style21 {
+    color: #495057
+}
+.style22 {
+    color: #495057
+}
