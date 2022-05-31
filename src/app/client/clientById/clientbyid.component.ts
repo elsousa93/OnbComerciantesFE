@@ -124,6 +124,7 @@ export class ClientByIdComponent implements OnInit {
   
   ngOnInit(): void {
     this.clientNr = Number(this.router.snapshot.params['id']);
+    console.log(this.client);
   }
 
   obterComprovativos(){

@@ -133,7 +133,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
-      { path: 'app-new-client', component: NewClientComponent }
+      { path: 'app-new-client', component: NewClientComponent },
       
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },

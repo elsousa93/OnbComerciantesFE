@@ -66,7 +66,7 @@ export class ClientComponent implements OnInit {
   }, error => console.error(error));
   console.log(this.newClient);
 
-  if (this.newClient.newClientNr == 0) {
+    //if (this.newClient.clientId == 0) {
     //There is no client - Show the warning and erase the 
     this.toggleShowWarning(true);
     this.showWarningT =true;
@@ -75,14 +75,14 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment_error";
     this.resultError = "*  Não existe Comerciante com esse número.";
     this.errorMsg = "titulo-form-error";
-  } else {
+  /*} else {*/
     this.toggleShowWarning(false);
     this.errorInput = "form-control campo_form_coment";
     this.errorMsg = "";
     this.resultError = "";
     this.showWarningT =false;
     this.hasClientT =true;
-  }
+  /*}*/
   console.warn("get enviado: ", val)
   this.sendClient(this.newClient);
   console.log(this.newClient);
