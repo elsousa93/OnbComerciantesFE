@@ -1,14 +1,14 @@
-<h1>Configuração dos Terminais</h1>
+<h1>{{'COTerminalCofig'|translate}}</h1>
 <br />
 <div class="form">
-  <p><b>EAT Unicre?</b></p>
+  <p><b>{{'COEATUnicre'|translate}}</b></p>
   <div *ngFor="let selectionReplicate of selectionsReplicate; let idx = index">
     <input type="radio" name="selectedReplicate" value="{{selectionReplicate}}" [checked]="(idx === 0)" (change)="radoChangehandler($event)" />{{selectionReplicate}}
   </div>
   <br />
   <form #FormCommercialOffer="ngForm" (ngSubmit)="submit(FormCommercialOffer)">
     <div *ngIf="selectedOption==='Sim'">
-      <label for="terminalType"><b>Tipo de terminal:</b></label>
+      <label for="terminalType"><b>{{'COTerminalType'|translate}}</b></label>
       <br />
       <select #terminalType name="terminalType" [(ngModel)]="commOffer.terminalType">
         <option *ngFor="let type of selectionsTerminalType" [value]="type">
@@ -17,7 +17,7 @@
       </select>
       <br />
       <br />
-      <label for="communicationType"><b>Tipo de comunucação:</b></label>
+      <label for="communicationType"><b>{{'COCommType'|translate}}</b></label>
       <br />
       <select #terminalType name="communicationType" [(ngModel)]="commOffer.communicationType">
         <option *ngFor="let comm of selectionsCommunicationType" [value]="comm">
@@ -28,12 +28,12 @@
       <br />
     </div>
     <div *ngIf="selectedOption==='Não'">
-      <b>Os terminais serão defenidos com a sua entidade de apoio ao terminal</b>
+      <b>{{'COPrivateTerminal'|translate}}</b>
       <br />
       <br />
     </div>
     <div class="form-group col-12">
-      <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+      <button type="submit" class="btn btn-primary mr-2">{{'Save'|translate}}</button>
     </div>
   </form>
 </div>
