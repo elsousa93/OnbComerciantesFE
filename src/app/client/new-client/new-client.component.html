@@ -240,7 +240,7 @@
 
                 <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados*: </p>
                 <input required minlength="2" maxlength="100" ngModel #services="ngModel" name="services" type="text"
-                  id="services" class="form-control campo_form" [(ngModel)]="addNewClient.sales.servicesOrProductsSold">
+                  id="services" class="form-control campo_form" [(ngModel)]="addNewClient.sales.servicesOrProductsSold[0]">
 
                 <p class="titulo-form-simples" for="transactionsAverage">Transações Média: </p>
                 <input required minlength="2" maxlength="100" ngModel #transactionsAverage="ngModel"
@@ -309,7 +309,7 @@
                 <p class="titulo-form-simples" for="destinationCountries">Países de Destino dos Produtos Serviços*:</p>
                 <input required minlength="2" maxlength="100" ngModel #destinationCountries="ngModel"
                   name="destinationCountries" type="text" id="destinationCountries" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.sales.servicesOrProductsDestinations">
+                  [(ngModel)]="addNewClient.sales.servicesOrProductsDestinations[0]">
               </div>
             </div>
           </div>

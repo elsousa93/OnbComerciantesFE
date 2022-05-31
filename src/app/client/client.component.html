@@ -48,10 +48,15 @@
                 <div>
                   <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                   <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)" [class]="errorInput">
-                  <p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p>
-                  <span [class]="errorMsg">{{ resultError }}</span>
+                  <!--<p class="texto-coment mt-2 mb-1">(PRESSIONE A TECLA "ENTER")</p>-->
+                  <span class="titulo-form-error">Documento não encontrado</span>
+                  <div class="row mb-xxl-0">
+                    <div>
+                      <button id="btn5a2" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR <i class="fas fa-search">&nbsp;</i></button>
+                    </div>
+                  </div>
+                  </div>
                 </div>
-              </div>
             </form>
           </div>
           <div class="col-xxl col-6">

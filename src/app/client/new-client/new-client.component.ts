@@ -69,9 +69,10 @@ export class NewClientComponent implements OnInit {
       "estimatedAnualRevenue": 0.0,
       "averageTransactions": 0.0,
       "servicesOrProductsSold": [
+        ""
       ],
       "servicesOrProductsDestinations": [
-        
+        ""
       ]
     },
     "foreignFiscalInformation": {
@@ -170,9 +171,6 @@ export class NewClientComponent implements OnInit {
     //this.addNewClient.contacts.fax.countryCode = form.callingCodeFaxClient;
     //this.addNewClient.contacts.fax.phoneNumber = form.faxClient;
     //this.addNewClient.billingEmail = form.billingEmail;
-
-    console.log(this.addNewClient);
-
     //Nao esta a ser usado
     this.stringJson = JSON.stringify(this.addNewClient);
     console.log("String json object :", this.stringJson);
