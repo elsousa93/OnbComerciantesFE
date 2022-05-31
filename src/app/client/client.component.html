@@ -1,7 +1,7 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container">
   <div class="row mb-xxl-5 mt-3">
-    <div class="offset-1 bg-white col-7 col-xxl-8">
+    <!--<div class="offset-1 bg-white col-7 col-xxl-8">
       <span class="mt-4 mb-4">
         <h2 class="mt-4 text-primary">Qual a tipologia do Comerciante?*</h2>
       </span>
@@ -11,7 +11,14 @@
     </div>
     <div class="col-3 col-xxl-2 mt-4 mb-4">
       <circular-progress [percentage]="10"></circular-progress>
-    </div>
+    </div>-->
+    <fase-title
+                title="Qual a tipologia do Comerciante?*"
+                description="Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat."
+                percentage=10>
+    </fase-title>
 
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <div class="form-check">
@@ -31,55 +38,23 @@
             <p class="titulo-form-simples">Tipo de Documento:*</p>
             <form>
               <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
-                id="docType" [(ngModel)]="newClient.docType">
+                id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
                 <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                   {{docType.docTypeOption}}
                 </option>
               </select>
               <br>
-              <div *ngIf="showWarningT  == true" text="red">
-                <div *ngIf="hasClientT == false">
-                  <p class="titulo-form-simples">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-                      class="titulo-form-error">* {{ resultError }}</span>
-                  </p>
-                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"
-                    class="form-control campo_form_coment_error">
-                  <div class="row mb-xxl-0">
-                    <div class="col-xxl col-6 offset-xxl-1 col-xxl-3 mb-xl-0">
-                      <button id="btn5a2"
-                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR
-                        <i class="fas fa-search">&nbsp;</i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="showWarningT  == false">
-                <div *ngIf="hasClientT == true">
-                  <p class="titulo-form-simples ">Número do Documento:* </p>
-                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)"
-                    class="form-control campo_form_coment">
+              <div>
+                <div>
+                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)" [class]="errorInput">
+                  <p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p>
+                  <span [class]="errorMsg">{{ resultError }}</span>
                 </div>
               </div>
             </form>
           </div>
           <div class="col-xxl col-6">
-          </div>
-        </div>
-      </div>
-      <div class="col-xxl col-6 ps-0 pe-0">
-        <p></p>
-        <div *ngIf="showWarningT  == false">
-          <div *ngIf="hasClientT == true">
-            <div class="container">
-              <div class="row mb-xxl-0">
-                <div class="col-xxl col-6 offset-xxl-1 col-xxl-3 ">
-                  <button id="btn5a2"
-                    class="btn text-start bg-primary text-light btn-primary mt-3 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR
-                    <i class="fas fa-search">&nbsp;</i>
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -99,12 +74,12 @@
           </thead>
           <tbody>
             <tr>
-              <input type="hidden" name="id" id="id" value={{newClient.newClientNr}}>
-              <th scope="row" class="text-center"><input type="radio" value={{newClient.docType}}
+              <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
+              <th scope="row" class="text-center"><input type="radio" value={{newClient.documentationDeliveryMethod}}
                   (click)="aButtons(true)"></th>
-              <td class="text-center">{{newClient.newClientNr}}</td>
-              <td class="text-center">{{newClient.docType}}</td>
-              <td class="text-center">{{newClient.docNr}}</td>
+              <td class="text-center">{{newClient.clientId}}</td>
+              <td class="text-center">{{newClient.documentationDeliveryMethod}}</td>
+              <!--<td class="text-center">{{newClient.docNr}}</td>-->
             </tr>
           </tbody>
         </table>
@@ -133,7 +108,7 @@
           <i class="fas fa-angle-down"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="obterSelecionado(newClient.newClientNr)">AVANÇAR&nbsp;
+          (click)="obterSelecionado(newClient.clientId)">AVANÇAR&nbsp;
           <i class="fas fa-angle-right">&nbsp;</i>
         </button>
       </div>

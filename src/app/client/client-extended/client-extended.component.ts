@@ -1,20 +1,18 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
-import { TestScheduler } from 'rxjs/testing';
-
+import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-client',
-  templateUrl: './clientbyid.component.html'
+  selector: 'app-client-extended',
+  templateUrl: './client-extended.component.html',
+  styleUrls: ['./client-extended.component.css']
 })
+export class ClientExtendedComponent implements OnInit {
 
-export class ClientByIdComponent implements OnInit {
-  
-  /*Variable declaration*/
-  public clientNr: number = 0;
-  client: Client = {
+  public clients: Client[] = [];
+  newClient : Client= {
     "clientId": "Bananas",
     "fiscalId": "Bananas",
     "companyName": "Bananas",
@@ -34,7 +32,7 @@ export class ClientByIdComponent implements OnInit {
       "validUntil": "2010-04-24"
     },
     "shareCapital": {
-      "capital": -88603287.00055264,
+      "capital": 87,
       "date": "1966-08-30"
     },
     "bylaws": "aliqua fugiat adipisicing sed",
@@ -64,8 +62,8 @@ export class ClientByIdComponent implements OnInit {
       "fiscalId": "esse volup"
     },
     "sales": {
-      "estimatedAnualRevenue": 59147011.77621019,
-      "averageTransactions": -6444798.979596421,
+      "estimatedAnualRevenue": 591,
+      "averageTransactions": -6444798,
       "servicesOrProductsSold": [
         "deserunt tempor Ut",
         "dolore nisi tempor"
@@ -110,29 +108,59 @@ export class ClientByIdComponent implements OnInit {
     "documentationDeliveryMethod": "PORTAL",
     "billingEmail": "27omQ82nb@RIqJdzMzddCi.wwoo"
   };
-  
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
-    this.ngOnInit();
-    if (this.clientNr != -1) {
-      http.get<Client>(baseUrl + 'BEClients/GetClientNr/' + this.clientNr).subscribe(result => {
-        this.client = result;
-        console.log( this.client);
 
-      }, error => console.error(error));
-    }
+  public clientid = 444;
+
+  //For testing
+
+  postData = {
+    test: "myContent",
+  };
+
+  url = 'http://httpbin.org/post';
+  json;
+
+
+  constructor(private router: ActivatedRoute,
+    private http: HttpClient, @Inject('BASE_URL')
+    private baseUrl: string, private route: Router) {
+
+    //Resquest
+  //  this.http.post(baseUrl + 'BEClients/PostClientTest/', this.postData).toPromise().then(data => {
+  //    console.log(data);});
+
+
+    http.post(baseUrl + 'BEClients/', this.newClient)
+      .toPromise().then((data: any) => {
+        console.log("construtor, a ser enviado pelo BECLients " ,data);
+        console.log(data.json.test);
+        this.json = JSON.stringify(data.json);
+      });
+
   }
-  
+
   ngOnInit(): void {
-    this.clientNr = Number(this.router.snapshot.params['id']);
-    console.log(this.client);
   }
 
-  obterComprovativos(){
-    this.route.navigate(['/nav-interna/', "COMPROVATIVOS" ]);
-    this.route.navigate(['/comprovativos/', this.clientNr ]);
+  chamadaPost(newClient :  Client) {
+
+
+    this.http.post(this.baseUrl + 'BEClients/PostClientTest', this.newClient)
+      .toPromise().then((data: any) => {
+        console.log(data);
+        console.log(data.json.test);
+        this.json = JSON.stringify(data.json);
+      });
+
   }
-  umdois(){
+
+  chamadaPost2() {
+
+    this.http.post<Client>(this.baseUrl + 'BEClients/PostClientTest', this.newClient).subscribe(result => {
+      this.newClient = result;
+       console.log("RESULT CHAMADA:  " , result);
+    }, error => console.error(error));
    
   }
-  
+
 }

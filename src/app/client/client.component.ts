@@ -17,10 +17,13 @@ export class ClientComponent implements OnInit {
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
-   
+
   ListaDocType = docType;
   formDocType!: FormGroup;
   docType?: string = "";
+
+  errorInput;
+  errorMsg;
 
   hasClient: boolean = false;
   showWarning: boolean = false;
@@ -42,7 +45,7 @@ export class ClientComponent implements OnInit {
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
-    
+    this.errorInput = "form-control campo_form_coment";
   }
 
 
@@ -52,10 +55,10 @@ export class ClientComponent implements OnInit {
     this.searchParameter = (box);
   }
 
-// Search for a client
-getValueSearch(val: string) {
-  this.activateButtons(true);
-  this.displayValueSearch = val;
+  // Search for a client
+  getValueSearch(val: string) {
+    this.activateButtons(true);
+    this.displayValueSearch = val;
 
 
   this.http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + this.displayValueSearch).subscribe(result => {
@@ -63,48 +66,54 @@ getValueSearch(val: string) {
   }, error => console.error(error));
   console.log(this.newClient);
 
-  if (this.newClient.newClientNr == 0) {
+    //if (this.newClient.clientId == 0) {
     //There is no client - Show the warning and erase the 
     this.toggleShowWarning(true);
     this.showWarningT =true;
     this.hasClientT =false;
     this.hasClient == false;
-    this.resultError = "Não existe Comerciante com esse número.";
-  } else {
+    this.errorInput = "form-control campo_form_coment_error";
+    this.resultError = "*  Não existe Comerciante com esse número.";
+    this.errorMsg = "titulo-form-error";
+  /*} else {*/
     this.toggleShowWarning(false);
+    this.errorInput = "form-control campo_form_coment";
+    this.errorMsg = "";
+    this.resultError = "";
     this.showWarningT =false;
     this.hasClientT =true;
-  }
+  /*}*/
   console.warn("get enviado: ", val)
   this.sendClient(this.newClient);
+  console.log(this.newClient);
   return this.newClient;
 
-}
-
-// Search for a client
-// old version
-/*  getValueSearch(val: string) {
-    console.warn("client.component recebeu: ", val)
-    this.displayValueSearch = val;
-
-    this.http.get<Client>(this.baseUrl + 'BEClients/GetClientByNewClientNr/' + this.displayValueSearch).subscribe(result => {
-      this.newClient = result;
-    }, error => console.error(error));
-    console.log(this.newClient);
-
-    if (this.newClient.newClientNr == 0) {
-      //There is no client - Show the warning and erase the 
-      this.toggleShowWarning(true);
-      this.hasClient == false;
-    } else {
-      this.toggleShowWarning(false);
-    }
-    console.warn("get enviado: ", val)
-    this.sendClient(this.newClient);
-    return this.newClient;
-
   }
-*/
+
+  // Search for a client
+  // old version
+  /*  getValueSearch(val: string) {
+      console.warn("client.component recebeu: ", val)
+      this.displayValueSearch = val;
+  
+      this.http.get<Client>(this.baseUrl + 'BEClients/GetClientByNewClientNr/' + this.displayValueSearch).subscribe(result => {
+        this.newClient = result;
+      }, error => console.error(error));
+      console.log(this.newClient);
+  
+      if (this.newClient.newClientNr == 0) {
+        //There is no client - Show the warning and erase the 
+        this.toggleShowWarning(true);
+        this.hasClient == false;
+      } else {
+        this.toggleShowWarning(false);
+      }
+      console.warn("get enviado: ", val)
+      this.sendClient(this.newClient);
+      return this.newClient;
+  
+    }
+  */
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
@@ -124,7 +133,7 @@ getValueSearch(val: string) {
     this.hasClient = true;
     this.clientsForSearch.push(client);
 
-    if (client.newClientNr == 0) {
+    if (client.clientId == "0") {
       this.hasClient = false;
     }
   }
@@ -143,11 +152,11 @@ getValueSearch(val: string) {
     this.docType = e.target.value;
   }
 
-  obterSelecionado(id: any){
+  obterSelecionado(id: any) {
     this.route.navigate(['/clientbyid/', id]);
   }
 
-  activateButtons(id: boolean){
+  activateButtons(id: boolean) {
     if (id == true) {
       this.showButtons = true
     } else {
@@ -155,7 +164,7 @@ getValueSearch(val: string) {
     }
   }
 
-  aButtons(id: boolean){
+  aButtons(id: boolean) {
     if (id == true) {
       this.showSeguinte = true
     } else {

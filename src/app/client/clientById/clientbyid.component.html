@@ -15,20 +15,20 @@
           <div class="col-xxl col-6">
             <p class="titulo-form-simples" for="newClientNr">Nr. Cliente: </p>
             <input required minlength="2" maxlength="100" ngModel #newClientNr="ngModel" name="newClientNr" type="text"
-              id="newClientNr" class="form-control campo_form" [(ngModel)]="client.newClientNr" readonly>
+              id="newClientNr" class="form-control campo_form" [(ngModel)]="client.clientId" readonly>
 
-            <p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
+            <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
             <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
-              id="docType" class="form-control campo_form" [(ngModel)]="client.docType" readonly>
+              id="docType" class="form-control campo_form" [(ngModel)]="client.docType" readonly>-->
           </div>
           <div class="col-xxl col-7">
             <p class="titulo-form-simples">Nome Cliente: </p>
             <input required minlength="2" maxlength="100" ngModel #nameClient="ngModel" name="nameClient" type="text"
-              id="nameClient" class="form-control campo_form" [(ngModel)]="client.nameClient" readonly>
+              id="nameClient" class="form-control campo_form" [(ngModel)]="client.shortName" readonly>
 
-            <p class="titulo-form-simples" for="docNr">Número do Documento: </p>
+            <!--<p class="titulo-form-simples" for="docNr">Número do Documento: </p>
             <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr"
-              class="form-control campo_form" [(ngModel)]="client.docNr" readonly>
+              class="form-control campo_form" [(ngModel)]="client.docNr" readonly>-->
           </div>
           <hr>
         </div>
@@ -43,16 +43,16 @@
               Registo
               Notarial?*</p>
 
-            <div class="form-check">
+            <!--<div class="form-check">
               <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
                 #flagAutCol="ngModel" [value]="true" id="flagAutCol" [(ngModel)]="client.flagAutCol">
               <label class="form-check-label" for="radio3">SIM</label>
-            </div>
-            <div class="form-check">
+            </div>-->
+            <!--<div class="form-check">
               <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
                 #flagAutCol="ngModel" [value]="false" id="flagAutCol" [(ngModel)]="client.flagAutCol">
               <label class="form-check-label" for="radio3">NÃO</label>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>
@@ -62,13 +62,13 @@
           <div class="col-xxl col-6">
             <p class="titulo-form-simples" for="crcCode">Código de Certidão do Registo Comercial: </p>
             <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
-              id="crcCode" class="form-control campo_form" [(ngModel)]="client.crcCode" readonly>
+              id="crcCode" class="form-control campo_form" [(ngModel)]="client.crc.code" readonly>
           </div>
           <div class="col-xxl col-7">
             <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
             <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
               name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-              [(ngModel)]="client.socialDenomination" readonly>
+              [(ngModel)]="client.companyName" readonly>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@
             <div class="col-xxl col-6 col-xxl-6">
               <p class="titulo-form-simples">Código de Certidão do Registo Comercial:</p>
               <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
-                id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crcCode" readonly>
+                id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crc.code" readonly>
               <p class="texto-coment mt-2 mb-4">(Aplicável apenas quando a Natureza Jurídica for Sociedade Comercial)
               </p>
             </div>
@@ -98,66 +98,66 @@
             <div class="col-xxl col-6">
               <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:</p>
               <input required minlength="2" maxlength="100" ngModel #natJuridicaN1="ngModel" name="natJuridicaN1"
-                type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.natJuridicaN1"
+                type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
                 readonly>
 
               <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
               <input required minlength="2" maxlength="100" ngModel #natJuridicaN2="ngModel" name="natJuridicaN2"
-                type="text" id="natJuridicaN2" class="form-control campo_form" [(ngModel)]="client.natJuridicaN2"
+                type="text" id="natJuridicaN2" class="form-control campo_form" [(ngModel)]="client.legalNature2"
                 readonly>
 
               <p class="titulo-form-simples" for="caePrincipal">CAE Principal:</p>
               <input required minlength="2" maxlength="100" ngModel #caePrincipal="ngModel" name="caePrincipal"
-                type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="client.caePrincipal"
+                type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.code"
                 readonly>
 
               <p class="titulo-form-simples" for="caeSecundario1">CAE Secundário 1: </p>
               <input required minlength="2" maxlength="100" ngModel #caeSecundario1="ngModel" name="caeSecundario1"
-                type="text" id="caeSecundario1" class="form-control campo_form" [(ngModel)]="client.caeSecundario1"
+                type="text" id="caeSecundario1" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[0].code"
                 readonly>
 
               <p class="titulo-form-simples" for="caeSecundario2">CAE Secundário 2: </p>
               <input required minlength="2" maxlength="100" ngModel #caeSecundario2="ngModel" name="caeSecundario2"
-                type="text" id="caeSecundario2" class="form-control campo_form" [(ngModel)]="client.caeSecundario2"
+                type="text" id="caeSecundario2" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[1].code"
                 readonly>
 
-              <p class="titulo-form-simples" for="caeSecundario3">CAE Secundário 3: </p>
+              <!--<p class="titulo-form-simples" for="caeSecundario3">CAE Secundário 3: </p>
               <input required minlength="2" maxlength="100" ngModel #caeSecundario3="ngModel" name="caeSecundario3"
-                type="text" id="caeSecundario3" class="form-control campo_form" [(ngModel)]="client.caeSecundario3"
-                readonly>
+                type="text" id="caeSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].code"
+                readonly>-->
             </div>
 
             <div class="col-xxl col-7">
 
-              <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:</p>
+              <!--<p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:</p>
               <input required minlength="2" maxlength="100" ngModel #natJuridicaNIFNIPC="ngModel"
                 name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form"
-                [(ngModel)]="client.natJuridicaNIFNIPC" readonly>
+                [(ngModel)]="client.natJuridicaNIFNIPC" readonly>-->
 
               <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
               <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
                 name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                [(ngModel)]="client.socialDenomination" readonly>
+                [(ngModel)]="client.companyName" readonly>
 
               <p class="titulo-form-simples" for="ramoPrincipal">Ramo de Negócio de Objeto Social Principal*: </p>
               <input required minlength="2" maxlength="100" ngModel #ramoPrincipal="ngModel" name="ramoPrincipal"
-                type="text" id="ramoPrincipal" class="form-control campo_form" [(ngModel)]="client.ramoPrincipal"
+                type="text" id="ramoPrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.branch"
                 readonly>
 
               <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
               <input required minlength="2" maxlength="100" ngModel #ramoSecundario1="ngModel" name="ramoSecundario1"
-                type="text" id="ramoSecundario1" class="form-control campo_form" [(ngModel)]="client.ramoSecundario1"
+                type="text" id="ramoSecundario1" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[0].branch"
                 readonly>
 
               <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
               <input required minlength="2" maxlength="100" ngModel #ramoSecundario2="ngModel" name="ramoSecundario2"
-                type="text" id="ramoSecundario2" class="form-control campo_form" [(ngModel)]="client.ramoSecundario2"
+                type="text" id="ramoSecundario2" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[1].branch"
                 readonly>
 
-              <p class="titulo-form-simples" for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </p>
+              <!--<p class="titulo-form-simples" for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </p>
               <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
-                type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.ramoSecundario3"
-                readonly>
+                type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].branch"
+                readonly>-->
 
             </div>
             <hr>
@@ -168,7 +168,7 @@
             <div class="col-xxl col-6">
               <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
               <input required minlength="2" maxlength="100" ngModel #dataConst="ngModel" name="dataConst" type="text"
-                id="dataConst" class="form-control campo_form" [(ngModel)]="client.dataConst" readonly>
+                id="dataConst" class="form-control campo_form" [(ngModel)]="client.shareCapital.date" readonly>
             </div>
           </div>
         </div>
@@ -177,24 +177,24 @@
             <div class="col-xxl col-6">
               <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
               <input required minlength="2" maxlength="100" ngModel #paisSedeSocial="ngModel" name="paisSedeSocial"
-                type="text" id="paisSedeSocial" class="form-control campo_form" [(ngModel)]="client.paisSedeSocial"
+                type="text" id="paisSedeSocial" class="form-control campo_form" [(ngModel)]="client.mainOfficeAddress.country"
                 readonly>
 
               <p class="titulo-form-simples" for="cpSedeSocial">Código-Postal da Sede Social: </p>
               <input required minlength="2" maxlength="100" ngModel #cpSedeSocial="ngModel" name="cpSedeSocial"
-                type="text" id="cpSedeSocial" class="form-control campo_form" [(ngModel)]="client.cpSedeSocial"
+                type="text" id="cpSedeSocial" class="form-control campo_form" [(ngModel)]="client.mainOfficeAddress.postalCode"
                 readonly>
             </div>
             <div class="col-xxl col-7">
               <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
               <input required minlength="2" maxlength="100" ngModel #localidadeSedeSocial="ngModel"
                 name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
-                [(ngModel)]="client.localidadeSedeSocial" readonly>
+                [(ngModel)]="client.mainOfficeAddress.postalCode" readonly>
 
               <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
               <textarea required minlength="2" maxlength="100" ngModel #moradaSedeSocial="ngModel"
                 name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
-                [(ngModel)]="client.moradaSedeSocial" readonly rows="3"></textarea>
+                [(ngModel)]="client.mainOfficeAddress.address" readonly rows="3"></textarea>
 
             </div>
           </div>
@@ -214,62 +214,62 @@
             <div class="col-xxl col-6">
               <p class="titulo-form-simples" for="franchiseName"> Nome Franchise:</p>
               <input required minlength="2" maxlength="100" ngModel #franchiseName="ngModel" name="franchiseName"
-                type="text" id="franchiseName" class="form-control campo_form" [(ngModel)]="client.franchiseName"
+                type="text" id="franchiseName" class="form-control campo_form" [(ngModel)]="client.companyName"
                 readonly>
 
               <p class="titulo-form-simples" for="expectableAnualInvoicing">Fauração Anual Expectável: </p>
               <input required minlength="2" maxlength="100" ngModel #expectableAnualInvoicing="ngModel"
                 name="expectableAnualInvoicing" type="text" id="expectableAnualInvoicing"
-                class="form-control campo_form" [(ngModel)]="client.expectableAnualInvoicing" readonly>
+                class="form-control campo_form" [(ngModel)]="client.sales.estimatedAnualRevenue" readonly>
 
               <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados*: </p>
               <input required minlength="2" maxlength="100" ngModel #services="ngModel" name="services" type="text"
-                id="services" class="form-control campo_form" [(ngModel)]="client.services" readonly>
+                id="services" class="form-control campo_form" [(ngModel)]="client.sales.servicesOrProductsSold" readonly>
 
               <p class="titulo-form-simples" for="transactionsAverage">Transações Média: </p>
               <input required minlength="2" maxlength="100" ngModel #transactionsAverage="ngModel"
                 name="transactionsAverage" type="text" id="transactionsAverage" class="form-control campo_form"
-                [(ngModel)]="client.transactionsAverage" readonly>
+                [(ngModel)]="client.sales.averageTransactions" readonly>
             </div>
             <div class="col-xxl col-7">
-              <p class="titulo-form-simples" for="groupNIPC">NIPC do Grupo: </p>
+              <!--<p class="titulo-form-simples" for="groupNIPC">NIPC do Grupo: </p>
               <input required minlength="2" maxlength="100" ngModel #groupNIPC="ngModel" name="groupNIPC" type="text"
-                id="groupNIPC" class="form-control campo_form" [(ngModel)]="client.groupNIPC" readonly>
+                id="groupNIPC" class="form-control campo_form" [(ngModel)]="client.groupNIPC" readonly>-->
 
               <div>
                 <p class="titulo-form-simples" for="preferenceDocuments"> Selecione a sua preferência de receção de
                   documentação:</p>
                 <input required ngModel name="preferenceDocuments" type="radio" value="100digital"
-                  #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="client.preferenceDocuments">
+                  #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="client.documentationDeliveryMethod">
                 <label class="titulo-form-simples" for="100digital">100% Digital</label> &nbsp;&nbsp;
 
                 <input required ngModel name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta"
-                  #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="client.preferenceDocuments">
+                  #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="client.documentationDeliveryMethod">
                 <label class="titulo-form-simples" for="documetacaoPorCarta">Documentação por carta</label><br><br>
               </div>
               <div>
                 <p class="titulo-form-simples" for="preferenceContacts">Selecione como preferia ser contactado:</p>
                 <input required ngModel name="preferenceContacts" type="radio" value="chamada"
-                  #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.preferenceContacts">
+                  #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
                 <label class="titulo-form-simples" for="chamada">Chamada</label>&nbsp;&nbsp;
 
                 <input required ngModel name="preferenceContacts" type="radio" value="correio"
-                  #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.preferenceContacts">
+                  #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
                 <label class="titulo-form-simples" for="correio">Correio</label>&nbsp;&nbsp;
 
                 <input required ngModel name="preferenceContacts" type="radio" value="email"
-                  #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.preferenceContacts">
+                  #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
                 <label class="titulo-form-simples" for="email">Email</label>&nbsp;&nbsp;
 
                 <input required ngModel name="preferenceContacts" type="radio" value="SMS" #preferenceContacts="ngModel"
-                  id="preferenceContacts" [(ngModel)]="client.preferenceContacts">
+                  id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
                 <label class="titulo-form-simples" for="sms">SMS</label>&nbsp;&nbsp;<br><br>
               </div>
 
               <p class="titulo-form-simples" for="destinationCountries">Países de Destino dos Produtos Serviços*:</p>
               <input required minlength="2" maxlength="100" ngModel #destinationCountries="ngModel"
                 name="destinationCountries" type="text" id="destinationCountries" class="form-control campo_form"
-                [(ngModel)]="client.destinationCountries" readonly>
+                [(ngModel)]="client.sales.servicesOrProductsDestinations" readonly>
             </div>
           </div>
         </div>

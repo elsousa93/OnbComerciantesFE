@@ -11,11 +11,109 @@ import { Client } from '../Client.interface';
 })
 export class NewClientComponent implements OnInit {
 
-  addNewClient: Client = {} as Client
+  //addNewClient: Client = {} as Client
+  addNewClient: Client = {
+    "clientId": "",
+    "fiscalId": "",
+    "companyName": "",
+    "contactName": "",
+    "shortName": "",
+    "headquartersAddress": {
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "country": ""
+    },
+    "merchantType": "",
+    "legalNature": "",
+    "legalNature2": "",
+    "crc": {
+      "code": "",
+      "validUntil": ""
+    },
+    "shareCapital": {
+      "capital": 0,
+      "date": ""
+    },
+    "bylaws": "",
+    "mainEconomicActivity": {
+      "code": "",
+      "branch": ""
+    },
+    "otherEconomicActivities": [
+      {
+        "code": "",
+        "branch": ""
+      },
+      {
+        "code": "",
+        "branch": ""
+      },
+      {
+        "code": "",
+        "branch": ""
+      }
+    ],
+    "mainOfficeAddress": {
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "country": ""
+    },
+    "establishmentDate": "",
+    "businessGroup": {
+      "type": "",
+      "fiscalId": ""
+    },
+    "sales": {
+      "estimatedAnualRevenue": 0.0,
+      "averageTransactions": 0.0,
+      "servicesOrProductsSold": [
+      ],
+      "servicesOrProductsDestinations": [
+        
+      ]
+    },
+    "foreignFiscalInformation": {
+      "issuerCountry": "",
+      "issuanceIndicator": "",
+      "fiscalId": "",
+      "issuanceReason": ""
+    },
+    "bankInformation": {
+      "bank": "",
+      "branch": "",
+      "iban": "",
+      "accountOpenedAt": ""
+    },
+    "contacts": {
+      "preferredMethod": "",
+      "preferredPeriod": {
+        "startsAt": "",
+        "endsAt": ""
+      },
+      "phone1": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "phone2": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "fax": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "email": ""
+    },
+    "documentationDeliveryMethod": "",
+    "billingEmail": ""
+  };
+
   stringJson: any;
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
-    console.log(this.addNewClient.id);
+    console.log(this.addNewClient.clientId);
   }
 
   ngOnInit(): void {
@@ -28,50 +126,50 @@ export class NewClientComponent implements OnInit {
   }
 
   submit(form: any) {
+    console.log(this.addNewClient);
+    //this.addNewClient.clientId = form.id;
+    //this.addNewClient.merchantType = form.clientTypology;
+    ////this.addNewClient.docNr = form.docNr;
+    //this.addNewClient.crc.code = form.crcCode;
+    //this.addNewClient.companyName = form.socialDenomination;
+    //this.addNewClient.legalNature = form.natJuridicaN1;
+    ////this.addNewClient.natJuridicaNIFNIPC = form.natJuridicaNIFNIPC;
+    //this.addNewClient.legalNature2 = form.natJuridicaN2;
+    //this.addNewClient.merchantType = form.categoriaComerciante;
+    ////this.addNewClient.categoriaNIPC = form.categoriaNIPC;
+    ////this.addNewClient.caePrincipal = form.caePrincipal;
+    //this.addNewClient.mainEconomicActivity.code = form.caePrincipal
+    //this.addNewClient.mainEconomicActivity.branch = form.categoriaNIPC;
+    //this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario1, branch: form.ramoSecundario1 });
+    //this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario2, branch: form.ramoSecundario2 });
+    //this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario3, branch: form.ramoSecundario3 });
+    //this.addNewClient.mainEconomicActivity.branch = form.ramoPrincipal;
+    //this.addNewClient.shareCapital.date = form.dataConst;
+    //this.addNewClient.mainOfficeAddress.country = form.paisSedeSocial;
+    //this.addNewClient.mainOfficeAddress.postalArea = form.localidadeSedeSocial;
+    //this.addNewClient.mainOfficeAddress.postalCode = form.cpSedeSocial;
+    //this.addNewClient.mainOfficeAddress.address = form.moradaSedeSocial;
+    //this.addNewClient.companyName = form.franchiseName;
+    ////this.addNewClient.groupNIPC = form.groupNIPC;
+    //this.addNewClient.sales.estimatedAnualRevenue = form.expectableAnualInvoicin;
 
-    this.addNewClient.id = form.id;
-    this.addNewClient.clientTypology = form.clientTypology;
-    //this.addNewClient.newClientNr = form.newClientNr;
-    this.addNewClient.docType = form.docType;
-    this.addNewClient.docNr = form.docNr;
-    this.addNewClient.flagAutCol = form.flagAutCol;
-    this.addNewClient.crcCode = form.crcCode;
-    this.addNewClient.socialDenomination = form.socialDenomination;
-    this.addNewClient.natJuridicaN1 = form.natJuridicaN1;
-    this.addNewClient.natJuridicaNIFNIPC = form.natJuridicaNIFNIPC;
-    this.addNewClient.natJuridicaN2 = form.natJuridicaN2;
-    this.addNewClient.categoriaComerciante = form.categoriaComerciante;
-    this.addNewClient.categoriaNIPC = form.categoriaNIPC;
-    this.addNewClient.caePrincipal = form.caePrincipal;
-    this.addNewClient.caeSecundario1 = form.caeSecundario1;
-    this.addNewClient.caeSecundario2 = form.caeSecundario2;
-    this.addNewClient.caeSecundario3 = form.caeSecundario3;
-    this.addNewClient.ramoPrincipal = form.ramoPrincipal;
-    this.addNewClient.ramoSecundario1 = form.ramoSecundario1;
-    this.addNewClient.ramoSecundario2 = form.ramoSecundario2;
-    this.addNewClient.ramoSecundario3 = form.ramoSecundario3;
-    this.addNewClient.dataConst = form.dataConst;
-    this.addNewClient.paisSedeSocial = form.paisSedeSocial;
-    this.addNewClient.localidadeSedeSocial = form.localidadeSedeSocial;
-    this.addNewClient.cpSedeSocial = form.cpSedeSocial;
-    this.addNewClient.moradaSedeSocial = form.moradaSedeSocial;
-    this.addNewClient.franchiseName = form.franchiseName;
-    this.addNewClient.groupNIPC = form.groupNIPC;
-    this.addNewClient.expectableAnualInvoicing = form.expectableAnualInvoicin;
-    this.addNewClient.services = form.services;
-    this.addNewClient.transactionsAverage = form.transactionsAverage;
-    this.addNewClient.preferenceDocuments = form.preferenceDocuments;
-    this.addNewClient.preferenceContacts = form.preferenceContacts;
-    this.addNewClient.destinationCountries = form.destinationCountries;
-    this.addNewClient.nameClient = form.nameClient;
-    this.addNewClient.callingCodeLandClient = form.callingCodeLandClient;
-    this.addNewClient.phoneLandClient = form.phoneLandClient;
-    this.addNewClient.callingCodeMobileClient = form.callingCodeMobileClient;
-    this.addNewClient.mobilePhoneClient = form.mobilePhoneClient;
-    this.addNewClient.emailClient = form.emailClient;
-    this.addNewClient.callingCodeFaxClient = form.callingCodeFaxClient;
-    this.addNewClient.faxClient = form.faxClient;
-    this.addNewClient.billingEmail = form.billingEmail;
+    //console.log(this.addNewClient.sales.servicesOrProductsSold);
+    //console.log(form.services);
+    //this.addNewClient.sales.servicesOrProductsSold.push(form.services);
+
+    //this.addNewClient.sales.averageTransactions = form.transactionsAverage;
+    //this.addNewClient.documentationDeliveryMethod = form.preferenceDocuments;
+    //this.addNewClient.contacts.preferredMethod = form.preferenceContacts;
+    //this.addNewClient.sales.servicesOrProductsDestinations.push(form.destinationCountries);
+    //this.addNewClient.shortName = form.nameClient;
+    //this.addNewClient.contacts.phone1.countryCode = form.callingCodeLandClient;
+    //this.addNewClient.contacts.phone1.phoneNumber = form.phoneLandClient;
+    //this.addNewClient.contacts.phone2.countryCode = form.callingCodeMobileClient;
+    //this.addNewClient.contacts.phone2.phoneNumber = form.mobilePhoneClient;
+    //this.addNewClient.contacts.email = form.emailClient;
+    //this.addNewClient.contacts.fax.countryCode = form.callingCodeFaxClient;
+    //this.addNewClient.contacts.fax.phoneNumber = form.faxClient;
+    //this.addNewClient.billingEmail = form.billingEmail;
 
     console.log(this.addNewClient);
 
@@ -79,7 +177,7 @@ export class NewClientComponent implements OnInit {
     this.stringJson = JSON.stringify(this.addNewClient);
     console.log("String json object :", this.stringJson);
 
-    this.http.post<Client>(this.baseUrl + 'BEClients/'+ this.stringJson,this.stringJson).subscribe(result => {
+    this.http.post<Client>(this.baseUrl + 'BEClients/',this.addNewClient).subscribe(result => {
       console.log(result);
     }, error => console.error(error));
 
