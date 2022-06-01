@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { docType } from './docType'
+import { docType } from './docType';
 
 @Component({
   selector: 'app-client',
@@ -24,6 +24,8 @@ export class ClientComponent implements OnInit {
 
   errorInput;
   errorMsg;
+
+  errorTeste: boolean = false;
 
   hasClient: boolean = false;
   showWarning: boolean = false;
@@ -57,6 +59,7 @@ export class ClientComponent implements OnInit {
 
   // Search for a client
   getValueSearch(val: string) {
+    this.errorTeste = true;
     this.activateButtons(true);
     this.displayValueSearch = val;
 

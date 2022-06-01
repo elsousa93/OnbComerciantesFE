@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { TestScheduler } from 'rxjs/testing';
 })
 
 export class ClientByIdComponent implements OnInit {
-  
+
   /*Variable declaration*/
   public clientNr: number = 0;
   client: Client = {
@@ -88,7 +89,7 @@ export class ClientByIdComponent implements OnInit {
       "accountOpenedAt": "2019-06-11"
     },
     "contacts": {
-      "preferredMethod": "EMAIL",
+      "preferredMethod": "email",
       "preferredPeriod": {
         "startsAt": "22:40:00.450Z",
         "endsAt": "15:42:54.722Z"
@@ -107,7 +108,7 @@ export class ClientByIdComponent implements OnInit {
       },
       "email": "azwub3bMd@MmQrMhlbOgZHJmPU.km"
     },
-    "documentationDeliveryMethod": "PORTAL",
+    "documentationDeliveryMethod": "docuemntacaoPorCarta",
     "billingEmail": "27omQ82nb@RIqJdzMzddCi.wwoo"
   };
   

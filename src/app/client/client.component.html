@@ -12,23 +12,17 @@
     <div class="col-3 col-xxl-2 mt-4 mb-4">
       <circular-progress [percentage]="10"></circular-progress>
     </div>-->
-    <fase-title
-                title="Qual a tipologia do Comerciante?*"
-                description="Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat."
-                percentage=10>
-    </fase-title>
+
 
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <div class="form-check">
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
-          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
+               #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
         <label class="radio">EMPRESA</label>
       </div>
       <div class="form-check">
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
+               #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
         <label class="radio" for="radio2">ENI</label>
       </div>
       <div class="col-xxl col-6">
@@ -38,7 +32,7 @@
             <p class="titulo-form-simples">Tipo de Documento:*</p>
             <form>
               <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
-                id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
+                      id="docType" [(ngModel)]="newClient.documentationDeliveryMethod" name="documentationDeliveryMethod">
                 <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                   {{docType.docTypeOption}}
                 </option>
@@ -46,17 +40,17 @@
               <br>
               <div>
                 <div>
-                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)" [class]="errorInput">
-                  <!--<p class="texto-coment mt-2 mb-1">(PRESSIONE A TECLA "ENTER")</p>-->
-                  <span class="titulo-form-error">Documento não encontrado</span>
+                    <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    <input id="n-doc" type="text" matInput #box (keyup)="getValueSearch(box.value)" [class]="errorInput" name="documentNumber">
+                    <!--<p class="texto-coment mt-2 mb-1">(PRESSIONE A TECLA "ENTER")</p>-->
+                    <span class="titulo-form-error">Documento não encontrado</span>
                   <div class="row mb-xxl-0">
                     <div>
                       <button id="btn5a2" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0">PESQUISAR <i class="fas fa-search">&nbsp;</i></button>
                     </div>
                   </div>
-                  </div>
                 </div>
+              </div>
             </form>
           </div>
           <div class="col-xxl col-6">
@@ -80,13 +74,17 @@
           <tbody>
             <tr>
               <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
-              <th scope="row" class="text-center"><input type="radio" value={{newClient.documentationDeliveryMethod}}
-                  (click)="aButtons(true)"></th>
+              <th scope="row" class="text-center">
+                <input type="radio" value={{newClient.documentationDeliveryMethod}}
+                       (click)="aButtons(true)">
+              </th>
               <td class="text-center">{{newClient.clientId}}</td>
               <td class="text-center">{{newClient.documentationDeliveryMethod}}</td>
               <!--<td class="text-center">{{newClient.docNr}}</td>-->
             </tr>
+             <
           </tbody>
+           <
         </table>
       </form>
     </div>
@@ -95,11 +93,13 @@
     <div *ngIf="hasClient == false" class="row" id="divshow" text="red">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
-          (click)="newSearch()">NOVA PESQUISA&nbsp;
+                (click)="newSearch()">
+          NOVA PESQUISA&nbsp;
           <i class="fas fa-search"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="createNewClient()">NOVO COMERCIANTE&nbsp;
+                (click)="createNewClient()">
+          NOVO COMERCIANTE&nbsp;
           <i class="far fa-user">&nbsp;</i>
         </button>
       </div>
@@ -109,11 +109,13 @@
     <div class="row" *ngIf="showSeguinte">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
-          (click)="close()">SAIR&nbsp;
+                (click)="close()">
+          SAIR&nbsp;
           <i class="fas fa-angle-down"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="obterSelecionado(newClient.clientId)">AVANÇAR&nbsp;
+                (click)="obterSelecionado(newClient.clientId)">
+          AVANÇAR&nbsp;
           <i class="fas fa-angle-right">&nbsp;</i>
         </button>
       </div>
