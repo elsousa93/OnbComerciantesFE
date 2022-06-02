@@ -1,7 +1,7 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container">
   <div class="row mb-xxl-5 mt-3">
-    <div class="offset-1 bg-white col-7 col-xxl-8">
+    <!--<div class="offset-1 bg-white col-7 col-xxl-8">
       <span class="mt-4 mb-4">
         <h2 class="mt-4 text-primary">Qual a tipologia do Comerciante?*</h2>
       </span>
@@ -11,7 +11,14 @@
     </div>
     <div class="col-3 col-xxl-2 mt-4 mb-4">
       <circular-progress [percentage]="10"></circular-progress>
-    </div>
+    </div>-->
+    <fase-title
+                title="Qual a tipologia do Comerciante?*"
+                description="Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat."
+                percentage=10>
+    </fase-title>
 
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <div class="form-check">
@@ -30,8 +37,8 @@
           <div class="docType-drop-down">
             <p class="titulo-form-simples">Tipo de Documento:*</p>
             <form>
-              <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
-                id="docType" [(ngModel)]="newClient.docType">
+              <select class="form-select campo-form-select" 
+                id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
                 <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                   {{docType.docTypeOption}}
                 </option>
@@ -39,12 +46,16 @@
               <br>
               <div>
                 <div>
-                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-                      [class]="errorMsg">{{ resultError }}</span></p>
-                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)" [class]="errorInput">
-                  <p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p>
+                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span></p>
+                  <input id="n-doc" type="text" #box [class]="errorInput">
+                  <!--p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p-->
+                  
                 </div>
               </div>
+              <button id="btn5a2"
+                class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0" (click)="getValueSearch(box.value)">PESQUISAR
+                <i class="fas fa-search">&nbsp;</i>
+              </button>
             </form>
           </div>
           <div class="col-xxl col-6">
@@ -53,7 +64,7 @@
       </div>
     </div>
   </div>
-  <div class="offset-xxl-1 col-xxl-10" *ngIf="hasClient == true">
+  <div class="offset-xxl-1 col-xxl-10" *ngIf="showWarning == true">
     <div class="table-responsive">
       <form #contactForm="ngForm">
         <table class="table">
@@ -67,20 +78,20 @@
           </thead>
           <tbody>
             <tr>
-              <input type="hidden" name="id" id="id" value={{newClient.newClientNr}}>
-              <th scope="row" class="text-center"><input type="radio" value={{newClient.docType}}
+              <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
+              <th scope="row" class="text-center"><input type="radio" value={{newClient.documentationDeliveryMethod}}
                   (click)="aButtons(true)"></th>
-              <td class="text-center">{{newClient.newClientNr}}</td>
-              <td class="text-center">{{newClient.docType}}</td>
-              <td class="text-center">{{newClient.docNr}}</td>
+              <td class="text-center">{{newClient.clientId}}</td>
+              <td class="text-center">{{newClient.documentationDeliveryMethod}}</td>
+              <!--<td class="text-center">{{newClient.docNr}}</td>-->
             </tr>
           </tbody>
         </table>
       </form>
     </div>
   </div>
-  <div class="container" *ngIf="showWarning">
-    <div *ngIf="hasClient == false" class="row" id="divshow" text="red">
+  <div class="container" *ngIf="hasNewClient == false">
+    <div class="row" id="divshow" text="red">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
           (click)="newSearch()">NOVA PESQUISA&nbsp;
@@ -93,15 +104,15 @@
       </div>
     </div>
   </div>
-  <div class="container" *ngIf="hasClient == true">
-    <div class="row" *ngIf="showSeguinte">
+  <div class="container" *ngIf="showSeguinte == true">
+    <div class="row">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
           (click)="close()">SAIR&nbsp;
           <i class="fas fa-angle-down"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="obterSelecionado(newClient.newClientNr)">AVANÇAR&nbsp;
+          (click)="obterSelecionado(newClient.clientId)">AVANÇAR&nbsp;
           <i class="fas fa-angle-right">&nbsp;</i>
         </button>
       </div>

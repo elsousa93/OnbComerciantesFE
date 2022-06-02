@@ -188,7 +188,7 @@
         *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
         O parâmetro "Código postal" é obrigatório.
       </div>
-    </div>
+   
 
 
     <div *ngIf="showYesCC">
@@ -221,7 +221,7 @@
 
     <button class="btn btn-primary" type="submit" [class.disabled]="!contactForm.valid"
       (click)="submit(contactForm.value)">Submeter</button>
-
+</div>
   </form>
 </div>
 

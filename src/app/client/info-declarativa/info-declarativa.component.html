@@ -1,11 +1,14 @@
-<button class="btn" routerLink="/info-declarativa">Comerciante</button>
- <button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
- <button class="btn">Assinatura Digital</button> <br><br>
+<p> info declarativa, add novos campos </p>
+<!--<button class="btn" routerLink="/info-declarativa">Comerciante</button>
+<button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+<button class="btn">Assinatura Digital</button>
+<br>
+<br>-->
 
 
 <!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação -->
 
-<div class="container">
+<!--<div class="container">
   <form #contactForm="ngForm">
     <div class="form-group">
       <label for="nameClient">Nome do Cliente:</label>
@@ -71,19 +74,19 @@
 
 <div class="container">
 
-    <div class="form-group">
-      <label for="emailClient">Email:</label>
+  <div class="form-group">
+    <label for="emailClient">Email:</label>
 
-      <input required ngModel #emailClient="ngModel" name="emailClient" type="text" id="emailClient" class="form-control" [(ngModel)]="newClient.emailClient">
-      <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
-        is required.
-      </div>
+    <input required ngModel #emailClient="ngModel" name="emailClient" type="text" id="emailClient" class="form-control" [(ngModel)]="newClient.emailClient">
+    <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
+      is required.
     </div>
- 
+  </div>
+
 </div>
 
 
-<div class="container" style= "display: flex">
+<div class="container" style="display: flex">
 
   <div class="country-code-dropdown">
     <p>Indicativo:</p>
@@ -111,18 +114,18 @@
 
 
 <div class="container">
- 
-    <div class="form-group">
-      <label for="billingEmail">Email Faturação:</label>
 
-      <input required ngModel #billingEmail="ngModel" name="billingEmail" type="text" id="billingEmail" class="form-control" [(ngModel)]="newClient.billingEmail">
-      <div class="alert alert-danger" *ngIf="billingEmail.touched && !billingEmail.valid">
-        is required.
-      </div>
+  <div class="form-group">
+    <label for="billingEmail">Email Faturação:</label>
+
+    <input required ngModel #billingEmail="ngModel" name="billingEmail" type="text" id="billingEmail" class="form-control" [(ngModel)]="newClient.billingEmail">
+    <div class="alert alert-danger" *ngIf="billingEmail.touched && !billingEmail.valid">
+      is required.
     </div>
+  </div>
 </div>
 
 <br>
 <br>
-<br>
+<br>-->
 
