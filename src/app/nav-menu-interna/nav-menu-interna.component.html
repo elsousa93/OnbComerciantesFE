@@ -15,44 +15,44 @@
     <div class="offset-1 col-10 bg-primary">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item text-center align-self-start text-xxl-center text-md-center" [routerLinkActive]="['link-active']">
-                    <i class="fas fa-circle icone-menu-secundario"></i>
-                    <a class="nav-link text-white  texto-menu-secundario" [routerLink]="['/client']">COMERCIANTE</a>
+                <li class="nav-item" [ngClass]="setListItem(1)" [routerLinkActive]="['link-active']">
+                    <i [ngClass]="setI(1)"></i>
+                    <a class="nav-link" [ngClass]="setAnchor(1)" [routerLink]="['/client']">CLIENTE EMPRESA</a>
                 </li>
                 <li class="nav-item align-self-xxl-center">
                   <i class="fas fa-angle-right seta_direita"></i>
                 </li>
-                <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3" [routerLinkActive]="['link-active']">
-                    <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                    <a class="nav-link texto-menu-secundario text-success"  [routerLink]="['/comprovativos']">COMPROVATIVOS</a>
+                <li class="nav-item" [ngClass]="setListItem(2)" [routerLinkActive]="['link-active']">
+                    <i [ngClass]="setI(2)"></i>
+                    <a class="nav-link" [ngClass]="setAnchor(2)"  [routerLink]="['/comprovativos']">COMPROVATIVOS</a>
                 </li>
                 <li class="nav-item align-self-xxl-center">
                     <i class="fas fa-angle-right seta_direita"></i>
                 </li>
-                <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3" [routerLinkActive]="['link-active']">
-                    <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                    <a class="nav-link texto-menu-secundario text-success"  [routerLink]="['/stakeholders']">INTERVENIENTES</a>
+                <li class="nav-item" [ngClass]="setListItem(3)" [routerLinkActive]="['link-active']">
+                    <i [ngClass]="setI(3)"></i>
+                    <a class="nav-link" [ngClass]="setAnchor(3)"  [routerLink]="['/stakeholders']">INTERVENIENTES</a>
                 </li>
                 <li class="nav-item align-self-xxl-center">
                     <i class="fas fa-angle-right seta_direita"></i>
                 </li>
-                <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3" [routerLinkActive]="['link-active']">
-                    <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                    <a class="nav-link texto-menu-secundario text-success"  [routerLink]="['/store-comp']">LOJAS</a>
+                <li class="nav-item" [ngClass]="setListItem(4)" [routerLinkActive]="['link-active']">
+                    <i [ngClass]="setI(4)"></i>
+                    <a class="nav-link" [ngClass]="setAnchor(4)"  [routerLink]="['/store-comp']">LOJAS</a>
                 </li>                
                 <li class="nav-item align-self-xxl-center">
                     <i class="fas fa-angle-right seta_direita"></i>
                 </li>
-                <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3" [routerLinkActive]="['link-active']">
-                    <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                    <a class="nav-link texto-menu-secundario text-success"  [routerLink]="['/commercial-offert-list']">OFERTA COMERCIAL</a>
+                <li class="nav-item" [ngClass]="setListItem(5)" [routerLinkActive]="['link-active']">
+                    <i [ngClass]="setI(5)"></i>
+                    <a class="nav-link" [ngClass]="setAnchor(5)"  [routerLink]="['/commercial-offert-list']">OFERTA COMERCIAL</a>
                 </li>
                 <li class="nav-item align-self-xxl-center">
                     <i class="fas fa-angle-right seta_direita"></i>
                 </li>
-                <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3" [routerLinkActive]="['link-active']">
-                    <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                    <a class="nav-link texto-menu-secundario text-success"  [routerLink]="['/info-declarativa']">INFO DECLARATIVA</a>
+                <li class="nav-item" [ngClass]="setListItem(6)" [routerLinkActive]="['link-active']">
+                    <i [ngClass]="setI(6)"></i>
+                    <a class="nav-link" [ngClass]="setAnchor(6)" [routerLink]="['/info-declarativa']">INFO DECLARATIVA</a>
                 </li>
             </ul>
         </nav>

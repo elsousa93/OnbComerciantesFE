@@ -64,7 +64,7 @@
 </div>
 
 <div class="d-flex justify-content-end mt-3">
-  <button class="btn btn-primary" *ngIf="isVisible == 0">PLATAFORMA DE ASSINATURA DIGITAL</button>
+  <button class="btn btn-primary" *ngIf="isVisible == 0" (click)="soapCall()">PLATAFORMA DE ASSINATURA DIGITAL</button>
 </div>
 
 <div class="d-block" *ngIf="isVisible == 1">

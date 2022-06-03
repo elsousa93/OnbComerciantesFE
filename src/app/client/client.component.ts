@@ -4,6 +4,8 @@ import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { docType } from './docType'
+import { DataService } from '../nav-menu-interna/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-client',
@@ -32,15 +34,20 @@ export class ClientComponent implements OnInit {
   @Output() nameEmitter = new EventEmitter<string>();
   //clientID: string;
 
+  public map = new Map();
+  public currentPage: number;
+  public subscription : Subscription;
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) {
-
+    private baseUrl: string, private route: Router,
+    private data: DataService) {
+    this.ngOnInit();
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
-
+    this.updateData(true,1);
   }
 
 
@@ -122,6 +129,15 @@ getValueSearch(val: string) {
   }
 
   ngOnInit(): void {
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+  }
+
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(1, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
   }
 
   submit(form: any) {

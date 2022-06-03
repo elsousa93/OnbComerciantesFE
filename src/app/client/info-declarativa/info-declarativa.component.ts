@@ -4,6 +4,9 @@ import { Client } from '../Client.interface'
 import { FormBuilder } from '@angular/forms';
 import { codes } from './indicativo';
 import { EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService } from '../../nav-menu-interna/data.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -46,6 +49,10 @@ export class InfoDeclarativaComponent implements OnInit {
 
   @Output() nameEmitter = new EventEmitter<string>();
 
+  public map: Map<number, boolean>;
+  public currentPage: number;
+  public subscription: Subscription; 
+
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
@@ -58,10 +65,9 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
 
-  constructor(private formBuilder: FormBuilder) {
-
+  constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService) {
     this.ngOnInit();
-
+    this.updateData(true, 6);
 
 
    /** if (this.newClient.id != 0) {
@@ -78,6 +84,8 @@ export class InfoDeclarativaComponent implements OnInit {
     this.listValue = this.formBuilder.group({
       listF: ['']
     })
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
 
@@ -91,6 +99,11 @@ export class InfoDeclarativaComponent implements OnInit {
     console.log(e);
   }
 
-  
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(currentPage, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
+  }
 
 }

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { IStakeholders } from './IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { DataService } from '../nav-menu-interna/data.service';
 
 /** Listagem Intervenientes / Intervenientes
  * pag 13
@@ -36,9 +38,13 @@ export class StakeholdersComponent implements OnInit {
 
   public poppy?: any; 
 
+  public map: Map<number, boolean>;
+  public currentPage: number;
+  public subscription: Subscription; 
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) {
+    private baseUrl: string, private route: Router, private data: DataService) {
 
     this.ngOnInit();
    
@@ -46,6 +52,14 @@ export class StakeholdersComponent implements OnInit {
         console.log(result);
         this.stakes = result;
       }, error => console.error(error));
+    this.updateData(true,3);
+  }
+
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(currentPage, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
   }
  
   ngOnInit(): void {
@@ -56,7 +70,8 @@ export class StakeholdersComponent implements OnInit {
       tipoDocumento: new FormControl(''),
       stakeholderNif: new FormControl(''),
     });
-
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
   //When canceling the create new store feature the user must navigate back to store list

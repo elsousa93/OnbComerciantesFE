@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Body>
+    <CheckProcessStatusRequestResponse
+    xmlns:ns2="http://www.multicert.com/mtrust/api/soap/v2_0/MtrustProcess/xsd/Commons"
+    xmlns="http://www.multicert.com/mtrust/api/soap/v2_0/MtrustProcess/xsd/MtrustProcessService">
+      <processStatuses>
+        <ns2:guid>001001-9996-000000000471890.par</ns2:guid>
+        <ns2:processStatus>pending</ns2:processStatus>
+      </processStatuses>
+      <processStatuses>
+        <ns2:guid>001001-9996-000000000471906.par</ns2:guid>
+        <ns2:processStatus>signed</ns2:processStatus>
+      </processStatuses>
+    </CheckProcessStatusRequestResponse>
+  </soap:Body>
+</soap:Envelope>
