@@ -14,126 +14,122 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ClientByIdComponent implements OnInit {
 
   /*Variable declaration*/
-  public clientNr: number = 0;
+  public clientId: string = "0";
+  //client: Client = {} as Client;
   client: Client = {
-    "clientId": "ftgyu",
-    "fiscalId": "sd",
-    "companyName": "ds",
-    "contactName": "sd ipsum",
-    "shortName": "deserunt exercita",
+    "clientId": "",
+    "fiscalId": "",
+    "companyName": "",
+    "contactName": "",
+    "shortName": "",
     "headquartersAddress": {
-      "address": "sed al",
-      "postalCode": "ea sit est dolore",
-      "postalArea": "ex ad",
-      "country": "dolor pariatur amet labore consectetur"
+    "address": "",
+    "postalCode": "",
+    "postalArea": "",
+    "country": ""
     },
-    "merchantType": "in esse",
-    "legalNature": "officia tempor",
-    "legalNature2": "proident",
+    "merchantType": "",
+    "legalNature": "",
+    "legalNature2": "",
     "crc": {
-      "code": "est in Excepteur",
-      "validUntil": "2010-04-24"
+    "code": "",
+    "validUntil": ""
     },
     "shareCapital": {
-      "capital": -88603287.00055264,
-      "date": "1966-08-30"
+    "capital": 0,
+    "date": "1966-08-30"
     },
-    "bylaws": "aliqua fugiat adipisicing sed",
+    "bylaws": "",
     "mainEconomicActivity": {
-      "code": "nostrud laboris ex eu",
-      "branch": "ex ad"
+    "code": "",
+    "branch": ""
     },
     "otherEconomicActivities": [
-      {
-        "code": "amet id nisi aliquip",
-        "branch": "ea incididunt ex"
-      },
-      {
-        "code": "cillum",
-        "branch": "consectetur sint"
-      }
+    {
+    "code": "",
+    "branch": ""
+    },
+    {
+    "code": "",
+    "branch": ""
+    }
     ],
     "mainOfficeAddress": {
-      "address": "culpa exercitation qui",
-      "postalCode": "non consequat in nulla",
-      "postalArea": "adipisicing sit nisi est",
-      "country": "eiusmod sunt Excepteur consequat ut"
+    "address": "",
+    "postalCode": "",
+    "postalArea": "",
+    "country": ""
     },
     "establishmentDate": "2009-12-16",
     "businessGroup": {
-      "type": "amet do minim",
-      "fiscalId": "esse volup"
+    "type": "",
+    "fiscalId": ""
     },
     "sales": {
-      "estimatedAnualRevenue": 59147011.77621019,
-      "averageTransactions": -6444798.979596421,
-      "servicesOrProductsSold": [
-        "deserunt tempor Ut",
-        "dolore nisi tempor"
-      ],
-      "servicesOrProductsDestinations": [
-        "pariatur et amet dolore sed",
-        "labore aliqua irure"
-      ]
+    "estimatedAnualRevenue": 0,
+    "averageTransactions": 0,
+    "servicesOrProductsSold": [
+    "",
+    ""
+    ],
+    "servicesOrProductsDestinations": [
+    "",
+    ""
+    ]
     },
     "foreignFiscalInformation": {
-      "issuerCountry": "et non ad",
-      "issuanceIndicator": "proident consectetur non",
-      "fiscalId": "cupidatat est sit esse",
-      "issuanceReason": "nisi officia dolore"
+    "issuerCountry": "",
+    "issuanceIndicator": "",
+    "fiscalId": "",
+    "issuanceReason": ""
     },
     "bankInformation": {
-      "bank": "consequat",
-      "branch": "adipisicing amet",
-      "iban": "non sunt sint",
-      "accountOpenedAt": "2019-06-11"
+    "bank": "",
+    "branch": "",
+    "iban": "",
+    "accountOpenedAt": "2019-06-11"
     },
     "contacts": {
-      "preferredMethod": "email",
-      "preferredPeriod": {
-        "startsAt": "22:40:00.450Z",
-        "endsAt": "15:42:54.722Z"
-      },
-      "phone1": {
-        "countryCode": "\\\\\\\\\\99646",
-        "phoneNumber": "ea"
-      },
-      "phone2": {
-        "countryCode": "\\\\\\\\\\\\\\\\\\\\\\03770",
-        "phoneNumber": "incididunt elit qui"
-      },
-      "fax": {
-        "countryCode": "\\\\\\\\\\\\03581305",
-        "phoneNumber": "voluptate Excepteur sit"
-      },
-      "email": "azwub3bMd@MmQrMhlbOgZHJmPU.km"
+    "preferredMethod": "",
+    "preferredPeriod": {
+    "startsAt": "22:40:00.450Z",
+    "endsAt": "15:42:54.722Z"
     },
-    "documentationDeliveryMethod": "docuemntacaoPorCarta",
-    "billingEmail": "27omQ82nb@RIqJdzMzddCi.wwoo"
-  };
-  
+    "phone1": {
+    "countryCode": "",
+    "phoneNumber": ""
+    },
+    "phone2": {
+    "countryCode": "",
+    "phoneNumber": ""
+    },
+    "fax": {
+    "countryCode": "",
+    "phoneNumber": ""
+    },
+    "email": ""
+    },
+    "documentationDeliveryMethod": "",
+    "billingEmail": ""
+    };
+
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
     this.ngOnInit();
-    if (this.clientNr != -1) {
-      http.get<Client>(baseUrl + 'BEClients/GetClientNr/' + this.clientNr).subscribe(result => {
+    if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
+      http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
         this.client = result;
-        console.log( this.client);
-
+        console.log(this.client)
       }, error => console.error(error));
     }
   }
   
   ngOnInit(): void {
-    this.clientNr = Number(this.router.snapshot.params['id']);
-    console.log(this.client);
+    this.clientId = String(this.router.snapshot.params['id']);
+    
   }
 
   obterComprovativos(){
-    this.route.navigate(['/nav-interna/', "COMPROVATIVOS" ]);
-    this.route.navigate(['/comprovativos/', this.clientNr ]);
-  }
-  umdois(){
-   
-  }
-  
+    //this.route.navigate(['/nav-interna/', "COMPROVATIVOS" ]);
+    this.route.navigate(['/comprovativos/', this.clientId ]);
+  }  
 }

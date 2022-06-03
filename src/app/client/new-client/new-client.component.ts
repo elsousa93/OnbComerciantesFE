@@ -1,8 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
+import { Input } from '@angular/core';
 import { Inject } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Client } from '../Client.interface';
 
 @Component({
@@ -11,7 +13,6 @@ import { Client } from '../Client.interface';
 })
 export class NewClientComponent implements OnInit {
 
-  //addNewClient: Client = {} as Client
   addNewClient: Client = {
     "clientId": "",
     "fiscalId": "",
@@ -33,7 +34,7 @@ export class NewClientComponent implements OnInit {
     },
     "shareCapital": {
       "capital": 0,
-      "date": ""
+      "date": "1966-08-30"
     },
     "bylaws": "",
     "mainEconomicActivity": {
@@ -60,18 +61,20 @@ export class NewClientComponent implements OnInit {
       "postalArea": "",
       "country": ""
     },
-    "establishmentDate": "",
+    "establishmentDate": "2009-12-16",
     "businessGroup": {
       "type": "",
       "fiscalId": ""
     },
     "sales": {
-      "estimatedAnualRevenue": 0.0,
-      "averageTransactions": 0.0,
+      "estimatedAnualRevenue": 0,
+      "averageTransactions": 0,
       "servicesOrProductsSold": [
+        "",
         ""
       ],
       "servicesOrProductsDestinations": [
+        "",
         ""
       ]
     },
@@ -85,13 +88,13 @@ export class NewClientComponent implements OnInit {
       "bank": "",
       "branch": "",
       "iban": "",
-      "accountOpenedAt": ""
+      "accountOpenedAt": "2019-06-11"
     },
     "contacts": {
       "preferredMethod": "",
       "preferredPeriod": {
-        "startsAt": "",
-        "endsAt": ""
+        "startsAt": "22:40:00.450Z",
+        "endsAt": "15:42:54.722Z"
       },
       "phone1": {
         "countryCode": "",
@@ -110,20 +113,18 @@ export class NewClientComponent implements OnInit {
     "documentationDeliveryMethod": "",
     "billingEmail": ""
   };
-
+  lastIdClient: any;
   stringJson: any;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  //Comerciante cadastrado com sucesso!!
+  constructor(public bsModalRef: BsModalRef, private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
     console.log(this.addNewClient.clientId);
   }
 
   ngOnInit(): void {
-
-  }
-
-  obterComprovativos() {
-    //this.route.navigate(['/nav-interna/', "COMPROVATIVOS"]);
-    //this.route.navigate(['/comprovativos/', this.clientNr]);
+    this.lastIdClient = Number(this.router.snapshot.params['id']);
+    this.addNewClient.clientId = this.lastIdClient;
+    console.log(this.lastIdClient);
   }
 
   submit(form: any) {
@@ -175,10 +176,10 @@ export class NewClientComponent implements OnInit {
     this.stringJson = JSON.stringify(this.addNewClient);
     console.log("String json object :", this.stringJson);
 
-    this.http.post<Client>(this.baseUrl + 'BEClients/',this.addNewClient).subscribe(result => {
+    this.http.post<Client>(this.baseUrl + 'BEClients/', this.addNewClient).subscribe(result => {
       console.log(result);
+      alert("Comerciante cadastrado com sucesso!!!");
+      this.route.navigate(['/comprovativos/', this.addNewClient.clientId ]);
     }, error => console.error(error));
-
-
   }
 }
