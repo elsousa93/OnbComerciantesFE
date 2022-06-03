@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Submission } from './submission.interface';
 import { FormGroup, FormControl, NgForm } from '@angular/forms';
 import { ProcessService } from './process.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({

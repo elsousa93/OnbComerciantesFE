@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Submission } from '../submission.interface';
 import { ProcessService } from '../process.service';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-acceptance',

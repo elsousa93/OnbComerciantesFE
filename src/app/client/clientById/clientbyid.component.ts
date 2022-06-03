@@ -16,10 +16,10 @@ export class ClientByIdComponent implements OnInit {
   /*Variable declaration*/
   public clientNr: number = 0;
   client: Client = {
-    "clientId": "Bananas",
-    "fiscalId": "Bananas",
-    "companyName": "Bananas",
-    "contactName": "Bananas ipsum",
+    "clientId": "ftgyu",
+    "fiscalId": "sd",
+    "companyName": "ds",
+    "contactName": "sd ipsum",
     "shortName": "deserunt exercita",
     "headquartersAddress": {
       "address": "sed al",
