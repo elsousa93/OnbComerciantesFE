@@ -16,12 +16,16 @@ export class LoginComponent implements OnInit {
   clientId: number = 12345;
 
   model: ILogin = { userid: "admin", password: "admin@123" }
-  public loginForm!: FormGroup;
+ 
   public message: string = ""; 
   public returnUrl: string = "";
   public isLoggedIn: boolean = true;
   public myDate = new Date();
 
+  loginForm = this.formBuilder.group({
+    userid: ['', Validators.required],
+    password: ['', Validators.required]
+  })
   constructor(
     private formBuilder: FormBuilder,
     private route: Router,

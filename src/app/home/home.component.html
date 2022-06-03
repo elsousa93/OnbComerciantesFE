@@ -1,66 +1,48 @@
-<div class="container">
-  <div class="row mt-4">
-      <div class="col mt-5">
-          <a><img src="assets/images/banner_home.jpg" class="img-fluid">
-          </a>
-      </div>
-  </div>
-</div>
-<div class="container">
-  <circular-progress [percentage]=100></circular-progress>
-  <div class="row">
-      <div class="col">
-          <nav class="navbar navbar-expand-lg navbar-light">
-              <div class="container bg-primary ms-0 me-0 ps-0 pe-0 text-end">
-                  <img src="assets/images/monograma_unicre.SVG" height="40" class="ms-0"><span class="navbar-text text-light ms-auto">
-                      <img src="assets/images/pipe.JPG" width="1" height="40">
-                  </span>
-                  <span class="navbar-text text-light">
-                      <button id="btn4" class="btn text-light mt-1 pt-1"><a href="#"></a><i class="fas fa-question botoes_icones_main"></i>
-                      </button>
-
-                  </span><span class="navbar-text text-light">
-                      <img src="assets/images/pipe.JPG" width="1" height="40">
-                  </span>
-                  <span class="navbar-text text-light">
-                      <button id="btn2" class="btn text-light mt-1 pt-1"><i class="fas fa-search botoes_icones_main"></i></button>
-                  </span>
-                  <span class="navbar-text text-light">
-                      <img src="assets/images/pipe.JPG" width="1" height="40">
-                  </span>
-                  <span class="navbar-text text-light">
-
-                      <button id="btn3" class="btn text-light mt-1 pt-1"><i class="fas fa-user botoes_icones_main"></i></button>
-                  </span>
-                  <span class="navbar-text text-light">
-                      <img src="assets/images/pipe.JPG" width="1" height="40">
-                  </span><span class="navbar-text text-light ms-0 me-0">
-                      <button id="btn1" class="btn text-light mt-1 pt-1"><i class="fas fa-times botoes_icones_main"></i></button>
-                  </span>
-              </div>
-          </nav>
-      </div>
-  </div>
-</div>
+<!--Banner da index-->
+<app-banner-home></app-banner-home>
+<!--Barra azul da index-->
+<app-barrazul-home></app-barrazul-home>
+<!--Conteúdo da index-->
 <div class="container">
     <div class="row">
         <div class="col-10 offset-1">
             <h1 class="mt-4 text-primary">LOREN IPSUM</h1>
 
-            <p>Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.|</p>
+            <p>Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                anim
+                id est laborum sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi
+                ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa
+                qui officia deserunt mollit anim id est laborum.|</p>
 
 
             <div class="row destaques banner_alertas shadow mb-xxl-5 mb-5 pt-3 pb-3 ps-3 pe-3">
                 <div class="col">
                     <h3 class="text-primary mt-0"><i class="far fa-check-square"></i>&nbsp;CHECKLIST</h3>
                     <p class="style5 mb-4 text-primary">
-                        Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&nbsp;</p>
+                        Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                        aliquip
+                        ex ea commodo consequat.&nbsp;</p>
                     <div class="row">
                         <div class="col-12 text-primary bg-transparent">
 
-                            <p  [routerLinkActive]="['link-active']">
-                                <a class="btn btn-primary pt-2 pb-1 btn-lg" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">CHECKLIST&nbsp;&nbsp;<i class="fas fa-tasks fa-lg"></i></a>
-                                <a  [routerLink]="['/client']" class="btn btn-primary pt-2 pb-1 btn-lg ms-xxl-4" id="anchor">COMEÇAR O REGISTO&nbsp;&nbsp;
+                            <p [routerLinkActive]="['link-active']">
+                                <a class="btn btn-primary pt-2 pb-2 btn-lg" data-bs-toggle="collapse"
+                                    href="#collapseExample" role="button" aria-expanded="false"
+                                    aria-controls="collapseExample">CHECKLIST&nbsp;&nbsp;<i
+                                        class="fas fa-tasks fa-lg"></i></a>
+
+                                <a [routerLink]="['/client']" class="btn btn-primary pt-2 pb-2 btn-lg ms-xxl-4"
+                                    id="anchor">COMEÇAR O REGISTO&nbsp;&nbsp;
                                     <i class="far fa-arrow-alt-circle-right fa-lg"></i></a>
                             </p>
                             <div class="collapse" id="collapseExample">
@@ -70,69 +52,88 @@
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input1" name="input1">
-                                                        <label class="form-check-label checklist-texto" for="input1">Consectetur adipiscing</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input1" name="input1">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input1">Consectetur adipiscing</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input2" name="input2">
-                                                        <label class="form-check-label checklist-texto" for="input2">Duis aute irure</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input2" name="input2">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input2">Duis aute irure</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input3" name="input3">
-                                                        <label class="form-check-label checklist-texto" for="input3">Commodo consequat</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input3" name="input3">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input3">Commodo consequat</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input4" name="input4">
-                                                        <label class="form-check-label checklist-texto" for="input4">Officia deserunt</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input4" name="input4">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input4">Officia deserunt</label>
                                                     </div>
                                                 </div>
-
-
-
                                             </div>
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input7" name="input7">
-                                                        <label class="form-check-label checklist-texto" for="input7">Cexercitation ullamco</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input7" name="input7">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input7">Cexercitation ullamco</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input7c" name="input7">
-                                                        <label class="form-check-label checklist-texto" for="input7">Excepteur sint occaecat</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input7c" name="input7">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input7">Excepteur sint occaecat</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input7s" name="input7">
-                                                        <label class="form-check-label checklist-texto" for="input7">Deserunt mollit</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input7s" name="input7">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input7">Deserunt mollit</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input7v" name="input7">
-                                                        <label class="form-check-label checklist-texto" for="input7">Reprehenderit in voluptate</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input7v" name="input7">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input7">Reprehenderit in voluptate</label>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input5" name="input5">
-                                                        <label class="form-check-label checklist-texto" for="input5">Cillum dolore</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input5" name="input5">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input5">Cillum dolore</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input5r" name="input5">
-                                                        <label class="form-check-label checklist-texto" for="input5">Ullamco laboris</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input5r" name="input5">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input5">Ullamco laboris</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input5l" name="input5">
-                                                        <label class="form-check-label checklist-texto" for="input5">Nostrud exercitation</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input5l" name="input5">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input5">Nostrud exercitation</label>
                                                     </div>
                                                     <div class="form-check caixa_checklist">
-                                                        <input class="form-check-input checklist-checkbox" type="checkbox" value="" id="input5h" name="input5">
-                                                        <label class="form-check-label checklist-texto" for="input5">Tempor sint occaecat&nbsp;</label>
+                                                        <input class="form-check-input checklist-checkbox"
+                                                            type="checkbox" value="" id="input5h" name="input5">
+                                                        <label class="form-check-label checklist-texto"
+                                                            for="input5">Tempor sint occaecat&nbsp;</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -142,5 +143,4 @@
             </div>
         </div>
     </div>
-
 </div>

@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { HostListener } from '@angular/core';
-import { ElementRef, Renderer2 } from '@angular/core';
+import { Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { numbers } from '@material/checkbox';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
@@ -21,17 +19,28 @@ export class ComprovativosComponent implements OnInit {
   public comprovativos: IComprovativos[] = [];
   public result: any;
   public id: number = 0;
+  public clientNr: number = 0;
 
   public subscription: Subscription;
   public currentPage: number;
   public map: Map<number, boolean>;
 
+  pageName = "";
   file?: File;
   localUrl: any;
   fileName: any;
   urlImage: string | any;
   mostrar: boolean = false;
   deleteModalRef: BsModalRef | undefined;
+
+  comerciante: string;
+  comprovantes: string;
+  intervenientes: string;
+  lojas: string;
+  oferta: string;
+  info: string;
+
+
 
   @ViewChild('deleteModal') deleteModal;
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
@@ -45,6 +54,9 @@ export class ComprovativosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.clientNr = Number(this.router.snapshot.params['id']);
+    console.log(String(this.router.snapshot.params['pagename']));
+    this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
@@ -72,7 +84,7 @@ export class ComprovativosComponent implements OnInit {
       }
     } else {
       alert("Verifique o tipo / tamanho do ficheiro");
-    }   
+    }
   }
 
   uploadFile(id: any) {
@@ -83,13 +95,13 @@ export class ComprovativosComponent implements OnInit {
           var elemento = document.getElementById(id);
           this.load();
         }
-     
+
       },
         err => {
           console.error(err);
         }
       )
-    }else {
+    } else {
       alert("Selecione um arquivo!")
     }
   }
@@ -97,20 +109,20 @@ export class ComprovativosComponent implements OnInit {
   load() {
     location.reload()
   }
-  
-  search(url: any, imgName: any){
-    window.open(url+imgName, '_blank' , 
+
+  search(url: any, imgName: any) {
+    window.open(url + imgName, '_blank',
       `margin: auto;
       width: 50%;
       padding: 10px;
       text-align: center;
       border: 3px solid green;
       `);
-    
+
   }
 
-  download(url: any, imgName: any){
-    const fileName = new Blob([imgName], { type: 'application/pdf;base64'});
+  download(url: any, imgName: any) {
+    const fileName = new Blob([imgName], { type: 'application/pdf;base64' });
     const blob = window.URL.createObjectURL(fileName);
     const link = document.createElement('a');
     link.href = blob;
@@ -118,23 +130,94 @@ export class ComprovativosComponent implements OnInit {
     link.click();
   }
 
-  onDelete(id: any){
-    this.deleteModalRef =this.modalService.show(this.deleteModal, {class: 'modal-sm'});
+  onDelete(id: any) {
+    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
   }
-  
+
   confirmDelete(id: any) {
     this.compService.delFile(id)
     //this.compService.deleteFile(id);
     this.deleteModalRef?.hide();
   }
- 
-  declineDelete(){
+
+  declineDelete() {
     this.deleteModalRef?.hide();
   }
-  
+
   openModalWithComponent(ident: any) {
     this.modalService.show(CheckDocumentsComponent);
   }
+
+  onClick(e) {
+    console.log(e);
+    switch (e) {
+      case null:
+        this.comerciante = 'fas fa-circle icone-menu-secundario';
+        this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
+        this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
+        this.info = 'far fa-circle icone-menu-secundario-inactivo';
+        break;
+
+      case "COMERCIANTE":
+        this.comerciante = 'fas fa-circle icone-menu-secundario';
+        this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
+        this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
+        this.info = 'far fa-circle icone-menu-secundario-inactivo';
+        break;
+
+      case "COMPROVATIVOS":
+        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.comprovantes = 'fas fa-circle icone-menu-secundario';
+        this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
+        this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
+        this.info = 'far fa-circle icone-menu-secundario-inactivo';
+        break;
+
+      case "INTERVENIENTES":
+        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.intervenientes = 'fas fa-circle icone-menu-secundario';
+        this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
+        this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
+        this.info = 'far fa-circle icone-menu-secundario-inactivo';
+        break;
+
+      case "LOJAS":
+        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.lojas = 'fas fa-circle icone-menu-secundario';
+        this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
+        this.info = 'far fa-circle icone-menu-secundario-inactivo';
+        break;
+
+      case "OFERTA COMERCIAL":
+        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
+        this.oferta = 'fas fa-circle icone-menu-secundario';
+        this.info = 'far fa-circle icone-menu-secundario-inactivo';
+        break;
+
+      case "INFO DECLARATIVA":
+        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
+        this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
+        this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
+        this.info = 'fas fa-circle icone-menu-secundario';
+        break;
+
+    }
+
+  }
+
 }
 
 

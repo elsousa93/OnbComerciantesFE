@@ -16,6 +16,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ComprovativosComponent } from './comprovativos/comprovativos.component';
 import { ClientComponent } from './client/client.component';
+import { ClientExtendedComponent } from './client/client-extended/client-extended.component';
 import { StakeholdersComponent } from './stakeholders/stakeholders.component';
 import { NewStakeholderComponent } from './stakeholders/new-stakeholder/new-stakeholder.component';
 import { CheckDocumentsComponent } from './comprovativos/check-documents/check-documents.component';
@@ -39,9 +40,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { PepComponent } from './pep/pep.component';
 import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
 import { FooterComponent } from './footer/footer.component';
+import { NewClientComponent } from './client/new-client/new-client.component';
 import { CircularProgressComponent } from './circular-progress/circular-progress.component';
 import { ProcessComponent } from './process/process.component';
-import { AcceptanceComponent } from './process/acceptance/acceptance.component';
+import { BannerHomeComponent } from './banner-home/banner-home.component';
+import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
+import { SubmissionComponent } from './submission/submission.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -70,14 +74,18 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PepComponent,
     CommercialOfferTariffComponent,
     ClientByIdComponent,
+    ClientExtendedComponent,
+    ReadcardComponent,
+   
     ReadcardComponent,
     NavMenuInternaComponent,
-    LoginComponent,
-    DashboardComponent,
     FooterComponent,
     CircularProgressComponent,
     ProcessComponent,
-    AcceptanceComponent
+    NewClientComponent,
+    BannerHomeComponent,
+    LoginComponent,
+    BarrazulHomeComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -92,6 +100,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'client', component: ClientComponent },
       { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'client/:id', component: ClientComponent },
+      { path: 'client-extended', component: ClientExtendedComponent },
+      { path: 'client-extended/:id', component: ClientExtendedComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
       { path: 'stakeholders/:nif', component: StakeholdersComponent },
       { path: 'add-stakeholder', component: NewStakeholderComponent },
@@ -101,6 +111,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
+      { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
       { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
       { path: 'add-store/:stroreid', component: AddStoreComponent },
@@ -113,13 +124,19 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      { path: 'login', component: LoginComponent},
+      { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
+      
+      { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
+      { path: 'app-new-client/:id', component: NewClientComponent },
+      { path: 'app-client-extended', component: ClientExtendedComponent },
+
       { path: 'readcardcc', component: ReadcardComponent },
-      { path: 'process', component: ProcessComponent },
-      { path: 'acceptance', component: AcceptanceComponent }
+      { path: 'submission/:id/merchant', component: SubmissionComponent },
+      { path: 'submission', component: SubmissionComponent }
+      
     ]),
     TranslateModule.forRoot({
       loader: {
