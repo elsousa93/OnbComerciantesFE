@@ -66,7 +66,7 @@ export class ClientComponent implements OnInit {
   }, error => console.error(error));
   console.log(this.newClient);
 
-  if (this.newClient.newClientNr == 0) {
+    if (true) {
     //There is no client - Show the warning and erase the 
     this.toggleShowWarning(true);
     this.showWarningT =true;
