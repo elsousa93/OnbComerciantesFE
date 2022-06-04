@@ -3,6 +3,9 @@ import { Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Subscription, take } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { DataService } from '../nav-menu-interna/data.service';
 import { CheckDocumentsComponent } from './check-documents/check-documents.component';
 import { IComprovativos } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
@@ -17,6 +20,10 @@ export class ComprovativosComponent implements OnInit {
   public result: any;
   public id: number = 0;
   public clientNr: number = 0;
+
+  public subscription: Subscription;
+  public currentPage: number;
+  public map: Map<number, boolean>;
 
   pageName = "";
   file?: File;
@@ -37,16 +44,28 @@ export class ComprovativosComponent implements OnInit {
 
   @ViewChild('deleteModal') deleteModal;
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
-    private modalService: BsModalService) {
+    private modalService: BsModalService, private data: DataService) {
+
+    this.ngOnInit();
     http.get<IComprovativos[]>(baseUrl + `BEComprovativos/`).subscribe(result => {
       this.comprovativos = result;
     }, error => console.error(error));
+    this.updateData(true, 2);
   }
 
   ngOnInit(): void {
     this.clientNr = Number(this.router.snapshot.params['id']);
     console.log(String(this.router.snapshot.params['pagename']));
     this.pageName = String(this.router.snapshot.params['pageName']);
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+  }
+
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(currentPage, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
   }
 
   selectFile(event: any, comp: any) {

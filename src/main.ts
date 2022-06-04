@@ -9,8 +9,14 @@ export function getBaseUrl() {
   return baseUrl;
 }
 
+export function getPostmanUrl() {
+  var postmanUrl = 'https://7929bf0d-1abd-4943-878b-1859269bc442.mock.pstmn.io/';
+  return postmanUrl;
+}
+
 const providers = [
-  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
+  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
+  { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] }
 ];
 
 if (environment.production) {

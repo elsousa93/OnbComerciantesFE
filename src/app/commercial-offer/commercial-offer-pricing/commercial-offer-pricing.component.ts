@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { DataService } from '../../nav-menu-interna/data.service';
 import { IPricing } from '../IPricing.interface';
 
 @Component({
@@ -14,8 +16,13 @@ export class CommercialOfferPricingComponent implements OnInit {
   prices: IPricing[] = [];
   public clientID: number = 12345678;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  public map = new Map();
+  public currentPage: number;
+  public subscription: Subscription;
+
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private data: DataService) {
     /*Get pricing information*/
+    this.ngOnInit();
     http.get<IPricing[]>(baseUrl + 'becommercialoffer/GetPricing/' + this.clientID).subscribe(result => {
       this.prices = result;
       console.log(this.prices)
@@ -24,6 +31,15 @@ export class CommercialOfferPricingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+  }
+
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(currentPage, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
   }
 
   /*Edit pricing button*/
@@ -36,11 +52,11 @@ export class CommercialOfferPricingComponent implements OnInit {
 
   /*Controls the continue button*/
   onCickContinue() {
-    
+    this.updateData(true, 5);
     /*Submit Pricing*/
     this.http.post<number>(this.baseUrl + 'becommercialoffer/PostPricing/' + this.clientID, this.prices).subscribe(result => {
       console.log(result);
-      this.route.navigate(['info-declarativa']);
+      this.route.navigate(['info-declarativa'], { state: { isFinished: true } });
     }, error => console.error(error));
   }
 

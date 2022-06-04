@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+xmlns:mtr="http://www.multicert.com/mtrust/api/soap/v2_0/MtrustProcess/xsd/MtrustProcessService"
+xmlns:com="http://www.multicert.com/mtrust/api/soap/v2_0/MtrustProcess/xsd/Commons"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Header/>
+  <soap:Body>
+    <mtr:NewProcessRequestV3>
+      <mtr:issuerCompanyId>000000000</mtr:issuerCompanyId>
+      <mtr:processType>NO_PROOF</mtr:processType>
+      <mtr:username>demo</mtr:username>
+      <mtr:processDescription>SoapUI test signature</mtr:processDescription>
+      <mtr:modelAlias>1</mtr:modelAlias>
+      <!--Optional:-->
+      <mtr:externalId>SoapUI_externalID</mtr:externalId>
+      <!--1 or more repetitions:-->
+      <mtr:receivers>
+        <com:idType>CC</com:idType>
+        <com:countryIdDoc>PRT</com:countryIdDoc>
+        <com:idNumber>123456</com:idNumber>
+        <!--<com:clientCompanyNipc>505767457</com:clientCompanyNipc>-->
+        <com:name>receiver name</com:name>
+        <com:email>receiver@multicer.pt</com:email>
+        <!--Optional:-->
+        <com:countryCode>PRT</com:countryCode>
+        <!--Optional:-->
+        <com:mobilePhone>910000000</com:mobilePhone>
+        <!--Optional:-->
+        <com:notificationMethod>EMAIL</com:notificationMethod>
+      </mtr:receivers>
+      <!--1 or more repetitions:-->
+      <!--<mtr:clientCompanies>
+<com:companyNipc>505767457</com:companyNipc>
+<com:companyName>Multicert</com:companyName>
+</mtr:clientCompanies>-->
+      <!--1 or more repetitions:-->
+      <mtr:documents>
+        <com:externalDocumentId>SOAPUI_EXT_DOC_ID_CONTRACT</com:externalDocumentId>
+        <com:docContent>
+          <xop:Include href="cid:mtrust_example_token.pdf"
+          xmlns:xop="http://www.w3.org/2004/08/xop/include"/>
+        </com:docContent>
+        <com:name>Example_Document.pdf</com:name>
+        <com:description>Example Document</com:description>
+        <!--1 or more repetitions:-->
+        <com:receivers>
+          <com:idType>CC</com:idType>
+          <com:countryIdDoc>PRT</com:countryIdDoc>
+          <com:idNumber>123456</com:idNumber>
+          <!--Zero or more repetitions:-->
+          <com:acceptanceTerm>
+            <!--1 or more repetitions:-->
+            <com:termToDisplay>
+              <com:text>Term text</com:text>
+              <com:language>en</com:language>
+            </com:termToDisplay>
+            <com:confirmationRequired>true</com:confirmationRequired>
+            <com:termExternalId>External Id</com:termExternalId>
+          </com:acceptanceTerm>
+          <com:signatureStructure xsi:type="com:smsSignatureStructure">
+            <com:visibleSignature>true</com:visibleSignature>
+            <com:position>
+              <com:x>50</com:x>
+              <com:y>50</com:y>
+              <com:width>200</com:width>
+              <com:height>200</com:height>
+              <com:page>1</com:page>
+            </com:position>
+          </com:signatureStructure>
+        </com:receivers>
+      </mtr:documents>
+      </mtr:NewProcessRequestV3>
+    </soap:Body>
+</soap:Envelope>

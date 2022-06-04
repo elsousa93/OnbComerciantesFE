@@ -1,0 +1,7 @@
+{
+  "/mtrust/*": {
+    "target": "https://www.mtrust.pt",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

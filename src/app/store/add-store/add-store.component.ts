@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Istore } from '../IStore.interface';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-add-store',
@@ -24,7 +25,43 @@ export class AddStoreComponent implements OnInit {
   public zonasTuristicas: string[] = ["Não", "Sim"];
   defaultZonaTuristica: number = 0;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  /*CHANGE - Get via service from the clients  - Address*/
+  public commCountry: string = "England";
+  public auxCountry: string = "";
+
+  public commPostal: string = "1245-123";
+  public auxPostal: string = "";
+
+  public commAddress: string = "Rua da Cidade";
+  public auxAddress: string = "";
+
+  public commIP: string = "123498";
+  public auxIP: string = "";
+
+  public commLocal: string = "Brejos de Azeitão";
+  public auxLocal: string = "";
+
+  /*CHANGE - Get via service from the clients  - Contacts*/
+  public commEmail: string = "asdfg@gmail.com";
+  public auxEmail: string = "";
+
+  public commInd: string = "+351";
+  public auxInd: string = "";
+
+  public commCellNumber: string = "914737727"
+  public auxCellNumber: string = "";
+
+  /*Is it supposed to relicate the Commercial offert from another store?*/
+  selectionsAddReplicate = ['Não', 'Sim'];
+  selectionsContactReplicate = ['Não', 'Sim'];
+
+  selectedAddOption = 'Não';
+  selectedContactOption = 'Não';
+  
+  public idisabledAdd: boolean = false;
+  public idisabledContact: boolean = false;
+
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, public appComp: AppComponent) {
 
     this.ngOnInit();
 
@@ -46,6 +83,8 @@ export class AddStoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("Entrei On init")
+    this.appComp.updateNavBar("Adicionar Loja")
     //Get Id from the store
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
   }
@@ -73,6 +112,74 @@ export class AddStoreComponent implements OnInit {
     } else {
       this.store.turisticZone = false;
       console.log("Não");
+    }
+  }
+
+  /*Controles the radio button changes*/
+  radioAddChangehandler(event: any) {
+    this.selectedAddOption = event.target.value;
+    if (this.selectedAddOption == "Sim") {
+      /*Update Country according to the default from Client*/
+      this.auxCountry = this.store.country;
+      this.store.country = this.commCountry;
+      /*Update Postal Code according to the default from Client*/
+      this.auxPostal = this.store.postalCode;
+      this.store.postalCode = this.commPostal;
+      /*Update Address according to the default from Client*/
+      this.auxAddress = this.store.address;
+      this.store.address = this.commAddress;
+      /*Update IP according to the default from Client*/
+      this.auxIP = this.store.fixedIP;
+      this.store.fixedIP = this.commIP;
+      /*Update Locale according to the default from Client*/
+      this.auxLocal = this.store.postalLocality;
+      this.store.postalLocality = this.commLocal;
+
+      /*Disable the fields from the address*/
+      this.idisabledAdd = true;
+    } else {
+      /*Update Country according to the previous value selected*/
+      this.store.country = this.auxCountry;
+      /*Update Postal Code according to the previous value selected*/
+      this.store.postalCode = this.auxPostal;
+      /*Update Addresss according to the previous value selected*/
+      this.store.address = this.auxAddress;
+      /*Update IP according to the previous value selected*/
+      this.store.fixedIP = this.auxIP;
+      /*Update Locale according to the previous value selected*/
+      this.store.postalLocality = this.auxLocal;
+
+      /*Enable the fields from the address*/
+      this.idisabledAdd = false;
+    }
+
+  }
+
+  radioContactChangehandler(event: any) {
+    this.selectedContactOption = event.target.value;
+    if (this.selectedContactOption == "Sim") {
+      /*Update Email according to the default from Client*/
+      this.auxEmail = this.store.emailContact;
+      this.store.emailContact = this.commEmail;
+      /*Update Indicative according to the default from Client*/
+      this.auxInd = this.store.cellphoneIndic;
+      this.store.cellphoneIndic = this.commInd;
+      /*Update Cellphone number according to the default from Client*/
+      this.auxCellNumber = this.store.cellphoneNumber;
+      this.store.cellphoneNumber = this.commCellNumber;
+
+      /*Disable the fields from the address*/
+      this.idisabledContact = true;
+    } else {
+      /*Update Email according to the previous value selected*/
+      this.store.emailContact = this.auxEmail;
+      /*Update Indicative according to the previous value selected*/
+      this.store.cellphoneIndic = this.auxInd;
+      /*Update Indicative according to the previous value selected*/
+      this.store.cellphoneNumber = this.auxCellNumber;
+
+      /*Enable the fields from the address*/
+      this.idisabledContact = false;
     }
   }
 
