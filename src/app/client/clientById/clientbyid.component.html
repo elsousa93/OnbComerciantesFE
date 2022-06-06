@@ -1,4 +1,4 @@
-<app-nav-menu-interna></app-nav-menu-interna>
+<!--<app-nav-menu-interna></app-nav-menu-interna>
 <div class="container">
   <div class="row">
     <div class="row bg-white">
@@ -17,10 +17,9 @@
             <input required minlength="2" maxlength="100" ngModel #newClientNr="ngModel" name="newClientNr" type="text"
               id="newClientNr" class="form-control campo_form" [(ngModel)]="client.clientId" readonly>
 
-            <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
+            <p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
             <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
               id="docType" class="form-control campo_form" [(ngModel)]="client.docType" readonly>-->
-          </div>
           <div class="col-xxl col-7">
             <p class="titulo-form-simples">Nome Cliente: </p>
             <input required minlength="2" maxlength="100" ngModel #nameClient="ngModel" name="nameClient" type="text"
@@ -31,8 +30,6 @@
               class="form-control campo_form" [(ngModel)]="client.docNr" readonly>-->
           </div>
           <hr>
-        </div>
-      </div>
 
       <div class="offset-1 bg-white col-7 col-xxl-10">
         <div class="row">
@@ -61,8 +58,8 @@
         <div class="row">
           <div class="col-xxl col-6">
             <p class="titulo-form-simples" for="crcCode">Código de Certidão do Registo Comercial: </p>
-            <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
-              id="crcCode" class="form-control campo_form" [(ngModel)]="client.crc.code" readonly>
+            <!--input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
+                id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crc.code" readonly-->
           </div>
           <div class="col-xxl col-7">
             <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
@@ -84,8 +81,8 @@
           <div class="row">
             <div class="col-xxl col-6 col-xxl-6">
               <p class="titulo-form-simples">Código de Certidão do Registo Comercial:</p>
-              <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
-                id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crc.code" readonly>
+              <!--input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
+                id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crc.code" readonly-->
               <p class="texto-coment mt-2 mb-4">(Aplicável apenas quando a Natureza Jurídica for Sociedade Comercial)
               </p>
             </div>
@@ -274,7 +271,6 @@
           </div>
         </div>
       </div>
-    </div>
     <div class="container">
       <div class="row mb-xxl-5">
         <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5"><button id="btn4a"
@@ -290,4 +286,3 @@
 
       </div>
     </div>
-  </div>

@@ -44,6 +44,8 @@ import { CircularProgressComponent } from './circular-progress/circular-progress
 import { ProcessComponent } from './process/process.component';
 import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
+import { SubmissionComponent } from './submission/submission.component';
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -117,14 +119,25 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      { path: 'login', component: LoginComponent},
+      { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
+<<<<<<< HEAD
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
       { path: 'app-new-client', component: NewClientComponent }
       
+=======
+      
+      { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
+      { path: 'app-new-client/:id', component: NewClientComponent },
+      { path: 'app-client-extended', component: ClientExtendedComponent },
+
+      { path: 'readcardcc', component: ReadcardComponent },
+      { path: 'submission/:id/merchant', component: SubmissionComponent },
+      { path: 'submission', component: SubmissionComponent }
+>>>>>>> 140551678b0fc26768f8f512163ac34b9d387f92
       
     ]),
     TranslateModule.forRoot({

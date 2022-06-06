@@ -129,7 +129,7 @@ export class ClientExtendedComponent implements OnInit {
   //  this.http.post(baseUrl + 'BEClients/PostClientTest/', this.postData).toPromise().then(data => {
   //    console.log(data);});
 
-
+  
     http.post(baseUrl + 'BEClients/', this.newClient)
       .toPromise().then((data: any) => {
         console.log("construtor, a ser enviado pelo BECLients " ,data);

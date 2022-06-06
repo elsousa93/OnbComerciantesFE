@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Output, EventEmitter  } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StakeholdersComponent } from '../stakeholders.component';
 import { IStakeholders } from '../IStakeholders.interface';
@@ -25,20 +25,40 @@ export class NewStakeholderComponent implements OnInit {
   showNoCC: boolean = true;
   showYesCC: boolean = false;
 
+  // Variables that are not on YAML
+  flagAssociado: boolean = true;
+  flagProcurador: boolean = true;
+  flagRecolhaEletronica: boolean = true;
+
+  formNewStakeholder!: FormGroup;
+
+
   newStake: IStakeholders = {
-    stakeholderNif: 0
+    fiscalId: 0,
+    fullName: '',
+    identificationDocument: {
+      identificationDocumentType: "",
+      identificationDocumentId: "",
+      identificationDocumentCountry: "nisi mollit",
+    },
+     fiscalAddress: {
+      address: "ullamco minim fugiat veniam",
+      postalCode: "sed nulla consequat et",
+      postalArea: "commodo",
+      country: "ex dolor "
+    },
   } as IStakeholders
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) {
+    private baseUrl: string, private route: Router, private fb: FormBuilder ) {
 
     this.ngOnInit();
  
-    console.log(this.newStake.stakeholderNif);
+    console.log(this.newStake.fiscalId);
 
-    if (this.newStake.stakeholderNif != 0) {
-      http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.stakeholderNif ).subscribe(result => {
+    if (this.newStake.fiscalId != 0) {
+      http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.fiscalId ).subscribe(result => {
         console.log(result);
         this.newStake = result;
       }, error => console.error(error));
@@ -46,35 +66,36 @@ export class NewStakeholderComponent implements OnInit {
   }
 
    ngOnInit(): void {
-     //Get Id from the store
-     this.newStake.stakeholderNif = Number(this.router.snapshot.params['nif']);
-     console.log(this.newStake.stakeholderNif);
+     this.createForm();
   }
 
   //@Output()  newStakeholderAdded = new EventEmitter<any>();
     stringJson: any;
 
+  createForm() {
+    this.formNewStakeholder = this.fb.group({
+      flagAssociado: [''],
+      flagProcurador: [''],
+      flagRecolhaEletronica: [''],
+      fullName: [''],
+      documentType: [''],
+      identificationDocumentCountry: [''],
+      identificationDocumentValidUntil: [''],
+      fiscalId: [''],
+      address: [''],
+      postalCode: [''],
+      postalArea: [''],
+      country: [''],
 
-  submit(form: any) {
-    this.newStake.stakeholderType = form.stakeholderType;
-    this.newStake.stakeholderNif = form.nif;
-    this.newStake.clientName = form.clientName;
-    this.newStake.clientNr = form.clientNr;
-    this.newStake.electronicCollectFlag = form.electronicCollectFlag;
-    this.newStake.documentType = form.documentType;
-    this.newStake.documentCountry = form.documentCountry;
-    this.newStake.flagRecolhaEletronica = form.flagRecolhaEletronica;
-    this.newStake.tipoDocumento = form.tipoDocumento;
-    this.newStake.paisDocumentoID = form.paisDocumentoID;
-    this.newStake.nrDocumentoID = form.nrDocumentoID;
-    this.newStake.primeiranacionalidade = form.primeiranacionalidade;
-    this.newStake.dateDocumentID = form.dtValidadeID;
-    this.newStake.paisNIFEstrangeiro = form.paisNIFEstrangeiro;
-    this.newStake.indicadorNIFPaisEstrangeiro = form.indicadorNIFPaisEstrangeiro;
-    this.newStake.nifEstrangeiro = form.nifEstrangeiro;
-    this.newStake.dateDocumentID = form.dateDocumentID;
+    });
+  }
+  submit(formNewStakeholder) {
+  
+    //fazer isto para todos os campos --------------- TO DO
+    this.newStake.fullName = formNewStakeholder.fullName;
 
-    console.log(this.newStake);
+
+    console.log(formNewStakeholder);
     console.log(typeof this.newStake);
 
     //Nao esta a ser usado
@@ -87,20 +108,15 @@ export class NewStakeholderComponent implements OnInit {
     }
 
     this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/PostNewStakeholder/'
-      + this.newStake.stakeholderNif, this.newStake).subscribe(result => {
+      + this.newStake.fiscalId, this.newStake).subscribe(result => {
         console.log(result);
       }, error => console.error(error));
 
     //Edit EditStakeholderById
     this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/EditStakeholderById/'
-      + this.newStake.stakeholderNif + '/edit', this.newStake).subscribe(result => {
+      + this.newStake.fiscalId + '/edit', this.newStake).subscribe(result => {
         console.log("EditStakeholderById");
         console.log(result);
-      }, error => console.error(error));
-
-    //Delete --
-    this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
-     +this.newStake.stakeholderNif+ this.newStake.clientNr +'/delete').subscribe(result => {
       }, error => console.error(error));
 
 
@@ -108,7 +124,7 @@ export class NewStakeholderComponent implements OnInit {
 
   onClickDelete(nif, clientNr) {
     this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
-      +this.newStake.stakeholderNif +'/'+ this.newStake.clientNr + '/delete').subscribe(result => {
+      +this.newStake.fiscalId + '/' + this.newStake.fiscalId + '/delete').subscribe(result => {
       }, error => console.error(error));
     this.route.navigate(['stakeholders']);
   }

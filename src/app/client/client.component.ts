@@ -4,6 +4,8 @@ import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { docType } from './docType'
+import { DataService } from '../nav-menu-interna/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-client',
@@ -13,11 +15,12 @@ import { docType } from './docType'
 
 export class ClientComponent implements OnInit {
   public clients: Client[] = [];
-  public clientsForSearch: Client[] = [];
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
 
+  clientIdNew;
+  newId;
   ListaDocType = docType;
   formDocType!: FormGroup;
   docType?: string = "";
@@ -25,26 +28,126 @@ export class ClientComponent implements OnInit {
   errorInput;
   errorMsg;
 
-  hasClient: boolean = false;
+  hasClient: boolean = true;
+  hasNewClient: boolean = true;
   showWarning: boolean = false;
-  hasClientT: boolean = false;
-  showWarningT: boolean = false;
   showButtons: boolean = false;
   showSeguinte: boolean = false;
-  resultError: string ="";
-  newClient: Client = {} as Client;
+  resultError: string = "";
+  newClient: Client = {
+    "clientId": "",
+    "fiscalId": "",
+    "companyName": "",
+    "contactName": "",
+    "shortName": "",
+    "headquartersAddress": {
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "country": ""
+    },
+    "merchantType": "",
+    "legalNature": "",
+    "legalNature2": "",
+    "crc": {
+      "code": "",
+      "validUntil": ""
+    },
+    "shareCapital": {
+      "capital": 0,
+      "date": "1966-08-30"
+    },
+    "bylaws": "",
+    "mainEconomicActivity": {
+      "code": "",
+      "branch": ""
+    },
+    "otherEconomicActivities": [
+      {
+        "code": "",
+        "branch": ""
+      },
+      {
+        "code": "",
+        "branch": ""
+      }
+    ],
+    "mainOfficeAddress": {
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "country": ""
+    },
+    "establishmentDate": "2009-12-16",
+    "businessGroup": {
+      "type": "",
+      "fiscalId": ""
+    },
+    "sales": {
+      "estimatedAnualRevenue": 0,
+      "averageTransactions": 0,
+      "servicesOrProductsSold": [
+        "",
+        ""
+      ],
+      "servicesOrProductsDestinations": [
+        "",
+        ""
+      ]
+    },
+    "foreignFiscalInformation": {
+      "issuerCountry": "",
+      "issuanceIndicator": "",
+      "fiscalId": "",
+      "issuanceReason": ""
+    },
+    "bankInformation": {
+      "bank": "",
+      "branch": "",
+      "iban": "",
+      "accountOpenedAt": "2019-06-11"
+    },
+    "contacts": {
+      "preferredMethod": "",
+      "preferredPeriod": {
+        "startsAt": "22:40:00.450Z",
+        "endsAt": "15:42:54.722Z"
+      },
+      "phone1": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "phone2": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "fax": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "email": ""
+    },
+    "documentationDeliveryMethod": "",
+    "billingEmail": ""
+  };
 
   @Output() nameEmitter = new EventEmitter<string>();
-  //clientID: string;
+
+  public map = new Map();
+  public currentPage: number;
+  public subscription : Subscription;
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) {
-    this.activateButtons(true);
+    private baseUrl: string, private route: Router,
+    private data: DataService) {
+    this.ngOnInit();
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
+    this.updateData(true,1);
+    this.activateButtons(true);
     this.errorInput = "form-control campo_form_coment";
   }
 
@@ -55,10 +158,10 @@ export class ClientComponent implements OnInit {
     this.searchParameter = (box);
   }
 
-  // Search for a client
-  getValueSearch(val: string) {
-    this.activateButtons(true);
-    this.displayValueSearch = val;
+// Search for a client
+getValueSearch(val: string) {
+  this.activateButtons(true);
+  this.displayValueSearch = val;
 
 
   this.http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + this.displayValueSearch).subscribe(result => {
@@ -88,32 +191,32 @@ export class ClientComponent implements OnInit {
   console.log(this.newClient);
   return this.newClient;
 
-  }
+}
 
-  // Search for a client
-  // old version
-  /*  getValueSearch(val: string) {
-      console.warn("client.component recebeu: ", val)
-      this.displayValueSearch = val;
-  
-      this.http.get<Client>(this.baseUrl + 'BEClients/GetClientByNewClientNr/' + this.displayValueSearch).subscribe(result => {
-        this.newClient = result;
-      }, error => console.error(error));
-      console.log(this.newClient);
-  
-      if (this.newClient.newClientNr == 0) {
-        //There is no client - Show the warning and erase the 
-        this.toggleShowWarning(true);
-        this.hasClient == false;
-      } else {
-        this.toggleShowWarning(false);
-      }
-      console.warn("get enviado: ", val)
-      this.sendClient(this.newClient);
-      return this.newClient;
-  
+// Search for a client
+// old version
+/*  getValueSearch(val: string) {
+    console.warn("client.component recebeu: ", val)
+    this.displayValueSearch = val;
+
+    this.http.get<Client>(this.baseUrl + 'BEClients/GetClientByNewClientNr/' + this.displayValueSearch).subscribe(result => {
+      this.newClient = result;
+    }, error => console.error(error));
+    console.log(this.newClient);
+
+    if (this.newClient.newClientNr == 0) {
+      //There is no client - Show the warning and erase the 
+      this.toggleShowWarning(true);
+      this.hasClient == false;
+    } else {
+      this.toggleShowWarning(false);
     }
-  */
+    console.warn("get enviado: ", val)
+    this.sendClient(this.newClient);
+    return this.newClient;
+
+  }
+*/
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
@@ -122,8 +225,11 @@ export class ClientComponent implements OnInit {
     //There is no client
     if (value == true) {
       this.showWarning = true
+      this.hasNewClient = true;
     } else {
-      this.showWarning = false
+      this.showWarning = false;
+      this.hasNewClient = false;
+      this.showSeguinte = false;
     }
   }
 
@@ -133,14 +239,16 @@ export class ClientComponent implements OnInit {
     this.hasClient = true;
     this.clientsForSearch.push(client);
 
-    if (client.clientId == "0") {
+    if (client.newClientNr == 0) {
       this.hasClient = false;
     }
   }
 
-  ngOnInit(): void {
-    this.showWarningT =false;
-    this.hasClientT =true;
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(1, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
   }
 
   submit(form: any) {
@@ -172,15 +280,22 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  createNewClient(){
-    this.route.navigate(['/app-new-client/']);
+  createNewClient() {
+    this.http.post(this.baseUrl + 'BEClients/GetLastId/',this.newClient).subscribe(result => {
+      console.log(result);
+      if (result != null) {
+        this.newId = result;
+        this.route.navigate(['/app-new-client/', this.newId]);
+      }
+    }, error => console.error(error));
+    
   }
 
-  close(){
+  close() {
     this.route.navigate(['/']);
   }
 
-  newSearch(){
+  newSearch() {
     location.reload();
   }
 

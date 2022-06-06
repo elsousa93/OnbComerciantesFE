@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+xmlns:mtr="http://www.multicert.com/mtrust/api/soap/v2_0/MtrustProcess/xsd/MtrustProcessService
+">
+  <soap:Header/>
+  <soap:Body>
+    <mtr:GetProcessDetailRequestV3>
+      <mtr:issuerCompanyId> 505767457 </mtr:issuerCompanyId>
+      <mtr:username>demo_no_proof</mtr:username>
+      <mtr:guid>394f7c81ca024d6b8839e6386db424be00613e721c12</mtr:guid>
+      <mtr:downloadDocuments>false</mtr:downloadDocuments>
+      <mtr:notificationHistory>false</mtr:notificationHistory>
+    </mtr:GetProcessDetailRequestV3>
+  </soap:Body>
+</soap:Envelope>
