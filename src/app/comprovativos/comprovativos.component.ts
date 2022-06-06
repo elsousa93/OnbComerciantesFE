@@ -33,7 +33,7 @@ export class ComprovativosComponent implements OnInit {
   mostrar: boolean = false;
   deleteModalRef: BsModalRef | undefined;
 
-  comerciante: string;
+  clienteEmpresa: string;
   comprovantes: string;
   intervenientes: string;
   lojas: string;
@@ -152,7 +152,7 @@ export class ComprovativosComponent implements OnInit {
     console.log(e);
     switch (e) {
       case null:
-        this.comerciante = 'fas fa-circle icone-menu-secundario';
+        this.clienteEmpresa = 'fas fa-circle icone-menu-secundario';
         this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
         this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
         this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
@@ -160,8 +160,8 @@ export class ComprovativosComponent implements OnInit {
         this.info = 'far fa-circle icone-menu-secundario-inactivo';
         break;
 
-      case "COMERCIANTE":
-        this.comerciante = 'fas fa-circle icone-menu-secundario';
+      case "CLIENTE EMPRESA":
+        this.clienteEmpresa = 'fas fa-circle icone-menu-secundario';
         this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
         this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
         this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
@@ -170,7 +170,7 @@ export class ComprovativosComponent implements OnInit {
         break;
 
       case "COMPROVATIVOS":
-        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.clienteEmpresa = 'far fa-circle icone-menu-secundario-inactivo';
         this.comprovantes = 'fas fa-circle icone-menu-secundario';
         this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
         this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
@@ -179,7 +179,7 @@ export class ComprovativosComponent implements OnInit {
         break;
 
       case "INTERVENIENTES":
-        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.clienteEmpresa = 'far fa-circle icone-menu-secundario-inactivo';
         this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
         this.intervenientes = 'fas fa-circle icone-menu-secundario';
         this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
@@ -188,7 +188,7 @@ export class ComprovativosComponent implements OnInit {
         break;
 
       case "LOJAS":
-        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.clienteEmpresa = 'far fa-circle icone-menu-secundario-inactivo';
         this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
         this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
         this.lojas = 'fas fa-circle icone-menu-secundario';
@@ -197,7 +197,7 @@ export class ComprovativosComponent implements OnInit {
         break;
 
       case "OFERTA COMERCIAL":
-        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.clienteEmpresa = 'far fa-circle icone-menu-secundario-inactivo';
         this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
         this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
         this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
@@ -206,7 +206,7 @@ export class ComprovativosComponent implements OnInit {
         break;
 
       case "INFO DECLARATIVA":
-        this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
+        this.clienteEmpresa = 'far fa-circle icone-menu-secundario-inactivo';
         this.comprovantes = 'far fa-circle icone-menu-secundario-inactivo';
         this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
         this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
