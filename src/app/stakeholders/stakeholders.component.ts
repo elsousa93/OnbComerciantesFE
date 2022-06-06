@@ -1,16 +1,13 @@
 import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IStakeholders } from './IStakeholders.interface';
-import { stakeTypeList } from './stakeholderType';
-import { docTypeList } from './docType';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { FormGroup, FormControl, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 
 /** Listagem Intervenientes / Intervenientes
- *
+ * pag 13
  */
 @Component({
   selector: 'app-stakeholders',
@@ -19,55 +16,38 @@ import { DataService } from '../nav-menu-interna/data.service';
 })
 export class StakeholdersComponent implements OnInit {
 
+
   newStake: IStakeholders = {
-    identificationDocument: {
-      identificationDocumentType: "",
-      identificationDocumentId: "",
-
-    }
+    stakeholderType:"Particular",
+    stakeholderNif: 0
   } as IStakeholders
+  form!: FormGroup;
 
-  
-
-//Field "stakeholder type" for the search
-  ListStakeholderType = stakeTypeList;
-  stakeholderType?: string = "";
-
-//Field "doc type" for the search
-  ListDocType = docTypeList;
-  docType?: string = "";
 
   ngForm!: FormGroup;
   public stakes: IStakeholders[] = [];
   public stakeShow: IStakeholders[] = [];
   public stakeholderId : number = 0;
-
-  public fiscalId : number = 0;
+  public stakeholderNif : number = 0;
   public clientNr: number = 8875;
   public totalUrl: string = "";
   public auxUrl: string = "";
-  public stakeSearch: IStakeholders[] = [this.newStake];
+  public stakeholdersByNIF: IStakeholders[] = [this.newStake];
   isShown: boolean = false;
   isFoundStakeholderShown: boolean = false;
-  public flagRecolhaEletronica: boolean = true; 
-  public poppy?: any;
 
+  public poppy?: any; 
 
-
-
-  formStakeholderSearch: FormGroup;
-    
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription; 
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: DataService) {
-   
+    private baseUrl: string, private route: Router, private data: DataService) {
 
     this.ngOnInit();
- 
+   
       http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes' ).subscribe(result => {
         console.log(result);
         this.stakes = result;
@@ -83,23 +63,17 @@ export class StakeholdersComponent implements OnInit {
   }
  
   ngOnInit(): void {
-    // this.clientNr = Number(this.router.snapshot.params['fiscalId']);
-      this.createForm();
-      this.subscription = this.data.currentData.subscribe(map => this.map = map);
-      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-
+    //Get Id from the store
+    this.clientNr = Number(this.router.snapshot.params['nif']);
+   this.form = new FormGroup({
+      stakeholderType: new FormControl(''),
+      tipoDocumento: new FormControl(''),
+      stakeholderNif: new FormControl(''),
+    });
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  
-createForm() {
-  this.formStakeholderSearch = this.fb.group({
-    stakeholderType: [''],
-    docType: [''],
-    docNumber: [''],
-    flagRecolhaEletronica: [''],
-    identificationDocumentId: [''],
-  });
-}
   //When canceling the create new store feature the user must navigate back to store list
   onClickCancel() {
     this.route.navigate(['stakeholders']);
@@ -110,54 +84,66 @@ createForm() {
     this.route.navigate(['/add-stakeholder']);
   }
 
-  onClickSearch() {
-    console.log("pesq");
-
-  }
-
-  onClickEdit(fiscalId) {
+  onClickEdit(stakeNif) {
     console.log("edit");
-    this.route.navigate(['/add-stakeholder/', fiscalId]);
+    this.route.navigate(['/add-stakeholder/', stakeNif]);
   }
 
-  onClickDelete(fiscalId, clientNr) {
+  onClickDelete(stakeNif, clientNr) {
     console.log("delete");
-    this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
-  }
+    this.route.navigate(['/add-stakeholder/', stakeNif, clientNr, 'delete']);
 
-  changeListElementStakeType(stakeType: string, e: any) {
-    console.log(e.target.value)
-    this.stakeholderType = e.target.value;
-   
-  }
-  changeListElementDocType(docType: string, e: any) {
-    console.log(e.target.value)
-    this.docType = e.target.value;
-    this.newStake.identificationDocument.identificationDocumentType = this.docType;
-    
   }
 
   toggleShow(stake: IStakeholders) {
-  //clear the array
+   //clear the array
    this.stakeShow = [];
-
    this.isShown = !this.isShown;
+   console.log(this.stakeShow);
+
    this.stakeShow.push(stake);
-   console.log("stakeShow array: " + this.stakeShow[0]);
      
-  }
+   // GetByid(StakeholderNif, 0)
+       
+   }
 
-  searchStakeholder(formStakeholderSearch) {
-    console.log(formStakeholderSearch);
-    this.http.get<IStakeholders>(this.baseUrl + 'bestakeholders/GetStakeholderByID/' + this.formStakeholderSearch.value.docNumber).subscribe(result => {
+  searchStakeholder(form: any) {
+   // stakeholderType: string, stakeholderNif: string
+    this.newStake.stakeholderType = form.stakeholderType;
+
+    console.log("FORM stake: " + typeof (form.stakeholderType));
+    console.log(form.stakeholderType);
+
+    this.newStake.stakeholderNif = form.stakeholderNif;
+    this.newStake.clientName = form.clientName;
+    this.newStake.clientNr = form.clientNr;
+
+    console.log("FORM" + form)
+    this.stakeholdersByNIF.push(this.newStake);
+   //this.stakeholderNif = stkNif;
+
+      
+    console.log("this " + form.value.stakeholderNif);
+
+    this.http.get<IStakeholders[]>(this.baseUrl +
+      'bestakeholders/GetStakeholderByNIF/' + form.value.stakeholderNif ).subscribe(result => {
       console.log(result);
-      this.toggleShow(result);
-    }, error => console.error(error));
+        this.stakeholdersByNIF = result;
+        console.log("RESULT " + result);
+      }, error => console.error(error));
 
+      if (this.stakeholdersByNIF != null) {
+         this.isFoundStakeholderShown = true;
+    }
+    console.log(this.stakeholdersByNIF);
   }
 
   refreshDiv() {
     location.reload();
     this.ngOnInit();
+
   }
 }
+
+
+

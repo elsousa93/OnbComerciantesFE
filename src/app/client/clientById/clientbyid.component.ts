@@ -3,8 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 
 @Component({
   selector: 'app-client',
@@ -12,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 
 export class ClientByIdComponent implements OnInit {
-
+  
   /*Variable declaration*/
   public clientId: string = "0";
   //client: Client = {} as Client;

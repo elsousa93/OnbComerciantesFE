@@ -201,19 +201,9 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  sendClient(client: Client) {
-    //clear the array
-    this.clientsForSearch = [];
-    this.hasClient = true;
-    this.clientsForSearch.push(client);
-
-    if (client.newClientNr == 0) {
-      this.hasClient = false;
-      this.showWarning = false;
-      this.hasNewClient = false;
-      this.showSeguinte = false;
->>>>>>>>> Temporary merge branch 2
-    }
+  ngOnInit(): void {
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
   //função que altera o valor do map e da currentPage
@@ -267,8 +257,7 @@ export class ClientComponent implements OnInit {
     this.route.navigate(['/']);
   }
 
-<<<<<<<<< Temporary merge branch 1
-
-=========
->>>>>>>>> Temporary merge branch 2
+  newSearch() {
+    location.reload();
+  }
 }

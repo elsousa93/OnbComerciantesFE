@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Submission } from '../submission.interface';
-import { ProcessService } from '../process.service';
-import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
-import { HttpHeaders } from '@angular/common/http';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Process } from '../process.interface';
+import { catchError, map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-acceptance',
@@ -23,9 +22,7 @@ export class AcceptanceComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router,
-    private ProcessService: ProcessService,
-    private compService: ComprovativosService  ) {
+    private baseUrl: string, private route: Router) {
 
     //this.loadXMLData();
     this.oAuth();

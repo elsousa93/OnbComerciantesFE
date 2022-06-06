@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Submission } from './submission.interface';
+import { Process } from './process.interface';
 import { FormGroup, FormControl, NgForm } from '@angular/forms';
 import { ProcessService } from './process.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
@@ -14,9 +13,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class ProcessComponent implements OnInit {
 
-  public allProcesses: Submission[] = [];
-  public allSuccessProcesses: Submission[] = [];
-  public allIncompletedProcesses: Submission[] = [];
+  public allProcesses: Process[] = [];
+  public allSuccessProcesses: Process[] = [];
+  public allIncompletedProcesses: Process[] = [];
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -36,10 +35,12 @@ export class ProcessComponent implements OnInit {
     ProcessService.getAllIncompletedSubmissions("olaa").subscribe(result => {
       this.allIncompletedProcesses = result;
     });
-  }
 
-  redirectToMoreInformation(id) {
-    this.route.navigate(['/acceptance/', id]);
+    //http.get<Process[]>(baseUrl + 'BEProcess/GetAllProcesses/ghjkl').subscribe(result => {
+    //  this.allProcesses = result;
+    //  console.log(this.allProcesses);
+    //  }, error => console.error(error));
+    
   }
 
   ngOnInit(): void {

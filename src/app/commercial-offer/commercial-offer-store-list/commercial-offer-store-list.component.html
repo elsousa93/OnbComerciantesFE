@@ -1,11 +1,11 @@
-<h1>{{'COPerStore'|translate}}</h1>
+<h1>Oferta Comercial Por Loja</h1>
 <br />
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="comercialOffers">
   <thead>
     <tr>
-      <th>{{'COName'|translate}}</th>
-      <th>{{'COTypeSolutions'|translate}}</th>
-      <th>{{'CONumberTerminals'|translate}}</th>
+      <th>Nome</th>
+      <th>Tipo de solução</th>
+      <th>Número de terminais</th>
     </tr>
   </thead>
   <tbody>
@@ -18,7 +18,7 @@
 </table>
 
 
-<p><b>{{'COReplicateProduts'|translate}}</b></p>
+<p><b>Pretende replicar produtos de outros establecimentos?</b></p>
 <div *ngFor="let selectionReplicate of selectionsReplicate; let idx = index">
   <input type="radio" name="selectedReplicate" value="{{selectionReplicate}}" [checked]="(idx === 0)" (change)="radoChangehandler($event)" />{{selectionReplicate}}
 </div>
@@ -26,7 +26,7 @@
   <div *ngIf="selectedOption==='Não'">
   </div>
   <div *ngIf="selectedOption==='Sim'">
-    <p><b>{{'COSelectStore'|translate}}</b></p>
+    <p><b>Selecione a loja que pretende considerar a mesma informação dos produtos( Loja de Representação):</b></p>
     <select replicateStore name="replicateStore" [(ngModel)]="storeToReplicate">
       <option *ngFor="let store of stores" [value]="store.id">
         {{store.nameEstab}}
@@ -35,16 +35,16 @@
 
     <div class="form-group col-12">
       <br />
-      <button type="submit" class="btn btn-primary mr-2">{{'Confirm'|translate}}</button>
+      <button type="submit" class="btn btn-primary mr-2">Confirmar</button>
     </div>
     <br />
   </div>
   <div *ngIf="selectedOption==='Não'">
     <br />
-    <button (click)="onCickAdd()" class="btn btn-primary">{{'AddConf'|translate}}</button>
+    <button (click)="onCickAdd()" class="btn btn-primary">Adicionar Configuração</button>
     <br />
   </div>
   <br />
 </form>
 
-<button (click)="onCickReturn()" class="btn btn-primary">{{'EndStoresConf'|translate}}</button>
+<button (click)="onCickReturn()" class="btn btn-primary">Concluir Configuração da loja</button>

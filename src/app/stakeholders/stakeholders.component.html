@@ -5,31 +5,37 @@
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakes">
   <thead>
     <tr>
-
+      <th>Tipo de Interveniente</th>
       <th>NIF</th>
-      <th>Nome Completo</th>
-
+      <th>Nome do Cliente</th>
+      <th>Número do Cliente</th>
+      <th>Recolha Eletrónica</th>
+      <th>Tipo de Documento</th>
+      <th>País do Documento</th>
+      <th>Opções</th>
     </tr>
   </thead>
   <tbody>
     <tr class="clickable" *ngFor="let stake of stakes">
-
-      <td>{{stake.fiscalId}}</td>
-      <td>{{stake.fullName}}</td> <!--Adicionar mais campos de acordo com o mock-->
-
-
+      <td>{{stake.stakeholderType}}</td>
+      <td>{{stake.stakeholderNif}}</td>
+      <td>{{stake.clientName}}</td>
+      <td>{{stake.clientNr}}</td>
+      <td>{{stake.electronicCollectFlag}}</td>
+      <td>{{stake.documentType}}</td>
+      <td>{{stake.documentCountry}}</td>
       <td>
         <button class="btn btn-info" (click)="toggleShow(stake)">
-          <span class="glyphicon glyphicon-pencil"></span>Mais Informação
+          <span class="glyphicon glyphicon-pencil"></span>More Info
         </button>
 
-        <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
-          <span class="glyphicon glyphicon-pencil"></span>Editar
+        <button class="btn btn-primary" (click) ="onClickEdit(stake.stakeholderNif)">
+          <span class="glyphicon glyphicon-pencil"></span>Edit
         </button>
 
 
-        <button class="btn btn-danger" (click)="onClickDelete(stake.fiscalId, stake.fullName)">
-          <span class="glyphicon glyphicon-trash"></span>Remover
+        <button class="btn btn-danger" (click) = "onClickDelete(stake.stakeholderNif, stake.clientNr)">
+          <span class="glyphicon glyphicon-trash"></span>Remove
         </button>
       </td>
 
@@ -37,60 +43,118 @@
   </tbody>
 </table>
 
-<h3>Pesquisar um Interveniente</h3>
-
-<div>
-  <b>Por favor, pesquise o Interveniente:</b>
-  <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder(formStakeholderSearch.value)">
-
-    <div class="form-group">
-      <label>Tipo de Interveniente:</label><br /> <!--Este campo nao está no YAML,Será um dropdown no futuro-->
-      <select class="form-select" (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType" formControlName="stakeholderType">
-        <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>{{stakeType.stakeTypeOption}}</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Tipo de Documento:</label><br /> <!--Será um dropdown no futuro, quando tivermos a reference data-->
-      <input type="text" formControlName="docType" />
-    </div>
-    <div class="form-group">
-      <label>Número do Documento:</label><br /> <!--Será um dropdown no futuro, quando tivermos a reference data-->
-      <input type="text" formControlName="docNumber" />
-    </div>
-
-    <div class="form-group">
-      Permite recolha eletrónica?<br />
-      <label>Sim</label>
-      <input type="radio" value="true" formControlName="flagRecolhaEletronica" />
-      <br />
-      <label>Não</label>
-      <input type="radio" value="false" formControlName="flagRecolhaEletronica" />
-    </div>
-    <button type="submit">Pesquisar</button>
-  </form> 
-</div>
-
-
-<br>
 <button (click)="onClickNew()" routerLink="/add-stakeholder">Adicionar Interveniente</button>
 
+
 <div *ngIf="isShown" class="row container-fluid" id="divshow">
-  <h2>Interveniente Encontrado!</h2>
   <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeShow">
     <thead>
       <tr>
-        <th>ID Fiscal</th>
-        <th>Nome Completo</th>
-
+        <th>Associado ao Contrato</th>
+        <th>Procurador</th>
+        <th>Recolha Eletronica</th>
+        <th>Tipo de Docuemnto </th>
+        <th>País do Documento de ID </th>
+        <th>Nº Documento de Identificação (1ª Nacionalidade):*</th>
+        <th>País de Documento de Identificação (1ª Nacionalidade):*</th>
+        <th>Data de Validade Doc. de Identificação (1ª Nacionalidade):</th>
+        <th>paisNIFEstrangeiro</th>
+        <th>indicadorNIFPaisEstrangeiro</th>
+        <th> nifEstrangeiro</th>
       </tr>
     </thead>
 
     <tbody>
       <tr class="table table-striped" *ngFor="let stake of stakeShow">
-        <th>{{stake.fiscalId}}</th>
-        <td>{{stake.fullName}}</td>
+        <th>{{stake.flagAssociado}}</th>
+        <th>{{stake.flagProcurador}}</th>
+        <th>{{stake.flagRecolhaEletronica}}</th>
+        <th>{{stake.tipoDocumento}}</th>
+        <th>{{stake.paisDocumentoID}}</th>
+        <th>{{stake.nrDocumentoID}}</th>
+        <th>{{stake.primeiranacionalidade}}</th>
+        <th>{{stake.dateDocumentID}}</th>
+        <th>{{stake.paisNIFEstrangeiro}}</th>
+        <th>{{stake.indicadorNIFPaisEstrangeiro}}</th>
+        <th>{{stake.nifEstrangeiro}}</th>
       </tr>
     </tbody>
   </table>
+
 </div>
+
+<br><br><br>
+
+<p><b>Adição de Outros Intervenientes</b></p>
+<p>Por favor, pesquise o Interveniente. (Para intervenientes já existentes na base de dados UNICRE)</p>
+
+<div id="pesquisa">
+  <!-- (ngSubmit)=""-->
+  <form #form="ngForm" (ngSubmit)="searchStakeholder(form)" novalidate>
+    <div class="form-group">
+      <label for="stakeholderType">Tipo de Interveniente</label>
+      <input required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType" class="form-control" [(ngModel)]="newStake.stakeholderType">
+    </div>
+    <div class="form-group">
+      <label for="tipoDocumento">Tipo de Documento:</label>
+      <input required ngModel #tipoDocumento="ngModel" name="tipoDocumento" type="text" id="tipoDocumento" class="form-control" [(ngModel)]="newStake.tipoDocumento">
+    </div>
+    <div class="form-group">
+      <label for="stakeholderNif">Número do Documento:</label>
+      <input required ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif" class="form-control" [(ngModel)]="newStake.stakeholderNif">
+    </div>
+
+    {{form.value |json}}
+    <button class="btn btn-primary" type="submit">Pesquisar</button>
+  </form>
+
+
+
+   <div *ngIf="isFoundStakeholderShown"  class="row container-fluid" id="divshow">
+      RESPOSTA:
+      {{stakeholdersByNIF | json}}
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeholdersByNIF">        
+        <thead>
+          <tr>
+            <th>Escolher</th>
+            <th>Tipo de Interveniente</th>
+            <th>NIF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table table-striped" *ngFor="let stakeP of stakeholdersByNIF">
+            <input type="hidden" name="id" id="id" value={{stakeP.stakeholderNif}}>
+            <td><input type="radio" value={{stakeP.stakeholderNif}}><br></td>
+            <td>{{stakeP.stakeholderType}}</td>
+            <td>{{stakeP.stakeholderNif}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="refreshDiv()">Refresh</button>
+
+  
+  <br /> <br />
+
+  <!-- Cria FORM diferente ?-->
+  <label for="flagRecolhaEletronica">
+    Recolha eletrónica dos dados do Cartão de Cidadão?
+    Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
+
+  </label>
+  <input required ngModel name="flagRecolhaEletronica" type="radio" value=true #flagRecolhaEletronica="ngModel" [value]="true" id="flagRecolhaEletronica">
+  <label for="sim">Sim</label>
+
+  <input required ngModel name="flagRecolhaEletronica" type="radio" value=false #flagRecolhaEletronica="ngModel" [value]="false" id="flagRecolhaEletronica">
+  <label for="nao">Não</label>
+
+</div>
+
+<div>
+  Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+  <form>
+    <button type="submit">Ler Cartão de Cidadão</button>
+  </form>
+</div>
+
+
