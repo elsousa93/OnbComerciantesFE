@@ -45,6 +45,10 @@ import { ProcessComponent } from './process/process.component';
 import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
+import { IndexCpComponent } from './index-cp/index-cp.component';
+import { MaterialModule } from './material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -75,7 +79,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ClientExtendedComponent,
     ReadcardComponent,
-   
     ReadcardComponent,
     NavMenuInternaComponent,
     FooterComponent,
@@ -85,7 +88,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BannerHomeComponent,
     LoginComponent,
     BarrazulHomeComponent,
-    AcceptanceComponent
+    IndexCpComponent,
+    
   ],
   imports: [
     ReactiveFormsModule,
@@ -95,6 +99,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ModalModule.forRoot(),
     HttpClientModule,
     FormsModule,
+    MaterialModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
@@ -135,7 +141,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
-      { path: 'submission', component: SubmissionComponent }
+      { path: 'submission', component: SubmissionComponent },
+
+      { path: 'develop-cp', component: IndexCpComponent }
       
     ]),
     TranslateModule.forRoot({
@@ -145,7 +153,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    NoopAnimationsModule
+
   ],
   providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService],
   bootstrap: [AppComponent]
