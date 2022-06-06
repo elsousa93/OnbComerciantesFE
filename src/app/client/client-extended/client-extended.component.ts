@@ -130,14 +130,13 @@ export class ClientExtendedComponent implements OnInit {
   //    console.log(data);});
 
   
-
-  /*  http.post(baseUrl + 'BEClients/', this.newClient)
+    http.post(baseUrl + 'BEClients/', this.newClient)
       .toPromise().then((data: any) => {
         console.log("construtor, a ser enviado pelo BECLients " ,data);
-        //console.log(data.json.test);
+        console.log(data.json.test);
         this.json = JSON.stringify(data.json);
       });
-  */
+
   }
 
   ngOnInit(): void {
@@ -149,7 +148,7 @@ export class ClientExtendedComponent implements OnInit {
     this.http.post(this.baseUrl + 'BEClients/PostClientTest', this.newClient)
       .toPromise().then((data: any) => {
         console.log(data);
-        //console.log(data.json.test);
+        console.log(data.json.test);
         this.json = JSON.stringify(data.json);
       });
 

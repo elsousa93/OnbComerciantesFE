@@ -15,7 +15,6 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ComprovativosComponent } from './comprovativos/comprovativos.component';
 import { ClientComponent } from './client/client.component';
-import { ClientExtendedComponent } from './client/client-extended/client-extended.component';
 import { StakeholdersComponent } from './stakeholders/stakeholders.component';
 import { NewStakeholderComponent } from './stakeholders/new-stakeholder/new-stakeholder.component';
 import { CheckDocumentsComponent } from './comprovativos/check-documents/check-documents.component';
@@ -77,7 +76,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PepComponent,
     CommercialOfferTariffComponent,
     ClientByIdComponent,
-    ClientExtendedComponent,
+    ReadcardComponent,
+   
     ReadcardComponent,
     ReadcardComponent,
     NavMenuInternaComponent,
@@ -106,8 +106,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'client', component: ClientComponent },
       { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'client/:id', component: ClientComponent },
-      { path: 'client-extended', component: ClientExtendedComponent },
-      { path: 'client-extended/:id', component: ClientExtendedComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
       { path: 'stakeholders/:nif', component: StakeholdersComponent },
       { path: 'add-stakeholder', component: NewStakeholderComponent },
@@ -130,20 +128,26 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      { path: 'login', component: LoginComponent},
+      { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
+<<<<<<< HEAD
+      { path: 'readcardcc', component: ReadcardComponent },
+      { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
+      { path: 'app-new-client', component: NewClientComponent }
+      
+=======
       
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
       { path: 'app-new-client/:id', component: NewClientComponent },
       { path: 'app-client-extended', component: ClientExtendedComponent },
 
-      { path: 'readcardcc', component: ReadcardComponent },
-      { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
 
       { path: 'develop-cp', component: IndexCpComponent }
+      { path: 'submission/:id/merchant', component: SubmissionComponent },
+      { path: 'submission', component: SubmissionComponent }
       
     ]),
     TranslateModule.forRoot({
