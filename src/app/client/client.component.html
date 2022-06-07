@@ -12,13 +12,13 @@
     <div class="col-3 col-xxl-2 mt-4 mb-4">
       <circular-progress [percentage]="10"></circular-progress>
     </div>-->
-    <!-->fase-title
+    <!--<fase-title
                 title="Qual a tipologia do Comerciante?*"
                 description="Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
         dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
         commodo consequat."
                 percentage=10>
-    </fase-title-->
+    </fase-title>-->
 
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <p class="titulo-form-simples">Qual a tipologia do cliente empresa?*</p>
@@ -39,7 +39,7 @@
           <div class="docType-drop-down">
             <p class="titulo-form-simples">Tipo de Documento:*</p>
             <form>
-              <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+              <select class="form-select campo-form-select" 
                 id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
                 <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                   {{docType.docTypeOption}}
@@ -48,12 +48,16 @@
               <br>
               <div>
                 <div>
-                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                  <input id="n-doc" type="text" #box (keyup)="getValueSearch(box.value)" [class]="errorInput">
-                  <p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p>
-                  <span [class]="errorMsg">{{ resultError }}</span>
+                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span></p>
+                  <input id="n-doc" type="text" #box [class]="errorInput">
+                  <!--p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p-->
+                  
                 </div>
               </div>
+              <button id="btn5a2"
+                class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0" (click)="getValueSearch(box.value)">PESQUISAR
+                <i class="fas fa-search">&nbsp;</i>
+              </button>
             </form>
           </div>
           <div class="col-xxl col-6">
@@ -62,7 +66,7 @@
       </div>
     </div>
   </div>
-  <div class="offset-xxl-1 col-xxl-10" *ngIf="hasClient == true">
+  <div class="offset-xxl-1 col-xxl-10" *ngIf="showWarning == true">
     <div class="table-responsive">
       <form #contactForm="ngForm">
         <table class="table">
@@ -71,7 +75,7 @@
               <th scope="col" class="text-center"></th>
               <th scope="col" class="text-center align-middle">ID - interno</th>
               <th scope="col" class="text-center">Nº Cliente</th>
-              <th scope="col" class="text-center">Tipo de Documento</th>
+              <th scope="col" class="text-center">Tipo de Doumento</th>
             </tr>
           </thead>
           <tbody>
@@ -88,8 +92,8 @@
       </form>
     </div>
   </div>
-  <div class="container" *ngIf="showWarning">
-    <div *ngIf="hasClient == false" class="row" id="divshow" text="red">
+  <div class="container" *ngIf="hasNewClient == false">
+    <div class="row" id="divshow" text="red">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
           (click)="newSearch()">NOVA PESQUISA&nbsp;
@@ -102,8 +106,8 @@
       </div>
     </div>
   </div>
-  <div class="container" *ngIf="hasClient == true">
-    <div class="row" *ngIf="showSeguinte">
+  <div class="container" *ngIf="showSeguinte == true">
+    <div class="row">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
           (click)="close()">SAIR&nbsp;
