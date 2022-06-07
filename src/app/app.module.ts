@@ -46,6 +46,7 @@ import { ProcessComponent } from './process/process.component';
 import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
+import { AcceptanceComponent } from './process/acceptance/acceptance.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -85,7 +86,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NewClientComponent,
     BannerHomeComponent,
     LoginComponent,
-    BarrazulHomeComponent
+    BarrazulHomeComponent,
+    AcceptanceComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -135,7 +137,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
-      { path: 'submission', component: SubmissionComponent }
+      { path: 'submission', component: SubmissionComponent },
+      { path: 'acceptance', component: AcceptanceComponent },
       
     ]),
     TranslateModule.forRoot({
