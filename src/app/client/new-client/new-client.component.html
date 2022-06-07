@@ -23,8 +23,8 @@
           <div class="row">
             <div class="col-xxl col-6">
               <p class="titulo-form-simples" for="newClientNr">Nr. Cliente: </p>
-              <input required minlength="2" maxlength="100" ngModel #clientName="ngModel" name="clientName" type="text"
-                id="clientName" class="form-control" [(ngModel)]="addNewClient.shortName" readonly>
+              <input required minlength="2" maxlength="100" ngModel #clientId="ngModel" name="clientId" type="text"
+                id="clientName" class="form-control" [(ngModel)]="addNewClient.clientId" readonly>
 
               <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
               <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
@@ -34,7 +34,7 @@
               <p class="titulo-form-simples" for="newClientNr">Novo Cliente: </p>
 
               <input required minlength="2" maxlength="100" ngModel #clientName="ngModel" name="clientName" type="text"
-                id="clientName" class="form-control" [(ngModel)]="addNewClient.clientId">
+                id="clientName" class="form-control" [(ngModel)]="addNewClient.companyName">
               <div class="alert alert-danger" *ngIf="clientName.touched && !clientName.valid">
                 <div *ngIf="clientName.errors && clientName.errors['required']">Client Name is required.</div>
                 <div *ngIf="clientName.errors && clientName.errors['minlength']">Client Name must have at least 2
@@ -49,6 +49,7 @@
               <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr"
                 class="form-control campo_form" [(ngModel)]="addNewClient.docNr">-->
             </div>
+            <p></p>
             <hr>
           </div>
         </div>
@@ -240,7 +241,7 @@
 
                 <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados*: </p>
                 <input required minlength="2" maxlength="100" ngModel #services="ngModel" name="services" type="text"
-                  id="services" class="form-control campo_form" [(ngModel)]="addNewClient.sales.servicesOrProductsSold">
+                  id="services" class="form-control campo_form" [(ngModel)]="addNewClient.sales.servicesOrProductsSold[0]">
 
                 <p class="titulo-form-simples" for="transactionsAverage">Transações Média: </p>
                 <input required minlength="2" maxlength="100" ngModel #transactionsAverage="ngModel"
@@ -309,7 +310,7 @@
                 <p class="titulo-form-simples" for="destinationCountries">Países de Destino dos Produtos Serviços*:</p>
                 <input required minlength="2" maxlength="100" ngModel #destinationCountries="ngModel"
                   name="destinationCountries" type="text" id="destinationCountries" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.sales.servicesOrProductsDestinations">
+                  [(ngModel)]="addNewClient.sales.servicesOrProductsDestinations[0]">
               </div>
             </div>
           </div>

@@ -1,9 +1,11 @@
+
 <div class="container">
   <div *ngIf="isLoggedIn === false">
     <div class="col-md-6 col-md-offset-3 loginBox">
       <h3>Log In</h3>
       <p *ngIf="message" class="text-center error">{{message}}</p>
-      <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <!--[formGroup]="loginForm"-->
+      <form (ngSubmit)="login()">
         <div class="form-group clearfix">
           <label for="userid" class="col-md-3 col-sm-5 col-xs-12">Userid</label>
           <div class="col-md-9 col-sm-7 col-xs-12">
@@ -26,4 +28,4 @@
     <h3>User: {{token}}</h3>
     <button (click)="onCickLogOut()" class="btn btn-primary">Sair</button>
   </div>
-</div>
+  </div>

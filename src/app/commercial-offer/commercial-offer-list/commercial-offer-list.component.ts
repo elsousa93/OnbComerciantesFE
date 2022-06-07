@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore } from '../../store/IStore.interface';
 
 @Component({
@@ -18,16 +20,30 @@ export class CommercialOfferListComponent implements OnInit {
   /*Default case*/
   selectedOption = 'Não';
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
+  public subscription: Subscription;
+  public map: Map<number, boolean>;
+  public currentPage : number;
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService) {
     /*Get stores list*/
+    this.ngOnInit();
     http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
       this.stores = result;
     }, error => console.error(error));
-
+    this.updateData(false, 5);
   }
 
   ngOnInit(): void {
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+  }
+
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(currentPage, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
   }
 
   onCickContinue() {
