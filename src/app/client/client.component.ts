@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { docType } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
@@ -31,7 +31,7 @@ export class ClientComponent implements OnInit {
   hasClient: boolean = true;
   hasNewClient: boolean = true;
   showWarning: boolean = false;
-  showButtons: boolean;
+  showButtons: boolean = false;
   showSeguinte: boolean = false;
   resultError: string = "";
   newClient: Client = {
@@ -147,7 +147,7 @@ export class ClientComponent implements OnInit {
       this.clients = result;
     }, error => console.error(error));
     this.updateData(true,1);
-    //this.activateButtons(true);
+    this.activateButtons(true);
     this.errorInput = "form-control campo_form_coment";
   }
 
@@ -223,12 +223,7 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado(id: any) {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        isCompany: this.showButtons
-      }
-    };
-    this.route.navigate(['/clientbyid/', id], navigationExtras);
+    this.route.navigate(['/clientbyid/', id]);
   }
 
   activateButtons(id: boolean) {
