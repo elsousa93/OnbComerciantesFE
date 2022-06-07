@@ -47,6 +47,7 @@ import { ProcessComponent } from './process/process.component';
 import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
+import { AcceptanceComponent } from './process/acceptance/acceptance.component';
 
 import { MaterialModule } from './material/material.module';
 import { TestnavComponent } from './testnav/testnav.component';
@@ -146,7 +147,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
-      { path: 'submission', component: SubmissionComponent }
+      { path: 'submission', component: SubmissionComponent },
+      { path: 'acceptance', component: AcceptanceComponent },
       
     ]),
     TranslateModule.forRoot({

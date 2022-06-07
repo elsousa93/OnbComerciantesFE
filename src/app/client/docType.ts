@@ -4,6 +4,6 @@ export interface docType {
 }
 
 export const docType: docType[] = [
-  { docTypeOption:"Número de Idetificação de Pessoa Colectiva"},
+  { docTypeOption:"Número de Identificação de Pessoa Colectiva"},
   { docTypeOption:"Outro..."},
 ]

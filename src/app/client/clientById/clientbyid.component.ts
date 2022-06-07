@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
+import { continents, countriesAndContinents } from '../countriesAndContinents';
 
 @Component({
   selector: 'app-client',
@@ -111,6 +112,12 @@ export class ClientByIdComponent implements OnInit {
     "billingEmail": ""
     };
 
+  isCommercialSociety: boolean;
+  isCompany: boolean;
+  Countries = countriesAndContinents;
+  Continents = continents;
+  checkedContinents = [];
+
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
     this.ngOnInit();
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
@@ -118,6 +125,9 @@ export class ClientByIdComponent implements OnInit {
         this.client = result;
         console.log(this.client)
       }, error => console.error(error));
+    }
+    if (this.route.getCurrentNavigation().extras.state) {
+      this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
     }
   }
   
@@ -129,5 +139,33 @@ export class ClientByIdComponent implements OnInit {
   obterComprovativos(){
     //this.route.navigate(['/nav-interna/', "COMPROVATIVOS" ]);
     this.route.navigate(['/comprovativos/', this.clientId ]);
-  }  
+  }
+
+  setCommercialSociety(id: boolean) {
+    if (id == true) {
+      this.isCommercialSociety = true
+    } else {
+      this.isCommercialSociety = false
+    }
+  }
+
+  continentSelected(event) {
+    if (this.checkedContinents.indexOf(event.target.id) > -1) {
+      var index = this.checkedContinents.indexOf(event.target.id);
+      this.checkedContinents.splice(index, 1);
+    } else {
+      this.checkedContinents.push(event.target.id);
+    }
+  }
+
+  onCountryChange(event) {
+    console.log(this.client);
+    if (this.client.sales.servicesOrProductsDestinations.indexOf(event.target.id) > -1) {
+      var index = this.client.sales.servicesOrProductsDestinations.indexOf(event.target.id);
+      this.client.sales.servicesOrProductsDestinations.splice(index, 1);
+    } else {
+      this.client.sales.servicesOrProductsDestinations.push(event.target.id);
+    }
+    console.log(this.client.sales.servicesOrProductsDestinations);
+  }
 }
