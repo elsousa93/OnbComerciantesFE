@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -46,6 +47,11 @@ import { ProcessComponent } from './process/process.component';
 import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
+
+import { MaterialModule } from './material/material.module';
+import { TestnavComponent } from './testnav/testnav.component';
+import { NavMenuPresencialComponent } from './nav-menu-presencial/nav-menu-presencial.component';
+import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component'
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -85,7 +91,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NewClientComponent,
     BannerHomeComponent,
     LoginComponent,
-    BarrazulHomeComponent
+    BarrazulHomeComponent,
+    TestnavComponent,
+    NavMenuPresencialComponent,
+    FooterPresencialComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -95,6 +104,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ModalModule.forRoot(),
     HttpClientModule,
     FormsModule,
+    BrowserAnimationsModule,
+    MaterialModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
