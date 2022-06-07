@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/bootstrap/5/css/bootstrap.min.css",
               "src/css/style.css"
             ],

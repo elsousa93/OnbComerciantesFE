@@ -5,7 +5,6 @@ import { Client } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
 
-
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html'

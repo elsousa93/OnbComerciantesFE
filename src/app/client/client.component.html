@@ -23,6 +23,8 @@
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <p class="titulo-form-simples">Qual a tipologia do cliente empresa?*</p>
       <div class="form-check">
+        <p class="titulo-form-simples">Qual a tipologia do Cliente Empresa?*</p>
+        <p></p>
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
                #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
         <label class="radio">EMPRESA</label>
@@ -152,7 +154,7 @@
               <th scope="col" class="text-center"></th>
               <th scope="col" class="text-center align-middle">ID - interno</th>
               <th scope="col" class="text-center">Nº Cliente</th>
-              <th scope="col" class="text-center">Tipo de Doumento</th>
+              <th scope="col" class="text-center">Tipo de Documento</th>
             </tr>
           </thead>
           <tbody>
@@ -177,7 +179,7 @@
           <i class="fas fa-search"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="createNewClient()">NOVO COMERCIANTE&nbsp;
+          (click)="createNewClient()">NOVO CLIENTE EMPRESA&nbsp;
           <i class="far fa-user">&nbsp;</i>
         </button>
       </div>
