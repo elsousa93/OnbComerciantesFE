@@ -7,10 +7,33 @@
   padding-right: 8px;
 }
 
+/*html {
+  min-height: 100%;*/
+  /*margin-left: calc(100vw - 100%);*/
+  /*margin-left: 0px;
+}
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+}*/
+
+
 html {
   min-height: 100%;
   /*margin-left: calc(100vw - 100%);*/
-  margin-left: 0px;
 }
 
 body {
@@ -29,6 +52,7 @@ main {
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
 }
+
 
 .logo_topo {
   max-width: 216px;

@@ -11,6 +11,9 @@ import { CookieService } from 'ngx-cookie-service';
 export class AppComponent {
   pageName: string = 'Teste';
   title = 'app';
+
+  isToggle: boolean = true;
+
   constructor(public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router) {
     translate.addLangs(['pt', 'en']);
     translate.setDefaultLang('pt');
@@ -36,5 +39,9 @@ export class AppComponent {
   updateNavBar(pageNameInput: string){
     this.pageName = pageNameInput;
     console.log(this.pageName);
+  }
+
+  toggleSideNav(toggled: boolean) {
+    this.isToggle = toggled;
   }
 }

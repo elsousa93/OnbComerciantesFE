@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-nav-menu-presencial',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavMenuPresencialComponent implements OnInit {
 
+  @Output() toggleNavEvent = new EventEmitter<boolean>();
+  isToggle: boolean = true;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  toggleEvent() {
+    this.isToggle = !this.isToggle;
+    this.toggleNavEvent.emit(this.isToggle);
   }
 
 }
