@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -48,11 +47,11 @@ import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { AcceptanceComponent } from './process/acceptance/acceptance.component';
-
-import { MaterialModule } from './material/material.module';
-import { TestnavComponent } from './testnav/testnav.component';
 import { NavMenuPresencialComponent } from './nav-menu-presencial/nav-menu-presencial.component';
-import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component'
+import { MaterialModule } from './material/material.module';
+import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component';
+import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presencial.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -83,7 +82,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ClientExtendedComponent,
     ReadcardComponent,
-   
+
     ReadcardComponent,
     NavMenuInternaComponent,
     FooterComponent,
@@ -93,9 +92,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BannerHomeComponent,
     LoginComponent,
     BarrazulHomeComponent,
-    TestnavComponent,
+    AcceptanceComponent,
     NavMenuPresencialComponent,
-    FooterPresencialComponent
+    FooterPresencialComponent,
+    SidenavPresencialComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -105,8 +105,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ModalModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    BrowserAnimationsModule,
     MaterialModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
@@ -125,7 +125,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
-      { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
+      { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard] },
       { path: 'add-store/:stroreid', component: AddStoreComponent },
       { path: 'add-store-iban/:stroreid', component: StoreIbanComponent },
       { path: 'commercial-offert-list', component: CommercialOfferListComponent },
@@ -140,7 +140,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      
+
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
       { path: 'app-new-client/:id', component: NewClientComponent },
       { path: 'app-client-extended', component: ClientExtendedComponent },
@@ -149,7 +149,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
       { path: 'acceptance', component: AcceptanceComponent },
-      
+
     ]),
     TranslateModule.forRoot({
       loader: {
@@ -159,7 +159,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-    providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

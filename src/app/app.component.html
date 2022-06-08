@@ -1,6 +1,19 @@
 <!--<app-nav-menu></app-nav-menu>-->
 <app-nav-menu-presencial></app-nav-menu-presencial>
 <main class="mt-xxl-n5">
-  <router-outlet></router-outlet>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav opened mode="side">
+      <mat-nav-list>
+        <a routerLink="/client" mat-list-item>Item1</a>
+        <a routerLink="." mat-list-item>Item2</a>
+        <a routerLink="." mat-list-item>Item3</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>
+  </mat-sidenav-container>
+  <!--<app-sidenav-presencial></app-sidenav-presencial>-->
+  <!--<router-outlet></router-outlet>-->
 </main>
-<app-footer></app-footer>
+<!--<app-footer></app-footer>-->
+<app-footer-presencial></app-footer-presencial>
+<!---->

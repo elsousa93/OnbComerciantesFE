@@ -1,23 +1,30 @@
-<header class="bg-dark fixed-top shadow-none">
+<header class="bg-dark fixed-top">
   <div class="container-fluid">
-    <div class="row justify-content-md-start">
+    <div class="row">
       <div class="col">
-        <nav class="navbar navbar-expand-lg bg-dark text-light navbar-dark justify-content-center">
-          <div class="container-fluid padding-navbarra ms-0 ps-0 pe-2">
-            <button id="btn1" class="btn btn-dark text-muted btn-lg ms-0 ps-1 pe-2 navbar-toggler" dmx-on:click="offcanvas1.show()">
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top pt-3 pb-3">
+          <span class="navbar-text text-light ms-4">
+            <button id="btn2" class="btn btn-dark text-muted btn-lg align-self-center ms-0 pt-0 pb-0 ps-0 pe-0" dmx-on:click="offcanvas1.show()">
 
               <i class="fas fa-bars"></i>
             </button>
-            <a class="navbar-brand me-0" href="index.html">
-              <img src="assets/images/logo_navbar_pres.svg" class="img-fluid logo-topo logo_topo" width="480">
-            </a>
+          </span>
+          <span class="navbar-text text-light">
+            <img src="assets/images/logo_navbar_pres.svg" class="img-fluid ms-4" width="470">
+          </span>
+          <span class="navbar-text text-light ms-auto">
             <form class="d-flex">
               <input class="form-control me-2 form-control-sm" type="search" placeholder="Nº processo" aria-label="Search">
-              <button class="btn btn-sm btn-outline-primary" type="submit">Procurar</button>
+              <button class="btn btn-outline-primary btn-sm ms-1 me-4 pt-2 pb-2" type="submit">Procurar</button>
             </form>
+          </span>
+          <div id="navbar1_collapse">
+
           </div>
         </nav>
       </div>
     </div>
   </div>
+
+
 </header>

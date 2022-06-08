@@ -1,3 +1,13 @@
+.sidenav-container{
+    margin-top: 64px;
+}
+
+/***************************************************/
+/***************************************************/
+/***************************************************/
+
+
+
 .style1 {
   width: 120px
 }
@@ -9,7 +19,8 @@
 
 html {
   min-height: 100%;
-  margin-left: calc(100vw - 100%);
+/*  margin-left: calc(100vw - 100%);*/
+margin-left: 0px;
 }
 
 body {
@@ -579,8 +590,8 @@ span {
 
 @media (min-width: 9px) {
   main {
-    margin-left: var(--offcanvas-width);
-  }
+/*    margin-left: var(--offcanvas-width);
+*/  }
 
   .offcanvas {
     -webkit-transform: none;

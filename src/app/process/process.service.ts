@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ISubmission } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
 @Injectable({
@@ -22,5 +23,9 @@ export class ProcessService {
 
     getAllIncompletedSubmissions(id): any {
       return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllIncompletedProcesses/ghjkl');
+    }
+
+    getSubmissionByID(id): any {
+      return this.http.get<ISubmission>(this.baseUrl + 'BEProcess/GetSubmissionByID/' + id);
     }
 }
