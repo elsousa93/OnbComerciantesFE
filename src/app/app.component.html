@@ -2,16 +2,76 @@
 <app-nav-menu-presencial (toggleNavEvent)="toggleSideNav($event)" ></app-nav-menu-presencial>
 <main class="mt-xxl-n5">
   <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav [opened]="isToggle" mode="side" class="shadow bg-danger">
-      <mat-nav-list>
-        <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-folder-open fs-4"></i>&nbsp; Abertura de processo</a>
-        <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-search fs-4"></i>&nbsp; Consultas</a>
-        <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="far fa-edit fs-4"></i>&nbsp; Tratamento de Processos</a>
-
-        <!--<a routerLink="/client" mat-list-item class="nav-link dropdown-toggle side_menu_texto"><i class="far fa-edit fs-4"></i>Tratamento de processos </a>-->
+    <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'" class="shadow sidenav temp">
+      <mat-nav-list class="sidenav-list">
+        <div class="accordion" id="accordion">
+    <div class="nav-item">
+      <a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><i class="far fa-folder-open fs-4"></i>&nbsp; Abertura de processo</a>
+    </div>
+    <div>
+      <a id="headingOne3" role="button" class="sidenav-item sidenav-button-accordion nav-link side_menu_texto dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3"><i class="far fa-edit fs-4"></i>&nbsp; Tratamento de Processos</a>
+      <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3" data-bs-parent="#accordion">
+        <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+          <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+            <span class="sub-icon sidenav-item navbar-text text-light">
+              <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+              <i class="bi bi-arrow-return-right fa-lg"></i>
+            </span>
+            <span class="sidenav-item navbar-text ps-2 mt-3">
+              <a class="side_menu_texto align-self-end">Múltiplos clientes</a>
+            </span>
+          </nav>
+        </div>
+        <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+          <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+            <span class="sub-icon sidenav-item navbar-text text-light">
+              <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+              <i class="bi bi-arrow-return-right fa-lg"></i>
+            </span>
+            <span class="sidenav-item navbar-text ps-2 mt-3">
+              <a class="side_menu_texto align-self-end">Validação DO</a>
+            </span>
+          </nav>
+        </div>
+        <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+          <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+            <span class="sub-icon sidenav-item navbar-text text-light">
+              <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+              <i class="bi bi-arrow-return-right fa-lg"></i>
+            </span>
+            <span class="navbar-text text-light ps-2 mt-3">
+              <a class="side_menu_texto align-self-end">Aprovação de negociação de precário</a>
+            </span>
+          </nav>
+        </div>
+        <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+          <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+            <span class="sub-icon sidenav-item navbar-text text-light">
+              <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+              <i class="bi bi-arrow-return-right fa-lg"></i>
+            </span>
+            <span class="navbar-text ps-2 mt-3">
+              <a class="side_menu_texto align-self-end mt-3">Validação matricula SIBS</a>
+            </span>
+          </nav>
+          </div>
+        </div>
+      </div>
+    <div class="nav-item">
+      <a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion">
+        <i class="material-icons md-48">
+          search
+        </i>
+        &nbsp;Consultas
+      </a>
+    </div>
+    <div class="nav-item">
+      <a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><i class="pe-1 far fa-question-circle fs-4"></i>&nbsp; FAQS </a>
+    </div>
+  </div>
       </mat-nav-list>
     </mat-sidenav>
-    <mat-sidenav-content style="padding-bottom:300px"><router-outlet></router-outlet></mat-sidenav-content>
+    <mat-sidenav-content style="padding-bottom:800px"><!--<router-outlet></router-outlet>--></mat-sidenav-content>
   </mat-sidenav-container>
   <!--<app-sidenav-presencial></app-sidenav-presencial>-->
   <!--<router-outlet></router-outlet>-->

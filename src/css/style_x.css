@@ -1,9 +1,94 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+.material-icons.md-48 {
+  font-size: 1.8rem;
+  line-height: .75em;
+  vertical-align: -0.5em;
+}
+
+.temp {
+    width:340px !important;
+}
+
+.submenu {
+    padding-bottom: 15px;
+}
+
+.side_menu_texto {
+    color: #525252 !important;
+}
+
 .sidenav-container{
     margin-top: 54px;
     background-color: white;
 }
 
-.sidebav
+.sidenav-button {
+  background-color: transparent !important;
+}
+
+.cor-consultas-menu {
+  color: #606060;
+}
+
+.sidenav-sub {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.2rem 2rem;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow-anchor: none;
+}
+
+.sidenav{
+  background-color: #ededed;
+  border: 0px;
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 35%) !important;
+}
+
+.sidenav-list{
+    padding-top:15px !important;
+    position: fixed;
+    width: 100%;
+}
+
+.sidenav-item {
+    color: #626262 !important;
+}
+
+.sub-icon {
+  padding-top: 10px !important;
+  color: #212529 !important;
+}
+
+.sidenav-item:hover {
+  color: #1e66b0 !important;
+}
+
+.sidenav-button-accordion {
+    background-color:transparent !important;
+    color: #525252 !important;
+    padding: 0.5rem 1rem;
+    padding-left: 18px;
+}
+
+  .sidenav-button-accordion:after {
+    margin-left: 4px;
+    flex-shrink: 0;
+    width: 0;
+    height: 0;
+    content: "";
+    background-image: none !important;
+    background-size: 1.25rem;
+    transition: transform 0.2s ease-in-out;
+    transform: rotate(0deg) !important;
+  }
 
 /***************************************************/
 /***************************************************/
