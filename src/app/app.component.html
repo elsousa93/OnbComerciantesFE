@@ -1,5 +1,21 @@
-<app-nav-menu></app-nav-menu>
+<!--<app-nav-menu></app-nav-menu>-->
+<app-nav-menu-presencial (toggleNavEvent)="toggleSideNav($event)" ></app-nav-menu-presencial>
 <main class="mt-xxl-n5">
-  <router-outlet></router-outlet>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav [opened]="isToggle" mode="side" class="shadow bg-danger">
+      <mat-nav-list>
+        <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-folder-open fs-4"></i>&nbsp; Abertura de processo</a>
+        <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-search fs-4"></i>&nbsp; Consultas</a>
+        <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="far fa-edit fs-4"></i>&nbsp; Tratamento de Processos</a>
+
+        <!--<a routerLink="/client" mat-list-item class="nav-link dropdown-toggle side_menu_texto"><i class="far fa-edit fs-4"></i>Tratamento de processos </a>-->
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content style="padding-bottom:300px"><router-outlet></router-outlet></mat-sidenav-content>
+  </mat-sidenav-container>
+  <!--<app-sidenav-presencial></app-sidenav-presencial>-->
+  <!--<router-outlet></router-outlet>-->
 </main>
-<app-footer></app-footer>
+<!--<app-footer></app-footer>-->
+<app-footer-presencial></app-footer-presencial>
+<!---->

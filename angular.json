@@ -32,7 +32,8 @@
             "styles": [
               "src/custom-theme.scss",
               "src/bootstrap/5/css/bootstrap.min.css",
-              "src/css/style.css"
+              "src/css/style.css",
+              "src/css/style_x.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

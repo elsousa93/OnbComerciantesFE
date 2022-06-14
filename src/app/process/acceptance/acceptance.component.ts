@@ -70,7 +70,7 @@ export class AcceptanceComponent implements OnInit {
 
   //loadXMLData() {
 
-    
+
   //  this.http.get('assets/xml_teste/getProcessDetailV3.xml', {
   //    headers: new HttpHeaders().set('Content-Type', 'text/xml')
   //      .append('Access-Control-Allow-Methods', 'GET')
@@ -218,10 +218,10 @@ export class AcceptanceComponent implements OnInit {
     }
 
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-    xmlhttp.setRequestHeader('Authorization', 'Basic ' + this.username+ ":" + this.password);
+    xmlhttp.setRequestHeader('Authorization', 'Basic ' + this.username + ":" + this.password);
     xmlhttp.responseType = 'document';
     xmlhttp.send(request);
-    
+
   }
 
   oAuth() {
@@ -239,20 +239,20 @@ export class AcceptanceComponent implements OnInit {
         'client_id': 'ca0c3470904dc3b2ddfe691dd0950d29',
         'client_secret': 'n%3Fw0%21uH7h6853%23k6A0fg',
       }
-      
+
     }
 
     const body = new HttpParams().set('grant_type', 'password')
       .set('username', 'PRT/CC/99000245/505767457/4a3d88cbfc37465a999aa3c5fdd19e75ec21e594c81e')
-      .set('password','')
+      .set('password', '')
       .set('client_id', 'ca0c3470904dc3b2ddfe691dd0950d29')
       .set('client_secret', 'n%3Fw0%21uH7h6853%23k6A0fg')
       ;
 
     this.http.post("mtrust/oauth/token", body, HTTP_OPTIONS)
       .subscribe(tap(res => {
-      console.log(res);
-    }))
+        console.log(res);
+      }))
   }
 
   //Assinatura manual

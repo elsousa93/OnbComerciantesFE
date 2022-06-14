@@ -1,25 +1,37 @@
 <h1 id="tableLabel">{{'TitleStores'|translate}}</h1>
 <br />
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stores">
-  <thead>
-    <tr>
-      <th>{{'NameStores'|translate}}</th>
-      <th>{{'ActivityStores'|translate}}</th>
-      <th>{{'SubActivityStores'|translate}}</th>
-      <th>{{'ZoneStores'|translate}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="clickable" *ngFor="let store of stores" [routerLink]="['/add-store/', store.id]">
-      <td>{{ store.nameEstab}}</td>
-      <td>{{ store.activityEstab }}</td>
-      <td>{{ store.subActivityEstab }}</td>
-      <td>{{ store.zoneEstab }}</td>
-    </tr>
-  </tbody>
-</table>
-<button (click)="onCickAdd()" class="btn btn-primary">Adicionar Loja</button>
-<br />
-<br />
-<button (click)="onCickContinue()" class="btn btn-primary">Continuar</button>
+<div class="offset-xxl-1 col-xxl-10">
+  <div class="table-responsive">
+    <table class='table' *ngIf="stores">
+      <thead class="table-primary align-middle">
+        <tr class="align-middle">
+          <th scope="col" class="text-center">{{'NameStores'|translate}}</th>
+          <th scope="col" class="text-center">{{'ActivityStores'|translate}}</th>
+          <th scope="col" class="text-center">{{'SubActivityStores'|translate}}</th>
+          <th scope="col" class="text-center">{{'ZoneStores'|translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="clickable" *ngFor="let store of stores" [routerLink]="['/add-store/', store.id]">
+          <td class="text-center">{{ store.nameEstab}}</td>
+          <td class="text-center">{{ store.activityEstab }}</td>
+          <td class="text-center">{{ store.subActivityEstab }}</td>
+          <td class="text-center">{{ store.zoneEstab }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
+<div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
+  <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
+          (click)="onCickAdd()">
+    {{'AddStore'|translate}}&nbsp;
+    <i class="fas fa-angle-down"></i>
+  </button>
+  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+          (click)="onCickContinue()">
+    {{'Continue'|translate}}&nbsp;
+    <i class="fas fa-angle-right">&nbsp;</i>
+  </button>
+</div>

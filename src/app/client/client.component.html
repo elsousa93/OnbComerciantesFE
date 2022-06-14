@@ -19,19 +19,18 @@
         commodo consequat."
                 percentage=10>
     </fase-title>-->
-    
+
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <p class="titulo-form-simples">Qual a tipologia do cliente empresa?*</p>
       <div class="form-check">
-        <p class="titulo-form-simples">Qual a tipologia do Cliente Empresa?*</p>
         <p></p>
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
-               #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
+          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
         <label class="radio">EMPRESA</label>
       </div>
       <div class="form-check">
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-               #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(false)">
+          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
         <label class="radio" for="radio2">ENI</label>
       </div>
       <div class="col-xxl col-6">
@@ -40,8 +39,8 @@
           <div class="docType-drop-down">
             <p class="titulo-form-simples">Tipo de Documento:*</p>
             <form>
-              <select class="form-select campo-form-select"
-                      id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
+              <select class="form-select campo-form-select" 
+                id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
                 <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                   {{docType.docTypeOption}}
                 </option>
@@ -52,12 +51,11 @@
                   <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span></p>
                   <input id="n-doc" type="text" #box [class]="errorInput">
                   <!--p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p-->
-
+                  
                 </div>
               </div>
               <button id="btn5a2"
-                      class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0" (click)="getValueSearch(box.value)">
-                PESQUISAR
+                class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0" (click)="getValueSearch(box.value)">PESQUISAR
                 <i class="fas fa-search">&nbsp;</i>
               </button>
             </form>
@@ -65,87 +63,10 @@
           <div class="col-xxl col-6">
           </div>
         </div>
-        <div *ngIf="showButtons == false">
-          <div id="pesquisa">
-            <p>Pesquise o Cliente: </p>
-            <!-- (ngSubmit)=""-->
-            <form #form="ngForm" novalidate>
-              <div class="form-group">
-                <label class="titulo-form-simples" for="tipoDocumento">Tipo de Documento: *</label>
-                <select ngModel #tipoDocumento="ngModel" name="tipoDocumento" required class="form-select campo-form-select" id="tipoDocumento">
-                  <option value="Cartão de Cidadão">Cartão de Cidadão</option> <!--Depois ir buscar as várias opções, de momento não temos-->
-                </select>
-                <!-- <input required ngModel #tipoDocumento="ngModel" name="tipoDocumento" type="text" id="tipoDocumento" class="form-control">-->
-              </div>
-              <div class="form-group">
-                <label class="titulo-form-simples" for="countryOfDocument">País do documento: </label>
-                <input required ngModel #countryOfDocument="ngModel" name="countryOfDocument" type="text" id="countryOfDocument" class="form-control" readonly>
-              </div>
-
-              <br>
-              <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="submit" (click)="aButtons(true)">Pesquisar/Adicionar</button>
-            </form>
-
-
-
-
-            <!--<button class="btn btn-primary" type="button" (click)="refreshDiv()">Refresh</button>-->
-
-
-            <br /> <br />
-
-            <!-- Cria FORM diferente ?-->
-            <label for="flagRecolhaEletronica">
-              Recolha eletrónica dos dados do Cartão de Cidadão?
-              Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
-
-            </label>
-            <div class="form-check">
-              <input class="form-check-input" required ngModel name="flagRecolhaEletronica" type="radio" value=true #flagRecolhaEletronica="ngModel" [value]="true" id="flagRecolhaEletronica">
-              <label class="radio" for="sim">Sim</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" required ngModel name="flagRecolhaEletronica" type="radio" value=false #flagRecolhaEletronica="ngModel" [value]="false" id="flagRecolhaEletronica">
-              <label class="radio" for="nao">Não</label>
-            </div>
-          </div>
-          <br>
-          <div>
-            Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
-            <div class="row container-fluid" id="divshow">
-
-              <table class='table table-striped' aria-labelledby="tableLabel">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>ID</th>
-                    <th>NIF</th>
-                    <th>Dt. Nasc</th>
-                    <th>Morada</th>
-                    <th>Código Postal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="table table-striped">
-                    <td>{{newClient.shortName}}</td>
-                    <td>{{newClient.clientId}}</td>
-                    <td>{{newClient.fiscalId}}</td>
-                    <td></td>
-                    <td>{{newClient.mainOfficeAddress.address}}</td>
-                    <td>{{newClient.mainOfficeAddress.postalCode}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <form>
-              <button type="submit">Ler Cartão de Cidadão</button>
-            </form>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-  <div class="offset-xxl-1 col-xxl-10" *ngIf="showWarning == true && showButtons == true">
+  <div class="offset-xxl-1 col-xxl-10" *ngIf="showWarning == true">
     <div class="table-responsive">
       <form #contactForm="ngForm">
         <table class="table">
@@ -154,7 +75,7 @@
               <th scope="col" class="text-center"></th>
               <th scope="col" class="text-center align-middle">ID - interno</th>
               <th scope="col" class="text-center">Nº Cliente</th>
-              <th scope="col" class="text-center">Tipo de Documento</th>
+              <th scope="col" class="text-center">Tipo de Doumento</th>
             </tr>
           </thead>
           <tbody>
@@ -171,7 +92,7 @@
       </form>
     </div>
   </div>
-  <div class="container" *ngIf="hasNewClient == false && showButtons == true">
+  <div class="container" *ngIf="hasNewClient == false">
     <div class="row" id="divshow" text="red">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
@@ -179,7 +100,7 @@
           <i class="fas fa-search"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="createNewClient()">NOVO CLIENTE EMPRESA&nbsp;
+          (click)="createNewClient()">NOVO COMERCIANTE&nbsp;
           <i class="far fa-user">&nbsp;</i>
         </button>
       </div>

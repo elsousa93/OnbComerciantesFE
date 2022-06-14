@@ -47,6 +47,11 @@ import { BannerHomeComponent } from './banner-home/banner-home.component';
 import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { AcceptanceComponent } from './process/acceptance/acceptance.component';
+import { NavMenuPresencialComponent } from './nav-menu-presencial/nav-menu-presencial.component';
+import { MaterialModule } from './material/material.module';
+import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component';
+import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presencial.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -77,7 +82,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ClientExtendedComponent,
     ReadcardComponent,
-   
+
     ReadcardComponent,
     NavMenuInternaComponent,
     FooterComponent,
@@ -87,7 +92,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BannerHomeComponent,
     LoginComponent,
     BarrazulHomeComponent,
-    AcceptanceComponent
+    AcceptanceComponent,
+    NavMenuPresencialComponent,
+    FooterPresencialComponent,
+    SidenavPresencialComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -97,6 +105,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ModalModule.forRoot(),
     HttpClientModule,
     FormsModule,
+    MaterialModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
@@ -115,7 +125,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
-      { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard]},
+      { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard] },
       { path: 'add-store/:stroreid', component: AddStoreComponent },
       { path: 'add-store-iban/:stroreid', component: StoreIbanComponent },
       { path: 'commercial-offert-list', component: CommercialOfferListComponent },
@@ -130,7 +140,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
-      
+
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
       { path: 'app-new-client/:id', component: NewClientComponent },
       { path: 'app-client-extended', component: ClientExtendedComponent },
