@@ -223,12 +223,15 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado(id: any) {
+
     let navigationExtras: NavigationExtras = {
       state: {
         isCompany: this.showButtons
-      }
-    };
+      } 
+    }; 
     this.route.navigate(['/clientbyid/', id], navigationExtras);
+
+    //isto nao esta a aparecer na versao mais nova.
   }
 
   activateButtons(id: boolean) {

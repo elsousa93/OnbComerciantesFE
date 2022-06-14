@@ -7,7 +7,7 @@ import { HttpUtilService } from './comprovativos/services/http.services';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -138,7 +138,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
-      { path: 'acceptance', component: AcceptanceComponent },
+      { path: 'acceptance/:submissionID', component: AcceptanceComponent },
+      { path: 'process', component: ProcessComponent }
       
     ]),
     TranslateModule.forRoot({
@@ -149,7 +150,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-    providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
