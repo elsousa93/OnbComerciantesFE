@@ -17,7 +17,7 @@ export class AppComponent {
   pageName: string = 'Teste';
   title = 'app';
 
-  isToggle: boolean = true;
+  isToggle: boolean = false;
 
   constructor(public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher  ) {
@@ -51,6 +51,7 @@ export class AppComponent {
   }
 
   toggleSideNav(toggled: boolean) {
+    console.log("chegou aqui");
     this.isToggle = toggled;
   }
 

@@ -1,6 +1,22 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round";
+
+.navbar-autohide {
+  top: var(--navPosition) !important;
+  transition: top 0.4s;
+}
+
+.submenu-link:hover {
+    color:red;
+}
 
 .material-icons.md-48 {
+  font-size: 1.8rem;
+  line-height: .75em;
+  vertical-align: -0.5em;
+}
+
+.material-icons-outlined.md-48 {
   font-size: 1.8rem;
   line-height: .75em;
   vertical-align: -0.5em;
@@ -52,10 +68,12 @@
   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 35%) !important;
 }
 
-.sidenav-list{
-    padding-top:15px !important;
-    position: fixed;
-    width: 100%;
+.sidenav-list {
+  padding-top: 15px !important;
+  position: fixed;
+  width: 100%;
+  top: var(--toptestexpto) !important;
+  transition: top 0.4s;
 }
 
 .sidenav-item {

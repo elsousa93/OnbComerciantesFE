@@ -1,53 +1,86 @@
-<!--<div class="offcanvas offcanvas-start shadow-none bg-danger" id="offcanvas1" is="dmx-bs5-offcanvas" tabindex="-1">
-  <div class="offcanvas-body ms-xxl-2 me-xxl-1 ps-xxl-1 pe-xxl-1 hr shadow-none bg-danger">
-    <div class="container ms-xxl-0 me-xxl-0 pe-xxl-3 shadow-none bg-danger">
-      <div class="row shadow-none bg-danger">
-        <div class="col ms-xxl-0 me-xxl-0 ps-xxl-0 pe-xxl-0 shadow-none">
-          <div class="navbar-nav flex-xxl-column">
-
-            <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" href="#" id="dropdown1" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-folder-open fs-4"></i>&nbsp; Abertura de processo</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown1">
-                <a class="dropdown-item stretched-link" href="#">Action</a>
-                <a class="dropdown-item stretched-link" href="#">Another action</a>
-                <a class="dropdown-item stretched-link" href="#">Something else here</a>
-              </div>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'" class="shadow sidenav temp">
+    <mat-nav-list class="sidenav-list">
+      <div class="accordion" id="accordion">
+        <div class="nav-item">
+          <a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><i class="material-icons-outlined md-48">door_front</i>&nbsp;&nbsp;Início</a>
+        </div>
+        <div class="nav-item">
+          <a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><i class="far fa-folder-open fs-4"></i>&nbsp;&nbsp;Abertura de processo</a>
+        </div>
+        <div>
+          <a id="headingOne3" role="button" class="sidenav-item sidenav-button-accordion nav-link side_menu_texto dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3"><i class="far fa-edit fs-4"></i>&nbsp; Tratamento de Processos</a>
+          <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3" data-bs-parent="#accordion">
+            <div class="submenu-link ps-3 ms-3 col-10 ps-0 pe-0">
+              <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+                <span class="sub-icon sidenav-item navbar-text text-light">
+                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+                  <i class="bi bi-arrow-return-right fa-lg"></i>
+                </span>
+                <span class="sidenav-item navbar-text ps-2 mt-3">
+                  <a class="side_menu_texto align-self-end">Múltiplos clientes</a>
+                </span>
+              </nav>
             </div>
-            <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" href="#" id="dropdown2" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-search fs-4"></i>&nbsp; Consultas</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown1">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+              <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+                <span class="sub-icon sidenav-item navbar-text text-light">
+                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+                  <i class="bi bi-arrow-return-right fa-lg"></i>
+                </span>
+                <span class="sidenav-item navbar-text ps-2 mt-3">
+                  <a class="side_menu_texto align-self-end">Validação DO</a>
+                </span>
+              </nav>
             </div>
-            <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle side_menu_texto" data-bs-toggle="dropdown" href="#" id="dropdown3" role="button" aria-haspopup="true" aria-expanded="false"><i class="far fa-edit fs-4"></i>&nbsp; Tratamento de Processos</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown1">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+              <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+                <span class="sub-icon sidenav-item navbar-text text-light">
+                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+                  <i class="bi bi-arrow-return-right fa-lg"></i>
+                </span>
+                <span class="navbar-text text-light ps-2 mt-3">
+                  <a class="side_menu_texto align-self-end">Aprovação de negociação de precário</a>
+                </span>
+              </nav>
             </div>
-
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+              <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+                <span class="sub-icon sidenav-item navbar-text text-light">
+                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
+                  <i class="bi bi-arrow-return-right fa-lg"></i>
+                </span>
+                <span class="navbar-text ps-2 mt-3">
+                  <a class="side_menu_texto align-self-end mt-3">Validação matricula SIBS</a>
+                </span>
+              </nav>
+            </div>
           </div>
         </div>
+        <div class="nav-item">
+          <a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion">
+            <i class="material-icons md-48">
+              search
+            </i>
+            &nbsp;Consultas
+          </a>
+        </div>
+        <div class="nav-item">
+          <a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><i class="pe-1 far fa-question-circle fs-4"></i>&nbsp; FAQS </a>
+        </div>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content style="padding-bottom:800px">
+    <!--<router-outlet></router-outlet>-->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="offset-1 col-10 ps-0 pe-0 bg-white"></div>
+        <div class="offset-1 col-10 ps-0 pe-0">
+          <router-outlet></router-outlet>
+        </div>
+        <div class="offset-1 col-10 bg-white ps-0 pe-0"></div>
       </div>
     </div>
-  </div>
-</div>-->
-<!--<div class="offcanvas offcanvas-start shadow-none bg-danger" id="offcanvas1" is="dmx-bs5-offcanvas" tabindex="-1">
-  <div class="offcanvas-body ms-xxl-2 me-xxl-1 ps-xxl-1 pe-xxl-1 hr shadow-none bg-danger">
-    <div class="container ms-xxl-0 me-xxl-0 pe-xxl-3 shadow-none bg-danger">
-      <mat-sidenav-container style="border:2px solid purple">
-        <mat-sidenav #snav mode="side" style="border:2px solid red">
-          <mat-nav-list style="border:2px solid green">
-            <a mat-list-item routerLink=".">Item1</a>
-            <a mat-list-item routerLink=".">Item2</a>
-            <a mat-list-item routerLink=".">Item3</a>
-          </mat-nav-list>
-        </mat-sidenav>
-      </mat-sidenav-container>
-    </div>
-  </div>
-</div>-->
+  </mat-sidenav-content>
+</mat-sidenav-container>
