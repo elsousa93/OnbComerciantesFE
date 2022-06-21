@@ -1,18 +1,23 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { autohideadjust } from '../animation';
 
 @Component({
   selector: 'app-nav-menu-presencial',
   templateUrl: './nav-menu-presencial.component.html',
-  styleUrls: ['./nav-menu-presencial.component.css']
+  styleUrls: ['./nav-menu-presencial.component.css'],
+  animations: [autohideadjust]
 })
 export class NavMenuPresencialComponent implements OnInit {
 
   @Output() toggleNavEvent = new EventEmitter<boolean>();
+  @Output() autoHide = new EventEmitter<boolean>();
+  
+
   isToggle: boolean = false;
+  isAutohide: boolean = true;
 
   @HostBinding('style.--navPosition') public navPosition: string = '0';
-  @HostBinding('style.--toptestexpto') public toptestexpto: string = '5px';
 
   prevScrollpos:number = window.pageYOffset;
 
@@ -46,13 +51,15 @@ export class NavMenuPresencialComponent implements OnInit {
       console.log("a");
       //this.teste("0");
       this.navPosition = "0";
-      this.toptestexpto = "90px";
       console.log(this.navPosition);
+      this.autoHide.emit(true);
+      this.isAutohide = true;
     } else {
       console.log("b");
-      this.navPosition = "-70px";
-      this.toptestexpto = "0";
+      this.navPosition = "-60px";
       console.log(this.navPosition);
+      this.autoHide.emit(false);
+      this.isAutohide = false;
       //this.teste("-50px");
     }
     this.prevScrollpos = currentScrollPos;

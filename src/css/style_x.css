@@ -1,6 +1,50 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round";
 
+
+/*.animation-teste {
+  transition-duration: 40000ms !important;
+  transition-timing-function: cubic-bezier(0.79, 0, 1, 1) !important;
+  transition-property: background-color,visibility !important;
+}*/
+
+.icons-sidenav {
+    vertical-align: top;
+}
+
+.animation-sidenav-content {
+  transition-duration: 1000ms !important;
+  transition-timing-function: ease-in-out !important;
+  transition-property: transform,margin-left,margin-right !important;
+}
+
+.widget {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 12px !important;
+  margin-bottom: 0px !important;
+  color: #d9d9d9 !important;
+  font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+.widget-navbar {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.widget-toolbar {
+  height: auto;
+  background-color: #767676;
+  box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 45%) !important;
+  width: auto !important;
+  margin-top: 59px;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
 .navbar-autohide {
   top: var(--navPosition) !important;
   transition: top 0.4s;
@@ -23,7 +67,7 @@
 }
 
 .temp {
-    width:340px !important;
+    width:290px !important;
 }
 
 .submenu {
@@ -32,10 +76,15 @@
 
 .side_menu_texto {
     color: #525252 !important;
+    font-size: 17px !important;
+    font-weight: 400 !important;
 }
 
+  /*.side_menu_texto:hover {
+    color: #adb5bd !important;
+  }*/
+
 .sidenav-container{
-    margin-top: 54px;
     background-color: white;
 }
 
@@ -71,8 +120,8 @@
 .sidenav-list {
   padding-top: 15px !important;
   position: fixed;
-  width: 100%;
-  top: var(--toptestexpto) !important;
+  width: 280px;
+/*  top: var(--toptestexpto) !important;*/
   transition: top 0.4s;
 }
 
