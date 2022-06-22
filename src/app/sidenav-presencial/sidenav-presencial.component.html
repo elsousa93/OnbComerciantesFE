@@ -1,123 +1,82 @@
 <mat-sidenav-container class="sidenav-container animation-teste">
-  <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'" [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp">
-    <mat-nav-list class="sidenav-list">
+  <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'" [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp position-fixed">
+    <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'down' : 'up'">
       <div class="accordion" id="accordion">
-        <div class="nav-item">
+        <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">home</i>&nbsp;Início &nbsp;</p></a>
-          <!--<a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><span class="material-symbols-rounded">home</span><span>&nbsp;&nbsp;Início</span></a>-->
         </div>
-        <div class="nav-item">
-          <!--<a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><i class="far fa-folder-open fs-4"></i>&nbsp;&nbsp;Abertura de processo</a>-->
+        <div class="nav-item" *ngIf="userPermissions.ProcessOpening">
           <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">folder_open</i>&nbsp;Abertura de processo &nbsp;</p></a>
-          <!--<a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion"><span class="material-symbols-rounded">folder_open</span>&nbsp;&nbsp;Abertura de processo</a>-->
         </div>
-        <div>
-          <!--<a id="headingOne3" role="button" class="sidenav-item sidenav-button-accordion nav-link side_menu_texto dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">-->
-          <!--<i class="far fa-edit fs-4"></i>-->
-          <!--<span class="material-symbols-rounded">
-      edit_note
-    </span>
-    &nbsp; Tratamento de Processos
-  </a>-->
+        <div *ngIf="userPermissions.ProcessHandling">
           <a id="headingOne3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle"><i class="material-symbols-rounded fa-lg icons-sidenav">edit_note</i>&nbsp;Tratamento de Processos &nbsp;</p>
           </a>
           <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3" data-bs-parent="#accordion">
-            <div class="submenu-link ps-3 ms-3 col-10 ps-0 pe-0">
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EligibilityOpinions">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
-                  <!--<i class="bi bi-arrow-return-right fa-lg"></i>-->
-                  <!--<span class="material-symbols-rounded">
-    subdirectory_arrow_right
-  </span>
-  <span class="sidenav-item navbar-text ps-2 mt-3">
-    <a class="side_menu_texto align-self-end">Múltiplos clientes</a>
-  </span>-->
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Múltiplos clientes &nbsp;</p></a>
-
+                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Pareceres de Elegibilidade &nbsp;</p></a>
                 </span>
-                
               </nav>
             </div>
-            <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.MultipleClientes">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
-                  <!--<i class="bi bi-arrow-return-right fa-lg"></i>-->
-                  <!--<span class="material-symbols-rounded">
-            subdirectory_arrow_right
-            <span class="sidenav-item navbar-text ps-2 mt-3">
-              <a class="side_menu_texto align-self-end">Validação DO</a>
-            </span>
-          </span>-->
+                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Múltiplos clientes &nbsp;</p></a>
+                </span>
+              </nav>
+            </div>
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.DOValidation">
+              <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+                <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação DO &nbsp;</p></a>
                 </span>
 
               </nav>
             </div>
-            <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.NegotiationAproval">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
-                  <!--<i class="bi bi-arrow-return-right fa-lg"></i>-->
-                  <!--<span class="material-symbols-rounded">
-    subdirectory_arrow_right
-  </span>
-  <span class="navbar-text text-light ps-2 mt-3">
-    <a class="side_menu_texto align-self-end">Aprovação de negociação de precário</a>
-  </span>-->
-
                   <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Aprovação de &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;negociação de precário &nbsp;</p></a>
                 </span>
-                
+
               </nav>
             </div>
-            <div class="ps-3 ms-3 col-10 ps-0 pe-0">
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EnrollmentValidation">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <!--<img src="assets/images/L.SVG" class="img-fluid ms-0" width="9">-->
-                  <!--<i class="bi bi-arrow-return-right fa-lg"></i>-->
-                  <!--<span class="material-symbols-rounded">
-    subdirectory_arrow_right
-  </span>
-  <span class="navbar-text ps-2 mt-3">
-    <a class="side_menu_texto align-self-end mt-3">Validação matricula SIBS</a>
-  </span>-->
                   <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação matricula SIBS &nbsp;</p></a>
                 </span>
-                
+
+              </nav>
+            </div>
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.RiskOpinion">
+              <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+                <span class="sub-icon sidenav-item navbar-text text-light">
+                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Parecer de Risco &nbsp;</p></a>
+                </span>
+              </nav>
+            </div>
+            <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.ComplianceDoubts">
+              <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
+                <span class="sub-icon sidenav-item navbar-text text-light">
+                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Dúvidas Compliance &nbsp;</p></a>
+                </span>
               </nav>
             </div>
           </div>
         </div>
-        <div class="nav-item">
-          <!--<a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion">-->
-          <!--<i class="material-icons md-48">
-    search
-  </i>-->
-          <!--<span class="material-symbols-rounded">
-      search
-    </span>
-    &nbsp;Consultas
-  </a>-->
+        <div class="nav-item" *ngIf="userPermissions.Consultation">
           <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">search</i>&nbsp;Consultas&nbsp;</p></a>
         </div>
         <div class="nav-item">
-          <!--<a role="button" class="sidenav-item nav-link side_menu_texto sidenav-button-accordion">-->
-          <!--<i class="pe-1 far fa-question-circle fs-4"></i>-->
-          <!--<span class="material-symbols-rounded">
-      help
-    </span>
-    &nbsp; FAQS
-  </a>-->
           <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">help</i>&nbsp;FAQS &nbsp;</p></a>
         </div>
       </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="animation-sidenav-content" style="padding-bottom:800px">
-    <!--<router-outlet></router-outlet>-->
     <div class="container-fluid">
       <div class="row">
         <div class="offset-1 col-10 ps-0 pe-0 bg-white"></div>
@@ -128,4 +87,5 @@
       </div>
     </div>
   </mat-sidenav-content>
+
 </mat-sidenav-container>

@@ -48,16 +48,13 @@ export class AppComponent {
 
   updateNavBar(pageNameInput: string){
     this.pageName = pageNameInput;
-    console.log(this.pageName);
   }
 
   toggleSideNav(toggled: boolean) {
-    console.log("chegou aqui");
     this.isToggle = toggled;
   }
 
   toggleAutoHide(toggled: boolean) {
-    console.log("testing!!");
     this.isAutoHide = toggled;
   }
 

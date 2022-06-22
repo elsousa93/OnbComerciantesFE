@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { onSideNavChange } from '../animation';
+import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
+import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
 
 @Component({
   selector: 'app-sidenav-presencial',
   templateUrl: './sidenav-presencial.component.html',
   styleUrls: ['./sidenav-presencial.component.css'],
-  animations: [onSideNavChange]
+  animations: [onSideNavChange, AutoHideSidenavAdjust]
 })
 export class SidenavPresencialComponent implements OnInit {
 
@@ -22,17 +23,17 @@ export class SidenavPresencialComponent implements OnInit {
 
 
   userType: string = "Banca";
+  userPermissions: MenuPermissions;
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-
   }
 
   ngOnInit(): void {
-    
+    this.userPermissions = getMenuPermissions(UserPermissions.DO);
   }
 
   public close() {
@@ -41,10 +42,6 @@ export class SidenavPresencialComponent implements OnInit {
 
 
   assignMenus() {
-    switch (this.userType) {
-      case "Banca":
-
-    }
   }
 
   public toggleSideNav(toggled: boolean) {

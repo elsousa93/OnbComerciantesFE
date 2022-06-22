@@ -1,12 +1,12 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { autohideadjust } from '../animation';
+import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
 
 @Component({
   selector: 'app-nav-menu-presencial',
   templateUrl: './nav-menu-presencial.component.html',
   styleUrls: ['./nav-menu-presencial.component.css'],
-  animations: [autohideadjust]
+  animations: [AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo]
 })
 export class NavMenuPresencialComponent implements OnInit {
 
@@ -15,7 +15,7 @@ export class NavMenuPresencialComponent implements OnInit {
   
 
   isToggle: boolean = false;
-  isAutohide: boolean = true;
+  isAutohide: boolean = false;
 
   @HostBinding('style.--navPosition') public navPosition: string = '0';
 
@@ -29,8 +29,8 @@ export class NavMenuPresencialComponent implements OnInit {
 
     //this.navPosition = '0';
     var prevScrollpos = window.pageYOffset;
-    console.log(prevScrollpos);
 
+    
     window.addEventListener("scroll", this.autohide.bind(this), false);
 
     //this.navPosition = '0';
@@ -44,23 +44,13 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   public autohide() {
-    //this.navPosition = "-50px";
-
     var currentScrollPos = window.pageYOffset;
     if (this.prevScrollpos > currentScrollPos) {
-      console.log("a");
-      //this.teste("0");
-      this.navPosition = "0";
-      console.log(this.navPosition);
       this.autoHide.emit(true);
-      this.isAutohide = true;
-    } else {
-      console.log("b");
-      this.navPosition = "-60px";
-      console.log(this.navPosition);
-      this.autoHide.emit(false);
       this.isAutohide = false;
-      //this.teste("-50px");
+    } else {
+      this.autoHide.emit(false);
+      this.isAutohide = true;
     }
     this.prevScrollpos = currentScrollPos;
   }

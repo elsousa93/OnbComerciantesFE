@@ -19,19 +19,65 @@ export const onSideNavChange = trigger('onSideNavChange', [
   transition('open => close', animate('1000ms ease-in-out')),
 ]);
 
-export const autohideadjust = trigger('autohideadjust', [
-  state('on',
+export const AutoHideNavbarAdjust = trigger('AutoHideNavbarAdjust', [
+  state('show',
     style({
       'top': '0'
     })
   ),
-  state('off',
+  state('hide',
     style({
-      'top': '57px'
+      'top': '-58px'
 
     })
   ),
-  transition('on => off', animate('400ms ease-in-out')),
-  transition('off => on', animate('400ms ease-in-out')),
+  transition('show => hide', animate('400ms ease-in-out')),
+  transition('hide => show', animate('400ms ease-in-out')),
+]);
+
+export const AutoHideClientBarAdjust = trigger('AutoHideClientBarAdjust', [
+  state('up',
+    style({
+      'top': '0'
+    })
+  ),
+  state('down',
+    style({
+      'top': '58px'
+
+    })
+  ),
+  transition('up => down', animate('400ms ease-in-out')),
+  transition('down => up', animate('400ms ease-in-out')),
+]);
+
+export const AutoHideSidenavAdjust = trigger('AutoHideSidenavAdjust', [
+  state('up',
+    style({
+      'top': '35px'
+    })
+  ),
+  state('down',
+    style({
+      'top': '90px'
+    })
+  ),
+  transition('up => down', animate('400ms ease-in-out')),
+  transition('down => up', animate('400ms ease-in-out')),
+]);
+
+export const AutoHideLogo = trigger('AutoHideLogo', [
+  state('show',
+    style({
+      'visibility': 'visible'
+    })
+  ),
+  state('hide',
+    style({
+      'visibility': 'hidden'
+    })
+  ),
+  transition('up => down', animate('400ms ease-in-out')),
+  transition('down => up', animate('400ms ease-in-out')),
 ]);
 

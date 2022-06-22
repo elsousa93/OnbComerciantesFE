@@ -1,14 +1,20 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round";
 
-
-/*.animation-teste {
-  transition-duration: 40000ms !important;
-  transition-timing-function: cubic-bezier(0.79, 0, 1, 1) !important;
-  transition-property: background-color,visibility !important;
-}*/
-
-.icons-sidenav {
+.counter {
+  margin-bottom: 0px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+/*  background-image: radial-gradient(circle, #ffc107 100%, white 100%);*/
+  border: 0px solid #fff;
+  background-color:white;
+  /*border-top: 2px solid #fff;*/
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+  .icons-sidenav {
     vertical-align: top;
 }
 
@@ -22,7 +28,7 @@
   font-family: Arial, Helvetica, sans-serif !important;
   font-size: 12px !important;
   margin-bottom: 0px !important;
-  color: #d9d9d9 !important;
+  color: /*#d9d9d9*/ white !important;
   font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
 }
 
@@ -36,9 +42,9 @@
   background-color: #767676;
   box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 45%) !important;
   width: auto !important;
-  margin-top: 59px;
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
+  /*margin-top: 59px;*/
+/*  padding-top: 5px !important;
+  padding-bottom: 5px !important;*/
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -46,7 +52,7 @@
 }
 
 .navbar-autohide {
-  top: var(--navPosition) !important;
+  /*top: var(--navPosition) !important;*/
   transition: top 0.4s;
 }
 
@@ -67,7 +73,7 @@
 }
 
 .temp {
-    width:290px !important;
+    width:285px !important;
 }
 
 .submenu {
@@ -118,11 +124,14 @@
 }
 
 .sidenav-list {
-  padding-top: 15px !important;
-  position: fixed;
+  /*padding-top: 20px !important;*/
+/*  top: 35px;
+*/  position: fixed;
   width: 280px;
 /*  top: var(--toptestexpto) !important;*/
-  transition: top 0.4s;
+  transition: top 2.4s;
+  margin: 0px;
+  padding: 0px;
 }
 
 .sidenav-item {
