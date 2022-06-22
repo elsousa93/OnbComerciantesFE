@@ -116,7 +116,7 @@ export class StakeholdersComponent implements OnInit {
 
   onClickEdit(fiscalId) {
     console.log("edit");
-    this.route.navigate(['/add-stakeholder/', fiscalId]);
+    this.route.navigate(['/update-stakeholder/', fiscalId]);
   }
 
   onClickDelete(fiscalId, clientNr) {

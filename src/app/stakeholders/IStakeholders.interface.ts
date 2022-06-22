@@ -11,6 +11,7 @@ export interface IStakeholders {
   email: string
   birthDate: string
   pep: Pep
+  role: string;
 }
 
 export interface IdentificationDocument {

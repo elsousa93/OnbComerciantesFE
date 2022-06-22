@@ -52,6 +52,8 @@ import { MaterialModule } from './material/material.module';
 import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component';
 import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presencial.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -67,6 +69,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AddStoreComponent,
     StakeholdersComponent,
     NewStakeholderComponent,
+    UpdateStakeholderComponent,
     ComprovativosComponent,
     CheckDocumentsComponent,
     CommercialOfferListComponent,
@@ -120,6 +123,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
+      { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
+
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
