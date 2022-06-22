@@ -31,8 +31,7 @@ export class NewStakeholderComponent implements OnInit {
   flagRecolhaEletronica: boolean = true;
 
   formNewStakeholder!: FormGroup;
-
-
+ 
   newStake: IStakeholders = {
     fiscalId: 0,
     fullName: '',
@@ -55,8 +54,6 @@ export class NewStakeholderComponent implements OnInit {
 
     this.ngOnInit();
 
-    console.log(this.newStake.fiscalId);
-
     if (this.newStake.fiscalId != 0) {
       http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.fiscalId).subscribe(result => {
         console.log(result);
@@ -66,6 +63,7 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.newStake.fiscalId = Number(this.router.snapshot.params['nif']);
     this.createForm();
   }
 
