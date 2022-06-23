@@ -1,6 +1,46 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round";
 
+.icon-dash {
+  font-size: 51px;
+  min-width: 0px;
+  padding-top: 17px;
+  color: #d9d9d9;
+}
+
+.subtitulo_barras_horizontais {
+  font-family: sans-serif;
+  font-size: 15px;
+  color: #97aae6;
+}
+
+.numero-dash {
+  font-family: sans-serif !important;
+  font-size: 47px !important;
+  letter-spacing: 0em !important;
+  padding-top: 6px ;
+  padding-bottom: 0px ;
+  border-width: 0px !important;
+  border-style: none !important;
+  text-shadow: 1px 1px 3px #00000044 !important;
+}
+
+.subtitulo_dashboard {
+    font-size: 12px !important;
+    font-family: sans-serif !important;
+    color: #b9c1d9 !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 11px !important;
+}
+
+.fundo_dash {
+  border: 0px solid #1e66b0 !important;
+  background-color: #1e66b0 !important;
+}
+
+
 .counter {
   margin-bottom: 0px;
   padding-top: 1px;
@@ -16,6 +56,12 @@
 }
   .icons-sidenav {
     vertical-align: top;
+}
+
+.footer-bottom {
+    position:absolute;
+    width:100%;
+    z-index: 999;
 }
 
 .animation-sidenav-content {
@@ -92,6 +138,7 @@
 
 .sidenav-container{
     background-color: white;
+    margin-top: 75px;
 }
 
 .sidenav-button {

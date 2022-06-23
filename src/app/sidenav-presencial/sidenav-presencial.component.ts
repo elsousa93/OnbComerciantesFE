@@ -52,9 +52,4 @@ export class SidenavPresencialComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-
-  public adjustMenuList() {
-
-  }
-
 }
