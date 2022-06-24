@@ -7,7 +7,7 @@ import { HttpUtilService } from './comprovativos/services/http.services';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -54,6 +54,7 @@ import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presenc
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NumberCounterComponent } from './number-counter/number-counter.component';
 
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
@@ -68,6 +69,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AddStoreComponent,
     StakeholdersComponent,
     NewStakeholderComponent,
+    UpdateStakeholderComponent,
     ComprovativosComponent,
     CheckDocumentsComponent,
     CommercialOfferListComponent,
@@ -122,6 +124,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
+      { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
+
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
@@ -150,8 +154,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
-      { path: 'acceptance', component: AcceptanceComponent },
-
+      { path: 'acceptance/:submissionID', component: AcceptanceComponent },
+      { path: 'process', component: ProcessComponent }
+      
     ]),
     TranslateModule.forRoot({
       loader: {
@@ -161,7 +166,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

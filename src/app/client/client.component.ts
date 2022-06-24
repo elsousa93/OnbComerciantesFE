@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { docType } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
@@ -223,7 +223,15 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado(id: any) {
-    this.route.navigate(['/clientbyid/', id]);
+
+    let navigationExtras: NavigationExtras = {
+      state: {
+        isCompany: this.showButtons
+      } 
+    }; 
+    this.route.navigate(['/clientbyid/', id], navigationExtras);
+
+    //isto nao esta a aparecer na versao mais nova.
   }
 
   activateButtons(id: boolean) {

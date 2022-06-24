@@ -14,15 +14,15 @@ export class ProcessService {
     private baseUrl: string, private route: Router) { }
 
    getAllProcessSubmissions(id) : any {
-     return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllProcesses/ghjkl');
+     return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllProcesses/' + id);
    }
 
     getAllSuccessSubmissions(id): any {
-      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllSuccessProcesses/ghjkl');
+      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllSuccessProcesses/' + id);
     }
 
     getAllIncompletedSubmissions(id): any {
-      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllIncompletedProcesses/ghjkl');
+      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllIncompletedProcesses/' + id);
     }
 
     getSubmissionByID(id): any {

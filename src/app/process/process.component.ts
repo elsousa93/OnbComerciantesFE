@@ -24,15 +24,15 @@ export class ProcessComponent implements OnInit {
 
     this.ngOnInit();
 
-    ProcessService.getAllProcessSubmissions("olaa").subscribe(result => {
+    ProcessService.getAllProcessSubmissions("1").subscribe(result => {
       this.allProcesses = result;
     });
 
-    ProcessService.getAllSuccessSubmissions("olaa").subscribe(result => {
+    ProcessService.getAllSuccessSubmissions("1").subscribe(result => {
       this.allSuccessProcesses = result;
     });
 
-    ProcessService.getAllIncompletedSubmissions("olaa").subscribe(result => {
+    ProcessService.getAllIncompletedSubmissions("2").subscribe(result => {
       this.allIncompletedProcesses = result;
     });
 
@@ -41,6 +41,12 @@ export class ProcessComponent implements OnInit {
     //  console.log(this.allProcesses);
     //  }, error => console.error(error));
     
+  }
+
+  redirectToMoreInformation(id) {
+
+    this.route.navigate(['/acceptance/', id]);
+
   }
 
   ngOnInit(): void {

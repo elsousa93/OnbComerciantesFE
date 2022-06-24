@@ -1,118 +1,247 @@
-<p class="text-primary" style="margin-top:5%;">SELECIONE A FORMA DE ASSINATURA DE CONTRATO</p>
-<p> Selecione uma das opções </p>
 
-<label for="opt1">Assinatura em papel</label>
-<input id="opt1" [value]="1"
-       [(ngModel)]="isVisible"
-       #opt1="ngModel"
-       name="isVisible"
-       type="radio"
-       [checked]="isSelected" />
-
-
-<label for="opt2">Assinatura eletrónica</label>
-<input id="opt2" [value]="0"
-       [(ngModel)]="isVisible"
-       #opt2="ngModel"
-       name="isVisible"
-       type="radio"
-       [checked]="!isSelected" />
-
-
-<p class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
-<table class='table table-striped' aria-labelledby="tableLabel">
-  <thead>
-    <tr>
-      <th>Nome do Cliente</th>
-      <th>NIF</th>
-      <th>Letra</th>
-      <th>Tipo de assinatura</th>
-      <th>Seleção</th>
-      <th>Tipo assinatura digital</th>
-      <th>Tipo de identificação </th>
-
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="clickable">
-      <td>BIJAL DE CANELA</td>
-      <td>123456789</td>
-      <td>A</td>
-      <td>ASSINA SOZINHO</td>
-      <td><input id="representative" type="checkbox" (change)="changeRepresentativeSelected($event)" /></td>
-      <td>
-        <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
-        <select *ngIf="isVisible == 0"><option>OTP</option></select>
-      </td>
-      <td>
-        <select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
-        <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
-      </td>
-
-    </tr>
-
-    <tr class="clickable">
-      <td>BIJAL DE CANELA</td>
-      <td>123456789</td>
-      <td>A</td>
-      <td>ASSINA SOZINHO</td>
-      <td><input id="representative1" type="checkbox" (change)="changeRepresentativeSelected($event)" /></td>
-      <td>
-        <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
-        <select *ngIf="isVisible == 0"><option>OTP</option></select>
-      </td>
-      <td>
-        <select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
-        <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
-      </td>
-
-    </tr>
-  </tbody>
-</table>
-
-<div class="d-flex justify-content-end">
-  <button *ngIf="representativesSelected.length == 0" class="btn btn-primary float-right" disabled>VALIDAR PODERES DE REPRESENTAÇÃO</button>
-  <button *ngIf="representativesSelected.length > 0" class="btn btn-primary float-right">VALIDAR PODERES DE REPRESENTAÇÃO</button>
+<div style="margin-top:5%;">
+  <button class="btn btn-primary" (click)="setCurrentPage(false)"> HISTÓRICO </button>
+  <button class="btn btn-primary" (click)="setCurrentPage(true)"> ACEITAÇÃO </button>
 </div>
-<h6>Observações:</h6>
-<input type="text" placeholder="Observações..." class="w-100" />
 
-<div *ngIf="isVisible == 1" class="d-flex justify-content-between mt-3">
+<div *ngIf="!acceptancePage">
 
   <div>
-    <button class="btn btn-primary" (click)="uploadFiles()">Carregar digitalizados</button>
-  </div>
-  <div>
-    <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
-    <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,null)" style="display: none" accept=".pdf" multiple>
-  </div>
-  <div>
-    <a class="btn btn-primary" [href]="downloadPath" [download]="download">Download do documento</a>
-  </div>
-  <div *ngIf="files.length > 0">
-    <h2>Ficheiros anexados</h2>
+
     <div>
-      <div *ngFor="let file of files">
-        <p>{{file.name}}</p>
-        <button (click)="removeFile(file)">Remove</button>
+      <label for="processNumber">Número do processo </label>
+      <p id="processNumber"> {{process.processNumber == undefined ? "-" : process.processNumber}} </p>
+    </div>
+    <div>
+      <label for="contractNumber">Número do contrato</label>
+      <p id="contractNumber"> {{process.contractNumber == undefined ? "-" : process.contractNumber}} </p>
+    </div>
+
+    <div>
+      <label for="currentState"> Estado atual </label>
+      <p id="currentState"> {{process.state == undefined ? "-" : process.state}} </p>
+    </div>
+
+    <div>
+      <label for="date"> Data </label>
+      <p id="date"> {{process.requestDate == undefined ? "-" : process.requestDate}} </p>
+    </div>
+    <div>
+      <label for="user"> Utilizador </label>
+      <p id="user"> - </p>
+    </div>
+    <div>
+      <label for="observations"> Observações </label>
+      <p id="observations"> </p>
+    </div>
+  </div>
+
+  <p>Pareceres/Decisão</p>
+  <br>
+
+  <p class="text-primary">Cliente Empresa</p>
+  <table class='table table-striped' aria-labelledby="tableLabel">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>NIPC</th>
+        <th>Nº Cliente</th>
+        <th>BEF</th>
+        <th>PEP</th>
+        <th>Elegibilidade</th>
+        <th>Nº Parecer</th>
+        <th>Compliance Office</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="clickable">
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <p class="text-primary">Interveniente</p>
+  <table class='table table-striped' aria-labelledby="tableLabel">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>NIF</th>
+        <th>Nº Cliente</th>
+        <th>BEF</th>
+        <th>PEP</th>
+        <th>Elegibilidade</th>
+        <th>Nº Parecer</th>
+        <th>Compliance Office</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="clickable" *ngFor="let stake of process.stakeHolders">
+        <td> - </td>
+        <td> - </td>
+        <td> {{stake.id == undefined ? "-" : stake.id}} </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+      </tr>
+    </tbody>
+  </table>
+  
+</div>
+
+
+<div *ngIf="acceptancePage">
+  <p class="text-primary" style="margin-top:5%;">SELECIONE A FORMA DE ASSINATURA DE CONTRATO</p>
+  <p> Selecione uma das opções </p>
+
+  <label for="opt1">Assinatura em papel</label>
+  <input id="opt1" [value]="1"
+         [(ngModel)]="isVisible"
+         #opt1="ngModel"
+         name="isVisible"
+         type="radio"
+         [checked]="isSelected" />
+
+
+  <label for="opt2">Assinatura eletrónica</label>
+  <input id="opt2" [value]="0"
+         [(ngModel)]="isVisible"
+         #opt2="ngModel"
+         name="isVisible"
+         type="radio"
+         [checked]="!isSelected" />
+
+
+  <p class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
+  <table class='table table-striped' aria-labelledby="tableLabel">
+    <thead>
+      <tr>
+        <th>Nome do Cliente</th>
+        <th>NIF</th>
+        <th>Letra</th>
+        <th>Tipo de assinatura</th>
+        <th>Seleção</th>
+        <th>Tipo assinatura digital</th>
+        <th>Tipo de identificação </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="clickable" *ngFor="let stakeholder of process.stakeHolders">
+        <td>{{stakeholder.id == undefined ? "-" : stakeholder.id}}</td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td><input #{{stakeholder.id}} id="{{stakeholder.id}}" type="checkbox" [checked]="representativesSelected.indexOf(stakeholder.id) > -1" (change)="changeRepresentativeSelected($event)" /></td>
+        <td>
+          <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
+          <select *ngIf="isVisible == 0"><option>OTP</option></select>
+        </td>
+        <td>
+          <select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
+          <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="d-flex justify-content-end">
+    <button *ngIf="representativesSelected.length == 0" class="btn btn-primary float-right" disabled>VALIDAR PODERES DE REPRESENTAÇÃO</button>
+    <button *ngIf="representativesSelected.length > 0" class="btn btn-primary float-right">VALIDAR PODERES DE REPRESENTAÇÃO</button>
+  </div>
+  <h6>Observações:</h6>
+  <input type="text" placeholder="Observações..." class="w-100" />
+
+  <div *ngIf="isVisible == 1" class="d-flex justify-content-between mt-3">
+
+    <div>
+      <button class="btn btn-primary" (click)="uploadFiles()">Carregar digitalizados</button>
+    </div>
+    <div>
+      <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
+      <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,null)" style="display: none" accept=".pdf" multiple>
+    </div>
+    <div>
+      <a class="btn btn-primary" [href]="downloadPath" [download]="download">Download do documento</a>
+    </div>
+    <div *ngIf="files.length > 0">
+      <h2>Ficheiros anexados</h2>
+      <div>
+        <div *ngFor="let file of files">
+          <p>{{file.name}}</p>
+          <button (click)="removeFile(file)">Remove</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="d-flex justify-content-end mt-3">
-  <button class="btn btn-primary" *ngIf="isVisible == 0" (click)="soapCall()">PLATAFORMA DE ASSINATURA DIGITAL</button>
-</div>
-
-<div class="d-block" *ngIf="isVisible == 1">
-  <div>
-    <input type="checkbox" id="1" [checked]="isValid" (change)="isValidChange($event.target.checked)" />
-    <label for="1">Validou que os documentos necessários foram efetivamente os carregados?</label>
+  <div class="d-flex justify-content-end mt-3">
+    <button class="btn btn-primary" *ngIf="isVisible == 0" (click)="openModal(template)">PLATAFORMA DE ASSINATURA DIGITAL</button>
   </div>
 
-  <div>
-    <input type="checkbox" id="2" />
-    <label for="2">Na presença do cliente? </label>
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Envio para a PAD</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Processo enviado para assinatura digital: <!--aqui vai ser o url para redirecionar para a pagina da assinatura digital-->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()">Ok</button>
+    </div>
+  </ng-template>
+
+  <div *ngIf="startedDigitalSignature && isVisible == 0">
+    <button class="btn btn-primary"> Carregar documentos da PAD </button>
+    <button class="btn btn-primary" (click)="cancelDigitalSignature()"> Cancelar documentos da PAD </button>
   </div>
+
+  <div class="d-block" *ngIf="isVisible == 1 || startedDigitalSignature">
+    <div>
+      <input type="checkbox" id="1" [checked]="isValid" (change)="isValidChange($event.target.checked)" />
+      <label for="1">Validou que os documentos necessários foram efetivamente os carregados?</label>
+    </div>
+
+    <div>
+      <input type="checkbox" id="2" />
+      <label for="2">Na presença do cliente? </label>
+    </div>
+  </div>
+
+  <br>
+
+  <div *ngIf="isValid">
+    <button class="btn btn-primary" (click)="openModal(template1)">Submeter Pedido</button>
+  </div>
+
+  <ng-template #template1>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Submeter pedido</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Ao efetuar a submissão, o processo irá continuar o tratamento. Deseja continuar?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()">Voltar</button>
+      <button type="button" class="btn btn-default"> <!--(click)=""-->Continuar</button>
+    </div>
+  </ng-template>
 </div>
 

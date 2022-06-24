@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Process } from '../process.interface';
@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs';
 import { ISubmission } from '../../submission/ISubmission.interface';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { ProcessService } from '../process.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-acceptance',
@@ -17,7 +18,7 @@ export class AcceptanceComponent implements OnInit {
 
   processId: string = this.router.snapshot.params['submissionID'];
   //processId: number = 123456;
-  process: ISubmission;
+  process: any;
   isVisible: any;
   isSelected: boolean = true;
   username = "";
@@ -34,11 +35,16 @@ export class AcceptanceComponent implements OnInit {
   representativesSelected: String[] = [];
   isValid: boolean = false;
 
+  modalRef: BsModalRef;
+
+  startedDigitalSignature: boolean = false;
+  acceptancePage: boolean = false;
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router,
     private ProcessService: ProcessService,
-    private compService: ComprovativosService) {
+    private compService: ComprovativosService, private modalService: BsModalService) {
 
     //this.loadXMLData();
     this.oAuth();
@@ -363,4 +369,21 @@ export class AcceptanceComponent implements OnInit {
   isValidChange(value: boolean) {
     this.isValid = value;
   }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+    this.startedDigitalSignature = true;
+  }
+
+  cancelDigitalSignature() {
+    if (this.isValid) {
+      this.isValid = false;
+    }
+    this.startedDigitalSignature = false;
+  }
+
+  setCurrentPage(value: boolean) {
+    this.acceptancePage = value;
+  }
+
 }

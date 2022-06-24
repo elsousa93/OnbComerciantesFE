@@ -1,3 +1,5 @@
+import { IStakeholders } from "../stakeholders/IStakeholders.interface"
+
 export interface Process {
   merchant: {
     fiscalId: string,
@@ -10,5 +12,7 @@ export interface Process {
   submissionType: string,
   contractNumber: number,
   requestDate: Date,
-  state: string 
+  state: string,
+  stakeholders: String[]
+  documents: String[]
 }
