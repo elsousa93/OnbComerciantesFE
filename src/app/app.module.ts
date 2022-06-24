@@ -53,6 +53,7 @@ import { FooterPresencialComponent } from './footer-presencial/footer-presencial
 import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presencial.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NumberCounterComponent } from './number-counter/number-counter.component';
+import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
