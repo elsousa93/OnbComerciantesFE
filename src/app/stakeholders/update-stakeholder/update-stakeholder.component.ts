@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 export class UpdateStakeholderComponent implements OnInit {
 
   newStake: IStakeholders = {
-  
   "fiscalId": 0,
     "identificationDocument": {
     "identificationDocumentType": "",
@@ -100,12 +99,11 @@ export class UpdateStakeholderComponent implements OnInit {
     this.ngOnInit();
   }
 
-
   ngOnInit(): void {
     this.createForm();
-    console.log(this.router.snapshot.params['nif'])
-    this.http.get<IStakeholders>(this.baseUrl + 'bestakeholders/GetStakeholderByID/'
-      + this.newStake.fiscalId).subscribe(result => {
+    this.fiscalId = Number(this.router.snapshot.params['nif']);
+    this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/GetStakeholderByID/'
+      + this.fiscalId).subscribe(result => {
         console.log("GetStakeholderById");
         console.log(result);
         this.createForm();
@@ -176,10 +174,10 @@ export class UpdateStakeholderComponent implements OnInit {
 
      console.log("TESTE");
     // https:/ / localhost: 7269 / BEStakeholders / EditStakeholderByID / 1000
-    this.http.post<IStakeholders>(this.baseUrl + 'BEStakeholders/EditStakeholderByID' +
-      this.formStakeholderSearch.value.fiscalId, this.newStake).subscribe(result => {
-      console.log(result);
-        console.log("ENTREI NO GET");
+    this.http.post<IStakeholders>(this.baseUrl + 'BEStakeholders/EditStakeholderByID/' +
+    this.newStake.fiscalId, this.newStake).subscribe(result => {
+      alert("Atualização efetuada!");
+      this.route.navigate(['stakeholders']);
     }, error => console.error(error));
 
     console.log("executed edit stake by ID");
