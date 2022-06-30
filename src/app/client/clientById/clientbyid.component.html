@@ -340,30 +340,45 @@
 
             <br>
 
-            <div *ngFor="let continent of checkedContinents">
+            <!--<div *ngFor="let continent of checkedContinents">
               <div *ngFor="let country of Countries">
                 <div *ngIf="country.continent == continent && client.sales.servicesOrProductsDestinations.indexOf(country.country) > -1">
                   <input #{{country.country}}
                          name="{{country.country}}" type="checkbox" id="{{country.country}}"
                          (change)="onCountryChange($event)" checked>
-                  <label for="{{country.country}}" class=""> {{country.country}} </label>
+                  <label for="{{country.country}}" class=""> {{country.country}} </label>-->
 
                   <!--<input required ngModel #destinationCountries="ngModel"
-           name="destinationCountries" type="checkbox" id="destinationCountries"
-           [(ngModel)]="client.sales.servicesOrProductsDestinations" (change)="teste($event)">
-    <label for="destinationCountries" class=""> {{country.country}} </label>-->
-                </div>
+         name="destinationCountries" type="checkbox" id="destinationCountries"
+         [(ngModel)]="client.sales.servicesOrProductsDestinations" (change)="teste($event)">
+  <label for="destinationCountries" class=""> {{country.country}} </label>-->
+                  <!--</div>
 
-                <div *ngIf="country.continent == continent && client.sales.servicesOrProductsDestinations.indexOf(country.country) == -1">
-                  <input #{{country.country}}
-                         name="{{country.country}}" type="checkbox" id="{{country.country}}"
-                         (change)="onCountryChange($event)">
-                  <label for="{{country.country}}" class=""> {{country.country}} </label>
-                </div>
+    <div *ngIf="country.continent == continent && client.sales.servicesOrProductsDestinations.indexOf(country.country) == -1">
+      <input #{{country.country}}
+             name="{{country.country}}" type="checkbox" id="{{country.country}}"
+             (change)="onCountryChange($event)">
+      <label for="{{country.country}}" class=""> {{country.country}} </label>
+    </div>
 
+  </div>-->
+                  <!-- </div> -->
+            <div *ngIf="client.sales.servicesOrProductsDestinations.length > 0" style="overflow:scroll; height:100px;">
+                  <div *ngFor="let value of client.sales.servicesOrProductsDestinations">
+                    <input #{{value}}
+                           name="{{value}}" type="checkbox" id="{{value}}"
+                           (change)="onCountryChange($event)" checked>
+                    <label for="{{value}}" class=""> {{value}} </label>
+                  </div>
               </div>
-            </div>
-            <!--<input required ngModel #destinationCountries="ngModel"
+
+                  <div>
+                    <input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">
+                    <button (click)="addCountryToList(countryName.value)">Adicionar</button>
+
+                  </div>
+
+                  <!--<input required ngModel #destinationCountries="ngModel"
          name="destinationCountries" type="checkbox" id="destinationCountries"
          [(ngModel)]="client.sales.servicesOrProductsDestinations">
   <label for="destinationCountries" class=""> Europa </label>
@@ -377,13 +392,13 @@
          name="destinationCountries" type="checkbox" id="destinationCountries"
          [(ngModel)]="client.sales.servicesOrProductsDestinations">
   <label for="destinationCountries" class=""> Ásia </label>-->
-            <!--<p *ngFor="let value of Countries">
+                  <!--<p *ngFor="let value of Countries">
     <input  type="checkbox" value={{value.country}} />
     {{value.country}}
   </p>-->
 
 
-          </div>
+                </div>
         </div>
       </div>
     </div>

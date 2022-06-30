@@ -52,6 +52,8 @@ import { MaterialModule } from './material/material.module';
 import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component';
 import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presencial.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InfoDeclarativaAssinaturaComponent } from './client/info-declarativa/info-declarativa-assinatura/info-declarativa-assinatura.component';
+import { StakeholderService } from './stakeholders/stakeholder.service';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -95,7 +97,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AcceptanceComponent,
     NavMenuPresencialComponent,
     FooterPresencialComponent,
-    SidenavPresencialComponent
+    SidenavPresencialComponent,
+    InfoDeclarativaAssinaturaComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -149,7 +152,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
       { path: 'acceptance/:submissionID', component: AcceptanceComponent },
-      { path: 'process', component: ProcessComponent }
+      { path: 'process', component: ProcessComponent },
+      { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent }
       
     ]),
     TranslateModule.forRoot({
@@ -160,7 +164,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

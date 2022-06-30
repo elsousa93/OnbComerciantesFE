@@ -2,24 +2,50 @@
 <br />
 <div class="offset-xxl-1 col-xxl-10">
   <div class="table-responsive">
-    <table class='table' *ngIf="stores">
-      <thead class="table-primary align-middle">
-        <tr class="align-middle">
-          <th scope="col" class="text-center">{{'NameStores'|translate}}</th>
-          <th scope="col" class="text-center">{{'ActivityStores'|translate}}</th>
-          <th scope="col" class="text-center">{{'SubActivityStores'|translate}}</th>
-          <th scope="col" class="text-center">{{'ZoneStores'|translate}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="clickable" *ngFor="let store of stores" [routerLink]="['/add-store/', store.id]">
-          <td class="text-center">{{ store.nameEstab}}</td>
-          <td class="text-center">{{ store.activityEstab }}</td>
-          <td class="text-center">{{ store.subActivityEstab }}</td>
-          <td class="text-center">{{ store.zoneEstab }}</td>
-        </tr>
-      </tbody>
+    <!--<table class='table' *ngIf="stores">
+    <thead class="table-primary align-middle">
+      <tr class="align-middle">
+        <th scope="col" class="text-center">{{'NameStores'|translate}}</th>
+        <th scope="col" class="text-center">{{'ActivityStores'|translate}}</th>
+        <th scope="col" class="text-center">{{'SubActivityStores'|translate}}</th>
+        <th scope="col" class="text-center">{{'ZoneStores'|translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="clickable" *ngFor="let store of stores" [routerLink]="['/add-store/', store.id]">
+        <td class="text-center">{{ store.nameEstab}}</td>
+        <td class="text-center">{{ store.activityEstab }}</td>
+        <td class="text-center">{{ store.subActivityEstab }}</td>
+        <td class="text-center">{{ store.zoneEstab }}</td>
+      </tr>
+    </tbody>
+  </table>-->
+    <table mat-table [dataSource]="dataSource" class="table">
+      <ng-container matColumnDef="nameEstab">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'NameStores'|translate}} </th>
+        <td mat-cell *matCellDef="let store" class="text-center"> {{store.nameEstab}} </td>
+      </ng-container>
+      <ng-container matColumnDef="activityEstab">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'ActivityStores'|translate}} </th>
+        <td mat-cell *matCellDef="let store" class="text-center"> {{store.activityEstab}} </td>
+      </ng-container>
+      <ng-container matColumnDef="subActivityEstab">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'SubActivityStores'|translate}} </th>
+        <td mat-cell *matCellDef="let store" class="text-center"> {{store.subActivityEstab}} </td>
+      </ng-container>
+      <ng-container matColumnDef="zoneEstab">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'ZoneStores'|translate}} </th>
+        <td mat-cell *matCellDef="let store" class="text-center"> {{store.zoneEstab}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary align-middle text-center"></tr>
+      <tr mat-row
+          (click)="navigateTo(row.id)"
+          *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[3, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
   </div>
 </div>
 

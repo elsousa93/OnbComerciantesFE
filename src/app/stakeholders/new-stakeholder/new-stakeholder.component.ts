@@ -37,9 +37,11 @@ export class NewStakeholderComponent implements OnInit {
     fiscalId: 0,
     fullName: '',
     identificationDocument: {
-      identificationDocumentType: "",
-      identificationDocumentId: "",
-      identificationDocumentCountry: "nisi mollit",
+      type: "",
+      number: "",
+      country: {
+        code: "nisi mollit"
+      },
     },
     fiscalAddress: {
       address: "ullamco minim fugiat veniam",
@@ -47,7 +49,7 @@ export class NewStakeholderComponent implements OnInit {
       postalArea: "commodo",
       country: "ex dolor "
     },
-  } as IStakeholders
+  } as unknown as IStakeholders
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -57,7 +59,7 @@ export class NewStakeholderComponent implements OnInit {
 
     console.log(this.newStake.fiscalId);
 
-    if (this.newStake.fiscalId != 0) {
+    if (this.newStake.fiscalId != "0") {
       http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.fiscalId).subscribe(result => {
         console.log(result);
         this.newStake = result;
