@@ -58,7 +58,7 @@ export class NewStakeholderComponent implements OnInit {
 
     this.ngOnInit();
 
-    if (this.newStake.fiscalId != 0) {
+    if (this.newStake.fiscalId != "0") {
       http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.fiscalId).subscribe(result => {
         console.log(result);
         this.newStake = result;
@@ -67,7 +67,7 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.newStake.fiscalId = Number(this.router.snapshot.params['nif']);
+    this.newStake.fiscalId = this.router.snapshot.params['nif'];
     this.createForm();
   }
 
