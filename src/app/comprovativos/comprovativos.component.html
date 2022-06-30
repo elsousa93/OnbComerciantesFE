@@ -27,7 +27,7 @@
         <button type="button" class="btn btn-default btn-sm" value="b" id="b" (click)="search(comp.url, comp.filename)">
         </button>
         <button type="button" class="btn btn-default btn-sm" value="c" id="c"
-          (click)="download(comp.url, comp.filename)">
+                (click)="download(comp.url, comp.filename)">
         </button>
       </td>
       <td *ngIf="comp.filename == ''"></td>
@@ -36,13 +36,15 @@
 </table>
 <div class="col-lg-12">
   <div style="text-align: left;">
-    <a class="btn btn-link" (click)="openModalWithComponent(comprovativos)" role="button" style="color: blue;">Checklist
-      de Documentos >>> </a>
+    <a class="btn btn-link" (click)="openModalWithComponent(comprovativos)" role="button" style="color: blue;">
+      Checklist
+      de Documentos >>>
+    </a>
   </div>
   <div style="text-align: right;">
     <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
     <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,comprovativos)" style="display: none"
-      accept=".pdf">
+           accept=".pdf">
   </div>
 </div>
 
@@ -53,3 +55,11 @@
     <button type="button" class="btn btn-primary" (click)="declineDelete()">Não</button>
   </div>
 </ng-template>
+
+
+<div>
+<button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+        (click)="obterStakeholders()">
+  AVANÇAR&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
+</button>
+</div>

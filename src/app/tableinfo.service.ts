@@ -18,7 +18,7 @@ export class TableinfoService {
 // To get: /api/country
   getAllCountriesList() {
     console.log("get all countries service");
-    this.http.get<ITableInformation>(this.baseUrl + 'betable/GetAllCountries/').subscribe(result => {
+    this.http.get<ITableInformation>(this.baseUrl + 'GetAllCountries/').subscribe(result => {
       console.log(result);
     }, error => console.error(error));
   }
