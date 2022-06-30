@@ -43,7 +43,7 @@ export class ComprovativosComponent implements OnInit {
 
 
   @ViewChild('deleteModal') deleteModal;
-  constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
+  constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
     private modalService: BsModalService, private data: DataService) {
 
     this.ngOnInit();
@@ -146,6 +146,10 @@ export class ComprovativosComponent implements OnInit {
 
   openModalWithComponent(ident: any) {
     this.modalService.show(CheckDocumentsComponent);
+  }
+
+  obterStakeholders() {
+    this.route.navigate(['stakeholders/']);
   }
 
   onClick(e) {
