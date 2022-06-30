@@ -134,17 +134,21 @@ export class ClientByIdComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state) {
       this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
     }
+   
+  }
 
+  getAllLegalNatures() {
     //Chamada à API para obter as naturezas juridicas
-    tableInfo.GetAllLegalNatures().subscribe(result => {
+    this.tableInfo.GetAllLegalNatures().subscribe(result => {
       console.log(result);
+      console.log('LegalNatures')
       this.legalNatureList = result;
     }, error => console.log(error));
   }
-  
+
   ngOnInit(): void {
     this.clientId = String(this.router.snapshot.params['id']);
-    
+    this.getAllLegalNatures();
   }
 
   obterComprovativos(){
