@@ -54,6 +54,9 @@ import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presenc
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfoDeclarativaAssinaturaComponent } from './client/info-declarativa/info-declarativa-assinatura/info-declarativa-assinatura.component';
 import { StakeholderService } from './stakeholders/stakeholder.service';
+import { NumberCounterComponent } from './number-counter/number-counter.component';
+import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -69,6 +72,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AddStoreComponent,
     StakeholdersComponent,
     NewStakeholderComponent,
+    UpdateStakeholderComponent,
     ComprovativosComponent,
     CheckDocumentsComponent,
     CommercialOfferListComponent,
@@ -98,7 +102,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NavMenuPresencialComponent,
     FooterPresencialComponent,
     SidenavPresencialComponent,
-    InfoDeclarativaAssinaturaComponent
+    InfoDeclarativaAssinaturaComponent,
+
+    NumberCounterComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -123,6 +129,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
+      { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
+
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
@@ -164,7 +172,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

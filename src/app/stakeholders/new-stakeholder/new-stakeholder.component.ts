@@ -5,6 +5,8 @@ import { StakeholdersComponent } from '../stakeholders.component';
 import { IStakeholders } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IReadCard } from './IReadCard.interface';
+import { DataService } from '../../nav-menu-interna/data.service';
+import { TableinfoService } from '../../tableinfo.service';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -31,8 +33,7 @@ export class NewStakeholderComponent implements OnInit {
   flagRecolhaEletronica: boolean = true;
 
   formNewStakeholder!: FormGroup;
-
-
+ 
   newStake: IStakeholders = {
     fiscalId: 0,
     fullName: '',
@@ -53,13 +54,11 @@ export class NewStakeholderComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder) {
+    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableinfoService) {
 
     this.ngOnInit();
 
-    console.log(this.newStake.fiscalId);
-
-    if (this.newStake.fiscalId != "0") {
+    if (this.newStake.fiscalId != 0) {
       http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.fiscalId).subscribe(result => {
         console.log(result);
         this.newStake = result;
@@ -68,6 +67,7 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.newStake.fiscalId = Number(this.router.snapshot.params['nif']);
     this.createForm();
   }
 
@@ -159,4 +159,10 @@ export class NewStakeholderComponent implements OnInit {
     }, error => console.error("error"));
   }
 
+
+  getAll() {
+    console.log(this.data.getAllCountriesList());
+    return this.data.getAllCountriesList();
+  }
 }
+

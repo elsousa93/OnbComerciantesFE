@@ -9,8 +9,9 @@ import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 
+
 /** Listagem Intervenientes / Intervenientes
- * pag 13
+ *
  */
 @Component({
   selector: 'app-stakeholders',
@@ -126,7 +127,7 @@ export class StakeholdersComponent implements OnInit {
 
   onClickEdit(fiscalId) {
     console.log("edit");
-    this.route.navigate(['/add-stakeholder/', fiscalId]);
+    this.route.navigate(['/update-stakeholder/', fiscalId]);
   }
 
   onClickDelete(fiscalId, clientNr) {
@@ -170,7 +171,8 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
 
   }
-}
 
+
+  }
 
 

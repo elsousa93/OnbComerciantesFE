@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
-import { LegalNature } from '../../table-info/itable-info.interface';
+import { LegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({

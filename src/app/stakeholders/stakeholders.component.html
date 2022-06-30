@@ -90,12 +90,20 @@
       <tr>
         <th>ID Fiscal</th>
         <th>Nome Completo</th>
+        <th>Editar</th>
       </tr>
     </thead>
     <tbody>
       <tr class="table table-striped" *ngFor="let stake of stakeShow">
         <th>{{stake.fiscalId}}</th>
         <td>{{stake.fullName}}</td>
+        <td>
+
+          <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
+            <span class="glyphicon glyphicon-pencil"></span>Editar
+          </button>
+
+        </td>
       </tr>
     </tbody>
   </table>
@@ -108,3 +116,5 @@
   </div>
 
 </div>
+
+
