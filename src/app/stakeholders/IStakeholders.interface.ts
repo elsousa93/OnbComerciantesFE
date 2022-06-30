@@ -1,24 +1,26 @@
+import { Address, IPep } from "../pep/IPep.interface"
+
 export interface IStakeholders {
-  fiscalId: number
+  fiscalId: string
   identificationDocument: IdentificationDocument
   fullName: string
   contactName: string
   shortName: string
-  fiscalAddress: FiscalAddress
+  address: Address
+  fiscalAddress: Address
   foreignFiscalInformation: ForeignFiscalInformation
   isProxy: boolean
   phone: Phone
-  email: string
+  email: Email
   birthDate: string
-  pep: Pep
-  role: string;
+  pep: IPep
 }
 
 export interface IdentificationDocument {
-  identificationDocumentType: string
-  identificationDocumentId: string
-  identificationDocumentCountry: string
-  identificationDocumentValidUntil: string
+  type: string
+  number: string
+  country: Country
+  expirationDate: string
 }
 
 export interface FiscalAddress {
@@ -29,51 +31,22 @@ export interface FiscalAddress {
 }
 
 export interface ForeignFiscalInformation {
-  issuerCountry: string
+  issuerCountry: Country
   issuanceIndicator: string
   fiscalId: string
   issuanceReason: string
 }
 
 export interface Phone {
-  countryCode: string
+  countryCode: Country
   phoneNumber: string
 }
 
-export interface Pep {
-  isPep: boolean
-  pepDetails: PepDetails
-  hasFamilityRelationship: boolean
-  familyRelationshipKind: string
-  hasBusinessRelationship: boolean
-  businessRelationshipKind: string
-  relatedPep: RelatedPep
-}
-
-export interface PepDetails {
-  kind: string
-  country: string
-  sinceWhen: string
-  name: string
-  fiscalId: string
-  identificationDocumentType: string
-  identificationDocumentId: string
-  identificationDocumentValidUntil: string
-  address: Address
-}
-
-export interface Address {
-  address: string
-  postalCode: string
-  postalArea: string
-  country: Country
-}
-
 export interface Country {
+  code: string
+}
+
+export interface Email {
   value: string
 }
 
-export interface RelatedPep {
-  id: string
-  href: string
-}

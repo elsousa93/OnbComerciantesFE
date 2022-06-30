@@ -19,7 +19,42 @@ export class PepComponent implements OnInit {
     @Inject('BASE_URL')
     private baseUrl: string, private route: Router) {
   }
-  newPep: IPep = { } as IPep;
+  newPep: IPep = {
+    isPep: undefined,
+    hasFamilyRelationship: undefined,
+    familyRelationshipKind: 0,
+    hasBusinessRelationship: undefined,
+    businessRelationshipKind: 0,
+    relatedPep: {
+      id: "",
+      url: ""
+    },
+    pepDetails: {
+      fiscalId: "",
+      identificationDocument: {
+        type: "",
+        number: "",
+        country: {
+          code: ""
+        },
+        expirationDate: ""
+      },
+      fullName: "",
+      contactName: "",
+      shortName: "",
+      address: {
+        address: "",
+        postalCode: "",
+        postalArea: "",
+        locality: "",
+        country: {
+          code: ""
+        },
+      },
+      sinceWhen: "",
+      kind: ""
+    }
+  } as IPep; //CRIAR UM PEPDETAILS E RELATEDPEP
 
   //Varibales for divs in HTML, when selected 
   isVisiblePep12months: any;
@@ -35,30 +70,29 @@ export class PepComponent implements OnInit {
 
   form = new FormGroup({
     id: new FormControl(''),
-    pep12months: new FormControl(''),
-    pepType: new FormControl(''),
-    pepCountry: new FormControl(''),
-    pepSinceWhen: new FormControl(''),
-    pepFamiliarOf: new FormControl(''),
-    pepFamilyRelation: new FormControl(''),
-    pepRelations: new FormControl(''),
-    pepTypeOfRelation: new FormControl(''),
-    pepPoliticalPublicJobs: new FormControl(''),
-    pepPoliticalPublicJobDesignation: new FormControl(''),
-    relatedPep_type: new FormControl(''),
-    relatedPep_country: new FormControl(''),
-    relatedPep_sinceWhen: new FormControl(''),
-    relatedPep_nif: new FormControl(''),
-    relatedPep_name: new FormControl(''),
-    relatedPep_idNumber: new FormControl(''),
-    relatedPep_idDocumentType: new FormControl(''),
-    relatedPep_idDocumentValidity: new FormControl(''),
-    relatedPep_idDocumentCountry: new FormControl(''),
-    relatedPep_address: new FormControl(''),
-    relatedPep_addressLocation: new FormControl(''),
-    relatedPep_postalCode: new FormControl(''),
-    relatedPep_addressCountry: new FormControl(''),
-
+    pep12months: new FormControl('', [Validators.required]),
+    //pepType: new FormControl(''),
+    //pepCountry: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    //pepSinceWhen: new FormControl(''),
+    //pepFamiliarOf: new FormControl(''),
+    //pepFamilyRelation: new FormControl(''),
+    //pepRelations: new FormControl(''),
+    //pepTypeOfRelation: new FormControl(''),
+    //pepPoliticalPublicJobs: new FormControl(''),
+    //pepPoliticalPublicJobDesignation: new FormControl(''),
+    //relatedPep_type: new FormControl(''),
+    //relatedPep_country: new FormControl(''),
+    //relatedPep_sinceWhen: new FormControl(''),
+    //relatedPep_nif: new FormControl(''),
+    //relatedPep_name: new FormControl(''),
+    //relatedPep_idNumber: new FormControl(''),
+    //relatedPep_idDocumentType: new FormControl(''),
+    //relatedPep_idDocumentValidity: new FormControl(''),
+    //relatedPep_idDocumentCountry: new FormControl(''),
+    //relatedPep_address: new FormControl(''),
+    //relatedPep_addressLocation: new FormControl(''),
+    //relatedPep_postalCode: new FormControl(''),
+    //relatedPep_addressCountry: new FormControl(''),
   });
 
 
@@ -68,44 +102,203 @@ export class PepComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.form.value);
-    console.log(this.form.value.pep12months);
-    console.log(typeof this.form.value.pep12months);
+    if (this.isVisiblePep12months) {
+      this.newPep.isPep = (this.form.value.pep12months === 'true' ? true : false); //Transforming string into boolean
+      this.newPep.pepDetails.kind = this.form.value.pepType;
+      this.newPep.pepDetails.address.country.code = this.form.value.pepCountry;
+      this.newPep.pepDetails.sinceWhen = this.form.value.pepSinceWhen;
+    }
 
-    this.newPep.id = this.form.value.id;
-    this.newPep.pep12months = (this.form.value.pep12months === 'true' ? true : false); //Transforming string into boolean
-    this.newPep.pepType = this.form.value.pepType;
+    if (this.isVisiblePepFamiliarOf) {
+      this.newPep.hasFamilyRelationship = (this.form.value.pepFamiliarOf === 'true' ? true : false);
 
-    this.newPep.pepCountry = this.form.value.pepCountry;
-    this.newPep.pepSinceWhen = this.form.value.pepSinceWhen;
+      this.newPep.familyRelationshipKind = Number(this.form.value.pepFamilyRelation);
 
-    this.newPep.pepFamiliarOf = (this.form.value.pepFamiliarOf === 'true' ? true : false);
-    this.newPep.pepFamilyRelation = this.form.value.pepFamilyRelation;
-    this.newPep.pepRelations = (this.form.value.pepRelations  === 'true' ? true : false);
-    this.newPep.pepTypeOfRelation = this.form.value.pepTypeOfRelation;
+      this.newPep.pepDetails.kind = this.form.value.relatedPep_type;
+      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
+      this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
+      this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
+      this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
+      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
+      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
+      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
+      this.newPep.pepDetails.identificationDocument.country.code = this.form.value.relatedPep_idDocumentCountry;
+      this.newPep.pepDetails.address.address = this.form.value.relatedPep_address;
+      this.newPep.pepDetails.address.locality = this.form.value.relatedPep_addressLocation;
+      this.newPep.pepDetails.address.postalCode = this.form.value.relatedPep_postalCode;
+      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
+    }
 
-    this.newPep.pepPoliticalPublicJobs = (this.form.value.pepPoliticalPublicJobs === 'true' ? true : false);
-    this.newPep.pepPoliticalPublicJobDesignation = this.form.value.pepPoliticalPublicJobDesignation;
-  
-    this.newPep.relatedPep_type = this.form.value.relatedPep_type;
-    this.newPep.relatedPep_country = this.form.value.relatedPep_country;
-    this.newPep.relatedPep_sinceWhen = this.form.value.relatedPep_sinceWhen;
-    this.newPep.relatedPep_nif = this.form.value.relatedPep_nif;
-    this.newPep.relatedPep_name = this.form.value.relatedPep_name;
-    this.newPep.relatedPep_idNumber = this.form.value.relatedPep_idNumber;
-    this.newPep.relatedPep_idDocumentType = this.form.value.relatedPep_idDocumentType;
-    this.newPep.relatedPep_idDocumentValidity = this.form.value.relatedPep_idDocumentValidity;
-    this.newPep.relatedPep_idDocumentCountry = this.form.value.relatedPep_idDocumentCountry;
-    this.newPep.relatedPep_address = this.form.value.relatedPep_address;
-    this.newPep.relatedPep_addressLocation = this.form.value.relatedPep_addressLocation;
-    this.newPep.relatedPep_postalCode = this.form.value.relatedPep_postalCode;
-    this.newPep.relatedPep_addressCountry = this.form.value.relatedPep_addressCountry;
+    if (this.isVisiblePepRelations) {
+      this.newPep.hasBusinessRelationship = (this.form.value.pepRelations === 'true' ? true : false);
 
-    //Post a Pep 
-    this.http.post<IPep>(this.baseUrl + 'bepep/AddPep/'
-      + this.newPep.id, this.newPep).subscribe(result => {
+      this.newPep.businessRelationshipKind = Number(this.form.value.pepTypeOfRelation);
+
+      this.newPep.pepDetails.kind = this.form.value.relatedPep_type;
+      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
+      this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
+      this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
+      this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
+      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
+      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
+      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
+      this.newPep.pepDetails.identificationDocument.country.code = this.form.value.relatedPep_idDocumentCountry;
+      this.newPep.pepDetails.address.address = this.form.value.relatedPep_address;
+      this.newPep.pepDetails.address.locality = this.form.value.relatedPep_addressLocation;
+      this.newPep.pepDetails.address.postalCode = this.form.value.relatedPep_postalCode;
+      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
+    }
+
+    if (this.isVisiblePepPoliticalPublicJobs) {
+      //this.newPep.pepPoliticalPublicJobs = (this.form.value.pepPoliticalPublicJobs === 'true' ? true : false);
+      //this.newPep.pepPoliticalPublicJobDesignation = this.form.value.pepPoliticalPublicJobDesignation;
+    }
+
+   
+
+    console.log(this.newPep);
+    //Post a Pep
+    // por enquanto deixei o id com o valor de 1, porque o newPep.id já n existe
+    this.http.post<IPep>(this.baseUrl + 'BEPep/AddPep/'
+      + 1, this.newPep).subscribe(result => {
         console.log("Enviado Pep");
         console.log(result);
       }, error => console.error(error));
+  }
+
+  //Altera os valores das variaveis de acordo com o que é selecionado em cada checkbox
+  onChangeValues(event: any) {  
+    var stringToBool = (event.target.value === 'true' ? true : false);
+    if (event.target.name == 'pep12months') {
+      this.isVisiblePep12months = stringToBool;
+      if (stringToBool) {
+        //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
+        //alguma das opções anteriores como "Sim",
+        //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
+        if (this.isVisiblePepFamiliarOf) {
+          this.form.removeControl('pepFamilyRelation');
+          this.removeRelatedPepFormControl();
+        }
+        if (this.isVisiblePepRelations) {
+          this.form.removeControl('pepTypeOfRelation');
+          this.removeRelatedPepFormControl();
+        }
+        if (this.isVisiblePepPoliticalPublicJobs) {
+          this.form.removeControl('pepPoliticalPublicJobDesignation');
+        }
+
+        this.isVisiblePepFamiliarOf = undefined;
+        this.isVisiblePepRelations = undefined;
+        this.isVisiblePepPoliticalPublicJobs = undefined;
+
+        this.form.removeControl('pepFamiliarOf');
+        this.form.removeControl('pepRelations');
+        this.form.removeControl('pepPoliticalPublicJobs');
+
+        this.form.addControl('pepType', new FormControl('', [Validators.required]));
+        this.form.addControl('pepCountry', new FormControl('', [Validators.required]));
+        this.form.addControl('pepSinceWhen', new FormControl('', [Validators.required]));
+      } else {
+        this.form.addControl('pepFamiliarOf', new FormControl('', [Validators.required]));
+        this.form.removeControl('pepType');
+        this.form.removeControl('pepCountry');
+        this.form.removeControl('pepSinceWhen');
+      }
+    }
+    if (event.target.name == 'pepFamiliarOf') {
+      this.isVisiblePepFamiliarOf = stringToBool;
+      if (stringToBool) {
+        //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
+        //alguma das opções anteriores como "Sim",
+        //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
+        if (this.isVisiblePepRelations) {
+          this.form.removeControl('pepTypeOfRelation');
+          this.removeRelatedPepFormControl();
+        }
+        if (this.isVisiblePepPoliticalPublicJobs) {
+          this.form.removeControl('pepPoliticalPublicJobDesignation');
+        }
+
+        this.isVisiblePepRelations = undefined;
+        this.isVisiblePepPoliticalPublicJobs = undefined;
+        this.form.removeControl('pepRelations');
+        this.form.removeControl('pepPoliticalPublicJobs');
+        this.form.addControl('pepFamilyRelation', new FormControl('', [Validators.required]));
+
+        this.addRelatedPepFormControl();
+
+        
+      } else {
+        this.form.addControl('pepRelations', new FormControl('', [Validators.required]));
+        this.form.removeControl('pepFamilyRelation');
+
+        this.removeRelatedPepFormControl();
+
+      }
+    }
+    if (event.target.name == 'pepRelations') {
+      this.isVisiblePepRelations = stringToBool;
+      if (stringToBool) {
+
+        //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
+        //alguma das opções anteriores como "Sim",
+        //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
+        if (this.isVisiblePepPoliticalPublicJobs) {
+          this.form.removeControl('pepPoliticalPublicJobDesignation');
+        }
+
+        this.isVisiblePepPoliticalPublicJobs = undefined;
+        this.form.removeControl('pepPoliticalPublicJobs');
+        this.form.addControl('pepTypeOfRelation', new FormControl('', [Validators.required]));
+
+        this.addRelatedPepFormControl();
+      } else {
+        this.form.addControl('pepPoliticalPublicJobs', new FormControl('', [Validators.required]));
+        this.form.removeControl('pepTypeOfRelation');
+
+        this.removeRelatedPepFormControl();
+      }
+    }
+    if (event.target.name == 'pepPoliticalPublicJobs') {
+      this.isVisiblePepPoliticalPublicJobs = stringToBool;
+      if (stringToBool) {
+        this.form.addControl('pepPoliticalPublicJobDesignation', new FormControl('', [Validators.required]));
+      } else {
+        this.form.removeControl('pepPoliticalPublicJobDesignation');
+      }
+    }
+    console.log(this.form);
+  }
+
+  addRelatedPepFormControl() {
+    this.form.addControl('relatedPep_type', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_country', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_sinceWhen', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_nif', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_name', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_idNumber', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_idDocumentType', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_idDocumentValidity', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_idDocumentCountry', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_address', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_addressLocation', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_postalCode', new FormControl('', [Validators.required]));
+    this.form.addControl('relatedPep_addressCountry', new FormControl('', [Validators.required]));
+  }
+
+  removeRelatedPepFormControl() {
+    this.form.removeControl('relatedPep_type');
+    this.form.removeControl('relatedPep_country');
+    this.form.removeControl('relatedPep_sinceWhen');
+    this.form.removeControl('relatedPep_nif');
+    this.form.removeControl('relatedPep_name');
+    this.form.removeControl('relatedPep_idNumber');
+    this.form.removeControl('relatedPep_idDocumentType');
+    this.form.removeControl('relatedPep_idDocumentValidity');
+    this.form.removeControl('relatedPep_idDocumentCountry');
+    this.form.removeControl('relatedPep_address');
+    this.form.removeControl('relatedPep_addressLocation');
+    this.form.removeControl('relatedPep_postalCode');
+    this.form.removeControl('relatedPep_addressCountry');
   }
 }

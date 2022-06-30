@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
+import { LegalNature } from '../../table-info/ITable-info.interface';
+import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({
   selector: 'app-client',
@@ -117,8 +119,11 @@ export class ClientByIdComponent implements OnInit {
   Countries = countriesAndContinents;
   Continents = continents;
   checkedContinents = [];
+  countryVal: string;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  legalNatureList: LegalNature[] = [];
+
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
     this.ngOnInit();
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
       http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
@@ -129,6 +134,12 @@ export class ClientByIdComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state) {
       this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
     }
+
+    //Chamada à API para obter as naturezas juridicas
+    tableInfo.GetAllLegalNatures().subscribe(result => {
+      console.log(result);
+      this.legalNatureList = result;
+    }, error => console.log(error));
   }
   
   ngOnInit(): void {
@@ -153,19 +164,39 @@ export class ClientByIdComponent implements OnInit {
     if (this.checkedContinents.indexOf(event.target.id) > -1) {
       var index = this.checkedContinents.indexOf(event.target.id);
       this.checkedContinents.splice(index, 1);
+      this.Countries.forEach(c => {
+        if (event.target.id == c.continent && this.client.sales.servicesOrProductsDestinations.indexOf(c.country) > -1) {
+          var index1 = this.client.sales.servicesOrProductsDestinations.indexOf(c.country);
+          this.client.sales.servicesOrProductsDestinations.splice(index1, 1);
+        }
+      })
     } else {
       this.checkedContinents.push(event.target.id);
+      this.Countries.forEach(c => {
+        if (event.target.id == c.continent && this.client.sales.servicesOrProductsDestinations.indexOf(c.country) == -1) {
+          this.client.sales.servicesOrProductsDestinations.push(c.country);
+        }
+      })
     }
   }
 
   onCountryChange(event) {
-    console.log(this.client);
     if (this.client.sales.servicesOrProductsDestinations.indexOf(event.target.id) > -1) {
       var index = this.client.sales.servicesOrProductsDestinations.indexOf(event.target.id);
       this.client.sales.servicesOrProductsDestinations.splice(index, 1);
     } else {
       this.client.sales.servicesOrProductsDestinations.push(event.target.id);
     }
-    console.log(this.client.sales.servicesOrProductsDestinations);
+  }
+
+  addCountryToList(country: string) {
+    this.Countries.forEach(c => {
+      if (this.client.sales.servicesOrProductsDestinations.indexOf(country) == -1) {
+        if (c.country == country) {
+          this.client.sales.servicesOrProductsDestinations.push(country);
+          this.countryVal = "";
+        }
+      }
+    })
   }
 }

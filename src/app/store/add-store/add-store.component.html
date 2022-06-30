@@ -55,15 +55,6 @@
               </span>
             </div>
             <div class="input-form-group">
-              <label for="storeFixedIp">{{'IPAddressStore'|translate}}</label>
-              <input #storeFixedIp="ngModel" [disabled]=idisabledAdd required minlength="5" maxlength="100" type="text" name="storeFixedIp" class="form-control" [(ngModel)]="store.fixedIP">
-              <span *ngIf="storeFixedIp.touched && storeFixedIp.invalid" class="error-block">
-                <span>{{'WarningInvalid'|translate}}</span>
-                <span *ngIf="storeFixedIp.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
-                <span *ngIf="storeFixedIp.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
-              </span>
-            </div>
-            <div class="input-form-group">
               <label for="storePostalLocality">{{'LocaleStore'|translate}}</label>
               <input #storePostalLocality="ngModel" [disabled]=idisabledAdd required minlength="5" maxlength="100" type="text" name="storePostalLocality" class="form-control" [(ngModel)]="store.postalLocality">
               <span *ngIf="storePostalLocality.touched && storePostalLocality.invalid" class="error-block">
@@ -73,19 +64,25 @@
               </span>
             </div>
             <br />
+            <p><b>{{'TuristicZoneStore'|translate}}</b></p>
+            <div *ngFor="let zonaTuristicas of zonasTuristicas; let idx = index">
+              <input type="radio" name="zonaTuristicas" value="{{zonaTuristicas}}" [checked]="(idx === defaultZonaTuristica)" (change)="radoChangehandler($event)" />{{zonaTuristicas}}
+            </div>
+            <br />
+            <div class="input-form-group">
+              <label for="storeZone">{{'ZoneStores'|translate}}</label>
+              <input #storeZone="ngModel" required minlength="5" maxlength="100" type="text" name="storeZone" class="form-control" [(ngModel)]="store.zoneEstab">
+              <span *ngIf="storeZone.touched && storeZone.invalid" class="error-block">
+                <span>{{'WarningInvalid'|translate}}</span>
+                <span *ngIf="storeZone.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
+                <span *ngIf="storeZone.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
+              </span>
+            </div>
+            <br />
             <p><b>{{'ReplicateContStore'|translate}}</b></p>
             <!--Select if you want to use the contacts from the cliente or set new values-->
             <div *ngFor="let selectionContactReplicate of selectionsContactReplicate; let idx2 = index">
               <input type="radio" name="selectedContactReplicate" value="{{selectionContactReplicate}}" [checked]="(idx2 === 0)" (change)="radioContactChangehandler($event)" />{{selectionContactReplicate}}
-            </div>
-            <div class="input-form-group">
-              <label for="storeEmailContact">{{'EmailStore'|translate}}</label>
-              <input #storeEmailContact="ngModel" [disabled]=idisabledContact required minlength="5" maxlength="100" type="text" name="storeEmailContact" class="form-control" [(ngModel)]="store.emailContact">
-              <span *ngIf="storeEmailContact.touched && storeEmailContact.invalid" class="error-block">
-                <span>{{'WarningInvalid'|translate}}</span>
-                <span *ngIf="storeEmailContact.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
-                <span *ngIf="storeEmailContact.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
-              </span>
             </div>
             <div class="input-form-group">
               <label for="storeCellphoneIndic">{{'CellIndStore'|translate}}</label>
@@ -105,12 +102,15 @@
                 <span *ngIf="storeCellphoneNumber.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
               </span>
             </div>
-            <br />
-            <p><b>{{'TuristicZoneStore'|translate}}</b></p>
-            <div *ngFor="let zonaTuristicas of zonasTuristicas; let idx = index">
-              <input type="radio" name="zonaTuristicas" value="{{zonaTuristicas}}" [checked]="(idx === defaultZonaTuristica)" (change)="radoChangehandler($event)" />{{zonaTuristicas}}
+            <div class="input-form-group">
+              <label for="storeEmailContact">{{'EmailStore'|translate}}</label>
+              <input #storeEmailContact="ngModel" [disabled]=idisabledContact required minlength="5" maxlength="100" type="text" name="storeEmailContact" class="form-control" [(ngModel)]="store.emailContact">
+              <span *ngIf="storeEmailContact.touched && storeEmailContact.invalid" class="error-block">
+                <span>{{'WarningInvalid'|translate}}</span>
+                <span *ngIf="storeEmailContact.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
+                <span *ngIf="storeEmailContact.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
+              </span>
             </div>
-            <br />
             <div class="input-form-group">
               <label for="storeActivity">{{'ActivityStores'|translate}}</label>
               <input #storeActivity="ngModel" required minlength="5" maxlength="100" type="text" name="storeActivity" class="form-control" [(ngModel)]="store.activityEstab">
@@ -130,12 +130,12 @@
               </span>
             </div>
             <div class="input-form-group">
-              <label for="storeZone">{{'ZoneStores'|translate}}</label>
-              <input #storeZone="ngModel" required minlength="5" maxlength="100" type="text" name="storeZone" class="form-control" [(ngModel)]="store.zoneEstab">
-              <span *ngIf="storeZone.touched && storeZone.invalid" class="error-block">
+              <label for="storeFixedIp">{{'IPAddressStore'|translate}}</label>
+              <input #storeFixedIp="ngModel" [disabled]=idisabledAdd required minlength="5" maxlength="100" type="text" name="storeFixedIp" class="form-control" [(ngModel)]="store.fixedIP">
+              <span *ngIf="storeFixedIp.touched && storeFixedIp.invalid" class="error-block">
                 <span>{{'WarningInvalid'|translate}}</span>
-                <span *ngIf="storeZone.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
-                <span *ngIf="storeZone.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
+                <span *ngIf="storeFixedIp.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
+                <span *ngIf="storeFixedIp.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
               </span>
             </div>
           </div>
