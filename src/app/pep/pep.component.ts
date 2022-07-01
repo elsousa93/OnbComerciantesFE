@@ -4,7 +4,7 @@ import { IPep } from './IPep.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
-import { PEPTypes } from '../table-info/ITable-info.interface';
+import { CountryInformation, PEPTypes } from '../table-info/ITable-info.interface';
 
 @Component({
   selector: 'app-pep',
@@ -16,7 +16,8 @@ export class PepComponent implements OnInit {
   //REACTIVE FORM
 
   //Informação de campos/tabelas
-  PEPTypes: PEPTypes[];
+  PEPTypes: PEPTypes[] = [];
+  Countries: CountryInformation[] = [];
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient,
@@ -24,7 +25,6 @@ export class PepComponent implements OnInit {
     @Inject('BASE_URL')
     private baseUrl: string, private route: Router,
     private tableInfo: TableInfoService) {
-
   }
   newPep: IPep = {
     isPep: undefined,
@@ -72,10 +72,16 @@ export class PepComponent implements OnInit {
 
 
   ngOnInit(): void {
+  }
+
+  loadDataFromBE() {
     this.tableInfo.GetAllPEPTypes().subscribe(res => {
       this.PEPTypes = res;
-
     });
+
+    this.tableInfo.GetAllCountries().subscribe(res => {
+      this.Countries = res;
+    })
   }
 
   form = new FormGroup({

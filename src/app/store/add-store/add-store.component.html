@@ -29,7 +29,11 @@
             </div>
             <div class="input-form-group">
               <label for="storeCountry">{{'ContryStore'|translate}}</label>
-              <input #storeCountry="ngModel" [disabled]=idisabledAdd required minlength="5" maxlength="100" type="text" name="storeCountry" class="form-control" [(ngModel)]="store.country">
+              <!--<input #storeCountry="ngModel" [disabled]=idisabledAdd required minlength="5" maxlength="100" type="text" name="storeCountry" class="form-control" [(ngModel)]="store.country">-->
+              <select #storeCountry="ngModel" [disabled]=idisabledAdd required minlength="5" maxlength="100" name="storeCountry" class="form-select form-control" [(ngModel)]="store.country">
+                <option value="">Em que país:</option>
+                <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
+              </select>
               <span *ngIf="storeCountry.touched && storeCountry.invalid" class="error-block">
                 <span>{{'WarningInvalid'|translate}}</span>
                 <span *ngIf="storeCountry.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
@@ -86,7 +90,10 @@
             </div>
             <div class="input-form-group">
               <label for="storeCellphoneIndic">{{'CellIndStore'|translate}}</label>
-              <input #storeCellphoneIndic="ngModel" [disabled]=idisabledContact required minlength="2" maxlength="100" type="text" name="storeCellphoneIndic" class="form-control" [(ngModel)]="store.cellphoneIndic">
+              <!--<input #storeCellphoneIndic="ngModel" [disabled]=idisabledContact required minlength="2" maxlength="100" type="text" name="storeCellphoneIndic" class="form-control" [(ngModel)]="store.cellphoneIndic">-->
+              <select #storeCellphoneIndic="ngModel" [disabled]=idisabledContact required minlength="2" maxlength="100" name="storeCellphoneIndic" class="form-select form-control" [(ngModel)]="store.cellphoneIndic">
+                <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
+              </select>
               <span *ngIf="storeCellphoneIndic.touched && storeCellphoneIndic.invalid" class="error-block">
                 <span>{{'WarningInvalid'|translate}}</span>
                 <span *ngIf="storeCellphoneIndic.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
