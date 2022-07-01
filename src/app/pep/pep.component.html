@@ -45,7 +45,8 @@
 
           <select class="form-select" formControlName="pepType" name="pepType" id="pepType">
             <option value="">Tipo de Pep:</option>
-            <option value="Gestores Públicos"> Gestores Públicos </option>
+            <!--<option value="Gestores Públicos"> Gestores Públicos </option>-->
+            <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
           </select>
         </label>
 

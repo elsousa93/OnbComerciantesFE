@@ -34,7 +34,7 @@ export class TableInfoService {
   }
 
   GetAllPEPTypes() {
-    return this.http.get<PEPTypes>(this.baseUrl + 'BEConfig/GetAllPEPTypes');
+    return this.http.get<PEPTypes[]>(this.baseUrl + 'BEConfig/GetAllPEPTypes');
   }
 
   GetAllPOS() {

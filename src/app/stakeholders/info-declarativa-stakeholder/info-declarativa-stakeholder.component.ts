@@ -10,6 +10,8 @@ import { ViewChild, EventEmitter, Output } from '@angular/core';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -26,6 +28,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   callingCodeStakeholder?: string = "";
 
   displayValueSearch = '';
+
+
+  //Informação de campos/tabelas
+  internationalCallingCodes: CountryInformation[];
 
   public newStakeholder: IStakeholders = {
 
@@ -48,12 +54,14 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router) {
+  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
     this.ngOnInit();
     http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
       this.dataSource.data = this.stakeholders;
     }, error => console.error(error));
+
+    this.callingCodeStakeholder = tableInfo.GetAllCountries();
   }
 
   ngOnInit(): void {

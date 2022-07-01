@@ -65,7 +65,7 @@
 
       <select class="form-select" #countryCode formControlName="countryCode" (click)="changeListElement(callingCodeStakeholder, $event)" id="countryCode">
         <option value="">Indicativo:</option>
-        <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
       </select>
       <!--<p>{{callingCodeStakeholder}}</p>-->
 

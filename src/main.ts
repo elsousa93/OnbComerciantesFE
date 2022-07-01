@@ -5,7 +5,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  var baseUrl = 'http://localhost:12000/BackendPortal/'
+  var baseUrl = 'https://localhost:7269/'
   return baseUrl;
 }
 
