@@ -56,7 +56,7 @@ import { InfoDeclarativaAssinaturaComponent } from './client/info-declarativa/in
 import { StakeholderService } from './stakeholders/stakeholder.service';
 import { NumberCounterComponent } from './number-counter/number-counter.component';
 import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
-
+import { TableInfoService } from './table-info/table-info.service';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -171,7 +171,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, ],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
