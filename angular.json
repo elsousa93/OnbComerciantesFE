@@ -112,7 +112,7 @@
             ],
             "styles": [
               "src/styles.css",
-                            "src/custom-theme.scss",
+              "src/custom-theme.scss",
               "src/bootstrap/5/css/bootstrap.min.css",
               "src/css/style.css",
               "src/css/style_x.css",
@@ -120,6 +120,7 @@
               "src/css/materialsymbolsoutlined.css",
               "src/css/materialsymbols.css",
               "src/css/materialicons.css"
+
 
             ],
             "scripts": []
