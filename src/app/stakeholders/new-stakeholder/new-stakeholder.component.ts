@@ -5,6 +5,8 @@ import { StakeholdersComponent } from '../stakeholders.component';
 import { IStakeholders } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IReadCard } from './IReadCard.interface';
+import { DataService } from '../../nav-menu-interna/data.service';
+import { TableinfoService } from '../../tableinfo.service';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -50,7 +52,7 @@ export class NewStakeholderComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder) {
+    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableinfoService) {
 
     this.ngOnInit();
 
@@ -155,4 +157,10 @@ export class NewStakeholderComponent implements OnInit {
     }, error => console.error("error"));
   }
 
+
+  getAll() {
+    console.log(this.data.getAllCountriesList());
+    return this.data.getAllCountriesList();
+  }
 }
+
