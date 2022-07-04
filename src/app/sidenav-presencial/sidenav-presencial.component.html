@@ -123,7 +123,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="animation-sidenav-content" style="padding-bottom:800px">
-    <router-outlet></router-outlet>
+    
     <div class="container-fluid">
       <div class="row">
         <div class="offset-1 col-10 mt-5 ps-0 pe-0 bg-white">
@@ -242,18 +242,80 @@
                   </h2>
                   <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                     data-bs-parent="#accordionFlushExample">
-                    <table mat-table [dataSource]="dataSource1" matSort #empTbSort="matSort"
-                      style="font-family: Roboto;border-bottom-width: 1px;width: 80% !important;">
-                      <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns1">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-sort-header">{{ column }}
-                        </th>
-                        <td mat-cell *matCellDef="let emp" class="mat-cell">{{ emp[column] }}</td>
+                    <mat-table [dataSource]="dataSource" matSort #empTbSort="matSort">
+                      <!-- Nº Pedido Column -->
+                      <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
                       </ng-container>
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns1" class="mat-header-row"></tr>
-                      <tr mat-row *matRowDef="let emprow; columns: displayedColumns1" class="mat-row"></tr>
-                    </table>
-                    <mat-paginator #paginatorPage [pageSizeOptions]="pageSizes" showFirstLastButtons>
-                    </mat-paginator>
+                      <!-- Nº Contrato Column -->
+                      <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Nº Contrato
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                      </ng-container>
+                      <!-- Data Pedido Column -->
+                      <ng-container matColumnDef="progress">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Data Pedido
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+                      </ng-container>
+                      <!-- Nome Cliente Empresa Column -->
+                      <ng-container matColumnDef="color">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Nome Cliente Empresa
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" [style.color]="row.color">
+                          {{row.color}}
+                        </mat-cell>
+                      </ng-container>
+                      <!-- Editar Processo Column -->
+                      <ng-container matColumnDef="teste">
+                        <mat-header-cell *matHeaderCellDef>
+                          &nbsp;&nbsp;&nbsp;Editar Processo
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
+                              &nbsp;&nbsp;delete
+                            </span>
+                          </a>
+                          <a href="#">
+                            <span class="material-symbols-rounded" style="color: #1e66b0;">
+                              edit_square
+                            </span>
+                          </a>
+                        </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                    </mat-table>
+                    <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                      <div class="row ms-0 me-0 ps-0 pe-0">
+                        <div class="me-0 ps-0 pe-0 col-12">
+                          <nav class="navbar navbar-light bg-light">
+                            <span class="navbar-text ms-0 me-0">
+                              <mat-form-field>
+                                <input matInput (keyup)="applyFilter($event.target.value)"
+                                  placeholder="Efetuar pesquisa">
+                              </mat-form-field>
+                            </span>
+                            <span class="navbar-text ms-auto me-0">
+                              <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                            </span>
+                            <span class="navbar-text ms-0 me-0">
+                              <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                            </span>
+                            <span class="navbar-text ms-0 me-0">
+                              <mat-paginator #paginatorPage [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                              </mat-paginator>
+                            </span>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
