@@ -12,7 +12,7 @@ export const docTypeENI: docType[] = [
   { docTypeOption: "Bilhete de Identidade Nacional"},
   { docTypeOption: "Cartão do Cidadão"},
   { docTypeOption: "Número de Identificação Fiscal"},
-  { docTypeOption: "Nº de CLiente"},
+  { docTypeOption: "Nº de Cliente"},
   { docTypeOption: "Passaporte"},
 ]
 
