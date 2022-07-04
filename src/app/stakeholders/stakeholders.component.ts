@@ -10,6 +10,7 @@ import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 
 
+
 /** Listagem Intervenientes / Intervenientes
  *
  */
@@ -74,10 +75,6 @@ export class StakeholdersComponent implements OnInit {
     this.updateData(true, 3);
 
 
-    //chamada do serviço dos stakeholders
-    //stakeService.GetAllStakeholdersFromSubmission("").subscribe(result => {
-    //  this.stakesAPI = result;
-    //});
   }
 
   //função que altera o valor do map e da currentPage
