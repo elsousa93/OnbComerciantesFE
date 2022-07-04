@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
@@ -6,6 +6,12 @@ import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
+import { FormControl } from '@angular/forms';
+import { Observable, of, OperatorFunction, pipe, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { Country } from '../../stakeholders/IStakeholders.interface';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/typeahead-match.class';
 
 @Component({
   selector: 'app-client',
@@ -13,7 +19,9 @@ import { TableInfoService } from '../../table-info/table-info.service';
 })
 
 export class ClientByIdComponent implements OnInit {
-  
+
+  @ViewChild('searchInput') input: ElementRef;
+
   /*Variable declaration*/
   public clientId: string = "0";
   //client: Client = {} as Client;
@@ -131,7 +139,9 @@ export class ClientByIdComponent implements OnInit {
   //CAEs
   CAEsList: EconomicActivityInformation[] = [];
 
+  filteredOptions: Observable<CountryInformation[]>;
 
+  myControl = new FormControl('');
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
     this.ngOnInit();
@@ -145,26 +155,33 @@ export class ClientByIdComponent implements OnInit {
       this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
     }
 
-    //Chamada à API para obter as naturezas juridicas
-    this.tableInfo.GetAllLegalNatures().subscribe(result => {
-      this.legalNatureList = result;
-    }, error => console.log(error));
+    
+    ////Chamada à API para obter as naturezas juridicas
+    //this.tableInfo.GetAllLegalNatures().subscribe(result => {
+    //  this.legalNatureList = result;
+    //}, error => console.log(error));
 
-    //Chamada à API para
-    this.tableInfo.GetAllCountries().subscribe(result => {
-      this.countryList = result;
-    }, error => console.log(error));
+    ////Chamada à API para
+    //this.tableInfo.GetAllCountries().subscribe(result => {
+    //  this.countryList = result;
+    //}, error => console.log(error));
 
-    //Chamada à API para obter a lista de CAEs
-    this.tableInfo.GetAllCAEs().subscribe(result => {
-      this.CAEsList = result;
-    });
+    ////Chamada à API para obter a lista de CAEs
+    //this.tableInfo.GetAllCAEs().subscribe(result => {
+    //  this.CAEsList = result;
+    //});
 
-    this.createContinentsList();
+    //this.createContinentsList();
+
+    
   }
 
   ngOnInit(): void {
     this.clientId = String(this.router.snapshot.params['id']);
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
   }
 
   obterComprovativos(){
@@ -247,4 +264,12 @@ export class ClientByIdComponent implements OnInit {
       }
     })
   }
+
+  //Fazer a pesquisa dos Paises
+  _filter(value: string): CountryInformation[] {
+    const filterValue = value.toLowerCase();
+
+    return this.countryList.filter(option => option.description.toLowerCase().includes(filterValue));
+  }
+  
 }
