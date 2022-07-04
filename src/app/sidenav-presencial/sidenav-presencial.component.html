@@ -1,36 +1,60 @@
 <mat-sidenav-container class="sidenav-container animation-teste">
-  <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'" [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp position-fixed">
-    <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up' : 'down'">
+  <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp position-fixed">
+    <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up':'down'">
       <div class="accordion" id="accordion">
         <div class="nav-item" *ngIf="userPermissions.HomePage">
-          <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">home</i>&nbsp;Início &nbsp;</p></a>
+          <a role="button">
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
+                class="material-symbols-rounded fa-lg icons-sidenav">home</i>&nbsp;Início &nbsp;</p>
+          </a>
         </div>
-        <div class="nav-item" *ngIf="userPermissions.ProcessOpening">
-          <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">folder_open</i>&nbsp;Abertura de processo &nbsp;</p></a>
+        <div class="nav-item" *ngIf="userPermissions.HomePage">
+          <a role="button">
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
+                class="material-symbols-rounded fa-lg icons-sidenav">folder_open</i>&nbsp;Abertura de processo &nbsp;
+            </p>
+          </a>
         </div>
         <div *ngIf="userPermissions.ProcessHandling">
-          <a id="headingOne3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle"><i class="material-symbols-rounded fa-lg icons-sidenav">edit_note</i>&nbsp;Tratamento de Processos &nbsp;</p>
+          <a id="headingOne3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3"
+            aria-expanded="true" aria-controls="collapseOne3">
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle"><i
+                class="material-symbols-rounded fa-lg icons-sidenav">edit_note</i>&nbsp;Tratamento de Processos &nbsp;
+            </p>
           </a>
-          <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3" data-bs-parent="#accordion">
+          <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3"
+            data-bs-parent="#accordion">
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EligibilityOpinions">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Pareceres de Elegibilidade &nbsp;</p></a>
+                  <a role="button">
+                    <p class="side_menu_texto mb-0 sidenav-item"><i
+                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Pareceres
+                      de Elegibilidade &nbsp;</p>
+                  </a>
                 </span>
               </nav>
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.MultipleClientes">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Múltiplos clientes &nbsp;</p></a>
+                  <a role="button">
+                    <p class="side_menu_texto mb-0 sidenav-item"><i
+                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Múltiplos
+                      clientes &nbsp;</p>
+                  </a>
                 </span>
               </nav>
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.DOValidation">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação DO &nbsp;</p></a>
+                  <a role="button">
+                    <p class="side_menu_texto mb-0 sidenav-item"><i
+                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação
+                      DO &nbsp;</p>
+                  </a>
                 </span>
 
               </nav>
@@ -38,7 +62,11 @@
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.NegotiationAproval">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Aprovação de &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;negociação de precário &nbsp;</p></a>
+                  <a role="button">
+                    <p class="side_menu_texto mb-0 sidenav-item"><i
+                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Aprovação
+                      de &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;negociação de precário &nbsp;</p>
+                  </a>
                 </span>
 
               </nav>
@@ -46,7 +74,11 @@
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EnrollmentValidation">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação matricula SIBS &nbsp;</p></a>
+                  <a role="button">
+                    <p class="side_menu_texto mb-0 sidenav-item"><i
+                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação
+                      matricula SIBS &nbsp;</p>
+                  </a>
                 </span>
 
               </nav>
@@ -54,256 +86,382 @@
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.RiskOpinion">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Parecer de Risco &nbsp;</p></a>
+                  <a role="button">
+                    <p class="side_menu_texto mb-0 sidenav-item"><i
+                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Parecer
+                      de Risco &nbsp;</p>
+                  </a>
                 </span>
               </nav>
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.ComplianceDoubts">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
-                  <a role="button"><p class="side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Dúvidas Compliance &nbsp;</p></a>
+                  <a role="button">
+                    <p class="side_menu_texto mb-0 sidenav-item"><i
+                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Dúvidas
+                      Compliance &nbsp;</p>
+                  </a>
                 </span>
               </nav>
             </div>
           </div>
         </div>
         <div class="nav-item" *ngIf="userPermissions.Consultation">
-          <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">search</i>&nbsp;Consultas&nbsp;</p></a>
+          <a role="button">
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
+                class="material-symbols-rounded fa-lg icons-sidenav">search</i>&nbsp;Consultas&nbsp;</p>
+          </a>
         </div>
         <div class="nav-item">
-          <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">help</i>&nbsp;FAQS &nbsp;</p></a>
+          <a role="button">
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
+                class="material-symbols-rounded fa-lg icons-sidenav">help</i>&nbsp;FAQS &nbsp;</p>
+          </a>
         </div>
       </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="animation-sidenav-content" style="padding-bottom:800px">
+    
     <div class="container-fluid">
-      <!--<div class="row">
-        <div class="offset-1 col-10 ps-0 pe-0 bg-white"></div>
-        <div class="offset-1 col-10 ps-0 pe-0">-->
-          <router-outlet></router-outlet>
-          <!--<div class="row">
-          <div class="offset-1 col-10 mt-5">
-            <div class="row text-center">
-              <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-                <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">92.456</h1>
-                <h1 class="text-danger mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
-                  <span class="material-symbols-outlined icon-dash">
-                    move_up
-                  </span>
-                </h1>
-                <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE ENVIO<br><br></h1>
-
-              </div>
-              <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-                <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">84.456</h1>
-                <h1 class="text-danger mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
-                  <span class="material-symbols-outlined icon-dash">
-                    assignment_returned
-                  </span>
-                </h1>
-                <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">&nbsp;TRATAMENTO BACKOFFICE<br><br></h1>
-
-              </div>
-              <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-
-
-
-
-
-
-                <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">77.226</h1>
-                <h1 class="text-danger mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
-                  <span class="material-symbols-outlined icon-dash">
-                    assignment_return
-                  </span>
-                </h1>
-                <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">DEVOLVIDOS BACKOFFICE<br><br></h1>
-
-              </div>
-              <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-
-                <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">57.475</h1>
-                <h1 class="text-danger mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
-                  <span class="material-symbols-outlined icon-dash">
-                    assignment_turned_in
-                  </span>
-                </h1>
-                <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">EM FASE DE ACEITAÇÃO<br><br></h1>
-
-              </div>
-              <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-
-                <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">44.529</h1>
-                <h1 class="text-danger mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
-                  <span class="material-symbols-outlined icon-dash">
-                    inventory_2
-                  </span>
-                </h1>
-                <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE ENVIO PARA ARQUIVO FÍSCO<br></h1>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        </div>
-        <div class="offset-1 col-10 bg-white ps-0 pe-0"></div>
-      </div>-->
-
       <div class="row">
-        <div class="offset-1 col-10 mt-5">
-          <div class="row text-center">
-            <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-              <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary"><app-number-counter number="10"></app-number-counter></h1>
+        <div class="offset-1 col-10 mt-5 ps-0 pe-0 bg-white">
+          <nav class="navbar navbar-expand-lg bg-primary mt-0 me-0 pt-0 pb-0">
+            <span class="navbar-text text-light">
+              <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+            </span>
+            <span class="navbar-text">
+              <h5 class="display-4 align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">PERFORMANCE
+                DIÁRIA:
+                08/08/2022</h5>
+            </span>
+          </nav>
+        </div>
+        <div class="offset-1 col-10 mt-3 ps-1 pe-1 ">
+          <div class="row">
+            <button type="button" class="col mt-2 mb-2 ms-3 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
+              data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+              <h1
+                class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+                <app-number-counter number="1024"></app-number-counter>
+              </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash ">
                   move_up
                 </span>
               </h1>
-              <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE ENVIO<br><br></h1>
+              <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE
+                ENVIO<br><br></h1>
+            </button>
 
-            </div>
-            <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-              <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary"><app-number-counter number="84456"></app-number-counter></h1>
+            <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
+              data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo">
+              <h1
+                class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+                <app-number-counter number="84456"></app-number-counter>
+              </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
                   assignment_returned
                 </span>
               </h1>
-              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">&nbsp;TRATAMENTO BACKOFFICE<br><br></h1>
+              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">&nbsp;TRATAMENTO
+                BACKOFFICE<br><br></h1>
+            </button>
 
-            </div>
-            <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-              <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary"><app-number-counter number="77226"></app-number-counter></h1>
+            <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
+              data-bs-toggle="collapse" data-bs-target="#flush-collapseThree">
+              <h1
+                class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+                <app-number-counter number="77226"></app-number-counter>
+              </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
                   assignment_return
                 </span>
               </h1>
-              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">DEVOLVIDOS BACKOFFICE<br><br></h1>
+              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">DEVOLVIDOS
+                BACKOFFICE<br><br></h1>
+            </button>
 
-            </div>
-            <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-
-              <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary"><app-number-counter number="57475"></app-number-counter></h1>
+            <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
+              data-bs-toggle="collapse" data-bs-target="#flush-collapseFour">
+              <h1
+                class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+                <app-number-counter number="57475"></app-number-counter>
+              </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
                   assignment_turned_in
                 </span>
               </h1>
-              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">EM FASE DE ACEITAÇÃO<br><br></h1>
+              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">EM FASE DE
+                ACEITAÇÃO<br><br></h1>
+            </button>
 
-            </div>
-            <div class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center">
-
-              <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary"><app-number-counter number="68586"></app-number-counter></h1>
+            <button type="button" class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center"
+              data-bs-toggle="collapse" data-bs-target="#flush-collapseFive">
+              <h1
+                class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+                <app-number-counter number="68586"></app-number-counter>
+              </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
                   inventory_2
                 </span>
               </h1>
-              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE ENVIO PARA ARQUIVO FÍSCO<br></h1>
-
-            </div>
+              <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE ENVIO
+                PARA <br> ARQUIVO FÍSCO<br></h1>
+            </button>
           </div>
-
         </div>
         <div class="container">
           <div class="row">
-            <div class="offset-1 col-10 ps-0 pe-0 bg-white">
-              <nav class="navbar navbar-expand-lg navbar-light bg-white mt-4 pt-0 pb-0">
-                <span class="navbar-text text-light">
-                  <h5 class="text-light display-4 subtitulo_processos align-self-center">Performance dIária: 08/08/2022</h5>
-                </span>
-              </nav>
-
-            </div>
-            <div class="offset-1 bg-white col-7 mb-3 ps-0 pe-3">
+            <div class="offset-1 col-10 mt-5 ps-0 pe-0 bg-white">
               <nav class="navbar navbar-expand-lg bg-primary mt-0 me-0 pt-0 pb-0">
                 <span class="navbar-text text-light">
                   <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
                 </span>
                 <span class="navbar-text">
-                  <h5 class="display-4 align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">FILAS DE TRABALHO</h5>
+                  <h5 class="display-4 align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">FILAS DE
+                    TRABALHO</h5>
                 </span>
               </nav>
-
             </div>
-            <div class="col-3 mb-3 ms-3 ps-0 pe-3 bg-white">
-              <nav class="navbar navbar-expand-lg bg-primary mt-0 pt-0 pb-0">
-                <span class="navbar-text text-light">
-                  <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
-                </span>
-                <span class="navbar-text">
-                  <h5 class="display-4 align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">ACTUALIZAÇÕES</h5>
-                </span>
-              </nav>
-
-            </div>
-            <div class="offset-1 col-7">
-              <div class="accordion accordion-flush" id="accordionFlushExample">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                      Accordion Item #1
+            <div class="offset-1 col-10 mb-3 mt-4 ps-0 pe-0 ">
+              <div class="accordion1 accordion-flush" id="accordionFlushExample">
+                <div class="accordion1-item">
+                  <h2 class="accordion1-header" id="flush-headingOne">
+                    <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                      <span class="material-symbols-outlined icon-accordion ">
+                        move_up
+                      </span>&nbsp;&nbsp;PROCESSOS PENDENTES DE ENVIO
                     </button>
                   </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <mat-table [dataSource]="dataSource" matSort #empTbSort="matSort">
+                      <!-- Nº Pedido Column -->
+                      <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+                      </ng-container>
+                      <!-- Nº Contrato Column -->
+                      <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Nº Contrato
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                      </ng-container>
+                      <!-- Data Pedido Column -->
+                      <ng-container matColumnDef="progress">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Data Pedido
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+                      </ng-container>
+                      <!-- Nome Cliente Empresa Column -->
+                      <ng-container matColumnDef="color">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Nome Cliente Empresa
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" [style.color]="row.color">
+                          {{row.color}}
+                        </mat-cell>
+                      </ng-container>
+                      <!-- Editar Processo Column -->
+                      <ng-container matColumnDef="teste">
+                        <mat-header-cell *matHeaderCellDef>
+                          &nbsp;&nbsp;&nbsp;Editar Processo
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
+                              &nbsp;&nbsp;delete
+                            </span>
+                          </a>
+                          <a href="#">
+                            <span class="material-symbols-rounded" style="color: #1e66b0;">
+                              edit_square
+                            </span>
+                          </a>
+                        </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                    </mat-table>
+                    <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                      <div class="row ms-0 me-0 ps-0 pe-0">
+                        <div class="me-0 ps-0 pe-0 col-12">
+                          <nav class="navbar navbar-light bg-light">
+                            <span class="navbar-text ms-0 me-0">
+                              <mat-form-field>
+                                <input matInput (keyup)="applyFilter($event.target.value)"
+                                  placeholder="Efetuar pesquisa">
+                              </mat-form-field>
+                            </span>
+                            <span class="navbar-text ms-auto me-0">
+                              <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                            </span>
+                            <span class="navbar-text ms-0 me-0">
+                              <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                            </span>
+                            <span class="navbar-text ms-0 me-0">
+                              <mat-paginator #paginatorPage [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                              </mat-paginator>
+                            </span>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                      Accordion Item #2
+
+                <div class="accordion1-item">
+                  <h2 class="accordion1-header" id="flush-headingTwo">
+                    <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                      <span class="material-symbols-outlined icon-accordion ">
+                        assignment_returned
+                      </span>&nbsp;&nbsp;TRATAMENTO BACKOFFICE
                     </button>
                   </h2>
-                  <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                  <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                      <div class="card-body pt-3 text-primary">
+                        <div class="table-responsive">
+                          <table mat-table [dataSource]="dataSourceWithObjectColumn" class="table1" matSort
+                            #empTbSortWithObject="matSort">
+                            <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumnsWithObject">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
+                              <ng-container *ngIf="column == 'project.name'">
+                                <td mat-cell *matCellDef="let emp">{{ emp.project.name }}</td>
+                              </ng-container>
+                              <ng-container *ngIf="column != 'project.name'">
+                                <td mat-cell *matCellDef="let emp">{{ emp[column] }}</td>
+                              </ng-container>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsWithObject"></tr>
+                            <tr mat-row *matRowDef="let emprow; columns: displayedColumnsWithObject"></tr>
+                          </table>
+
+                          <mat-paginator #paginatorPageSize [pageSizeOptions]="pageSizes" showFirstLastButtons>
+                          </mat-paginator>
+                        </div>
+                        <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                      Accordion Item #3
+                <div class="accordion1-item">
+                  <h2 class="accordion1-header" id="flush-headingThree">
+                    <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                      <span class="material-symbols-outlined icon-accordion ">
+                        assignment_return
+                      </span>&nbsp;&nbsp;DEVOLVIDOS BACKOFFICE
                     </button>
                   </h2>
-                  <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                  <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion1-item">
+                  <h2 class="accordion1-header" id="flush-headingFour">
+                    <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                      <span class="material-symbols-outlined icon-accordion ">
+                        assignment_turned_in
+                      </span>&nbsp;&nbsp;FASE DE ACEITAÇÃO
+                    </button>
+                  </h2>
+                  <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                      <div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion1-item">
+                  <h2 class="accordion1-header" id="flush-headingFive">
+                    <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                      <span class="material-symbols-outlined icon-accordion ">
+                        inventory_2
+                      </span>&nbsp;&nbsp;PENDENTES DE ENVIO PARA ARQUIVO FÍSICO
+                    </button>
+                  </h2>
+                  <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                      <div>
+
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-3">
-              <div class="row">
-                <img src="assets/images/cartaz.jpg" class="pe-0 img-fluid">
-              </div>
-            </div>
-            <div class="offset-1 col-10 ps-0 pe-0 bg-white">
-              <nav class="navbar navbar-expand-lg navbar-light bg-white mt-2 pt-0 pb-0">
-                <span class="navbar-text text-light">
-                  <h5 class="text-light display-4 subtitulo_processos align-self-center">Performance dIária: 08/08/2022</h5>
-                </span>
-              </nav>
-
             </div>
             <div class="offset-1 col-10 ps-0 pe-0">
-
-            </div>
-            <div class="offset-1 col-10 ps-0 pe-0 bg-white">
-              <nav class="navbar navbar-expand-lg navbar-light bg-white mt-2 pt-0 pb-0">
-                <span class="navbar-text text-light">
-                  <h5 class="text-light display-4 subtitulo_processos align-self-center">Performance dIária: 08/08/2022</h5>
+              <nav class="navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0"><span class="navbar-text text-light">
                 </span>
               </nav>
 
+            </div>
+            <div class="offset-1 col-10 ps-0 pe-0 bg-white">
+              <div class="container mb-3 ms-0 me-0 pt-3 pb-3 ps-0 pe-0">
+                <div class="row ms-0 me-0 ps-0 pe-0">
+                  <div class="offset-1 me-0 ps-0 pe-0 col-10">
+                    <nav class="navbar navbar-light bg-light">
+                      <span class="navbar-text ms-auto me-1">
+                        <button id="btn1"
+                          class="btn bg-primary text-white botao_esquerda mt-0 ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
+                          wappler-command="editContent"><i class="fas fa-folder-open fs-5"></i>&nbsp; ABERTURA DE
+                          PROCESSO</button></span>
+                      <span class="navbar-text ms-1 me-auto">
+                        <button id="btn3" class="btn botao_direita ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
+                          wappler-command="editContent">CONSULTA DE PROCESSO&nbsp;&nbsp;<i
+                            class="fas fa-search fs-5 fa-sm icon_botao_direita"></i></button></span>
+                    </nav>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
   </mat-sidenav-content>
 
 </mat-sidenav-container>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Tem certeza que deseja apagar?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Sim</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+      </div>
+    </div>
+  </div>
+</div>

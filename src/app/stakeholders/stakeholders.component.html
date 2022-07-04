@@ -1,122 +1,163 @@
 <app-nav-menu-interna></app-nav-menu-interna>
+<div class="container">
+  <div class="row mb-xxl-5 mt-3">
+    <div class="offset-1 bg-white col-7 col-xxl-10">
+      <!--table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakes">
+        <thead>
+          <tr>
+            <th>Tipo de Interveniente</th>
+            <th>NIF</th>
+            <th>Nome do Cliente</th>
+            <th>Número do Cliente</th>
+            <th>Recolha Eletrónica</th>
+            <th>Tipo de Documento</th>
+            <th>País do Documento</th>
+            <th>Opções</th>
+            <th>Nome Completo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="clickable" *ngFor="let stake of stakes">
 
-  <h1 id="tableLabel">Intervenientes</h1>
+            <td>{{stake.fiscalId}}</td>
+            <td>{{stake.fullName}}</td>
+            <--Adicionar mais campos de acordo com o mock>
+            <td>
+              <button class="btn btn-info" (click)="toggleShow(stake)">
+                <span class="glyphicon glyphicon-pencil"></span>Mais Informação
+              </button>
 
-  <p>Todos os intervenientes no contracto.</p>
-
-  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakes">
-    <thead>
-      <tr>
-        <th>Tipo de Interveniente</th>
-        <th>NIF</th>
-        <th>Nome do Cliente</th>
-        <th>Número do Cliente</th>
-        <th>Recolha Eletrónica</th>
-        <th>Tipo de Documento</th>
-        <th>País do Documento</th>
-        <th>Opções</th>
-        <th>Nome Completo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="clickable" *ngFor="let stake of stakes">
-
-        <td>{{stake.fiscalId}}</td>
-        <td>{{stake.fullName}}</td> <!--Adicionar mais campos de acordo com o mock-->
-        <td>
-          <button class="btn btn-info" (click)="toggleShow(stake)">
-            <span class="glyphicon glyphicon-pencil"></span>Mais Informação
-          </button>
-
-          <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
-            <span class="glyphicon glyphicon-pencil"></span>Editar
-          </button>
+              <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
+                <span class="glyphicon glyphicon-pencil"></span>Editar
+              </button>
 
 
-          <button class="btn btn-danger" (click)="onClickDelete(stake.fiscalId, stake.fullName)">
-            <span class="glyphicon glyphicon-trash"></span>Remover
-          </button>
-        </td>
+              <button class="btn btn-danger" (click)="onClickDelete(stake.fiscalId, stake.fullName)">
+                <span class="glyphicon glyphicon-trash"></span>Remover
+              </button>
+            </td>
 
-      </tr>
-    </tbody>
-  </table>
+          </tr>
+        </tbody>
+      </table-->
 
-  <h3>Pesquisar um Interveniente</h3>
-
-  <div>
-    <b>Por favor, pesquise o Interveniente:</b>
-    <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder(formStakeholderSearch.value)">
-
-      <!--<div id="pesquisa">-->
-      <!-- (ngSubmit)=""-->
-      <!--<form #form="ngForm" (ngSubmit)="searchStakeholder(form)" novalidate>-->
-      <div class="form-group">
-        <label>Tipo de Interveniente:</label><br /> <!--Este campo nao está no YAML,Será um dropdown no futuro-->
-        <select class="form-select" (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType" formControlName="stakeholderType">
-          <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>{{stakeType.stakeTypeOption}}</option>
-        </select>
+      <div class="table-responsive">
+        <form #contactForm="ngForm">
+          <table class="table">
+            <thead class="table-primary align-middle">
+              <tr class="align-middle">
+                <th scope="col" class="text-center">Associado ao Contrato</th>
+                <th scope="col" class="text-center align-middle">Nº Cliente</th>
+                <th scope="col" class="text-center">Nome Cliente</th>
+                <th scope="col" class="text-center">NIF</th>
+                <th scope="col" class="text-center">Elegível</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <input type="hidden" name="id" id="id" value="1032">
+                <td class="text-center">Sim</td>
+                <td class="text-center">1032</td>
+                <td class="text-center">BIJAL DE CANELA</td>
+                <td class="text-center">162243839</td>
+                <td class="text-center">Elegível</td>
+              </tr>
+              <tr>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center">
+                  <label style="border: 1px solid #000;width: 125px;">Sem Páginas</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <label style="border: 1px solid #000;width: 125px;">1 - 1, 1 no Total</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
       </div>
 
-      <div class="form-group">
-        <label>Tipo de Documento:</label><br /> <!--Será um dropdown no futuro, quando tivermos a reference data-->
-        <input type="text" formControlName="docType" />
+      <h3>Pesquisar um Interveniente</h3>
+
+      <div>
+        <b>Por favor, pesquise o Interveniente:</b>
+        <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder(formStakeholderSearch.value)">
+
+          <!--<div id="pesquisa">-->
+          <!-- (ngSubmit)=""-->
+          <!--<form #form="ngForm" (ngSubmit)="searchStakeholder(form)" novalidate>-->
+          <div class="form-group">
+            <label>Tipo de Interveniente:</label><br />
+            <!--Este campo nao está no YAML,Será um dropdown no futuro-->
+            <select class="form-select" (click)="changeListElementStakeType(stakeholderType, $event)"
+              id="stakeholderType" formControlName="stakeholderType">
+              <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
+                {{stakeType.stakeTypeOption}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de Documento:</label><br />
+            <!--Será um dropdown no futuro, quando tivermos a reference data-->
+            <input type="text" formControlName="docType" />
+          </div>
+          <div class="form-group">
+            <label>Número do Documento:</label><br />
+            <!--Será um dropdown no futuro, quando tivermos a reference data-->
+            <input type="text" formControlName="docNumber" />
+          </div>
+
+
+          <div class="form-group">
+            Permite recolha eletrónica?<br />
+            <label>Sim</label>
+            <input type="radio" value="true" formControlName="flagRecolhaEletronica" />
+            <br />
+            <label>Não</label>
+            <input type="radio" value="false" formControlName="flagRecolhaEletronica" />
+          </div>
+
+          <button type="submit">Pesquisar</button>
+        </form>
       </div>
-      <div class="form-group">
-        <label>Número do Documento:</label><br /> <!--Será um dropdown no futuro, quando tivermos a reference data-->
-        <input type="text" formControlName="docNumber" />
+
+      <!-- Cria FORM diferente ?-->
+      <br>
+      <button (click)="onClickNew()" routerLink="/add-stakeholder">Adicionar Interveniente</button>
+
+      <div *ngIf="isShown" class="row container-fluid" id="divshow">
+        <h2>Interveniente Encontrado!</h2>
+        <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeShow">
+          <thead>
+            <tr>
+              <th>ID Fiscal</th>
+              <th>Nome Completo</th>
+              <th>Editar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table table-striped" *ngFor="let stake of stakeShow">
+              <th>{{stake.fiscalId}}</th>
+              <td>{{stake.fullName}}</td>
+              <td>
+
+                <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
+                  <span class="glyphicon glyphicon-pencil"></span>Editar
+                </button>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div>
+          Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+          <form>
+            <button type="submit">Ler Cartão de Cidadão</button>
+          </form>
+        </div>
+
       </div>
-
-
-      <div class="form-group">
-        Permite recolha eletrónica?<br />
-        <label>Sim</label>
-        <input type="radio" value="true" formControlName="flagRecolhaEletronica" />
-        <br />
-        <label>Não</label>
-        <input type="radio" value="false" formControlName="flagRecolhaEletronica" />
-      </div>
-
-      <button type="submit">Pesquisar</button>
-    </form>
-  </div>
-
-  <!-- Cria FORM diferente ?-->
-  <br>
-  <button (click)="onClickNew()" routerLink="/add-stakeholder">Adicionar Interveniente</button>
-
-  <div *ngIf="isShown" class="row container-fluid" id="divshow">
-    <h2>Interveniente Encontrado!</h2>
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeShow">
-      <thead>
-        <tr>
-          <th>ID Fiscal</th>
-          <th>Nome Completo</th>
-          <th>Editar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="table table-striped" *ngFor="let stake of stakeShow">
-          <th>{{stake.fiscalId}}</th>
-          <td>{{stake.fullName}}</td>
-          <td>
-
-            <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
-              <span class="glyphicon glyphicon-pencil"></span>Editar
-            </button>
-
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div>
-      Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
-      <form>
-        <button type="submit">Ler Cartão de Cidadão</button>
-      </form>
     </div>
-
   </div>
-
-
+</div>
