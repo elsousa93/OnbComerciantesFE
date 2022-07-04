@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container animation-teste">
   <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'" [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp position-fixed">
-    <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'down' : 'up'">
+    <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up' : 'down'">
       <div class="accordion" id="accordion">
         <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button"><p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i class="material-symbols-rounded fa-lg icons-sidenav">home</i>&nbsp;Início &nbsp;</p></a>

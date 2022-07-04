@@ -41,7 +41,7 @@ export class NumberCounterComponent implements OnInit {
       const target = context.number;
       const count = context.numberDisplay;
       const increment = Math.trunc(target / this.speed);
-      console.log(increment);
+      //console.log(increment);
 
       if (count < target) {
         context.numberDisplay = count + increment;

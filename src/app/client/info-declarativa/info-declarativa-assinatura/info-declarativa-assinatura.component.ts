@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
+import { CountryInformation } from '../../../table-info/ITable-info.interface';
+import { TableInfoService } from '../../../table-info/table-info.service';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -20,6 +22,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
     }, error => console.error(error));
+
   }
 
   ngOnInit(): void {

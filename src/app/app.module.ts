@@ -130,7 +130,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
       { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
-
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },

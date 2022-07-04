@@ -46,10 +46,10 @@ export class NavMenuPresencialComponent implements OnInit {
   public autohide() {
     var currentScrollPos = window.pageYOffset;
     if (this.prevScrollpos > currentScrollPos) {
-      this.autoHide.emit(true);
+      this.autoHide.emit(false);
       this.isAutohide = false;
     } else {
-      this.autoHide.emit(false);
+      this.autoHide.emit(true);
       this.isAutohide = true;
     }
     this.prevScrollpos = currentScrollPos;

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { docType } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
+import { TableInfoService } from '../table-info/table-info.service';
 
 @Component({
   selector: 'app-client',
@@ -18,6 +19,10 @@ export class ClientComponent implements OnInit {
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
+
+  //Informação de campos/tabelas
+  documentTypes;
+  
 
   clientIdNew;
   newId;
@@ -140,7 +145,8 @@ export class ClientComponent implements OnInit {
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router,
-    private data: DataService) {
+    private data: DataService,
+    private tableInfo: TableInfoService  ) {
     this.ngOnInit();
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
@@ -149,6 +155,10 @@ export class ClientComponent implements OnInit {
     this.updateData(true,1);
     //this.activateButtons(true);
     this.errorInput = "form-control campo_form_coment";
+
+    //Informação de campos/tabelas
+    //this.documentTypes = tableInfo;
+
   }
 
 

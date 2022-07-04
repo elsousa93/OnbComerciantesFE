@@ -7,6 +7,8 @@ import { EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
+import { TableInfoService } from '../../table-info/table-info.service';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
 
 
 @Component({
@@ -46,6 +48,10 @@ export class InfoDeclarativaComponent implements OnInit {
     faxClient: 54000,
     billingEmail: "empresa@participante.com",
   } as unknown as Client;
+
+  //Informação de campos/tabelas
+  internationalCallingCodes: CountryInformation[];
+
 
   public newClient: Client = {
     clientId: '0',
@@ -91,9 +97,10 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.ngOnInit();
     this.updateData(true, 6);
+    this.internationalCallingCodes = tableInfo.GetAllCountries();
 
 
    /** if (this.newClient.id != 0) {
@@ -103,8 +110,6 @@ export class InfoDeclarativaComponent implements OnInit {
       }, error => console.error(error));
 
     } **/
-
-
 }
   ngOnInit(): void {
     this.listValue = this.formBuilder.group({

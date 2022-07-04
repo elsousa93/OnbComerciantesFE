@@ -1,3 +1,5 @@
+<app-nav-menu-interna></app-nav-menu-interna>
+
 <button class="btn" routerLink="/info-declarativa">Comerciante</button>
 <button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
 <button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
@@ -5,7 +7,7 @@
 <br>
 
 
-<!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação--> 
+<!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação-->
 
 <div class="container">
   <form #contactForm="ngForm">
@@ -34,9 +36,8 @@
     <form [formGroup]="listValue">
       <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
         <option value="">Indicativo:</option>
-        <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
       </select>
-      <!--<p>{{phone1CountryCode}}</p>-->
     </form>
     <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
       is required.
@@ -62,7 +63,7 @@
     <form [formGroup]="listValue">
       <select class="form-select" #phone2CountryCode formControlName="phone2CountryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode">
         <option value="">Indicativo:</option>
-        <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
       </select>
       <!--<p>{{phone2CountryCode}}</p>-->
     </form>
@@ -106,7 +107,7 @@
     <form [formGroup]="listValue">
       <select class="form-select" #faxCountryCode formControlName="faxCountryCode" (click)="changeListElement(faxCountryCode, $event)" id="faxCountryCode">
         <option value="">Indicativo do Fax:</option>
-        <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
       </select>
       <!--<p>{{faxCountryCode}}</p>-->
     </form>

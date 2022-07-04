@@ -4,8 +4,11 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+//Para local dev: 'https://localhost:7270/';
+//Para dev SIBS: 'http://localhost:12000/BackendPortal/';
+
 export function getBaseUrl() {
-  var baseUrl = 'http://localhost:12000/BackendPortal/'
+  var baseUrl = 'https://localhost:7270/';
   return baseUrl;
 }
 
