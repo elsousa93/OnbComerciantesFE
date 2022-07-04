@@ -28,6 +28,7 @@ export class NewClientComponent implements OnInit {
     "merchantType": "",
     "legalNature": "",
     "legalNature2": "",
+    "observations":"",
     "crc": {
       "code": "",
       "validUntil": ""

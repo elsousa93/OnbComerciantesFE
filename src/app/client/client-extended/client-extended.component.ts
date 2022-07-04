@@ -16,6 +16,7 @@ export class ClientExtendedComponent implements OnInit {
     "clientId": "Bananas",
     "fiscalId": "Bananas",
     "companyName": "Bananas",
+    "observations": "",
     "contactName": "Bananas ipsum",
     "shortName": "deserunt exercita",
     "headquartersAddress": {

@@ -20,6 +20,7 @@ export class ClientByIdComponent implements OnInit {
   client: Client = {
     "clientId": "",
     "fiscalId": "",
+    "observations":"",
     "companyName": "",
     "contactName": "",
     "shortName": "",
