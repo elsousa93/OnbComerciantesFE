@@ -6,7 +6,7 @@ import { ViewChildren } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from './data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 
 
@@ -42,7 +42,7 @@ export class NavMenuInternaComponent implements OnInit {
 
   public startedEditing: boolean; //preciso de ter associado a página
 
-  constructor(private data: DataService) {
+  constructor(private data: DataService, private route: Router) {
   }
 
   ngOnInit(): void {
@@ -93,6 +93,24 @@ export class NavMenuInternaComponent implements OnInit {
 
   onClick(e) {
     alert(this.item.name);
+  }
+
+
+//Redirecionar para as páginas - contemplar sessão
+  goToStakeholders() {
+    this.route.navigate(['stakeholders/']);
+  }
+  goToComprovativos() {
+    this.route.navigate(['comprovativos']);
+  }
+  goToStores() {
+    this.route.navigate(['store']);
+  }
+  goToInfoDeclarativa() {
+    this.route.navigate(['info-declarativa']);
+  }
+  goToComercialOffer() {
+    this.route.navigate(['app-commercial-offer-list']);
   }
 
   /*onClick(e :any) {
