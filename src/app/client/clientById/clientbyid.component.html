@@ -15,20 +15,20 @@
           <div class="col-xxl col-6">
             <p class="titulo-form-simples" for="newClientNr">Nr. Cliente: </p>
             <input required minlength="2" maxlength="100" ngModel #newClientNr="ngModel" name="newClientNr" type="text"
-                   id="newClientNr" class="form-control campo_form" [(ngModel)]="client.clientId" readonly>-->
+                   id="newClientNr" class="form-control campo_form" [(ngModel)]="client.clientId" [readonly]="clientExists">-->
 
             <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
         <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
-          id="docType" class="form-control campo_form" [(ngModel)]="client.docType" readonly>-->
+          id="docType" class="form-control campo_form" [(ngModel)]="client.docType" [readonly]="clientExists">-->
           <!--</div>
           <div class="col-xxl col-7">
             <p class="titulo-form-simples">Nome Cliente: </p>
             <input required minlength="2" maxlength="100" ngModel #nameClient="ngModel" name="nameClient" type="text"
-                   id="nameClient" class="form-control campo_form" [(ngModel)]="client.shortName" readonly>-->
+                   id="nameClient" class="form-control campo_form" [(ngModel)]="client.shortName" [readonly]="clientExists">-->
 
             <!--<p class="titulo-form-simples" for="docNr">Número do Documento: </p>
         <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr"
-          class="form-control campo_form" [(ngModel)]="client.docNr" readonly>-->
+          class="form-control campo_form" [(ngModel)]="client.docNr" [readonly]="clientExists">-->
           <!--</div>-->
           <!--<hr>-->
         <!--</div>
@@ -65,13 +65,13 @@
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="crcCode">Código de Certidão do Registo Comercial: </p>
                 <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
-                       id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crc.code" readonly />
+                       id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crc.code" [readonly]="clientExists" />
               </div>
               <div class="col-xxl col-7">
             <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
             <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
               name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-              [(ngModel)]="client.companyName" readonly>
+              [(ngModel)]="client.companyName" [readonly]="clientExists">
           </div>
         </div>
       </div>-->
@@ -79,6 +79,8 @@
       <p></p>
       <p></p>
       <app-barrazul-home></app-barrazul-home>
+      <div>
+      <form [formGroup]="form" name="form" (ngSubmit)="submit()">
       <div class="row">
         <div class="offset-1 col-10">
           <h1 class="mt-4 text-primary"><i class="fas fa-building"></i>&nbsp;Caracterização social da empresa:</h1>
@@ -88,29 +90,42 @@
             <div class="col-xxl col-6 col-xxl-6">
               <div *ngIf="!isCommercialSociety">
                 <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:*</p>
-                <input required minlength="2" maxlength="100" ngModel #natJuridicaNIFNIPC="ngModel"
-                       name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
-                <!--[(ngModel)]="client.natJuridicaNIFNIPC" readonly-->
+                <input required minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
+                       name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" [readonly]="clientExists" />
+
+                <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
+                  <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
+                <!--[(ngModel)]="client.natJuridicaNIFNIPC" [readonly]="clientExists"-->
               </div>
               <p class="">A empresa é uma Sociedade Comercial?*</p>
               <div class="form-check">
-                <input class="form-check-input" required ngModel name="commercialSociety" type="radio" value=true
-                       #commercialSociety="ngModel" id="commercialSociety" (click)="setCommercialSociety(true)">
+                <input class="form-check-input" required formControlName="commercialSociety" name="commercialSociety" type="radio" value=true
+                       id="commercialSociety" (click)="setCommercialSociety(true)">
                 <label class="radio">Sim</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" required ngModel name="commercialSociety" type="radio" value=false
-                       #commercialSociety="ngModel" id="commercialSociety" (click)="setCommercialSociety(false)">
+                <input class="form-check-input" required formControlName="commercialSociety" name="commercialSociety" type="radio" value=false
+                       id="commercialSociety" (click)="setCommercialSociety(false)">
                 <label class="radio" for="radio2">Não</label>
+              </div>
+              <div class="alert alert-danger" *ngIf="this.form.get('commercialSociety').touched && !this.form.get('commercialSociety').valid">
+                <div *ngIf="this.form.get('commercialSociety').errors && this.form.get('commercialSociety').errors?.['required']">
+                  O parâmetro acima é obrigatório.
+                </div>
               </div>
 
               <div *ngIf="isCommercialSociety == undefined || isCommercialSociety == true">
                 <p class="titulo-form-simples">Código de Certidão do Registo Comercial:</p>
-                <input required minlength="2" maxlength="100" ngModel #crcCode="ngModel" name="crcCode" type="text"
-                       id="crcCode" class="form-control campo_form mb-0" [(ngModel)]="client.crc.code" readonly />
-                <!--<p class="texto-coment mt-2 mb-4">
-                    (Aplicável apenas quando a Natureza Jurídica for Sociedade Comercial)
-                </p>-->
+                <input required minlength="2" maxlength="100" formControlName="crcCode" name="crcCode" type="text"
+                       id="crcCode" class="form-control campo_form mb-0" [readonly]="clientExists" />
+                <div class="alert alert-danger" *ngIf="this.form.get('crcCode').touched && !this.form.get('crcCode').valid">
+                  <div *ngIf="this.form.get('crcCode').errors && this.form.get('crcCode').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
               </div>
               <br>
             </div>
@@ -123,16 +138,21 @@
             <div class="row">
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:</p>
-                <select required ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
-                        class="form-control campo_form" [(ngModel)]="client.legalNature"
+                <select required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                        class="form-control campo_form"
                         (change)="onLegalNatureSelected()">
                   <option value="">Selecione</option>
                   <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
                 </select>
+                <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
+                  <div *ngIf="this.form.get('natJuridicaN1').errors && this.form.get('natJuridicaN1').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <!--<input required minlength="2" maxlength="100" ngModel #natJuridicaN1="ngModel" name="natJuridicaN1"
-         type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
-         readonly>-->
+  type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
+  [readonly]="clientExists">-->
 
                 <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
                 <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
@@ -141,61 +161,102 @@
                   <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
                 </select>
 
+
                 <p class="titulo-form-simples" for="caePrincipal">CAE Principal:</p>
-                <input required ngModel #caePrincipal="ngModel" name="caePrincipal" type="search" id="caePrincipal"
-                       class="form-control campo-form" [(ngModel)]="client.mainEconomicActivity.code">
+                <input required formControlName="CAE1" name="caePrincipal" type="search" id="caePrincipal"
+                       class="form-control campo-form">
+                <div class="alert alert-danger" *ngIf="this.form.get('caePrincipal').touched && !this.form.get('caePrincipal').valid">
+                  <div *ngIf="this.form.get('caePrincipal').errors && this.form.get('caePrincipal').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <!--<input required minlength="2" maxlength="100" ngModel #caePrincipal="ngModel" name="caePrincipal"
-         type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.code"
-         readonly>-->
+  type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.code"
+  [readonly]="clientExists">-->
 
                 <p class="titulo-form-simples" for="caeSecundario1">CAE Secundário 1: </p>
-                <input required minlength="2" maxlength="100" ngModel #caeSecundario1="ngModel" name="caeSecundario1"
-                       type="text" id="caeSecundario1" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[0].code"
-                       readonly>
+                <input required minlength="2" maxlength="100" formControlName="CAESecondary1" name="caeSecundario1"
+                       type="text" id="caeSecundario1" class="form-control campo_form"
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
+                  <div *ngIf="this.form.get('CAESecondary1').errors && this.form.get('CAESecondary1').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <p class="titulo-form-simples" for="caeSecundario2">CAE Secundário 2: </p>
-                <input required minlength="2" maxlength="100" ngModel #caeSecundario2="ngModel" name="caeSecundario2"
-                       type="text" id="caeSecundario2" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[1].code"
-                       readonly>
+                <input required minlength="2" maxlength="100" formControlName="CAESecondary2" name="caeSecundario2"
+                       type="text" id="caeSecundario2" class="form-control campo_form"
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('caeSecundario2').touched && !this.form.get('caeSecundario2').valid">
+                  <div *ngIf="this.form.get('caeSecundario2').errors && this.form.get('caeSecundario2').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <!--<p class="titulo-form-simples" for="caeSecundario3">CAE Secundário 3: </p>
   <input required minlength="2" maxlength="100" ngModel #caeSecundario3="ngModel" name="caeSecundario3"
     type="text" id="caeSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].code"
-    readonly>-->
+    [readonly]="clientExists">-->
               </div>
 
               <div class="col-xxl col-7">
 
                 <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:</p>
-                <input required minlength="2" maxlength="100" ngModel #natJuridicaNIFNIPC="ngModel"
-                       name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
-                <!--[(ngModel)]="client.natJuridicaNIFNIPC" readonly/>-->
+                <input required minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
+                       name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" [readonly]="clientExists" />
+                <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
+                  <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
+                <!--[(ngModel)]="client.natJuridicaNIFNIPC" [readonly]="clientExists"/>-->
 
                 <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
-                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+                <input required minlength="2" maxlength="100" formControlName="socialDenomination"
                        name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                       [(ngModel)]="client.companyName" readonly>
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
+                  <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <p class="titulo-form-simples" for="ramoPrincipal">Ramo de Negócio de Objeto Social Principal*: </p>
-                <input required minlength="2" maxlength="100" ngModel #ramoPrincipal="ngModel" name="ramoPrincipal"
-                       type="text" id="ramoPrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.branch"
-                       readonly>
+                <input required minlength="2" maxlength="100" formControlName="CAE1Branch" name="ramoPrincipal"
+                       type="text" id="ramoPrincipal" class="form-control campo_form"
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
+                  <div *ngIf="this.form.get('CAE1Branch').errors && this.form.get('CAE1Branch').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
-                <input required minlength="2" maxlength="100" ngModel #ramoSecundario1="ngModel" name="ramoSecundario1"
-                       type="text" id="ramoSecundario1" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[0].branch"
-                       readonly>
+                <input required minlength="2" maxlength="100" formControlName="CAESecondary1Branch" name="ramoSecundario1"
+                       type="text" id="ramoSecundario1" class="form-control campo_form"
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
+                  <div *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
-                <input required minlength="2" maxlength="100" ngModel #ramoSecundario2="ngModel" name="ramoSecundario2"
-                       type="text" id="ramoSecundario2" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[1].branch"
-                       readonly>
+                <input required minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario2"
+                       type="text" id="ramoSecundario2" class="form-control campo_form"
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
+                  <div *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <!--<p class="titulo-form-simples" for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </p>
-                <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
-                  type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].branch"
-                  readonly>-->
+  <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
+    type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].branch"
+    [readonly]="clientExists">-->
 
               </div>
               <hr>
@@ -205,8 +266,13 @@
             <div class="row">
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
-                <input required ngModel #dataConst="ngModel" name="dataConst" type="date"
-                       id="dataConst" class="form-control campo_form" [(ngModel)]="client.shareCapital.date" readonly>
+                <input required formControlName="constitutionDate" type="date"
+                       id="dataConst" class="form-control campo_form" [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
+                  <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -214,25 +280,45 @@
             <div class="row">
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
-                <input required minlength="2" maxlength="100" ngModel #paisSedeSocial="ngModel" name="paisSedeSocial"
-                       type="text" id="paisSedeSocial" class="form-control campo_form" [(ngModel)]="client.mainOfficeAddress.country"
-                       readonly>
+                <input required minlength="2" maxlength="100" formControlName="country" name="paisSedeSocial"
+                       type="text" id="paisSedeSocial" class="form-control campo_form"
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
+                  <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <p class="titulo-form-simples" for="cpSedeSocial">Código-Postal da Sede Social: </p>
-                <input required minlength="2" maxlength="100" ngModel #cpSedeSocial="ngModel" name="cpSedeSocial"
-                       type="text" id="cpSedeSocial" class="form-control campo_form" [(ngModel)]="client.mainOfficeAddress.postalCode"
-                       readonly>
+                <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="cpSedeSocial"
+                       type="text" id="cpSedeSocial" class="form-control campo_form"
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
+                  <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
               </div>
               <div class="col-xxl col-7">
                 <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
-                <input required minlength="2" maxlength="100" ngModel #localidadeSedeSocial="ngModel"
+                <input required minlength="2" maxlength="100" formControlName="location"
                        name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
-                       [(ngModel)]="client.mainOfficeAddress.postalCode" readonly>
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
+                  <div *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
-                <textarea required minlength="2" maxlength="100" ngModel #moradaSedeSocial="ngModel"
+                <textarea required minlength="2" maxlength="100" formControlName="address"
                           name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
-                          [(ngModel)]="client.mainOfficeAddress.address" readonly rows="3"></textarea>
+                          [readonly]="clientExists" rows="3"></textarea>
+                <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
+                  <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
               </div>
             </div>
@@ -246,16 +332,21 @@
             <div class="row">
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:</p>
-                <select required ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
-                        class="form-control campo_form" [(ngModel)]="client.legalNature"
+                <select required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                        class="form-control campo_form"
                         (change)="onLegalNatureSelected()">
                   <option value="">Selecione</option>
                   <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
                 </select>
+                <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
+                  <div *ngIf="this.form.get('natJuridicaN1').errors && this.form.get('natJuridicaN1').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
 
                 <!--<input required minlength="2" maxlength="100" ngModel #natJuridicaN1="ngModel" name="natJuridicaN1"
-                       type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
-                       readonly>-->
+  type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
+  [readonly]="clientExists">-->
 
                 <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
                 <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
@@ -263,17 +354,24 @@
                   <option value="">Selecione:</option>
                   <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
                 </select>
+                <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
+                
 
                 <!--<input required minlength="2" maxlength="100" ngModel #natJuridicaN2="ngModel" name="natJuridicaN2"
-                       type="text" id="natJuridicaN2" class="form-control campo_form" [(ngModel)]="client.legalNature2"
-                       readonly>-->
+  type="text" id="natJuridicaN2" class="form-control campo_form" [(ngModel)]="client.legalNature2"
+  [readonly]="clientExists">-->
               </div>
-              <div class="col-xxl col-7">
-                <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
-                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
-                       name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                       [(ngModel)]="client.companyName" readonly>
-              </div>
+                <div class="col-xxl col-7">
+                  <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
+                  <input required minlength="2" maxlength="100" formControlName="socialDenomination"
+                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+                         [readonly]="clientExists">
+                  <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
+                    <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                      O parâmetro acima é obrigatório.
+                    </div>
+                  </div>
+                </div>
 
             </div>
           </div>
@@ -283,9 +381,14 @@
             <div class="row">
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
-                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+                <input required minlength="2" maxlength="100" formControlName="socialDenomination"
                        name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                       [(ngModel)]="client.companyName" readonly>
+                       [readonly]="clientExists">
+                <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
+                  <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -302,59 +405,91 @@
         <div class="row">
           <div class="col-xxl col-6">
             <p class="titulo-form-simples" for="franchiseName"> Nome Franchise:</p>
-            <input required minlength="2" maxlength="100" ngModel #franchiseName="ngModel" name="franchiseName"
-                   type="text" id="franchiseName" class="form-control campo_form" [(ngModel)]="client.companyName"
-                   readonly>
+            <input required minlength="2" maxlength="100" formControlName="franchiseName" name="franchiseName"
+                   type="text" id="franchiseName" class="form-control campo_form"
+                   [readonly]="clientExists">
+            <div class="alert alert-danger" *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
+              <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
+                O parâmetro acima é obrigatório.
+              </div>
+            </div>
 
             <p class="titulo-form-simples" for="expectableAnualInvoicing">Fauração Anual Expectável: </p>
-            <input required minlength="2" maxlength="100" ngModel #expectableAnualInvoicing="ngModel"
+            <input required minlength="2" maxlength="100" formControlName="expectableAnualInvoicing"
                    name="expectableAnualInvoicing" type="text" id="expectableAnualInvoicing"
-                   class="form-control campo_form" [(ngModel)]="client.sales.estimatedAnualRevenue" readonly>
+                   class="form-control campo_form" [readonly]="clientExists">
+            <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
+              <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
+                O parâmetro acima é obrigatório.
+              </div>
+            </div>
 
             <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados*: </p>
-            <input required minlength="2" maxlength="100" ngModel #services="ngModel" name="services" type="text"
-                   id="services" class="form-control campo_form" [(ngModel)]="client.sales.servicesOrProductsSold" readonly>
+            <input required minlength="2" maxlength="100" formControlName="services" name="services" type="text"
+                   id="services" class="form-control campo_form" [readonly]="clientExists">
+            <div class="alert alert-danger" *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
+              <div *ngIf="this.form.get('services').errors && this.form.get('services').errors?.['required']">
+                O parâmetro acima é obrigatório.
+              </div>
+            </div>
 
             <p class="titulo-form-simples" for="transactionsAverage">Transações Média: </p>
-            <input required minlength="2" maxlength="100" ngModel #transactionsAverage="ngModel"
+            <input required minlength="2" maxlength="100" formControlName="transactionsAverage"
                    name="transactionsAverage" type="text" id="transactionsAverage" class="form-control campo_form"
-                   [(ngModel)]="client.sales.averageTransactions" readonly>
+                   [readonly]="clientExists">
+            <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
+              <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
+                O parâmetro acima é obrigatório.
+              </div>
+            </div>
           </div>
           <div class="col-xxl col-7">
             <!--<p class="titulo-form-simples" for="groupNIPC">NIPC do Grupo: </p>
             <input required minlength="2" maxlength="100" ngModel #groupNIPC="ngModel" name="groupNIPC" type="text"
-              id="groupNIPC" class="form-control campo_form" [(ngModel)]="client.groupNIPC" readonly>-->
+              id="groupNIPC" class="form-control campo_form" [(ngModel)]="client.groupNIPC" [readonly]="clientExists">-->
 
             <div>
               <p class="titulo-form-simples" for="preferenceDocuments">
                 Selecione a sua preferência de receção de
                 documentação:
               </p>
-              <input required ngModel name="preferenceDocuments" type="radio" value="100digital"
-                     #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="client.documentationDeliveryMethod">
+              <input required name="preferenceDocuments" type="radio" value="100digital"
+                     formControlName="preferenceDocuments" id="preferenceDocuments">
               <label class="titulo-form-simples" for="100digital">100% Digital</label> &nbsp;&nbsp;
 
-              <input required ngModel name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta"
-                     #preferenceDocuments="ngModel" id="preferenceDocuments" [(ngModel)]="client.documentationDeliveryMethod">
+              <input required name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta"
+                     formControlName="preferenceDocuments" id="preferenceDocuments">
               <label class="titulo-form-simples" for="documetacaoPorCarta">Documentação por carta</label><br><br>
+
+              <div class="alert alert-danger" *ngIf="this.form.get('preferenceDocuments').touched && !this.form.get('preferenceDocuments').valid">
+                <div *ngIf="this.form.get('preferenceDocuments').errors && this.form.get('preferenceDocuments').errors?.['required']">
+                  O parâmetro acima é obrigatório.
+                </div>
+              </div>
             </div>
             <div>
               <p class="titulo-form-simples" for="preferenceContacts">Selecione como preferia ser contactado:</p>
-              <input required ngModel name="preferenceContacts" type="radio" value="chamada"
-                     #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
+              <input required name="preferenceContacts" type="radio" value="chamada"
+                     formControlName="preferenceContacts" id="preferenceContacts">
               <label class="titulo-form-simples" for="chamada">Chamada</label>&nbsp;&nbsp;
 
-              <input required ngModel name="preferenceContacts" type="radio" value="correio"
-                     #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
+
+              <input required name="preferenceContacts" type="radio" value="correio"
+                     formControlName="preferenceContacts" id="preferenceContacts">
               <label class="titulo-form-simples" for="correio">Correio</label>&nbsp;&nbsp;
 
-              <input required ngModel name="preferenceContacts" type="radio" value="email"
-                     #preferenceContacts="ngModel" id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
+              <input required name="preferenceContacts" type="radio" value="email"
+                     formControlName="preferenceContacts" id="preferenceContacts">
               <label class="titulo-form-simples" for="email">Email</label>&nbsp;&nbsp;
 
-              <input required ngModel name="preferenceContacts" type="radio" value="SMS" #preferenceContacts="ngModel"
-                     id="preferenceContacts" [(ngModel)]="client.contacts.preferredMethod">
+              <input required name="preferenceContacts" type="radio" value="SMS"
+                     id="preferenceContacts" formControlName="preferenceContacts">
               <label class="titulo-form-simples" for="sms">SMS</label>&nbsp;&nbsp;<br><br>
+              <div class="alert alert-danger" *ngIf="this.form.get('preferenceContacts').touched && !this.form.get('preferenceContacts').valid">
+                <div *ngIf="this.form.get('preferenceContacts').errors && this.form.get('preferenceContacts').errors?.['required']">
+                  O parâmetro acima é obrigatório.
+                </div>
+              </div>
             </div>
 
             <p class="titulo-form-simples" for="destinationCountries">Países de Destino dos Produtos Serviços*:</p>
@@ -398,8 +533,8 @@
             </div>
 
             <div>
-              <input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">
-              <button (click)="addCountryToList(countryName.value)">Adicionar</button>
+              <input type="text" id="countryName" name="countryName" formControlName="country">
+              <!--<button (click)="addCountryToList(countryName.value)">Adicionar</button>-->
 
             </div>
 
@@ -426,13 +561,11 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
   <div class="container">
     <div class="row mb-xxl-5">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a"
-                class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"  (click)="getAllLegalNatures()">
+                class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg">
           SAIR&nbsp;<i class="fas fa-angle-down"></i>
         </button>
 
@@ -441,12 +574,15 @@
         </button>
 
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                (click)="obterComprovativos()">
+                type="submit">
           AVANÇAR&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
         </button>
       </div>
-
     </div>
   </div>
-
-  </div>
+        </div>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>

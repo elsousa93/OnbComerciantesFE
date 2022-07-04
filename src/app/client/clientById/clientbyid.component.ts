@@ -6,6 +6,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-client',
@@ -15,6 +16,8 @@ import { TableInfoService } from '../../table-info/table-info.service';
 export class ClientByIdComponent implements OnInit {
   
   /*Variable declaration*/
+  form: FormGroup;
+
   public clientId: string = "0";
   //client: Client = {} as Client;
   client: Client = {
@@ -38,7 +41,7 @@ export class ClientByIdComponent implements OnInit {
     },
     "shareCapital": {
     "capital": 0,
-    "date": "1966-08-30"
+    "date": ""
     },
     "bylaws": "",
     "mainEconomicActivity": {
@@ -61,7 +64,7 @@ export class ClientByIdComponent implements OnInit {
     "postalArea": "",
     "country": ""
     },
-    "establishmentDate": "2009-12-16",
+    "establishmentDate": "",
     "businessGroup": {
     "type": "",
     "fiscalId": ""
@@ -88,13 +91,13 @@ export class ClientByIdComponent implements OnInit {
     "bank": "",
     "branch": "",
     "iban": "",
-    "accountOpenedAt": "2019-06-11"
+    "accountOpenedAt": ""
     },
     "contacts": {
     "preferredMethod": "",
     "preferredPeriod": {
-    "startsAt": "22:40:00.450Z",
-    "endsAt": "15:42:54.722Z"
+    "startsAt": "",
+    "endsAt": ""
     },
     "phone1": {
     "countryCode": "",
@@ -114,6 +117,7 @@ export class ClientByIdComponent implements OnInit {
     "billingEmail": ""
     };
 
+  clientExists: boolean = false;
   isCommercialSociety: boolean;
   isCompany: boolean;
   Countries = countriesAndContinents;
@@ -131,14 +135,83 @@ export class ClientByIdComponent implements OnInit {
   //CAEs
   CAEsList: EconomicActivityInformation[] = [];
 
+  initializeFormControls() {
+    this.form = new FormGroup({
+      commercialSociety: new FormControl('', Validators.required),
+      franchiseName: new FormControl(''),
+      natJuridicaNIFNIPC: new FormControl('', Validators.required),
+      expectableAnualInvoicing: new FormControl('', Validators.required),
+      preferenceDocuments: new FormControl('', Validators.required),
+      //Pretende associar a grupo/franchise
+      services: new FormControl('', Validators.required),
+      transactionsAverage: new FormControl('', Validators.required),
+      destinationCountries: new FormControl('', Validators.required),
+      NIPC: new FormControl('', Validators.required),
+      CAE1: new FormControl('', Validators.required),
+      CAESecondary1: new FormControl(''),
+      CAESecondary2: new FormControl(''),
+      CAESecondary3: new FormControl(''),
+      constitutionDate: new FormControl(''),
+      address: new FormControl('', Validators.required),
+      ZIPCode: new FormControl('', Validators.required),
+      location: new FormControl('', Validators.required),
+      country: new FormControl('', Validators.required),
+      preferenceContacts: new FormControl('', Validators.required)
+    });
 
+
+    this.form.get("CAE1").valueChanges.subscribe(v => {
+      if (v !== '') {
+        this.form.addControl('CAE1Branch', new FormControl('', Validators.required));
+      } else {
+        this.form.removeControl('CAE1Branch');
+      }
+    });
+
+    this.form.get("CAESecondary1").valueChanges.subscribe(v => {
+      if (v !== '') {
+        this.form.addControl('CAESecondary1Branch', new FormControl('', Validators.required));
+      } else {
+        this.form.removeControl('CAESecondary1Branch');
+      }
+    });
+
+    this.form.get("CAESecondary2").valueChanges.subscribe(v => {
+      if (v !== '') {
+        this.form.addControl('CAESecondary2Branch', new FormControl('', Validators.required));
+      } else {
+        this.form.removeControl('CAESecondary2Branch');
+      }
+    });
+
+    this.form.get("CAESecondary3").valueChanges.subscribe(v => {
+      if (v !== '') {
+        this.form.addControl('CAESecondary3Branch', new FormControl('', Validators.required));
+      } else {
+        this.form.removeControl('CAESecondary3Branch');
+      }
+    });
+
+    this.form.get("commercialSociety").valueChanges.subscribe(v => {
+      if (v == true) {
+        this.form.addControl('crcCode', new FormControl('', Validators.required));
+        this.form.removeControl('socialDenomination');
+        this.form.removeControl('natJuridicaN1');
+      } else {
+        this.form.removeControl('crcCode');
+        this.form.addControl('socialDenomination', new FormControl('', Validators.required));
+        this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
+      }
+    })
+  }
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
     this.ngOnInit();
+    this.initializeFormControls();
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
       http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
+        this.clientExists = true;
         this.client = result;
-        console.log(this.client)
       }, error => console.error(error));
     }
     if (this.route.getCurrentNavigation().extras.state) {
@@ -160,7 +233,7 @@ export class ClientByIdComponent implements OnInit {
       this.CAEsList = result;
     });
 
-    this.createContinentsList();
+    //this.createContinentsList();
   }
 
   ngOnInit(): void {
@@ -246,5 +319,22 @@ export class ClientByIdComponent implements OnInit {
         }
       }
     })
+  }
+
+
+
+  submit() {
+    var formValues = this.form.value;
+
+    this.client.contacts.preferredMethod = this.form.value["preferenceContacts"];
+    this.client.documentationDeliveryMethod = this.form.value["preferenceDocuments"];
+
+    this.client.headquartersAddress.address = this.form.value["address"];
+    this.client.headquartersAddress.country = this.form.value["country"];
+    this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
+    this.client.headquartersAddress.postalArea = this.form.value["location"];
+
+    this.client.mainEconomicActivity.branch = this.form.value[""];
+    console.log(formValues);
   }
 }
