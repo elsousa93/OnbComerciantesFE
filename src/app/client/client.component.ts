@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { docType } from './docType'
+import { docTypeEmpresa, docTypeEni } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -26,7 +26,7 @@ export class ClientComponent implements OnInit {
 
   clientIdNew;
   newId;
-  ListaDocType = docType;
+  ListaDocType = docTypeEmpresa;
   formDocType!: FormGroup;
   docType?: string = "";
 
@@ -231,7 +231,11 @@ export class ClientComponent implements OnInit {
     this.toggleShowWarning(false);
     this.docType = e.target.value;
   }
-
+  /**
+   * Se for Empresa, tem um determinado comportamento,
+   * Se for ENI tem outro
+   * @param id
+   */
   obterSelecionado(id: any) {
 
     let navigationExtras: NavigationExtras = {
@@ -245,6 +249,7 @@ export class ClientComponent implements OnInit {
   }
 
   activateButtons(id: boolean) {
+    console.log("id: ", id);
     if (id == true) {
       this.showButtons = true
     } else {
