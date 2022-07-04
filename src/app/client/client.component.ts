@@ -31,7 +31,7 @@ export class ClientComponent implements OnInit {
   hasClient: boolean = true;
   hasNewClient: boolean = true;
   showWarning: boolean = false;
-  showButtons: boolean = false;
+  showButtons: boolean;
   showSeguinte: boolean = false;
   resultError: string = "";
   newClient: Client = {
@@ -147,7 +147,7 @@ export class ClientComponent implements OnInit {
       this.clients = result;
     }, error => console.error(error));
     this.updateData(true,1);
-    this.activateButtons(true);
+    //this.activateButtons(true);
     this.errorInput = "form-control campo_form_coment";
   }
 
