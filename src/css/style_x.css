@@ -2,10 +2,18 @@
 @import "director.css";
 
 .icon-dash {
-  font-size: 51px;
   min-width: 0px;
   padding-top: 17px;
-  color: #d9d9d9;
+}
+
+.icon-dash img {
+  /* color: #d9d9d9 */
+  width: 51px;
+  padding-bottom: 9px;
+}
+
+.icon-accordion img {
+  width: 30px;
 }
 
 .subtitulo_barras_horizontais {
@@ -65,6 +73,14 @@
   z-index: 999;
 }
 
+.btn-dark-toggle {
+  width: 20px;
+}
+
+.btn-dark-toggle:hover {
+  width: 20px;
+}
+
 .animation-sidenav-content {
   transition-duration: 1000ms !important;
   transition-timing-function: ease-in-out !important;
@@ -79,6 +95,12 @@
     /*#d9d9d9*/
     white !important;
   font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
+  vertical-align: center !important;
+}
+
+.widget img {
+  width: 12px;
+  text-align: center;
 }
 
 .widget-navbar {
@@ -185,8 +207,24 @@
   padding: 0px;
 }
 
-.sidenav-item {
-  color: #626262 !important;
+.sidenav-item img {
+  width: 24px;
+}
+
+.delete-icon img {
+  width: 50px;
+  padding: 10px;
+  vertical-align: center;
+}
+
+.img-button img {
+  color: white;
+  width: 20px;
+}
+
+.edit-icon img {
+  width: 50px;
+  padding: 10px;
 }
 
 .sub-icon {
