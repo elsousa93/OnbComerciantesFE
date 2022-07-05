@@ -20,13 +20,7 @@ import { DataService } from '../nav-menu-interna/data.service';
 export class StakeholdersComponent implements OnInit {
 
 
-  newStake: IStakeholders = {
-    identificationDocument: {
-      identificationDocumentType: "",
-      identificationDocumentId: "",
-
-    }
-  } as IStakeholders
+  newStake: IStakeholders = { } as IStakeholders
   
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
@@ -135,7 +129,7 @@ export class StakeholdersComponent implements OnInit {
   changeListElementDocType(docType: string, e: any) {
     console.log(e.target.value)
     this.docType = e.target.value;
-    this.newStake.identificationDocument.identificationDocumentType = this.docType;
+    this.newStake.identificationDocument.type = this.docType;
 
   }
 
