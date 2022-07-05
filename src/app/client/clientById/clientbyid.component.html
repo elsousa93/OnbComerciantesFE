@@ -533,8 +533,25 @@
             </div>
 
             <div>
-              <input type="text" id="countryName" name="countryName" formControlName="country">
-              <!--<button (click)="addCountryToList(countryName.value)">Adicionar</button>-->
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let country of filteredOptions | async" [value]="country.description">
+                  {{country.description}}
+                </mat-option>
+              </mat-autocomplete>
+
+              <input type="text" class="form-control campo-form"
+                     matInput
+                     id="countryName"
+                     name="countryName"
+                     #countryName
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="countryVal">
+              <!--Não tenho a certeza se é necessário ter aqui o ngModel e o formControl-->
+
+
+              <!--<input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">-->
+              <button (click)="addCountryToList(countryName.value)">Adicionar</button>
 
             </div>
 

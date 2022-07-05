@@ -24,11 +24,13 @@ export class NewClientComponent implements OnInit {
       "address": "",
       "postalCode": "",
       "postalArea": "",
+      "locality": "",
       "country": ""
     },
     "merchantType": "",
     "legalNature": "",
     "legalNature2": "",
+    "observations":"",
     "crc": {
       "code": "",
       "validUntil": ""

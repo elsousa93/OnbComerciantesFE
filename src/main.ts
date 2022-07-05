@@ -8,7 +8,7 @@ import { environment } from './environments/environment';
 //Para dev SIBS: 'http://localhost:12000/BackendPortal/';
 
 export function getBaseUrl() {
-  var baseUrl = 'https://localhost:7270/';
+  var baseUrl = 'http://localhost:12000/BackendPortal/';
   return baseUrl;
 }
 

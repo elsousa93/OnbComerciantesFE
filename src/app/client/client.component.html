@@ -4,7 +4,7 @@
     <!--<div class="offset-1 bg-white col-7 col-xxl-8">
       <span class="mt-4 mb-4">
         <h2 class="mt-4 text-primary">Qual a tipologia do Comerciante?*</h2>
-      </span>
+      </span>s
       <p class="mt-2">Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
         dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
         commodo consequat.</p>
@@ -25,144 +25,149 @@
       <div class="form-check">
         <p></p>
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
-          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
+               #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
         <label class="radio">EMPRESA</label>
       </div>
       <div class="form-check">
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-          #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(false)">
+               #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)">
         <label class="radio" for="radio2">ENI</label>
       </div>
-      <div class="col-xxl col-6">
+      <div>
         <p></p>
         <div *ngIf="showButtons">
-          <div class="docType-drop-down">
-            <p class="titulo-form-simples">Tipo de Documento:*</p>
+          <div class="row">
             <form>
-              <select class="form-select campo-form-select" 
-                id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
-                <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
-                  {{docType.docTypeOption}}
-                </option>
-              </select>
-              <br>
-              <div>
-                <div>
-                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span></p>
+              <div class="row" *ngIf="showENI == false">
+                <div class="col-xxl col-xxl-6">
+                  <p class="titulo-form-simples">Tipo de Documento:*</p>
+                  <select class="form-select campo-form-select" id="docType"
+                          [(ngModel)]="newClient.documentationDeliveryMethod">
+                    <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
+                      {{docType.docTypeOption}}
+                    </option>
+                  </select>
+                  <button id="btn5a2"
+                          class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
+                          (click)="getValueSearch(box.value)">
+                    PESQUISAR
+                    <i class="fas fa-search">&nbsp;</i>
+                  </button>
+                </div>
+                <div class="col-xxl">
+                  <p class="titulo-form-simples ">
+                    Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span>
+                  </p>
                   <input id="n-doc" type="text" #box [class]="errorInput">
-                  <!--p class="texto-coment mt-2 mb-4">(PRESSIONE A TECLA "ENTER")</p-->
-                  
                 </div>
               </div>
-              <button id="btn5a2"
-                class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0" (click)="getValueSearch(box.value)">PESQUISAR
-                <i class="fas fa-search">&nbsp;</i>
-              </button>
-            </form>
-          </div>
-          <div class="col-xxl col-6">
-          </div>
-        </div>
+              <div *ngIf="showENI">
+                <div class="row">
+                  <div class="col-xxl col-xxl-6">
+                    <p class="titulo-form-simples">Tipo de Documento:*</p>
+                    <select class="form-select campo-form-select" id="docType"
+                            [(ngModel)]="newClient.documentationDeliveryMethod">
+                      <option *ngFor="let docType of ListaDocTypeENI" value={{docType.docTypeOption}}>
+                        {{docType.docTypeOption}}
+                      </option>
+                    </select>
+                    <p class="titulo-form-CC"> Clique em ler cartão para proceder à Leitura do Cartão Cidadão</p>
+                  </div>
+                  <div class="col-xxl">
+                    <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
+                    <p class="titulo-form">
+                      Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
+                    </p>
+                    <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
+                           #flagAutCol="ngModel" [value]="true" id="flagAutCol">
+                    <label class="form-check-label"
+                           for="radio3">SIM</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
+                           #flagAutCol="ngModel" [value]="false" id="flagAutCol">
+                    <label class="form-check-label" for="radio3">NÃO</label>
+                  </div>
 
-        <div *ngIf="showButtons == false">
-          <div id="pesquisa">
-            <p>Pesquise o Cliente: </p>
-            <!-- (ngSubmit)=""-->
-            <form #form="ngForm" novalidate>
-              <div class="form-group">
-                <label class="titulo-form-simples" for="tipoDocumento">Tipo de Documento: *</label>
-                <select ngModel #tipoDocumento="ngModel" name="tipoDocumento" required class="form-select campo-form-select" id="tipoDocumento">
-                  <option value="Cartão de Cidadão">Cartão de Cidadão</option> <!--Depois ir buscar as várias opções, de momento não temos-->
-                </select>
-                <!-- <input required ngModel #tipoDocumento="ngModel" name="tipoDocumento" type="text" id="tipoDocumento" class="form-control">-->
+                  <div style="width: 600px;" *ngIf="ccInfo">
+                    <div>
+                      <p class="titulo-form-simples">País do documento:</p>
+                      <input id="n-doc" type="text" value="{{ ccInfo[1] }}" readonly>
+                    </div>
+                    <br>
+                    <div class="card">
+                      <div class="card-body">
+                        <table>
+                          <tr>
+                            <td class="titulo-form-simples">Nome:</td>
+                            <td class="titulo-form-simples">{{ ccInfo[0] }}</td>
+                          </tr>
+                          <tr>
+                            <td class="titulo-form-simples">Id:</td>
+                            <td class="titulo-form-simples">{{ ccInfo[3] }}</td>
+                          </tr>
+                          <tr>
+                            <td class="titulo-form-simples">Nif:</td>
+                            <td class="titulo-form-simples">{{ ccInfo[5] }}</td>
+                          </tr>
+                          <tr>
+                            <td class="titulo-form-simples">Dt. Nasc.:</td>
+                            <td class="titulo-form-simples">{{ ccInfo[2] }}</td>
+                          </tr>
+                          <tr>
+                            <td class="titulo-form-simples">Morada:</td>
+                            <td class="titulo-form-simples">{{ ccInfo[7] }}</td>
+                          </tr>
+                          <tr>
+                            <td class="titulo-form-simples">Codigo Postal:</td>
+                            <td class="titulo-form-simples">{{ ccInfo[6] }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button id="btn5a2"
+                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
+                        (click)="getValueENI()">
+                  Ler Cartão Cidadão
+                  <i class="fas fa-search">&nbsp;</i>
+                </button>
               </div>
-              <div class="form-group">
-                <label class="titulo-form-simples" for="countryOfDocument">País do documento: </label>
-                <input required ngModel #countryOfDocument="ngModel" name="countryOfDocument" type="text" id="countryOfDocument" class="form-control" readonly>
-              </div>
-
               <br>
-              <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="submit" (click)="aButtons(true)">Pesquisar/Adicionar</button>
-            </form>
-
-
-
-
-            <!--<button class="btn btn-primary" type="button" (click)="refreshDiv()">Refresh</button>-->
-
-
-            <br /> <br />
-
-            <!-- Cria FORM diferente ?-->
-            <label for="flagRecolhaEletronica">
-              Recolha eletrónica dos dados do Cartão de Cidadão?
-              Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
-
-            </label>
-            <div class="form-check">
-              <input class="form-check-input" required ngModel name="flagRecolhaEletronica" type="radio" value=true #flagRecolhaEletronica="ngModel" [value]="true" id="flagRecolhaEletronica">
-              <label class="radio" for="sim">Sim</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" required ngModel name="flagRecolhaEletronica" type="radio" value=false #flagRecolhaEletronica="ngModel" [value]="false" id="flagRecolhaEletronica">
-              <label class="radio" for="nao">Não</label>
-            </div>
-          </div>
-          <br>
-          <div>
-            Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
-            <div class="row container-fluid" id="divshow">
-
-              <table class='table table-striped' aria-labelledby="tableLabel">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>ID</th>
-                    <th>NIF</th>
-                    <th>Dt. Nasc</th>
-                    <th>Morada</th>
-                    <th>Código Postal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="table table-striped">
-                    <td>{{newClient.shortName}}</td>
-                    <td>{{newClient.clientId}}</td>
-                    <td>{{newClient.fiscalId}}</td>
-                    <td></td>
-                    <td>{{newClient.mainOfficeAddress.address}}</td>
-                    <td>{{newClient.mainOfficeAddress.postalCode}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <form>
-              <button type="submit">Ler Cartão de Cidadão</button>
             </form>
           </div>
-        </div>
         </div>
       </div>
     </div>
-  <div class="offset-xxl-1 col-xxl-10" *ngIf="showWarning == true && showButtons == true">
+  </div>
+  <div class="offset-xxl-1 col-xxl-10" *ngIf="showWarning == true">
     <div class="table-responsive">
       <form #contactForm="ngForm">
         <table class="table">
           <thead class="table-primary align-middle">
             <tr class="align-middle">
               <th scope="col" class="text-center"></th>
-              <th scope="col" class="text-center align-middle">ID - interno</th>
-              <th scope="col" class="text-center">Nº Cliente</th>
-              <th scope="col" class="text-center">Tipo de Doumento</th>
+              <th scope="col" class="text-center align-middle">ID Interno</th>
+              <th scope="col" class="text-center">Nº de Cliente</th>
+              <!--<th scope="col" class="text-center">Tipo de Doumento</th>-->
+              <th scope="col" class="text-center">Morada</th>
+              <th scope="col" class="text-center">Código Postal</th>
+              <th scope="col" class="text-center">Localidade</th>
+              <th scope="col" class="text-center">País</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
-              <th scope="row" class="text-center"><input type="radio" value={{newClient.documentationDeliveryMethod}}
-                  (click)="aButtons(true)"></th>
+              <th scope="row" class="text-center">
+                <input type="radio" value={{newClient.documentationDeliveryMethod}}
+                       (click)="aButtons(true)">
+              </th>
               <td class="text-center">{{newClient.clientId}}</td>
-              <td class="text-center">{{newClient.documentationDeliveryMethod}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.address}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.postalCode}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.locality}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.country}}</td>
+              <!--<td class="text-center">{{newClient.documentationDeliveryMethod}}</td>-->
               <!--<td class="text-center">{{newClient.docNr}}</td>-->
             </tr>
           </tbody>
@@ -170,15 +175,17 @@
       </form>
     </div>
   </div>
-  <div class="container" *ngIf="hasNewClient == false && showButtons == true">
+  <div class="container" *ngIf="hasNewClient == false">
     <div class="row" id="divshow" text="red">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
-          (click)="newSearch()">NOVA PESQUISA&nbsp;
+                (click)="newSearch()">
+          NOVA PESQUISA&nbsp;
           <i class="fas fa-search"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="createNewClient()">NOVO COMERCIANTE&nbsp;
+                (click)="createNewClient()">
+          NOVO COMERCIANTE&nbsp;
           <i class="far fa-user">&nbsp;</i>
         </button>
       </div>
@@ -188,14 +195,18 @@
     <div class="row">
       <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
-          (click)="close()">SAIR&nbsp;
+                (click)="close()">
+          SAIR&nbsp;
           <i class="fas fa-angle-down"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="obterSelecionado(newClient.clientId)">AVANÇAR&nbsp;
+                (click)="obterSelecionado(newClient.clientId)">
+          AVANÇAR&nbsp;
           <i class="fas fa-angle-right">&nbsp;</i>
         </button>
       </div>
     </div>
   </div>
 </div>
+
+
