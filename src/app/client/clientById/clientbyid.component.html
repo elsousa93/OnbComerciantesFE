@@ -16,24 +16,21 @@
             <p class="titulo-form-simples" for="newClientNr">Nr. Cliente: </p>
             <input required minlength="2" maxlength="100" ngModel #newClientNr="ngModel" name="newClientNr" type="text"
                    id="newClientNr" class="form-control campo_form" [(ngModel)]="client.clientId" readonly>-->
-
-            <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
-        <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
-          id="docType" class="form-control campo_form" [(ngModel)]="client.docType" readonly>-->
-          <!--</div>
-          <div class="col-xxl col-7">
-            <p class="titulo-form-simples">Nome Cliente: </p>
-            <input required minlength="2" maxlength="100" ngModel #nameClient="ngModel" name="nameClient" type="text"
-                   id="nameClient" class="form-control campo_form" [(ngModel)]="client.shortName" readonly>-->
-
-            <!--<p class="titulo-form-simples" for="docNr">Número do Documento: </p>
-        <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr"
-          class="form-control campo_form" [(ngModel)]="client.docNr" readonly>-->
-          <!--</div>-->
-          <!--<hr>-->
-        <!--</div>
+      <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
+      <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
+        id="docType" class="form-control campo_form" [(ngModel)]="client.docType" readonly>-->
+      <!--</div>
+      <div class="col-xxl col-7">
+        <p class="titulo-form-simples">Nome Cliente: </p>
+        <input required minlength="2" maxlength="100" ngModel #nameClient="ngModel" name="nameClient" type="text"
+               id="nameClient" class="form-control campo_form" [(ngModel)]="client.shortName" readonly>-->
+      <!--<p class="titulo-form-simples" for="docNr">Número do Documento: </p>
+      <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr"
+        class="form-control campo_form" [(ngModel)]="client.docNr" readonly>-->
+      <!--</div>-->
+      <!--<hr>-->
+      <!--</div>
       </div>-->
-
       <!--<div class="offset-1 bg-white col-7 col-xxl-10">
         <div class="row">
           <div class="col-xxl col-6 col-xxl-12 mb-3">
@@ -59,7 +56,6 @@
           </div>
         </div>
       </div>-->
-
       <!--<div class="offset-1 bg-white col-7 col-xxl-10" *ngIf="isCommercialSociety == undefined">
             <div class="row">
               <div class="col-xxl col-6">
@@ -131,8 +127,8 @@
                 </select>
 
                 <!--<input required minlength="2" maxlength="100" ngModel #natJuridicaN1="ngModel" name="natJuridicaN1"
-         type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
-         readonly>-->
+                type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
+                readonly>-->
 
                 <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
                 <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
@@ -142,12 +138,18 @@
                 </select>
 
                 <p class="titulo-form-simples" for="caePrincipal">CAE Principal:</p>
-                <input required ngModel #caePrincipal="ngModel" name="caePrincipal" type="search" id="caePrincipal"
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let cae of CAEsList" [value]="cae.code">
+                    {{cae.description}}
+                  </mat-option>
+                </mat-autocomplete>
+
+                <input required ngModel #caePrincipal="ngModel" name="caePrincipal" type="text" id="caePrincipal"
                        class="form-control campo-form" [(ngModel)]="client.mainEconomicActivity.code">
 
                 <!--<input required minlength="2" maxlength="100" ngModel #caePrincipal="ngModel" name="caePrincipal"
-         type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.code"
-         readonly>-->
+                type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.code"
+                readonly>-->
 
                 <p class="titulo-form-simples" for="caeSecundario1">CAE Secundário 1: </p>
                 <input required minlength="2" maxlength="100" ngModel #caeSecundario1="ngModel" name="caeSecundario1"
@@ -160,9 +162,9 @@
                        readonly>
 
                 <!--<p class="titulo-form-simples" for="caeSecundario3">CAE Secundário 3: </p>
-  <input required minlength="2" maxlength="100" ngModel #caeSecundario3="ngModel" name="caeSecundario3"
-    type="text" id="caeSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].code"
-    readonly>-->
+                <input required minlength="2" maxlength="100" ngModel #caeSecundario3="ngModel" name="caeSecundario3"
+                  type="text" id="caeSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].code"
+                  readonly>-->
               </div>
 
               <div class="col-xxl col-7">
@@ -398,7 +400,24 @@
             </div>
 
             <div>
-              <input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let country of filteredOptions | async" [value]="country.description">
+                  {{country.description}}
+                </mat-option>
+              </mat-autocomplete>
+
+              <input type="text" class="form-control campo-form"
+                     matInput
+                     id="countryName"
+                     name="countryName"
+                     #countryName
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="countryVal">
+              <!--Não tenho a certeza se é necessário ter aqui o ngModel e o formControl-->
+
+
+              <!--<input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">-->
               <button (click)="addCountryToList(countryName.value)">Adicionar</button>
 
             </div>
@@ -449,4 +468,6 @@
     </div>
   </div>
 
-  </div>
+  
+  <hr>
+</div>
