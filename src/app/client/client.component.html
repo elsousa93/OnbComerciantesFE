@@ -146,9 +146,13 @@
           <thead class="table-primary align-middle">
             <tr class="align-middle">
               <th scope="col" class="text-center"></th>
-              <th scope="col" class="text-center align-middle">ID - interno</th>
-              <th scope="col" class="text-center">Nº Cliente</th>
-              <th scope="col" class="text-center">Tipo de Doumento</th>
+              <th scope="col" class="text-center align-middle">ID Interno</th>
+              <th scope="col" class="text-center">Nº de Cliente</th>
+              <!--<th scope="col" class="text-center">Tipo de Doumento</th>-->
+              <th scope="col" class="text-center">Morada</th>
+              <th scope="col" class="text-center">Código Postal</th>
+              <th scope="col" class="text-center">Localidade</th>
+              <th scope="col" class="text-center">País</th>
             </tr>
           </thead>
           <tbody>
@@ -159,7 +163,11 @@
                        (click)="aButtons(true)">
               </th>
               <td class="text-center">{{newClient.clientId}}</td>
-              <td class="text-center">{{newClient.documentationDeliveryMethod}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.address}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.postalCode}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.locality}}</td>
+              <td class="text-center">{{newClient.headquartersAddress.country}}</td>
+              <!--<td class="text-center">{{newClient.documentationDeliveryMethod}}</td>-->
               <!--<td class="text-center">{{newClient.docNr}}</td>-->
             </tr>
           </tbody>

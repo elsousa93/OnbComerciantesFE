@@ -12,10 +12,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ClientExtendedComponent implements OnInit {
 
   public clients: Client[] = [];
-  newClient : Client= {
+  newClient : Client = {
     "clientId": "Bananas",
     "fiscalId": "Bananas",
-    "companyName": "Bananas",
+    "companyName": "Empresa Teste",
     "observations": "",
     "contactName": "Bananas ipsum",
     "shortName": "deserunt exercita",
@@ -23,6 +23,7 @@ export class ClientExtendedComponent implements OnInit {
       "address": "sed al",
       "postalCode": "ea sit est dolore",
       "postalArea": "ex ad",
+      "locality": "",
       "country": "dolor pariatur amet labore consectetur"
     },
     "merchantType": "in esse",

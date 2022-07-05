@@ -29,6 +29,7 @@ export interface HeadquartersAddress {
   address: String,
   postalCode: String,
   postalArea: String,
+  locality: String,
   country: String,
 }
 

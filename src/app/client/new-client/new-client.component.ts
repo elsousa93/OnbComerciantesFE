@@ -23,6 +23,7 @@ export class NewClientComponent implements OnInit {
       "address": "",
       "postalCode": "",
       "postalArea": "",
+      "locality": "",
       "country": ""
     },
     "merchantType": "",

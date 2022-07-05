@@ -49,6 +49,7 @@ export class ClientComponent implements OnInit {
       "address": "",
       "postalCode": "",
       "postalArea": "",
+      "locality": "",
       "country": ""
     },
     "merchantType": "",

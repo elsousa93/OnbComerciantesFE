@@ -33,10 +33,11 @@ export class ClientByIdComponent implements OnInit {
     "contactName": "",
     "shortName": "",
     "headquartersAddress": {
-    "address": "",
-    "postalCode": "",
-    "postalArea": "",
-    "country": ""
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "locality": "",
+      "country": ""
     },
     "merchantType": "",
     "legalNature": "",
