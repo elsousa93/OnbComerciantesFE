@@ -4,7 +4,7 @@
     <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up':'down'">
       <div class="accordion" id="accordion">
         <div class="nav-item" *ngIf="userPermissions.HomePage">
-          <a role="button">
+          <a role="button" href="index.html">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/home.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Início &nbsp;</p>
           </a>
@@ -367,13 +367,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon">
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </a>
                           <a href="#">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </a>
                         </mat-cell>
@@ -454,13 +454,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon">
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </a>
                           <a href="#">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </a>
                         </mat-cell>
@@ -541,13 +541,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon" >
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </a>
                           <a href="#">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </a>
                         </mat-cell>
@@ -628,13 +628,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon">
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </button>
                           <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </button>
                         </mat-cell>
