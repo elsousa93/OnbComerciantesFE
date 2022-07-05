@@ -1,23 +1,21 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
-<<<<<<< HEAD
-@import "director.css";
-=======
+@import "https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round";
 
->>>>>>> f19dca9577e39e1f4b0c43bfa82f56d503f66a00
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu72xKOzY.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
 
 .icon-dash {
+  font-size: 51px;
   min-width: 0px;
   padding-top: 17px;
-}
-
-.icon-dash img {
-  /* color: #d9d9d9 */
-  width: 51px;
-  padding-bottom: 9px;
-}
-
-.icon-accordion img {
-  width: 30px;
+  color: #d9d9d9;
 }
 
 .subtitulo_barras_horizontais {
@@ -77,19 +75,41 @@
   z-index: 999;
 }
 
-.btn-dark-toggle {
-  width: 20px;
-}
-
-.btn-dark-toggle:hover {
-  width: 20px;
-}
-
 .animation-sidenav-content {
   transition-duration: 1000ms !important;
   transition-timing-function: ease-in-out !important;
   transition-property: transform, margin-left, margin-right !important;
 }
+
+/*
+.widget {
+  font-size: 12px !important;
+  margin-bottom: 0px !important;
+  color:
+    /*#d9d9d9
+    white !important;
+  font: 400 12px 'Roboto' !important;
+}
+
+.widget-navbar {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.widget-toolbar {
+  height: auto;
+  background-color: #767676;
+  box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 45%) !important;
+  width: auto !important;
+  /*margin-top: 59px;
+  /*  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+*/
 
 .widget {
   font-size: 12px !important;
@@ -97,18 +117,7 @@
   color:
     /*#d9d9d9*/
     white !important;
-  font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
-<<<<<<< HEAD
-  vertical-align: center !important;
-=======
->>>>>>> f19dca9577e39e1f4b0c43bfa82f56d503f66a00
-}
-
-.widget img {
-  width: 12px;
-  text-align: center;
-  font: 400 12px 'Roboto' !important;
-  vertical-align: text-top;
+  font: 400 12px  !important;
 }
 
 .widget-navbar {
@@ -129,6 +138,7 @@
   top: 0;
   z-index: 999;
 }
+
 
 .navbar-autohide {
   /*top: var(--navPosition) !important;*/
@@ -215,26 +225,8 @@
   padding: 0px;
 }
 
-.sidenav-item img {
-  width: 24px;
-}
-
-.delete-icon img {
-  width: 50px;
-  padding: 10px;
-  padding-bottom: 8px;
-  vertical-align: center;
-}
-
-.img-button img {
-  color: white;
-  width: 20px;
-}
-
-.edit-icon img {
-  width: 50px;
-  padding: 10px;
-  vertical-align: center;
+.sidenav-item {
+  color: #626262 !important;
 }
 
 .sub-icon {
@@ -998,19 +990,10 @@ span {}
   padding-bottom: 2px !important;
 }
 
-.btn-procurar {
-  color: #1e66b0;
-  border-color: #1e66b0
-}
-
-.btn-procurar:hover{
-  color: #fff;
-  border-color: #1e66b0
-}
-
 .botao_direita {
   background-color: #1e66b0;
   color: #fff;
+  border-width: 0px;
   border-top-left-radius: 0px;
   border-top-right-radius: 4px;
   border-bottom-left-radius: 0px;
@@ -1176,7 +1159,7 @@ mat-cell {
 mat-header-cell,
 mat-sort-header,
 mat-header-row{
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-size: 19px !important;
   color: #1e66b0 !important;
   font-weight: bold;
@@ -1188,7 +1171,7 @@ mat-header-row{
 
 
 .mat-sort-header{
-  font-family: "Roboto" !important;
+  font-family: 'Roboto' !important;
   font-size: 19px !important;
   color: #1e66b0 !important;
   
@@ -1196,25 +1179,8 @@ mat-header-row{
   min-height: 30px !important;
 }
 
-.mat-header-row1{
-  font-family: 'Roboto' !important;
-  font-size: 19px !important;
-  color: #1e66b0 !important;
-  font-weight: bold;
-  border-bottom: 1px solid #1e66b0 !important;
-  text-align: center !important;
-  min-height: 30px !important;
-}
-
-
-
-.mat-sort-header-content{
-  text-align: center !important;
-  /*padding: 10px !important;*/
-}
-
 mat-table {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto;
   padding: 20px 20px;
   background-color: var(--bs-table-bg); 
   border-bottom-width: 1px;
