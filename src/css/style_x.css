@@ -72,13 +72,12 @@
 }
 
 .widget {
-  font-family: Arial, Helvetica, sans-serif !important;
   font-size: 12px !important;
   margin-bottom: 0px !important;
   color:
     /*#d9d9d9*/
     white !important;
-  font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
+  font: 400 12px 'Roboto' !important;
 }
 
 .widget-navbar {
@@ -929,10 +928,25 @@ span {}
 }
 
 .botao_esquerda {
-  border-top-left-radius: 4px;
-  border-top-right-radius: 0px;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 0px;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.botao_esquerda:hover {
+  color: #fff !important;
+  background-color: rgba(30, 102, 176, 0.73) !important;
+}
+
+.botao_esquerda:active {
+  background-color: #1e66b0 !important;
+  color: #fff !important;
+}
+
+.icon_botao_esquerda {
+  padding-top: 3px !important;
+  padding-bottom: 2px !important;
 }
 
 .botao_direita {

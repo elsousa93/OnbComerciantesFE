@@ -136,24 +136,30 @@ export class SidenavPresencialComponent implements OnInit {
     },
   ];
 
-  //dataSource1 = new MatTableDataSource(this.EmpData);
   dataSource1: MatTableDataSource<UserData>;
-  //dataSourceWithObjectColumn = new MatTableDataSource(this.EmpData);
-  dataSourceWithObjectColumn :MatTableDataSource<UserData>;
-
+  dataSourceDevolvidos: MatTableDataSource<UserData>;
+  dataSourceAceitacao: MatTableDataSource<UserData>;
+  dataSourceArquivoFisico: MatTableDataSource<UserData>;
+  
   @ViewChild('empTbSort') empTbSort = new MatSort();
   @ViewChild('empTbSortWithObject') empTbSortWithObject = new MatSort();
+  @ViewChild('empTbSortDevolvidos') empTbSortDevolvidos = new MatSort();
+  @ViewChild('empTbSortAceitacao') empTbSortAceitacao = new MatSort();
+  @ViewChild('empTbSortArquivoFisico') empTbSortArquivoFisico = new MatSort();
   @ViewChild('paginatorPage') paginatorPage : MatPaginator;
   @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
+  @ViewChild('paginatorPageDevolvidos') paginatorPageDevolvidos: MatPaginator;
+  @ViewChild('paginatorPageAceitacao') paginatorPageAceitacao: MatPaginator;
+  @ViewChild('paginatorPageArquivoFisico') paginatorPageArquivoFisico: MatPaginator;
+  
   //---------------------------
-
-
+  
   @Input() isToggle: boolean = false;
   @Input() isAutoHide: boolean = false;
 
   displayedColumns = ['id', 'name', 'progress', 'color', 'teste'];
   dataSource: MatTableDataSource<UserData>;
-
+  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -180,9 +186,11 @@ export class SidenavPresencialComponent implements OnInit {
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
     this.dataSource1 = new MatTableDataSource(users);
+    this.dataSourceDevolvidos = new MatTableDataSource(users);
+    this.dataSourceAceitacao = new MatTableDataSource(users);
+    this.dataSourceArquivoFisico = new MatTableDataSource(users);
+    
   }
-
-
 
   ngOnInit(): void {
     this.userPermissions = getMenuPermissions(UserPermissions.DO);
@@ -204,15 +212,19 @@ export class SidenavPresencialComponent implements OnInit {
     this.dataSource.sort = this.sort;
 
     //-------------------------------------
-    this.empTbSort.disableClear = true;
-    this.dataSource1.sort = this.empTbSort;
-    
-    this.dataSource1.paginator = this.paginatorPage;
-    this.dataSourceWithObjectColumn.paginator = this.paginatorPageSize;
-
-    this.dataSourceWithObjectColumn.paginator = this.paginatorPageSize;
     this.empTbSortWithObject.disableClear = true;
-    this.dataSourceWithObjectColumn.sort = this.empTbSortWithObject;
+    this.dataSource1.sort = this.empTbSortWithObject;
+    this.dataSource1.paginator = this.paginatorPageSize;
+
+    this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
+    this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
+
+    this.dataSourceAceitacao.paginator = this.paginatorPageDevolvidos;
+    this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
+
+    this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
+    this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
+
   }
 
   applyFilter(filterValue: string) {
@@ -221,6 +233,29 @@ export class SidenavPresencialComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
+  applyFilter1(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSource1.filter = filterValue;
+  }
+
+  applyFilterDevolvidos(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceDevolvidos.filter = filterValue;
+  }
+
+  applyFilterAceitacao(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceAceitacao.filter = filterValue;
+  }
+  
+  applyFilterArquivoFisico(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceArquivoFisico.filter = filterValue;
+  }
 }
 
 
