@@ -4,23 +4,23 @@
     <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up':'down'">
       <div class="accordion" id="accordion">
         <div class="nav-item" *ngIf="userPermissions.HomePage">
-          <a role="button">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
-                class="material-symbols-rounded fa-lg icons-sidenav">home</i>&nbsp;Início &nbsp;</p>
+          <a role="button" href="index.html">
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
+              <img src="assets/images/home.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Início &nbsp;</p>
           </a>
         </div>
         <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
-                class="material-symbols-rounded fa-lg icons-sidenav">folder_open</i>&nbsp;Abertura de processo &nbsp;
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
+              <img src="assets/images/folder_open.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Abertura de processo &nbsp;
             </p>
           </a>
         </div>
         <div *ngIf="userPermissions.ProcessHandling">
           <a id="headingOne3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3"
             aria-expanded="true" aria-controls="collapseOne3">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle"><i
-                class="material-symbols-rounded fa-lg icons-sidenav">edit_note</i>&nbsp;Tratamento de Processos &nbsp;
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle">
+              <img src="assets/images/edit_note.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Tratamento de Processos &nbsp;
             </p>
           </a>
           <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3"
@@ -29,8 +29,8 @@
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
-                    <p class="side_menu_texto mb-0 sidenav-item"><i
-                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Pareceres
+                    <p class="side_menu_texto mb-0 sidenav-item">
+                      <img src="assets/images/subdirectory_arrow_right.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Pareceres
                       de Elegibilidade &nbsp;</p>
                   </a>
                 </span>
@@ -40,8 +40,8 @@
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
-                    <p class="side_menu_texto mb-0 sidenav-item"><i
-                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Múltiplos
+                    <p class="side_menu_texto mb-0 sidenav-item">
+                      <img src="assets/images/subdirectory_arrow_right.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Múltiplos
                       clientes &nbsp;</p>
                   </a>
                 </span>
@@ -51,8 +51,8 @@
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
-                    <p class="side_menu_texto mb-0 sidenav-item"><i
-                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação
+                    <p class="side_menu_texto mb-0 sidenav-item">
+                      <img src="assets/images/subdirectory_arrow_right.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
                       DO &nbsp;</p>
                   </a>
                 </span>
@@ -63,8 +63,8 @@
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
-                    <p class="side_menu_texto mb-0 sidenav-item"><i
-                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Aprovação
+                    <p class="side_menu_texto mb-0 sidenav-item">
+                      <img src="assets/images/subdirectory_arrow_right.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Aprovação
                       de &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;negociação de precário &nbsp;</p>
                   </a>
                 </span>
@@ -75,8 +75,8 @@
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
-                    <p class="side_menu_texto mb-0 sidenav-item"><i
-                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Validação
+                    <p class="side_menu_texto mb-0 sidenav-item">
+                      <img src="assets/images/subdirectory_arrow_right.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
                       matricula SIBS &nbsp;</p>
                   </a>
                 </span>
@@ -87,8 +87,8 @@
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
-                    <p class="side_menu_texto mb-0 sidenav-item"><i
-                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Parecer
+                    <p class="side_menu_texto mb-0 sidenav-item">
+                      <img src="assets/images/subdirectory_arrow_right.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Parecer
                       de Risco &nbsp;</p>
                   </a>
                 </span>
@@ -98,8 +98,8 @@
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
-                    <p class="side_menu_texto mb-0 sidenav-item"><i
-                        class="material-symbols-rounded fa-lg icons-sidenav">subdirectory_arrow_right</i>&nbsp;Dúvidas
+                    <p class="side_menu_texto mb-0 sidenav-item">
+                      <img src="assets/images/subdirectory_arrow_right.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Dúvidas
                       Compliance &nbsp;</p>
                   </a>
                 </span>
@@ -109,14 +109,14 @@
         </div>
         <div class="nav-item" *ngIf="userPermissions.Consultation">
           <a role="button">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
-                class="material-symbols-rounded fa-lg icons-sidenav">search</i>&nbsp;Consultas&nbsp;</p>
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
+              <img src="assets/images/search.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Consultas&nbsp;</p>
           </a>
         </div>
         <div class="nav-item">
           <a role="button">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item"><i
-                class="material-symbols-rounded fa-lg icons-sidenav">help</i>&nbsp;FAQS &nbsp;</p>
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
+              <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;FAQS &nbsp;</p>
           </a>
         </div>
       </div>
@@ -148,7 +148,7 @@
               </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash ">
-                  move_up
+                  <img src="assets/images/move_up_dash.svg">
                 </span>
               </h1>
               <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE
@@ -163,7 +163,7 @@
               </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
-                  assignment_returned
+                  <img src="assets/images/assignment_returned_dash.svg">
                 </span>
               </h1>
               <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">&nbsp;TRATAMENTO
@@ -178,7 +178,7 @@
               </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
-                  assignment_return
+                  <img src="assets/images/assignment_return_dash.svg">
                 </span>
               </h1>
               <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">DEVOLVIDOS
@@ -193,7 +193,7 @@
               </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
-                  assignment_turned_in
+                  <img src="assets/images/assignment_turned_in_dash.svg">
                 </span>
               </h1>
               <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">EM FASE DE
@@ -208,11 +208,11 @@
               </h1>
               <h1 class="mt-0 mb-0 pt-0 pb-0 ps-3 pe-3">
                 <span class="material-symbols-outlined icon-dash">
-                  inventory_2
+                  <img src="assets/images/inventory_2_dash.svg">
                 </span>
               </h1>
               <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE ENVIO
-                PARA <br> ARQUIVO FÍSCO<br></h1>
+                PARA <br> ARQUIVO FÍSICO<br></h1>
             </button>
           </div>
         </div>
@@ -236,7 +236,7 @@
                     <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                       <span class="material-symbols-outlined icon-accordion ">
-                        move_up
+                        <img src="assets/images/move_up.svg">
                       </span>&nbsp;&nbsp;PROCESSOS PENDENTES DE ENVIO
                     </button>
                   </h2>
@@ -278,13 +278,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon">
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </a>
                           <a href="#">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </a>
                         </mat-cell>
@@ -324,7 +324,7 @@
                     <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                       <span class="material-symbols-outlined icon-accordion ">
-                        assignment_returned
+                        <img src="assets/images/assignment_returned.svg">
                       </span>&nbsp;&nbsp;TRATAMENTO BACKOFFICE
                     </button>
                   </h2>
@@ -367,13 +367,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon">
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </a>
                           <a href="#">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </a>
                         </mat-cell>
@@ -412,7 +412,7 @@
                     <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                       <span class="material-symbols-outlined icon-accordion ">
-                        assignment_return
+                        <img src="assets/images/assignment_return.svg">
                       </span>&nbsp;&nbsp;DEVOLVIDOS BACKOFFICE
                     </button>
                   </h2>
@@ -454,13 +454,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon">
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </a>
                           <a href="#">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </a>
                         </mat-cell>
@@ -499,7 +499,7 @@
                     <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
                       <span class="material-symbols-outlined icon-accordion ">
-                        assignment_turned_in
+                        <img src="assets/images/assignment_turned_in.svg">
                       </span>&nbsp;&nbsp;FASE DE ACEITAÇÃO
                     </button>
                   </h2>
@@ -541,13 +541,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon" >
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </a>
                           <a href="#">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </a>
                         </mat-cell>
@@ -586,7 +586,7 @@
                     <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
                       <span class="material-symbols-outlined icon-accordion ">
-                        inventory_2
+                        <img src="assets/images/inventory_2.svg">
                       </span>&nbsp;&nbsp;PENDENTES DE ENVIO PARA ARQUIVO FÍSICO
                     </button>
                   </h2>
@@ -628,13 +628,13 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: red;padding:10px !important;">
-                              &nbsp;&nbsp;delete
+                            <span class="material-symbols-rounded delete-icon">
+                              &nbsp;&nbsp;<img src="assets/images/delete.svg">
                             </span>
                           </button>
                           <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="material-symbols-rounded" style="color: #1e66b0;">
-                              edit_square
+                            <span class="material-symbols-rounded edit-icon">
+                              <img src="assets/images/edit_square.svg">
                             </span>
                           </button>
                         </mat-cell>
@@ -684,13 +684,12 @@
                     <nav class="navbar navbar-light bg-light">
                       <span class="navbar-text ms-auto me-1">
                         <button id="btn1"
-                          class="btn bg-primary text-white botao_esquerda mt-0 ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
-                          wappler-command="editContent"><i class="fas fa-folder-open fs-5"></i>&nbsp; ABERTURA DE
+                          class="btn bg-primary text-white botao_esquerda img-button mt-0 ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
+                          wappler-command="editContent"><img src="assets/images/folder-open-solid.svg">&nbsp; ABERTURA DE
                           PROCESSO</button></span>
                       <span class="navbar-text ms-1 me-auto">
-                        <button id="btn3" class="btn botao_direita ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
-                          wappler-command="editContent">CONSULTA DE PROCESSO&nbsp;&nbsp;<i
-                            class="fas fa-search fs-5 fa-sm icon_botao_direita"></i></button></span>
+                        <button id="btn3" class="btn img-button botao_direita ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
+                          wappler-command="editContent">CONSULTA DE PROCESSO&nbsp;&nbsp;<img src="assets/images/search-solid.svg"></button></span>
                     </nav>
                   </div>
                 </div>
