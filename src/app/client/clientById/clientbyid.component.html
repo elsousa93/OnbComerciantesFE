@@ -227,7 +227,7 @@
                        type="text" id="CAE1Branch" class="form-control campo_form"
                        [readonly]="clientExists">
                 <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
-                  <div *ngIf="this.form.get('CAE1Branch').errors && this.form.get('CAE1Branch').errors?.['required']">
+                  <div class="alert alert-danger" *ngIf="this.form.controls['CAE1Branch'].errors?.['required']">
                     O parâmetro acima é obrigatório.
                   </div>
                 </div>
@@ -330,7 +330,7 @@
           <div class="offset-1 bg-white col-7 col-xxl-10">
             <div class="row">
               <div class="col-xxl col-6">
-                <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:</p>
+                <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1: iuashiusdhushudhu</p>
                 <select required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                         class="form-control campo_form"
                         (change)="onLegalNatureSelected()">

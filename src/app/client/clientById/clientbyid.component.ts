@@ -6,7 +6,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, of, OperatorFunction, pipe, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { Country } from '../../stakeholders/IStakeholders.interface';
@@ -145,6 +145,8 @@ export class ClientByIdComponent implements OnInit {
   //CAEs
   CAEsList: EconomicActivityInformation[] = [];
 
+  filteredOptions: Observable<CountryInformation[]>;
+
   initializeFormControls() {
     this.form = new FormGroup({
       commercialSociety: new FormControl('', Validators.required),
@@ -170,22 +172,33 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaN1: new FormControl(this.client.legalNature),
       natJuridicaN2: new FormControl(this.client.legalNature2),
       socialDenomination: new FormControl(''),
-      CAE1Branch: new FormControl(this.client.mainEconomicActivity.branch),
+      CAE1Branch: new FormControl({ value: this.client.mainEconomicActivity.branch, disabled: true }),
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
       CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1].branch),
 
-    }); 
-
+    });
+    //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);
+    this.form.updateValueAndValidity();
+    
 
     this.form.get("CAE1").valueChanges.subscribe(v => {
       if (v !== '') {
         console.log("cae1 entrou uhjaskaj ;)");
         //this.form.addControl('CAE1Branch', new FormControl('', Validators.required));
-        this.form.get('CAE1Branch').addValidators(Validators.required);
+        //this.form.get('CAE1Branch').addValidators(Validators.required);
+        this.form.updateValueAndValidity();
+        console.log(this.form.get('CAE1Branch').errors);    
+
+
       } else {
         console.log("nooooo ujakmskjans ;(");
         //this.form.removeControl('CAE1Branch');
-        this.form.get('CAE1Branch').removeValidators(Validators.required);
+        //this.form.get('CAE1Branch').removeValidators(Validators.required);
+        //this.form.get('CAE1Branch').setErrors({ 'required': false });
+        this.form.updateValueAndValidity();
+
+        console.log(this.form.get('CAE1Branch').errors);
+
       }
     });
 
@@ -194,8 +207,8 @@ export class ClientByIdComponent implements OnInit {
         //this.form.addControl('CAESecondary1Branch', new FormControl('', Validators.required));
         this.form.get('CAESecondary1Branch').addValidators(Validators.required);
       } else {
-        this.form.removeControl('CAESecondary1Branch');
-        this.form.get('CAESecondary1Branch').removeValidators(Validators.required);
+        this.form.get('CAESecondary1Branch').setErrors({ 'required': false });
+
       }
 
       console.log("CAESecondary1 uajnsjnsjnasnbasna");
@@ -208,11 +221,11 @@ export class ClientByIdComponent implements OnInit {
         
       } else {
         //this.form.removeControl('CAESecondary2Branch');
-        this.form.get('CAESecondary2Branch').removeValidators(Validators.required);
+        //this.form.get('CAESecondary2Branch').removeValidators(Validators.required);
+        this.form.get('CAESecondary2Branch').setErrors({ 'required': false });
+
 
       }
-
-      console.log("CAESecondary2 mnsdmsnd,m");
     });
 
     //this.form.get("CAESecondary3").valueChanges.subscribe(v => {
@@ -228,22 +241,37 @@ export class ClientByIdComponent implements OnInit {
       if (v === 'true') {
         console.log("entrei");
         this.form.get('crcCode').addValidators(Validators.required);
-        this.form.get('socialDenomination').removeValidators(Validators.required);
-        this.form.get('natJuridicaN1').removeValidators(Validators.required);
-        var a = this.form.get('natJuridicaN1').validator({} as AbstractControl);
-        console.log(a);
+        this.form.get('socialDenomination').setErrors({ 'required': false });
+        this.form.get('natJuridicaN1').setErrors({'required': false});
+        console.log(this.form.get('CAE1Branch').errors);
       } else {
         console.log("false");
-        this.form.get('crcCode').removeValidators(Validators.required);
+        this.form.get('crcCode').setErrors({ 'required': false });
         this.form.get('socialDenomination').setValidators(Validators.required);
-        this.form.get('natJuridicaN1').setValidators(Validators.required);
+        this.form.get('natJuridicaN1').setValidators([Validators.required]);
+        var a = this.form.get('natJuridicaN1').validator({} as AbstractControl);
+        console.log(a);
         
         //this.form.addControl('socialDenomination', new FormControl('', Validators.required));
       //  this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
       }
 
-      console.log("comercial society UASHUASUHASHUAHUS");
     })
+
+    console.log(this.form.get('CAE1Branch').errors);
+    console.log(this.form.get('CAE1Branch').errors?.['required']);
+
+  }
+
+  getFormValidationErrors() {
+    Object.keys(this.form.controls).forEach(key => {
+      const controlErrors: ValidationErrors = this.form.get(key).errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        });
+      }
+    });
   }
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
@@ -281,6 +309,9 @@ export class ClientByIdComponent implements OnInit {
     this.tableInfo.GetAllCAEs().subscribe(result => {
       this.CAEsList = result;
     });
+
+    this.getFormValidationErrors();
+
 
     //this.createContinentsList();
   }
@@ -420,5 +451,11 @@ export class ClientByIdComponent implements OnInit {
 
   redirectHomePage() {
     this.route.navigate(["/"]);
+  }
+
+  _filter(value: string): CountryInformation[] {
+    const filterValue = value.toLowerCase();
+
+    return this.countryList.filter(option => option.description.toLowerCase().includes(filterValue));
   }
 }
