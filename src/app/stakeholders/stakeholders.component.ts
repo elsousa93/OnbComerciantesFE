@@ -7,8 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
-import { StakeholderService } from './stakeholder.service';
-
 
 
 /** Listagem Intervenientes / Intervenientes
@@ -23,13 +21,12 @@ export class StakeholdersComponent implements OnInit {
 
 
   newStake: IStakeholders = {
-      identificationDocument: {
-          type: "",
-          number: "",
-          country: "",
-          expirationDate: "",
-      }
-  } as unknown as IStakeholders
+    identificationDocument: {
+      identificationDocumentType: "",
+      identificationDocumentId: "",
+
+    }
+  } as IStakeholders
   
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
@@ -44,7 +41,7 @@ export class StakeholdersComponent implements OnInit {
   public stakes: IStakeholders[] = [];
   public stakeShow: IStakeholders[] = [];
   public stakeholderId : number = 0;
-  public fiscalId: string = "0";
+  public fiscalId: number = 0;
   public clientNr: number = 8875;
   public totalUrl: string = "";
   public auxUrl: string = "";
@@ -60,15 +57,13 @@ export class StakeholdersComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
-  public stakesAPI: IStakeholders[] = [];
-
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeService: StakeholderService) {
+    private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder) {
 
     this.ngOnInit();
    
-      http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
+      http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes' ).subscribe(result => {
         console.log(result);
         this.stakes = result;
       }, error => console.error(error));
@@ -140,7 +135,7 @@ export class StakeholdersComponent implements OnInit {
   changeListElementDocType(docType: string, e: any) {
     console.log(e.target.value)
     this.docType = e.target.value;
-    this.newStake.identificationDocument.type = this.docType;
+    this.newStake.identificationDocument.identificationDocumentType = this.docType;
 
   }
 
