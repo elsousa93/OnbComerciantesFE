@@ -9,6 +9,7 @@
         <circular-progress [percentage]="2"></circular-progress>
       </div>
     </div>-->
+    <form [formGroup]="form" name="form" (ngSubmit)="submit()">
     <div class="row bg-white">
       <!--<div class="offset-1 bg-white col-7 col-xxl-10">
         <div class="row">
@@ -16,24 +17,21 @@
             <p class="titulo-form-simples" for="newClientNr">Nr. Cliente: </p>
             <input required minlength="2" maxlength="100" ngModel #newClientNr="ngModel" name="newClientNr" type="text"
                    id="newClientNr" class="form-control campo_form" [(ngModel)]="client.clientId" [readonly]="clientExists">-->
-
-            <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
-        <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
-          id="docType" class="form-control campo_form" [(ngModel)]="client.docType" [readonly]="clientExists">-->
-          <!--</div>
-          <div class="col-xxl col-7">
-            <p class="titulo-form-simples">Nome Cliente: </p>
-            <input required minlength="2" maxlength="100" ngModel #nameClient="ngModel" name="nameClient" type="text"
-                   id="nameClient" class="form-control campo_form" [(ngModel)]="client.shortName" [readonly]="clientExists">-->
-
-            <!--<p class="titulo-form-simples" for="docNr">Número do Documento: </p>
-        <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr"
-          class="form-control campo_form" [(ngModel)]="client.docNr" [readonly]="clientExists">-->
-          <!--</div>-->
-          <!--<hr>-->
-        <!--</div>
+      <!--<p class="titulo-form-simples" for="newClientNr">Tipo de Documento:</p>
+      <input required minlength="2" maxlength="100" ngModel #docType="ngModel" name="docType" type="text"
+        id="docType" class="form-control campo_form" [(ngModel)]="client.docType" [readonly]="clientExists">-->
+      <!--</div>
+      <div class="col-xxl col-7">
+        <p class="titulo-form-simples">Nome Cliente: </p>
+        <input required minlength="2" maxlength="100" ngModel #nameClient="ngModel" name="nameClient" type="text"
+               id="nameClient" class="form-control campo_form" [(ngModel)]="client.shortName" [readonly]="clientExists">-->
+      <!--<p class="titulo-form-simples" for="docNr">Número do Documento: </p>
+      <input required minlength="2" maxlength="100" ngModel #docNr="ngModel" name="docNr" type="text" id="docNr"
+        class="form-control campo_form" [(ngModel)]="client.docNr" [readonly]="clientExists">-->
+      <!--</div>-->
+      <!--<hr>-->
+      <!--</div>
       </div>-->
-
       <!--<div class="offset-1 bg-white col-7 col-xxl-10">
         <div class="row">
           <div class="col-xxl col-6 col-xxl-12 mb-3">
@@ -59,7 +57,6 @@
           </div>
         </div>
       </div>-->
-
       <!--<div class="offset-1 bg-white col-7 col-xxl-10" *ngIf="isCommercialSociety == undefined">
             <div class="row">
               <div class="col-xxl col-6">
@@ -79,8 +76,7 @@
       <p></p>
       <p></p>
       <app-barrazul-home></app-barrazul-home>
-      <div>
-      <form [formGroup]="form" name="form" (ngSubmit)="submit()">
+      <!--<form [formGroup]="form" name="form" (ngSubmit)="submit()">-->
       <div class="row">
         <div class="offset-1 col-10">
           <h1 class="mt-4 text-primary"><i class="fas fa-building"></i>&nbsp;Caracterização social da empresa:</h1>
@@ -141,12 +137,12 @@
                 <select required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                         class="form-control campo_form"
                         (change)="onLegalNatureSelected()">
-                  <option value="">Selecione</option>
+                  <option value="" selected disabled hidden>Selecione</option>
                   <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
                 </select>
                 <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
-                  <div *ngIf="this.form.get('natJuridicaN1').errors && this.form.get('natJuridicaN1').errors?.['required']">
-                    O parâmetro acima é obrigatório.
+                  <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
+                    O parâmetro acima é obrigatórioaa.
                   </div>
                 </div>
 
@@ -155,18 +151,21 @@
   [readonly]="clientExists">-->
 
                 <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
-                <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
-                        class="form-control campo_form" [(ngModel)]="client.legalNature2">
-                  <option value="">Selecione:</option>
+                <select required formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+                        class="form-control campo_form">
+                  <option value="" selected disabled hidden>Selecione</option>
                   <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
                 </select>
-
-
-                <p class="titulo-form-simples" for="caePrincipal">CAE Principal:</p>
-                <input required formControlName="CAE1" name="caePrincipal" type="search" id="caePrincipal"
+                <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
+                  <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
+                <p class="titulo-form-simples" for="CAE1">CAE Principal:</p>
+                <input required formControlName="CAE1" name="CAE1" type="search" id="CAE1"
                        class="form-control campo-form">
-                <div class="alert alert-danger" *ngIf="this.form.get('caePrincipal').touched && !this.form.get('caePrincipal').valid">
-                  <div *ngIf="this.form.get('caePrincipal').errors && this.form.get('caePrincipal').errors?.['required']">
+                <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched && !this.form.get('CAE1').valid">
+                  <div *ngIf="this.form.get('CAE1').errors && this.form.get('CAE1').errors?.['required']">
                     O parâmetro acima é obrigatório.
                   </div>
                 </div>
@@ -175,9 +174,9 @@
   type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="client.mainEconomicActivity.code"
   [readonly]="clientExists">-->
 
-                <p class="titulo-form-simples" for="caeSecundario1">CAE Secundário 1: </p>
-                <input required minlength="2" maxlength="100" formControlName="CAESecondary1" name="caeSecundario1"
-                       type="text" id="caeSecundario1" class="form-control campo_form"
+                <p class="titulo-form-simples" for="CAESecondary1">CAE Secundário 1: </p>
+                <input required minlength="2" maxlength="100" formControlName="CAESecondary1" name="CAESecondary1"
+                       type="text" id="CAESecondary1" class="form-control campo_form"
                        [readonly]="clientExists">
                 <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
                   <div *ngIf="this.form.get('CAESecondary1').errors && this.form.get('CAESecondary1').errors?.['required']">
@@ -185,12 +184,12 @@
                   </div>
                 </div>
 
-                <p class="titulo-form-simples" for="caeSecundario2">CAE Secundário 2: </p>
-                <input required minlength="2" maxlength="100" formControlName="CAESecondary2" name="caeSecundario2"
-                       type="text" id="caeSecundario2" class="form-control campo_form"
+                <p class="titulo-form-simples" for="CAESecondary2">CAE Secundário 2: </p>
+                <input required minlength="2" maxlength="100" formControlName="CAESecondary2" name="CAESecondary2"
+                       type="text" id="CAESecondary2" class="form-control campo_form"
                        [readonly]="clientExists">
-                <div class="alert alert-danger" *ngIf="this.form.get('caeSecundario2').touched && !this.form.get('caeSecundario2').valid">
-                  <div *ngIf="this.form.get('caeSecundario2').errors && this.form.get('caeSecundario2').errors?.['required']">
+                <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2').touched && !this.form.get('CAESecondary2').valid">
+                  <div *ngIf="this.form.get('CAESecondary2').errors && this.form.get('CAESecondary2').errors?.['required']">
                     O parâmetro acima é obrigatório.
                   </div>
                 </div>
@@ -223,9 +222,9 @@
                   </div>
                 </div>
 
-                <p class="titulo-form-simples" for="ramoPrincipal">Ramo de Negócio de Objeto Social Principal*: </p>
-                <input required minlength="2" maxlength="100" formControlName="CAE1Branch" name="ramoPrincipal"
-                       type="text" id="ramoPrincipal" class="form-control campo_form"
+                <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
+                <input required minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                       type="text" id="CAE1Branch" class="form-control campo_form"
                        [readonly]="clientExists">
                 <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
                   <div *ngIf="this.form.get('CAE1Branch').errors && this.form.get('CAE1Branch').errors?.['required']">
@@ -254,9 +253,9 @@
                 </div>
 
                 <!--<p class="titulo-form-simples" for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </p>
-  <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
-    type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].branch"
-    [readonly]="clientExists">-->
+                <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
+                  type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].branch"
+                  [readonly]="clientExists">-->
 
               </div>
               <hr>
@@ -289,9 +288,9 @@
                   </div>
                 </div>
 
-                <p class="titulo-form-simples" for="cpSedeSocial">Código-Postal da Sede Social: </p>
-                <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="cpSedeSocial"
-                       type="text" id="cpSedeSocial" class="form-control campo_form"
+                <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
+                <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
+                       type="text" id="ZIPCode" class="form-control campo_form"
                        [readonly]="clientExists">
                 <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
                   <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
@@ -335,7 +334,7 @@
                 <select required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                         class="form-control campo_form"
                         (change)="onLegalNatureSelected()">
-                  <option value="">Selecione</option>
+                  <option value="" selected disabled hidden>Selecione</option>
                   <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
                 </select>
                 <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
@@ -345,22 +344,22 @@
                 </div>
 
                 <!--<input required minlength="2" maxlength="100" ngModel #natJuridicaN1="ngModel" name="natJuridicaN1"
-  type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
-  [readonly]="clientExists">-->
+                type="text" id="natJuridicaN1" class="form-control campo_form" [(ngModel)]="client.legalNature"
+                [readonly]="clientExists">-->
 
                 <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
                 <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
                         class="form-control campo_form" [(ngModel)]="client.legalNature2">
-                  <option value="">Selecione:</option>
+                  <option value="" selected disabled hidden>Selecione:</option>
                   <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
                 </select>
                 <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
-                
 
-                <!--<input required minlength="2" maxlength="100" ngModel #natJuridicaN2="ngModel" name="natJuridicaN2"
-  type="text" id="natJuridicaN2" class="form-control campo_form" [(ngModel)]="client.legalNature2"
-  [readonly]="clientExists">-->
-              </div>
+
+                  <!--<input required minlength="2" maxlength="100" ngModel #natJuridicaN2="ngModel" name="natJuridicaN2"
+                  type="text" id="natJuridicaN2" class="form-control campo_form" [(ngModel)]="client.legalNature2"
+                  [readonly]="clientExists">-->
+                </div>
                 <div class="col-xxl col-7">
                   <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
                   <input required minlength="2" maxlength="100" formControlName="socialDenomination"
@@ -373,20 +372,21 @@
                   </div>
                 </div>
 
+              </div>
             </div>
           </div>
-        </div>
-        <div *ngIf="isCommercialSociety == false && !isCompany">
-          <div class="offset-1 bg-white col-7 col-xxl-10">
-            <div class="row">
-              <div class="col-xxl col-6">
-                <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
-                <input required minlength="2" maxlength="100" formControlName="socialDenomination"
-                       name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                       [readonly]="clientExists">
-                <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
-                  <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
-                    O parâmetro acima é obrigatório.
+          <div *ngIf="isCommercialSociety == false && !isCompany">
+            <div class="offset-1 bg-white col-7 col-xxl-10">
+              <div class="row">
+                <div class="col-xxl col-6">
+                  <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
+                  <input required minlength="2" maxlength="100" formControlName="socialDenomination"
+                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+                         [readonly]="clientExists">
+                  <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
+                    <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                      O parâmetro acima é obrigatório.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -561,28 +561,29 @@
           </div>
         </div>
       </div>
-  <div class="container">
-    <div class="row mb-xxl-5">
-      <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
-        <button id="btn4a"
-                class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg">
-          SAIR&nbsp;<i class="fas fa-angle-down"></i>
-        </button>
+      <div class="container">
+        <div class="row mb-xxl-5">
+          <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
+            <button id="btn4a"
+                    type="button"
+                    (click)="redirectHomePage()"
+                    class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg">
+              SAIR&nbsp;<i class="fas fa-angle-down"></i>
+            </button>
 
-        <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
-          <i class="fas fa-angle-left"></i>&nbsp;VOLTAR
-        </button>
+            <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="button" (click)="redirectBeginningClient()">
+              <i class="fas fa-angle-left"></i>&nbsp;VOLTAR
+            </button>
 
-        <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                type="submit">
-          AVANÇAR&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
-        </button>
-      </div>
-    </div>
-  </div>
-        </div>
-        </form>
+            <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+                    type="submit">
+              AVANÇAR&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
+            </button>
+          </div>
         </div>
       </div>
+      <hr>
     </div>
+</form>
+</div>
 </div>

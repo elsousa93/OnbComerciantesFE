@@ -6,7 +6,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-client',
@@ -17,6 +17,7 @@ export class ClientByIdComponent implements OnInit {
   
   /*Variable declaration*/
   form: FormGroup;
+  myControl = new FormControl('');
 
   public clientId: string = "0";
   //client: Client = {} as Client;
@@ -138,70 +139,101 @@ export class ClientByIdComponent implements OnInit {
   initializeFormControls() {
     this.form = new FormGroup({
       commercialSociety: new FormControl('', Validators.required),
-      franchiseName: new FormControl(''),
+      franchiseName: new FormControl(this.client.companyName),
       natJuridicaNIFNIPC: new FormControl('', Validators.required),
-      expectableAnualInvoicing: new FormControl('', Validators.required),
-      preferenceDocuments: new FormControl('', Validators.required),
+      expectableAnualInvoicing: new FormControl(this.client.sales.estimatedAnualRevenue, Validators.required),
+      preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
       //Pretende associar a grupo/franchise
       services: new FormControl('', Validators.required),
-      transactionsAverage: new FormControl('', Validators.required),
+      transactionsAverage: new FormControl(this.client.sales.averageTransactions, Validators.required),
       destinationCountries: new FormControl('', Validators.required),
-      NIPC: new FormControl('', Validators.required),
-      CAE1: new FormControl('', Validators.required),
-      CAESecondary1: new FormControl(''),
-      CAESecondary2: new FormControl(''),
+      CAE1: new FormControl(this.client.mainEconomicActivity.code, Validators.required),
+      CAESecondary1: new FormControl(this.client.otherEconomicActivities[0].code),
+      CAESecondary2: new FormControl(this.client.otherEconomicActivities[1].code),
       CAESecondary3: new FormControl(''),
-      constitutionDate: new FormControl(''),
-      address: new FormControl('', Validators.required),
-      ZIPCode: new FormControl('', Validators.required),
-      location: new FormControl('', Validators.required),
-      country: new FormControl('', Validators.required),
-      preferenceContacts: new FormControl('', Validators.required)
-    });
+      constitutionDate: new FormControl(this.client.establishmentDate),
+      address: new FormControl(this.client.mainOfficeAddress.address, Validators.required),
+      ZIPCode: new FormControl(this.client.mainOfficeAddress.postalCode, Validators.required),
+      location: new FormControl(this.client.mainOfficeAddress.postalArea, Validators.required),
+      country: new FormControl(this.client.mainOfficeAddress.country, Validators.required),
+      preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
+      crcCode: new FormControl('', Validators.required),
+      natJuridicaN1: new FormControl(this.client.legalNature),
+      natJuridicaN2: new FormControl(this.client.legalNature2),
+      socialDenomination: new FormControl(''),
+      CAE1Branch: new FormControl(this.client.mainEconomicActivity.branch),
+      CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
+      CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1].branch),
+
+    }); 
 
 
     this.form.get("CAE1").valueChanges.subscribe(v => {
       if (v !== '') {
-        this.form.addControl('CAE1Branch', new FormControl('', Validators.required));
+        console.log("cae1 entrou uhjaskaj ;)");
+        //this.form.addControl('CAE1Branch', new FormControl('', Validators.required));
+        this.form.get('CAE1Branch').addValidators(Validators.required);
       } else {
-        this.form.removeControl('CAE1Branch');
+        console.log("nooooo ujakmskjans ;(");
+        //this.form.removeControl('CAE1Branch');
+        this.form.get('CAE1Branch').removeValidators(Validators.required);
       }
     });
 
     this.form.get("CAESecondary1").valueChanges.subscribe(v => {
       if (v !== '') {
-        this.form.addControl('CAESecondary1Branch', new FormControl('', Validators.required));
+        //this.form.addControl('CAESecondary1Branch', new FormControl('', Validators.required));
+        this.form.get('CAESecondary1Branch').addValidators(Validators.required);
       } else {
         this.form.removeControl('CAESecondary1Branch');
+        this.form.get('CAESecondary1Branch').removeValidators(Validators.required);
       }
+
+      console.log("CAESecondary1 uajnsjnsjnasnbasna");
     });
 
     this.form.get("CAESecondary2").valueChanges.subscribe(v => {
       if (v !== '') {
-        this.form.addControl('CAESecondary2Branch', new FormControl('', Validators.required));
+        //this.form.addControl('CAESecondary2Branch', new FormControl('', Validators.required));
+        this.form.get('CAESecondary2Branch').addValidators(Validators.required);
+        
       } else {
-        this.form.removeControl('CAESecondary2Branch');
+        //this.form.removeControl('CAESecondary2Branch');
+        this.form.get('CAESecondary2Branch').removeValidators(Validators.required);
+
       }
+
+      console.log("CAESecondary2 mnsdmsnd,m");
     });
 
-    this.form.get("CAESecondary3").valueChanges.subscribe(v => {
-      if (v !== '') {
-        this.form.addControl('CAESecondary3Branch', new FormControl('', Validators.required));
-      } else {
-        this.form.removeControl('CAESecondary3Branch');
-      }
-    });
+    //this.form.get("CAESecondary3").valueChanges.subscribe(v => {
+    //  if (v !== '') {
+    //    this.form.addControl('CAESecondary3Branch', new FormControl('', Validators.required));
+    //  } else {
+    //    this.form.removeControl('CAESecondary3Branch');
+    //  }
+    //  console.log("CAESecondary3 hbsdhjbsadoqijwoiqjsms");
+    //});
 
     this.form.get("commercialSociety").valueChanges.subscribe(v => {
-      if (v == true) {
-        this.form.addControl('crcCode', new FormControl('', Validators.required));
-        this.form.removeControl('socialDenomination');
-        this.form.removeControl('natJuridicaN1');
+      if (v === 'true') {
+        console.log("entrei");
+        this.form.get('crcCode').addValidators(Validators.required);
+        this.form.get('socialDenomination').removeValidators(Validators.required);
+        this.form.get('natJuridicaN1').removeValidators(Validators.required);
+        var a = this.form.get('natJuridicaN1').validator({} as AbstractControl);
+        console.log(a);
       } else {
-        this.form.removeControl('crcCode');
-        this.form.addControl('socialDenomination', new FormControl('', Validators.required));
-        this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
+        console.log("false");
+        this.form.get('crcCode').removeValidators(Validators.required);
+        this.form.get('socialDenomination').setValidators(Validators.required);
+        this.form.get('natJuridicaN1').setValidators(Validators.required);
+        
+        //this.form.addControl('socialDenomination', new FormControl('', Validators.required));
+      //  this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
       }
+
+      console.log("comercial society UASHUASUHASHUAHUS");
     })
   }
 
@@ -333,8 +365,39 @@ export class ClientByIdComponent implements OnInit {
     this.client.headquartersAddress.country = this.form.value["country"];
     this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
     this.client.headquartersAddress.postalArea = this.form.value["location"];
+    this.client.mainEconomicActivity.code = this.form.value["CAE1"];
+    this.client.mainEconomicActivity.branch = this.form.value["CAE1Branch"];
+    this.client.otherEconomicActivities.push({ code: this.form.value["CAESecondary1"], branch: this.form.value["CAESecondary1Branch"] });
+    this.client.otherEconomicActivities.push({ code: this.form.value["CAESecondary2"], branch: this.form.value["CAESecondary2Branch"] });
+    this.client.companyName = this.form.value["franchiseName"];
+    this.client.sales.estimatedAnualRevenue = this.form.value["expectableAnualInvoicing"];
+    this.client.sales.averageTransactions = this.form.value["transactionsAverage"];
+    this.client.sales.servicesOrProductsSold.push(this.form.value["services"]);
+    //Paises destino
+    this.client.establishmentDate = this.form.value["constitutionDate"];
+    this.client.crc = this.form.value["crcCode"];
+    this.client.legalNature = this.form.value["natJuridicaN1"];
+
+    this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+    this.client.companyName = this.form.value["socialDenomination"];
+    //Social Denomination
+
 
     this.client.mainEconomicActivity.branch = this.form.value[""];
-    console.log(formValues);
+    //console.log(this.form.valid);
+    //for (const c in this.form.controls) {
+    //  console.log(c + "|" + this.form.controls[c].invalid);
+    //}
+
+    this.route.navigate(["/comprovativos"]);
+
+  }
+
+  redirectBeginningClient() {
+    this.route.navigate(["/client"]);
+  }
+
+  redirectHomePage() {
+    this.route.navigate(["/"]);
   }
 }
