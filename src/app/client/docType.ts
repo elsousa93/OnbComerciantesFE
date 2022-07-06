@@ -4,15 +4,11 @@ export interface docType {
 }
 
 export const docType: docType[] = [
-  { docTypeOption: "Nº de Cliente"},
-  { docTypeOption: "Número de Identificação de Pessoa Colectiva"}  
+  { docTypeOption:"Número de Identificação de Pessoa Colectiva"},
+  { docTypeOption:"Outro..."},
 ]
 
 export const docTypeENI: docType[] = [
-  { docTypeOption: "Bilhete de Identidade Nacional"},
-  { docTypeOption: "Cartão do Cidadão"},
-  { docTypeOption: "Número de Identificação Fiscal"},
-  { docTypeOption: "Nº de Cliente"},
-  { docTypeOption: "Passaporte"},
+  { docTypeOption:"Número do Cartão Cidadão"},
+  { docTypeOption:"Outro..."},
 ]
-
