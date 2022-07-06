@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Input } from '@angular/core';
 import { Inject } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Client } from '../Client.interface';
@@ -118,6 +119,8 @@ export class NewClientComponent implements OnInit {
   lastIdClient: any;
   stringJson: any;
 
+  form: FormGroup;
+
   //Comerciante cadastrado com sucesso!!
   constructor(public bsModalRef: BsModalRef, private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
     console.log(this.addNewClient.clientId);
@@ -163,10 +166,14 @@ export class NewClientComponent implements OnInit {
     this.addNewClient.mainEconomicActivity.branch = form.ramoPrincipal;
     this.addNewClient.shareCapital.date = form.dataConst;
 
-    this.http.post<Client>(this.baseUrl + 'BEClients/', this.addNewClient).subscribe(result => {
-      console.log(result);
-      alert("Comerciante cadastrado com sucesso!!!");
-      this.route.navigate(['/comprovativos/', this.addNewClient.clientId ]);
-    }, error => console.error(error));
+    console.log(this.addNewClient);
+
+    //this.http.post<Client>(this.baseUrl + 'BEClients/', this.addNewClient).subscribe(result => {
+    //  console.log(result);
+    //  alert("Comerciante cadastrado com sucesso!!!");
+    //  this.route.navigate(['/comprovativos/', this.addNewClient.clientId ]);
+    //}, error => console.error(error));
+
+    this.route.navigate(['/comprovativos/', this.addNewClient.clientId]);
   }
 }

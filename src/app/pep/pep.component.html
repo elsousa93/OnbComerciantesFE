@@ -72,7 +72,7 @@
 
           <select class="form-select" formControlName="pepCountry" name="pepCountry" id="pepCountry">
             <option value="">Em que país:</option>
-            <option value="Portugal"> Portugal </option>
+            <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
           </select>
         </label>
 
@@ -250,7 +250,8 @@
           <!--<input formControlName="relatedPep_type" name="relatedPep_type" type="text" id="relatedPep_type" class="form-control">-->
           <select class="form-select" formControlName="relatedPep_type" name="relatedPep_type" id="relatedPep_type">
             <option value="">Tipo de PEP:</option>
-            <option value="Gestores Públicos"> Gestores Públicos </option>
+            <!--<option value="Gestores Públicos"> Gestores Públicos </option>-->
+            <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
           </select>
         </label>
         <!--<div class="alert alert-danger" *ngIf="relatedPep_type.touched && !relatedPep_type.valid">
@@ -269,7 +270,7 @@
           <!--<input formControlName="relatedPep_country" name="relatedPep_country" type="text" id="relatedPep_country" class="form-control">-->
           <select class="form-select" formControlName="relatedPep_country" name="relatedPep_country" id="relatedPep_country">
             <option value="">Em que país:</option>
-            <option value="Portugal"> Portugal </option>
+            <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
           </select>
         </label>
         <!--<div class="alert alert-danger" *ngIf="relatedPep_country.touched && !relatedPep_country.valid">
@@ -364,7 +365,7 @@
         <!--<input formControlName="relatedPep_idDocumentCountry" idDocumentCountry="relatedPep_idDocumentCountry" type="text" id="relatedPep_idDocumentCountry" class="form-control">-->
         <select class="form-select" formControlName="relatedPep_idDocumentCountry" name="relatedPep_idDocumentCountry" id="relatedPep_idDocumentCountry">
           <option value="">Pais do Documento de Identificação:</option>
-          <option value="Brasil"> Brasil </option>
+          <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
         </select>
         <!--<div class="alert alert-danger" *ngIf="relatedPep_idDocumentCountry.touched && !relatedPep_idDocumentCountry.valid">
     O parâmetro acima é obrigatório.
@@ -379,7 +380,7 @@
         <!--<input formControlName="relatedPep_addressCountry" addressCountry="relatedPep_addressCountry" type="text" id="relatedPep_addressCountry" class="form-control">-->
         <select class="form-select" formControlName="relatedPep_addressCountry" name="relatedPep_addressCountry" id="relatedPep_addressCountry">
           <option value="">Pais da Morada:</option>
-          <option value="Brasil"> Brasil </option>
+          <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
         </select>
         <!--<div class="alert alert-danger" *ngIf="relatedPep_addressCountry.touched && !relatedPep_addressCountry.valid">
     O parâmetro acima é obrigatório.
