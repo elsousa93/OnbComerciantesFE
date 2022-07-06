@@ -17,9 +17,6 @@ import { Sort } from '@angular/material/sort';
   animations: [onSideNavChange, AutoHideSidenavAdjust]
 })
 export class SidenavPresencialComponent implements OnInit {
-
-  //------------------------------------
-
   displayedColumns1: string[] = ['id', 'name', 'progress', 'color', 'teste']
 
   displayedColumnsWithObject: string[] = [
