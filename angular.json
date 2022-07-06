@@ -35,7 +35,7 @@
               "src/css/style.css",
               "src/css/style_x.css",
               "src/css/roboto.css",
-              "src/css/materialsymbolsoutlined.css",
+              // "src/css/materialsymbolsoutlined.css",
               "src/css/materialsymbols.css",
               "src/css/materialicons.css"
 
@@ -116,7 +116,7 @@
               "src/css/style.css",
               "src/css/style_x.css",
               "src/css/roboto.css",
-              "src/css/materialsymbolsoutlined.css",
+              // "src/css/materialsymbolsoutlined.css",
               "src/css/materialsymbols.css",
               "src/css/materialicons.css"
 
