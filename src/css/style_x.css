@@ -1,9 +1,5 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
-<<<<<<< HEAD
 @import "director.css";
-=======
-
->>>>>>> f19dca9577e39e1f4b0c43bfa82f56d503f66a00
 
 .icon-dash {
   min-width: 0px;
@@ -98,10 +94,7 @@
     /*#d9d9d9*/
     white !important;
   font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
-<<<<<<< HEAD
   vertical-align: center !important;
-=======
->>>>>>> f19dca9577e39e1f4b0c43bfa82f56d503f66a00
 }
 
 .widget img {
