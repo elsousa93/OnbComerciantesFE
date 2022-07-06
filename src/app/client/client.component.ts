@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { docType } from './docType'
+import { docType, docTypeENI } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
 
@@ -20,8 +20,10 @@ export class ClientComponent implements OnInit {
   public displayValueSearch: any;
 
   clientIdNew;
+  ccInfo;
   newId;
   ListaDocType = docType;
+  ListaDocTypeENI = docTypeENI;
   formDocType!: FormGroup;
   docType?: string = "";
 
@@ -33,6 +35,7 @@ export class ClientComponent implements OnInit {
   showWarning: boolean = false;
   showButtons: boolean = false;
   showSeguinte: boolean = false;
+  showENI: boolean = false;
   resultError: string = "";
   newClient: Client = {
     "clientId": "",
@@ -234,11 +237,27 @@ export class ClientComponent implements OnInit {
     //isto nao esta a aparecer na versao mais nova.
   }
 
+  activateButtonsENI(id: boolean) {
+    if (id == true) {
+      this.showButtons = true;
+      this.showENI = true;
+      this.showWarning = false;
+      this.ccInfo = null;
+    } else {
+      this.showButtons = false;
+      this.showENI = false;
+      this.showWarning = false;
+      this.ccInfo = null;
+    }
+  }
+
   activateButtons(id: boolean) {
     if (id == true) {
-      this.showButtons = true
+      this.showButtons = true;
+      this.showENI = false;
     } else {
-      this.showButtons = false
+      this.showButtons = false;
+      this.showENI = false;
     }
   }
 
@@ -267,5 +286,17 @@ export class ClientComponent implements OnInit {
 
   newSearch() {
     location.reload();
+  }
+
+  getValueENI(){
+    //this.activateButtons(true);
+    this.http.get(this.baseUrl + 'CitizenCard/searchCC').subscribe(result => {
+      if (result == null) {
+        alert("Erro ao ler cartão cidadão!");
+      } else {
+        this.ccInfo = result;
+        console.log(this.ccInfo);
+      }
+    }, error => console.error(error));
   }
 }
