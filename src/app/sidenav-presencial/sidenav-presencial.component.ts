@@ -33,6 +33,7 @@ export class SidenavPresencialComponent implements OnInit {
 
   ngOnInit(): void {
     this.userPermissions = getMenuPermissions(UserPermissions.DO);
+  //  alert(this.isAutoHide);
   }
 
   assignMenus() {

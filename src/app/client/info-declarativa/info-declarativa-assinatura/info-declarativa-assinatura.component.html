@@ -1,0 +1,67 @@
+<app-nav-menu-interna></app-nav-menu-interna>
+<button class="btn" routerLink="/info-declarativa">Comerciante</button>
+<button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+<button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
+<br>
+<br>
+
+<div class="container">
+  <p class="text-primary" style="margin-top:5%;">SELECIONE A FORMA DE ASSINATURA DE CONTRATO</p>
+  <p> Selecione uma das opções </p>
+
+  <label for="opt1">Assinatura em papel</label>
+  <input id="opt1" [value]="1"
+         [(ngModel)]="isVisible"
+         #opt1="ngModel"
+         name="isVisible"
+         type="radio"
+         [checked]="isSelected" />
+
+
+  <label for="opt2">Assinatura eletrónica</label>
+  <input id="opt2" [value]="0"
+         [(ngModel)]="isVisible"
+         #opt2="ngModel"
+         name="isVisible"
+         type="radio"
+         [checked]="!isSelected" />
+
+
+  <p class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="isVisible == 0 || isVisible == 1">
+    <thead>
+      <tr>
+        <th>Nome do Cliente</th>
+        <th>NIF</th>
+        <th *ngIf="isVisible == 1">Letra</th>
+        <th *ngIf="isVisible == 1">Tipo de assinatura</th>
+        <th>Seleção</th>
+        <th>Tipo assinatura digital</th>
+        <th>Tipo de identificação </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="clickable" *ngFor="let stakeholder of stakeholders">
+        <td>{{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}}</td>
+        <td> - </td>
+        <td *ngIf="isVisible == 1"> - </td>
+        <td *ngIf="isVisible == 1"> - </td>
+        <td><input #{{stakeholder.fiscalId}} id="{{stakeholder.fiscalId}}" type="checkbox" [checked]="representativesSelected.indexOf(stakeholder.fiscalId) > -1" (change)="changeRepresentativeSelected($event)" /></td>
+        <td>
+          <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
+          <select *ngIf="isVisible == 0">
+            <option>OTP</option>
+            <option>Chave Móvel Digital</option>
+            <option>CC</option>
+          </select>
+        </td>
+        <td>
+          <select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
+          <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>

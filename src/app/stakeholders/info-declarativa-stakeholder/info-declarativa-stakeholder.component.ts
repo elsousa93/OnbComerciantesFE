@@ -1,13 +1,17 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IStakeholders } from '../IStakeholders.interface'
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { codes } from './indicativo';
 import { ViewChild, EventEmitter, Output } from '@angular/core';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -17,13 +21,17 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 /**
  * Nesta página há vários Form Groups
  * */
-export class InfoDeclarativaStakeholderComponent implements OnInit {
+export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewInit {
   //----------Ecrã Comerciante-----------
   ListaInd = codes;
   formContactos!: FormGroup;
   callingCodeStakeholder?: string = "";
 
   displayValueSearch = '';
+
+
+  //Informação de campos/tabelas
+  internationalCallingCodes: CountryInformation[];
 
   public newStakeholder: IStakeholders = {
 
@@ -37,13 +45,31 @@ export class InfoDeclarativaStakeholderComponent implements OnInit {
   //   this.nameEmitter.emit(this.displayValueSearch);
   // }
 
-  constructor(private formBuilder: FormBuilder) {
+  stakeholders: IStakeholders[] = [];
+  displayedColumns: string[] = ['fiscalId', 'shortName', 'identificationDocumentId', 'elegible', 'valid'];
+  dataSource = new MatTableDataSource<IStakeholders>(this.stakeholders);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
     this.ngOnInit();
+    http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
+      this.stakeholders = result;
+      this.dataSource.data = this.stakeholders;
+    }, error => console.error(error));
+
+    this.callingCodeStakeholder = tableInfo.GetAllCountries();
   }
 
   ngOnInit(): void {
     this.formContactos = this.formBuilder.group({
-      listF: ['']
+      listF: [''],
+      countryCode: new FormControl(''),
+      phoneNumber: new FormControl(''),
+      email: new FormControl(''),
     })
   }
 
@@ -55,12 +81,19 @@ export class InfoDeclarativaStakeholderComponent implements OnInit {
   changeListElement(variavel: string, e: any) {
     console.log(e.target.value)
     this.callingCodeStakeholder = e.target.value;
+    console.log(this.formContactos.value.countryCode);
+    console.log(this.formContactos.value.phoneNumber);
+    console.log(this.formContactos.value.email);
     //update ao newStakeholder aqui?
     // this.newStakeholder.callingCodeStakeholder =  this.callingCodeStakeholder;
   }
 
   submit(e) {
     console.log(e);
+  }
+
+  clickRow(id: number) {
+    console.log('Carregou no stakeholder com o id: ' + id);
   }
 
 }

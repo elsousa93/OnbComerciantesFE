@@ -8,6 +8,7 @@ export interface Client {
   merchantType: String,
   legalNature: String,
   legalNature2: String,
+  observations: String,
   crc: Crc,
   shareCapital: ShareCapital,
   bylaws: String,
@@ -28,6 +29,7 @@ export interface HeadquartersAddress {
   address: String,
   postalCode: String,
   postalArea: String,
+  locality: String,
   country: String,
 }
 

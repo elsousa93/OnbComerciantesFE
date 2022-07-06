@@ -3,6 +3,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Istore } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({
   selector: 'app-add-store',
@@ -14,6 +16,11 @@ import { AppComponent } from '../../app.component';
   //If the storeId value is -1 it means that it is a new store to be added - otherwise the storeId corresponds to the id of the store to edit
 
 export class AddStoreComponent implements OnInit {
+
+  //Informação de campos/tabelas
+  Countries: CountryInformation[] = [];
+
+
 
   /*Variable declaration*/
   public stroreId: number = 0;
@@ -61,9 +68,17 @@ export class AddStoreComponent implements OnInit {
   public idisabledAdd: boolean = false;
   public idisabledContact: boolean = false;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, public appComp: AppComponent) {
 
+  loadTableInfo() {
+    this.tableInfo.GetAllCountries().subscribe(res => {
+      this.Countries = res;
+    })
+  }
+
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService) {
     this.ngOnInit();
+
+    this.loadTableInfo();
 
     //WS call - Get the fields for the specific store if we are not creatig a new store
     if (this.stroreId != -1) {

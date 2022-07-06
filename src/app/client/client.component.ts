@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
@@ -43,10 +44,12 @@ export class ClientComponent implements OnInit {
     "companyName": "",
     "contactName": "",
     "shortName": "",
+    "observations": "",
     "headquartersAddress": {
       "address": "",
       "postalCode": "",
       "postalArea": "",
+      "locality": "",
       "country": ""
     },
     "merchantType": "",
@@ -138,7 +141,7 @@ export class ClientComponent implements OnInit {
 
   public map = new Map();
   public currentPage: number;
-  public subscription : Subscription;
+  public subscription: Subscription;
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -149,7 +152,7 @@ export class ClientComponent implements OnInit {
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
-    this.updateData(true,1);
+    this.updateData(true, 1);
     this.activateButtons(true);
     this.errorInput = "form-control campo_form_coment";
   }
@@ -159,6 +162,18 @@ export class ClientComponent implements OnInit {
     console.warn("VALOR RECEBIDO no Client", box);
     // this.searchParameter.push(box);
     this.searchParameter = (box);
+  }
+
+  getValueENI() {
+    //this.activateButtons(true);
+    this.http.get(this.baseUrl + 'CitizenCard/searchCC').subscribe(result => {
+      if (result == null) {
+        alert("Erro ao ler cartão cidadão!");
+      } else {
+        this.ccInfo = result;
+        console.log(this.ccInfo);
+      }
+    }, error => console.error(error));
   }
 
   // Search for a client
@@ -178,7 +193,7 @@ export class ClientComponent implements OnInit {
         this.clientIdNew = this.newClient.clientId;
         this.toggleShowWarning(true);
         this.hasClient == true;
-        
+
         this.errorInput = "form-control campo_form_coment";
         this.errorMsg = "";
         this.resultError = "";
@@ -230,8 +245,8 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         isCompany: this.showButtons
-      } 
-    }; 
+      }
+    };
     this.route.navigate(['/clientbyid/', id], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
@@ -270,14 +285,14 @@ export class ClientComponent implements OnInit {
   }
 
   createNewClient() {
-    this.http.post(this.baseUrl + 'BEClients/GetLastId/',this.newClient).subscribe(result => {
+    this.http.post(this.baseUrl + 'BEClients/GetLastId/', this.newClient).subscribe(result => {
       console.log(result);
       if (result != null) {
         this.newId = result;
         this.route.navigate(['/app-new-client/', this.newId]);
       }
     }, error => console.error(error));
-    
+
   }
 
   close() {
@@ -286,17 +301,5 @@ export class ClientComponent implements OnInit {
 
   newSearch() {
     location.reload();
-  }
-
-  getValueENI(){
-    //this.activateButtons(true);
-    this.http.get(this.baseUrl + 'CitizenCard/searchCC').subscribe(result => {
-      if (result == null) {
-        alert("Erro ao ler cartão cidadão!");
-      } else {
-        this.ccInfo = result;
-        console.log(this.ccInfo);
-      }
-    }, error => console.error(error));
   }
 }

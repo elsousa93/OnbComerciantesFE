@@ -33,7 +33,12 @@
               "src/custom-theme.scss",
               "src/bootstrap/5/css/bootstrap.min.css",
               "src/css/style.css",
-              "src/css/style_x.css"
+              "src/css/style_x.css",
+              "src/css/roboto.css",
+              "src/css/materialsymbolsoutlined.css",
+              "src/css/materialsymbols.css",
+              "src/css/materialicons.css"
+
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -46,13 +51,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 }
               ],
               "fileReplacements": [
@@ -105,7 +110,17 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/custom-theme.scss",
+              "src/bootstrap/5/css/bootstrap.min.css",
+              "src/css/style.css",
+              "src/css/style_x.css",
+              "src/css/roboto.css",
+              "src/css/materialsymbolsoutlined.css",
+              "src/css/materialsymbols.css",
+              "src/css/materialicons.css"
+
+
             ],
             "scripts": []
           }

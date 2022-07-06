@@ -1,10 +1,14 @@
+<app-nav-menu-interna></app-nav-menu-interna>
+
 <button class="btn" routerLink="/info-declarativa">Comerciante</button>
 <button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
-<button class="btn">Assinatura Digital</button>
-<br>
-<br>
+<button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
+
 
 <!--
+
+
+
        flagElectableStakeholder : boolean,
        flagValidStakeholder:boolean,
        callingCodeStakeholder: string,
@@ -18,39 +22,76 @@
        monthlyEarnsStakeholder: number
   -->
 
-<p>- Inserir tabela - </p>
+<div class="offset-xxl-1 col-xxl-10">
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="table">
+      <ng-container matColumnDef="fiscalId">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Nº Cliente </th>
+        <td mat-cell *matCellDef="let stake" class="text-center"> {{stake.fiscalId}} </td>
+      </ng-container>
+      <ng-container matColumnDef="shortName">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Nome Cliente </th>
+        <td mat-cell *matCellDef="let stake" class="text-center"> {{stake.shortName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="identificationDocumentId">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> NIF </th>
+        <td mat-cell *matCellDef="let stake" class="text-center"> {{stake.identificationDocument.number}} </td>
+      </ng-container>
+      <ng-container matColumnDef="elegible">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Elegível </th>
+        <td mat-cell *matCellDef="let stake" class="text-center"> - </td>
+      </ng-container>
+      <ng-container matColumnDef="valid">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Válido </th>
+        <td mat-cell *matCellDef="let stake" class="text-center"> - </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary align-middle text-center"></tr>
+      <tr mat-row
+          (click)="clickRow(row.fiscalId)"
+          *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+</div>
+
+
 <p><strong>Contactos</strong></p>
 <p>Preencha pelo menos 1 contacto</p>
 
 
+<form [formGroup]="formContactos">
+  <div class="container" style="display: flex">
+    <div class="country-code-dropdown">
+      <p>Indicativo:</p>
 
-<!--<div class="container" style="display: flex">
-  <div class="country-code-dropdown">
-    <p>Indicativo:</p>
-    <form [formGroup]="formContactos">
-      <select class="form-select" formControlName="formContactos" (click)="changeListElement(callingCodeStakeholder, $event)" id="callingCodeStakeholder" [(ngModel)]="newStakeholder.callingCodeStakeholder">
+      <select class="form-select" #countryCode formControlName="countryCode" (click)="changeListElement(callingCodeStakeholder, $event)" id="countryCode">
         <option value="">Indicativo:</option>
-        <option *ngFor="let codes of ListaInd" value={{codes.countryCodes}}>{{codes.country}} (+{{codes.countryCodes}}) </option>
+        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
       </select>
-      <p>{{callingCodeStakeholder}}</p>
-    </form>
-  </div>
-  <div class="form-group">
-    <label for="phoneStakeholder">Telefone:</label>
-    <input required ngModel #phoneStakeholder="ngModel" name="phoneStakeholder" type="text" id="phoneStakeholder" class="form-control" [(ngModel)]="newStakeholder.phoneStakeholder">
-    <div class="alert alert-danger" *ngIf="phoneStakeholder.touched && !phoneStakeholder.valid">
-      is required.
+      <!--<p>{{callingCodeStakeholder}}</p>-->
+
+      <div class="alert alert-danger" *ngIf="phoneNumber.value && !countryCode.value">
+        is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phoneStakeholder">Telefone:</label>
+      <input #phoneNumber formControlName="phoneNumber" name="phoneStakeholder" type="text" id="phoneStakeholder" class="form-control">
+
+      <div class="alert alert-danger" *ngIf="phoneNumber.touched && !phoneNumber.valid || countryCode.value && !phoneNumber.value">
+        is required.
+      </div>
     </div>
   </div>
-</div>
-<div class="form-group">
-  <label for="emailStakeholder">Email:</label>
-  <input required ngModel #emailStakeholder="ngModel" name="emailStakeholder" type="text" id="emailStakeholder" class="form-control" [(ngModel)]="newStakeholder.emailStakeholder">
-  <div class="alert alert-danger" *ngIf="emailStakeholder.touched && !emailStakeholder.valid">
-    is required.
+  <div class="form-group">
+    <label for="emailStakeholder">Email:</label>
+    <input required formControlName="email" name="email" type="text" id="email" class="form-control">
   </div>
-</div>
-<div class="form-group">
+</form>
+<!--<div class="form-group">
   <label for="hourContractStart">Melhor hora de início:</label>
   <input required ngModel #hourContractStart="ngModel" name="hourContractStart" type="text" id="hourContractStart" class="form-control" [(ngModel)]="newStakeholder.hourContractStart">
   <div class="alert alert-danger" *ngIf="hourContractStart.touched && !hourContractStart.valid">

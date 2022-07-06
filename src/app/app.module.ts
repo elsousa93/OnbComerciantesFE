@@ -52,9 +52,11 @@ import { MaterialModule } from './material/material.module';
 import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component';
 import { SidenavPresencialComponent } from './sidenav-presencial/sidenav-presencial.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InfoDeclarativaAssinaturaComponent } from './client/info-declarativa/info-declarativa-assinatura/info-declarativa-assinatura.component';
+import { StakeholderService } from './stakeholders/stakeholder.service';
 import { NumberCounterComponent } from './number-counter/number-counter.component';
 import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
-
+import { TableInfoService } from './table-info/table-info.service';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -101,6 +103,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NavMenuPresencialComponent,
     FooterPresencialComponent,
     SidenavPresencialComponent,
+    InfoDeclarativaAssinaturaComponent,
+
     NumberCounterComponent
   ],
   imports: [
@@ -127,7 +131,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
       { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
-
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
@@ -157,8 +160,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
       { path: 'acceptance/:submissionID', component: AcceptanceComponent },
-      { path: 'process', component: ProcessComponent }
-
+      { path: 'process', component: ProcessComponent },
+      { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent }
+      
     ]),
     TranslateModule.forRoot({
       loader: {
@@ -168,7 +172,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
