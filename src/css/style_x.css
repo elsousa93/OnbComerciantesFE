@@ -1,5 +1,9 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
-@import "director.css";
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../css/Roboto-Regular.ttf') format('truetype');
+}
 
 .icon-dash {
   min-width: 0px;
@@ -213,20 +217,25 @@
 }
 
 .delete-icon img {
-  width: 50px;
+  width: 50px !important;
   padding: 10px;
-  vertical-align: center;
+  padding-top: 17px !important;
+  justify-content: center;
+  align-items: center;
 }
 
+
+
 .img-button img {
-  color: white;
-  width: 20px;
+  color: white !important;
+  width: 20px !important;
 }
 
 .edit-icon img {
-  width: 50px;
-  padding: 10px;
-  vertical-align: center;
+  width: 50px !important;
+  padding: 10px !important;
+  justify-content: center;
+  align-items: center;
 }
 
 .sub-icon {
@@ -918,7 +927,7 @@ span {}
 }
 
 .table1> :not(caption)>*>* {
-  
+
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg)
@@ -995,7 +1004,7 @@ span {}
   border-color: #1e66b0
 }
 
-.btn-procurar:hover{
+.btn-procurar:hover {
   color: #fff;
   border-color: #1e66b0
 }
@@ -1157,17 +1166,22 @@ mat-cell {
   text-align: center !important;
 }
 
+<<<<<<< HEAD
 .mat-cell1 {
   font-family: 'Roboto' !important;
   font-size: 16px !important;
   color: #1e66b0 !important;
   border-bottom: 1px solid #e6eef7 !important;
   text-align: center !important;
+=======
+mat-cell:last-of-type, mat-header-cell:last-of-type, mat-footer-cell:last-of-type {
+  padding-right: 0px !important;
+>>>>>>> be84bf9d314c25bbe2a29fbb5d2ec2ae9b397ab6
 }
 
 mat-header-cell,
 mat-sort-header,
-mat-header-row{
+mat-header-row {
   font-family: 'roboto';
   font-size: 19px !important;
   color: #1e66b0 !important;
@@ -1208,12 +1222,12 @@ mat-header-row{
 mat-table {
   font-family: 'roboto', "Helvetica Neue", sans-serif;
   padding: 20px 20px;
-  background-color: var(--bs-table-bg); 
+  background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 
-mat-form-field{
+mat-form-field {
   position: relative !important;
   text-align: center !important;
   display: inline-block !important;
@@ -1254,9 +1268,10 @@ mat-row {
     'opsz' 48;
 }
 
-::ng-deep .mat-form-field{
+::ng-deep .mat-form-field {
   color: #1e66b0 !important;
 }
+
 mat-paginator {
   font-family: 'roboto';
   font-size: 14px !important;
