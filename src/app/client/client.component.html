@@ -1,6 +1,25 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container">
   <div class="row mb-xxl-5 mt-3">
+    <!--<div class="offset-1 bg-white col-7 col-xxl-8">
+      <span class="mt-4 mb-4">
+        <h2 class="mt-4 text-primary">Qual a tipologia do Comerciante?*</h2>
+      </span>
+      <p class="mt-2">Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.</p>
+    </div>
+    <div class="col-3 col-xxl-2 mt-4 mb-4">
+      <circular-progress [percentage]="10"></circular-progress>
+    </div>-->
+    <!--<fase-title
+                title="Qual a tipologia do Comerciante?*"
+                description="Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat."
+                percentage=10>
+    </fase-title>-->
+
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <p class="titulo-form-simples">Qual a tipologia do cliente empresa?*</p>
       <div class="form-check">
@@ -23,22 +42,20 @@
                 <div class="col-xxl col-xxl-6">
                   <p class="titulo-form-simples">Tipo de Documento:*</p>
                   <select class="form-select campo-form-select" id="docType"
-                          [(ngModel)]="newClient.documentationDeliveryMethod">
+                    [(ngModel)]="newClient.documentationDeliveryMethod">
                     <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                       {{docType.docTypeOption}}
                     </option>
                   </select>
                   <button id="btn5a2"
-                          class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
-                          (click)="getValueSearch(box.value)">
-                    PESQUISAR
+                    class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
+                    (click)="getValueSearch(box.value)">PESQUISAR
                     <i class="fas fa-search">&nbsp;</i>
                   </button>
                 </div>
                 <div class="col-xxl">
-                  <p class="titulo-form-simples ">
-                    Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span>
-                  </p>
+                  <p class="titulo-form-simples ">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span
+                      [class]="errorMsg">{{ resultError }}</span></p>
                   <input id="n-doc" type="text" #box [class]="errorInput">
                 </div>
               </div>
@@ -47,7 +64,7 @@
                   <div class="col-xxl col-xxl-6">
                     <p class="titulo-form-simples">Tipo de Documento:*</p>
                     <select class="form-select campo-form-select" id="docType"
-                            [(ngModel)]="newClient.documentationDeliveryMethod">
+                      [(ngModel)]="newClient.documentationDeliveryMethod">
                       <option *ngFor="let docType of ListaDocTypeENI" value={{docType.docTypeOption}}>
                         {{docType.docTypeOption}}
                       </option>
@@ -56,15 +73,14 @@
                   </div>
                   <div class="col-xxl">
                     <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
-                    <p class="titulo-form">
-                      Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
+                    <p class="titulo-form">Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
                     </p>
                     <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
-                           #flagAutCol="ngModel" [value]="true" id="flagAutCol">
+                      #flagAutCol="ngModel" [value]="true" id="flagAutCol">
                     <label class="form-check-label"
-                           for="radio3">SIM</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      for="radio3">SIM</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
-                           #flagAutCol="ngModel" [value]="false" id="flagAutCol">
+                      #flagAutCol="ngModel" [value]="false" id="flagAutCol">
                     <label class="form-check-label" for="radio3">NÃO</label>
                   </div>
 
@@ -107,9 +123,8 @@
                   </div>
                 </div>
                 <button id="btn5a2"
-                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
-                        (click)="getValueENI()">
-                  Ler Cartão Cidadão
+                  class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
+                  (click)="getValueENI()">Ler Cartão Cidadão
                   <i class="fas fa-search">&nbsp;</i>
                 </button>
               </div>

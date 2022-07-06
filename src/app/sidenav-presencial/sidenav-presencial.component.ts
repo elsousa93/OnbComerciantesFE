@@ -210,7 +210,6 @@ export class SidenavPresencialComponent implements OnInit {
     this.dataSource.sort = this.sort;
 
     //-------------------------------------
-    this.empTbSortWithObject.disableClear = true;
     this.dataSource1.sort = this.empTbSortWithObject;
     this.dataSource1.paginator = this.paginatorPageSize;
 

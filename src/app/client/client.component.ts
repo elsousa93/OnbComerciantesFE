@@ -302,4 +302,16 @@ export class ClientComponent implements OnInit {
   newSearch() {
     location.reload();
   }
+
+  getValueENI(){
+    //this.activateButtons(true);
+    this.http.get(this.baseUrl + 'CitizenCard/searchCC').subscribe(result => {
+      if (result == null) {
+        alert("Erro ao ler cartão cidadão!");
+      } else {
+        this.ccInfo = result;
+        console.log(this.ccInfo);
+      }
+    }, error => console.error(error));
+  }
 }
