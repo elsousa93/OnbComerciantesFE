@@ -15,4 +15,3 @@ export const docTypeENI: docType[] = [
   { docTypeOption: "Nº de Cliente" },
   { docTypeOption: "Passaporte" },
 ]
-]
