@@ -172,8 +172,7 @@
                       <nav class="navbar navbar-light bg-light">
                         <span class="navbar-text ms-0 me-0">
                           <mat-form-field>
-                            <input matInput (keyup)="applyFilter($event.target.value)"
-                              placeholder="Efetuar pesquisa">
+                            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Efetuar pesquisa">
                           </mat-form-field>
                         </span>
                         <span class="navbar-text ms-auto me-0">
@@ -261,8 +260,7 @@
                       <nav class="navbar navbar-light bg-light">
                         <span class="navbar-text ms-0 me-0">
                           <mat-form-field>
-                            <input matInput (keyup)="applyFilter1($event.target.value)"
-                              placeholder="Efetuar pesquisa">
+                            <input matInput (keyup)="applyFilter1($event.target.value)" placeholder="Efetuar pesquisa">
                           </mat-form-field>
                         </span>
                         <span class="navbar-text ms-auto me-0">
@@ -535,8 +533,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageArquivoFisico [length]="10"
-                            [pageSizeOptions]="[10, 25, 100]">
+                          <mat-paginator #paginatorPageArquivoFisico [length]="10" [pageSizeOptions]="[10, 25, 100]">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -576,25 +573,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Tem certeza que deseja apagar?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Sim</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
       </div>
     </div>
   </div>

@@ -118,8 +118,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     MaterialModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
-      
-      { path: '', component: DashboardComponent, pathMatch: 'full'  },
+      { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
       { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'client/:id', component: ClientComponent },
