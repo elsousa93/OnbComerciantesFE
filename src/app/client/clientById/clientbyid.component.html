@@ -223,9 +223,28 @@
                 </div>
 
                 <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
-                <input required minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                       type="text" id="CAE1Branch" class="form-control campo_form"
-                       [readonly]="clientExists">
+                <div *ngIf="this.form.get('CAE1').errors">                   <!-- tem erros, nao pode receber -->
+                  <input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                         type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                </div>
+
+                <div *ngIf="!this.form.get('CAE1').errors">
+                  <!--Nao tem erros, pode receber -->
+                  <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                         type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                </div>
+                <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
+                  <!--Se o CAE1 tiver alguma coisa-->
+                  <!--<input [disabled]="false" minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+    type="text" id="CAE1Branch" class="form-control campo_form"
+    [readonly]="clientExists">-->
+                  <div *ngIf="this.form.get('CAE1').errors">
+                    Interagiram com o CAE. CAE não é valido.
+                  </div>
+                  <div *ngIf="this.form.get('CAE1').valid">
+                    Interagiram com o CAE. CAE é valido (tem mais de 2 caracteres).
+                  </div>
+                </div>
                 <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
                   <div class="alert alert-danger" *ngIf="this.form.controls['CAE1Branch'].errors?.['required']">
                     O parâmetro acima é obrigatório.
@@ -253,13 +272,13 @@
                 </div>
 
                 <!--<p class="titulo-form-simples" for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </p>
-                <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
-                  type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].branch"
-                  [readonly]="clientExists">-->
+  <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
+    type="text" id="ramoSecundario3" class="form-control campo_form" [(ngModel)]="client.otherEconomicActivities[2].branch"
+    [readonly]="clientExists">-->
 
               </div>
-              <hr>
-            </div>
+                <hr>
+              </div>
           </div>
           <div class="offset-1 bg-white col-7 col-xxl-10">
             <div class="row">

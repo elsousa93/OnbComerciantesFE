@@ -33,7 +33,7 @@ export class ClientComponent implements OnInit {
 
   hasClient: boolean = true;
   hasNewClient: boolean = true;
-  showWarning: boolean = false;
+  showWarning: boolean = true; //sem backend: true
   showButtons: boolean = false;
   showSeguinte: boolean = false;
   showENI: boolean = false;

@@ -46,17 +46,17 @@ export class ClientByIdComponent implements OnInit {
     "legalNature": "",
     "legalNature2": "",
     "crc": {
-    "code": "",
-    "validUntil": ""
+        "code": "",
+        "validUntil": ""
     },
     "shareCapital": {
-    "capital": 0,
-    "date": ""
+        "capital": 0,
+        "date": ""
     },
     "bylaws": "",
     "mainEconomicActivity": {
-    "code": "",
-    "branch": ""
+        "code": "",
+        "branch": ""
     },
     "otherEconomicActivities": [
     {
@@ -172,7 +172,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaN1: new FormControl(this.client.legalNature),
       natJuridicaN2: new FormControl(this.client.legalNature2),
       socialDenomination: new FormControl(''),
-      CAE1Branch: new FormControl({ value: this.client.mainEconomicActivity.branch, disabled: true }),
+      CAE1Branch: new FormControl(this.client.mainEconomicActivity.branch),
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
       CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1].branch),
 
