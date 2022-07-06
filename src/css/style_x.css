@@ -1,9 +1,14 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
-<<<<<<< HEAD
-@import "director.css";
-=======
 
->>>>>>> f19dca9577e39e1f4b0c43bfa82f56d503f66a00
+@import "director.css";
+
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../css/Roboto-Regular.ttf') format('truetype');
+  font-weight: bold;
+  
+}
 
 .icon-dash {
   min-width: 0px;
@@ -21,7 +26,7 @@
 }
 
 .subtitulo_barras_horizontais {
-  font-family: Roboto;
+  font-family: 'roboto';
   font-size: 15px;
   color: #97aae6;
 }
@@ -97,17 +102,13 @@
   color:
     /*#d9d9d9*/
     white !important;
-  font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
-<<<<<<< HEAD
-  vertical-align: center !important;
-=======
->>>>>>> f19dca9577e39e1f4b0c43bfa82f56d503f66a00
+  font: 400 12px 'roboto', "Helvetica Neue", sans-serif !important;
 }
 
 .widget img {
   width: 12px;
   text-align: center;
-  font: 400 12px 'Roboto' !important;
+  font: 400 12px 'roboto' !important;
   vertical-align: text-top;
 }
 
@@ -222,7 +223,6 @@
 .delete-icon img {
   width: 50px;
   padding: 10px;
-  padding-bottom: 8px;
   vertical-align: center;
 }
 
@@ -1158,7 +1158,7 @@ span {}
 }
 
 mat-cell {
-  font-family: 'Roboto';
+  font-family: 'roboto';
   font-size: 16px !important;
   color: #1e66b0 !important;
   border-bottom: 1px solid #e6eef7 !important;
@@ -1176,7 +1176,7 @@ mat-cell {
 mat-header-cell,
 mat-sort-header,
 mat-header-row{
-  font-family: "Roboto";
+  font-family: 'roboto';
   font-size: 19px !important;
   color: #1e66b0 !important;
   font-weight: bold;
@@ -1214,17 +1214,9 @@ mat-header-row{
 }
 
 mat-table {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'roboto', "Helvetica Neue", sans-serif;
   padding: 20px 20px;
   background-color: var(--bs-table-bg); 
-  border-bottom-width: 1px;
-  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
-}
-
-
-.mat-table {
-  font-family: 'Roboto';
-  /*background-color: var(--bs-table-bg);*/
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
@@ -1233,7 +1225,7 @@ mat-form-field{
   position: relative !important;
   text-align: center !important;
   display: inline-block !important;
-  font-family: 'Roboto';
+  font-family: 'roboto';
   font-size: 14px !important;
   color: #1e66b0 !important;
 }
@@ -1274,7 +1266,7 @@ mat-row {
   color: #1e66b0 !important;
 }
 mat-paginator {
-  font-family: 'Roboto';
+  font-family: 'roboto';
   font-size: 14px !important;
   color: #1e66b0 !important;
   border-bottom: 0px solid #1e66b0 !important;
