@@ -151,17 +151,44 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Tem certeza que deseja apagar?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Sim</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
-      </div>
+      <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0">
+        <div class="container-fluid ms-0 me-0 ps-0 pe-0">
+          <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+            <div class="offset-1 col-10 align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+              <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                <span class="navbar-text ms-auto align-self-start">
+                  <h2 class="mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 text-light"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></h2>
+                </span>
+              </nav>
+            </div>
+            <div class="row mb-xxl-5">
+              <div class="col-xxl offset-xxl-1 offset-1 col-10 col-xxl-10 mb-5 ps-0 pe-0">
+                <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                  <span class="navbar-text"></span>
+                  <span class="material-symbols-rounded icon_alerta">
+                    <img src="assets/images/warning.svg" class="img_warning">
+                  </span>
+                </nav>
+                <nav
+                  class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                  <span class="navbar-text">
+                    <h3 class="fw-bold text-light mb-2">QUER APAGAR ESTE PROCESSO?</h3>
+                  </span>
+                </nav>
+                <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+                  <span class="navbar-text"></span>
+                  <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
+                      class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
+                      wappler-command="editContent" data-bs-dismiss="modal">MANTER PROCESSO</button></span>
+                  <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
+                      class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
+                      wappler-command="editContent">APAGAR PROCESSO</button></span>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   </div>
 </div>
