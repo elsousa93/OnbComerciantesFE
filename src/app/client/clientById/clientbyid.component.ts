@@ -127,6 +127,7 @@ export class ClientByIdComponent implements OnInit {
     "documentationDeliveryMethod": "",
     "billingEmail": ""
     };
+  tempClient: any;
 
   clientExists: boolean = false;
   isCommercialSociety: boolean;
@@ -147,6 +148,67 @@ export class ClientByIdComponent implements OnInit {
   CAEsList: EconomicActivityInformation[] = [];
 
   filteredOptions: Observable<CountryInformation[]>;
+
+  //TEMPORARIO!!!!
+  initializeDefaultClient() {
+    this.tempClient = {
+      "fiscalId": "585597928",
+      "companyName": "SILVESTRE LIMITADA",
+      "commercialName": "CAFE CENTRAL",
+      "shortName": "SILVESTRE LDA",
+      "headquartersAddress": {
+        "address": "Rua da Azoia 4",
+        "postalCode": "2625-236",
+        "postalArea": "Povoa de Santa Iria",
+        "locality": "string",
+        "country": "PT"
+      },
+      "merchantType": "COMPANY",
+      "legalNature": "35",
+      "crc": {
+        "code": "0000-0000-0001",
+        "validUntil": "2023-06-29T17:52:08.336Z"
+      },
+      "shareCapital": {
+        "capital": 50000.20,
+        "date": "2028-06-29T17:52:08.336Z"
+      },
+      "byLaws": "O Joao pode assinar tudo, like a boss",
+      "mainEconomicActivity": "90010",
+      "otherEconomicActivities": ["055111"],
+      "mainOfficeAddress": {
+        "address": "Rua da Azoia 4",
+        "postalCode": "2625-236",
+        "postalArea": "Povoa de Santa Iria",
+        "locality": "string",
+        "country": "PT"
+      },
+      "establishmentDate": "2020-03-01T17:52:08.336Z",
+      "knowYourSales": {
+        "estimatedAnualRevenue": 1000000,
+        "averageTransactions": 30000,
+        "servicesOrProductsSold": ["Cafe"],
+        "servicesOrProductsDestinations": ["PT"]
+      },
+      "bankInformation": {
+        "bank": "0033",
+        "branch": "0000",
+        "iban": "PT00333506518874499677629",
+        "accountOpenedAt": "2020-06-29T17:52:08.336Z"
+      },
+      "contacts": {
+        "email": "joao@silvestre.pt",
+        "phone1": {
+          "countryCode": "+351",
+          "phoneNumber": "919654422"
+        }
+      },
+      "documentationDeliveryMethod": "MAIL",
+      "billingEmail": "joao@silvestre.pt"
+    }
+
+  }
+
 
   initializeFormControls() {
     this.form = new FormGroup({
@@ -287,6 +349,8 @@ export class ClientByIdComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state) {
       this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
     }
+
+    this.initializeDefaultClient();
 
     
     //Chamada à API para obter as naturezas juridicas
