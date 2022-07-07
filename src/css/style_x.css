@@ -21,7 +21,7 @@
 }
 
 .subtitulo_barras_horizontais {
-  font-family: 'roboto';
+  font-family: 'roboto' !important;
   font-size: 15px;
   color: #97aae6;
 }
@@ -92,20 +92,17 @@
 }
 
 .widget {
-  font-size: 12px !important;
   margin-bottom: 0px !important;
-  color:
-    /*#d9d9d9*/
-    white !important;
-  font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
-  vertical-align: center !important;
+  color:#d9d9d9 !important;
+  font: 400 12px 'roboto' !important;
+  vertical-align: text-top !important;
 }
 
 .widget img {
   width: 12px;
   text-align: center;
   font: 400 12px 'roboto' !important;
-  vertical-align: text-top;
+  padding-top: 8px !important;
 }
 
 .widget-navbar {
@@ -114,7 +111,7 @@
 }
 
 .widget-toolbar {
-  height: 22px;
+  height: 28px;
   background-color: #767676;
   box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 45%) !important;
   width: auto !important;
@@ -217,11 +214,12 @@
 }
 
 .delete-icon img {
-  width: 50px !important;
+  width: 37px !important;
   padding: 10px;
-  padding-top: 17px !important;
+  padding-top: 14px !important;
   justify-content: center;
   align-items: center;
+  display: inline-block;
 }
 
 
@@ -232,7 +230,7 @@
 }
 
 .edit-icon img {
-  width: 50px !important;
+  width: 37px !important;
   padding: 10px !important;
   justify-content: center;
   align-items: center;
@@ -1106,7 +1104,7 @@ span {}
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0;
   overflow-anchor: none;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease
+  transition: color 0.07s ease-in-out, background-color 0.07s ease-in-out, border-color 0.07s ease-in-out, box-shadow 0.07s ease-in-out, border-radius 0.07s ease
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1243,6 +1241,52 @@ mat-paginator {
 }
 
 .img_warning{
-  width: 217px;
-  color: #f8f9fa;
+  width: 217px !important;
+  color: #f8f9fa !important;
+}
+
+.texto_status {
+    font-family: 'roboto';
+    font-size: 12px;
+    vertical-align: top !important;
+}
+
+.navbar-widget {
+  height: 0px;
+}
+
+.navbar-toggler-logo {
+  font-size: 12px;
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: box-shadow 0.15s ease-in-out;
+  height:17px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-toggler-logo {
+    transition: none
+  }
+}
+
+.navbar-toggler-logo:hover {
+  text-decoration: none
+}
+
+.navbar-toggler-logo:focus {
+  text-decoration: none;
+  outline: 0;
+  box-shadow: 0 0 0 .25rem
+}
+
+.navbar-toggler-icon-logo {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%
 }
