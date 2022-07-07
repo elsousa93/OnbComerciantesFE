@@ -288,22 +288,25 @@ export class ClientByIdComponent implements OnInit {
     }
 
     
-    ////Chamada à API para obter as naturezas juridicas
-    //this.tableInfo.GetAllLegalNatures().subscribe(result => {
-    //  this.legalNatureList = result;
-    //}, error => console.log(error));
+    //Chamada à API para obter as naturezas juridicas
+    this.tableInfo.GetAllLegalNatures().subscribe(result => {
+      this.legalNatureList = result;
+      console.log("JA FOI BUSCAR AS LEGAL NATURES");
+    }, error => console.log(error));
 
-    ////Chamada à API para
-    //this.tableInfo.GetAllCountries().subscribe(result => {
-    //  this.countryList = result;
-    //}, error => console.log(error));
+    //Chamada à API para
+    this.tableInfo.GetAllCountries().subscribe(result => {
+      this.countryList = result;
+      console.log("JA FOI BUSCAR OS PAISES");
+    }, error => console.log(error));
 
-    ////Chamada à API para obter a lista de CAEs
-    //this.tableInfo.GetAllCAEs().subscribe(result => {
-    //  this.CAEsList = result;
-    //});
+    //Chamada à API para obter a lista de CAEs
+    this.tableInfo.GetAllCAEs().subscribe(result => {
+      this.CAEsList = result;
+      console.log("JA FOI BUSCAR OS CAES");
+    });
 
-    //this.createContinentsList();
+    this.createContinentsList();
 
     //Chamada à API para obter a lista de CAEs
     this.tableInfo.GetAllCAEs().subscribe(result => {
@@ -314,6 +317,7 @@ export class ClientByIdComponent implements OnInit {
 
 
     //this.createContinentsList();
+    
   }
 
   ngOnInit(): void {
