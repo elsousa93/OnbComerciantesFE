@@ -423,19 +423,10 @@
       <div class="offset-1 bg-white col-7 col-xxl-10">
         <div class="row">
           <div class="col-xxl col-6">
-            <p class="titulo-form-simples" for="franchiseName"> Nome Franchise:</p>
-            <input required minlength="2" maxlength="100" formControlName="franchiseName" name="franchiseName"
-                   type="text" id="franchiseName" class="form-control campo_form"
-                   [readonly]="clientExists">
-            <div class="alert alert-danger" *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
-              <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
-                O parâmetro acima é obrigatório.
-              </div>
-            </div>
 
-            <p class="titulo-form-simples" for="expectableAnualInvoicing">Fauração Anual Expectável: </p>
+            <p class="titulo-form-simples" for="expectableAnualInvoicing">Faturação Anual Expectável* </p>
             <input required minlength="2" maxlength="100" formControlName="expectableAnualInvoicing"
-                   name="expectableAnualInvoicing" type="text" id="expectableAnualInvoicing"
+                   name="expectableAnualInvoicing" type="number" id="expectableAnualInvoicing"
                    class="form-control campo_form" [readonly]="clientExists">
             <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
               <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
@@ -443,7 +434,7 @@
               </div>
             </div>
 
-            <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados*: </p>
+            <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados* </p>
             <input required minlength="2" maxlength="100" formControlName="services" name="services" type="text"
                    id="services" class="form-control campo_form" [readonly]="clientExists">
             <div class="alert alert-danger" *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
@@ -452,20 +443,16 @@
               </div>
             </div>
 
-            <p class="titulo-form-simples" for="transactionsAverage">Transações Média: </p>
+            <p class="titulo-form-simples" for="transactionsAverage">Transações Média* </p>
             <input required minlength="2" maxlength="100" formControlName="transactionsAverage"
-                   name="transactionsAverage" type="text" id="transactionsAverage" class="form-control campo_form"
+                   name="transactionsAverage" type="number" id="transactionsAverage" class="form-control campo_form"
                    [readonly]="clientExists">
             <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
               <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
                 O parâmetro acima é obrigatório.
               </div>
             </div>
-          </div>
-          <div class="col-xxl col-7">
-            <!--<p class="titulo-form-simples" for="groupNIPC">NIPC do Grupo: </p>
-            <input required minlength="2" maxlength="100" ngModel #groupNIPC="ngModel" name="groupNIPC" type="text"
-              id="groupNIPC" class="form-control campo_form" [(ngModel)]="client.groupNIPC" [readonly]="clientExists">-->
+
 
             <div>
               <p class="titulo-form-simples" for="preferenceDocuments">
@@ -487,116 +474,105 @@
               </div>
             </div>
             <div>
-              <p class="titulo-form-simples" for="preferenceContacts">Selecione como preferia ser contactado:</p>
-              <input required name="preferenceContacts" type="radio" value="chamada"
-                     formControlName="preferenceContacts" id="preferenceContacts">
-              <label class="titulo-form-simples" for="chamada">Chamada</label>&nbsp;&nbsp;
+              <p class="titulo-form-simples" for="">Pretende associar a empresa a Grupo/Franchise existente? </p>
 
+              <input name="associatedWithGroupOrFranchise" type="radio" [value]="true"
+                     formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)">
+              <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">Sim</label> &nbsp;&nbsp;
 
-              <input required name="preferenceContacts" type="radio" value="correio"
-                     formControlName="preferenceContacts" id="preferenceContacts">
-              <label class="titulo-form-simples" for="correio">Correio</label>&nbsp;&nbsp;
+              <input name="associatedWithGroupOrFranchise" type="radio" [value]="false"
+                     formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)">
+              <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">Não</label><br><br>
 
-              <input required name="preferenceContacts" type="radio" value="email"
-                     formControlName="preferenceContacts" id="preferenceContacts">
-              <label class="titulo-form-simples" for="email">Email</label>&nbsp;&nbsp;
+            </div>
 
-              <input required name="preferenceContacts" type="radio" value="SMS"
-                     id="preferenceContacts" formControlName="preferenceContacts">
-              <label class="titulo-form-simples" for="sms">SMS</label>&nbsp;&nbsp;<br><br>
-              <div class="alert alert-danger" *ngIf="this.form.get('preferenceContacts').touched && !this.form.get('preferenceContacts').valid">
-                <div *ngIf="this.form.get('preferenceContacts').errors && this.form.get('preferenceContacts').errors?.['required']">
-                  O parâmetro acima é obrigatório.
+            <div *ngIf="associatedWithGroupOrFranchise">
+
+              <div>
+                <p class="titulo-form-simples" for="franchiseName"> Nome Franchise</p>
+                <input required formControlName="franchiseName" name="franchiseName"
+                       type="text" id="franchiseName" class="form-control campo_form"
+                       [readonly]="clientExists || isAssociatedWithFranchise == false">
+                <div class="alert alert-danger" *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
+                  <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <p class="titulo-form-simples" for="destinationCountries">Países de Destino dos Produtos Serviços*:</p>
-            <div *ngFor="let continent of continentsList">
-              <input #{{continent}}
-                     name="{{continent}}" type="checkbox" id="{{continent}}" (change)="continentSelected($event)">
-              <label for="{{continent}}"> {{continent}} </label>
-            </div>
+              <div>
+                <p class="titulo-form-simples" for="NIPCGroup">NIPC Grupo</p>
 
-            <br>
-
-            <!--<div *ngFor="let continent of checkedContinents">
-              <div *ngFor="let country of Countries">
-                <div *ngIf="country.continent == continent && client.sales.servicesOrProductsDestinations.indexOf(country.country) > -1">
-                  <input #{{country.country}}
-                         name="{{country.country}}" type="checkbox" id="{{country.country}}"
-                         (change)="onCountryChange($event)" checked>
-                  <label for="{{country.country}}" class=""> {{country.country}} </label>-->
-            <!--<input required ngModel #destinationCountries="ngModel"
-                   name="destinationCountries" type="checkbox" id="destinationCountries"
-                   [(ngModel)]="client.sales.servicesOrProductsDestinations" (change)="teste($event)">
-            <label for="destinationCountries" class=""> {{country.country}} </label>-->
-            <!--</div>
-
-              <div *ngIf="country.continent == continent && client.sales.servicesOrProductsDestinations.indexOf(country.country) == -1">
-                <input #{{country.country}}
-                       name="{{country.country}}" type="checkbox" id="{{country.country}}"
-                       (change)="onCountryChange($event)">
-                <label for="{{country.country}}" class=""> {{country.country}} </label>
+                <input required minlength="2" maxlength="100" formControlName="NIPCGroup"
+                       name="NIPCGroup" type="number" id="NIPCGroup" class="form-control campo_form" [readonly]="clientExists || isAssociatedWithFranchise" />
+                <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
+                  <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
+                    O parâmetro acima é obrigatório.
+                  </div>
+                </div>
               </div>
 
-            </div>-->
-            <!-- </div> -->
-            <div *ngIf="client.sales.servicesOrProductsDestinations.length > 0" style="overflow:scroll; height:100px;">
-              <div *ngFor="let value of client.sales.servicesOrProductsDestinations">
-                <input #{{value}}
-                       name="{{value}}" type="checkbox" id="{{value}}"
-                       (change)="onCountryChange($event)" checked>
-                <label for="{{value}}" class=""> {{value}} </label>
-              </div>
             </div>
-
-            <div>
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let country of filteredOptions | async" [value]="country.description">
-                  {{country.description}}
-                </mat-option>
-              </mat-autocomplete>
-
-              <input type="text" class="form-control campo-form"
-                     matInput
-                     id="countryName"
-                     name="countryName"
-                     #countryName
-                     [formControl]="myControl"
-                     [matAutocomplete]="auto"
-                     [(ngModel)]="countryVal">
-              <!--Não tenho a certeza se é necessário ter aqui o ngModel e o formControl-->
-
-
-              <!--<input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">-->
-              <button (click)="addCountryToList(countryName.value)">Adicionar</button>
-
-            </div>
-
-            <!--<input required ngModel #destinationCountries="ngModel"
-                   name="destinationCountries" type="checkbox" id="destinationCountries"
-                   [(ngModel)]="client.sales.servicesOrProductsDestinations">
-            <label for="destinationCountries" class=""> Europa </label>
-
-            <input required ngModel #destinationCountries="ngModel"
-                   name="destinationCountries" type="checkbox" id="destinationCountries"
-                   [(ngModel)]="client.sales.servicesOrProductsDestinations">
-            <label for="destinationCountries" class=""> África </label>
-
-            <input required ngModel #destinationCountries="ngModel"
-                   name="destinationCountries" type="checkbox" id="destinationCountries"
-                   [(ngModel)]="client.sales.servicesOrProductsDestinations">
-            <label for="destinationCountries" class=""> Ásia </label>-->
-            <!--<p *ngFor="let value of Countries">
-              <input  type="checkbox" value={{value.country}} />
-              {{value.country}}
-            </p>-->
-
 
           </div>
+
+          <div class="col-xxl col-7">
+            <p class="titulo-form-simples" for="destinationCountries">Países de Destino dos Produtos Serviços*</p>
+
+            <div class="border border-dark">
+              <div *ngFor="let continent of continentsList">
+                <input #{{continent}}
+                       name="{{continent}}" type="checkbox" id="{{continent}}" (change)="continentSelected($event)">
+                <label for="{{continent}}"> {{continent}} </label>
+              </div>
+
+              <br>
+
+              <div class="border border-primary" style="overflow:scroll; height:200px;">
+                <div *ngFor="let continent of checkedContinents">
+                  <div *ngFor="let country of countryList">
+                    <div *ngIf="country.continent == continent && client.sales.servicesOrProductsDestinations.indexOf(country.description) > -1">
+                      <input #{{country.description}}
+                             name="{{country.description}}" type="checkbox" id="{{country.description}}"
+                             (change)="onCountryChange($event)" checked>
+                      <label for="{{country.description}}" class=""> {{country.description}} </label>
+                    </div>
+                    <div *ngIf="country.continent == continent && client.sales.servicesOrProductsDestinations.indexOf(country.description) == -1">
+                      <input #{{country.description}}
+                             name="{{country.description}}" type="checkbox" id="{{country.description}}"
+                             (change)="onCountryChange($event)">
+                      <label for="{{country.description}}" class=""> {{country.description}} </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let country of filteredOptions | async" [value]="country.description">
+                    {{country.description}}
+                  </mat-option>
+                </mat-autocomplete>
+
+                <input type="text" class="form-control campo-form"
+                       matInput
+                       id="countryName"
+                       name="countryName"
+                       #countryName
+                       [formControl]="myControl"
+                       [matAutocomplete]="auto"
+                       [(ngModel)]="countryVal">
+                <!--Não tenho a certeza se é necessário ter aqui o ngModel e o formControl-->
+                <!--<input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">-->
+                <button (click)="addCountryToList(countryName.value)">Adicionar</button>
+
+              </div>
+
+            </div>
+
+          </div>
+          </div>
         </div>
-      </div>
       <div class="container">
         <div class="row mb-xxl-5">
           <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">

@@ -132,7 +132,7 @@ export class ClientByIdComponent implements OnInit {
   isCompany: boolean;
   Countries = countriesAndContinents;
   Continents = continents;
-  checkedContinents = [];
+  checkedContinents = []; // posso manter esta variavel para os continentes selecionados
   countryVal: string;
 
   //Natureza Juridica N1
@@ -140,12 +140,15 @@ export class ClientByIdComponent implements OnInit {
   //Natureza Juridica N2
   legalNatureList2: SecondLegalNature[] = [];
   //Paises de destino
-  countryList: CountryInformation[] = [];
+  countryList: CountryInformation[] = []; 
   continentsList: string[] = [];
   //CAEs
   CAEsList: EconomicActivityInformation[] = [];
 
-  filteredOptions: Observable<CountryInformation[]>;
+  filteredOptions: Observable<CountryInformation[]>; 
+
+  associatedWithGroupOrFranchise: boolean = false;
+  isAssociatedWithFranchise: boolean;
 
   initializeFormControls() {
     this.form = new FormGroup({
@@ -176,10 +179,13 @@ export class ClientByIdComponent implements OnInit {
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
       CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1].branch),
 
+
+      merchantType: new FormControl(this.client.merchantType),
+      associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
+      NIPCGroup: new FormControl(this.client.businessGroup.fiscalId),
+
     });
-    //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);
-    this.form.updateValueAndValidity();
-    
+    //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);    
 
     this.form.get("CAE1").valueChanges.subscribe(v => {
       if (v !== '') {
@@ -195,7 +201,6 @@ export class ClientByIdComponent implements OnInit {
         //this.form.removeControl('CAE1Branch');
         //this.form.get('CAE1Branch').removeValidators(Validators.required);
         //this.form.get('CAE1Branch').setErrors({ 'required': false });
-        this.form.updateValueAndValidity();
 
         console.log(this.form.get('CAE1Branch').errors);
 
@@ -261,6 +266,21 @@ export class ClientByIdComponent implements OnInit {
     console.log(this.form.get('CAE1Branch').errors);
     console.log(this.form.get('CAE1Branch').errors?.['required']);
 
+    this.form.get("franchiseName").valueChanges.subscribe(v => {
+      if (v !== '') {
+        this.isAssociatedWithFranchise = true;
+      } else {
+        this.isAssociatedWithFranchise = undefined;
+      }
+    })
+
+    this.form.get("NIPCGroup").valueChanges.subscribe(v => {
+      if (v !== null) {
+        this.isAssociatedWithFranchise = false;
+      } else {
+        this.isAssociatedWithFranchise = undefined;
+      }
+    })
   }
 
   getFormValidationErrors() {
@@ -276,7 +296,6 @@ export class ClientByIdComponent implements OnInit {
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
     this.ngOnInit();
-    this.initializeFormControls();
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
       http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
         this.clientExists = true;
@@ -322,6 +341,9 @@ export class ClientByIdComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || '')),
     );
+
+    this.initializeFormControls();
+
   }
 
   obterComprovativos(){
@@ -392,15 +414,16 @@ export class ClientByIdComponent implements OnInit {
 
   createContinentsList() {
     this.countryList.forEach(country => {
-      if (this.Continents.length == 0) {
+      if (this.continentsList.length == 0) {
         this.continentsList.push(country.continent);
       } else {
         if (this.continentsList.indexOf(country.continent) == -1) {
           this.continentsList.push(country.continent);
-        } else {
-          var index = this.continentsList.indexOf(country.continent);
-          this.continentsList.splice(index, 1);
         }
+        // else {
+        //  var index = this.continentsList.indexOf(country.continent);
+        //  this.continentsList.splice(index, 1);
+        //}
       }
     })
   }
@@ -441,6 +464,11 @@ export class ClientByIdComponent implements OnInit {
     //  console.log(c + "|" + this.form.controls[c].invalid);
     //}
 
+    if (this.associatedWithGroupOrFranchise) {
+      this.client.companyName = this.form.value["franchiseName"];
+      this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
+    }
+
     this.route.navigate(["/comprovativos"]);
 
   }
@@ -453,9 +481,17 @@ export class ClientByIdComponent implements OnInit {
     this.route.navigate(["/"]);
   }
 
-  _filter(value: string): CountryInformation[] {
+  _filter(value: string): CountryInformation[] { 
     const filterValue = value.toLowerCase();
 
     return this.countryList.filter(option => option.description.toLowerCase().includes(filterValue));
+  }
+
+  setAssociatedWith(value: boolean) {
+    if (value == true) {
+      this.associatedWithGroupOrFranchise = true;
+    } else {
+      this.associatedWithGroupOrFranchise = false;
+    }
   }
 }
