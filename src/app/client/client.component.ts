@@ -136,6 +136,8 @@ export class ClientComponent implements OnInit {
     "billingEmail": ""
   };
 
+  tipologia: string;
+
   tempClient: any;
 
   @Output() nameEmitter = new EventEmitter<string>();
@@ -303,14 +305,16 @@ export class ClientComponent implements OnInit {
     this.docType = e.target.value;
   }
 
-  obterSelecionado(id: any) {
+  obterSelecionado() {
 
     let navigationExtras: NavigationExtras = {
       state: {
-        isCompany: this.showButtons
+        tipologia: this.tipologia
       }
     };
-    this.route.navigate(['/clientbyid/', id], navigationExtras);
+
+    console.log(navigationExtras.state['isCompany']);
+    this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }
@@ -327,6 +331,8 @@ export class ClientComponent implements OnInit {
       this.showWarning = false;
       this.ccInfo = null;
     }
+
+    this.tipologia = "ENI";
   }
 
   activateButtons(id: boolean) {
@@ -337,6 +343,8 @@ export class ClientComponent implements OnInit {
       this.showButtons = false;
       this.showENI = false;
     }
+
+    this.tipologia = "Company";
   }
 
   aButtons(id: boolean) {

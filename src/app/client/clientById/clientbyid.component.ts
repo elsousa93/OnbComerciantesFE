@@ -28,6 +28,7 @@ export class ClientByIdComponent implements OnInit {
   myControl = new FormControl('');
 
   public clientId: string = "0";
+  
   //client: Client = {} as Client;
   client: Client = {
     "clientId": "",
@@ -129,7 +130,11 @@ export class ClientByIdComponent implements OnInit {
     };
   tempClient: any;
 
+  tipologia: string;
+
   clientExists: boolean = false;
+  crcFound: boolean = false;
+
   isCommercialSociety: boolean;
   isCompany: boolean;
   Countries = countriesAndContinents;
@@ -209,10 +214,9 @@ export class ClientByIdComponent implements OnInit {
 
   }
 
-
   initializeFormControls() {
     this.form = new FormGroup({
-      commercialSociety: new FormControl('', Validators.required),
+      commercialSociety: new FormControl(true, Validators.required),
       franchiseName: new FormControl(this.client.companyName),
       natJuridicaNIFNIPC: new FormControl('', Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.sales.estimatedAnualRevenue, Validators.required),
@@ -240,28 +244,16 @@ export class ClientByIdComponent implements OnInit {
       CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1].branch),
 
     });
+
     //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);
     this.form.updateValueAndValidity();
     
 
     this.form.get("CAE1").valueChanges.subscribe(v => {
       if (v !== '') {
-        console.log("cae1 entrou uhjaskaj ;)");
-        //this.form.addControl('CAE1Branch', new FormControl('', Validators.required));
-        //this.form.get('CAE1Branch').addValidators(Validators.required);
         this.form.updateValueAndValidity();
-        console.log(this.form.get('CAE1Branch').errors);    
-
-
       } else {
-        console.log("nooooo ujakmskjans ;(");
-        //this.form.removeControl('CAE1Branch');
-        //this.form.get('CAE1Branch').removeValidators(Validators.required);
-        //this.form.get('CAE1Branch').setErrors({ 'required': false });
         this.form.updateValueAndValidity();
-
-        console.log(this.form.get('CAE1Branch').errors);
-
       }
     });
 
@@ -279,42 +271,21 @@ export class ClientByIdComponent implements OnInit {
 
     this.form.get("CAESecondary2").valueChanges.subscribe(v => {
       if (v !== '') {
-        //this.form.addControl('CAESecondary2Branch', new FormControl('', Validators.required));
         this.form.get('CAESecondary2Branch').addValidators(Validators.required);
-        
       } else {
-        //this.form.removeControl('CAESecondary2Branch');
-        //this.form.get('CAESecondary2Branch').removeValidators(Validators.required);
         this.form.get('CAESecondary2Branch').setErrors({ 'required': false });
-
-
       }
     });
 
-    //this.form.get("CAESecondary3").valueChanges.subscribe(v => {
-    //  if (v !== '') {
-    //    this.form.addControl('CAESecondary3Branch', new FormControl('', Validators.required));
-    //  } else {
-    //    this.form.removeControl('CAESecondary3Branch');
-    //  }
-    //  console.log("CAESecondary3 hbsdhjbsadoqijwoiqjsms");
-    //});
-
     this.form.get("commercialSociety").valueChanges.subscribe(v => {
       if (v === 'true') {
-        console.log("entrei");
         this.form.get('crcCode').addValidators(Validators.required);
         this.form.get('socialDenomination').setErrors({ 'required': false });
         this.form.get('natJuridicaN1').setErrors({'required': false});
-        console.log(this.form.get('CAE1Branch').errors);
       } else {
-        console.log("false");
         this.form.get('crcCode').setErrors({ 'required': false });
         this.form.get('socialDenomination').setValidators(Validators.required);
-        this.form.get('natJuridicaN1').setValidators([Validators.required]);
-        var a = this.form.get('natJuridicaN1').validator({} as AbstractControl);
-        console.log(a);
-        
+        this.form.get('natJuridicaN1').setValidators([Validators.required]);        
         //this.form.addControl('socialDenomination', new FormControl('', Validators.required));
       //  this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
       }
@@ -347,7 +318,9 @@ export class ClientByIdComponent implements OnInit {
       }, error => console.error(error));
     }
     if (this.route.getCurrentNavigation().extras.state) {
-      this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
+      //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
+      this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
+      console.log(this.tipologia);
     }
 
     this.initializeDefaultClient();
@@ -391,6 +364,7 @@ export class ClientByIdComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || '')),
     );
+
   }
 
   obterComprovativos(){
@@ -474,7 +448,16 @@ export class ClientByIdComponent implements OnInit {
     })
   }
 
+  searchByCRC() {
+    var crcInserted = this.form.get('crcCode').value;
 
+    if (crcInserted === '123') {
+      this.crcFound = true;
+    } else {
+      this.crcFound = false;
+      console.log("nao encontrado");
+    }
+  }
 
   submit() {
     var formValues = this.form.value;

@@ -133,6 +133,8 @@
                 </button>
               </div>
               <br>
+
+              <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="submit" (click)="aButtons(true)">Pesquisar/Adicionar</button>
             </form>
           </div>
         </div>
@@ -200,7 +202,7 @@
           <i class="fas fa-angle-down"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                (click)="obterSelecionado(tempClient.clientId)">
+                (click)="obterSelecionado()">
           AVANÇAR&nbsp;
           <i class="fas fa-angle-right">&nbsp;</i>
         </button>
