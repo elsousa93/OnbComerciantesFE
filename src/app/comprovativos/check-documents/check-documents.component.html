@@ -7,11 +7,15 @@
        
  
  }
+ .headerCustomized{
+    align-items: baseline !important;
+    height: auto;
+ }
 </style>
 <p *ngIf="!compCheckDocs"><em>Loading...</em></p>
-    <div class="modal-content2">
-        <div class="modal-header">
-            <h5 class="modal-title">CHECKLIST DE DOCUMENTOS</h5>
+    <div>
+        <div class="modal-header headerCustomized">
+            CHECKLIST DE DOCUMENTOS
             <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" (click)="onClose()">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -22,25 +26,24 @@
             <p>
             QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?
             </p>
-            
-            <p> Deverão ser associados ao processo de Onboarding os seguintes documentos</p>
-            <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="compCheckDocs" style="size: inherit;">
-            <thead>
-                <tr>
-                <th>Nome</th>
-                <th>Comprovativo de Sociedade</th>
-                <th>Comprovativo BEF</th>
-                <th>Comprovativo Fiscal Pessoa coletiva</th>
-                <th>Comprovativo RCBE</th>
+            <table class='table-responsive' aria-labelledby="tableLabel" *ngIf="compCheckDocs" style="size: inherit;">
+            <thead class="table-primary align-middle">
+                <tr class="align-middle">
+                <th scope="col" class="text-center">Nome</th>
+                <th scope="col" class="text-center">Comprovativo de Sociedade</th>
+                <th scope="col" class="text-center">Comprovativo BEF</th>
+                <th scope="col" class="text-center">Comprovativo Fiscal Pessoa coletiva</th>
+                <th scope="col" class="text-center">Comprovativo do IBAN</th>
+                <th scope="col" class="text-center">Comprovativo RCBE</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let compCDocs of compCheckDocs">
-                <td>{{ compCDocs.nomeEmpresa }}</td>
-                <td>{{ compCDocs.flagComprovativoSociedade }}</td>
-                <td>{{ compCDocs.flagComprovativoBEF }}</td>
-                <td>{{ compCDocs.flagComprovativoFiscal }}</td>
-                <td>{{ compCDocs.flagComprovativoRCBE }}</td>
+                <td class="text-center">{{ compCDocs.nomeEmpresa }}</td>
+                <td class="text-center">{{ compCDocs.flagComprovativoSociedade }}</td>
+                <td class="text-center">{{ compCDocs.flagComprovativoBEF }}</td>
+                <td class="text-center">{{ compCDocs.flagComprovativoFiscal }}</td>
+                <td class="text-center">{{ compCDocs.flagComprovativoRCBE }}</td>
                 </tr>
             </tbody>
             </table>
