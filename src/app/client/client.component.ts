@@ -306,14 +306,15 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado() {
-
+    console.log("aaa");
+    console.log(this.newClient.clientId);
     let navigationExtras: NavigationExtras = {
       state: {
-        tipologia: this.tipologia
+        tipologia: this.tipologia,
+        NIFNIPC: this.newClient.clientId
       }
     };
 
-    console.log(navigationExtras.state['isCompany']);
     this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.

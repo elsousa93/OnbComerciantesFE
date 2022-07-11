@@ -31,22 +31,22 @@ export class ClientByIdComponent implements OnInit {
   
   //client: Client = {} as Client;
   client: Client = {
-    "clientId": "",
-    "fiscalId": "",
-    "observations":"",
-    "companyName": "",
-    "contactName": "",
-    "shortName": "",
+    "clientId": "444",
+    "fiscalId": "444",
+    "observations":"nenhuma",
+    "companyName": "company",
+    "contactName": "manuel",
+    "shortName": "comp",
     "headquartersAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "locality": "",
-      "country": ""
+      "address": "Rua António Rebelo",
+      "postalCode": "2091-205",
+      "postalArea": "UIJKL",
+      "locality": "GTYHUJ",
+      "country": "Portugal"
     },
-    "merchantType": "",
-    "legalNature": "",
-    "legalNature2": "",
+    "merchantType": "yhj",
+    "legalNature": "teste",
+    "legalNature2": "jj",
     "crc": {
         "code": "",
         "validUntil": ""
@@ -57,56 +57,56 @@ export class ClientByIdComponent implements OnInit {
     },
     "bylaws": "",
     "mainEconomicActivity": {
-        "code": "",
+        "code": "3212",
         "branch": ""
     },
     "otherEconomicActivities": [
     {
-    "code": "",
+    "code": "921",
     "branch": ""
     },
     {
-    "code": "",
+    "code": "812",
     "branch": ""
     }
     ],
     "mainOfficeAddress": {
-    "address": "",
-    "postalCode": "",
-    "postalArea": "",
-    "country": ""
+    "address": "jkm",
+    "postalCode": "9102-102",
+    "postalArea": "hnjkds",
+    "country": "Espanha"
     },
-    "establishmentDate": "",
+    "establishmentDate": "28-05-2015",
     "businessGroup": {
-    "type": "",
-    "fiscalId": ""
+    "type": "uyhujk",
+    "fiscalId": "5678"
     },
     "sales": {
-    "estimatedAnualRevenue": 0,
-    "averageTransactions": 0,
+    "estimatedAnualRevenue": 1490,
+    "averageTransactions": 921,
     "servicesOrProductsSold": [
-    "",
+    "neve",
     ""
     ],
     "servicesOrProductsDestinations": [
-    "",
+    "tyhuj",
     ""
     ]
     },
     "foreignFiscalInformation": {
-    "issuerCountry": "",
-    "issuanceIndicator": "",
-    "fiscalId": "",
-    "issuanceReason": ""
+    "issuerCountry": "iijik",
+    "issuanceIndicator": "klklk",
+    "fiscalId": "92182",
+    "issuanceReason": "jklj"
     },
     "bankInformation": {
-    "bank": "",
-    "branch": "",
-    "iban": "",
-    "accountOpenedAt": ""
+    "bank": "kjkj",
+    "branch": "lklkkl",
+    "iban": "lklk",
+    "accountOpenedAt": "09-10-2019"
     },
     "contacts": {
-    "preferredMethod": "",
+    "preferredMethod": "hjnk",
     "preferredPeriod": {
     "startsAt": "",
     "endsAt": ""
@@ -132,10 +132,10 @@ export class ClientByIdComponent implements OnInit {
 
   tipologia: string;
 
-  clientExists: boolean = false;
+  clientExists: boolean = true;
   crcFound: boolean = false;
 
-  isCommercialSociety: boolean;
+  isCommercialSociety: boolean = true;
   isCompany: boolean;
   Countries = countriesAndContinents;
   Continents = continents;
@@ -215,10 +215,12 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeFormControls() {
+    console.log("inicializar form controls");
+    console.log(this.route.getCurrentNavigation().extras.state["NIFNIPC"]);
     this.form = new FormGroup({
       commercialSociety: new FormControl(true, Validators.required),
       franchiseName: new FormControl(this.client.companyName),
-      natJuridicaNIFNIPC: new FormControl('', Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.sales.estimatedAnualRevenue, Validators.required),
       preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
       //Pretende associar a grupo/franchise
@@ -236,8 +238,8 @@ export class ClientByIdComponent implements OnInit {
       country: new FormControl(this.client.mainOfficeAddress.country, Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
       crcCode: new FormControl('', Validators.required),
-      natJuridicaN1: new FormControl(this.client.legalNature),
-      natJuridicaN2: new FormControl(this.client.legalNature2),
+      natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
+      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
       socialDenomination: new FormControl(''),
       CAE1Branch: new FormControl(this.client.mainEconomicActivity.branch),
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
@@ -450,6 +452,8 @@ export class ClientByIdComponent implements OnInit {
 
   searchByCRC() {
     var crcInserted = this.form.get('crcCode').value;
+    console.log(this.form.get('crcCode'));
+    console.log(crcInserted);
 
     if (crcInserted === '123') {
       this.crcFound = true;
@@ -460,6 +464,7 @@ export class ClientByIdComponent implements OnInit {
   }
 
   submit() {
+    console.log("chegou aqui");
     var formValues = this.form.value;
 
     this.client.contacts.preferredMethod = this.form.value["preferenceContacts"];
@@ -487,7 +492,9 @@ export class ClientByIdComponent implements OnInit {
     //Social Denomination
 
 
-    this.client.mainEconomicActivity.branch = this.form.value[""];
+    //this.client.mainEconomicActivity.branch = this.form.value[""];
+
+    console.log(this.client);
     //console.log(this.form.valid);
     //for (const c in this.form.controls) {
     //  console.log(c + "|" + this.form.controls[c].invalid);

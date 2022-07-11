@@ -49,7 +49,7 @@
                   </select>
                   <button id="btn5a2"
                           class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
-                          (click)="getValueSearch(box.value)">
+                          >
                     PESQUISAR
                     <i class="fas fa-search">&nbsp;</i>
                   </button>
@@ -58,7 +58,8 @@
                   <p class="titulo-form-simples ">
                     Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span>
                   </p>
-                  <input id="n-doc" type="text" #box [class]="errorInput">
+                  <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                         #clientId="ngModel" [class]="errorInput">
                 </div>
               </div>
               <div *ngIf="showENI">
