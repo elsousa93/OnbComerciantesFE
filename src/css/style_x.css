@@ -21,7 +21,7 @@
 }
 
 .subtitulo_barras_horizontais {
-  font-family: 'roboto';
+  font-family: 'roboto' !important;
   font-size: 15px;
   color: #97aae6;
 }
@@ -92,20 +92,17 @@
 }
 
 .widget {
-  font-size: 12px !important;
   margin-bottom: 0px !important;
-  color:
-    /*#d9d9d9*/
-    white !important;
-  font: 400 12px Roboto, "Helvetica Neue", sans-serif !important;
-  vertical-align: center !important;
+  color: #d9d9d9 !important;
+  font: 400 12px 'roboto' !important;
+  vertical-align: text-top !important;
 }
 
 .widget img {
   width: 12px;
   text-align: center;
   font: 400 12px 'roboto' !important;
-  vertical-align: text-top;
+  padding-top: 8px !important;
 }
 
 .widget-navbar {
@@ -114,7 +111,7 @@
 }
 
 .widget-toolbar {
-  height: 22px;
+  height: 28px;
   background-color: #767676;
   box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 45%) !important;
   width: auto !important;
@@ -124,6 +121,16 @@
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  z-index: 999;
+}
+
+.teste {
+  height: 75px;
+  position: fixed;
+  background-color: #1e66b0;
+  box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 45%) !important;
+  width: 100% !important;
+  margin-top: -20px;
   z-index: 999;
 }
 
@@ -156,16 +163,6 @@
   padding-bottom: 15px;
 }
 
-.side_menu_texto {
-  color: #525252 !important;
-  font-size: 17px !important;
-  font-weight: 400 !important;
-}
-
-/*.side_menu_texto:hover {
-    color: #adb5bd !important;
-  }*/
-
 .sidenav-container {
   background-color: white;
   margin-top: 75px;
@@ -186,7 +183,8 @@
   width: 100%;
   padding: 0.2rem 2rem;
   font-size: 1rem;
-  color: #212529;
+  color: #fa6e00;
+  /*color: #212529;*/
   text-align: left;
   background-color: transparent;
   border: 0;
@@ -217,11 +215,12 @@
 }
 
 .delete-icon img {
-  width: 50px !important;
+  width: 37px !important;
   padding: 10px;
-  padding-top: 17px !important;
+  padding-top: 14px !important;
   justify-content: center;
   align-items: center;
+  display: inline-block;
 }
 
 
@@ -232,7 +231,7 @@
 }
 
 .edit-icon img {
-  width: 50px !important;
+  width: 37px !important;
   padding: 10px !important;
   justify-content: center;
   align-items: center;
@@ -244,7 +243,11 @@
 }
 
 .sidenav-item:hover {
-  color: #1e66b0 !important;
+  color: #1e66b0 !important; 
+}
+
+.sidenav-item {
+  color: red !important;
 }
 
 .sidenav-button-accordion {
@@ -331,6 +334,17 @@ main {
   flex: 1 0 auto;
 }*/
 
+main {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  margin-top: -70px !important;
+}
+
+.menu-top{
+  margin-top: 70px !important;
+}
+
 .logo_topo {}
 
 @media (min-width: 576px) {
@@ -386,7 +400,7 @@ main {
     color: #fff;
     font-size: 44px;
     margin-left: 10px;
-    margin-right: 10px
+    margin-right: 10px;
   }
 
   .style11 {
@@ -628,16 +642,6 @@ main {
     position: fixed
   }
 
-
-  .icone-menu-secundario.icone-menu-secundario-desactivo {
-    color: #4b8fd6
-  }
-
-  .icone-menu-secundario-inactivo {
-    color: #4b8fd6;
-    font-size: 24px;
-    padding-top: 0px
-  }
 
   .style12 {
     position: absolute;
@@ -899,16 +903,15 @@ span {}
   color: #0dcaf0
 }
 
-.side_menu_texto {}
-
-.side_menu_texto:hover {
-  color: #fff
+.side_menu_texto {
+  color: #525252 !important;
+  font-size: 17px !important;
+  font-weight: 400 !important;
 }
 
-.fundo_expand {}
-
-#btn1 {}
-
+.side_menu_texto:hover {
+  color: red
+}
 
 .table1 {
   --bs-table-bg: rgba(0, 0, 0, 0);
@@ -1106,7 +1109,7 @@ span {}
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0;
   overflow-anchor: none;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease
+  transition: color 0.07s ease-in-out, background-color 0.07s ease-in-out, border-color 0.07s ease-in-out, box-shadow 0.07s ease-in-out, border-radius 0.07s ease
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1167,7 +1170,9 @@ mat-cell {
 }
 
 
-mat-cell:last-of-type, mat-header-cell:last-of-type, mat-footer-cell:last-of-type {
+mat-cell:last-of-type,
+mat-header-cell:last-of-type,
+mat-footer-cell:last-of-type {
   padding-right: 0px !important;
 
 }
@@ -1242,7 +1247,79 @@ mat-paginator {
   border-bottom-right-radius: 4px;
 }
 
-.img_warning{
-  width: 217px;
-  color: #f8f9fa;
+.img_warning {
+  width: 217px !important;
+  color: #f8f9fa !important;
+}
+
+.texto_status {
+  font-family: 'roboto';
+  font-size: 12px;
+  vertical-align: top !important;
+}
+
+.navbar-widget {
+  height: 0px;
+}
+
+.navbar-toggler-logo {
+  font-size: 12px;
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: box-shadow 0.15s ease-in-out;
+  height: 17px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-toggler-logo {
+    transition: none
+  }
+}
+
+.navbar-toggler-logo:hover {
+  text-decoration: none
+}
+
+.navbar-toggler-logo:focus {
+  text-decoration: none;
+  outline: 0;
+  box-shadow: 0 0 0 .25rem
+}
+
+.navbar-toggler-icon-logo {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%
+}
+
+.texto-menu-secundario {
+  padding-top: 8px;
+  padding-bottom: 10px
+}
+
+.icone-menu-secundario {
+  color: #fff !important;
+  font-size: 51px !important;
+  margin-top: 17px !important;
+  height: 10px !important;
+}
+
+.icone-menu-secundario.icone-menu-secundario-desactivo {
+  color: #4b8fd6
+}
+
+.icone-menu-secundario-inactivo {
+  color: #4b8fd6;
+  font-size: 20px;
+  padding-top: 0px
+}
+
+.conteudo{
+  padding-top: 130px !important;
 }

@@ -1,68 +1,53 @@
-<div class="container" style="overflow-y:auto;">
-    <div class="row pt-0">
-        <div class="col">
-            <div class="row align-items-center">
-            </div>
-            <div class="row mt-0 bg-white">
-                <div class="offset-1 col-10">
-                    <div class="row bg-white">
-                        <img src="assets/images/pipe.JPG" height="5"> <!--path changed-->
-                    </div>
-                </div>
-            </div>
-            <div class="row bg-primary">
-                <div class="offset-1 col-10 bg-primary">
-                    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item text-xxl-center text-lg-center text-center align-self-start">
-                                <!--i class="fas fa-circle icone-menu-secundario"></i>
-                                <i class="far fa-check-circle icone-menu-secundario"></i-->
-                                    <i class="far fa-check-circle icone-menu-secundario"></i>
-                                <a class="nav-link active text-white  texto-menu-secundario" aria-current="page" role="button" data-bs-toggle="button">CLIENTE EMPRESA</a>
-                            </li>
-                            <li class="nav-item align-self-xxl-center">
-                                <i class="fas fa-angle-right seta_direita"></i>
-                            </li>
-                            <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3">
-                                <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                                <a class="nav-link texto-menu-secundario text-success" aria-current="page" role="button" (click)="goToComprovativos()">COMPROVATIVOS</a>
-                            </li>
-                            <li class="nav-item align-self-xxl-center">
-                                <i class="fas fa-angle-right seta_direita"></i>
+<div class="d-flex justify-content-around shadow-none justify-content-center me-0 mb-0 pt-0 pb-0 ps-0 pe-0">
+    <mat-toolbar class="row teste me-0 mb-0 pt-0 pb-0 ps-0 pe-0"
+        [@AutoHideSidenavAdjustBarraTopo]="isAutohideBarra ? 'up' : 'down'">
+        <nav
+            class="navbar navbar-light bg-primary justify-content-around navbar-expand pt-0 pb-0 shadow-none justify-content-center">
+            <ul class="navbar-nav mb-2 mb-lg-0 justify-content-around flex-wrap align-content-around shadow-none">
+                <li class="nav-item text-center text-lg-center text-center align-self-start mt-4">
+                    <img src="assets/images/circle-solid.svg" class="icone-menu-secundario" style="height: 25px !important;"><a
+                        class="nav-link active text-white  texto-menu-secundario" aria-current="page" [routerLink]="['/client']"
+                        data-bs-toggle="button">COMERCIANTE</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item text-center align-self-start align-self-center mt-5">
+                    <img src="assets/images/circle-regular.svg" class="icone-menu-secundario-inactivo" style="height: 25px !important;"><a
+                        class="nav-link texto-menu-secundario text-success" [routerLink]="['/comprovativos']">COMPROVATIVOS</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <img src="assets/images/angle-right-solid.svg" class="seta_direita"  style="height: 30px !important;">
+                </li>
+                <li class="nav-item text-center align-self-start align-self-center mt-5">
+                    <img src="assets/images/circle-regular.svg" style="height: 25px !important;"><a
+                        class="nav-link texto-menu-secundario text-success" [routerLink]="['/stakeholders']">INTERVENIENTES</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item text-center align-self-start align-self-center mt-5">
+                    <img src="assets/images/circle-regular.svg" style="height: 25px !important;"><a
+                        class="nav-link texto-menu-secundario text-success" href="#">LOJAS</a>
+                </li>
+                <li class="nav-item align-self-center">
 
-                            </li>
-                            <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3">
-                                <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                                <a class="nav-link texto-menu-secundario text-success" aria-current="page" role="button" (click)="goToStakeholders()">INTERVENIENTES</a>
-                            </li>
-                            <li class="nav-item align-self-xxl-center">
-                                <i class="fas fa-angle-right seta_direita"></i>
-                            </li>
-                            <!--li class="nav-item text-center align-self-start text-xxl-center text-md-center">
-                                <i class="fas fa-circle icone-menu-secundario-inactivo"></i>
-                                <a class="nav-link texto-menu-secundario text-success" href="#">LOJAS</a>
-                            </li-->
-                            <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3">
-                                <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                                <a class="nav-link texto-menu-secundario text-success" aria-current="page" role="button" (click)="goToStores()">LOJAS</a>
-                            </li>
-                            <li class="nav-item align-self-xxl-center">
-                                <i class="fas fa-angle-right seta_direita"></i>
-                            </li>
-                            <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3">
-                                <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                                <a class="nav-link texto-menu-secundario text-success" aria-current="page" role="button" (click)="goToComercialOffer()">OFERTA COMERCIAL</a>
-                            </li>
-                            <li class="nav-item align-self-xxl-center">
-                                <i class="fas fa-angle-right seta_direita"></i>
-                            </li>
-                            <li class="nav-item text-center align-self-start align-self-xxl-center mt-xxl-3">
-                                <i class="far fa-circle icone-menu-secundario-inactivo"></i>
-                                <a class="nav-link texto-menu-secundario text-success" aria-current="page" role="button" (click)="goToInfoDeclarativa()">INFO DECLARATIVA</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item text-center align-self-start align-self-center  mt-5">
+                    <img src="assets/images/circle-regular.svg" style="height: 25px !important;"><a
+                        class="nav-link texto-menu-secundario text-success" href="#">OFERTA COMERCIAL</a>
+                </li>
+                <li class="nav-item align-self-center">
+
+                    <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item text-center align-self-start align-self-center  mt-5">
+                    <img src="assets/images/circle-regular.svg" style="height: 25px !important;"><a
+                        class="nav-link texto-menu-secundario text-success" href="#">INFO DECLARATIVA</a>
+                </li>
+            </ul>
+        </nav>
+
+    </mat-toolbar>
+</div>

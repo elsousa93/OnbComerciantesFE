@@ -1,44 +1,42 @@
 <mat-toolbar class="row justify-content-around widget-toolbar me-0"
   [@AutoHideClientBarAdjust]="isAutohide ? 'up' : 'down'">
-
   <div class="col pb-0 pt-0">
-    <nav class="navbar navbar-expand-lg justify-content-center widget_barra pb-0 pt-0">
-      <span class="navbar-text text-light ps-3">
-        <a href="index.html">
-          <img src="assets/images/logo_unicre_widget.svg" class="align-baseline" height="15"
-            [@AutoHideLogo]="isAutohide ? 'show' : 'hide'">
-        </a>
-      </span>
-      <span class="navbar-text text-light ms-auto ps-3">
+    <nav class="navbar navbar-expand navbar-widget justify-content-center pb-0 pt-0">
+      <a href="index.html">
+        <img src="assets/images/logo_unicre_widget.svg" class="navbar-toggler-logo"
+          [@AutoHideLogo]="isAutohide ? 'show' : 'hide'">
+      </a>
+      <div class="navbar-nav ms-auto">
+        <h5 class="widget img"><img src="assets/images/user-solid.svg"></h5>
+        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2"
+          href="#">&nbsp;João Costa Teles</a>
 
-        <p class="widget"><img src="assets/images/user-solid.svg">&nbsp; JOÃO COSTA TELES</p>
-      </span>
-      <span class="navbar-text text-light ps-0">
+        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2"
+          href="#">|&nbsp;&nbsp;</a>
 
-        <h5 class="widget text-success">&nbsp;&nbsp;&nbsp; |</h5>
-      </span>
-      <span class="navbar-text text-light ps-3">
+        <h5 class="widget img"><img src="assets/images/building-columns-solid.svg"></h5>
+        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2"
+          href="#">&nbsp;Novo Banco</a>
 
-        <h5 class="widget"><img src="assets/images/building-columns-solid.svg">&nbsp; NOVO BANCO</h5>
-      </span><span class="navbar-text text-light ps-0">
+        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2"
+          href="#">|&nbsp;&nbsp;</a>
 
-        <h5 class="widget text-success">&nbsp;&nbsp;&nbsp; |</h5>
-      </span><span class="navbar-text text-light ps-3">
+        <h5 class="widget img"><img src="assets/images/thumbtack-solid.svg"></h5>
+        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2"
+          href="#">&nbsp;Praça de Londres</a>
 
-        <h5 class="widget"><img src="assets/images/thumbtack-solid.svg">&nbsp; PRAÇA DE LONDRES</h5>
-      </span>
-      <span class="navbar-text text-light ps-0">
+        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2"
+          href="#">|&nbsp;&nbsp;</a>
 
-        <h5 class="widget text-success">&nbsp;&nbsp;&nbsp; |</h5>
-      </span>
-
-      <span class="navbar-text text-light ps-3">
-
-        <h5 class="widget"><img src="assets/images/calendar-days-solid.svg">&nbsp; 02/08/2022 - 14:44:28&nbsp;</h5>
-      </span>
+        <h5 class="widget img"><img src="assets/images/calendar-days-solid.svg"></h5>
+        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2"
+          href="#">&nbsp;08/08/2022 10:28</a>
+      </div>
     </nav>
   </div>
+
 </mat-toolbar>
+
 
 <header class="bg-dark fixed-top" [@AutoHideNavbarAdjust]="isAutohide ? 'hide' : 'show'">
   <div class="container-fluid">
