@@ -33,8 +33,8 @@
                     </option>
                   </select>
                   <button id="btn5a2"
-                          class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
-                          (click)="getValueSearch(box.value)">
+                          class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
+                          >
                     PESQUISAR
                     <i class="fas fa-search">&nbsp;</i>
                   </button>
@@ -43,7 +43,8 @@
                   <p class="titulo-form-simples ">
                     Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span>
                   </p>
-                  <input id="n-doc" type="text" #box [class]="errorInput">
+                  <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                         #clientId="ngModel" [class]="errorInput">
                 </div>
               </div>
               <div *ngIf="showENI">
@@ -118,6 +119,8 @@
                 </button>
               </div>
               <br>
+
+              <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="submit" (click)="aButtons(true)">Pesquisar/Adicionar</button>
             </form>
           </div>
         </div>
@@ -182,7 +185,7 @@
           <i class="fas fa-angle-down"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                (click)="obterSelecionado(newClient.clientId)">
+                (click)="obterSelecionado()">
           AVANÇAR&nbsp;
           <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
         </button>
