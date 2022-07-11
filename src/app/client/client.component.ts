@@ -285,13 +285,14 @@ export class ClientComponent implements OnInit {
   }
 
   createNewClient() {
-    this.http.post(this.baseUrl + 'BEClients/GetLastId/', this.newClient).subscribe(result => {
-      console.log(result);
-      if (result != null) {
-        this.newId = result;
+    //Funcao para ir buscar o numero do ultimo cliente e incrementar
+   // this.http.post(this.baseUrl + 'BEClients/GetLastId/', this.newClient).subscribe(result => {
+   //   console.log(result);
+    // if (result != null) {
+     //   this.newId = result;
         this.route.navigate(['/app-new-client/', this.newId]);
-      }
-    }, error => console.error(error));
+     // }
+    //}, error => console.error(error));
 
   }
 
@@ -300,6 +301,8 @@ export class ClientComponent implements OnInit {
   }
 
   newSearch() {
-    location.reload();
+   // location.reload();
+
+  this.route.navigate(['/client'])
   }
 }
