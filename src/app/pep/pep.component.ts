@@ -180,6 +180,8 @@ export class PepComponent implements OnInit {
         console.log("Enviado Pep");
         console.log(result);
       }, error => console.error(error));
+
+    this.route.navigate(['/info-declarativa-lojas']);
   }
 
   //Altera os valores das variaveis de acordo com o que é selecionado em cada checkbox

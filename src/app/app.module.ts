@@ -57,6 +57,7 @@ import { StakeholderService } from './stakeholders/stakeholder.service';
 import { NumberCounterComponent } from './number-counter/number-counter.component';
 import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
 import { TableInfoService } from './table-info/table-info.service';
+import { InfoDeclarativaLojasComponent } from './client/info-declarativa/info-declarativa-lojas/info-declarativa-lojas.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -105,7 +106,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SidenavPresencialComponent,
     InfoDeclarativaAssinaturaComponent,
 
-    NumberCounterComponent
+    NumberCounterComponent,
+      InfoDeclarativaLojasComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -161,7 +163,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'submission', component: SubmissionComponent },
       { path: 'acceptance/:submissionID', component: AcceptanceComponent },
       { path: 'process', component: ProcessComponent },
-      { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent }
+      { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent },
+      { path: 'info-declarativa-lojas', component: InfoDeclarativaLojasComponent }
       
     ]),
     TranslateModule.forRoot({

@@ -2,6 +2,7 @@
 
 <button class="btn" routerLink="/info-declarativa">Comerciante</button>
 <button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+<button class="btn" routerLink="/info-declarativa-lojas">Lojas</button>
 <button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
 
 
@@ -47,7 +48,7 @@
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary align-middle text-center"></tr>
       <tr mat-row
-          (click)="clickRow(row.fiscalId)"
+          (click)="clickRow(row)"
           *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]"
@@ -58,7 +59,7 @@
 </div>
 
 
-<p><strong>Contactos</strong></p>
+<p><strong>Contactos*</strong></p>
 <p>Preencha pelo menos 1 contacto</p>
 
 
@@ -78,7 +79,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="phoneStakeholder">Telefone:</label>
+      <label for="phoneStakeholder">Telefone*</label>
       <input #phoneNumber formControlName="phoneNumber" name="phoneStakeholder" type="text" id="phoneStakeholder" class="form-control">
 
       <div class="alert alert-danger" *ngIf="phoneNumber.touched && !phoneNumber.valid || countryCode.value && !phoneNumber.value">
@@ -87,7 +88,7 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="emailStakeholder">Email:</label>
+    <label for="emailStakeholder">Email*</label>
     <input required formControlName="email" name="email" type="text" id="email" class="form-control">
   </div>
 </form>
