@@ -6,7 +6,7 @@
             <ul class="navbar-nav mb-2 mb-lg-0 justify-content-around flex-wrap align-content-around shadow-none">
                 <li class="nav-item text-center text-lg-center text-center align-self-start mt-4">
                     <img src="assets/images/circle-solid.svg" class="icone-menu-secundario" style="height: 25px !important;"><a
-                        class="nav-link active text-white  texto-menu-secundario" aria-current="page" href="#"
+                        class="nav-link active text-white  texto-menu-secundario" aria-current="page" [routerLink]="['/client']"
                         data-bs-toggle="button">COMERCIANTE</a>
                 </li>
                 <li class="nav-item align-self-center">
@@ -14,14 +14,14 @@
                 </li>
                 <li class="nav-item text-center align-self-start align-self-center mt-5">
                     <img src="assets/images/circle-regular.svg" class="icone-menu-secundario-inactivo" style="height: 25px !important;"><a
-                        class="nav-link texto-menu-secundario text-success" href="#">COMPROVATIVOS</a>
+                        class="nav-link texto-menu-secundario text-success" [routerLink]="['/comprovativos']">COMPROVATIVOS</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg" class="seta_direita"  style="height: 30px !important;">
                 </li>
                 <li class="nav-item text-center align-self-start align-self-center mt-5">
                     <img src="assets/images/circle-regular.svg" style="height: 25px !important;"><a
-                        class="nav-link texto-menu-secundario text-success" href="#">INTERVENIENTES</a>
+                        class="nav-link texto-menu-secundario text-success" [routerLink]="['/stakeholders']">INTERVENIENTES</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
