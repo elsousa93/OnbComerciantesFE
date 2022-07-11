@@ -1,4 +1,4 @@
-import { ViewChild } from '@angular/core';
+import { EventEmitter, Output, ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { ViewChildren } from '@angular/core';
@@ -6,17 +6,17 @@ import { ViewChildren } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from './data.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
+import { Router } from '@angular/router';
+import { AutoHideSidenavAdjustBarraTopo } from '../animation';
 
 
 @Component({
   selector: 'app-nav-menu-interna',
   templateUrl: './nav-menu-interna.component.html',
-  styleUrls: ['./nav-menu-interna.component.css']
+  styleUrls: ['./nav-menu-interna.component.css'],
+  animations: [AutoHideSidenavAdjustBarraTopo]
 })
 export class NavMenuInternaComponent implements OnInit {
-
   boss1: string;
   intervenientes: string;
   lojas: string;
@@ -25,11 +25,10 @@ export class NavMenuInternaComponent implements OnInit {
   sub: any;
   name: any;
 
-  @ViewChildren('myItem') item;
+  @Input() isAutohideBarra: boolean = false;
+  @Output() autoHide = new EventEmitter<boolean>();
 
-  //map para saber o estado que deve ser mostrado em cada uma das páginas (undefined -> se a página ainda não foi visitada)
-  //(false -> se foi visitada, mas o seguimento da página não foi seguido, ou seja, os campos não foram todos preenchidos): ainda n está completo
-  //(true -> se foi visitada e todos os campos necessários foram preenchidos): ainda não está completo porque ainda n se sabe quais os forms que serão usados
+  @ViewChildren('myItem') item;
   public map: Map<number, boolean>;
 
   //o numero da pagina atual em que estamos
@@ -42,12 +41,19 @@ export class NavMenuInternaComponent implements OnInit {
 
   public startedEditing: boolean; //preciso de ter associado a página
 
+  prevScrollpos:number = window.pageYOffset;
+
   constructor(private data: DataService, private route: Router) {
   }
 
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+
+    var prevScrollpos = window.pageYOffset;
+    
+    window.addEventListener("scroll", this.autohide.bind(this), false);
+
     console.log(this.map);
   }
 
@@ -95,8 +101,7 @@ export class NavMenuInternaComponent implements OnInit {
     alert(this.item.name);
   }
 
-
-//Redirecionar para as páginas - contemplar sessão
+  //Redirecionar para as páginas - contemplar sessão
   goToStakeholders() {
     this.route.navigate(['stakeholders/']);
   }
@@ -113,78 +118,17 @@ export class NavMenuInternaComponent implements OnInit {
     this.route.navigate(['app-commercial-offer-list']);
   }
 
-  /*onClick(e :any) {
-   
-    console.log(e);
-    if(e != null){
-      //this.someInput.nativeElement.class = 'Whale!';
-      switch (e) {
-        case "COMERCIANTE":
-          this.comerciante = 'fas fa-circle icone-menu-secundario';
-          this.comprovativos = 'far fa-circle icone-menu-secundario-inactivo';
-          this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
-          this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
-          this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
-          this.info = 'far fa-circle icone-menu-secundario-inactivo';
-          break;
-  
-        case "COMPROVATIVOS":
-          this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
-          this.comprovativos = 'fas fa-circle icone-menu-secundario';
-          this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
-          this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
-          this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
-          this.info = 'far fa-circle icone-menu-secundario-inactivo';
-          break;
-  
-        case "INTERVENIENTES":
-          this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
-          this.comprovativos = 'far fa-circle icone-menu-secundario-inactivo';
-          this.intervenientes = 'fas fa-circle icone-menu-secundario';
-          this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
-          this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
-          this.info = 'far fa-circle icone-menu-secundario-inactivo';
-          break;
-  
-        case "LOJAS":
-          this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
-          this.comprovativos = 'far fa-circle icone-menu-secundario-inactivo';
-          this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
-          this.lojas = 'fas fa-circle icone-menu-secundario';
-          this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
-          this.info = 'far fa-circle icone-menu-secundario-inactivo';
-          break;
-  
-        case "OFERTA COMERCIAL":
-          this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
-          this.comprovativos = 'far fa-circle icone-menu-secundario-inactivo';
-          this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
-          this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
-          this.oferta = 'fas fa-circle icone-menu-secundario';
-          this.info = 'far fa-circle icone-menu-secundario-inactivo';
-          break;
-  
-        case "INFO DECLARATIVA":
-          this.comerciante = 'far fa-circle icone-menu-secundario-inactivo';
-          this.comprovativos = 'far fa-circle icone-menu-secundario-inactivo';
-          this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
-          this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
-          this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
-          this.info = 'fas fa-circle icone-menu-secundario';
-          break;
-  
-      }
-    }else{
-        this.comerciante = 'fas fa-circle icone-menu-secundario';
-        this.comprovativos = 'far fa-circle icone-menu-secundario-inactivo';
-        this.intervenientes = 'far fa-circle icone-menu-secundario-inactivo';
-        this.lojas = 'far fa-circle icone-menu-secundario-inactivo';
-        this.oferta = 'far fa-circle icone-menu-secundario-inactivo';
-        this.info = 'far fa-circle icone-menu-secundario-inactivo';
-      
 
+  public autohide() {
+    var currentScrollPos = window.pageYOffset;
+    if (this.prevScrollpos > currentScrollPos) {
+      this.autoHide.emit(false);
+      this.isAutohideBarra = false;
+    } else {
+      this.autoHide.emit(true);
+      this.isAutohideBarra = true;
     }
+    this.prevScrollpos = currentScrollPos;
   }
-  */
 }
 

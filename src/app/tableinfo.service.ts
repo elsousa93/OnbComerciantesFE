@@ -12,7 +12,8 @@ export class TableinfoService {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private data: DataService,
+    private baseUrl: string, private route: Router,
+    private data: DataService,
     private fb: FormBuilder) {   }
 
 // To get: /api/country

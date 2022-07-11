@@ -66,6 +66,21 @@ export const AutoHideSidenavAdjust = trigger('AutoHideSidenavAdjust', [
   transition('down => up', animate('400ms ease-in-out')),
 ]);
 
+export const AutoHideSidenavAdjustBarraTopo = trigger('AutoHideSidenavAdjustBarraTopo', [
+  state('up',
+    style({
+      'top': '40px'
+    })
+  ),
+  state('down',
+    style({
+      'top': '100px'
+    })
+  ),
+  transition('up => down', animate('400ms ease-in-out')),
+  transition('down => up', animate('400ms ease-in-out')),
+]);
+
 export const AutoHideLogo = trigger('AutoHideLogo', [
   state('show',
     style({

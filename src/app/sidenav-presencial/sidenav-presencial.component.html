@@ -5,16 +5,16 @@
       <div class="accordion" id="accordion">
         <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button" href="index.html">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
+            <span class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/home.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Início &nbsp;
-            </p>
+            </span>
           </a>
         </div>
         <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button" [routerLink]="['/client']" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/folder_open.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Abertura de processo &nbsp;
+                class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Abertura de Processo &nbsp;
             </p>
           </a>
         </div>
@@ -128,7 +128,7 @@
           <a role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/search.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Consultas&nbsp;
+                class="material-symbols-rounded fa-lg icons-sidenav ">&nbsp;Consultas&nbsp;
             </p>
           </a>
         </div>
@@ -141,6 +141,7 @@
         </div>
       </div>
     </mat-nav-list>
+
   </mat-sidenav>
   <mat-sidenav-content class="animation-sidenav-content" style="padding-bottom:800px">
     <router-outlet></router-outlet>
