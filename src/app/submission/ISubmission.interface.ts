@@ -1,4 +1,3 @@
-//import * as internal from "stream"
 import { Client } from "../client/Client.interface"
 import { IStakeholders } from "../stakeholders/IStakeholders.interface"
 

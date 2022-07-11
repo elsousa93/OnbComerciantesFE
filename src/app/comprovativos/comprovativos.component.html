@@ -1,7 +1,9 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <br>
+<br><br>
 <br>
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="comprovativos">
+<h2 class="mt-5 text-primary">Comprovativos</h2>
+<table class='table table-striped conteudo' aria-labelledby="tableLabel" *ngIf="comprovativos">
   <thead>
     <tr>
       <th>Tipo</th>
@@ -9,7 +11,6 @@
       <th>Data Validade</th>
       <th>Data Entrega</th>
       <th>Status</th>
-      <th>Denominação Social</th>
       <th></th>
     </tr>
   </thead>
@@ -41,6 +42,14 @@
       de Documentos >>>
     </a>
   </div>
+<br>
+  <div class="col-xxl">
+    <p class="titulo-form-simples ">
+      Observações: &nbsp;&nbsp;&nbsp;&nbsp;
+    </p>
+    <input id="obs" type="text" #box >
+  </div>
+
   <div style="text-align: right;">
     <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
     <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,comprovativos)" style="display: none"
@@ -48,6 +57,12 @@
   </div>
 </div>
 
+<input type="checkbox" id="validate" name="validate" value="validateClient">
+  <label for="validate">Validou que os documentos necessários foram efetivamente os carregados?
+  </label><br>
+<input type="checkbox" id="clientPresence" name="clientPresence" value="clientPresence">
+  <label for="clientPresence">Na presença do cliente?
+  </label><br>
 <ng-template #deleteModal>
   <div style="margin: auto;width: 50%;padding: 10px;text-align: center;">
     <p>Tem certeza que deseja excluir?</p>
@@ -58,8 +73,19 @@
 
 
 <div>
+  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+  [routerLink]="['/']">
+  Sair&nbsp;
+</button>
+<button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
+  Cancelar&nbsp;
+</button>
+<button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+[routerLink]="['/client']">
+  Voltar&nbsp;
+</button>
 <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
         (click)="obterStakeholders()">
-  AVANÇAR&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
+  Submeter Pedido&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
 </button>
 </div>

@@ -1,27 +1,12 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<div class="container">
-  <div class="row mb-xxl-5 mt-3">
-    <!--<div class="offset-1 bg-white col-7 col-xxl-8">
+<div class="container-fluid conteudo me-0 mb-0 pt-0 pb-0 ps-0 pe-0">
+  <div class="row mb-5 mt-3">
+    <div class="offset-1 bg-white col-7 col-8">
       <span class="mt-4 mb-4">
         <h2 class="mt-4 text-primary">Qual a tipologia do Comerciante?*</h2>
       </span>
-      <p class="mt-2">Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.</p>
     </div>
-    <div class="col-3 col-xxl-2 mt-4 mb-4">
-      <circular-progress [percentage]="10"></circular-progress>
-    </div>-->
-    <!--<fase-title
-                title="Qual a tipologia do Comerciante?*"
-                description="Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat."
-                percentage=10>
-    </fase-title>-->
-
-    <div class="offset-1 bg-white col-7 col-xxl-10">
-      <p class="titulo-form-simples">Qual a tipologia do cliente empresa?*</p>
+    <div class="offset-1 bg-white col-7 col-10">
       <div class="form-check">
         <p></p>
         <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
@@ -39,7 +24,7 @@
           <div class="row">
             <form>
               <div class="row" *ngIf="showENI == false">
-                <div class="col-xxl col-xxl-6">
+                <div class="col-xxl col-6">
                   <p class="titulo-form-simples">Tipo de Documento:*</p>
                   <select class="form-select campo-form-select" id="docType"
                           [(ngModel)]="newClient.documentationDeliveryMethod">
@@ -49,7 +34,7 @@
                   </select>
                   <button id="btn5a2"
                           class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
-                          (click)="getValueSearch(box.value)">
+                          >
                     PESQUISAR
                     <i class="fas fa-search">&nbsp;</i>
                   </button>
@@ -58,12 +43,13 @@
                   <p class="titulo-form-simples ">
                     Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span>
                   </p>
-                  <input id="n-doc" type="text" #box [class]="errorInput">
+                  <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                         #clientId="ngModel" [class]="errorInput">
                 </div>
               </div>
               <div *ngIf="showENI">
                 <div class="row">
-                  <div class="col-xxl col-xxl-6">
+                  <div class="col-xxl col-6">
                     <p class="titulo-form-simples">Tipo de Documento:*</p>
                     <select class="form-select campo-form-select" id="docType"
                             [(ngModel)]="newClient.documentationDeliveryMethod">
@@ -126,20 +112,22 @@
                   </div>
                 </div>
                 <button id="btn5a2"
-                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-xxl-5 ms-xxl-0"
+                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
                         (click)="getValueENI()">
                   Ler Cartão Cidadão
                   <i class="fas fa-search">&nbsp;</i>
                 </button>
               </div>
               <br>
+
+              <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="submit" (click)="aButtons(true)">Pesquisar/Adicionar</button>
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="offset-xxl-1 col-xxl-10" *ngIf="showWarning == true">
+  <div class="offset-1 col-10" *ngIf="showWarning == true">
     <div class="table-responsive">
       <form #contactForm="ngForm">
         <table class="table">
@@ -148,7 +136,6 @@
               <th scope="col" class="text-center"></th>
               <th scope="col" class="text-center align-middle">ID Interno</th>
               <th scope="col" class="text-center">Nº de Cliente</th>
-              <!--<th scope="col" class="text-center">Tipo de Doumento</th>-->
               <th scope="col" class="text-center">Morada</th>
               <th scope="col" class="text-center">Código Postal</th>
               <th scope="col" class="text-center">Localidade</th>
@@ -167,8 +154,6 @@
               <td class="text-center">{{newClient.headquartersAddress.postalCode}}</td>
               <td class="text-center">{{newClient.headquartersAddress.locality}}</td>
               <td class="text-center">{{newClient.headquartersAddress.country}}</td>
-              <!--<td class="text-center">{{newClient.documentationDeliveryMethod}}</td>-->
-              <!--<td class="text-center">{{newClient.docNr}}</td>-->
             </tr>
           </tbody>
         </table>
@@ -177,14 +162,14 @@
   </div>
   <div class="container" *ngIf="hasNewClient == false">
     <div class="row" id="divshow" text="red">
-      <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
+      <div class="col-xxl offset-1 col-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
                 (click)="newSearch()">
           NOVA PESQUISA&nbsp;
           <i class="fas fa-search"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                (click)="createNewClient()">
+                [routerLink]="['/clientbyid/']">
           NOVO COMERCIANTE&nbsp;
           <i class="far fa-user">&nbsp;</i>
         </button>
@@ -193,20 +178,18 @@
   </div>
   <div class="container" *ngIf="showSeguinte == true">
     <div class="row">
-      <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
+      <div class="col-xxl offset-1 col-5 offset-1 col-10 mb-5">
         <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
                 (click)="close()">
           SAIR&nbsp;
           <i class="fas fa-angle-down"></i>
         </button>
         <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                (click)="obterSelecionado(newClient.clientId)">
+                (click)="obterSelecionado()">
           AVANÇAR&nbsp;
-          <i class="fas fa-angle-right">&nbsp;</i>
+          <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
         </button>
       </div>
     </div>
   </div>
 </div>
-
-

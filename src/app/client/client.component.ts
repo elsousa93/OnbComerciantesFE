@@ -1,4 +1,3 @@
-
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
@@ -137,6 +136,10 @@ export class ClientComponent implements OnInit {
     "billingEmail": ""
   };
 
+  tipologia: string;
+
+  tempClient: any;
+
   @Output() nameEmitter = new EventEmitter<string>();
 
   public map = new Map();
@@ -155,6 +158,68 @@ export class ClientComponent implements OnInit {
     this.updateData(true, 1);
     this.activateButtons(true);
     this.errorInput = "form-control campo_form_coment";
+
+    this.initializeDefaultClient();
+  }
+
+  //TEMPORARIO!!!!
+  initializeDefaultClient() {
+    this.tempClient = {
+      "fiscalId": "585597928",
+      "companyName": "SILVESTRE LIMITADA",
+      "commercialName": "CAFE CENTRAL",
+      "shortName": "SILVESTRE LDA",
+      "headquartersAddress": {
+        "address": "Rua da Azoia 4",
+        "postalCode": "2625-236",
+        "postalArea": "Povoa de Santa Iria",
+        "locality": "string",
+        "country": "PT"
+      },
+      "merchantType": "COMPANY",
+      "legalNature": "35",
+      "crc": {
+        "code": "0000-0000-0001",
+        "validUntil": "2023-06-29T17:52:08.336Z"
+      },
+      "shareCapital": {
+        "capital": 50000.20,
+        "date": "2028-06-29T17:52:08.336Z"
+      },
+      "byLaws": "O Joao pode assinar tudo, like a boss",
+      "mainEconomicActivity": "90010",
+      "otherEconomicActivities": ["055111"],
+      "mainOfficeAddress": {
+        "address": "Rua da Azoia 4",
+        "postalCode": "2625-236",
+        "postalArea": "Povoa de Santa Iria",
+        "locality": "string",
+        "country": "PT"
+      },
+      "establishmentDate": "2020-03-01T17:52:08.336Z",
+      "knowYourSales": {
+        "estimatedAnualRevenue": 1000000,
+        "averageTransactions": 30000,
+        "servicesOrProductsSold": ["Cafe"],
+        "servicesOrProductsDestinations": ["PT"]
+      },
+      "bankInformation": {
+        "bank": "0033",
+        "branch": "0000",
+        "iban": "PT00333506518874499677629",
+        "accountOpenedAt": "2020-06-29T17:52:08.336Z"
+      },
+      "contacts": {
+        "email": "joao@silvestre.pt",
+        "phone1": {
+          "countryCode": "+351",
+          "phoneNumber": "919654422"
+        }
+      },
+      "documentationDeliveryMethod": "MAIL",
+      "billingEmail": "joao@silvestre.pt"
+    }
+    
   }
 
 
@@ -240,14 +305,17 @@ export class ClientComponent implements OnInit {
     this.docType = e.target.value;
   }
 
-  obterSelecionado(id: any) {
-
+  obterSelecionado() {
+    console.log("aaa");
+    console.log(this.newClient.clientId);
     let navigationExtras: NavigationExtras = {
       state: {
-        isCompany: this.showButtons
+        tipologia: this.tipologia,
+        NIFNIPC: this.newClient.clientId
       }
     };
-    this.route.navigate(['/clientbyid/', id], navigationExtras);
+
+    this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }
@@ -264,6 +332,8 @@ export class ClientComponent implements OnInit {
       this.showWarning = false;
       this.ccInfo = null;
     }
+
+    this.tipologia = "ENI";
   }
 
   activateButtons(id: boolean) {
@@ -274,6 +344,8 @@ export class ClientComponent implements OnInit {
       this.showButtons = false;
       this.showENI = false;
     }
+
+    this.tipologia = "Company";
   }
 
   aButtons(id: boolean) {
@@ -285,13 +357,14 @@ export class ClientComponent implements OnInit {
   }
 
   createNewClient() {
-    this.http.post(this.baseUrl + 'BEClients/GetLastId/', this.newClient).subscribe(result => {
-      console.log(result);
-      if (result != null) {
-        this.newId = result;
+    //Funcao para ir buscar o numero do ultimo cliente e incrementar
+   // this.http.post(this.baseUrl + 'BEClients/GetLastId/', this.newClient).subscribe(result => {
+   //   console.log(result);
+    // if (result != null) {
+     //   this.newId = result;
         this.route.navigate(['/app-new-client/', this.newId]);
-      }
-    }, error => console.error(error));
+     // }
+    //}, error => console.error(error));
 
   }
 
@@ -300,6 +373,8 @@ export class ClientComponent implements OnInit {
   }
 
   newSearch() {
-    location.reload();
+   // location.reload();
+
+  this.route.navigate(['/client'])
   }
 }

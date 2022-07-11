@@ -28,24 +28,25 @@ export class ClientByIdComponent implements OnInit {
   myControl = new FormControl('');
 
   public clientId: string = "0";
+  
   //client: Client = {} as Client;
   client: Client = {
-    "clientId": "",
-    "fiscalId": "",
-    "observations":"",
-    "companyName": "",
-    "contactName": "",
-    "shortName": "",
+    "clientId": "444",
+    "fiscalId": "444",
+    "observations":"nenhuma",
+    "companyName": "company",
+    "contactName": "manuel",
+    "shortName": "comp",
     "headquartersAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "locality": "",
-      "country": ""
+      "address": "Rua António Rebelo",
+      "postalCode": "2091-205",
+      "postalArea": "UIJKL",
+      "locality": "GTYHUJ",
+      "country": "Portugal"
     },
-    "merchantType": "",
-    "legalNature": "",
-    "legalNature2": "",
+    "merchantType": "yhj",
+    "legalNature": "teste",
+    "legalNature2": "jj",
     "crc": {
         "code": "",
         "validUntil": ""
@@ -56,56 +57,56 @@ export class ClientByIdComponent implements OnInit {
     },
     "bylaws": "",
     "mainEconomicActivity": {
-        "code": "",
+        "code": "3212",
         "branch": ""
     },
     "otherEconomicActivities": [
     {
-    "code": "",
+    "code": "921",
     "branch": ""
     },
     {
-    "code": "",
+    "code": "812",
     "branch": ""
     }
     ],
     "mainOfficeAddress": {
-    "address": "",
-    "postalCode": "",
-    "postalArea": "",
-    "country": ""
+    "address": "jkm",
+    "postalCode": "9102-102",
+    "postalArea": "hnjkds",
+    "country": "Espanha"
     },
-    "establishmentDate": "",
+    "establishmentDate": "28-05-2015",
     "businessGroup": {
-    "type": "",
-    "fiscalId": ""
+    "type": "uyhujk",
+    "fiscalId": "5678"
     },
     "sales": {
-    "estimatedAnualRevenue": 0,
-    "averageTransactions": 0,
+    "estimatedAnualRevenue": 1490,
+    "averageTransactions": 921,
     "servicesOrProductsSold": [
-    "",
+    "neve",
     ""
     ],
     "servicesOrProductsDestinations": [
-    "",
+    "tyhuj",
     ""
     ]
     },
     "foreignFiscalInformation": {
-    "issuerCountry": "",
-    "issuanceIndicator": "",
-    "fiscalId": "",
-    "issuanceReason": ""
+    "issuerCountry": "iijik",
+    "issuanceIndicator": "klklk",
+    "fiscalId": "92182",
+    "issuanceReason": "jklj"
     },
     "bankInformation": {
-    "bank": "",
-    "branch": "",
-    "iban": "",
-    "accountOpenedAt": ""
+    "bank": "kjkj",
+    "branch": "lklkkl",
+    "iban": "lklk",
+    "accountOpenedAt": "09-10-2019"
     },
     "contacts": {
-    "preferredMethod": "",
+    "preferredMethod": "hjnk",
     "preferredPeriod": {
     "startsAt": "",
     "endsAt": ""
@@ -127,9 +128,14 @@ export class ClientByIdComponent implements OnInit {
     "documentationDeliveryMethod": "",
     "billingEmail": ""
     };
+  tempClient: any;
 
-  clientExists: boolean = false;
-  isCommercialSociety: boolean;
+  tipologia: string;
+
+  clientExists: boolean = true;
+  crcFound: boolean = false;
+
+  isCommercialSociety: boolean = true;
   isCompany: boolean;
   Countries = countriesAndContinents;
   Continents = continents;
@@ -148,14 +154,76 @@ export class ClientByIdComponent implements OnInit {
 
   filteredOptions: Observable<CountryInformation[]>; 
 
+  //TEMPORARIO!!!!
+  initializeDefaultClient() {
+    this.tempClient = {
+      "fiscalId": "585597928",
+      "companyName": "SILVESTRE LIMITADA",
+      "commercialName": "CAFE CENTRAL",
+      "shortName": "SILVESTRE LDA",
+      "headquartersAddress": {
+        "address": "Rua da Azoia 4",
+        "postalCode": "2625-236",
+        "postalArea": "Povoa de Santa Iria",
+        "locality": "string",
+        "country": "PT"
+      },
+      "merchantType": "COMPANY",
+      "legalNature": "35",
+      "crc": {
+        "code": "0000-0000-0001",
+        "validUntil": "2023-06-29T17:52:08.336Z"
+      },
+      "shareCapital": {
+        "capital": 50000.20,
+        "date": "2028-06-29T17:52:08.336Z"
+      },
+      "byLaws": "O Joao pode assinar tudo, like a boss",
+      "mainEconomicActivity": "90010",
+      "otherEconomicActivities": ["055111"],
+      "mainOfficeAddress": {
+        "address": "Rua da Azoia 4",
+        "postalCode": "2625-236",
+        "postalArea": "Povoa de Santa Iria",
+        "locality": "string",
+        "country": "PT"
+      },
+      "establishmentDate": "2020-03-01T17:52:08.336Z",
+      "knowYourSales": {
+        "estimatedAnualRevenue": 1000000,
+        "averageTransactions": 30000,
+        "servicesOrProductsSold": ["Cafe"],
+        "servicesOrProductsDestinations": ["PT"]
+      },
+      "bankInformation": {
+        "bank": "0033",
+        "branch": "0000",
+        "iban": "PT00333506518874499677629",
+        "accountOpenedAt": "2020-06-29T17:52:08.336Z"
+      },
+      "contacts": {
+        "email": "joao@silvestre.pt",
+        "phone1": {
+          "countryCode": "+351",
+          "phoneNumber": "919654422"
+        }
+      },
+      "documentationDeliveryMethod": "MAIL",
+      "billingEmail": "joao@silvestre.pt"
+    }
+
+  }
+
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
 
   initializeFormControls() {
+    console.log("inicializar form controls");
+    console.log(this.route.getCurrentNavigation().extras.state["NIFNIPC"]);
     this.form = new FormGroup({
-      commercialSociety: new FormControl('', Validators.required),
+      commercialSociety: new FormControl(true, Validators.required),
       franchiseName: new FormControl(this.client.companyName),
-      natJuridicaNIFNIPC: new FormControl('', Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.sales.estimatedAnualRevenue, Validators.required),
       preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
       //Pretende associar a grupo/franchise
@@ -173,8 +241,8 @@ export class ClientByIdComponent implements OnInit {
       country: new FormControl(this.client.mainOfficeAddress.country, Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
       crcCode: new FormControl('', Validators.required),
-      natJuridicaN1: new FormControl(this.client.legalNature),
-      natJuridicaN2: new FormControl(this.client.legalNature2),
+      natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
+      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
       socialDenomination: new FormControl(''),
       CAE1Branch: new FormControl(this.client.mainEconomicActivity.branch),
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
@@ -186,25 +254,15 @@ export class ClientByIdComponent implements OnInit {
       NIPCGroup: new FormControl(this.client.businessGroup.fiscalId),
 
     });
-    //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);    
+    //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);
+    this.form.updateValueAndValidity();
+    
 
     this.form.get("CAE1").valueChanges.subscribe(v => {
       if (v !== '') {
-        console.log("cae1 entrou uhjaskaj ;)");
-        //this.form.addControl('CAE1Branch', new FormControl('', Validators.required));
-        //this.form.get('CAE1Branch').addValidators(Validators.required);
         this.form.updateValueAndValidity();
-        console.log(this.form.get('CAE1Branch').errors);    
-
-
       } else {
-        console.log("nooooo ujakmskjans ;(");
-        //this.form.removeControl('CAE1Branch');
-        //this.form.get('CAE1Branch').removeValidators(Validators.required);
-        //this.form.get('CAE1Branch').setErrors({ 'required': false });
-
-        console.log(this.form.get('CAE1Branch').errors);
-
+        this.form.updateValueAndValidity();
       }
     });
 
@@ -222,42 +280,21 @@ export class ClientByIdComponent implements OnInit {
 
     this.form.get("CAESecondary2").valueChanges.subscribe(v => {
       if (v !== '') {
-        //this.form.addControl('CAESecondary2Branch', new FormControl('', Validators.required));
         this.form.get('CAESecondary2Branch').addValidators(Validators.required);
-        
       } else {
-        //this.form.removeControl('CAESecondary2Branch');
-        //this.form.get('CAESecondary2Branch').removeValidators(Validators.required);
         this.form.get('CAESecondary2Branch').setErrors({ 'required': false });
-
-
       }
     });
 
-    //this.form.get("CAESecondary3").valueChanges.subscribe(v => {
-    //  if (v !== '') {
-    //    this.form.addControl('CAESecondary3Branch', new FormControl('', Validators.required));
-    //  } else {
-    //    this.form.removeControl('CAESecondary3Branch');
-    //  }
-    //  console.log("CAESecondary3 hbsdhjbsadoqijwoiqjsms");
-    //});
-
     this.form.get("commercialSociety").valueChanges.subscribe(v => {
       if (v === 'true') {
-        console.log("entrei");
         this.form.get('crcCode').addValidators(Validators.required);
         this.form.get('socialDenomination').setErrors({ 'required': false });
         this.form.get('natJuridicaN1').setErrors({'required': false});
-        console.log(this.form.get('CAE1Branch').errors);
       } else {
-        console.log("false");
         this.form.get('crcCode').setErrors({ 'required': false });
         this.form.get('socialDenomination').setValidators(Validators.required);
-        this.form.get('natJuridicaN1').setValidators([Validators.required]);
-        var a = this.form.get('natJuridicaN1').validator({} as AbstractControl);
-        console.log(a);
-        
+        this.form.get('natJuridicaN1').setValidators([Validators.required]);        
         //this.form.addControl('socialDenomination', new FormControl('', Validators.required));
       //  this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
       }
@@ -285,14 +322,14 @@ export class ClientByIdComponent implements OnInit {
   }
 
   getFormValidationErrors() {
-    Object.keys(this.form.controls).forEach(key => {
-      const controlErrors: ValidationErrors = this.form.get(key).errors;
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-        });
-      }
-    });
+    //Object.keys(this.form.controls).forEach(key => {
+    //  const controlErrors: ValidationErrors = this.form.get(key).errors;
+    //  if (controlErrors != null) {
+    //    Object.keys(controlErrors).forEach(keyError => {
+    //      console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+    //    });
+    //  }
+    //});
   }
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService) {
@@ -304,8 +341,12 @@ export class ClientByIdComponent implements OnInit {
       }, error => console.error(error));
     }
     if (this.route.getCurrentNavigation().extras.state) {
-      this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
+      //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
+      this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
+      console.log(this.tipologia);
     }
+
+    this.initializeDefaultClient();
 
     
     //Chamada à API para obter as naturezas juridicas
@@ -346,9 +387,7 @@ export class ClientByIdComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || '')),
     );
-
     this.initializeFormControls();
-
   }
 
   obterComprovativos(){
@@ -433,9 +472,21 @@ export class ClientByIdComponent implements OnInit {
     })
   }
 
+  searchByCRC() {
+    var crcInserted = this.form.get('crcCode').value;
+    console.log(this.form.get('crcCode'));
+    console.log(crcInserted);
 
+    if (crcInserted === '123') {
+      this.crcFound = true;
+    } else {
+      this.crcFound = false;
+      console.log("nao encontrado");
+    }
+  }
 
   submit() {
+    console.log("chegou aqui");
     var formValues = this.form.value;
 
     this.client.contacts.preferredMethod = this.form.value["preferenceContacts"];
@@ -463,7 +514,9 @@ export class ClientByIdComponent implements OnInit {
     //Social Denomination
 
 
-    this.client.mainEconomicActivity.branch = this.form.value[""];
+    //this.client.mainEconomicActivity.branch = this.form.value[""];
+
+    console.log(this.client);
     //console.log(this.form.valid);
     //for (const c in this.form.controls) {
     //  console.log(c + "|" + this.form.controls[c].invalid);

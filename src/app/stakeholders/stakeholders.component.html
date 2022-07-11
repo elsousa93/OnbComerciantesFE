@@ -1,4 +1,9 @@
 <app-nav-menu-interna></app-nav-menu-interna>
+<br>
+<br>
+<br>
+<br>
+<br>
 <div class="container">
   <div class="row mb-xxl-5 mt-3">
     <div class="offset-1 bg-white col-7 col-xxl-10">
@@ -77,44 +82,54 @@
         </form>
       </div>
 
-      <h3>Pesquisar um Interveniente</h3>
+      <h2 class="mt-4 text-primary">Adição de outros intervenientes</h2>
 
       <div>
-        <b>Por favor, pesquise o Interveniente:</b>
+        Por favor, pesquise o Interveniente:
         <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder(formStakeholderSearch.value)">
 
           <!--<div id="pesquisa">-->
           <!-- (ngSubmit)=""-->
           <!--<form #form="ngForm" (ngSubmit)="searchStakeholder(form)" novalidate>-->
-          <div class="form-group">
-            <label>Tipo de Interveniente:</label><br />
+          <div class="col-xxl col-6">
+            <p class="titulo-form-simples">Tipo de Interveniente: *</p>
             <!--Este campo nao está no YAML,Será um dropdown no futuro-->
-            <select class="form-select" (click)="changeListElementStakeType(stakeholderType, $event)"
+            <select class="form-select campo-form-select" (click)="changeListElementStakeType(stakeholderType, $event)"
               id="stakeholderType" formControlName="stakeholderType">
               <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
                 {{stakeType.stakeTypeOption}}</option>
             </select>
           </div>
 
-          <div class="form-group">
-            <label>Tipo de Documento:</label><br />
+          <div class="col-xxl col-6">
+            <p class="titulo-form-simples">Tipo de Documento: *</p>
             <!--Será um dropdown no futuro, quando tivermos a reference data-->
-            <input type="text" formControlName="docType" />
+            <select class="form-select" (click)="changeListElementDocType(docType, $event)"
+              id="documentType" formControlName="documentType">
+              <option *ngFor="let docType of ListDocType" value={{docType.stakeTypeOption}}>
+                {{docType.docTypeOption}}</option>
+            </select>
           </div>
           <div class="form-group">
-            <label>Número do Documento:</label><br />
+            <label>País do documento:</label><br />
             <!--Será um dropdown no futuro, quando tivermos a reference data-->
             <input type="text" formControlName="docNumber" />
           </div>
 
 
-          <div class="form-group">
-            Permite recolha eletrónica?<br />
-            <label>Sim</label>
-            <input type="radio" value="true" formControlName="flagRecolhaEletronica" />
-            <br />
-            <label>Não</label>
-            <input type="radio" value="false" formControlName="flagRecolhaEletronica" />
+          <div class="col-xxl">
+            <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
+            <p class="titulo-form">
+              Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
+            </p>
+          
+            <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
+                           #flagAutCol="ngModel" [value]="true" id="flagAutCol">
+                    <label class="form-check-label"
+                           for="radio3">SIM</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
+                           #flagAutCol="ngModel" [value]="false" id="flagAutCol">
+                    <label class="form-check-label" for="radio3">NÃO</label>
           </div>
 
           <button type="submit">Pesquisar</button>
@@ -123,7 +138,10 @@
 
       <!-- Cria FORM diferente ?-->
       <br>
-      <button (click)="onClickNew()" routerLink="/add-stakeholder">Adicionar Interveniente</button>
+      <button id="btn4a" routerLink="/add-stakeholder" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
+                (click)="onClickNew()">
+                Adicionar Interveniente&nbsp;
+      </button>
 
       <div *ngIf="isShown" class="row container-fluid" id="divshow">
         <h2>Interveniente Encontrado!</h2>

@@ -146,7 +146,7 @@ export class StakeholdersComponent implements OnInit {
 
   searchStakeholder(formStakeholderSearch) {
     console.log(formStakeholderSearch);
-    this.http.get<IStakeholders>(this.baseUrl + 'bestakeholders/GetStakeholderByID/' + this.formStakeholderSearch.value.docNumber).subscribe(result => {
+    this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
       console.log(result);
       this.toggleShow(result);
     }, error => console.error(error));
