@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { DataService } from '../../../nav-menu-interna/data.service';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
@@ -17,8 +19,12 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   stakeholders: IStakeholders[] = [];
   representativesSelected: String[] = [];
 
+  public map: Map<number, boolean>;
+  public currentPage: number;
+  public subscription: Subscription; 
+
   constructor(private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private router: Router) {
+    private baseUrl: string, private router: Router, private data: DataService) {
     http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
     }, error => console.error(error));
@@ -26,6 +32,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
   changeRepresentativeSelected(event) {
@@ -38,5 +46,17 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     console.log(this.stakeholders);
     console.log(this.representativesSelected);
   }
+
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(currentPage, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
+  }
+
+  redirectHomePage() {
+
+    this.router.navigate(["/"]);
+  }
+
 
 }

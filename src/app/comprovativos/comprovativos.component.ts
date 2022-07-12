@@ -170,7 +170,7 @@ export class ComprovativosComponent implements OnInit {
       this.comprovativos = result;
       console.log(result);
     }, error => console.error(error));
-    this.updateData(true, 2);
+    this.updateData(false, 4);
   }
 
   ngOnInit(): void {
@@ -266,8 +266,8 @@ export class ComprovativosComponent implements OnInit {
     this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
   }
 
-  obterStakeholders() {
-    this.route.navigate(['stakeholders/']);
+  obterOfertaComercial() {
+    this.route.navigate(['/commercial-offert-list']);
   }
 
   confirmDelete() {

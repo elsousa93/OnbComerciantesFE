@@ -99,8 +99,11 @@ export class InfoDeclarativaComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.ngOnInit();
-    this.updateData(true, 6);
-    this.internationalCallingCodes = tableInfo.GetAllCountries();
+    this.updateData(false, 6);
+
+    this.tableInfo.GetAllCountries().subscribe(result => {
+      this.internationalCallingCodes = result;
+    });
 
     this.listValue = this.formBuilder.group({
       comercialName: new FormControl('', Validators.required),

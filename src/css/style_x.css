@@ -1319,8 +1319,8 @@ mat-paginator {
   padding-bottom: 10px
 }
 
-.texto-menu-secundario:hover{
-  color: red !important;
+.texto-menu-secundario:hover {
+  color: #97aae6 !important;
 }
 
 .icone-menu-secundario {
