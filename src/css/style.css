@@ -567,6 +567,7 @@ main {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   }
+
 .botao_branco:hover {
   background-color: rgba(123, 147, 171, 0.31);
   color: #fff;
@@ -576,6 +577,7 @@ main {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+
 .botao_azul {
   margin: 8px 6px;
   padding: 10px;
@@ -587,11 +589,51 @@ main {
   color: #fff;
   background-color: #1e66b0;
   }
+
 .botao_azul:hover {
   background-color: rgba(30, 102, 176, 0.44);
   color: #fff;
   border-color: rgba(123, 147, 171, 0.31);
   border-style: solid;
+}
+
+.botao_azul_pesquisa {
+  padding: 10px;
+  border: 2px solid #1e66b0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #fff;
+  background-color: #1e66b0;
+  }
+
+.botao_azul_pesquisa:hover {
+  background-color: rgba(30, 102, 176, 0.44);
+  color: #fff;
+  border-color: rgba(123, 147, 171, 0.31);
+  border-style: solid;
+}
+
+
+.botao_branco_pesquisa {
+  padding: 10px;
+  color: #1e66b0;
+  border: 2px solid #1e66b0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  }
+
+.botao_branco_pesquisa:hover {
+  background-color: rgba(123, 147, 171, 0.31);
+  color: #fff;
+  border: 2px solid rgba(123, 147, 171, 0.31);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .center-align {
