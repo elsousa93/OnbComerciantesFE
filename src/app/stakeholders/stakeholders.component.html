@@ -53,32 +53,34 @@
             <div class="col-6 ms-0 me-3 ps-0 pe-3">
               <p class="titulo-form-simples">Tipo de Interveniente: *</p>
               <select class="form-select campo-form-select" (click)="changeListElementStakeType(stakeholderType, $event)"
-                id="stakeholderType" formControlName="stakeholderType">
+                      id="stakeholderType" formControlName="stakeholderType">
                 <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
-                  {{stakeType.stakeTypeOption}}</option>
+                  {{stakeType.stakeTypeOption}}
+                </option>
               </select>
               <p class="titulo-form-simples">Tipo de Documento: *</p>
               <select class="form-select" (click)="changeListElementDocType(docType, $event)"
-                id="documentType" formControlName="documentType">
+                      id="documentType" formControlName="documentType">
                 <div *ngIf="isParticular">
-                  <option *ngFor="let docType of ListDocTypeP" value={{docType.stakeTypeOption}}>
-                  {{docType.docTypeOption}}</option>
-                  </div> 
-              </select>
-              <p class="titulo-form-simples">Número do Documento:</p><input id="text1" name="text1" type="text" class="form-control campo_form">
-
-              <p class="titulo-form-simples">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
-              Processo mais rápido e dispensa a apresentação de comprovativos em papel:*<br><br>
-              <div class="form-check">
-                <input class="form-check-input" required ngModel type="radio" value=true id="flagAutCol" name="flagAutCol" #flagAutCol="ngModel" [value]="true">
-                <label class="form-check-label radio" for="radio3">SIM</label>
+                <option *ngFor="let docType of ListDocTypeP" value={{docType.stakeTypeOption}}>
+                  {{docType.docTypeOption}}
+                </option>
               </div>
+            </select>
+            <p class="titulo-form-simples">Número do Documento:</p><input id="text1" name="text1" type="text" class="form-control campo_form">
 
-              <div class="form-check">
-                <input class="form-check-input" required ngModel type="radio" value=false id="flagAutCol" name="flagAutCol" #flagAutCol="ngModel" [value]="false">
-                <label class="form-check-label radio" for="radio3">NÃO</label>
-              </div>
+            <p class="titulo-form-simples">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
+            Processo mais rápido e dispensa a apresentação de comprovativos em papel:*<br><br>
+            <div class="form-check">
+              <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=true id="flagAutCol" name="flagAutCol" [value]="true">
+              <label class="form-check-label radio" for="radio3">SIM</label>
             </div>
+
+            <div class="form-check">
+              <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=false id="flagAutCol" name="flagAutCol" [value]="false">
+              <label class="form-check-label radio" for="radio3">NÃO</label>
+            </div>
+          </div>
             <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                   <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
@@ -131,4 +133,4 @@
       </div>
     </div>
   </div>
-
+</div>

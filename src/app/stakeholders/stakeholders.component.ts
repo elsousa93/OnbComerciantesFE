@@ -95,8 +95,9 @@ export class StakeholdersComponent implements OnInit {
       stakeholderType: [''],
       docType: [''],
       docNumber: [''],
-      flagRecolhaEletronica: [''],
+      flagAutCol: [''],
       identificationDocumentId: [''],
+      documentType: ['']
     });
   }
 
