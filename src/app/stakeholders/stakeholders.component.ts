@@ -65,7 +65,7 @@ export class StakeholdersComponent implements OnInit {
         console.log(result);
         this.stakes = result;
       }, error => console.error(error));
-    this.updateData(true, 3);
+    this.updateData(false, 2);
 
 
   }
