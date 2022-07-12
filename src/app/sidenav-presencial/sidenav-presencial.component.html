@@ -4,7 +4,8 @@
     <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up':'down'">
       <div class="accordion" id="accordion">
 
-        <div class="nav-item"  *ngIf="userPermissions.HomePage">
+        
+        <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button"  href="index.html" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/home.svg"
