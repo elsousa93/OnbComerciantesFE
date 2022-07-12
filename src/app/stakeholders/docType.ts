@@ -2,9 +2,16 @@ export interface docType {
   docTypeOption: string;
 }
 
-export const docTypeList: docType[] = [
-  { docTypeOption: "Cartão de Cidadão" },
+export const docTypeListE: docType[] = [
+  { docTypeOption: "Número de Identificação de Pesso Colectiva" },
+  { docTypeOption: "Nº de Cliente" },
+]
+
+
+export const docTypeListP: docType[] = [
+  { docTypeOption: "Bilhete de Identidade Nacional" },
+  { docTypeOption: "Cartão do Cidadão" },
+  { docTypeOption: "Número de Identificação Fiscal" },
+  { docTypeOption: "Nº de Cliente" },
   { docTypeOption: "Passaporte" },
-  { docTypeOption: "Outro 3" },
-  { docTypeOption: "Outro 4" },
 ]

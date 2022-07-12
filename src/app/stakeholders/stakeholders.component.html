@@ -93,7 +93,6 @@
           <!--<form #form="ngForm" (ngSubmit)="searchStakeholder(form)" novalidate>-->
           <div class="col-xxl col-6">
             <p class="titulo-form-simples">Tipo de Interveniente: *</p>
-            <!--Este campo nao está no YAML,Será um dropdown no futuro-->
             <select class="form-select campo-form-select" (click)="changeListElementStakeType(stakeholderType, $event)"
               id="stakeholderType" formControlName="stakeholderType">
               <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
@@ -103,19 +102,14 @@
 
           <div class="col-xxl col-6">
             <p class="titulo-form-simples">Tipo de Documento: *</p>
-            <!--Será um dropdown no futuro, quando tivermos a reference data-->
             <select class="form-select" (click)="changeListElementDocType(docType, $event)"
               id="documentType" formControlName="documentType">
-              <option *ngFor="let docType of ListDocType" value={{docType.stakeTypeOption}}>
+              <div *ngIf="isParticular">
+                <option *ngFor="let docType of ListDocTypeP" value={{docType.stakeTypeOption}}>
                 {{docType.docTypeOption}}</option>
+                </div> 
             </select>
           </div>
-          <div class="form-group">
-            <label>País do documento:</label><br />
-            <!--Será um dropdown no futuro, quando tivermos a reference data-->
-            <input type="text" formControlName="docNumber" />
-          </div>
-
 
           <div class="col-xxl">
             <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>

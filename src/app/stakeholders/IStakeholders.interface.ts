@@ -17,10 +17,10 @@ export interface IStakeholders {
 }
 
 export interface IdentificationDocument {
-  type: string
-  number: string
-  country: Country
-  expirationDate: string
+  identificationDocumentType: string
+  identificationDocumentNumber: string
+  identificationDocumentCountry: Country
+  identificationDocumentExpirationDate: string
 }
 
 export interface FiscalAddress {

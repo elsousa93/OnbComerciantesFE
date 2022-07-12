@@ -2,7 +2,8 @@ import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IStakeholders } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
-import { docTypeList } from './docType';
+import { docTypeListP } from './docType';
+import { docTypeListE } from './docType';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -27,7 +28,8 @@ export class StakeholdersComponent implements OnInit {
   stakeholderType?: string = "";
 
   //Field "doc type" for the search
-  ListDocType = docTypeList;
+  ListDocTypeP = docTypeListP;
+  ListDocTypeE = docTypeListE;
   docType?: string = "";
 
 
@@ -50,6 +52,8 @@ export class StakeholdersComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription; 
+
+  public isParticular: boolean;
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -129,7 +133,11 @@ export class StakeholdersComponent implements OnInit {
   changeListElementDocType(docType: string, e: any) {
     console.log(e.target.value)
     this.docType = e.target.value;
-    this.newStake.identificationDocument.type = this.docType;
+    this.newStake.identificationDocument.identificationDocumentType = this.docType;
+    console.log(this.docType);
+    console.log(this.newStake.identificationDocument.identificationDocumentType);
+
+    this.isParticular=true;
 
   }
 
