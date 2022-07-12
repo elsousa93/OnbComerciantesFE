@@ -22,9 +22,9 @@ export class NewStakeholderComponent implements OnInit {
   public foo = 0;
   public displayValueSearch = "";
 
-  showBtnCC: boolean = false;
+  showBtnCC: boolean;
   readcard: IReadCard[] = [];
-  showNoCC: boolean = true;
+  showNoCC: boolean = false;
   showYesCC: boolean = false;
 
   // Variables that are not on YAML

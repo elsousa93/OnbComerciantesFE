@@ -110,6 +110,15 @@
   padding-bottom: 0px;
 }
 
+.img_add {
+  vertical-align: sub;
+}
+
+.img_btn {
+  height: 25px;
+  vertical-align: text-top;
+}
+
 .widget-toolbar {
   height: 28px;
   background-color: #767676;
