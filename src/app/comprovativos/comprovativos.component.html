@@ -10,11 +10,9 @@
             <tr class="align-middle">
               <th scope="col" class="text-center align-middle">Tipo</th>
               <th scope="col" class="text-center">Interveniente</th>
-              <th scope="col" class="text-center">Data Validade</th>
-              <th scope="col" class="text-center">Data Entrega</th>
+              <th scope="col" class="text-center">Data de Validade</th>
+              <th scope="col" class="text-center">Data de Entrada</th>
               <th scope="col" class="text-center">Status</th>
-              <th scope="col" class="text-center">Denominação Social</th>
-              <th scope="col" class="text-center" colspan="2">Ficheiro</th>
               <th scope="col" class="text-center"></th>
 
             </tr>
@@ -60,7 +58,7 @@
     </div>
     <p class="titulo-form-simples" for="observacoes">Observações:</p>
     <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
-      id="observacoes" class="form-control campo_form" [(ngModel)]="client.observations" readonly rows="3"></textarea>
+      id="observacoes" class="form-control campo_form" [(ngModel)]="client.observations" rows="3"></textarea>
     <div style="text-align: right;">
       <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
       <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
@@ -88,6 +86,7 @@
     <div class="modal-content-checkdocuments">
       <div class="modal-header-checkdocuments">
         <h4 class="modal-title-checkdocuments">CHECKLIST DE DOCUMENTOS</h4>
+        <span class="w3-button w3-display-topright">&times;</span>
       </div>
       <div class="modal-body-checkdocuments">
         <span>
@@ -101,8 +100,9 @@
               <tr class="align-middle">
                 <th scope="col" class="text-center">Nome</th>
                 <th scope="col" class="text-center align-middle">Comnprovativo de Sociedade</th>
-                <th scope="col" class="text-center">Comprovativo REF</th>
+                <th scope="col" class="text-center">Comprovativo BEF</th>
                 <th scope="col" class="text-center">Comprovativo Fiscal Pessoa coletiva</th>
+                <th scope="col" class="text-center">Comprovativo de IBAN</th>
                 <th scope="col" class="text-center">Comprovativo de RCBE</th>
               </tr>
             </thead>
@@ -141,12 +141,12 @@
             </tbody>
           </table>
           <br>       
-          <span> Para o/os interveniente(s):</span><br>
+          <span> Para a/as Loja(s):</span><br>
           <table class="table" *ngIf="client">
             <thead class="table-primary align-middle">
               <tr class="align-middle">
                 <th scope="col" class="text-center">Nome</th>
-                <th scope="col" class="text-center align-middle">Comprovativo</th>
+                <th scope="col" class="text-center align-middle">Comprovativo de IBAN</th>
               </tr>
             </thead>
             <tbody>
