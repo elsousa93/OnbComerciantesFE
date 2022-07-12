@@ -1,15 +1,17 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 
-<button class="btn" routerLink="/info-declarativa">Comerciante</button>
-<button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
-<button class="btn" routerLink="/info-declarativa-lojas">Lojas</button>
-<button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
-
-<br>
-<br>
-
+<div class="container-fluid mt-5 ms-0 me-0 pt-5 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 bg-white col-7 col-xxl-10">
 
 <!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação-->
+<div class="offset-1 bg-white align-self-center col-10 ps-3">
+  <br>
+
+  <button class="btn" routerLink="/info-declarativa">Comerciante</button>
+  <button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+  <button class="btn" routerLink="/info-declarativa-lojas">Lojas</button>
+  <button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
 <form [formGroup]="listValue" (ngSubmit)="submit()" name="listValue">
   <div class="container">
     <div class="form-group">
@@ -21,7 +23,6 @@
       </div>
     </div>
   </div>
-
   <!--<div class="container">
     <label for="preferredStartPeriod">Melhor hora início:</label>
     <input required ngModel #preferredStartPeriod="ngModel" name="preferredStartPeriod" type="time" id="preferredStartPeriod" class="form-control" [(ngModel)]="newClient.contacts.preferredPeriod.startsAt">
@@ -141,4 +142,6 @@
 <br>
 <br>
 <br>
-
+</div>
+</div>
+</div>
