@@ -1,9 +1,14 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-
-<button class="btn" routerLink="/info-declarativa">Comerciante</button>
-<button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
-<button class="btn" routerLink="/info-declarativa-lojas">Lojas</button>
-<button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<button type="button" class="btn btn-primary me-4" routerLink="/info-declarativa">Cliente Empresa</button>
+<button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+<button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-lojas">Lojas</button>
+<button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-assinatura">Assinatura Pack</button>
 
 <br>
 <br>
@@ -32,16 +37,16 @@
 
   <div class="container d-flex">
     <div class="country-code-dropdown">
-    <p>Indicativo:*</p>
-    <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
-      <option value="">Indicativo:</option>
-      <option value="adsadsa">Teste</option>
-      <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
-    </select>
-    <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
-      is required.
+      <p>Indicativo:*</p>
+      <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
+        <option value="">Indicativo:</option>
+        <option value="adsadsa">Teste</option>
+        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+      </select>
+      <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
+        is required.
+      </div>
     </div>
-  </div>
 
     <div class="form-group">
       <label for="phoneLandClient">Telefone 1:*</label>
@@ -105,12 +110,11 @@
         <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
       </select>
 
-        <p>{{faxCountryCode}}</p>
       <div class="alert alert-danger" *ngIf="faxPhoneNumber.value && !faxCountryCode.value">
         is required.
       </div>
     </div>
-    
+
 
 
 
