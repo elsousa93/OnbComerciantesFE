@@ -68,7 +68,7 @@ export class StakeholdersComponent implements OnInit {
 
   public isParticular: boolean=false;
   public isCC: boolean = false;
-  public isNoDataReadable: boolean = true;
+  public isNoDataReadable: boolean;
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
