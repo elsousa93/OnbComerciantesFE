@@ -33,37 +33,37 @@ export class ClientByIdComponent implements OnInit {
   //client: Client = {} as Client;
   client: Client = {
     "clientId": "444",
-    "fiscalId": "444",
+    "fiscalId": "585597928",
     "observations":"nenhuma",
-    "companyName": "company",
-    "contactName": "manuel",
-    "shortName": "comp",
+    "companyName": "SILVESTRE LIMITADA",
+    "contactName": "CAFE CENTRAL",
+    "shortName": "SILVESTRE LDA",
     "headquartersAddress": {
       "address": "Rua António Rebelo",
       "postalCode": "2091-205",
-      "postalArea": "UIJKL",
-      "locality": "GTYHUJ",
-      "country": "Portugal"
+      "postalArea": "Povoa de Santa Iria",
+      "locality": "Lisboa",
+      "country": "PT"
     },
-    "merchantType": "yhj",
-    "legalNature": "teste",
-    "legalNature2": "jj",
+    "merchantType": "COMPANY",
+    "legalNature": "35",
+    "legalNature2": "",
     "crc": {
-        "code": "",
-        "validUntil": ""
+      "code": "0000-0000-0001",
+      "validUntil": "2023-06-29T17:52:08.336Z"
     },
     "shareCapital": {
-        "capital": 0,
-        "date": ""
+      "capital": 50000.20,
+      "date": "2028-06-29T17:52:08.336Z"
     },
-    "bylaws": "",
+    "bylaws": "O Joao pode assinar tudo",
     "mainEconomicActivity": {
-        "code": "3212",
+      "code": "90010",
         "branch": ""
     },
     "otherEconomicActivities": [
     {
-    "code": "921",
+        "code": "90010",
     "branch": ""
     },
     {
@@ -72,10 +72,10 @@ export class ClientByIdComponent implements OnInit {
     }
     ],
     "mainOfficeAddress": {
-    "address": "jkm",
-    "postalCode": "9102-102",
-    "postalArea": "hnjkds",
-    "country": "Espanha"
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+    "country": "PT"
     },
     "establishmentDate": "28-05-2015",
     "businessGroup": {
@@ -245,14 +245,13 @@ export class ClientByIdComponent implements OnInit {
       location: new FormControl(this.client.mainOfficeAddress.postalArea, Validators.required),
       country: new FormControl(this.client.mainOfficeAddress.country, Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
-      crcCode: new FormControl('', Validators.required),
+      crcCode: new FormControl(this.client.crc.code, Validators.required),
       natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
       socialDenomination: new FormControl(''),
       CAE1Branch: new FormControl(this.client.mainEconomicActivity.branch),
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
       CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1].branch),
-
 
       merchantType: new FormControl(this.client.merchantType),
       associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
