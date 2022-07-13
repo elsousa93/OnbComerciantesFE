@@ -70,7 +70,7 @@
   <div class="row">
     <div class="col">
 
-      <input type="checkbox" id="validate" name="validate" value="validateClient">
+      <input type="checkbox" id="validate" name="validate" [checked]="validatedDocuments" (change)="validatedDocumentsChange($event.target.checked)">
       <label for="validate">Validou que os documentos necessários foram efetivamente os carregados?
       </label><br>
       <input type="checkbox" id="clientPresence" name="clientPresence" value="clientPresence">
@@ -92,7 +92,7 @@
     <div class="modal-content-checkdocuments">
       <div class="modal-header-checkdocuments">
         <h4 class="modal-title-checkdocuments">CHECKLIST DE DOCUMENTOS</h4>
-        <span class="w3-button w3-display-topright">&times;</span>
+        <span style="cursor: pointer !important;" class="w3-button w3-display-topright" (click)="declineCheckList()">&times;</span>
       </div>
       <div class="modal-body-checkdocuments">
         <span>
@@ -134,7 +134,7 @@
             <thead class="table-primary align-middle">
               <tr class="align-middle">
                 <th scope="col" class="text-center">Nome</th>
-                <th scope="col" class="text-center align-middle">Comnprovativo de Documento de Identificação</th>
+                <th scope="col" class="text-center align-middle">Comprovativo de Documento de Identificação</th>
                 <th scope="col" class="text-center">Comprovativo Fiscal Particular</th>
                 <th scope="col" class="text-center">Procuração Cliente</th>
               </tr>
@@ -194,7 +194,7 @@
         [routerLink]="['/client']">
         Voltar&nbsp;
       </button>
-      <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
+      <button *ngIf="validatedDocuments" id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
         Submeter Pedido&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
       </button>
     </div>
