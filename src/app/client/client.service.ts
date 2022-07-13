@@ -13,10 +13,10 @@ export class ClientService {
     private baseUrl: string, private route: Router) { }
 
   GetClientById(clientID: string): any {
-    return this.http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + clientID);
+    return this.http.get<Client>(this.baseUrl + 'submission/' + clientID + "/merchant");
   }
 
-  EditClient(clientId: string, newClient: Client) {
-    return this.http.put<Client>(this.baseUrl + 'BEClients/EditClient/' + clientId, newClient);
+  EditClient(clientID: string, newClient: Client) {
+    return this.http.put<Client>(this.baseUrl + 'submission/' + clientID + "/merchant", newClient);
   }
 }

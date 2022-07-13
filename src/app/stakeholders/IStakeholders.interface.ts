@@ -1,25 +1,25 @@
 import { Address, IPep } from "../pep/IPep.interface"
 
 export interface IStakeholders {
-  fiscalId: string
-  identificationDocument: IdentificationDocument
-  fullName: string
-  contactName: string
-  shortName: string
-  address: Address
-  fiscalAddress: Address
-  foreignFiscalInformation: ForeignFiscalInformation
-  isProxy: boolean
-  phone: Phone
-  email: Email
-  birthDate: string
-  pep: IPep
+  fiscalId?: string
+  identificationDocument?: IdentificationDocument
+  fullName?: string
+  contactName?: string
+  shortName?: string
+  address?: Address
+  fiscalAddress?: Address
+  foreignFiscalInformation?: ForeignFiscalInformation
+  isProxy?: boolean
+  phone?: Phone
+  email?: string
+  birthDate?: string
+  pep?: IPep
 }
 
 export interface IdentificationDocument {
   type: string
   number: string
-  country: Country
+  country: string
   expirationDate: string
 }
 
@@ -31,14 +31,14 @@ export interface FiscalAddress {
 }
 
 export interface ForeignFiscalInformation {
-  issuerCountry: Country
+  issuerCountry: string
   issuanceIndicator: string
   fiscalId: string
   issuanceReason: string
 }
 
 export interface Phone {
-  countryCode: Country
+  countryCode: string
   phoneNumber: string
 }
 

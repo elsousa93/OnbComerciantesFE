@@ -13,64 +13,72 @@ export interface ISubmission {
 }
 
 export interface SubmissionPostTemplate {
-  submissionType: string
-  processNumber: string
-  processKind: string
-  processType: string
-  isClientAwaiting: boolean
-  submissionUser: SubmissionUser
-  isComplete: boolean
-  bank: string
-  merchant: Client
-  stakeholders: IStakeholders[]
-  documents: Document[]
+  submissionType?: string
+  processNumber?: string
+  processKind?: string
+  processType?: string
+  isClientAwaiting?: boolean
+  submissionUser?: SubmissionUser
+  isComplete?: boolean
+  bank?: string
+  merchant?: Client
+  stakeholders?: IStakeholders[]
+  documents?: Document[]
 }
 
 export interface SubmissionPostResponse {
-  id: string
-  state: string
-  bank: string
-  merchant: Client
-  stakeholders: IStakeholders[]
-  documents: Document[]
-  submissionType: string
-  processNumber: string
-  processKind: string
-  processType: string
-  isClientAwaiting: boolean
-  submissionUser: SubmissionUser
-  isComplete: boolean
+  id?: string
+  state?: string
+  bank?: string
+  merchant?: Client
+  stakeholders?: IStakeholders[]
+  documents?: Document[]
+  submissionType?: string
+  processNumber?: string
+  processKind?: string
+  processType?: string
+  isClientAwaiting?: boolean
+  submissionUser?: SubmissionUser
+  isComplete?: boolean
 }
 
 export interface SubmissionPutTemplate {
-  id: string
-  submissionType: string
-  processNumber: string
-  processKind: string
-  processType: string
-  isClientAwaiting: boolean
-  submissionUser: SubmissionUser
-  isComplete: boolean
-  bank: string
+  submissionType?: string
+  processNumber?: string
+  processKind?: string
+  processType?: string
+  isClientAwaiting?: boolean
+  submissionUser?: SubmissionUser
+  isComplete?: boolean
+  id?: string
+  bank?: string
 }
 
 export interface SubmissionGetTemplate {
-  merchant: Client
-  processKind: string
-  processNumber: string
-  processType: string
-  submissionId: string
-  submissionType: string
-  contractNumber: number
-  requestDate: string
+  id?: string
   state?: string
-  stakeholders: IStakeholders[]
-  documents: Document[]
+  bank?: string
+  merchant?: SimplifiedReference
+  stakeholders?: SimplifiedReference[]
+  documents?: Document[]
+  submissionType?: string
+  processNumber?: string
+  processKind?: string
+  processType?: string
+  isClientAwaiting?: boolean
+  submissionUser?: SubmissionUser
+  isComplete?: boolean
+  
+}
+
+interface SimplifiedReference {
+  id?: string
+  href?: string
 }
 
 interface SubmissionUser {
-  user: string
-  employer: string
+  user?: string
+  employer?: string
 }
 
 export interface Merchant {

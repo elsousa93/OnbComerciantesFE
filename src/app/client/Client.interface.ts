@@ -1,28 +1,29 @@
 export interface Client {
-  clientId: String,
-  fiscalId: String,
-  companyName: String,
-  contactName: String,
-  shortName: String,
-  headquartersAddress: HeadquartersAddress,
-  merchantType: String,
-  legalNature: String,
-  legalNature2: String,
-  observations: String,
-  crc: Crc,
-  shareCapital: ShareCapital,
-  bylaws: String,
-  mainEconomicActivity: MainEconomicActivity,
-  otherEconomicActivities: OtherEconomicActivity[],
-  mainOfficeAddress: MainOfficeAddress,
-  establishmentDate: String,
-  businessGroup: BusinessGroup,
-  sales: Sales,
-  foreignFiscalInformation: ForeignFiscalInformation,
-  bankInformation: BankInformation,
-  contacts: Contacts,
-  documentationDeliveryMethod: String,
-  billingEmail: String,
+  id?: String,
+  fiscalId?: String,
+  companyName?: String,
+  commercialName?: String,
+  shortName?: String,
+  headquartersAddress?: HeadquartersAddress,
+  merchantType?: String,
+  legalNature?: String,
+  legalNature2?: String,
+  crc?: Crc,
+  shareCapital?: ShareCapital,
+  byLaws?: String,
+  mainEconomicActivity?: String,
+  otherEconomicActivities?: String[],
+  mainOfficeAddress?: MainOfficeAddress,
+  establishmentDate?: String,
+  bankInformation?: BankInformation,
+  contacts?: Contacts,
+  documentationDeliveryMethod?: String,
+  billingEmail?: String,
+  knowYourSales?: Sales,
+  foreignFiscalInformation?: ForeignFiscalInformation,
+  businessGroup?: BusinessGroup,
+  clientId?: String,
+  legalName?: String
 }
 
 export interface HeadquartersAddress {
@@ -58,6 +59,7 @@ export interface MainOfficeAddress {
   postalCode: String,
   postalArea: String,
   country: String,
+  locality: String
 }
 
 export interface BusinessGroup {
@@ -87,12 +89,12 @@ export interface BankInformation {
 }
 
 export interface Contacts {
-  preferredMethod: String,
-  preferredPeriod: PreferredPeriod,
-  phone1: Phone1,
-  phone2: Phone2,
-  fax: Fax,
-  email: String,
+  preferredMethod?: String,
+  preferredPeriod?: PreferredPeriod,
+  phone1?: Phone1,
+  phone2?: Phone2,
+  fax?: Fax,
+  email?: String,
 }
 
 export interface PreferredPeriod {
