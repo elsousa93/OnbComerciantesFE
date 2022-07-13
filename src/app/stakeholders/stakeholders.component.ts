@@ -21,7 +21,20 @@ import { DataService } from '../nav-menu-interna/data.service';
 export class StakeholdersComponent implements OnInit {
 
 
-  newStake: IStakeholders = { } as IStakeholders
+  newStake: IStakeholders = { 
+    "fiscalId": "",
+    "identificationDocument": {
+      "identificationDocumentType": "",
+      "identificationDocumentNumber": "",
+      "identificationDocumentCountry": {
+        "code": ""
+      },
+      "identificationDocumentExpirationDate": "",
+    },
+    "fullName": "",
+    "contactName": "",
+    "shortName": ""
+  } as IStakeholders
   
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
@@ -30,7 +43,7 @@ export class StakeholdersComponent implements OnInit {
   //Field "doc type" for the search
   ListDocTypeP = docTypeListP;
   ListDocTypeE = docTypeListE;
-  docType?: string = "";
+  documentType?: string = "";
 
 
   ngForm!: FormGroup;
@@ -53,7 +66,9 @@ export class StakeholdersComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
-  public isParticular: boolean;
+  public isParticular: boolean=false;
+  public isCC: boolean = false;
+  public isNoDataReadable: boolean = true;
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -75,6 +90,10 @@ export class StakeholdersComponent implements OnInit {
     this.map.set(currentPage, value);
     this.data.changeData(this.map);
     this.data.changeCurrentPage(currentPage);
+  }
+
+  changeDataReadable(readable: boolean){
+    this.isNoDataReadable=readable;
   }
  
   ngOnInit(): void {
@@ -127,19 +146,23 @@ export class StakeholdersComponent implements OnInit {
   }
 
   changeListElementStakeType(stakeType: string, e: any) {
-    console.log(e.target.value)
     this.stakeholderType = e.target.value;
-
+    if (this.stakeholderType === 'Particular'){
+      this.isParticular = true;
+    } else {
+      this.isParticular=false;
+    }
   }
   changeListElementDocType(docType: string, e: any) {
-    console.log(e.target.value)
-    this.docType = e.target.value;
-    this.newStake.identificationDocument.identificationDocumentType = this.docType;
-    console.log(this.docType);
-    console.log(this.newStake.identificationDocument.identificationDocumentType);
-
-    this.isParticular=true;
-
+    this.documentType = e.target.value;
+    
+    this.newStake.identificationDocument.identificationDocumentType = this.documentType;
+    
+    if (this.documentType === 'Cartão do Cidadão') {
+      this.isCC = true;
+    } else {
+      this.isCC = false;
+    }
   }
 
   toggleShow(stake: IStakeholders) {
