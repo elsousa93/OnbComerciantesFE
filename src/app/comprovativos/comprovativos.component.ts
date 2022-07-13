@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Renderer2 } from '@angular/core';
+import { AfterViewInit, Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -16,7 +16,7 @@ import { ComprovativosService } from './services/comprovativos.services';
   selector: 'app-comprovativos',
   templateUrl: './comprovativos.component.html'
 })
-export class ComprovativosComponent implements OnInit {
+export class ComprovativosComponent implements OnInit, AfterViewInit {
   public comprovativos: IComprovativos[] = [];
 
   public newComp: IComprovativos = {
@@ -158,6 +158,9 @@ export class ComprovativosComponent implements OnInit {
 
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('checkListDocs') checkListDocs;
+
+  validatedDocuments: boolean = false;
+
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
   private modalService: BsModalService, private data: DataService) {
 
@@ -295,5 +298,13 @@ export class ComprovativosComponent implements OnInit {
 
   declineCheckList() {
     this.checkListModalRef?.hide();
+  }
+
+  ngAfterViewInit() {
+    this.onCheckList();
+  }
+
+  validatedDocumentsChange(value: boolean) {
+    this.validatedDocuments = value;
   }
 }
