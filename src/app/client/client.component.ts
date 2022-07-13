@@ -155,7 +155,7 @@ export class ClientComponent implements OnInit {
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
-    this.updateData(true, 1);
+    this.updateData(false, 1);
     this.activateButtons(true);
     this.errorInput = "form-control campo_form_coment";
 
@@ -291,7 +291,7 @@ export class ClientComponent implements OnInit {
 
   //função que altera o valor do map e da currentPage
   updateData(value: boolean, currentPage: number) {
-    this.map.set(1, value);
+    this.map.set(currentPage, value);
     this.data.changeData(this.map);
     this.data.changeCurrentPage(currentPage);
   }

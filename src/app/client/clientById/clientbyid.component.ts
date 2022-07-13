@@ -8,11 +8,12 @@ import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLeg
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Observable, of, OperatorFunction, pipe, fromEvent } from 'rxjs';
+import { Observable, of, OperatorFunction, pipe, fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { Country } from '../../stakeholders/IStakeholders.interface';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/typeahead-match.class';
+import { DataService } from '../../nav-menu-interna/data.service';
 
 @Component({
   selector: 'app-client',
@@ -152,7 +153,11 @@ export class ClientByIdComponent implements OnInit {
   //CAEs
   CAEsList: EconomicActivityInformation[] = [];
 
-  filteredOptions: Observable<CountryInformation[]>; 
+  filteredOptions: Observable<CountryInformation[]>;
+
+  public map = new Map();
+  public currentPage: number;
+  public subscription: Subscription;
 
   //TEMPORARIO!!!!
   initializeDefaultClient() {
@@ -331,7 +336,7 @@ export class ClientByIdComponent implements OnInit {
     //});
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService) {
     this.ngOnInit();
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
       http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
@@ -387,11 +392,15 @@ export class ClientByIdComponent implements OnInit {
       map(value => this._filter(value || '')),
     );
     this.initializeFormControls();
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  obterComprovativos(){
-    //this.route.navigate(['/nav-interna/', "COMPROVATIVOS" ]);
-    this.route.navigate(['/comprovativos/', this.clientId ]);
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number) {
+    this.map.set(currentPage, value);
+    this.data.changeData(this.map);
+    this.data.changeCurrentPage(currentPage);
   }
 
   setCommercialSociety(id: boolean) {
@@ -526,7 +535,8 @@ export class ClientByIdComponent implements OnInit {
       this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
     }
 
-    this.route.navigate(["/comprovativos"]);
+    this.updateData(true, 1);
+    this.route.navigate(["/stakeholders"]);
 
   }
 

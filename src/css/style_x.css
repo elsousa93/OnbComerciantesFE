@@ -110,6 +110,15 @@
   padding-bottom: 0px;
 }
 
+.img_add {
+  vertical-align: sub;
+}
+
+.img_btn {
+  height: 25px;
+  vertical-align: text-top;
+}
+
 .widget-toolbar {
   height: 28px;
   background-color: #767676;
@@ -1310,8 +1319,8 @@ mat-paginator {
   padding-bottom: 10px
 }
 
-.texto-menu-secundario:hover{
-  color: red !important;
+.texto-menu-secundario:hover {
+  color: #97aae6 !important;
 }
 
 .icone-menu-secundario {

@@ -32,47 +32,53 @@
                     {{ files.filename }}
                   </div>
                   <div class="col-sm">
-                    <td class="text-center">
-                      <button type="button" class="btn btn-default btn-sm"
-                        (click)="onDelete(files.id,files.clientId, files.filename)"><i class="fas fa-trash"></i></button>
-                      <button type="button" class="btn btn-default btn-sm" (click)="search(files.url, files.filename)"><i
-                          class="fas fa-search"></i></button>
-                      <button type="button" class="btn btn-default btn-sm" (click)="download(files.url, files.filename)"><i
-                          class="fas fa-download"></i></button>
-                    </td>
-
-                  </div>
-                </div>
+              <td class="text-center">
+                <button type="button" class="btn btn-default btn-sm"
+                  (click)="onDelete(files.id,files.clientId, files.filename)"><i class="fas fa-trash"></i></button>
+                <button type="button" class="btn btn-default btn-sm" (click)="search(files.url, files.filename)"><i
+                    class="fas fa-search"></i></button>
+                <button type="button" class="btn btn-default btn-sm" (click)="download(files.url, files.filename)"><i
+                    class="fas fa-download"></i></button>
               </td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-    </div>
-  </div>
 
-  <div class="offset-xxl-1 col-xxl-10">
-    <div style="text-align: left;">
-      <button type="button" class="btn titulo-form-simples" (click)="onCheckList()">Checklist de Documentos >>></button>
-    </div>
-    <p class="titulo-form-simples" for="observacoes">Observações:</p>
-    <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
-      id="observacoes" class="form-control campo_form" [(ngModel)]="client.observations" rows="3"></textarea>
-    <div style="text-align: right;">
-      <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
-      <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
-        accept=".pdf">
     </div>
   </div>
+  </td>
+  <td></td>
+  </tr>
+  </tbody>
+  </table>
+  </form>
+</div>
 </div>
 
-<input type="checkbox" id="validate" name="validate" value="validateClient">
-<label for="validate">Validou que os documentos necessários foram efetivamente os carregados?
-</label><br>
-<input type="checkbox" id="clientPresence" name="clientPresence" value="clientPresence">
-<label for="clientPresence">Na presença do cliente?
-</label><br>
+<div class="offset-xxl-1 col-xxl-10">
+  <div style="text-align: left;">
+    <button type="button" class="btn titulo-form-simples" (click)="onCheckList()">Checklist de Documentos >>></button>
+  </div>
+  <p class="titulo-form-simples" for="observacoes">Observações:</p>
+  <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
+    id="observacoes" class="form-control campo_form" [(ngModel)]="client.observations" rows="3"></textarea>
+  <div style="text-align: right;">
+    <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
+    <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
+      accept=".pdf">
+  </div>
+</div>
+</div>
+<div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0">
+  <div class="row">
+    <div class="col">
+
+      <input type="checkbox" id="validate" name="validate" value="validateClient">
+      <label for="validate">Validou que os documentos necessários foram efetivamente os carregados?
+      </label><br>
+      <input type="checkbox" id="clientPresence" name="clientPresence" value="clientPresence">
+      <label for="clientPresence">Na presença do cliente?
+      </label>
+    </div>
+  </div>
+</div><br>
 <ng-template #deleteModal>
   <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
     <p>Tem certeza que deseja excluir?</p>
@@ -82,7 +88,7 @@
 </ng-template>
 
 <ng-template #checkListDocs>
-  <div style="margin: auto;width: 100%;padding: 6px;" >
+  <div style="margin: auto;width: 100%;padding: 6px;">
     <div class="modal-content-checkdocuments">
       <div class="modal-header-checkdocuments">
         <h4 class="modal-title-checkdocuments">CHECKLIST DE DOCUMENTOS</h4>
@@ -116,10 +122,12 @@
               </tr>
             </tbody>
           </table>
-          <br>     
-          <span> Para a Natureza Jurídica selecionada Sociedade unipessoal por quotas os documentos obrigatórios:</span><br>
-          <span style="background-color: rgb(231, 227, 227);"> 
-            <li>Certidão da Conservatória do Registo Comercial ou Certidão Permanente ou Retirada a certidão se Cliente fornecer o código de Acesso à Certidão (www.portaldaempresa.pt). </li>
+          <br>
+          <span> Para a Natureza Jurídica selecionada Sociedade unipessoal por quotas os documentos
+            obrigatórios:</span><br>
+          <span style="background-color: rgb(231, 227, 227);">
+            <li>Certidão da Conservatória do Registo Comercial ou Certidão Permanente ou Retirada a certidão se Cliente
+              fornecer o código de Acesso à Certidão (www.portaldaempresa.pt). </li>
           </span><br>
           <span> Para o/os interveniente(s):</span><br>
           <table class="table" *ngIf="client">
@@ -140,7 +148,7 @@
               </tr>
             </tbody>
           </table>
-          <br>       
+          <br>
           <span> Para a/as Loja(s):</span><br>
           <table class="table" *ngIf="client">
             <thead class="table-primary align-middle">
@@ -158,34 +166,37 @@
           </table>
           <br>
           <span> <b>Legenda: </b></span><br>
-          <span> 
+          <span>
             <i class="glyphicon glyphicon-ok"> - Já existe em arquivo </i>&nbsp;&nbsp;&nbsp;&nbsp;
             <i class="glyphicon glyphicon-remove"> - Não existe em arquivo</i>&nbsp;&nbsp;&nbsp;&nbsp;
             <label>N/A - Não aplicável</label>
-          </span>      
+          </span>
         </form>
       </div>
       <div class="modal-footer-checkdocuments">
-        <button type="button" class="btn botao_azul" (click)="declineCheckList()" >FECHAR</button>
+        <button type="button" class="btn botao_azul" (click)="declineCheckList()">FECHAR</button>
       </div>
     </div>
   </div>
 </ng-template>
 
-<div>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-    [routerLink]="['/']">
-    Sair&nbsp;
-  </button>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
-    Cancelar&nbsp;
-  </button>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-    [routerLink]="['/client']">
-    Voltar&nbsp;
-  </button>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-    (click)="obterStakeholders()">
-    Submeter Pedido&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
-  </button>
+<div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0">
+  <div class="row">
+    <div class="col">
+      <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+        [routerLink]="['/']">
+        Sair&nbsp;
+      </button>
+      <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
+        Cancelar&nbsp;
+      </button>
+      <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+        [routerLink]="['/client']">
+        Voltar&nbsp;
+      </button>
+      <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
+        Submeter Pedido&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
+      </button>
+    </div>
+  </div>
 </div>
