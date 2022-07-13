@@ -1,5 +1,5 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<!--form [formGroup]="form" name="form" (ngSubmit)="submit()">
+<form [formGroup]="form" name="form" (ngSubmit)="submit()">
   <div class="container">
     <div class="row">
       <form [formGroup]="form" name="form" (ngSubmit)="submit()">
@@ -157,7 +157,7 @@
                     <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
                     <div *ngIf="this.form.get('CAE1').errors"-->
 <!-- tem erros, nao pode receber -->
-<!--input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                    <input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
                              type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
                     </div>
                     <div *ngIf="!this.form.get('CAE1').errors">
@@ -415,7 +415,7 @@
                   <p class="titulo-form-simples" for="NIPCGroup">NIPC Grupo</p>
 
                   <input required minlength="2" maxlength="100" formControlName="NIPCGroup"
-                         name="NIPCGroup" type="number" id="NIPCGroup" class="form-control campo_form" [readonly]="clientExists || isAssociatedWithFranchise" />
+                         name="NIPCGroup"  type="number" id="NIPCGroup" class="form-control campo_form" [readonly]="clientExists || isAssociatedWithFranchise" />
                   <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
                     <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
                       O parâmetro acima é obrigatório.
@@ -505,11 +505,11 @@
 
           </div>
         </div>
+        </form>
 
-
-    <hr>
+    </div> <!--fecha row-->
   </div>
-</form-->
+</form>
 
 
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
