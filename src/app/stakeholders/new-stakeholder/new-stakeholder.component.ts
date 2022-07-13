@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StakeholdersComponent } from '../stakeholders.component';
@@ -21,6 +21,8 @@ import { TableinfoService } from '../../tableinfo.service';
 export class NewStakeholderComponent implements OnInit {
   public foo = 0;
   public displayValueSearch = "";
+
+  @Input() isCC: boolean;
 
   showBtnCC: boolean;
   readcard: IReadCard[] = [];
