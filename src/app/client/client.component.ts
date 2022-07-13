@@ -362,7 +362,7 @@ export class ClientComponent implements OnInit {
    //   console.log(result);
     // if (result != null) {
      //   this.newId = result;
-        this.route.navigate(['/app-new-client/', this.newId]);
+        this.route.navigate(['/app-new-client/']);
      // }
     //}, error => console.error(error));
 

@@ -157,6 +157,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
       { path: 'app-new-client/:id', component: NewClientComponent },
+      { path: 'app-new-client', component: NewClientComponent },
       { path: 'app-client-extended', component: ClientExtendedComponent },
 
       { path: 'readcardcc', component: ReadcardComponent },

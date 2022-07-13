@@ -95,7 +95,7 @@
         <p></p>
         <p></p>
         <p></p>
-        <app-barrazul-home></app-barrazul-home>
+      
         <div class="row">
           <div class="offset-1 col-10">
             <h1 class="mt-4 text-primary"><i class="fas fa-building"></i>&nbsp;Caracterização social da empresa:</h1>
@@ -219,7 +219,7 @@
           <p></p>
           <p></p>
           <p></p>
-          <app-barrazul-home></app-barrazul-home>
+          
           <div class="offset-1 col-10">
             <h1 class="mt-4 text-primary"><i class="fas fa-building"></i>&nbsp;Informação Complementar da Empresa:</h1>
           </div>
@@ -229,10 +229,7 @@
           <div class="offset-1 bg-white col-7 col-xxl-10">
             <div class="row">
               <div class="col-xxl col-6">
-                <p class="titulo-form-simples" for="franchiseName"> Nome Franchise:</p>
-                <input required minlength="2" maxlength="100" ngModel #franchiseName="ngModel" name="franchiseName"
-                  type="text" id="franchiseName" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.companyName">
+
 
                 <p class="titulo-form-simples" for="expectableAnualInvoicing">Fauração Anual Expectável: </p>
                 <input required minlength="2" maxlength="100" ngModel #expectableAnualInvoicing="ngModel"
@@ -273,33 +270,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="preferenceContacts">Selecione como preferia ser contactado:</p>
-                    <div>
-                      <input required ngModel name="preferenceContacts" type="radio" value="chamada"
-                        #preferenceContacts="ngModel" id="preferenceContacts"
-                        [(ngModel)]="addNewClient.contacts.preferredMethod">
-                      <label class="titulo-form-simples" for="chamada">Chamada</label>
-                    </div>
-                    <div>
-                      <input required ngModel name="preferenceContacts" type="radio" value="correio"
-                        #preferenceContacts="ngModel" id="preferenceContacts"
-                        [(ngModel)]="addNewClient.contacts.preferredMethod">
-                      <label class="titulo-form-simples" for="correio">Correio</label>
-                    </div>
-                    <div>
-                      <input required ngModel name="preferenceContacts" type="radio" value="email"
-                        #preferenceContacts="ngModel" id="preferenceContacts"
-                        [(ngModel)]="addNewClient.contacts.preferredMethod">
-                      <label class="titulo-form-simples" for="email">Email</label>
-                    </div>
-                    <div>
-                      <input required ngModel name="preferenceContacts" type="radio" value="SMS"
-                        #preferenceContacts="ngModel" id="preferenceContacts"
-                        [(ngModel)]="addNewClient.contacts.preferredMethod">
-                      <label class="titulo-form-simples" for="sms">SMS</label>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -308,10 +279,35 @@
             <div class="row">
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="destinationCountries">Países de Destino dos Produtos Serviços*:</p>
-                <input required minlength="2" maxlength="100" ngModel #destinationCountries="ngModel"
-                  name="destinationCountries" type="text" id="destinationCountries" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.sales.servicesOrProductsDestinations[0]">
+                *EM DESENVOLVIMENTO*
               </div>
+            </div>
+            <div class="row">
+              <div class="col-xxl col-6">
+                <p class="titulo-form-simples" for="destinationCountries">
+                  Pretende associar a empresa a Grupo/Franchise existente?
+
+                </p>
+                <div>
+                  <input required ngModel name="preferenceDocuments" type="radio" value="100digital"
+                         #preferenceDocuments="ngModel" id="preferenceDocuments"
+                         [(ngModel)]="addNewClient.documentationDeliveryMethod">
+                  <label class="titulo-form-simples" for="100digital">Sim</label>
+                </div>
+                <div>
+                  <input required ngModel name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta"
+                         #preferenceDocuments="ngModel" id="preferenceDocuments"
+                         [(ngModel)]="addNewClient.documentationDeliveryMethod">
+                  <label class="titulo-form-simples" for="documetacaoPorCarta">
+                   Não
+                  </label><br><br>
+                </div>
+              </div>
+
+                              <p class="titulo-form-simples" for="franchiseName"> Nome Franchise:</p>
+                <input required minlength="2" maxlength="100" ngModel #franchiseName="ngModel" name="franchiseName"
+                  type="text" id="franchiseName" class="form-control campo_form"
+                  [(ngModel)]="addNewClient.companyName">
             </div>
           </div>
 
