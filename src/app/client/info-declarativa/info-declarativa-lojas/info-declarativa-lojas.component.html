@@ -1,0 +1,106 @@
+<app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid mt-5 ms-0 me-0 pt-5 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 bg-white col-7 col-xxl-10">
+
+      <!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação-->
+      <div class="offset-1 bg-white align-self-center col-10 ps-3">
+        <br>
+        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa">Cliente Empresa</button>
+        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+        <button type="button" class="btn btn-primary me-4" routerLink="/info-declarativa-lojas">Lojas</button>
+        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-assinatura">Assinatura Pack</button>
+
+<div class="table-responsive">
+  <table mat-table [dataSource]="dataSource" class="table">
+    <ng-container matColumnDef="nameEstab">
+      <th mat-header-cell *matHeaderCellDef class="text-center">{{'NameStores'|translate}}</th>
+      <td mat-cell *matCellDef="let store" class="text-center"> {{store.nameEstab}} </td>
+    </ng-container>
+    <ng-container matColumnDef="activityEstab">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> {{'ActivityStores'|translate}} </th>
+      <td mat-cell *matCellDef="let store" class="text-center"> {{store.activityEstab}} </td>
+    </ng-container>
+    <ng-container matColumnDef="subActivityEstab">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> {{'SubActivityStores'|translate}} </th>
+      <td mat-cell *matCellDef="let store" class="text-center"> {{store.subActivityEstab}} </td>
+    </ng-container>
+    <ng-container matColumnDef="zoneEstab">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> {{'ZoneStores'|translate}} </th>
+      <td mat-cell *matCellDef="let store" class="text-center"> {{store.zoneEstab}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary align-middle text-center"></tr>
+    <tr mat-row
+        (click)="selectRow(row)"
+        *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[3, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+  <p class="text-primary">INFORMAÇÃO CARATERÍSTICA DO ESTABELECIMENTO</p>
+  <form [formGroup]="listValue" (ngSubmit)="submit()" name="listValue">
+      <div class="country-code-dropdown">
+        <p class="titulo-form-simples">Indicativo:*</p>
+        <select class="form-select" #cellphoneCountryCode formControlName="cellphoneCountryCode" (click)="changeListElement(cellphoneCountryCode, $event)" id="cellphoneCountryCode">
+          <option value="">Indicativo:</option>
+          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+          as
+        </select>
+        <div class="alert alert-danger" *ngIf="cellphoneNumber.value && !cellphoneCountryCode.value">
+          is required.
+        </div>
+
+      </div>
+
+
+
+      <div class="form-group titulo-form-simples">
+        <label for="phoneLandClient">Telemóvel*</label>
+        <input #cellphoneNumber name="cellphoneNumber" type="text" id="cellphoneNumber" class="form-control" formControlName="cellphoneNumber">
+        <div class="alert alert-danger" *ngIf="cellphoneNumber.touched && !cellphoneNumber.valid || cellphoneCountryCode.value && !cellphoneNumber.value">
+          is required.
+        </div>
+      </div>
+
+
+      <div class="country-code-dropdown">
+        <p class="titulo-form-simples">Indicativo:*</p>
+        <select #telephoneCountryCode class="form-select" formControlName="telephoneCountryCode" (click)="changeListElement(telephoneCountryCode, $event)" id="telephoneCountryCode">
+          <option value="">Indicativo:</option>
+          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+        </select>
+        <div class="alert alert-danger" *ngIf="telephoneNumber.value && !telephoneCountryCode.value">
+          is required.
+        </div>
+      </div>
+
+
+
+      <div class="form-group titulo-form-simples">
+        <label for="phoneLandClient">Telefone*</label>
+        <input #telephoneNumber name="telephoneNumber" type="text" id="telephoneNumber" class="form-control" formControlName="telephoneNumber">
+        <div class="alert alert-danger" *ngIf="telephoneNumber.touched && !telephoneNumber.valid || telephoneCountryCode.value && !telephoneNumber.value">
+          is required.
+        </div>
+      </div>
+
+
+
+    <div class="form-group titulo-form-simples">
+      <label for="email">Email:*</label>
+      <input name="email" type="text" id="email" class="form-control" formControlName="email" #email>
+      <div class="alert alert-danger" *ngIf="this.listValue.get('email').touched && !this.listValue.get('email').valid">
+        <div *ngIf="this.listValue.get('email').errors && this.listValue.get('email').errors?.['required']">
+          O parâmetro acima é obrigatório.
+        </div>
+      </div>
+    </div>
+
+    <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" [disabled]="!listValue.valid">Seguinte</button>
+  </form>
+</div>
+</div>
+</div>

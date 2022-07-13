@@ -50,6 +50,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   dataSource = new MatTableDataSource<IStakeholders>(this.stakeholders);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  selectedStakeholder = {
+    
+  } as IStakeholders;
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -62,6 +66,24 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }, error => console.error(error));
 
     this.callingCodeStakeholder = tableInfo.GetAllCountries();
+
+    this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.formContactos.controls["phoneNumber"].setValidators([Validators.required]);
+      } else {
+        this.formContactos.controls["phoneNumber"].clearValidators();
+      }
+      this.formContactos.controls["phoneNumber"].updateValueAndValidity();
+    });
+
+    this.formContactos.controls["phoneNumber"].valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.formContactos.controls["countryCode"].setValidators([Validators.required]);
+      } else {
+        this.formContactos.controls["countryCode"].clearValidators();
+      }
+      this.formContactos.controls["countryCode"].updateValueAndValidity();
+    });
   }
 
   ngOnInit(): void {
@@ -90,10 +112,14 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   submit(e) {
     console.log(e);
+    this.newStakeholder.email = this.formContactos.value.email;
+    this.newStakeholder.phone.countryCode.code = this.formContactos.value.countryCode;
+    this.newStakeholder.phone.phoneNumber = this.formContactos.value.phoneNumber;
+    this.route.navigate(['/info-declarativa-lojas']);
   }
 
-  clickRow(id: number) {
-    console.log('Carregou no stakeholder com o id: ' + id);
+  clickRow(stake: any) {
+    this.selectedStakeholder = stake;
   }
 
 }

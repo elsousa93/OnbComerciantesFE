@@ -15,18 +15,20 @@ export class ComprovativosService {
     this.API_URL = baseUrl;
    }
 
-  uploadFile(file: File, id: any) {
+  uploadFile(file: File, id: any, compClient: any) {
     const formData: FormData = new FormData();
     formData.append('image', file);
-
-    return this.http.put( this.API_URL + `ServicesComprovativos/`+ id, formData)
+    return this.http.put( this.API_URL + `ServicesComprovativos/`+ id + "/" + compClient, formData)
       .pipe(map(this.httpUtil.extrairDados))
       .pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(10))),
         catchError(this.httpUtil.processarErros));
   }
 
-  delFile(id: any){
-    this.http.delete(this.API_URL + `ServicesComprovativos/ServicesComprovativos/`+  id).pipe(take(1))
-  }
+  delFile(id: any, clientId:any, filename:any){
+    return this.http.delete(this.API_URL + `ServicesComprovativos/`+ id + "/" + clientId + "/" + filename).pipe(map(this.httpUtil.extrairDados))
+    .pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(1))),
+      catchError(this.httpUtil.processarErros));
+    }
 }

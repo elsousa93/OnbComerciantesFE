@@ -140,10 +140,10 @@ export class UpdateStakeholderComponent implements OnInit {
     
     this.formUpdateStakeholder = this.fb.group({
       fullName: this.newStake.fullName,
-      documentType: this.newStake.identificationDocument.type,
-      documentCountry: this.newStake.identificationDocument.country.code,
-      identificationDocumentId: this.newStake.identificationDocument.number,
-      identificationDocumentValidUntil: this.newStake.identificationDocument.expirationDate,
+      documentType: this.newStake.identificationDocument.identificationDocumentType,
+      documentCountry: this.newStake.identificationDocument.identificationDocumentCountry,
+      identificationDocumentId: this.newStake.identificationDocument.identificationDocumentNumber,
+      identificationDocumentValidUntil: this.newStake.identificationDocument.identificationDocumentExpirationDate,
       fiscalId: this.newStake.fiscalId,
       //roleStakeholder: this.newStake.role,    NÃO SEI QUAL È ESTE CAMPO
       address: this.newStake.fiscalAddress.address,
@@ -161,10 +161,10 @@ export class UpdateStakeholderComponent implements OnInit {
     }
    
     this.newStake.fullName = formUpdateStakeholder.fullName;
-    this.newStake.identificationDocument.type = formUpdateStakeholder.documentType;
-    this.newStake.identificationDocument.country.code = formUpdateStakeholder.documentCountry;
-    this.newStake.identificationDocument.number = formUpdateStakeholder.identificationDocumentId;
-    this.newStake.identificationDocument.expirationDate = formUpdateStakeholder.identificationDocumentValidUntil;
+    this.newStake.identificationDocument.identificationDocumentType = formUpdateStakeholder.documentType;
+    this.newStake.identificationDocument.identificationDocumentCountry.code = formUpdateStakeholder.documentCountry;
+    this.newStake.identificationDocument.identificationDocumentNumber = formUpdateStakeholder.identificationDocumentId;
+    this.newStake.identificationDocument.identificationDocumentExpirationDate = formUpdateStakeholder.identificationDocumentValidUntil;
     this.newStake.fiscalId = formUpdateStakeholder.fiscalId;
     //this.newStake.role = formUpdateStakeholder.roleStakeholder;    NAO SEI QUAL É ESTE CAMPO
     this.newStake.fiscalAddress.address = formUpdateStakeholder.streetAdressStakeholder;

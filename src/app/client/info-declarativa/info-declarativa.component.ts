@@ -6,7 +6,7 @@ import { codes } from './indicativo';
 import { EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription, tap } from 'rxjs';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 
@@ -99,9 +99,77 @@ export class InfoDeclarativaComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.ngOnInit();
-    this.updateData(true, 6);
-    this.internationalCallingCodes = tableInfo.GetAllCountries();
+    this.updateData(false, 6);
 
+    this.tableInfo.GetAllCountries().subscribe(result => {
+      this.internationalCallingCodes = result;
+    });
+
+    this.listValue = this.formBuilder.group({
+      comercialName: new FormControl('', Validators.required),
+      phone1CountryCode: new FormControl(null),
+      phone1PhoneNumber: new FormControl(null),
+      phone2CountryCode: new FormControl(''),
+      phone2PhoneNumber: new FormControl(''),
+      faxCountryCode: new FormControl(''),
+      faxPhoneNumber: new FormControl(''),
+      email: new FormControl(this.newClient.contacts.email, Validators.required),
+      billingEmail: new FormControl(this.newClient.billingEmail)
+    });
+
+    this.listValue.get("phone1CountryCode").valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.listValue.controls["phone1PhoneNumber"].setValidators([Validators.required]);  
+      } else {
+        this.listValue.controls["phone1PhoneNumber"].clearValidators();
+      }
+      this.listValue.controls["phone1PhoneNumber"].updateValueAndValidity();
+    });
+
+    this.listValue.get("phone1PhoneNumber").valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.listValue.controls["phone1CountryCode"].setValidators([Validators.required]);
+      } else {
+        this.listValue.controls["phone1CountryCode"].clearValidators();
+      }
+      this.listValue.controls["phone1CountryCode"].updateValueAndValidity();
+    });
+
+    this.listValue.get("phone2CountryCode").valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.listValue.controls["phone2PhoneNumber"].setValidators([Validators.required]);
+      } else {
+        this.listValue.controls["phone2PhoneNumber"].clearValidators();
+      }
+      this.listValue.controls["phone2PhoneNumber"].updateValueAndValidity();
+    });
+
+    this.listValue.get("phone2PhoneNumber").valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.listValue.controls["phone2CountryCode"].setValidators([Validators.required]);
+      } else {
+        this.listValue.controls["phone2CountryCode"].clearValidators();
+      }
+      this.listValue.controls["phone2CountryCode"].updateValueAndValidity();
+    });
+
+    this.listValue.get("faxCountryCode").valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.listValue.controls["faxPhoneNumber"].setValidators([Validators.required]);
+      } else {
+        this.listValue.controls["faxPhoneNumber"].clearValidators();
+      }
+      this.listValue.controls["faxPhoneNumber"].updateValueAndValidity();
+    });
+
+    this.listValue.get("faxPhoneNumber").valueChanges.subscribe(data => {
+      if (data !== '') {
+        this.listValue.controls["faxCountryCode"].setValidators([Validators.required]);
+      } else {
+        this.listValue.controls["faxCountryCode"].clearValidators();
+      }
+      this.listValue.controls["faxCountryCode"].updateValueAndValidity();
+    });
 
    /** if (this.newClient.id != 0) {
       http.get<Client>(baseUrl + 'beclient/GetClientById/' + this.newClient.id).subscribe(result => {
@@ -112,11 +180,6 @@ export class InfoDeclarativaComponent implements OnInit {
     } **/
 }
   ngOnInit(): void {
-    this.listValue = this.formBuilder.group({
-      phone1CountryCode: [''],
-      phone2CountryCode: [''],
-      faxCountryCode: [''],
-    })
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
@@ -135,12 +198,18 @@ export class InfoDeclarativaComponent implements OnInit {
     console.log(e.target.id);
   }
 
-  submit(e) {
-    console.log(e);
+  submit() {
+    this.newClient.companyName = this.listValue.get('comercialName').value;
     this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1CountryCode').value;
+    this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1PhoneNumber').value;
     this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2CountryCode').value;
+    this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2PhoneNumber').value;
+    this.newClient.contacts.email = this.listValue.get('email').value;
     this.newClient.contacts.fax.countryCode = this.listValue.get('faxCountryCode').value;
-    console.log(this.newClient);
+    this.newClient.contacts.fax.phoneNumber = this.listValue.get('faxPhoneNumber').value;
+    this.newClient.billingEmail = this.listValue.get('billingEmail').value;
+
+    this.router.navigate(['/info-declarativa-stakeholder']);
   }
 
   //função que altera o valor do map e da currentPage

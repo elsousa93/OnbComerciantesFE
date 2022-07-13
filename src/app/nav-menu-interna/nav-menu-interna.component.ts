@@ -59,42 +59,66 @@ export class NavMenuInternaComponent implements OnInit {
 
   setListItem(page: number) {
     if (page == this.currentPage) {
-      return 'text-center align-self-start text-xxl-center text-md-center';
+      return 'text-center text-lg-center text-center align-self-start mt-4'; //ativo -> atualizado
     } else {
       if (this.map.get(page)) {
-        return 'text-xxl-center text-lg-center text-md-center align-self-start';
+        return 'text-center align-self-start align-self-center mt-5'; //se já foi visitado e foi concluido ->atualizado
       }
       if (this.map.get(page) == false) {
-        return 'text-xxl-center text-lg-center text-md-center align-self-start align-self-xxl-center';
+        return 'text-center align-self-start align-self-center mt-5'; // se foi visitado, mas n foi concluido
       }
-      return 'text-center align-self-start align-self-xxl-center mt-xxl-3';
+      return 'text-center align-self-start align-self-center mt-5'; //ainda nao foi visitado -> atualizado
     }
   }
 
-  setI(page: number) {
-    if (page == this.currentPage) {
-      return 'fas fa-circle icone-menu-secundario';
-    } else {
-      if (this.map.get(page)) { //value do map (undefined, true ou false)
-        return 'far fa-check-circle icone-menu-secundario'; // por a aparecer o certo 
-      } else {
-        if (this.map.get(page) == false) {
-          return 'fas fa-exclamation-triangle icone-menu-secundario-incompleto'; //laranja
-        }
-        return 'far fa-circle icone-menu-secundario-inactivo';  //desativo
-      }
-    }
-  }
+  //setI(page: number) {
+  //  if (page == this.currentPage) {
+  //    return 'fas fa-circle icone-menu-secundario';
+  //  } else {
+  //    if (this.map.get(page)) { //value do map (undefined, true ou false)
+  //      return 'far fa-check-circle icone-menu-secundario'; // por a aparecer o certo 
+  //    } else {
+  //      if (this.map.get(page) == false) {
+  //        return 'fas fa-exclamation-triangle icone-menu-secundario-incompleto'; //laranja
+  //      }
+  //      return 'far fa-circle icone-menu-secundario-inactivo';  //desativo
+  //    }
+  //  }
+  //}
 
   setAnchor(page: number) {
-    if (page == this.currentPage || this.map.get(page)) {
-      return 'text-white texto-menu-secundario';
+    if (page == this.currentPage) {
+      return 'active text-white texto-menu-secundario' ; // página atual -> atualizado
     } else {
-      if (this.map.get(page) == false) {
-        return 'texto-menu-secundario-incompleto text-danger';
+      if (this.map.get(page)) {
+        return 'texto-menu-secundario text-success'; //pagina visitada e concluida -> atualizado
       }
-      return 'texto-menu-secundario text-success';
+      if (this.map.get(page) == false) {
+        return 'texto-menu-secundario text-danger'; //pagina visitada e quando esta incompleta    -> deixo o inativo ou deixo o normal
+      }
+      return 'texto-menu-secundario-inativo text-success'; // ainda nao foi visitada -> atualizado
     }
+  }
+
+  setImage(page: number) {
+    if (page == this.currentPage) {
+      return 'icone-menu-secundario'; //caso seja a página atual
+    }
+  }
+
+  setImageSrc(page: number) {
+    if (page == this.currentPage) {
+      return 'assets/images/circle-solid.svg';
+    } else {
+      if (this.map.get(page)) {
+        return 'assets/images/circle-check-regular.svg'; //caso já tenha sido visitado e foi concluido
+      }
+      if (this.map.get(page) == false) {
+        return 'assets/images/triangle-exclamation-solid.svg'; //caso já tenha sido visitado mas ainda n foi concluido
+      }
+      return 'assets/images/circle-regular.svg'; //caso ainda n tenha sido visitado;
+    }
+
   }
 
   onClick(e) {

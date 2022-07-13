@@ -41,7 +41,7 @@ export class StoreComponent implements AfterViewInit{
       this.stores = result;
       this.dataSource.data = this.stores;
     }, error => console.error(error));
-    this.updateData(false, 4);
+    this.updateData(false, 3);
   }
   
   ngOnInit(): void {
@@ -64,7 +64,7 @@ export class StoreComponent implements AfterViewInit{
 
   onCickContinue() {
     this.updateData(true, this.currentPage);
-    this.route.navigate(['commercial-offert-list']);
+    this.route.navigate(['/comprovativos']);
   }
 
   navigateTo(id: number) {

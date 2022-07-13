@@ -39,12 +39,12 @@ export class PepComponent implements OnInit {
     pepDetails: {
       fiscalId: "",
       identificationDocument: {
-        type: "",
-        number: "",
-        country: {
+        identificationDocumentType: "",
+        identificationDocumentNumber: "",
+        identificationDocumentCountry: {
           code: ""
         },
-        expirationDate: ""
+        identificationDocumentExpirationDate: ""
       },
       fullName: "",
       contactName: "",
@@ -135,10 +135,10 @@ export class PepComponent implements OnInit {
       this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
       this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
       this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
-      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
-      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
-      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
-      this.newPep.pepDetails.identificationDocument.country.code = this.form.value.relatedPep_idDocumentCountry;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentNumber = this.form.value.relatedPep_idNumber;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentType = this.form.value.relatedPep_idDocumentType;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentExpirationDate = this.form.value.relatedPep_idDocumentValidity;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentCountry.code = this.form.value.relatedPep_idDocumentCountry;
       this.newPep.pepDetails.address.address = this.form.value.relatedPep_address;
       this.newPep.pepDetails.address.locality = this.form.value.relatedPep_addressLocation;
       this.newPep.pepDetails.address.postalCode = this.form.value.relatedPep_postalCode;
@@ -155,10 +155,10 @@ export class PepComponent implements OnInit {
       this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
       this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
       this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
-      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
-      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
-      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
-      this.newPep.pepDetails.identificationDocument.country.code = this.form.value.relatedPep_idDocumentCountry;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentNumber = this.form.value.relatedPep_idNumber;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentType = this.form.value.relatedPep_idDocumentType;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentExpirationDate = this.form.value.relatedPep_idDocumentValidity;
+      this.newPep.pepDetails.identificationDocument.identificationDocumentCountry.code = this.form.value.relatedPep_idDocumentCountry;
       this.newPep.pepDetails.address.address = this.form.value.relatedPep_address;
       this.newPep.pepDetails.address.locality = this.form.value.relatedPep_addressLocation;
       this.newPep.pepDetails.address.postalCode = this.form.value.relatedPep_postalCode;
@@ -180,6 +180,8 @@ export class PepComponent implements OnInit {
         console.log("Enviado Pep");
         console.log(result);
       }, error => console.error(error));
+
+    this.route.navigate(['/info-declarativa-lojas']);
   }
 
   //Altera os valores das variaveis de acordo com o que é selecionado em cada checkbox

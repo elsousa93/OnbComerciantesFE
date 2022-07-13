@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StakeholdersComponent } from '../stakeholders.component';
@@ -22,9 +22,11 @@ export class NewStakeholderComponent implements OnInit {
   public foo = 0;
   public displayValueSearch = "";
 
-  showBtnCC: boolean = false;
+  @Input() isCC: boolean;
+
+  showBtnCC: boolean;
   readcard: IReadCard[] = [];
-  showNoCC: boolean = true;
+  showNoCC: boolean = false;
   showYesCC: boolean = false;
 
   // Variables that are not on YAML

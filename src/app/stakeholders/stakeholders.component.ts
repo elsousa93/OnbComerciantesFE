@@ -2,7 +2,8 @@ import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IStakeholders } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
-import { docTypeList } from './docType';
+import { docTypeListP } from './docType';
+import { docTypeListE } from './docType';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -20,15 +21,29 @@ import { DataService } from '../nav-menu-interna/data.service';
 export class StakeholdersComponent implements OnInit {
 
 
-  newStake: IStakeholders = { } as IStakeholders
+  newStake: IStakeholders = { 
+    "fiscalId": "",
+    "identificationDocument": {
+      "identificationDocumentType": "",
+      "identificationDocumentNumber": "",
+      "identificationDocumentCountry": {
+        "code": ""
+      },
+      "identificationDocumentExpirationDate": "",
+    },
+    "fullName": "",
+    "contactName": "",
+    "shortName": ""
+  } as IStakeholders
   
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
   stakeholderType?: string = "";
 
   //Field "doc type" for the search
-  ListDocType = docTypeList;
-  docType?: string = "";
+  ListDocTypeP = docTypeListP;
+  ListDocTypeE = docTypeListE;
+  documentType?: string = "";
 
 
   ngForm!: FormGroup;
@@ -51,6 +66,10 @@ export class StakeholdersComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
+  public isParticular: boolean=false;
+  public isCC: boolean = false;
+  public isNoDataReadable: boolean;
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder) {
@@ -61,7 +80,7 @@ export class StakeholdersComponent implements OnInit {
         console.log(result);
         this.stakes = result;
       }, error => console.error(error));
-    this.updateData(true, 3);
+    this.updateData(false, 2);
 
 
   }
@@ -71,6 +90,10 @@ export class StakeholdersComponent implements OnInit {
     this.map.set(currentPage, value);
     this.data.changeData(this.map);
     this.data.changeCurrentPage(currentPage);
+  }
+
+  changeDataReadable(readable: boolean){
+    this.isNoDataReadable=readable;
   }
  
   ngOnInit(): void {
@@ -91,8 +114,9 @@ export class StakeholdersComponent implements OnInit {
       stakeholderType: [''],
       docType: [''],
       docNumber: [''],
-      flagRecolhaEletronica: [''],
+      flagAutCol: [''],
       identificationDocumentId: [''],
+      documentType: ['']
     });
   }
 
@@ -122,15 +146,23 @@ export class StakeholdersComponent implements OnInit {
   }
 
   changeListElementStakeType(stakeType: string, e: any) {
-    console.log(e.target.value)
     this.stakeholderType = e.target.value;
-
+    if (this.stakeholderType === 'Particular'){
+      this.isParticular = true;
+    } else {
+      this.isParticular=false;
+    }
   }
   changeListElementDocType(docType: string, e: any) {
-    console.log(e.target.value)
-    this.docType = e.target.value;
-    this.newStake.identificationDocument.type = this.docType;
-
+    this.documentType = e.target.value;
+    
+    this.newStake.identificationDocument.identificationDocumentType = this.documentType;
+    
+    if (this.documentType === 'Cartão do Cidadão') {
+      this.isCC = true;
+    } else {
+      this.isCC = false;
+    }
   }
 
   toggleShow(stake: IStakeholders) {
