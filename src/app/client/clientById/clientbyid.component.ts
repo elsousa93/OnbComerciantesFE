@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
@@ -21,7 +21,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 })
 
 export class ClientByIdComponent implements OnInit {
-
+  @Input() tipologia: string;
   @ViewChild('searchInput') input: ElementRef;
 
   /*Variable declaration*/
@@ -131,12 +131,11 @@ export class ClientByIdComponent implements OnInit {
     };
   tempClient: any;
 
-  tipologia: string;
 
   clientExists: boolean = true;
   crcFound: boolean = false;
 
-  isCommercialSociety: boolean = true;
+  isCommercialSociety: boolean = null;
   isCompany: boolean;
   Countries = countriesAndContinents;
   Continents = continents;
@@ -300,7 +299,7 @@ export class ClientByIdComponent implements OnInit {
         this.form.get('socialDenomination').setValidators(Validators.required);
         this.form.get('natJuridicaN1').setValidators([Validators.required]);        
         //this.form.addControl('socialDenomination', new FormControl('', Validators.required));
-      //  this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
+        //this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
       }
 
     })
@@ -336,7 +335,8 @@ export class ClientByIdComponent implements OnInit {
     //});
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService) {
     this.ngOnInit();
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
       http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
@@ -344,46 +344,40 @@ export class ClientByIdComponent implements OnInit {
         this.client = result;
       }, error => console.error(error));
     }
+    //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       console.log(this.tipologia);
     }
-
     this.initializeDefaultClient();
-
     
     //Chamada à API para obter as naturezas juridicas
     this.tableInfo.GetAllLegalNatures().subscribe(result => {
       this.legalNatureList = result;
-      console.log("JA FOI BUSCAR AS LEGAL NATURES");
+      console.log("FETCH LEGAL NATURES");
     }, error => console.log(error));
 
-    //Chamada à API para
+    //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
-      console.log("JA FOI BUSCAR OS PAISES");
+      console.log("FETCH PAISES");
     }, error => console.log(error));
 
     //Chamada à API para obter a lista de CAEs
     this.tableInfo.GetAllCAEs().subscribe(result => {
       this.CAEsList = result;
-      console.log("JA FOI BUSCAR OS CAES");
+      console.log("FETCH OS CAEs");
     });
-
     this.createContinentsList();
 
     //Chamada à API para obter a lista de CAEs
     this.tableInfo.GetAllCAEs().subscribe(result => {
       this.CAEsList = result;
     });
-
     this.getFormValidationErrors();
-
-
     //this.createContinentsList();
-    
-  }
+  } //fim do construtor
 
   ngOnInit(): void {
     this.clientId = String(this.router.snapshot.params['id']);
@@ -410,7 +404,10 @@ export class ClientByIdComponent implements OnInit {
       this.isCommercialSociety = false
     }
   }
-
+  getCommercialSociety() {
+    return this.isCommercialSociety;
+  }
+ 
   continentSelected(event) {
     if (this.checkedContinents.indexOf(event.target.id) > -1) {
       var index = this.checkedContinents.indexOf(event.target.id);
@@ -482,15 +479,18 @@ export class ClientByIdComponent implements OnInit {
 
   searchByCRC() {
     var crcInserted = this.form.get('crcCode').value;
-    console.log(this.form.get('crcCode'));
+    console.log("codigo CRC:" , this.form.get('crcCode').value);
     console.log(crcInserted);
 
     if (crcInserted === '123') {
       this.crcFound = true;
     } else {
       this.crcFound = false;
-      console.log("nao encontrado");
+      console.log("--");
     }
+  }
+  getCrcCode() {
+    return this.form.get('crcCode').value;
   }
 
   submit() {
@@ -537,7 +537,6 @@ export class ClientByIdComponent implements OnInit {
 
     this.updateData(true, 1);
     this.route.navigate(["/stakeholders"]);
-
   }
 
   redirectBeginningClient() {
@@ -550,7 +549,6 @@ export class ClientByIdComponent implements OnInit {
 
   _filter(value: string): CountryInformation[] { 
     const filterValue = value.toLowerCase();
-
     return this.countryList.filter(option => option.description.toLowerCase().includes(filterValue));
   }
 
