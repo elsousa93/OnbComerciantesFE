@@ -234,7 +234,7 @@ export class SidenavPresencialComponent implements OnInit {
           "type": "",
           "number": "",
           "country": "",
-          "expirationDate": ""
+          "expirationDate": "2023-06-29T17:52:08.337Z"
         },
         "fullName": "",
         "contactName": "",
@@ -294,7 +294,7 @@ export class SidenavPresencialComponent implements OnInit {
           "type": "",
           "number": "",
           "country": "",
-          "expirationDate": ""
+          "expirationDate": "2023-06-29T17:52:08.337Z"
         },
         "fullName": "",
         "contactName": "",
@@ -325,7 +325,7 @@ export class SidenavPresencialComponent implements OnInit {
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private submissionService: SubmissionService,
-      private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService) {
+    private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService ) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -334,6 +334,32 @@ export class SidenavPresencialComponent implements OnInit {
   ngOnInit(): void {
     this.userPermissions = getMenuPermissions(UserPermissions.DO);
     console.log("teste api");
+
+    this.stakeholderService.GetAllStakeholdersFromSubmission("987a287a-ebcd-4c8b-8e6f-73a8d93517bf").subscribe(d => {
+      console.log("stakeholders from submission");
+      console.log(d);
+    });
+
+    this.stakeholderService.GetStakeholderFromSubmission("987a287a-ebcd-4c8b-8e6f-73a8d93517bf", "22195900002431").subscribe(d => {
+      console.log("one stakeholder from submission");
+      console.log(d);
+    });
+
+    this.stakeholderService.CreateNewStakeholder("987a287a-ebcd-4c8b-8e6f-73a8d93517bf", this.stakeholderTeste).subscribe(d => {
+      console.log("criar stakeholder para uma submissao");
+      console.log(d);
+    });
+
+    this.stakeholderService.UpdateStakeholder("987a287a-ebcd-4c8b-8e6f-73a8d93517bf", "22195900002431", this.stakeholderPutTeste).subscribe(d => {
+      console.log("update stakeholder from submission");
+      console.log(d);
+    });
+
+    //this.stakeholderService.DeleteStakeholder("987a287a-ebcd-4c8b-8e6f-73a8d93517bf", "22195900000031").subscribe(d => {
+    //  console.log("delete de um stakeholder");
+    //  console.log(d);
+    //});
+
     this.submissionService.InsertSubmission(this.submissionTest).subscribe(d => {
       console.log("inserir");
       console.log(d);
@@ -364,31 +390,6 @@ export class SidenavPresencialComponent implements OnInit {
       console.log(d);
     });
   //  alert(this.isAutoHide);
-
-    this.stakeholderService.GetAllStakeholdersFromSubmission("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(d => {
-      console.log("stakeholders from submission");
-      console.log(d);
-    });
-
-    this.stakeholderService.GetStakeholderFromSubmission("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", "232012610").subscribe(d => {
-      console.log("one stakeholder from submission");
-      console.log(d);
-    });
-
-    this.stakeholderService.CreateNewStakeholder("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", this.stakeholderTeste).subscribe(d => {
-      console.log("criar stakeholder para uma submissao");
-      console.log(d);
-    });
-
-    this.stakeholderService.UpdateStakeholder("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", "232012610", this.stakeholderPutTeste).subscribe(d => {
-      console.log("update stakeholder from submission");
-      console.log(d);
-    });
-
-    this.stakeholderService.DeleteStakeholder("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", "232012610").subscribe(d => {
-      console.log("delete de um stakeholder");
-      console.log(d);
-    });
 
     this.tableInfo.GetAllCAEs().subscribe(d => {
       console.log("get all caes");
@@ -438,6 +439,18 @@ export class SidenavPresencialComponent implements OnInit {
 
     this.tableInfo.GetCountryById("PT").subscribe(d => {
       console.log("get country by code");
+      console.log(d);
+    });
+    this.clientService.SearchClientByQuery("000000001", "search", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(d => {
+      console.log("client by query ");
+      console.log(d);
+    });
+    this.clientService.getClientByID("22195900002451", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(d => {
+      console.log("client by id OUTBOUND");
+      console.log(d);
+    });
+    this.clientService.createClient(this.clientEditTest, "fQkRbjO+7kGqtbjwnDMAag==", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(d => {
+      console.log("create client OUTBOUND");
       console.log(d);
     });
   }

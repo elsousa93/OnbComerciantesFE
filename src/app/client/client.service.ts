@@ -9,7 +9,7 @@ import { Client } from './Client.interface';
 })
 export class ClientService {
 
-  urlOutbound: string = "http://localhost/Mockaco/";
+  urlOutbound: string = "Mockaco/";
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -100,6 +100,8 @@ export class ClientService {
 
   updateClient(client: Client, processReferenceID: string, clientID: string, messageID: string, AcquiringUserID: string, AcquiringProcessID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 
+    var treatedProcessNumber = encodeURIComponent(AcquiringProcessID);
+
     var URI = this.urlOutbound + "v1/process/" + processReferenceID + "/merchant/" + clientID;
 
     var data = new Date();
@@ -110,7 +112,7 @@ export class ClientService {
         'Message-Id': messageID,
         'Date': data.toISOString(),
         'X-Acquiring-UserId': AcquiringUserID,
-        'X-Acquiring-ProcessId': AcquiringProcessID
+        'X-Acquiring-ProcessId': treatedProcessNumber
       }),
     }
 

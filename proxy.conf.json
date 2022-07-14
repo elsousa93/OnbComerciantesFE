@@ -4,9 +4,18 @@
     "secure": false,
     "changeOrigin": true
   },
-  "/v19/*": {
-    "target": "http://localhost:11000",
+  "/Mockaco/*": {
+    "target": "http://localhost/Mockaco/",
     "secure": false,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/Mockaco": ""
+    }
+  },
+  "/DOCAS/*": {
+    "target": "http://localhost:11000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }
