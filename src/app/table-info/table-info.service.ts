@@ -9,11 +9,11 @@ export class TableInfoService {
 
   constructor(private http: HttpClient, @Inject('ACQUIRING_URL') private acquiringUrl: string) { }
 
-  GetAllCountries(): any {
+  GetAllCountries(): any{
     return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country');
   }
 
-  GetCountryById(code: string): any {
+  GetCountryById(code: string){
     return this.http.get<CountryInformation>(this.acquiringUrl + 'country/' + code);
   }
 
@@ -21,7 +21,7 @@ export class TableInfoService {
     return this.http.get<EconomicActivityInformation[]>(this.acquiringUrl + 'merchant/economicactivity');
   }
 
-  GetCAEByCode(code: string): any {
+  GetCAEByCode(code: string){
     return this.http.get<EconomicActivityInformation>(this.acquiringUrl + 'merchant/economicactivity/' + code);
   }
 

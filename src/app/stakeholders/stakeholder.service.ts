@@ -1,8 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../nav-menu-interna/data.service';
 import { IStakeholders } from './IStakeholders.interface';
 
 @Injectable({
@@ -10,16 +7,14 @@ import { IStakeholders } from './IStakeholders.interface';
 })
 export class StakeholderService {
 
-  constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('ACQUIRING_URL')
-    private baseUrl: string, private route: Router,
-    private data: DataService, private fb: FormBuilder  ) { }
+  constructor(private http: HttpClient, @Inject('ACQUIRING_URL')
+    private baseUrl: string) { }
 
   GetAllStakeholdersFromSubmission(submissionId: string): any {
     return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');
   }
 
-  GetStakeholderFromSubmission(submissionId: string, stakeholderId): any {
+  GetStakeholderFromSubmission(submissionId: string, stakeholderId: string): any {
     return this.http.get<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
   }
 
