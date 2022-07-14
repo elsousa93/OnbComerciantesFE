@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { docType, docTypeENI } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
+import { ClientService } from './client.service';
 
 @Component({
   selector: 'app-client',
@@ -32,7 +33,11 @@ export class ClientComponent implements OnInit {
 
   hasClient: boolean = true;
   hasNewClient: boolean = true;
-  showWarning: boolean = true; //sem backend: true
+
+  //Pesquisa 
+  showFoundClient: boolean = false;     //sem backend: true // antigo nome: showWarning
+  idToSeacrh: number;
+
   showButtons: boolean = false;
   showSeguinte: boolean = false;
   showENI: boolean = false;
@@ -134,10 +139,8 @@ export class ClientComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router,
-    private data: DataService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
+  private baseUrl: string, private route: Router, private data: DataService, private clientService: ClientService) {
     this.ngOnInit();
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
@@ -153,6 +156,8 @@ export class ClientComponent implements OnInit {
   //TEMPORARIO!!!!
   initializeDefaultClient() {
     this.tempClient = {
+      "id": "22181900000011",
+      "merchantId": "22181900000021",
       "fiscalId": "585597928",
       "companyName": "SILVESTRE LIMITADA",
       "commercialName": "CAFE CENTRAL",
@@ -237,14 +242,14 @@ export class ClientComponent implements OnInit {
       if (result == null) {
         this.newClient.clientId = "0";
         this.clientIdNew = result;
-        this.toggleShowWarning(false);
+        this.toggleShowFoundClient(false);
         this.errorInput = "form-control campo_form_coment_error";
         this.resultError = "*  Não existe Comerciante com esse número.";
         this.errorMsg = "titulo-form-error";
       } else {
         this.newClient = result;
         this.clientIdNew = this.newClient.clientId;
-        this.toggleShowWarning(true);
+        this.toggleShowFoundClient(true);
         this.hasClient == true;
 
         this.errorInput = "form-control campo_form_coment";
@@ -256,17 +261,36 @@ export class ClientComponent implements OnInit {
 
   }
 
+  /**
+   * SIMULAÇÃO da Pesquisa -- Enquanto não temos API
+   * Chamar esta função no botão de Pesquisar
+   * 
+   **/
+  onSearchSimulation(idToSeacrh: number) {
+    //No New SubmissionResponse, este é o valor do merchant.id
+    if (idToSeacrh == 22181900000011) {
+     //Cliente Encontrado
+      console.log("Cliente Encontrado");
+      this.showFoundClient = true;
+
+    }
+    if (!(idToSeacrh==22181900000011)) {
+      this.showFoundClient = false;
+      this.resultError = "*  Não existe Comerciante com esse número.";
+    }
+  }
+
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
 
-  toggleShowWarning(value: Boolean) {
+  toggleShowFoundClient(value: Boolean) {
     //There is no client
     if (value == true) {
-      this.showWarning = true
+      this.showFoundClient = true
       this.hasNewClient = true;
     } else {
-      this.showWarning = false;
+      this.showFoundClient = false;
       this.hasNewClient = false;
       this.showSeguinte = false;
     }
@@ -289,7 +313,7 @@ export class ClientComponent implements OnInit {
 
   changeListElementDocType(docType, e: any) {
     this.activateButtons(true);
-    this.toggleShowWarning(false);
+    this.toggleShowFoundClient(false);
     this.docType = e.target.value;
   }
 
@@ -312,12 +336,12 @@ export class ClientComponent implements OnInit {
     if (id == true) {
       this.showButtons = true;
       this.showENI = true;
-      this.showWarning = false;
+      this.showFoundClient = false;
       this.ccInfo = null;
     } else {
       this.showButtons = false;
       this.showENI = false;
-      this.showWarning = false;
+      this.showFoundClient = false;
       this.ccInfo = null;
     }
 

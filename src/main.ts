@@ -9,8 +9,13 @@ import { environment } from './environments/environment';
 
 export function getBaseUrl() {
   //var baseUrl = 'http://localhost:12000/BackendPortal/';
-  var baseUrl = 'http://localhost:12000/AcquiringAPI/api'
+  var baseUrl = 'http://localhost:12000/AcquiringAPI/api/';
   return baseUrl;
+}
+
+export function getDOCASUrl() {
+  var DOCASUrl = 'http://localhost:11000/api/';
+  return DOCASUrl;
 }
 
 export function getPostmanUrl() {
@@ -20,6 +25,7 @@ export function getPostmanUrl() {
 
 const providers = [
   { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
+  { provide: 'DOCAS_URL', useFactory: getDOCASUrl, deps: [] },
   { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] }
 ];
 
