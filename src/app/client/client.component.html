@@ -198,11 +198,10 @@
 </div-->
 
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row ms-0 me-0 ps-0 pe-0">
+  <div class="row">
     <div class="bg-primary col-12 mt-0 pt-0 ps-0 pe-0 shadow-none">
     </div>
-    <div class="row">
-      <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <div class="offset-1 bg-white align-self-center col-10 ps-3">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span
             class="navbar-text text-light">
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
@@ -213,33 +212,32 @@
           </span>
         </nav>
       </div>
-    </div>
     <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0">
       <h2 class="text-primary mt-5 ps-3"><span class="material-symbols-rounded icon-titulos m-align">
-          <img src="assets/images/group_add.svg" width="70">
+        <img src="assets/images/group_add_blue.svg" class="img_add">
         </span>&nbsp;IDENTIFICAÇÃO DO CLIENTE EMPRESA<br></h2>
       <p class="titul campo_obrigatrio">* campo obrigatório</p>
 
       <div *ngIf="showButtons">
-        <div class="row">
-          <div class="col-8 ms-3 me-3 ps-3 pe-3">  <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
-            <p class="titulo-form-simples">QUAL A TIPOLOGIA DO COMERCIANTE?</p>
-            <div class="row">
-              <div class="col-md-6">     <!--Colocar botões lado a lado -->
+        <div class="row ms-0 me-0">
+          <div class="col-9 ms-0 me-0 ps-0 pe-0">  <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
+            <p class="titulo-form-simples">QUAL A TIPOLOGIA DO CLIENTE EMPRESA?</p>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
-                         #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
-                  <label class="form-check-label radio">EMPRESA</label>
+                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)"/>
+                  <label class="form-check-label radio pe-5" for="radio3">EMPRESA</label>
                 </div>
-              </div>
-              <div class="col-md-6">     <!--Colocar botões lado a lado -->
+              </span>
+              <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-                         #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)">
-                  <label class="form-check-label radio" for="radio2">ENI</label>
+                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)"/>
+                  <label class="form-check-label radio" for="radio3">ENI</label>
                 </div>
-              </div>
-            </div>  <!--fecha row-->
+              </span>
+            </nav>   
             <div>
               <div *ngIf="showButtons">
                 <div class="row">
@@ -274,7 +272,7 @@
                       </div>
                     </div>
                     <div *ngIf="showENI">
-                      <div class="row">
+                      <div class="row ms-0 me-0">
                         <div class="col col-6">
                           <p class="titulo-form-simples">Tipo de Documento:*</p>
                           <select class="form-select campo-form-select" id="docType"
@@ -287,18 +285,19 @@
                             Clique em ler cartão para proceder à Leitura do Cartão Cidadão
                           </p>
                         </div>
-                        <div class="col">
+                        <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0">
                           <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
                           <p class="titulo-form">
                             Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
                           </p>
+
                           <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
                                  #flagAutCol="ngModel" [value]="true" id="flagAutCol">
-                          <label class="form-check-label"
-                                 for="radio3">SIM</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <label class="form-check-label radio pe-5"
+                                 for="radio3">SIM</label>
                           <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
                                  #flagAutCol="ngModel" [value]="false" id="flagAutCol">
-                          <label class="form-check-label" for="radio3">NÃO</label>
+                          <label class="form-check-label radio" for="radio3">NÃO</label>
                         </div>
 
                         <div style="width: 600px;" *ngIf="ccInfo">
@@ -351,13 +350,34 @@
                       <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
 
                     </div>
-
+                    
                   </form>
                 </div>
               </div>
             </div>
           </div> <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
         </div> <!--row ends-->
+        <!-- <div class="col ms-0 ps-0"> Caso seja preciso os botões clássicos no final da página
+          <hr />
+          <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+            <span class="navbar-text me-2 align-self-center ms-0 me-0">
+              <button [routerLink]="['/']" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+                SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+              </button>
+            </span>
+  
+            <button [routerLink]="['/']" id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+              CANCELAR&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+            </button>
+            <button [routerLink]="['/client']" id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+              <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+              VOLTAR&nbsp;
+            </button>
+            <button [routerLink]="['/']" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+              SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+            </button>
+          </nav>
+        </div> -->
         </div>
       </div>
 
