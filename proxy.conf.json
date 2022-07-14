@@ -4,7 +4,7 @@
     "secure": false,
     "changeOrigin": true
   },
-  "/": {
+  "/v1/*": {
     "target": "http://localhost:11000",
     "secure": false,
     "logLevel": "debug"

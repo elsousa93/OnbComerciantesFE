@@ -31,7 +31,7 @@ export function getAcquiringAPIUrl() {
 const providers = [
   { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
   { provide: 'DOCAS_URL', useFactory: getDOCASUrl, deps: [] },
-  { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] }
+  { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] },
   { provide: 'ACQUIRING_URL', useFactory: getAcquiringAPIUrl, deps: [] }
 ];
 
