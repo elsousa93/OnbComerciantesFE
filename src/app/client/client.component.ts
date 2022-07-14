@@ -19,6 +19,8 @@ export class ClientComponent implements OnInit {
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
+  public isNoDataReadable: boolean;
+  
 
   clientIdNew;
   ccInfo;
@@ -39,9 +41,13 @@ export class ClientComponent implements OnInit {
   idToSeacrh: number;
 
   showButtons: boolean = false;
+  
   showSeguinte: boolean = false;
   showENI: boolean = false;
+  isENI: boolean = false;
+  isCC: boolean = false;
   resultError: string = "";
+  clientTypology: string ="";
   newClient: Client = {
     "clientId": "",
     "fiscalId": "",
@@ -149,7 +155,7 @@ export class ClientComponent implements OnInit {
       this.clients = result;
     }, error => console.error(error));
     this.updateData(false, 1);
-    this.activateButtons(true);
+    this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
@@ -318,6 +324,11 @@ export class ClientComponent implements OnInit {
     this.activateButtons(true);
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
+    if (this.docType === 'Cartão do Cidadão') {
+      this.isCC = true;
+    } else {
+      this.isCC = false;
+    }
   }
 
   obterSelecionado() {
@@ -337,27 +348,31 @@ export class ClientComponent implements OnInit {
 
   activateButtonsENI(id: boolean) {
     if (id == true) {
-      this.showButtons = true;
       this.showENI = true;
       this.showFoundClient = false;
       this.ccInfo = null;
+      this.isENI=true;
     } else {
-      this.showButtons = false;
       this.showENI = false;
       this.showFoundClient = false;
       this.ccInfo = null;
+      this.isENI = false;
     }
 
     this.tipologia = "ENI";
   }
 
+  changeDataReadable(readable: boolean){
+    this.isNoDataReadable=readable;
+  }
+
   activateButtons(id: boolean) {
     if (id == true) {
       this.showButtons = true;
-      this.showENI = false;
+      // this.showENI = false;
     } else {
       this.showButtons = false;
-      this.showENI = false;
+      // this.showENI = false;
     }
 
     this.tipologia = "Company";

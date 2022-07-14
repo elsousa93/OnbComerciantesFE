@@ -218,7 +218,6 @@
         </span>&nbsp;IDENTIFICAÇÃO DO CLIENTE EMPRESA<br></h2>
       <p class="titul campo_obrigatrio">* campo obrigatório</p>
 
-      <div *ngIf="showButtons">
         <div class="row ms-0 me-0">
           <div class="col-9 ms-0 me-0 ps-0 pe-0">  <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
             <p class="titulo-form-simples">QUAL A TIPOLOGIA DO CLIENTE EMPRESA?</p>
@@ -242,62 +241,50 @@
               <div *ngIf="showButtons">
                 <div class="row">
                   <form>
-                    <div class="row" *ngIf="showENI == false">
+                  <div class="row" *ngIf="!showENI">
                       <div class="col">
-                        <p class="titulo-form-simples">Tipo de documento*</p>
+                        <p class="titulo-form-simples">Tipo de Documento:*</p>
                         <select class="form-select campo-form-select" id="docType"
                                 [(ngModel)]="newClient.documentationDeliveryMethod">
                           <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                             {{docType.docTypeOption}}
                           </option>
                         </select>
-                        <p class="titulo-form-simples">
-                          Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">
-                            {{
-                            resultError
-                            }}
-                          </span>
-                        </p>
-                        <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
-                               #clientId="ngModel" [class]="errorInput">
-                        <p class="titulo-form-simples">
-                          <button id="btn5a2" class="btn botao_azul_pesquisa" (click)="onSearchSimulation(clientId.value)">
-                            <!--onSearchSimulation(clientId.value)-->
-                            PESQUISAR
-                            &nbsp;<span class="material-symbols-rounded m-align ">
-                              <img src="assets/images/person_search.svg" style="height: 25px !important;">
-                            </span>
-                          </button>
-                        </p>
                       </div>
                     </div>
-                    <div *ngIf="showENI">
-                      <div class="row ms-0 me-0">
-                        <div class="col col-6">
+                    <div class="row" *ngIf="showENI">
+                        <div class="col">
                           <p class="titulo-form-simples">Tipo de Documento:*</p>
-                          <select class="form-select campo-form-select" id="docType"
-                                  [(ngModel)]="newClient.documentationDeliveryMethod">
+                          <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+                  id="documentType" formControlName="documentType">
                             <option *ngFor="let docType of ListaDocTypeENI" value={{docType.docTypeOption}}>
                               {{docType.docTypeOption}}
                             </option>
                           </select>
-                          <p class="titulo-form-CC">
-                            Clique em ler cartão para proceder à Leitura do Cartão Cidadão
-                          </p>
                         </div>
-                        <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0">
-                          <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
-                          <p class="titulo-form">
+                      </div>                      
+                        <div *ngIf="isCC" class="offset-1 col-5 ms-5 me-0 ps-5 pe-0">
+                          <p class="titulo-form-simples mb-3">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
+                          
                             Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
-                          </p>
+                          
 
-                          <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
-                                 #flagAutCol="ngModel" [value]="true" id="flagAutCol">
-                          <label class="form-check-label radio pe-5"
-                                 for="radio3">SIM</label>
-                          <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
-                                 #flagAutCol="ngModel" [value]="false" id="flagAutCol">
-                          <label class="form-check-label radio" for="radio3">NÃO</label>
+                            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                              <span class="navbar-text">
+                                <div class="form-check">
+                                  <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=true
+                                  id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true"/>
+                                  <label class="form-check-label radio pe-5" for="radio3">SIM</label>
+                                </div>
+                              </span>
+                              <span class="navbar-text">
+                                <div class="form-check">
+                                  <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=false
+                                  id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false"/>
+                                  <label class="form-check-label radio" for="radio3">NÃO</label>
+                                </div>
+                              </span>
+                            </nav>   
                         </div>
 
                         <div style="width: 600px;" *ngIf="ccInfo">
@@ -336,8 +323,6 @@
                               </table>
                             </div>
                           </div>
-                        </div>
-                      </div>
                       <button id="btn5a2"
                               class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
                               (click)="getValueENI()">
@@ -346,12 +331,30 @@
                       </button>
 
                       <br>
+                    </div></form>
 
                       <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
 
                     </div>
+                    <p class="titulo-form-simples" >
+                      Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg" >
+                        {{
+                        resultError
+                        }}
+                      </span>
+                    </p>
+                    <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
+                           #clientId="ngModel" [class]="errorInput">
+                    <p class="titulo-form-simples">
+                      <button id="btn5a2" class="btn botao_azul_pesquisa" (click)="onSearchSimulation(clientId.value)">
+                        <!--onSearchSimulation(clientId.value)-->
+                        PESQUISAR
+                        &nbsp;<span class="material-symbols-rounded m-align ">
+                          <img src="assets/images/person_search.svg" style="height: 25px !important;">
+                        </span>
+                      </button>
+                    </p>
                     
-                  </form>
                 </div>
               </div>
             </div>
@@ -378,7 +381,6 @@
             </button>
           </nav>
         </div> -->
-        </div>
       </div>
 
 
@@ -421,7 +423,7 @@
         <hr>
       </div>
 
-      <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="hasNewClient == false">
+      <!-- <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="hasNewClient == false">
         <div class="row">
           <div class="col">
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -442,7 +444,7 @@
             </nav>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="showSeguinte == true">
         <div class="row">
@@ -463,4 +465,3 @@
         </div>
       </div>
     </div>
-  </div>
