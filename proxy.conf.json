@@ -1,14 +1,21 @@
 {
-  "/": {
-    "target": "http://localhost:11000",
-    "secure": false,
-    "logLevel": "debug"
-  },
-
   "/mtrust/*": {
     "target": "https://www.mtrust.pt",
     "secure": false,
     "changeOrigin": true
+  },
+  "/Mockaco/*": {
+    "target": "http://localhost/Mockaco/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/Mockaco": ""
+    }
+  },
+  "/DOCAS/*": {
+    "target": "http://localhost:11000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
-
 }

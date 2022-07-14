@@ -42,7 +42,7 @@ export class TableInfoService {
   }
 
   GetAllPOS() {
-    return this.http.get<POS[]>(this.acquiringUrl + 'pointofsale');
+    return this.http.get<POS[]>(this.acquiringUrl + 'pos');
   }
 
   GetAllProducts() {

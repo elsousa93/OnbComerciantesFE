@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CRCService {
 
+  docasURL: string = "DOCAS/";
+
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('DOCAS_URL')
   private DOCASUrl: string, private route: Router) { }
 
@@ -23,7 +25,7 @@ export class CRCService {
     }
     ////////////////////////
 
-    var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
+    var URI = this.docasURL + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
