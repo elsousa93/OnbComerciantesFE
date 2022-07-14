@@ -9,7 +9,7 @@ import { environment } from './environments/environment';
 
 export function getBaseUrl() {
   //var baseUrl = 'http://localhost:12000/BackendPortal/';
-  var baseUrl = 'http://localhost:12000/AcquiringAPI/api'
+  var baseUrl = 'http://localhost:12000/AcquiringAPI/api/'
   return baseUrl;
 }
 

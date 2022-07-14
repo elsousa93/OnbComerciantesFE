@@ -18,6 +18,11 @@ export class SubmissionService {
   }
 
   EditSubmission(submissionID: string, submissionToEdit: SubmissionPutTemplate): any {
-    return this.http.put<any>(this.baseUrl + 'submission/' + submissionID, submissionToEdit);
+    return this.http.put<SubmissionPutTemplate>(this.baseUrl + 'submission/' + submissionID, submissionToEdit);
+  }
+
+  GetSubmissionByProcessNumber(processNumber: string): any {
+    var treatedProcessNumber = encodeURIComponent(processNumber);
+    return this.http.get<SubmissionGetTemplate>(this.baseUrl + 'submission?ProcessNumber=' + treatedProcessNumber);
   }
 }

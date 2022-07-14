@@ -27,21 +27,21 @@ export interface Client {
 }
 
 export interface HeadquartersAddress {
-  address: String,
-  postalCode: String,
-  postalArea: String,
-  locality: String,
-  country: String,
+  address?: String,
+  postalCode?: String,
+  postalArea?: String,
+  locality?: String,
+  country?: String,
 }
 
 export interface Crc {
-  code: String,
-  validUntil: String,
+  code?: String,
+  validUntil?: String,
 }
 
 export interface ShareCapital {
-  capital: Number,
-  date: String,
+  capital?: Number,
+  date?: String,
 }
 
 export interface MainEconomicActivity {
@@ -55,37 +55,37 @@ export interface OtherEconomicActivity {
 }
 
 export interface MainOfficeAddress {
-  address: String,
-  postalCode: String,
-  postalArea: String,
-  country: String,
-  locality: String
+  address?: String,
+  postalCode?: String,
+  postalArea?: String,
+  country?: String,
+  locality?: String
 }
 
 export interface BusinessGroup {
-  type: String,
-  fiscalId: String,
+  type?: String,
+  fiscalId?: String,
 }
 
 export interface Sales {
-  estimatedAnualRevenue: Number,
-  averageTransactions: Number,
-  servicesOrProductsSold: String[],
-  servicesOrProductsDestinations: String[],
+  estimatedAnualRevenue?: Number,
+  averageTransactions?: Number,
+  servicesOrProductsSold?: String[],
+  servicesOrProductsDestinations?: String[],
 }
 
 export interface ForeignFiscalInformation {
-  issuerCountry: String,
-  issuanceIndicator: String,
-  fiscalId: String,
-  issuanceReason: String,
+  issuerCountry?: String,
+  issuanceIndicator?: String,
+  fiscalId?: String,
+  issuanceReason?: String,
 }
 
 export interface BankInformation {
-  bank: String,
-  branch: String,
-  iban: String,
-  accountOpenedAt: String,
+  bank?: String,
+  branch?: String,
+  iban?: String,
+  accountOpenedAt?: String,
 }
 
 export interface Contacts {
