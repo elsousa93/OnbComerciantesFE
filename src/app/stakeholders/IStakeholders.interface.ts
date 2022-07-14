@@ -6,7 +6,7 @@ export interface IStakeholders {
   fullName?: string
   contactName?: string
   shortName?: string
-  address?: Address
+  //address?: Address
   fiscalAddress?: Address
   foreignFiscalInformation?: ForeignFiscalInformation
   isProxy?: boolean
@@ -14,6 +14,8 @@ export interface IStakeholders {
   email?: string
   birthDate?: string
   pep?: IPep
+  id?: string
+  stakeholderId?: string
 }
 
 export interface IdentificationDocument {

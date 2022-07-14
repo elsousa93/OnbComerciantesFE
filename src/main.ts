@@ -23,10 +23,16 @@ export function getPostmanUrl() {
   return postmanUrl;
 }
 
+export function getAcquiringAPIUrl() {
+  var acquiringAPIUrl = 'http://localhost:12000/AcquiringAPI/api/';
+  return acquiringAPIUrl;
+}
+
 const providers = [
   { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
   { provide: 'DOCAS_URL', useFactory: getDOCASUrl, deps: [] },
-  { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] }
+  { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] },
+  { provide: 'ACQUIRING_URL', useFactory: getAcquiringAPIUrl, deps: [] }
 ];
 
 if (environment.production) {
