@@ -71,8 +71,8 @@
               <label for="documentType">
                 Tipo de Documento de Identificação (1ª Nacionalidade):*
               </label>
-              <input name="identificationDocumentType" formControlName="documentType" class="form-control"
-                [(ngModel)]="newStake.identificationDocument.identificationDocumentType">
+              <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control"
+                [(ngModel)]="newStake.identificationDocument.type">
               <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
         documentType is required.
       </div>-->
@@ -84,8 +84,8 @@
               <label for="documentCountry">
                 País de Documento de Identificação (1ª Nacionalidade):*
               </label>
-              <input name="documentCountry" formControlName="documentCountry" class="form-control"
-                [(ngModel)]="newStake.identificationDocument.identificationDocumentCountry">
+              <input readonly name="documentCountry" formControlName="documentCountry" class="form-control"
+                [(ngModel)]="newStake.identificationDocument.country">
               <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
         documentCountry is required.
       </div>-->
@@ -95,8 +95,8 @@
               <label for="identificationDocumentId">
                 Nº Documento de Identificação (1ª Nacionalidade):*
               </label>
-              <input name="identificationDocumentId" formControlName="identificationDocumentId" class="form-control"
-                [(ngModel)]="newStake.identificationDocument.identificationDocumentNumber">
+              <input readonly name="identificationDocumentId" formControlName="identificationDocumentId" class="form-control"
+                [(ngModel)]="newStake.identificationDocument.number">
               <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
         nrDocumentoID is required.
       </div>-->
@@ -106,9 +106,9 @@
               <label for="identificationDocumentValidUntil">
                 Data de Validade Doc. de Identificação (1ª Nacionalidade):*
               </label>
-              <input name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+              <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
                 cols="30" rows="10" class="form-control"
-                [(ngModel)]="newStake.identificationDocument.identificationDocumentExpirationDate">
+                [(ngModel)]="newStake.identificationDocument.expirationDate">
               <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
         dataDocumentoID is required.
       </div>-->
@@ -204,19 +204,8 @@
         <button type="submit" (click)="submit(formNewStakeholder.value)"> Submeter </button>
 
     </div>
-      <br>
-      <br>
-
       <button (click)="onClickDelete(newStake.fiscalId, newStake.fullName)" class="btn btn-primary">Eliminar</button>
 
-      <br>
-      <br>
-      <br>
-      Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
-
-      <form>
-        <button type="submit">Ler Cartão de Cidadão</button>
-      </form>
     </div>
   </div>
 </div>

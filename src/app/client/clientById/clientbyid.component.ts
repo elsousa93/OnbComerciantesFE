@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../Client.interface';
@@ -21,7 +21,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 })
 
 export class ClientByIdComponent implements OnInit {
-
+  @Input() tipologia: string;
   @ViewChild('searchInput') input: ElementRef;
 
   /*Variable declaration*/
@@ -32,111 +32,98 @@ export class ClientByIdComponent implements OnInit {
   
   //client: Client = {} as Client;
   client: Client = {
-    "clientId": "444",
-    "fiscalId": "585597928",
-    "observations":"nenhuma",
-    "companyName": "SILVESTRE LIMITADA",
-    "contactName": "CAFE CENTRAL",
-    "shortName": "SILVESTRE LDA",
+    "clientId": "",
+    "fiscalId": "",
+    "companyName": "",
+    "commercialName":"",
+    "shortName": "",
     "headquartersAddress": {
-      "address": "Rua António Rebelo",
-      "postalCode": "2091-205",
-      "postalArea": "Povoa de Santa Iria",
-      "locality": "Lisboa",
-      "country": "PT"
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "locality": "",
+      "country": ""
     },
-    "merchantType": "COMPANY",
-    "legalNature": "35",
+    "merchantType": "",
+    "legalNature": "",
     "legalNature2": "",
     "crc": {
-      "code": "0000-0000-0001",
-      "validUntil": "2023-06-29T17:52:08.336Z"
+      "code": "",
+      "validUntil": ""
     },
     "shareCapital": {
-      "capital": 50000.20,
-      "date": "2028-06-29T17:52:08.336Z"
+      "capital": 0,
+      "date": "1966-08-30"
     },
-    "bylaws": "O Joao pode assinar tudo",
-    "mainEconomicActivity": {
-      "code": "90010",
-        "branch": ""
-    },
-    "otherEconomicActivities": [
-    {
-        "code": "90010",
-    "branch": ""
-    },
-    {
-    "code": "812",
-    "branch": ""
-    }
-    ],
+    "byLaws": "",
+    "mainEconomicActivity": "",
+    "otherEconomicActivities": [""],
     "mainOfficeAddress": {
-      "address": "Rua da Azoia 4",
-      "postalCode": "2625-236",
-      "postalArea": "Povoa de Santa Iria",
-    "country": "PT"
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "country": "",
+      "locality": ""
     },
-    "establishmentDate": "28-05-2015",
+    "establishmentDate": "2009-12-16",
     "businessGroup": {
-    "type": "uyhujk",
-    "fiscalId": "5678"
+      "type": "",
+      "fiscalId": ""
     },
-    "sales": {
-    "estimatedAnualRevenue": 1490,
-    "averageTransactions": 921,
-    "servicesOrProductsSold": [
-    "neve",
-    ""
-    ],
-    "servicesOrProductsDestinations": [
-    "tyhuj",
-    ""
-    ]
+    "knowYourSales": {
+      "estimatedAnualRevenue": 0,
+      "averageTransactions": 0,
+      "servicesOrProductsSold": [
+        "",
+        ""
+      ],
+      "servicesOrProductsDestinations": [
+        "",
+        ""
+      ]
     },
     "foreignFiscalInformation": {
-    "issuerCountry": "iijik",
-    "issuanceIndicator": "klklk",
-    "fiscalId": "92182",
-    "issuanceReason": "jklj"
+      "issuerCountry": "",
+      "issuanceIndicator": "",
+      "fiscalId": "",
+      "issuanceReason": ""
     },
     "bankInformation": {
-    "bank": "kjkj",
-    "branch": "lklkkl",
-    "iban": "lklk",
-    "accountOpenedAt": "09-10-2019"
+      "bank": "",
+      "branch": "",
+      "iban": "",
+      "accountOpenedAt": "2019-06-11"
     },
     "contacts": {
-    "preferredMethod": "hjnk",
-    "preferredPeriod": {
-    "startsAt": "",
-    "endsAt": ""
-    },
-    "phone1": {
-    "countryCode": "",
-    "phoneNumber": ""
-    },
-    "phone2": {
-    "countryCode": "",
-    "phoneNumber": ""
-    },
-    "fax": {
-    "countryCode": "",
-    "phoneNumber": ""
-    },
-    "email": ""
+      "preferredMethod": "",
+      "preferredPeriod": {
+        "startsAt": "22:40:00.450Z",
+        "endsAt": "15:42:54.722Z"
+      },
+      "phone1": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "phone2": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "fax": {
+        "countryCode": "",
+        "phoneNumber": ""
+      },
+      "email": ""
     },
     "documentationDeliveryMethod": "",
     "billingEmail": ""
-    };
+  };
   tempClient: any;
 
-  tipologia: string;
 
   clientExists: boolean = true;
   crcFound: boolean = false;
 
-  isCommercialSociety: boolean = true;
+  isCommercialSociety: boolean = null;
   isCompany: boolean;
   Countries = countriesAndContinents;
   Continents = continents;
@@ -229,15 +216,15 @@ export class ClientByIdComponent implements OnInit {
       commercialSociety: new FormControl(true, Validators.required),
       franchiseName: new FormControl(this.client.companyName),
       natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
-      expectableAnualInvoicing: new FormControl(this.client.sales.estimatedAnualRevenue, Validators.required),
+      expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
       preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
       //Pretende associar a grupo/franchise
       services: new FormControl('', Validators.required),
-      transactionsAverage: new FormControl(this.client.sales.averageTransactions, Validators.required),
+      transactionsAverage: new FormControl(this.client.knowYourSales.averageTransactions, Validators.required),
       destinationCountries: new FormControl('', Validators.required),
-      CAE1: new FormControl(this.client.mainEconomicActivity.code, Validators.required),
-      CAESecondary1: new FormControl(this.client.otherEconomicActivities[0].code),
-      CAESecondary2: new FormControl(this.client.otherEconomicActivities[1].code),
+      CAE1: new FormControl(this.client.mainEconomicActivity, Validators.required),
+      CAESecondary1: new FormControl(this.client.otherEconomicActivities[0]),
+      CAESecondary2: new FormControl(this.client.otherEconomicActivities[1]),
       CAESecondary3: new FormControl(''),
       constitutionDate: new FormControl(this.client.establishmentDate),
       address: new FormControl(this.client.mainOfficeAddress.address, Validators.required),
@@ -249,9 +236,9 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
       socialDenomination: new FormControl(''),
-      CAE1Branch: new FormControl(this.client.mainEconomicActivity.branch),
-      CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0].branch),
-      CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1].branch),
+      CAE1Branch: new FormControl(this.client.mainEconomicActivity),
+      CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0]),
+      CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1]),
 
       merchantType: new FormControl(this.client.merchantType),
       associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
@@ -300,7 +287,7 @@ export class ClientByIdComponent implements OnInit {
         this.form.get('socialDenomination').setValidators(Validators.required);
         this.form.get('natJuridicaN1').setValidators([Validators.required]);        
         //this.form.addControl('socialDenomination', new FormControl('', Validators.required));
-      //  this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
+        //this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
       }
 
     })
@@ -336,7 +323,8 @@ export class ClientByIdComponent implements OnInit {
     //});
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService) {
     this.ngOnInit();
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
       http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
@@ -344,46 +332,40 @@ export class ClientByIdComponent implements OnInit {
         this.client = result;
       }, error => console.error(error));
     }
+    //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       console.log(this.tipologia);
     }
-
     this.initializeDefaultClient();
-
     
     //Chamada à API para obter as naturezas juridicas
     this.tableInfo.GetAllLegalNatures().subscribe(result => {
       this.legalNatureList = result;
-      console.log("JA FOI BUSCAR AS LEGAL NATURES");
+      console.log("FETCH LEGAL NATURES");
     }, error => console.log(error));
 
-    //Chamada à API para
+    //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
-      console.log("JA FOI BUSCAR OS PAISES");
+      console.log("FETCH PAISES");
     }, error => console.log(error));
 
     //Chamada à API para obter a lista de CAEs
     this.tableInfo.GetAllCAEs().subscribe(result => {
       this.CAEsList = result;
-      console.log("JA FOI BUSCAR OS CAES");
+      console.log("FETCH OS CAEs");
     });
-
     this.createContinentsList();
 
     //Chamada à API para obter a lista de CAEs
     this.tableInfo.GetAllCAEs().subscribe(result => {
       this.CAEsList = result;
     });
-
     this.getFormValidationErrors();
-
-
     //this.createContinentsList();
-    
-  }
+  } //fim do construtor
 
   ngOnInit(): void {
     this.clientId = String(this.router.snapshot.params['id']);
@@ -410,41 +392,44 @@ export class ClientByIdComponent implements OnInit {
       this.isCommercialSociety = false
     }
   }
-
+  getCommercialSociety() {
+    return this.isCommercialSociety;
+  }
+ 
   continentSelected(event) {
     if (this.checkedContinents.indexOf(event.target.id) > -1) {
       var index = this.checkedContinents.indexOf(event.target.id);
       this.checkedContinents.splice(index, 1);
       this.countryList.forEach(c => {
-        if (event.target.id == c.continent && this.client.sales.servicesOrProductsDestinations.indexOf(c.description) > -1) {
-          var index1 = this.client.sales.servicesOrProductsDestinations.indexOf(c.description);
-          this.client.sales.servicesOrProductsDestinations.splice(index1, 1);
+        if (event.target.id == c.continent && this.client.knowYourSales.servicesOrProductsDestinations.indexOf(c.description) > -1) {
+          var index1 = this.client.knowYourSales.servicesOrProductsDestinations.indexOf(c.description);
+          this.client.knowYourSales.servicesOrProductsDestinations.splice(index1, 1);
         }
       })
     } else {
       this.checkedContinents.push(event.target.id);
       this.countryList.forEach(c => {
-        if (event.target.id == c.continent && this.client.sales.servicesOrProductsDestinations.indexOf(c.description) == -1) {
-          this.client.sales.servicesOrProductsDestinations.push(c.description);
+        if (event.target.id == c.continent && this.client.knowYourSales.servicesOrProductsDestinations.indexOf(c.description) == -1) {
+          this.client.knowYourSales.servicesOrProductsDestinations.push(c.description);
         }
       })
     }
   }
 
   onCountryChange(event) {
-    if (this.client.sales.servicesOrProductsDestinations.indexOf(event.target.id) > -1) {
-      var index = this.client.sales.servicesOrProductsDestinations.indexOf(event.target.id);
-      this.client.sales.servicesOrProductsDestinations.splice(index, 1);
+    if (this.client.knowYourSales.servicesOrProductsDestinations.indexOf(event.target.id) > -1) {
+      var index = this.client.knowYourSales.servicesOrProductsDestinations.indexOf(event.target.id);
+      this.client.knowYourSales.servicesOrProductsDestinations.splice(index, 1);
     } else {
-      this.client.sales.servicesOrProductsDestinations.push(event.target.id);
+      this.client.knowYourSales.servicesOrProductsDestinations.push(event.target.id);
     }
   }
 
   addCountryToList(country: string) {
     this.countryList.forEach(c => {
-      if (this.client.sales.servicesOrProductsDestinations.indexOf(country) == -1) {
+      if (this.client.knowYourSales.servicesOrProductsDestinations.indexOf(country) == -1) {
         if (c.description == country) {
-          this.client.sales.servicesOrProductsDestinations.push(country);
+          this.client.knowYourSales.servicesOrProductsDestinations.push(country);
           this.countryVal = "";
         }
       }
@@ -482,15 +467,18 @@ export class ClientByIdComponent implements OnInit {
 
   searchByCRC() {
     var crcInserted = this.form.get('crcCode').value;
-    console.log(this.form.get('crcCode'));
+    console.log("codigo CRC:" , this.form.get('crcCode').value);
     console.log(crcInserted);
 
     if (crcInserted === '123') {
       this.crcFound = true;
     } else {
       this.crcFound = false;
-      console.log("nao encontrado");
+      console.log("--");
     }
+  }
+  getCrcCode() {
+    return this.form.get('crcCode').value;
   }
 
   submit() {
@@ -504,14 +492,14 @@ export class ClientByIdComponent implements OnInit {
     this.client.headquartersAddress.country = this.form.value["country"];
     this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
     this.client.headquartersAddress.postalArea = this.form.value["location"];
-    this.client.mainEconomicActivity.code = this.form.value["CAE1"];
-    this.client.mainEconomicActivity.branch = this.form.value["CAE1Branch"];
-    this.client.otherEconomicActivities.push({ code: this.form.value["CAESecondary1"], branch: this.form.value["CAESecondary1Branch"] });
-    this.client.otherEconomicActivities.push({ code: this.form.value["CAESecondary2"], branch: this.form.value["CAESecondary2Branch"] });
+    this.client.mainEconomicActivity = this.form.value["CAE1"];
+    this.client.mainEconomicActivity = this.form.value["CAE1Branch"];
+    this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);
+    this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"], this.form.value["CAESecondary2Branch"]);
     this.client.companyName = this.form.value["franchiseName"];
-    this.client.sales.estimatedAnualRevenue = this.form.value["expectableAnualInvoicing"];
-    this.client.sales.averageTransactions = this.form.value["transactionsAverage"];
-    this.client.sales.servicesOrProductsSold.push(this.form.value["services"]);
+    this.client.knowYourSales.estimatedAnualRevenue = this.form.value["expectableAnualInvoicing"];
+    this.client.knowYourSales.averageTransactions = this.form.value["transactionsAverage"];
+    this.client.knowYourSales.servicesOrProductsSold.push(this.form.value["services"]);
     //Paises destino
     this.client.establishmentDate = this.form.value["constitutionDate"];
     this.client.crc = this.form.value["crcCode"];
@@ -537,7 +525,6 @@ export class ClientByIdComponent implements OnInit {
 
     this.updateData(true, 1);
     this.route.navigate(["/stakeholders"]);
-
   }
 
   redirectBeginningClient() {
@@ -550,7 +537,6 @@ export class ClientByIdComponent implements OnInit {
 
   _filter(value: string): CountryInformation[] { 
     const filterValue = value.toLowerCase();
-
     return this.countryList.filter(option => option.description.toLowerCase().includes(filterValue));
   }
 

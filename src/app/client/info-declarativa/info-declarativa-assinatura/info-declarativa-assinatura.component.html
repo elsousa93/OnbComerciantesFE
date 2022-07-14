@@ -1,51 +1,51 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div class="d-flex">
-<button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa">Cliente Empresa</button>
-<button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
-<button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-lojas">Lojas</button>
-<button type="button" class="btn btn-primary me-4" routerLink="/info-declarativa-assinatura">Assinatura Pack</button>
-  </div>
-<br>
-<br>
+<div class="container-fluid mt-5 ms-0 me-0 pt-5 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 bg-white col-7 col-xxl-10">
 
-<div class="container">
-  <p class="text-primary">SELECIONE A FORMA DE ASSINATURA DE CONTRATO</p>
+      <!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação-->
+      <div class="offset-1 bg-white align-self-center col-10 ps-3">
+        <br>
 
-  <p>Idioma:</p>
+        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa">Cliente Empresa</button>
+        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
+        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-lojas">Lojas</button>
+        <button type="button" class="btn btn-primary me-4" routerLink="/info-declarativa-assinatura">Assinatura Pack</button>
+
+  <p class="text-primary" style="margin-top:5%;">SELECIONE A FORMA DE ASSINATURA DE CONTRATO</p>
+
+  <p class="titulo-form-simples">Idioma:</p>
   <select class="form-select">
     <option value=""> - </option>
     <option value="Português">Português</option>
   </select>
   <br>
 
-  <p> Selecione uma das opções </p>
+  <div class="col">
+  <p class="titulo-form"> Selecione uma das opções </p>
 
-  <label for="opt1">Assinatura em papel</label>
-  <input id="opt1" [value]="1"
+  
+  <input class="form-check-input" id="opt1" [value]="1"
          [(ngModel)]="isVisible"
          #opt1="ngModel"
          name="isVisible"
          type="radio"
          [checked]="isSelected" />
+         <label class="form-check-label" for="opt1">Assinatura em papel</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
-  <label for="opt2">Assinatura eletrónica</label>
-  <input id="opt2" [value]="0"
+  
+  <input class="form-check-input" id="opt2" [value]="0"
          [(ngModel)]="isVisible"
          #opt2="ngModel"
          name="isVisible"
          type="radio"
          [checked]="!isSelected" />
+         <label class="form-check-label" for="opt2">Assinatura eletrónica</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
-  <p class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
-  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="isVisible == 0 || isVisible == 1">
+</div>
+<br>
+  <p *ngIf="isVisible == 0 || isVisible == 1" class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
+  <table *ngIf="isVisible == 0 || isVisible == 1" class='table table-striped' aria-labelledby="tableLabel" >
     <thead>
       <tr>
         <th>Nome do Cliente</th>
@@ -82,4 +82,6 @@
     </tbody>
   </table>
   <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="button" (click)="redirectHomePage()">SUBMETER PEDIDO</button>
+</div>
+</div>
 </div>

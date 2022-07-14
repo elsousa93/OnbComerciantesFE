@@ -18,7 +18,7 @@ export class NewClientComponent implements OnInit {
     "clientId": "",
     "fiscalId": "",
     "companyName": "",
-    "contactName": "",
+    "commercialName":"",
     "shortName": "",
     "headquartersAddress": {
       "address": "",
@@ -30,7 +30,6 @@ export class NewClientComponent implements OnInit {
     "merchantType": "",
     "legalNature": "",
     "legalNature2": "",
-    "observations":"",
     "crc": {
       "code": "",
       "validUntil": ""
@@ -39,37 +38,22 @@ export class NewClientComponent implements OnInit {
       "capital": 0,
       "date": "1966-08-30"
     },
-    "bylaws": "",
-    "mainEconomicActivity": {
-      "code": "",
-      "branch": ""
-    },
-    "otherEconomicActivities": [
-      {
-        "code": "",
-        "branch": ""
-      },
-      {
-        "code": "",
-        "branch": ""
-      },
-      {
-        "code": "",
-        "branch": ""
-      }
-    ],
+    "byLaws": "",
+    "mainEconomicActivity": "",
+    "otherEconomicActivities": [""],
     "mainOfficeAddress": {
       "address": "",
       "postalCode": "",
       "postalArea": "",
-      "country": ""
+      "country": "",
+      "locality": ""
     },
     "establishmentDate": "2009-12-16",
     "businessGroup": {
       "type": "",
       "fiscalId": ""
     },
-    "sales": {
+    "knowYourSales": {
       "estimatedAnualRevenue": 0,
       "averageTransactions": 0,
       "servicesOrProductsSold": [
@@ -139,17 +123,17 @@ export class NewClientComponent implements OnInit {
     this.addNewClient.companyName = form.socialDenomination;
     this.addNewClient.legalNature = form.natJuridicaN1;
     this.addNewClient.legalNature2 = form.natJuridicaN2;
-    this.addNewClient.mainEconomicActivity.code = form.caePrincipal
-    this.addNewClient.mainEconomicActivity.branch = form.categoriaNIPC;
-    this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario1, branch: form.ramoSecundario1 });
-    this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario2, branch: form.ramoSecundario2 });
-    this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario3, branch: form.ramoSecundario3 });
+    this.addNewClient.mainEconomicActivity = form.caePrincipal;
+    // this.addNewClient.mainEconomicActivity = form.categoriaNIPC;
+    this.addNewClient.otherEconomicActivities.push(form.caeSecundario1);
+    // this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario2, branch: form.ramoSecundario2 });
+    // this.addNewClient.otherEconomicActivities.push({ code: form.caeSecundario3, branch: form.ramoSecundario3 });
     this.addNewClient.mainOfficeAddress.country = form.paisSedeSocial;
     this.addNewClient.mainOfficeAddress.postalArea = form.localidadeSedeSocial;
     this.addNewClient.mainOfficeAddress.postalCode = form.cpSedeSocial;
     this.addNewClient.mainOfficeAddress.address = form.moradaSedeSocial;
-    this.addNewClient.sales.estimatedAnualRevenue = form.expectableAnualInvoicin;
-    this.addNewClient.sales.averageTransactions = form.transactionsAverage;
+    this.addNewClient.knowYourSales.estimatedAnualRevenue = form.expectableAnualInvoicin;
+    this.addNewClient.knowYourSales.averageTransactions = form.transactionsAverage;
     this.addNewClient.documentationDeliveryMethod = form.preferenceDocuments;
     this.addNewClient.contacts.preferredMethod = form.preferenceContacts;
     this.addNewClient.shortName = form.nameClient;
@@ -163,7 +147,7 @@ export class NewClientComponent implements OnInit {
     this.addNewClient.billingEmail = form.billingEmail;
     this.addNewClient.merchantType = form.categoriaComerciante;
 
-    this.addNewClient.mainEconomicActivity.branch = form.ramoPrincipal;
+    this.addNewClient.mainEconomicActivity = form.ramoPrincipal;
     this.addNewClient.shareCapital.date = form.dataConst;
 
     console.log(this.addNewClient);

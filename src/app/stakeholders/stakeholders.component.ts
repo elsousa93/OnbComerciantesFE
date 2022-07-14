@@ -24,12 +24,10 @@ export class StakeholdersComponent implements OnInit {
   newStake: IStakeholders = { 
     "fiscalId": "",
     "identificationDocument": {
-      "identificationDocumentType": "",
-      "identificationDocumentNumber": "",
-      "identificationDocumentCountry": {
-        "code": ""
-      },
-      "identificationDocumentExpirationDate": "",
+      "type": "",
+      "number": "",
+      "country": "",
+      "expirationDate": "",
     },
     "fullName": "",
     "contactName": "",
@@ -68,7 +66,7 @@ export class StakeholdersComponent implements OnInit {
 
   public isParticular: boolean=false;
   public isCC: boolean = false;
-  public isNoDataReadable: boolean = true;
+  public isNoDataReadable: boolean;
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -156,7 +154,7 @@ export class StakeholdersComponent implements OnInit {
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
     
-    this.newStake.identificationDocument.identificationDocumentType = this.documentType;
+    this.newStake.identificationDocument.type = this.documentType;
     
     if (this.documentType === 'Cartão do Cidadão') {
       this.isCC = true;

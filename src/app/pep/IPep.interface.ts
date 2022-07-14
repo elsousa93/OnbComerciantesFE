@@ -22,11 +22,11 @@ export interface PepDetails {
 }
 
 export interface Address {
-  address: string
-  postalCode: string
-  postalArea: string
-  locality: string
-  country: Country
+  address?: string
+  postalCode?: string
+  postalArea?: string
+  locality?: string
+  country?: string
 }
 
 export interface RelatedPep {
