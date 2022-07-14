@@ -6,10 +6,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { Client, Crc } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
+import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { CRCService } from '../CRC/crcservice.service';
 import { SubmissionPostTemplate, SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
+import { TableInfoService } from '../table-info/table-info.service';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
+import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 
 @Component({
   selector: 'app-sidenav-presencial',
@@ -159,12 +162,6 @@ export class SidenavPresencialComponent implements OnInit {
         "fullName": "Joao Paulo Ferreira Silvestre",
         "contactName": "Jo Silvestre",
         "shortName": "Joao Silvestre",
-        "address": {
-          "address": "Rua da Azoia 4",
-          "postalCode": "2625-236",
-          "postalArea": "Povoa de Santa Iria",
-          "country": "PT"
-        },
         "isProxy": false,
         "fiscalAddress": {
           "address": "Rua da Azoia 4",
@@ -195,7 +192,130 @@ export class SidenavPresencialComponent implements OnInit {
     "isComplete": true,
     "id": "1a1e127a-ef25-49a1-a0c6-4e99b3c4c949",
     "bank": "0800"
-}
+  }
+
+  stakeholderTeste: IStakeholders = {
+    "fiscalId": "232012610",
+    "identificationDocument": {
+      "type": "0020",
+      "number": "13713441",
+      "country": "PT",
+      "expirationDate": "2023-06-29T17:52:08.337Z"
+    },
+    "fullName": "Joao Paulo Ferreira Silvestre",
+    "contactName": "Jo Silvestre",
+    "shortName": "Joao Silvestre",
+    "fiscalAddress": {
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+      "country": "PT"
+    },
+    "isProxy": false,
+    "phone": {
+      "countryCode": "+351",
+      "phoneNumber": "919654422"
+    },
+    "email": "joao@silvestre.pt",
+    "birthDate": "1990-08-11",
+    "pep": {
+      "isPep": true,
+      "hasFamilyRelationship": true,
+      "familyRelationshipKind": 1,
+      "hasBusinessRelationship": true,
+      "businessRelationshipKind": 1,
+      "relatedPep": {
+        "id": "",
+        "url": ""
+      },
+      "pepDetails": {
+        "fiscalId": "",
+        "identificationDocument": {
+          "type": "",
+          "number": "",
+          "country": "",
+          "expirationDate": ""
+        },
+        "fullName": "",
+        "contactName": "",
+        "shortName": "",
+        "fiscalAddress": {
+          "address": "Rua da Azoia 4",
+          "postalCode": "2625-236",
+          "postalArea": "Povoa de Santa Iria",
+          "country": "PT"
+        },
+        "kind": "",
+        "country": "",
+        "sinceWhen": ""
+      }, 
+    },
+    "id": "",
+    "stakeholderId": "" 
+  }
+
+  stakeholderPutTeste: IStakeholders = {
+    "fiscalId": "232012610",
+    "identificationDocument": {
+      "type": "0020",
+      "number": "13713441",
+      "country": "PT",
+      "expirationDate": "2023-06-29T17:52:08.337Z"
+    },
+    "fullName": "Joao Paulo Ferreira Silvestre",
+    "contactName": "Jo Silvestre",
+    "shortName": "Joao Silvestre",
+    "fiscalAddress": {
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+      "country": "PT"
+    },
+    "isProxy": false,
+    "phone": {
+      "countryCode": "+351",
+      "phoneNumber": "919654422"
+    },
+    "email": "joao@silvestre.pt",
+    "birthDate": "1990-08-11",
+    "pep": {
+      "isPep": true,
+      "hasFamilyRelationship": true,
+      "familyRelationshipKind": 1,
+      "hasBusinessRelationship": true,
+      "businessRelationshipKind": 1,
+      "relatedPep": {
+        "id": "",
+        "url": ""
+      },
+      "pepDetails": {
+        "fiscalId": "",
+        "identificationDocument": {
+          "type": "",
+          "number": "",
+          "country": "",
+          "expirationDate": ""
+        },
+        "fullName": "",
+        "contactName": "",
+        "shortName": "",
+        "fiscalAddress": {
+          "address": "Rua da Azoia 4",
+          "postalCode": "2625-236",
+          "postalArea": "Povoa de Santa Iria",
+          "country": "PT"
+        },
+        "kind": "",
+        "sinceWhen": "",
+        "country": ""
+      },
+
+    },
+    "id": "",
+    "stakeholderId": ""
+  }
+
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   @HostBinding('style.--toptestexpto') public toptestexpto: string = '5px';
@@ -205,7 +325,7 @@ export class SidenavPresencialComponent implements OnInit {
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private submissionService: SubmissionService,
-    private clientService: ClientService, private crcService: CRCService) {
+      private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -244,6 +364,82 @@ export class SidenavPresencialComponent implements OnInit {
       console.log(d);
     });
   //  alert(this.isAutoHide);
+
+    this.stakeholderService.GetAllStakeholdersFromSubmission("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(d => {
+      console.log("stakeholders from submission");
+      console.log(d);
+    });
+
+    this.stakeholderService.GetStakeholderFromSubmission("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", "232012610").subscribe(d => {
+      console.log("one stakeholder from submission");
+      console.log(d);
+    });
+
+    this.stakeholderService.CreateNewStakeholder("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", this.stakeholderTeste).subscribe(d => {
+      console.log("criar stakeholder para uma submissao");
+      console.log(d);
+    });
+
+    this.stakeholderService.UpdateStakeholder("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", "232012610", this.stakeholderPutTeste).subscribe(d => {
+      console.log("update stakeholder from submission");
+      console.log(d);
+    });
+
+    this.stakeholderService.DeleteStakeholder("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", "232012610").subscribe(d => {
+      console.log("delete de um stakeholder");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllCAEs().subscribe(d => {
+      console.log("get all caes");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllCountries().subscribe(d => {
+      console.log("get all countries");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllLegalNatures().subscribe(d => {
+      console.log("get all legal natures");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllPEPTypes().subscribe(d => {
+      console.log("get all pep types");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllPOS().subscribe(d => {
+      console.log("get all pos");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllProducts().subscribe(d => {
+      console.log("get all products");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllShopActivities().subscribe(d => {
+      console.log("get all shop activities");
+      console.log(d);
+    });
+
+    this.tableInfo.GetAllStakeholderRoles().subscribe(d => {
+      console.log("get all stakeholder roles");
+      console.log(d);
+    });
+
+    //Corresponde ao ABATE DE AVES (PRODU��O DE CARNE)
+    this.tableInfo.GetCAEByCode("10120").subscribe(d => {
+      console.log("get cae by code");
+      console.log(d);
+    });
+
+    this.tableInfo.GetCountryById("PT").subscribe(d => {
+      console.log("get country by code");
+      console.log(d);
+    });
   }
 
   assignMenus() {
