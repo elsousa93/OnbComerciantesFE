@@ -140,7 +140,9 @@ export class ClientComponent implements OnInit {
   public subscription: Subscription;
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
-  private baseUrl: string, private route: Router, private data: DataService, private clientService: ClientService) {
+  private baseUrl: string, @Inject('NEYONDBACK_URL')
+    private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService) {
+
     this.ngOnInit();
     console.log(baseUrl);
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
@@ -224,7 +226,8 @@ export class ClientComponent implements OnInit {
 
   getValueENI() {
     //this.activateButtons(true);
-    this.http.get(this.baseUrl + 'CitizenCard/searchCC').subscribe(result => {
+    console.log("chamar a funcao de leitura do cartao: ");
+    this.http.get(this.neyondBackUrl + 'CitizenCard/searchCC').subscribe(result => {
       if (result == null) {
         alert("Erro ao ler cartão cidadão!");
       } else {
