@@ -220,7 +220,7 @@
 
         <div class="row ms-0 me-0">
           <div class="col-9 ms-0 me-0 ps-0 pe-0">  <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
-            <p class="titulo-form-simples">QUAL A TIPOLOGIA DO CLIENTE EMPRESA?</p>
+            <p class="titulo-form-simples">QUAL A TIPOLOGIA DO CLIENTE EMPRESA?*</p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
@@ -239,11 +239,11 @@
             </nav>   
             <div>
               <div *ngIf="showButtons">
-                <div class="row">
                   <form>
-                  <div class="row" *ngIf="!showENI">
+                  <div class="row ms-0 me-0" *ngIf="!showENI">
                       <div class="col">
-                        <p class="titulo-form-simples">Tipo de Documento:*</p>
+                        <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                        <p class="titulo-form-simples mt-0">Tipo de Documento:*</p>
                         <select class="form-select campo-form-select" id="docType"
                                 [(ngModel)]="newClient.documentationDeliveryMethod">
                           <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
@@ -251,9 +251,11 @@
                           </option>
                         </select>
                       </div>
+                      </div>
                     </div>
-                    <div class="row" *ngIf="showENI">
+                    <div class="row ms-0 me-0" *ngIf="showENI">
                         <div class="col">
+                          <div class="ms-0 me-0 ps-0 pe-0 col-7">
                           <p class="titulo-form-simples">Tipo de Documento:*</p>
                           <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
                   id="documentType" formControlName="documentType">
@@ -261,7 +263,7 @@
                               {{docType.docTypeOption}}
                             </option>
                           </select>
-                        </div>
+                        </div></div>
                       </div>                      
                         <div *ngIf="isCC" class="offset-1 col-5 ms-5 me-0 ps-5 pe-0">
                           <p class="titulo-form-simples mb-3">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
@@ -329,22 +331,21 @@
                         Ler Cartão Cidadão
                         <i class="fas fa-search">&nbsp;</i>
                       </button>
-
-                      <br>
                     </div></form>
 
                       <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
-
-                    </div>
-                    <p class="titulo-form-simples" >
-                      Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg" >
-                        {{
-                        resultError
-                        }}
-                      </span>
-                    </p>
+                      <div class="row ms-0 me-0">
+                        <div class="col">
+                          <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                          <p class="titulo-form-simples" >
+                            Número do Documento:* <span [class]="errorMsg" >
+                              {{
+                              resultError
+                              }}
+                            </span>
+                          </p>
                     <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
-                           #clientId="ngModel" [class]="errorInput">
+                           #clientId="ngModel" [class]="errorInput"></div></div></div>
                     <p class="titulo-form-simples">
                       <button id="btn5a2" class="btn botao_azul_pesquisa" (click)="onSearchSimulation(clientId.value)">
                         <!--onSearchSimulation(clientId.value)-->

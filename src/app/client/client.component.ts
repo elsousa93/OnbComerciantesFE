@@ -352,11 +352,13 @@ export class ClientComponent implements OnInit {
       this.showFoundClient = false;
       this.ccInfo = null;
       this.isENI=true;
+      this.showButtons = true;
     } else {
       this.showENI = false;
       this.showFoundClient = false;
       this.ccInfo = null;
       this.isENI = false;
+      this.showButtons = true;
     }
 
     this.tipologia = "ENI";

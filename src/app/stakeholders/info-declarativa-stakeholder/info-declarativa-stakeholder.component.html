@@ -1,16 +1,33 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<div class="container-fluid mt-5 ms-0 me-0 pt-5 ps-0 pe-0">
+<div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
-    <div class="offset-1 bg-white col-7 col-xxl-10">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <span class="navbar-text text-light">
+        <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+        </span>
+        <span class="navbar-text">
+         <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INFORMÇÃO DECLARATIVA</h5>
+        </span>
+       </nav>
+      </div>
+      <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
 
-      <!--Indicativo, telefone fixo 1:, Indicativo, Telemóvel, email, Indicativo Fax Email da Faturação-->
-      <div class="offset-1 bg-white align-self-center col-10 ps-3">
-        <br>
-        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa">Cliente Empresa</button>
-        <button type="button" class="btn btn-primary me-4" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
-        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-lojas">Lojas</button>
-        <button type="button" class="btn btn-outline-primary me-4" routerLink="/info-declarativa-assinatura">Assinatura Pack</button>
-<p class="titul campo_obrigatrio">* campo obrigatório</p>
+        <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
+          <li class="nav-item">
+           <a class="nav-link btn-outline-primary activo_tabs activo-tabd" routerLink="/info-declarativa" id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">Cliente Empresa</a>
+          </li>
+          <li class="nav-item_x">
+           <a class="nav-link active btn-primary" routerLink="/info-declarativa-stakeholder" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">Interveniente</a>
+          </li>
+          <li class="nav-item_x">
+           <a class="nav-link btn-outline-primary" routerLink="/info-declarativa-lojas" id="navTabs1_3_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">Lojas</a>
+          </li>
+          <li class="nav-item_x">
+           <a class="nav-link btn-outline-primary" routerLink="/info-declarativa-assinatura" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">Assinatura Pack</a>
+          </li>
+         </ul>
+
 
 <div class="offset-xxl-1 col-xxl-10">
   <div class="table-responsive">
@@ -46,39 +63,62 @@
     </mat-paginator>
   </div>
 </div>
+<p class="titul campo_obrigatrio">* campo obrigatório</p>
 
 
 <p class="text-primary"><strong>Contactos *</strong></p>
 <p>Preencha pelo menos 1 contacto</p>
 
 
-<form [formGroup]="formContactos">
+
     <div class="country-code-dropdown">
-      <p class="titulo-form-simples">Indicativo:</p>
-
-      <select class="form-select" #countryCode formControlName="countryCode" (click)="changeListElement(callingCodeStakeholder, $event)" id="countryCode">
-        <option value="">Indicativo:</option>
-        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
-      </select>
-      <!--<p>{{callingCodeStakeholder}}</p>-->
-
-      <div class="alert alert-danger" *ngIf="phoneNumber.value && !countryCode.value">
-        is required.
+      <div class="row ms-0 me-0">
+        
+        <div class="col"><form [formGroup]="formContactos">
+          <div class="ms-0 me-0 ps-0 pe-0 col-7">
+            <div class="row">
+              <div class="col-4">
+               <p class="titulo-form-simples mt-0">INDICATIVO:</p>
+               <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
+                <option value="">Indicativo:</option>
+                <option value="adsadsa">Teste</option>
+                <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+              </select>
+              <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
+                is required.
+              </div>
+            </div>
+            <div class="col">
+              <p class="titulo-form-simples mt-0">TELEFONE:*</p>
+              <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phone1PhoneNumber">
+              <div class="alert alert-danger" *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
+                is required.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+             <p class="titulo-form-simples mt-0">EMAIL*</p>
+             <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email">
+            <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
+              is required.
+            </div>
+            </div>
+           </div>
+           <p class="titulo-form-simples"></p>
+        </div></form><div class="col ms-0 ps-0">
+        <hr>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+           <span class="navbar-text me-2 align-self-center ms-0 me-0">
+            <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button></span>
+           <button id="btn5a3" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
+           <button id="btn5a4" [routerLink]="['/info-declarativa']" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+           <button id="btn5a2" [routerLink]="['/info-declarativa-lojas']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"  wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+        </nav>
+       </div>
       </div>
     </div>
-    <div class="form-group titulo-form-simples">
-      <label for="phoneStakeholder">Telefone*</label>
-      <input #phoneNumber formControlName="phoneNumber" name="phoneStakeholder" type="text" id="phoneStakeholder" class="form-control">
-
-      <div class="alert alert-danger" *ngIf="phoneNumber.touched && !phoneNumber.valid || countryCode.value && !phoneNumber.value">
-        is required.
-      </div>
-    </div>
-  <div class="form-group titulo-form-simples">
-    <label for="emailStakeholder">Email*</label>
-    <input required formControlName="email" name="email" type="text" id="email" class="form-control">
-  </div>
-</form>
+<!-- </form> -->
 </div>
 </div>
 </div>
