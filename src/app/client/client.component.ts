@@ -41,9 +41,8 @@ export class ClientComponent implements OnInit {
     "clientId": "",
     "fiscalId": "",
     "companyName": "",
-    "contactName": "",
+    "commercialName":"",
     "shortName": "",
-    "observations": "",
     "headquartersAddress": {
       "address": "",
       "postalCode": "",
@@ -62,33 +61,22 @@ export class ClientComponent implements OnInit {
       "capital": 0,
       "date": "1966-08-30"
     },
-    "bylaws": "",
-    "mainEconomicActivity": {
-      "code": "",
-      "branch": ""
-    },
-    "otherEconomicActivities": [
-      {
-        "code": "",
-        "branch": ""
-      },
-      {
-        "code": "",
-        "branch": ""
-      }
-    ],
+    "byLaws": "",
+    "mainEconomicActivity": "",
+    "otherEconomicActivities": [""],
     "mainOfficeAddress": {
       "address": "",
       "postalCode": "",
       "postalArea": "",
-      "country": ""
+      "country": "",
+      "locality": ""
     },
     "establishmentDate": "2009-12-16",
     "businessGroup": {
       "type": "",
       "fiscalId": ""
     },
-    "sales": {
+    "knowYourSales": {
       "estimatedAnualRevenue": 0,
       "averageTransactions": 0,
       "servicesOrProductsSold": [

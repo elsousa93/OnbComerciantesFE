@@ -12,103 +12,91 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ClientExtendedComponent implements OnInit {
 
   public clients: Client[] = [];
-  newClient : Client = {
-    "clientId": "Bananas",
-    "fiscalId": "Bananas",
-    "companyName": "Empresa Teste",
-    "observations": "",
-    "contactName": "Bananas ipsum",
-    "shortName": "deserunt exercita",
+  newClient: Client = {
+    "clientId": "",
+    "fiscalId": "",
+    "companyName": "",
+    "commercialName":"",
+    "shortName": "",
     "headquartersAddress": {
-      "address": "sed al",
-      "postalCode": "ea sit est dolore",
-      "postalArea": "ex ad",
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
       "locality": "",
-      "country": "dolor pariatur amet labore consectetur"
+      "country": ""
     },
-    "merchantType": "in esse",
-    "legalNature": "officia tempor",
-    "legalNature2": "proident",
+    "merchantType": "",
+    "legalNature": "",
+    "legalNature2": "",
     "crc": {
-      "code": "est in Excepteur",
-      "validUntil": "2010-04-24"
+      "code": "",
+      "validUntil": ""
     },
     "shareCapital": {
-      "capital": 87,
+      "capital": 0,
       "date": "1966-08-30"
     },
-    "bylaws": "aliqua fugiat adipisicing sed",
-    "mainEconomicActivity": {
-      "code": "nostrud laboris ex eu",
-      "branch": "ex ad"
-    },
-    "otherEconomicActivities": [
-      {
-        "code": "amet id nisi aliquip",
-        "branch": "ea incididunt ex"
-      },
-      {
-        "code": "cillum",
-        "branch": "consectetur sint"
-      }
-    ],
+    "byLaws": "",
+    "mainEconomicActivity": "",
+    "otherEconomicActivities": [""],
     "mainOfficeAddress": {
-      "address": "culpa exercitation qui",
-      "postalCode": "non consequat in nulla",
-      "postalArea": "adipisicing sit nisi est",
-      "country": "eiusmod sunt Excepteur consequat ut"
+      "address": "",
+      "postalCode": "",
+      "postalArea": "",
+      "country": "",
+      "locality": ""
     },
     "establishmentDate": "2009-12-16",
     "businessGroup": {
-      "type": "amet do minim",
-      "fiscalId": "esse volup"
+      "type": "",
+      "fiscalId": ""
     },
-    "sales": {
-      "estimatedAnualRevenue": 591,
-      "averageTransactions": -6444798,
+    "knowYourSales": {
+      "estimatedAnualRevenue": 0,
+      "averageTransactions": 0,
       "servicesOrProductsSold": [
-        "deserunt tempor Ut",
-        "dolore nisi tempor"
+        "",
+        ""
       ],
       "servicesOrProductsDestinations": [
-        "pariatur et amet dolore sed",
-        "labore aliqua irure"
+        "",
+        ""
       ]
     },
     "foreignFiscalInformation": {
-      "issuerCountry": "et non ad",
-      "issuanceIndicator": "proident consectetur non",
-      "fiscalId": "cupidatat est sit esse",
-      "issuanceReason": "nisi officia dolore"
+      "issuerCountry": "",
+      "issuanceIndicator": "",
+      "fiscalId": "",
+      "issuanceReason": ""
     },
     "bankInformation": {
-      "bank": "consequat",
-      "branch": "adipisicing amet",
-      "iban": "non sunt sint",
+      "bank": "",
+      "branch": "",
+      "iban": "",
       "accountOpenedAt": "2019-06-11"
     },
     "contacts": {
-      "preferredMethod": "EMAIL",
+      "preferredMethod": "",
       "preferredPeriod": {
         "startsAt": "22:40:00.450Z",
         "endsAt": "15:42:54.722Z"
       },
       "phone1": {
-        "countryCode": "\\\\\\\\\\99646",
-        "phoneNumber": "ea"
+        "countryCode": "",
+        "phoneNumber": ""
       },
       "phone2": {
-        "countryCode": "\\\\\\\\\\\\\\\\\\\\\\03770",
-        "phoneNumber": "incididunt elit qui"
+        "countryCode": "",
+        "phoneNumber": ""
       },
       "fax": {
-        "countryCode": "\\\\\\\\\\\\03581305",
-        "phoneNumber": "voluptate Excepteur sit"
+        "countryCode": "",
+        "phoneNumber": ""
       },
-      "email": "azwub3bMd@MmQrMhlbOgZHJmPU.km"
+      "email": ""
     },
-    "documentationDeliveryMethod": "PORTAL",
-    "billingEmail": "27omQ82nb@RIqJdzMzddCi.wwoo"
+    "documentationDeliveryMethod": "",
+    "billingEmail": ""
   };
 
   public clientid = 444;

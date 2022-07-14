@@ -39,12 +39,10 @@ export class PepComponent implements OnInit {
     pepDetails: {
       fiscalId: "",
       identificationDocument: {
-        identificationDocumentType: "",
-        identificationDocumentNumber: "",
-        identificationDocumentCountry: {
-          code: ""
-        },
-        identificationDocumentExpirationDate: ""
+        type: "",
+        number: "",
+        country: "",
+        expirationDate: ""
       },
       fullName: "",
       contactName: "",
@@ -54,9 +52,7 @@ export class PepComponent implements OnInit {
         postalCode: "",
         postalArea: "",
         locality: "",
-        country: {
-          code: ""
-        },
+        country: "",
       },
       sinceWhen: "",
       kind: ""
@@ -121,7 +117,7 @@ export class PepComponent implements OnInit {
     if (this.isVisiblePep12months) {
       this.newPep.isPep = (this.form.value.pep12months === 'true' ? true : false); //Transforming string into boolean
       this.newPep.pepDetails.kind = this.form.value.pepType;
-      this.newPep.pepDetails.address.country.code = this.form.value.pepCountry;
+      this.newPep.pepDetails.address.country = this.form.value.pepCountry;
       this.newPep.pepDetails.sinceWhen = this.form.value.pepSinceWhen;
     }
 
@@ -131,18 +127,18 @@ export class PepComponent implements OnInit {
       this.newPep.familyRelationshipKind = Number(this.form.value.pepFamilyRelation);
 
       this.newPep.pepDetails.kind = this.form.value.relatedPep_type;
-      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
+      this.newPep.pepDetails.address.country = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
       this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
       this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
       this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentNumber = this.form.value.relatedPep_idNumber;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentType = this.form.value.relatedPep_idDocumentType;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentExpirationDate = this.form.value.relatedPep_idDocumentValidity;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentCountry.code = this.form.value.relatedPep_idDocumentCountry;
+      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
+      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
+      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
+      this.newPep.pepDetails.identificationDocument.country = this.form.value.relatedPep_idDocumentCountry;
       this.newPep.pepDetails.address.address = this.form.value.relatedPep_address;
       this.newPep.pepDetails.address.locality = this.form.value.relatedPep_addressLocation;
       this.newPep.pepDetails.address.postalCode = this.form.value.relatedPep_postalCode;
-      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
+      this.newPep.pepDetails.address.country = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
     }
 
     if (this.isVisiblePepRelations) {
@@ -151,18 +147,18 @@ export class PepComponent implements OnInit {
       this.newPep.businessRelationshipKind = Number(this.form.value.pepTypeOfRelation);
 
       this.newPep.pepDetails.kind = this.form.value.relatedPep_type;
-      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
+      this.newPep.pepDetails.address.country = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
       this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
       this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
       this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentNumber = this.form.value.relatedPep_idNumber;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentType = this.form.value.relatedPep_idDocumentType;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentExpirationDate = this.form.value.relatedPep_idDocumentValidity;
-      this.newPep.pepDetails.identificationDocument.identificationDocumentCountry.code = this.form.value.relatedPep_idDocumentCountry;
+      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
+      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
+      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
+      this.newPep.pepDetails.identificationDocument.country = this.form.value.relatedPep_idDocumentCountry;
       this.newPep.pepDetails.address.address = this.form.value.relatedPep_address;
       this.newPep.pepDetails.address.locality = this.form.value.relatedPep_addressLocation;
       this.newPep.pepDetails.address.postalCode = this.form.value.relatedPep_postalCode;
-      this.newPep.pepDetails.address.country.code = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
+      this.newPep.pepDetails.address.country = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
     }
 
     if (this.isVisiblePepPoliticalPublicJobs) {

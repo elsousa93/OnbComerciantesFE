@@ -24,12 +24,10 @@ export class StakeholdersComponent implements OnInit {
   newStake: IStakeholders = { 
     "fiscalId": "",
     "identificationDocument": {
-      "identificationDocumentType": "",
-      "identificationDocumentNumber": "",
-      "identificationDocumentCountry": {
-        "code": ""
-      },
-      "identificationDocumentExpirationDate": "",
+      "type": "",
+      "number": "",
+      "country": "",
+      "expirationDate": "",
     },
     "fullName": "",
     "contactName": "",
@@ -156,7 +154,7 @@ export class StakeholdersComponent implements OnInit {
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
     
-    this.newStake.identificationDocument.identificationDocumentType = this.documentType;
+    this.newStake.identificationDocument.type = this.documentType;
     
     if (this.documentType === 'Cartão do Cidadão') {
       this.isCC = true;

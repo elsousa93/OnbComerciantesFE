@@ -23,7 +23,7 @@
         Tipo de Documento de Identificação (1ª Nacionalidade):*
       </label>
       <input name="identificationDocumentType" formControlName="documentType"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.identificationDocumentType">
+             class="form-control" [(ngModel)]="newStake.identificationDocument.type">
       <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
       documentType is required.
     </div>-->
@@ -34,7 +34,7 @@
         País do Documento de Identificação (1ª Nacionalidade):*
       </label>
       <input name="documentCountry" formControlName="documentCountry"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.identificationDocumentCountry.code">
+             class="form-control" [(ngModel)]="newStake.identificationDocument.country">
       <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
       documentCountry is required.
     </div>-->
@@ -45,7 +45,7 @@
         Nº Documento de Identificação (1ª Nacionalidade):*
       </label>
       <input name="identificationDocumentId" formControlName="identificationDocumentId"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.identificationDocumentNumber">
+             class="form-control" [(ngModel)]="newStake.identificationDocument.number">
       <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
       nrDocumentoID is required.
     </div>-->
@@ -56,7 +56,7 @@
         Data do documento de Identificação (1ª Nacionalidade):*
       </label>
       <input name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil" cols="30" rows="10"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.identificationDocumentExpirationDate">
+             class="form-control" [(ngModel)]="newStake.identificationDocument.expirationDate">
       <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
       dataDocumentoID is required.
     </div>-->

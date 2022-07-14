@@ -128,22 +128,22 @@
 
                 <p class="titulo-form-simples" for="caePrincipal">CAE Principal:</p>
                 <input required minlength="2" maxlength="100" ngModel #caePrincipal="ngModel" name="caePrincipal"
-                  type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="addNewClient.mainEconomicActivity.code">
+                  type="text" id="caePrincipal" class="form-control campo_form" [(ngModel)]="addNewClient.mainEconomicActivity">
 
                 <p class="titulo-form-simples" for="caeSecundario1">CAE Secundário 1: </p>
                 <input required minlength="2" maxlength="100" ngModel #caeSecundario1="ngModel" name="caeSecundario1"
                   type="text" id="caeSecundario1" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.otherEconomicActivities[0].code">
+                  [(ngModel)]="addNewClient.otherEconomicActivities[0]">
 
                 <p class="titulo-form-simples" for="caeSecundario2">CAE Secundário 2: </p>
                 <input required minlength="2" maxlength="100" ngModel #caeSecundario2="ngModel" name="caeSecundario2"
                   type="text" id="caeSecundario2" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.otherEconomicActivities[1].code">
+                  [(ngModel)]="addNewClient.otherEconomicActivities[1]">
 
                 <p class="titulo-form-simples" for="caeSecundario3">CAE Secundário 3: </p>
                 <input required minlength="2" maxlength="100" ngModel #caeSecundario3="ngModel" name="caeSecundario3"
                   type="text" id="caeSecundario3" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.otherEconomicActivities[2].code">
+                  [(ngModel)]="addNewClient.otherEconomicActivities[2]">
               </div>
 
               <div class="col-xxl col-7">
@@ -161,22 +161,22 @@
                 <p class="titulo-form-simples" for="ramoPrincipal">Ramo de Negócio de Objeto Social Principal*: </p>
                 <input required minlength="2" maxlength="100" ngModel #ramoPrincipal="ngModel" name="ramoPrincipal"
                   type="text" id="ramoPrincipal" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.mainEconomicActivity.branch">
+                  [(ngModel)]="addNewClient.mainEconomicActivity">
 
                 <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
                 <input required minlength="2" maxlength="100" ngModel #ramoSecundario1="ngModel" name="ramoSecundario1"
                   type="text" id="ramoSecundario1" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.otherEconomicActivities[0].branch">
+                  [(ngModel)]="addNewClient.otherEconomicActivities[0]">
 
                 <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
                 <input required minlength="2" maxlength="100" ngModel #ramoSecundario2="ngModel" name="ramoSecundario2"
                   type="text" id="ramoSecundario2" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.otherEconomicActivities[1].branch">
+                  [(ngModel)]="addNewClient.otherEconomicActivities[1]">
 
                 <p class="titulo-form-simples" for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </p>
                 <input required minlength="2" maxlength="100" ngModel #ramoSecundario3="ngModel" name="ramoSecundario3"
                   type="text" id="ramoSecundario3" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.otherEconomicActivities[2].branch">
+                  [(ngModel)]="addNewClient.otherEconomicActivities[2]">
               </div>
               <hr>
             </div>
@@ -234,16 +234,16 @@
                 <p class="titulo-form-simples" for="expectableAnualInvoicing">Fauração Anual Expectável: </p>
                 <input required minlength="2" maxlength="100" ngModel #expectableAnualInvoicing="ngModel"
                   name="expectableAnualInvoicing" type="text" id="expectableAnualInvoicing"
-                  class="form-control campo_form" [(ngModel)]="addNewClient.sales.estimatedAnualRevenue">
+                  class="form-control campo_form" [(ngModel)]="addNewClient.knowYourSales.estimatedAnualRevenue">
 
                 <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados*: </p>
                 <input required minlength="2" maxlength="100" ngModel #services="ngModel" name="services" type="text"
-                  id="services" class="form-control campo_form" [(ngModel)]="addNewClient.sales.servicesOrProductsSold[0]">
+                  id="services" class="form-control campo_form" [(ngModel)]="addNewClient.knowYourSales.servicesOrProductsSold[0]">
 
                 <p class="titulo-form-simples" for="transactionsAverage">Transações Média: </p>
                 <input required minlength="2" maxlength="100" ngModel #transactionsAverage="ngModel"
                   name="transactionsAverage" type="text" id="transactionsAverage" class="form-control campo_form"
-                  [(ngModel)]="addNewClient.sales.averageTransactions">
+                  [(ngModel)]="addNewClient.knowYourSales.averageTransactions">
               </div>
               <div class="col-xxl col-7">
                 <!--<p class="titulo-form-simples" for="groupNIPC">NIPC do Grupo: </p>
