@@ -15,15 +15,12 @@
 <p *ngIf="!compCheckDocs"><em>Loading...</em></p>
 <div class="modal-content2">
     <div class="modal-header">
-        <h5 class="modal-title">CHECKLIST DE DOCUMENTOS</h5>
+        <h5 class="modal-title">QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?</h5>
         <button type="button"  data-dismiss="modal" aria-label="Fechar" (click)="onClose()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>
-            QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?
-            </p>
             <table class='table-responsive' aria-labelledby="tableLabel" *ngIf="compCheckDocs" style="size: inherit;">
             <thead class="table-primary align-middle">
                 <tr class="align-middle">

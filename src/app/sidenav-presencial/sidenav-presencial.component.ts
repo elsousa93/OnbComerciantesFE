@@ -4,9 +4,10 @@ import { ChangeDetectorRef, Component, HostBinding, Input, OnInit } from '@angul
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
-import { Client } from '../client/Client.interface';
+import { Client, Crc } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { CRCService } from '../CRC/crcservice.service';
 import { SubmissionPostTemplate, SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -324,7 +325,7 @@ export class SidenavPresencialComponent implements OnInit {
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private submissionService: SubmissionService,
-    private clientService: ClientService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService  ) {
+      private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -356,6 +357,10 @@ export class SidenavPresencialComponent implements OnInit {
     });
     this.clientService.EditClient("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", this.clientEditTest).subscribe(d => {
       console.log("edit client");
+      console.log(d);
+    });
+    this.crcService.getCRC("001", "001", "001").subscribe(d => {
+      console.log("get company CRC");
       console.log(d);
     });
   //  alert(this.isAutoHide);
@@ -425,7 +430,7 @@ export class SidenavPresencialComponent implements OnInit {
       console.log(d);
     });
 
-    //Corresponde ao ABATE DE AVES (PRODUÇÃO DE CARNE)
+    //Corresponde ao ABATE DE AVES (PRODU��O DE CARNE)
     this.tableInfo.GetCAEByCode("10120").subscribe(d => {
       console.log("get cae by code");
       console.log(d);
