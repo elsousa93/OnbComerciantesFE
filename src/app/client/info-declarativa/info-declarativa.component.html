@@ -36,76 +36,80 @@
               </h2>
               <p class="titul campo_obrigatrio">* campo obrigatório</p>
               <div class="row ms-0 me-0">
-                <div class="col">
-                <div class="ms-0 me-0 ps-0 pe-0 col-7">
-                  <p class="titulo-form-simples mt-0">NOME COMERCIAL*</p>
-							   <input #contactName name="contactName" type="text" id="contactName" class="form-control" formControlName="comercialName">
-                 <div class="alert alert-danger" *ngIf="contactName.touched && !contactName.valid">
-                  is required.
-                </div>
-							</div></div>
-        <form [formGroup]="listValue" (ngSubmit)="submit()" name="listValue">
+                <form [formGroup]="listValue" (ngSubmit)="submit()" name="listValue">
+                  <div class="col">
+                    <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                      <p class="titulo-form-simples mt-0">NOME COMERCIAL*</p>
+                      <input #contactName name="contactName" type="text" id="contactName" class="form-control" formControlName="comercialName">
+                      <div class="alert alert-danger" *ngIf="contactName.touched && !contactName.valid">
+                        is required.
+                      </div>
+                    </div>
+                  </div>
 
-          <div class="ms-0 me-0 ps-0 pe-0 col-7">
-            <div class="row">
-              <div class="col-4">
-               <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
-               <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
-                <option value="">Indicativo:</option>
-                <option value="adsadsa">Teste</option>
-                <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
-              </select>
-              <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
-                is required.
-              </div>
-              </div>
-              <div class="col">
-               <p class="titulo-form-simples mt-0">TELEFONE 1:*</p>
-               <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phone1PhoneNumber">
-              <div class="alert alert-danger" *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
-                is required.
-              </div>
-              </div>
-             </div>
 
-            <div class="row">
-              <div class="col-4">
-               <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
-               <select class="form-select" #phone2CountryCode formControlName="phone2CountryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode">
-                <option value="">Indicativo:</option>
-                <option value="adsadsa">Teste</option>
-                <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
-              </select>
-              <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
-                is required.
+
+                  <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                    <div class="row">
+                      <div class="col-4">
+                        <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
+                        <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
+                          <option value="">Indicativo:</option>
+                          <option value="adsadsa">Teste</option>
+                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
+                          is required.
+                        </div>
+                      </div>
+                      <div class="col">
+                        <p class="titulo-form-simples mt-0">TELEFONE 1:*</p>
+                        <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phone1PhoneNumber">
+                        <div class="alert alert-danger" *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
+                          is required.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-4">
+                        <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
+                        <select class="form-select" #phone2CountryCode formControlName="phone2CountryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode">
+                          <option value="">Indicativo:</option>
+                          <option value="adsadsa">Teste</option>
+                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
+                          is required.
+                        </div>
+                      </div>
+                      <div class="col">
+                        <p class="titulo-form-simples mt-0">TELEFONE 2:*</p>
+                        <input #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phone2PhoneNumber">
+                        <div class="alert alert-danger" *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
+                          is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <p class="titulo-form-simples mt-0">EMAIL*</p>
+                        <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email">
+                        <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
+                          is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <p class="titulo-form-simples mt-0">EMAIL DE FATURAÇÃO</p>
+                        <input #billingEmail name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail">
+                      </div>
+                    </div>
+                    <p class="titulo-form-simples"></p>
+                  </div>
+                </form>
               </div>
-              </div>
-              <div class="col">
-               <p class="titulo-form-simples mt-0">TELEFONE 2:*</p>
-               <input #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phone2PhoneNumber">
-              <div class="alert alert-danger" *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
-                is required.
-              </div>
-              </div>
-             </div>
-            <div class="row">
-              <div class="col-12">
-               <p class="titulo-form-simples mt-0">EMAIL*</p>
-               <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email">
-              <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
-                is required.
-              </div>
-              </div>
-             </div>
-            <div class="row">
-              <div class="col-12">
-               <p class="titulo-form-simples mt-0">EMAIL DE FATURAÇÃO</p>
-               <input #billingEmail name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail">
-              </div>
-             </div>
-            <p class="titulo-form-simples"></p>
-          </div></form>
-          </div>
 
           <div class="col ms-0 ps-0">
             <hr>

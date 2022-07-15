@@ -238,10 +238,10 @@
             <div>
               <div *ngIf="showButtons">
                   <form>
-                  <div class="row ms-0 me-0" *ngIf="!showENI">
+                  <div class="row me-0" *ngIf="!showENI">
                       <div class="col">
-                        <div class="ms-0 me-0 ps-0 pe-0 col-7">
-                        <p class="titulo-form-simples mt-0">Tipo de Documento:*</p>
+                        <div class="me-0 ps-0 pe-0 col-7">
+                        <p class="titulo-form-simples">Tipo de Documento:*</p>
                         <select class="form-select campo-form-select" id="docType"
                                 [(ngModel)]="newClient.documentationDeliveryMethod">
                           <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
@@ -251,9 +251,9 @@
                       </div>
                       </div>
                     </div>
-                    <div class="row ms-0 me-0" *ngIf="showENI">
+                    <div class="row me-0" *ngIf="showENI">
                         <div class="col">
-                          <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                          <div class="me-0 ps-0 pe-0 col-7">
                           <p class="titulo-form-simples">Tipo de Documento:*</p>
                           <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
                   id="documentType" formControlName="documentType">
@@ -326,9 +326,9 @@
                     </div></form>
 
                       <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
-                      <div class="row ms-0 me-0">
+                      <div class="row me-0">
                         <div class="col">
-                          <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                          <div class="me-0 ps-0 pe-0 col-7">
                           <p class="titulo-form-simples" >
                             Número do Documento:* <span [class]="errorMsg" >
                               {{
