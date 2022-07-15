@@ -26,60 +26,85 @@
            <a class="nav-link active btn-primary" routerLink="/info-declarativa-assinatura" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">Assinatura Pack</a>
           </li>
          </ul>
-  <p class="text-primary" style="margin-top:5%;">SELECIONE A FORMA DE ASSINATURA DE CONTRATO</p>
-
-  <p class="titulo-form-simples">Idioma:</p>
-  <select class="form-select">
-    <option value=""> - </option>
-    <option value="Português">Português</option>
-  </select>
-  <br>
-
-  <div class="col">
-  <p class="titulo-form"> Selecione uma das opções </p>
-
-  
-  <input class="form-check-input" id="opt1" [value]="1"
-         [(ngModel)]="isVisible"
-         #opt1="ngModel"
-         name="isVisible"
-         type="radio"
-         [checked]="isSelected" />
-         <label class="form-check-label" for="opt1">Assinatura em papel</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-  
-  <input class="form-check-input" id="opt2" [value]="0"
-         [(ngModel)]="isVisible"
-         #opt2="ngModel"
-         name="isVisible"
-         type="radio"
-         [checked]="!isSelected" />
-         <label class="form-check-label" for="opt2">Assinatura eletrónica</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-</div>
-<br>
-  <p *ngIf="isVisible == 0 || isVisible == 1" class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
+         <div class="tab-content" id="navTabs1_content">
+          <div class="container-fluid mt-0 ps-3 pe-3">
+            <div class="row">
+               <div class="bg-white align-self-center col-12 style53 laterais_tabs2 mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
+                  <h4 class="text-primary mt-3 ps-0"><img src="assets/images/save_as.svg"
+                    style="height: 25px !important; vertical-align: sub;">&nbsp;SELECIONE A FORMA DE ASSINATURA DO CONTRATO
+                  </h4>
+                  <p class="titul campo_obrigatrio">* campo obrigatório</p>
+                  <div class="row ms-0 me-0">
+                    <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                       <div class="row">
+                          <div class="col-4">
+                             <p class="titulo-form-simples mt-0">Idioma*</p>
+                             <select class="form-select">
+                              <option value=""> - </option>
+                              <option value="Português">Português</option>
+                            </select>
+                          </div>
+                       </div>
+                       <div class="row">
+                          <div class="col-6 ms-0 me-0 ps-4 pe-5">
+                             <p class="titulo-form-simples mb-1">SELECIONE UMA DAS OPÇÕES?*</p>
+                             <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                <span class="navbar-text">
+                                   <div class="form-check">
+                                    <input class="form-check-input" id="opt1" [value]="1"
+                                    [(ngModel)]="isVisible"
+                                    #opt1="ngModel"
+                                    name="isVisible"
+                                    type="radio"
+                                    [checked]="isSelected" />
+                                      <label class="form-check-label radio pe-5" for="radio8">ASSINATURA EM PAPEL&nbsp;</label>
+                                   </div>
+                                </span>
+                                <span class="navbar-text">
+                                   <div class="form-check">
+                                    <input class="form-check-input" id="opt2" [value]="0"
+                                    [(ngModel)]="isVisible"
+                                    #opt2="ngModel"
+                                    name="isVisible"
+                                    type="radio"
+                                    [checked]="!isSelected" />
+                                      <label class="form-check-label radio" for="radio8">ASSINATURA ELECTRÓNICA</label>
+                                   </div>
+                                </span>
+                             </nav>
+                             <p class="titulo-form-simples"></p>
+                          </div>
+                       </div>
+                       <p class="titulo-form-simples"></p>
+                    </div>
+                 </div>
+                 <h4 *ngIf="isVisible == 0 || isVisible == 1" class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
+                  style="height: 25px !important; vertical-align: bottom;">&nbsp;SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA
+               </h4>
+               </div>
+               <div class="bg-white align-self-center col-12 laterais_tabs4 mt-0 ms-0 me-0 pt-2 ps-5 pe-5">
+                <div class="table-responsive mb-5 pb-5">
   <table *ngIf="isVisible == 0 || isVisible == 1" class='table table-striped' aria-labelledby="tableLabel" >
-    <thead>
-      <tr>
-        <th>Nome do Cliente</th>
-        <th>NIF</th>
-        <th *ngIf="isVisible == 1">Letra</th>
-        <th *ngIf="isVisible == 1">Tipo de assinatura</th>
-        <th>Seleção</th>
-        <th>Tipo assinatura digital</th>
-        <th>Tipo de identificação </th>
+    <thead class="text-primary table-primary">
+      <tr class="table-white text-primary">
+        <th scope="col" class="text-center text-primary bg-light table-white">Nome do Cliente</th>
+        <th scope="col" class="text-center bg-light">NIF</th>
+        <th scope="col" class="text-center bg-light" *ngIf="isVisible == 1">Letra</th>
+        <th scope="col" class="text-center bg-light" *ngIf="isVisible == 1">Tipo de assinatura</th>
+        <th scope="col" class="text-center bg-light">Seleção</th>
+        <th scope="col" class="text-center bg-light">Tipo assinatura digital</th>
+        <th scope="col" class="text-center bg-light">Tipo de identificação </th>
 
       </tr>
     </thead>
     <tbody>
       <tr class="clickable" *ngFor="let stakeholder of stakeholders">
-        <td>{{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}}</td>
-        <td> - </td>
-        <td *ngIf="isVisible == 1"> - </td>
-        <td *ngIf="isVisible == 1"> - </td>
-        <td><input #{{stakeholder.fiscalId}} id="{{stakeholder.fiscalId}}" type="checkbox" [checked]="representativesSelected.indexOf(stakeholder.fiscalId) > -1" (change)="changeRepresentativeSelected($event)" /></td>
-        <td>
+        <td class="text-primary text-center align-middle">{{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}}</td>
+        <td class="text-primary text-center align-middle"> - </td>
+        <td class="text-primary text-center align-middle" *ngIf="isVisible == 1"> - </td>
+        <td class="text-primary text-center align-middle" *ngIf="isVisible == 1"> - </td>
+        <td class="text-primary text-center align-middle"><input #{{stakeholder.fiscalId}} id="{{stakeholder.fiscalId}}" type="checkbox" [checked]="representativesSelected.indexOf(stakeholder.fiscalId) > -1" (change)="changeRepresentativeSelected($event)" /></td>
+        <td class="text-primary text-center align-middle">
           <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
           <select *ngIf="isVisible == 0">
             <option>OTP</option>
@@ -87,7 +112,7 @@
             <option>CC</option>
           </select>
         </td>
-        <td>
+        <td class="text-primary text-center align-middle">
           <select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
           <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
         </td>
@@ -95,7 +120,30 @@
       </tr>
     </tbody>
   </table>
-  <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="button" (click)="redirectHomePage()">SUBMETER PEDIDO</button>
+  </div>
+  </div>
+  <div class="col ms-0 ps-0">
+    <hr>
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+      <span class="navbar-text me-2 align-self-center ms-0 me-0">
+        <button id="btn5a1" [routerLink]="['/']"
+          class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+          wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg"
+            style="height: 25px !important; vertical-align: sub;"></button></span>
+      <button id="btn5a3" [routerLink]="['/']"
+        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3"
+        wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/cancel.svg"
+          style="height: 25px !important; vertical-align: sub;"></button>
+      <button id="btn5a4" [routerLink]="['/info-declarativa-lojas']"
+        class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
+        wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+          style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+      <button id="btn5a2" [routerLink]="['/']"
+        class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+        wappler-command="editContent">SUBMETER PEDIDO&nbsp;</button>
+    </nav>
+  </div>
 </div>
 </div>
 </div>
