@@ -49,38 +49,40 @@ export class ClientComponent implements OnInit {
   resultError: string = "";
   clientTypology: string ="";
   newClient: Client = {
-    "clientId": "",
-    "fiscalId": "",
-    "companyName": "",
-    "commercialName":"",
-    "shortName": "",
+    "clientId": "22181900000011",
+    "fiscalId": "22181900000011",
+    "id": "22181900000011",
+
+    "companyName": "J SILVESTRE LIMITADA",
+    "commercialName":"CAFE CENTRAL",
+    "shortName": "SILVESTRE LDA",
     "headquartersAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "locality": "",
-      "country": ""
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+      "locality": "Lisboa",
+      "country": "PT"
     },
-    "merchantType": "",
-    "legalNature": "",
+    "merchantType": "Company",
+    "legalNature": "35",
     "legalNature2": "",
     "crc": {
-      "code": "",
-      "validUntil": ""
+      "code": "0000-0000-0001",
+      "validUntil": "2023-06-29T17:52:08.336Z"
     },
     "shareCapital": {
-      "capital": 0,
+      "capital": 50000.20,
       "date": "1966-08-30"
     },
-    "byLaws": "",
-    "mainEconomicActivity": "",
-    "otherEconomicActivities": [""],
+    "byLaws": "O Joao pode assinar tudo",
+    "mainEconomicActivity": "90010",
+    "otherEconomicActivities": ["055111"],
     "mainOfficeAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "country": "",
-      "locality": ""
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+      "country": "Lisbon",
+      "locality": "PT"
     },
     "establishmentDate": "2009-12-16",
     "businessGroup": {
@@ -88,15 +90,15 @@ export class ClientComponent implements OnInit {
       "fiscalId": ""
     },
     "knowYourSales": {
-      "estimatedAnualRevenue": 0,
-      "averageTransactions": 0,
+      "estimatedAnualRevenue": 1000000,
+      "averageTransactions": 30000,
       "servicesOrProductsSold": [
-        "",
-        ""
+        "Cafe",
+        "Pastelaria"
       ],
       "servicesOrProductsDestinations": [
-        "",
-        ""
+        "PT",
+        "ES"
       ]
     },
     "foreignFiscalInformation": {
@@ -105,34 +107,15 @@ export class ClientComponent implements OnInit {
       "fiscalId": "",
       "issuanceReason": ""
     },
-    "bankInformation": {
-      "bank": "",
-      "branch": "",
-      "iban": "",
-      "accountOpenedAt": "2019-06-11"
-    },
     "contacts": {
-      "preferredMethod": "",
-      "preferredPeriod": {
-        "startsAt": "22:40:00.450Z",
-        "endsAt": "15:42:54.722Z"
-      },
+      "email": "joao@silvestre.pt",
       "phone1": {
-        "countryCode": "",
-        "phoneNumber": ""
-      },
-      "phone2": {
-        "countryCode": "",
-        "phoneNumber": ""
-      },
-      "fax": {
-        "countryCode": "",
-        "phoneNumber": ""
-      },
-      "email": ""
+        "countryCode": "+351",
+        "phoneNumber": "919654422"
+      }
     },
-    "documentationDeliveryMethod": "",
-    "billingEmail": ""
+    "documentationDeliveryMethod": "Mail",
+    "billingEmail": "joao@silvestre.pt"
   };
 
   tipologia: string;
@@ -177,7 +160,7 @@ export class ClientComponent implements OnInit {
         "locality": "string",
         "country": "PT"
       },
-      "merchantType": "COMPANY",
+      "merchantType": "Company",
       "legalNature": "35",
       "crc": {
         "code": "0000-0000-0001",
