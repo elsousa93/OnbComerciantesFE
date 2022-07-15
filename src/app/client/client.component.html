@@ -199,9 +199,7 @@
 
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
-    <div class="bg-primary col-12 mt-0 pt-0 ps-0 pe-0 shadow-none">
-    </div>
-      <div class="offset-1 bg-white align-self-center col-10 ps-3">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span
             class="navbar-text text-light">
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
@@ -212,8 +210,8 @@
           </span>
         </nav>
       </div>
-    <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0">
-      <h2 class="text-primary mt-5 ps-3"><span class="material-symbols-rounded icon-titulos m-align">
+    <div class="offset-1 bg-white center-align col-10 ps-3">
+      <h2 class="text-primary mt-5 ps-0 center-align"><span class="material-symbols-rounded icon-titulos m-align">
         <img src="assets/images/group_add_blue.svg" class="img_add">
         </span>&nbsp;IDENTIFICAÇÃO DO CLIENTE EMPRESA<br></h2>
       <p class="titul campo_obrigatrio">* campo obrigatório</p>
@@ -325,12 +323,6 @@
                               </table>
                             </div>
                           </div>
-                      <button id="btn5a2"
-                              class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
-                              (click)="getValueENI()">
-                        Ler Cartão Cidadão
-                        <i class="fas fa-search">&nbsp;</i>
-                      </button>
                     </div></form>
 
                       <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
@@ -345,7 +337,13 @@
                             </span>
                           </p>
                     <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
-                           #clientId="ngModel" [class]="errorInput"></div></div></div>
+                           #clientId="ngModel" [class]="errorInput"></div></div></div><div *ngIf="isNoDataReadable && isCC">
+                            Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+              
+                            <form>
+                              <button class="btn botao_azul_pesquisa" type="submit">Ler Cartão de Cidadão</button>
+                            </form>
+                          </div>
                     <p class="titulo-form-simples">
                       <button id="btn5a2" class="btn botao_azul_pesquisa" (click)="onSearchSimulation(clientId.value)">
                         <!--onSearchSimulation(clientId.value)-->
