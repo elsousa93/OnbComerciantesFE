@@ -79,10 +79,13 @@
                      <button id="btn5a5" (click)="onCheckList()"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
                         wappler-command="editContent">CONSULTAR CHECKLIST&nbsp;<img src="assets/images/checklist.svg" style="height: 25px !important; vertical-align: sub;"></button>
-                     <button id="btn5a6" accept=".pdf" (change)="selectFile($event,client)"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                        wappler-command="editContent">ANEXAR DOCUMENTOS&nbsp;
-                        <img src="assets/images/file_upload.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                     <input type="file" id="btn5a6" accept=".pdf" (change)="selectFile($event,client)"
+                        wappler-command="editContent" hidden>
+                        <label class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" for="btn5a6">ANEXAR DOCUMENTOS&nbsp;
+
+                           <img src="assets/images/file_upload.svg" style="height: 25px !important; vertical-align: sub;">
+                        </label>
+                        
                         
                   </span>
                </nav>

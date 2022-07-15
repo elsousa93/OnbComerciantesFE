@@ -218,7 +218,7 @@
 
         <div class="row ms-0 me-0">
           <div class="col-9 ms-0 me-0 ps-0 pe-0">  <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
-            <p class="titulo-form-simples">QUAL A TIPOLOGIA DO CLIENTE EMPRESA?*</p>
+              <p class="titulo-form-simples">QUAL A TIPOLOGIA DO CLIENTE EMPRESA?*</p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
@@ -393,8 +393,9 @@
                 <table class="table">
                   <thead class="text-primary table-primary">
                     <tr class="table-white text-primary">
-                      <th scope="col" class="text-center text-primary bg-light table-white">ID Interno</th>
+                      <th scope="col" class="text-center text-primary bg-light table-white"></th>
                       <th scope="col" class="text-center bg-light">Nº de Cliente</th>
+                      <th scope="col" class="text-center bg-light">Cliente</th>
                       <th scope="col" class="text-center bg-white">Morada</th>
                       <th scope="col" class="text-center bg-white">Código Postal</th>
                       <th scope="col" class="text-center bg-white">Localidade</th>
@@ -408,6 +409,7 @@
                         <input type="radio" value={{newClient.documentationDeliveryMethod}} (click)="aButtons(true)">
                       </th>
                       <td class="text-primary text-center">{{newClient.clientId}}</td>
+                      <td class="text-primary text-center">{{newClient.commercialName}}</td>
                       <td class="text-primary text-center">{{newClient.headquartersAddress.address}}</td>
                       <td class="text-primary text-center">{{newClient.headquartersAddress.postalCode}}</td>
                       <td class="text-primary text-center">{{newClient.headquartersAddress.locality}}</td>
