@@ -468,8 +468,8 @@ export class ClientByIdComponent implements OnInit {
 
   searchByCRC() {
     var crcInserted = this.form.get('crcCode').value;
-    console.log("codigo CRC:" , this.form.get('crcCode').value);
-    console.log(crcInserted);
+    console.log("codigo CRC do Client:" , this.form.get('crcCode').value);
+    console.log("CRC inserido: ", crcInserted);
 
     if (crcInserted === '123') {
       this.crcFound = true;
