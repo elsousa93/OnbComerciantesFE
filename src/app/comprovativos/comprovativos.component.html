@@ -79,10 +79,16 @@
                      <button id="btn5a5" (click)="onCheckList()"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
                         wappler-command="editContent">CONSULTAR CHECKLIST&nbsp;<img src="assets/images/checklist.svg" style="height: 25px !important; vertical-align: sub;"></button>
-                     <button id="btn5a6" accept=".pdf" (change)="selectFile($event,client)"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                        wappler-command="editContent">ANEXAR DOCUMENTOS&nbsp;
-                        <img src="assets/images/file_upload.svg" style="height: 25px !important; vertical-align: sub;"></button>
+   
+
+                     <label for="arquivo" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg">
+                       ANEXAR DOCUMENTOS&nbsp;
+                       <img src="assets/images/file_upload.svg" style="height: 25px !important; vertical-align: sub;" />
+
+                     </label>
+                       <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
+                              accept=".pdf">
+
                   </span>
                </nav>
                <p class="titulo-form-simples" for="observacoes">Observações:</p>

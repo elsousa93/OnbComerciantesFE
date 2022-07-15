@@ -26,6 +26,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "url": ""
   };
 
+  //SO PARA MOSTRAR, DEPOIS ATUALIZAR COM A API
+  public compToShow: {tipo:string, interveniente: string, dataValidade: string, dataEntrada: string, status: string};
+
+
+
   public client: Client = {
     "clientId": "",
     "fiscalId": "",
@@ -180,19 +185,25 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   selectFile(event: any, comp: any) {
+    console.log("a");
     this.file = <File>event.target.files[0];
     const sizeFile = this.file.size / (1024 * 1024);
     var extensoesPermitidas = /(.pdf)$/i;
-    const limSize = 10;
+    const limSize = 10
+
+    this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
 
     this.newComp.clientId = String(this.clientNr);
     console.log(this.clientNr);
     this.http.post(this.url + 'ServicesComprovativos/GetLastId/', this.newComp).subscribe(result => {
-      console.log(result);
+      console.log("b");
       if (result != null) {
+        console.log("c");
         this.compClientId = result;
         if ((sizeFile <= limSize) && (extensoesPermitidas.exec(this.file.name))) {
+          console.log("d");
           if (event.target.files && event.target.files[0]) {
+            console.log("e");
             var reader = new FileReader();
             reader.onload = (event: any) => {
               this.localUrl = event.target.result;
