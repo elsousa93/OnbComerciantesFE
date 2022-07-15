@@ -389,29 +389,29 @@
             <h4 class="text-primary mb-4">RESULTADOS: CLIENTES ENCONTRADOS</h4>
             <div class="table-responsive mb-5">
               <form #contactForm="ngForm">
+
                 <table class="table">
-                  <thead class="table-primary align-middle">
-                    <tr class="align-middle">
-                      <th scope="col" class="text-center"></th>
-                      <th scope="col" class="text-center align-middle">ID Interno</th>
-                      <th scope="col" class="text-center">Nº de Cliente</th>
-                      <th scope="col" class="text-center">Morada</th>
-                      <th scope="col" class="text-center">Código Postal</th>
-                      <th scope="col" class="text-center">Localidade</th>
-                      <th scope="col" class="text-center">País</th>
+                  <thead class="text-primary table-primary">
+                    <tr class="table-white text-primary">
+                      <th scope="col" class="text-center text-primary bg-light table-white">ID Interno</th>
+                      <th scope="col" class="text-center bg-light">Nº de Cliente</th>
+                      <th scope="col" class="text-center bg-white">Morada</th>
+                      <th scope="col" class="text-center bg-white">Código Postal</th>
+                      <th scope="col" class="text-center bg-white">Localidade</th>
+                      <th scope="col" class="text-center bg-white">País</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
-                      <th scope="row" class="text-center">
+                      <th scope="row" class="text-primary text-center">
                         <input type="radio" value={{newClient.documentationDeliveryMethod}} (click)="aButtons(true)">
                       </th>
-                      <td class="text-center">{{newClient.clientId}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.address}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.postalCode}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.locality}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.country}}</td>
+                      <td class="text-primary text-center">{{newClient.clientId}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.address}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.postalCode}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.locality}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.country}}</td>
                     </tr>
                   </tbody>
                 </table>
