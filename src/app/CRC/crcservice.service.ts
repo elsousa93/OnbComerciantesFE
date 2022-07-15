@@ -18,14 +18,14 @@ export class CRCService {
     var secret = btoa("4bd86de7-5640-4048-887e-7ecb6cedb01d" + ":" + "SIBS123456");
     const HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Content-Type': 'multipart/form-data',
+        //'Content-Type': 'multipart/form-data',
         'Authorization': 'Bearer ' + "eyJhbGciOiJSUzI1NiIsImtpZCI6IkM1QkE4RDUwNjcyNTg5NTcwOEI5QkUyMDJBOEU5MjJFQUE1MjE2OUYiLCJ4NXQiOiJ4YnFOVUdjbGlWY0l1YjRnS282U0xxcFNGcDgiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI0YmQ4NmRlNy01NjQwLTQwNDgtODg3ZS03ZWNiNmNlZGIwMWQiLCJuYW1lIjoiRE9DQVMiLCJvaV9wcnN0IjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwiY2xpZW50X2lkIjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwib2lfdGtuX2lkIjoiMTFmNDViNjktZTU2Ny00MzllLTljMTQtN2ExYzdiNzgzMzljIiwiZXhwIjoxNjU3ODk2NzY5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjEwMDAwLyIsImlhdCI6MTY1NzgxMDM2OX0.jQFIEG1cA2uPdXIg74izZzOX2IaB4fRqy9gDNEXaPCqwzbMRLyfT7Fw3LdGI-xgSEPUdhvEdamvFJaxerfoi1YRTrV-ULvPFnbKRv05ZZBg5SHh2DvtPb1pLFR3r2cTMqbdyI-xZbLwLtXTSM9CRvaXAHGXMqzikk7SUOCy0m2Gz0L2TF7K084dLVh9VRaMbGJCxkH13ClW9PTuZyaWWreQI_KdwKcwsNNqyCZEwvxH4Lu7LL5gtjUGE5BKTECdKNtpH4ge95FCj7Sl2VO_-5tQKYwdD8vz66VFxrPZlbe0EYZnUj090nK-KNKdkNixWoJ-lrzQzB1_PqwIr2UnmGg",
         'Access-Control-Allow-Origin': '*'
       }),
     }
     ////////////////////////
 
-    var URI = this.docasURL + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
+    var URI = this.docasURL + "api/v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
