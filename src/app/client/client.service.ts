@@ -9,7 +9,7 @@ import { Client } from './Client.interface';
 })
 export class ClientService {
 
-  urlOutbound: string = "Mockaco/";
+  urlOutbound: string = "mockaco/";
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
