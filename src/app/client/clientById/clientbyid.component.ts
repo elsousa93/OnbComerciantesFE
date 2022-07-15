@@ -32,39 +32,39 @@ export class ClientByIdComponent implements OnInit {
   
   //client: Client = {} as Client;
   client: Client = {
-    "clientId": "",
-    "fiscalId": "",
-    "companyName": "",
-    "commercialName":"",
-    "shortName": "",
+    "clientId": "22181900000011",
+    "fiscalId": "22181900000011",
+    "companyName": "SILVESTRE LIMITADA",
+    "commercialName":"CAFE CENTRAL",
+    "shortName": "SILVESTRE LDA",
     "headquartersAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "locality": "",
-      "country": ""
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+      "locality": "Lisboa",
+      "country": "PT"
     },
-    "merchantType": "",
+    "merchantType": "Company",
     "legalNature": "",
     "legalNature2": "",
     "crc": {
-      "code": "",
-      "validUntil": ""
+      "code": "123",
+      "validUntil": "2023-06-29T17:52:08.336Z"
     },
     "shareCapital": {
       "capital": 0,
       "date": "1966-08-30"
     },
-    "byLaws": "",
-    "mainEconomicActivity": "",
-    "otherEconomicActivities": [""],
+    "byLaws": "O Joao pode assinar tudo",
     "mainOfficeAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "country": "",
-      "locality": ""
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+      "locality": "Lisboa",
+      "country": "PT"
     },
+    "otherEconomicActivities": [""],
+
     "establishmentDate": "2009-12-16",
     "businessGroup": {
       "type": "",
@@ -227,15 +227,15 @@ export class ClientByIdComponent implements OnInit {
       CAESecondary2: new FormControl(this.client.otherEconomicActivities[1]),
       CAESecondary3: new FormControl(''),
       constitutionDate: new FormControl(this.client.establishmentDate),
-      address: new FormControl(this.client.mainOfficeAddress.address, Validators.required),
-      ZIPCode: new FormControl(this.client.mainOfficeAddress.postalCode, Validators.required),
-      location: new FormControl(this.client.mainOfficeAddress.postalArea, Validators.required),
-      country: new FormControl(this.client.mainOfficeAddress.country, Validators.required),
+      address: new FormControl(this.client.headquartersAddress.address, Validators.required),
+      ZIPCode: new FormControl(this.client.headquartersAddress.postalCode, Validators.required),
+      location: new FormControl(this.client.headquartersAddress.postalArea, Validators.required),
+      country: new FormControl(this.client.headquartersAddress.country, Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
       crcCode: new FormControl(this.client.crc.code, Validators.required),
       natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
-      socialDenomination: new FormControl(''),
+      socialDenomination: new FormControl(this.client.shortName, Validators.required),
       CAE1Branch: new FormControl(this.client.mainEconomicActivity),
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0]),
       CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1]),
@@ -266,7 +266,7 @@ export class ClientByIdComponent implements OnInit {
 
       }
 
-      console.log("CAESecondary1 uajnsjnsjnasnbasna");
+      console.log("CAESecondary1");
     });
 
     this.form.get("CAESecondary2").valueChanges.subscribe(v => {
@@ -392,6 +392,7 @@ export class ClientByIdComponent implements OnInit {
       this.isCommercialSociety = false
     }
   }
+
   getCommercialSociety() {
     return this.isCommercialSociety;
   }
@@ -467,19 +468,30 @@ export class ClientByIdComponent implements OnInit {
 
   searchByCRC() {
     var crcInserted = this.form.get('crcCode').value;
-    console.log("codigo CRC:" , this.form.get('crcCode').value);
-    console.log(crcInserted);
+    console.log("codigo CRC do Client:" , this.form.get('crcCode').value);
+    console.log("CRC inserido: ", crcInserted);
 
     if (crcInserted === '123') {
       this.crcFound = true;
+      console.log("-Crc true-: ", this.crcFound);
+      console.log("-isCommercialSociety true-: ", this.isCommercialSociety);
+
+
     } else {
-      this.crcFound = false;
       console.log("--");
     }
   }
   getCrcCode() {
     return this.form.get('crcCode').value;
   }
+
+  getPaisSedeSocial() {
+    console.log(this.form.get('headquartersAddress.country').value);
+    console.log(this.form.get('headquartersAddress.country'));
+
+    return this.form.get('headquartersAddress.country').value;
+  }
+
 
   submit() {
     console.log("chegou aqui");

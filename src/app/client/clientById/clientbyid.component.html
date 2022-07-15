@@ -731,12 +731,11 @@
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
             <input required minlength="2" ngModel formControlName="crcCode" name="crcCode" type="text"
-                   id="crcCode" class="form-control campo_form" [value]="getCrcCode()" (focusout)="searchByCRC()" readonly />
+                   id="crcCode" class="form-control campo_form"  (focusout)="searchByCRC()"  />
 
             <!--crc fim-->
 
-            <div>
-              <!--*ngIf="isCommercialSociety && crcFound"-->
+            <div  *ngIf="isCommercialSociety && crcFound" >           <!--*ngIf="isCommercialSociety && crcFound"-->
               <div>
                 <div class="row">
                   <div class="col-xxl col-6">
@@ -907,7 +906,7 @@
                   <hr>
                 </div>
               </div>
-              <div class="offset-1 bg-white col-7 col-xxl-10">
+              <div class="offset-1 bg-white col-7 col-xxl-10"> <!-- Data da constituição --> 
                 <div class="row">
                   <div class="col-xxl col-6">
                     <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
@@ -921,14 +920,13 @@
                   </div>
                 </div>
               </div>
-              <div class="offset-1 bg-white col-10 col-xxl-10">
+              <div class="offset-1 bg-white col-10 col-xxl-10">   <!--País da Sede Social-->
                 <div class="row">
                   <div class="col-xxl col-6">
                     <div>
                       <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="country" name="paisSedeSocial"
-                             type="text" id="paisSedeSocial" class="form-control campo_form"
-                             [readonly]="clientExists">
+                      <input required minlength="2" maxlength="100" ngModel formControlName="country" name="country"
+                             type="text" id="country" class="form-control campo_form" [value]="getPaisSedeSocial()"  [readonly]="clientExists">
                       <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
                         <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
                           O parâmetro acima é obrigatório.
