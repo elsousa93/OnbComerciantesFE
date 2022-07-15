@@ -25,7 +25,7 @@ export class CRCService {
     }
     ////////////////////////
 
-    var URI = this.docasURL + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
+    var URI = this.docasURL + "api/v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
