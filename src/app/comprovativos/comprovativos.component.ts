@@ -29,8 +29,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   //SO PARA MOSTRAR, DEPOIS ATUALIZAR COM A API
   public compToShow: {tipo:string, interveniente: string, dataValidade: string, dataEntrada: string, status: string};
 
-
-
   public client: Client = {
     "clientId": "",
     "fiscalId": "",
@@ -190,7 +188,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     const sizeFile = this.file.size / (1024 * 1024);
     var extensoesPermitidas = /(.pdf)$/i;
     const limSize = 10
-
+    this.compToShow = { tipo: "pdf", interveniente: "Manuel", dataValidade: new Date() + "", dataEntrada: new Date() + "", status: "A ser avaliado" }
     this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
 
     this.newComp.clientId = String(this.clientNr);
