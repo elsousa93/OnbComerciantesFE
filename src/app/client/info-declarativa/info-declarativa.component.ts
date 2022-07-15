@@ -153,23 +153,23 @@ export class InfoDeclarativaComponent implements OnInit {
       this.listValue.controls["phone2CountryCode"].updateValueAndValidity();
     });
 
-    this.listValue.get("faxCountryCode").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.listValue.controls["faxPhoneNumber"].setValidators([Validators.required]);
-      } else {
-        this.listValue.controls["faxPhoneNumber"].clearValidators();
-      }
-      this.listValue.controls["faxPhoneNumber"].updateValueAndValidity();
-    });
+    //this.listValue.get("faxCountryCode").valueChanges.subscribe(data => {
+    //  if (data !== '') {
+    //    this.listValue.controls["faxPhoneNumber"].setValidators([Validators.required]);
+    //  } else {
+    //    this.listValue.controls["faxPhoneNumber"].clearValidators();
+    //  }
+    //  this.listValue.controls["faxPhoneNumber"].updateValueAndValidity();
+    //});
 
-    this.listValue.get("faxPhoneNumber").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.listValue.controls["faxCountryCode"].setValidators([Validators.required]);
-      } else {
-        this.listValue.controls["faxCountryCode"].clearValidators();
-      }
-      this.listValue.controls["faxCountryCode"].updateValueAndValidity();
-    });
+    //this.listValue.get("faxPhoneNumber").valueChanges.subscribe(data => {
+    //  if (data !== '') {
+    //    this.listValue.controls["faxCountryCode"].setValidators([Validators.required]);
+    //  } else {
+    //    this.listValue.controls["faxCountryCode"].clearValidators();
+    //  }
+    //  this.listValue.controls["faxCountryCode"].updateValueAndValidity();
+    //});
 
    /** if (this.newClient.id != 0) {
       http.get<Client>(baseUrl + 'beclient/GetClientById/' + this.newClient.id).subscribe(result => {
