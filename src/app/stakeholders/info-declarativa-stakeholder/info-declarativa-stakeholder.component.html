@@ -56,8 +56,8 @@
                         <th scope="row" class="text-primary text-center">12345</th>
                         <td class="text-primary text-center">Bual de Canela</td>
                         <td class="text-primary text-center">162243889</td>
-                        <td class="text-primary text-center">@mdo</td>
-                        <td class="text-primary text-center">@mdo</td>
+                        <td class="text-primary text-center"></td>
+                        <td class="text-primary text-center"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -75,10 +75,7 @@
                         <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode"
                           (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
                           <option value="">Indicativo:</option>
-                          <option value="adsadsa">Teste</option>
-                          <option *ngFor="let country of internationalCallingCodes"
-                            value={{country.internationalCallingCode}}>{{country.description}}
-                            (+{{country.internationalCallingCode}}) </option>
+                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
                           is required.
