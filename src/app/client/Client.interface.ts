@@ -58,8 +58,9 @@ export interface MainOfficeAddress {
   address?: String,
   postalCode?: String,
   postalArea?: String,
-  country?: String,
-  locality?: String
+  locality?: String,
+  country?: String
+  
 }
 
 export interface BusinessGroup {
