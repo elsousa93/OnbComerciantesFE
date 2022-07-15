@@ -4,18 +4,22 @@
     "secure": false,
     "changeOrigin": true
   },
-  "/Mockaco/*": {
+  "/mockaco/*": {
     "target": "http://localhost/Mockaco/",
     "secure": false,
     "logLevel": "debug",
     "pathRewrite": {
-      "^/Mockaco": ""
-    }
+      "^/mockaco": ""
+    },
+    "changeOrigin": false
   },
   "/DOCAS/*": {
     "target": "http://localhost:11000/",
     "secure": false,
     "logLevel": "debug",
-    "changeOrigin": true
+    "changeOrigin": false,
+    "pathRewrite": {
+      "^/DOCAS": ""
+    }
   }
 }

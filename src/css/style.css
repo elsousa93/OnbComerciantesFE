@@ -648,3 +648,8 @@ main {
   color: #fd0d0d;
   font-size: 16px;
 }
+
+.quadro_paises_tracejado {
+  border: 2px #1e66b0;
+  border-right-style: dashed;
+}

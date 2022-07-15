@@ -9,7 +9,7 @@ import { Client } from './Client.interface';
 })
 export class ClientService {
 
-  urlOutbound: string = "Mockaco/";
+  urlOutbound: string = "mockaco/";
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -25,7 +25,7 @@ export class ClientService {
 
   SearchClientByQuery(searchID: string, searchType: string, messageID: string, userID: string, processID: string, countryID?: string, partnerID?: string, branchID?): any {
 
-    var URI = this.urlOutbound + "v1/merchant?searchId=" + searchID + "&searchType=" + searchType;
+    var URI = this.urlOutbound + "api/v1/merchant?searchId=" + searchID + "&searchType=" + searchType;
 
     if (countryID === null)
       URI += "&countryId=" + countryID;
@@ -52,7 +52,7 @@ export class ClientService {
 
   getClientByID(clientID: string, messageID: string, AcquiringUserID: string, AcquiringProcessID:string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 
-    var URI = this.urlOutbound + "v1/merchant/" + clientID;
+    var URI = this.urlOutbound + "api/v1/merchant/" + clientID;
 
     var data = new Date();
 
@@ -76,7 +76,7 @@ export class ClientService {
 
   createClient(client: Client, processReferenceID: string, messageID: string, AcquiringUserID: string, AcquiringProcessID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 
-    var URI = this.urlOutbound + "v1/process/" + processReferenceID + "/merchant";
+    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/merchant";
 
     var data = new Date();
 
@@ -102,7 +102,7 @@ export class ClientService {
 
     var treatedProcessNumber = encodeURIComponent(AcquiringProcessID);
 
-    var URI = this.urlOutbound + "v1/process/" + processReferenceID + "/merchant/" + clientID;
+    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/merchant/" + clientID;
 
     var data = new Date();
 

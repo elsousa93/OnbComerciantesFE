@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col">
+        <hr>
+        <p class="titulo-form-simples mb-2 pb-3 ps-3">PAÍSES DE DESTINO DOS PRODUTOS SERVIÇOS:*<br></p>
+    </div>
+</div>
+
+<form #form="ngForm">
+    <div class="row ms-0 me-0">
+        <div class="col-9">
+            <div class="row ps-3" *ngFor="let items of lstPaisPreenchido; index as i">
+                <textarea id="text5" class="form-control campo_form">{{ items }}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row ms-0 me-0">
+        <div class="row ms-0 me-0">
+            <div class="col quadro_paises_tracejado">
+                <p class="titulo-form-simples vertical-align"></p>
+                <p class="titulo_paises mt-0"></p>
+                <div class="form-check">
+                    <input type="checkbox" [(ngModel)]="inputEuropa" value="EUROPA" id="EUROPA" name="EUROPA"
+                        class="form-check-input" (click)="countrys('EUROPA')">
+                    <label class="form-check-label radio" for="EUROPA">EUROPA</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" [(ngModel)]="inputAfrica" value="AFRICA" id="AFRICA" name="AFRICA"
+                        class="form-check-input" (click)="countrys('AFRICA')">
+                    <label class="form-check-label radio" for="AFRICA">ÁFRICA</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" [(ngModel)]="inputAsia" value="ASIA" name="ASIA" class="form-check-input"
+                        (click)="countrys('ASIA')">
+                    <label class="form-check-label radio" for="ASIA">ÁSIA</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" [(ngModel)]="inputAmericas" value="AMERICA DO NORTE / SUL" name="AMERICA"
+                        class="form-check-input" (click)="countrys('AMERICA DO NORTE / SUL')">
+                    <label class="form-check-label radio" for="AMERICA DO NORTE / SUL">AMERICA DO NORTE / SUL</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" [(ngModel)]="inputOceania" value="OCEANIA" name="OCEANIA"
+                        class="form-check-input" (click)="countrys('OCEANIA')">
+                    <label class="form-check-label radio" for="OCEANIA">OCEÂNIA</label>
+                </div>
+            </div>
+            <div class="col ps-5">
+                <div class="form-check" *ngFor="let item of lstCountry; index as i">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="contPais[item]" name="input16">{{item |
+                    uppercase }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-check" *ngFor="let item of lstCountry1; index as i">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="contPais[item]" name="input16">{{item |
+                    uppercase }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-check" *ngFor="let item of lstCountry2; index as i">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="contPais[item]" name="input16">{{item |
+                    uppercase }}
+                </div>
+            </div>
+            <button id="btn5a3"
+                class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
+                wappler-command="editContent" (click)="inserirText(form)"><span
+                    class="material-symbols-rounded m-align">
+                    public</span> ESCOLHER&nbsp;</button>
+        </div>
+    </div>
+</form>

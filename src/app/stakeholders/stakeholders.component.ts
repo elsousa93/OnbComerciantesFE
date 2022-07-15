@@ -4,7 +4,7 @@ import { IStakeholders } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
 import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -130,7 +130,12 @@ export class StakeholdersComponent implements OnInit {
 
   onClickNew() {
     console.log("add new");
-    this.route.navigate(['/add-stakeholder']);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        isCC: this.isCC
+      }
+    };
+    this.route.navigate(['/add-stakeholder'], navigationExtras);
   }
 
   onClickEdit(fiscalId) {

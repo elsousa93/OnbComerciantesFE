@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StakeholdersComponent } from '../stakeholders.component';
 import { IStakeholders } from '../IStakeholders.interface';
@@ -32,7 +32,7 @@ export class NewStakeholderComponent implements OnInit {
   // Variables that are not on YAML
   flagAssociado: boolean = true;
   flagProcurador: boolean = true;
-  flagRecolhaEletronica: boolean = true;
+  flagRecolhaEletronica: boolean = null;
 
   formNewStakeholder!: FormGroup;
  
@@ -70,7 +70,17 @@ export class NewStakeholderComponent implements OnInit {
 
   ngOnInit(): void {
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
+    console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
+    
     this.createForm();
+    console.log('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
+    this.showYesCC = this.route.getCurrentNavigation().extras.state["isCC"];
+    this.formNewStakeholder.get('flagRecolhaEletronica').setValue(this.showYesCC);
+    if (this.showYesCC) {
+      this.flagRecolhaEletronica = this.showYesCC;
+    }
+    console.log('flag ', this.flagRecolhaEletronica);
+    console.log('value depois ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
   }
 
   //@Output()  newStakeholderAdded = new EventEmitter<any>();
@@ -80,7 +90,7 @@ export class NewStakeholderComponent implements OnInit {
     this.formNewStakeholder = this.fb.group({
       flagAssociado: [''],
       flagProcurador: [''],
-      flagRecolhaEletronica: [''],
+      flagRecolhaEletronica: new FormControl(this.showYesCC),
       fullName: [''],
       documentType: [''],
       identificationDocumentCountry: [''],

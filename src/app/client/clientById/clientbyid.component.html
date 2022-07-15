@@ -157,171 +157,171 @@
                       <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
                       <div *ngIf="this.form.get('CAE1').errors">
                          tem erros, nao pode receber -->
-                        <!--<input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                               type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
-                      </div>
-                      <div *ngIf="!this.form.get('CAE1').errors">
-                        <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                               type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
-                      </div>
-                      <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
-                        <div *ngIf="this.form.get('CAE1').errors">
-                          Interagiram com o CAE. CAE não é valido.
-                        </div>
-                        <div *ngIf="this.form.get('CAE1').valid">
-                          Interagiram com o CAE. CAE é valido (tem mais de 2 caracteres).
-                        </div>
-                      </div>
-                      <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
-                        <div class="alert alert-danger" *ngIf="this.form.controls['CAE1Branch'].errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary1Branch" name="ramoSecundario1"
-                             type="text" id="ramoSecundario1" class="form-control campo_form"
-                             [readonly]="clientExists">
-                      <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
-                        <div *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario2"
-                             type="text" id="ramoSecundario2" class="form-control campo_form"
-                             [readonly]="clientExists">
-                      <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
-                        <div *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-                </div>
-              </div>
-              <div class="offset-1 bg-white col-7 col-xxl-10">
-                <div class="row">
-                  <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
-                    <input required formControlName="constitutionDate" type="date"
-                           id="dataConst" class="form-control campo_form" [readonly]="clientExists">
-                    <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
-                      <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
-                        O parâmetro acima é obrigatório.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="offset-1 bg-white col-7 col-xxl-10">
-                <div class="row">
-                  <div class="col-xxl col-6">
-                    <div>
-                      <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="country" name="paisSedeSocial"
-                             type="text" id="paisSedeSocial" class="form-control campo_form"
-                             [readonly]="clientExists">
-                      <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
-                        <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
-                             type="text" id="ZIPCode" class="form-control campo_form"
-                             [readonly]="clientExists">
-                      <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
-                        <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-7">
-                    <div>
-                      <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="location"
-                             name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
-                             [readonly]="clientExists">
-                      <div class="alert alert-danger" *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
-                        <div *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
-                      <textarea required minlength="2" maxlength="100" formControlName="address"
-                                name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
-                                [readonly]="clientExists" rows="3"></textarea>
-                      <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
-                        <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <p></p>
-              <p></p>
-              <p></p>
+<!--<input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                   type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+          </div>
+          <div *ngIf="!this.form.get('CAE1').errors">
+            <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                   type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+          </div>
+          <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
+            <div *ngIf="this.form.get('CAE1').errors">
+              Interagiram com o CAE. CAE não é valido.
             </div>
-            <div *ngIf="isCommercialSociety == false && tipologia==='Company'">
-              <div class="offset-1 bg-white col-7 col-xxl-10">
-                <div class="row">
-                  <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:</p>
-                    <select required ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
-                            class="form-control campo_form" [(ngModel)]="client.legalNature"
-                            (change)="onLegalNatureSelected()">
-                      <option value="">Selecione</option>
-                      <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
-                    </select>
-
-                    <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
-                    <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
-                            class="form-control campo_form" [(ngModel)]="client.legalNature2">
-                      <option value="">Selecione:</option>
-                      <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
-                    </select>
-
-                  </div>
-                  <div class="col-xxl col-7">
-                    <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
-                    <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
-                           name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                           [(ngModel)]="client.companyName" readonly>
-                  </div>
-
-                </div>
-              </div>
+            <div *ngIf="this.form.get('CAE1').valid">
+              Interagiram com o CAE. CAE é valido (tem mais de 2 caracteres).
             </div>
-            <div *ngIf="isCommercialSociety == false && tipologia === 'ENI'">
-              <div class="offset-1 bg-white col-7 col-xxl-10">
-                <div class="row">
-                  <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
-                    <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
-                           name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                           [readonly]="clientExists">
-                    <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
-                      <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
-                        O parâmetro acima é obrigatório.
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
-                    <div *ngIf="this.form.get('CAE1').errors"-->
+          </div>
+          <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
+            <div class="alert alert-danger" *ngIf="this.form.controls['CAE1Branch'].errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
+          <input required minlength="2" maxlength="100" formControlName="CAESecondary1Branch" name="ramoSecundario1"
+                 type="text" id="ramoSecundario1" class="form-control campo_form"
+                 [readonly]="clientExists">
+          <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
+            <div *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
+          <input required minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario2"
+                 type="text" id="ramoSecundario2" class="form-control campo_form"
+                 [readonly]="clientExists">
+          <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
+            <div *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+  <div class="offset-1 bg-white col-7 col-xxl-10">
+    <div class="row">
+      <div class="col-xxl col-6">
+        <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
+        <input required formControlName="constitutionDate" type="date"
+               id="dataConst" class="form-control campo_form" [readonly]="clientExists">
+        <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
+          <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
+            O parâmetro acima é obrigatório.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="offset-1 bg-white col-7 col-xxl-10">
+    <div class="row">
+      <div class="col-xxl col-6">
+        <div>
+          <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
+          <input required minlength="2" maxlength="100" formControlName="country" name="paisSedeSocial"
+                 type="text" id="paisSedeSocial" class="form-control campo_form"
+                 [readonly]="clientExists">
+          <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
+            <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
+          <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
+                 type="text" id="ZIPCode" class="form-control campo_form"
+                 [readonly]="clientExists">
+          <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
+            <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xxl col-7">
+        <div>
+          <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
+          <input required minlength="2" maxlength="100" formControlName="location"
+                 name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
+                 [readonly]="clientExists">
+          <div class="alert alert-danger" *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
+            <div *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
+          <textarea required minlength="2" maxlength="100" formControlName="address"
+                    name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
+                    [readonly]="clientExists" rows="3"></textarea>
+          <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
+            <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <p></p>
+  <p></p>
+  <p></p>
+</div>
+<div *ngIf="isCommercialSociety == false && tipologia==='Company'">
+  <div class="offset-1 bg-white col-7 col-xxl-10">
+    <div class="row">
+      <div class="col-xxl col-6">
+        <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:</p>
+        <select required ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
+                class="form-control campo_form" [(ngModel)]="client.legalNature"
+                (change)="onLegalNatureSelected()">
+          <option value="">Selecione</option>
+          <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
+        </select>
+
+        <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:</p>
+        <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
+                class="form-control campo_form" [(ngModel)]="client.legalNature2">
+          <option value="">Selecione:</option>
+          <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
+        </select>
+
+      </div>
+      <div class="col-xxl col-7">
+        <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
+        <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+               name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+               [(ngModel)]="client.companyName" readonly>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div *ngIf="isCommercialSociety == false && tipologia === 'ENI'">
+  <div class="offset-1 bg-white col-7 col-xxl-10">
+    <div class="row">
+      <div class="col-xxl col-6">
+        <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
+        <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+               name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+               [readonly]="clientExists">
+        <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
+          <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+            O parâmetro acima é obrigatório.
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
+        <div *ngIf="this.form.get('CAE1').errors"-->
 <!-- tem erros, nao pode receber -->
 <!--input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
                              type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
@@ -634,7 +634,7 @@
                          [matAutocomplete]="auto"
                          [(ngModel)]="countryVal">
                   Não tenho a certeza se é necessário ter aqui o ngModel e o formControl-->
-                  <!--<input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">
+<!--<input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">
                   <button (click)="addCountryToList(countryName.value)">Adicionar</button>
 
                 </div>
@@ -686,7 +686,7 @@
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
           <span class="navbar-text text-light">
-            <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+            <img src="../assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
           </span>
           <span class="navbar-text">
             <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
@@ -701,9 +701,7 @@
     <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0">
       <!--Primeiros 3 campos-->
       <h2 class="text-primary mt-5 ps-3">
-        <span class="material-symbols-rounded icon-titulos m-align">
-          filter
-        </span>&nbsp;CARACTERIZAÇÃO SOCIAL DA EMPRESA
+        <img src="../assets/images/filter.svg" class="img_add" style="height: 33px;">&nbsp;CARACTERIZAÇÃO SOCIAL DA EMPRESA
       </h2>
       <p class="titul campo_obrigatrio ps-3">* campo obrigatório</p>
       <div class="col-10">
@@ -733,11 +731,11 @@
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
             <input required minlength="2" ngModel formControlName="crcCode" name="crcCode" type="text"
-                   id="crcCode" class="form-control campo_form" [value]="getCrcCode()" (focusout)="searchByCRC()" readonly />
+                   id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" />
 
             <!--crc fim-->
 
-            <div>
+            <div *ngIf="isCommercialSociety && crcFound">
               <!--*ngIf="isCommercialSociety && crcFound"-->
               <div>
                 <div class="row">
@@ -747,9 +745,10 @@
                       <select required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                               class="form-control campo_form"
                               (change)="onLegalNatureSelected()">
-                        <option value="" selected disabled hidden>Selecione</option>
-                        <option value="teste">Teste</option>
-                        <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
+                        <option value="">Selecione</option>
+
+                        <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}> {{legalNature.code}}{{legalNature.description}}</option>
+
                       </select>
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                         <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
@@ -762,7 +761,7 @@
                       <select required formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                               class="form-control campo_form">
                         <option value="" selected disabled hidden>Selecione</option>
-                        <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
+                        <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
                       </select>
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
                         <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
@@ -848,10 +847,10 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
-                     
-                        <input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                               type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
-                      
+
+                      <input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                             type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+
                       <!--<div *ngIf="!this.form.get('CAE1').errors">
                         <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
                                type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
@@ -909,10 +908,13 @@
                   <hr>
                 </div>
               </div>
+
+
               <div class="offset-1 bg-white col-7 col-xxl-10">
+                <!-- Data de constituição   offset-1 bg-white col-7 col-xxl-10 //col-xxl col-6  -->
                 <div class="row">
                   <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
+                    <p class="titulo-form-simples" for="dataConst">Data de Constituição: </p>
                     <input required formControlName="constitutionDate" type="date"
                            id="dataConst" class="form-control campo_form" [readonly]="clientExists">
                     <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
@@ -923,14 +925,14 @@
                   </div>
                 </div>
               </div>
-              <div class="offset-1 bg-white col-10 col-xxl-10">
+              <div class="bg-white col-12 col-xxl-12">
+                <!--País da Sede Social-->
                 <div class="row">
                   <div class="col-xxl col-6">
                     <div>
                       <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="country" name="paisSedeSocial"
-                             type="text" id="paisSedeSocial" class="form-control campo_form"
-                             [readonly]="clientExists">
+                      <input required minlength="2" maxlength="100" ngModel formControlName="country" name="country"
+                             type="text" id="country" class="form-control campo_form" [value]="getPaisSedeSocial()" [readonly]="clientExists">
                       <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
                         <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -964,8 +966,8 @@
                     <div>
                       <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
                       <input required minlength="2" maxlength="100" formControlName="address"
-                                name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
-                                [readonly]="clientExists" rows="3">
+                             name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
+                             [readonly]="clientExists" rows="3">
                       <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
                         <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -976,86 +978,79 @@
                   </div>
                 </div>
               </div>
-
-
-
-            </div> 
+            </div> <!-- Fecha comercial society -->
           </div>
-
           <div>
+          </div>
+        </div> <!--Fecha primeiros 3 campos-->
+        <!--Se NÃO for sociedade comercial-->
+        <div *ngIf="isCommercialSociety == false && tipologia==='Company'">
+          <div class="bg-white col-7 col-xxl-10">
+            <div class="row">
+              <div class="col-xxl col-6">
+                <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
+                <select required ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
+                        class="form-control campo_form" [(ngModel)]="client.legalNature"
+                        (change)="onLegalNatureSelected()">
+                  <option value="">Selecione:</option>
+                  <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
+                </select>
+
+                <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
+                <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
+                        class="form-control campo_form" [(ngModel)]="client.legalNature2">
+                  <option value="">Selecione:</option>
+                  <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
+                </select>
+
+              </div>
+              <div class="col-xxl col-7">
+                <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
+                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+                       name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+                       [(ngModel)]="client.companyName" readonly>
+              </div>
+
+            </div>
+          </div>
+        </div><!--fecha div "se NÃO for sociedade comercial"-->
 
 
 
+        <div class=" bg-white col-7 col-10 mb-5 pb-0 pe-0">
+          <div class="row me-0 pe-0">
+            <hr>
+          </div>
+          <div class="row">
+            <!------------   Botões final de página -------------->
+            <div class="col">
+              <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                  <button id="btn5a1"
+                          class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3"
+                          wappler-command="editContent">
+                    SAIR&nbsp;<span class="material-symbols-rounded m-align">
+                      <img src="../assets/images/exit_to_app.svg" style="height: 25px !important;">
+                    </span>
+                  </button>
+                </span>
+                <button id="btn5a3"
+                        class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
+                        wappler-command="editContent" (click)="redirectBeginningClient()">
+                  <span class="material-symbols-rounded m-align">
+                    <img src="../assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
+                  </span>VOLTAR&nbsp;
+                </button>
+                <button id="btn5a2"
+                        class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                        wappler-command="editContent">
+                  CONTINUAR&nbsp;<span class="material-symbols-rounded m-align">
+                    <img src="../assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
+                  </span>
+                </button>
+              </nav>
+            </div>
+          </div>
         </div>
-      </div> <!--Fecha primeiros 3 campos-->
-                        <!--Se NÃO for sociedade comercial-->
-                        <div *ngIf="isCommercialSociety == false && tipologia==='Company'">
-                          <div class="bg-white col-7 col-xxl-10">
-                            <div class="row">
-                              <div class="col-xxl col-6">
-                                <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
-                                <select required ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
-                                        class="form-control campo_form" [(ngModel)]="client.legalNature"
-                                        (change)="onLegalNatureSelected()">
-                                  <option value="">Selecione:</option>
-                                  <option *ngFor="let legalNature of legalNatureList" value="{{legalNature.code}}">{{legalNature.description}}</option>
-                                </select>
-
-                                <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
-                                <select ngModel #natJuridicaN2="ngModel" name="natJuridicaN2" id="natJuridicaN2"
-                                        class="form-control campo_form" [(ngModel)]="client.legalNature2">
-                                  <option value="">Selecione:</option>
-                                  <option *ngFor="let legalNature2 of legalNatureList2" value="{{legalNature2.code}}">{{legalNature2.description}}</option>
-                                </select>
-
-                              </div>
-                              <div class="col-xxl col-7">
-                                <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
-                                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
-                                       name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                                       [(ngModel)]="client.companyName" readonly>
-                              </div>
-
-                            </div>
-                          </div>
-                        </div><!--fecha div "se NÃO for sociedade comercial"-->
-
-
-
-                        <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0">
-                          <div class="row me-0 pe-0">
-                            <hr>
-                          </div>
-                          <div class="row">
-                            <!------------   Botões final de página -------------->
-                            <div class="col">
-                              <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                                <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                                  <button id="btn5a1"
-                                          class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3"
-                                          wappler-command="editContent">
-                                    SAIR&nbsp;<span class="material-symbols-rounded m-align">
-                                      <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
-                                    </span>
-                                  </button>
-                                </span>
-                                <button id="btn5a3"
-                                        class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
-                                        wappler-command="editContent" (click)="redirectBeginningClient()">
-                                  <span class="material-symbols-rounded m-align">
-                                    <img src="assets/images/arrow_back_ios.svg" style="height: 25px !important;">
-                                  </span>VOLTAR&nbsp;
-                                </button>
-                                <button id="btn5a2"
-                                        class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                                        wappler-command="editContent">
-                                  CONTINUAR&nbsp;<span class="material-symbols-rounded m-align">
-                                    <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
-                                  </span>
-                                </button>
-                              </nav>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+      </div>
+    </div>
