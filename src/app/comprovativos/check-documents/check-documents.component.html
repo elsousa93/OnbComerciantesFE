@@ -15,15 +15,12 @@
 <p *ngIf="!compCheckDocs"><em>Loading...</em></p>
 <div class="modal-content2">
     <div class="modal-header">
-        <h5 class="modal-title">CHECKLIST DE DOCUMENTOS</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" (click)="onClose()">
+        <h5 class="modal-title">QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?</h5>
+        <button type="button"  data-dismiss="modal" aria-label="Fechar" (click)="onClose()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>
-            QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?
-            </p>
             <table class='table-responsive' aria-labelledby="tableLabel" *ngIf="compCheckDocs" style="size: inherit;">
             <thead class="table-primary align-middle">
                 <tr class="align-middle">
@@ -31,8 +28,8 @@
                 <th scope="col" class="text-center">Comprovativo de Sociedade</th>
                 <th scope="col" class="text-center">Comprovativo BEF</th>
                 <th scope="col" class="text-center">Comprovativo Fiscal Pessoa coletiva</th>
-                <th scope="col" class="text-center">Comprovativo do IBAN</th>
-                <th scope="col" class="text-center">Comprovativo RCBE</th>
+                <th scope="col" class="text-center">Comprovativo de IBAN</th>
+                <th scope="col" class="text-center">Comprovativo de RCBE</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,6 +38,7 @@
                 <td class="text-center">{{ compCDocs.flagComprovativoSociedade }}</td>
                 <td class="text-center">{{ compCDocs.flagComprovativoBEF }}</td>
                 <td class="text-center">{{ compCDocs.flagComprovativoFiscal }}</td>
+                <td class="text-center">{{ compCDocs.flagComprovativoIBAN }}</td>
                 <td class="text-center">{{ compCDocs.flagComprovativoRCBE }}</td>
                 </tr>
             </tbody>

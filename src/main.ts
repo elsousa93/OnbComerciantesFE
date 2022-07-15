@@ -8,8 +8,18 @@ import { environment } from './environments/environment';
 //Para dev SIBS: 'http://localhost:12000/BackendPortal/';
 
 export function getBaseUrl() {
-  var baseUrl = 'http://localhost:12000/BackendPortal/';
+ // var baseUrl = 'http://localhost:12000/BackendPortal/';
+  var baseUrl = 'http://localhost:12000/AcquiringAPI/api/';
   return baseUrl;
+}
+export function getNeyondBackend() {
+  var neyondBackUrl = 'http://localhost:12000/BackendPortal/';
+  return neyondBackUrl;
+}
+
+export function getDOCASUrl() {
+  var DOCASUrl = 'http://localhost:11000/api/';
+  return DOCASUrl;
 }
 
 export function getPostmanUrl() {
@@ -17,9 +27,17 @@ export function getPostmanUrl() {
   return postmanUrl;
 }
 
+export function getAcquiringAPIUrl() {
+  var acquiringAPIUrl = 'http://localhost:12000/AcquiringAPI/api/';
+  return acquiringAPIUrl;
+}
+
 const providers = [
   { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
-  { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] }
+  { provide: 'DOCAS_URL', useFactory: getDOCASUrl, deps: [] },
+  { provide: 'POSTMAN_URL', useFactory: getPostmanUrl, deps: [] },
+  { provide: 'ACQUIRING_URL', useFactory: getAcquiringAPIUrl, deps: [] },
+  { provide: 'NEYONDBACK_URL', useFactory: getNeyondBackend, deps: [] }
 ];
 
 if (environment.production) {

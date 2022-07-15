@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Renderer2 } from '@angular/core';
+import { AfterViewInit, Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -16,7 +16,7 @@ import { ComprovativosService } from './services/comprovativos.services';
   selector: 'app-comprovativos',
   templateUrl: './comprovativos.component.html'
 })
-export class ComprovativosComponent implements OnInit {
+export class ComprovativosComponent implements OnInit, AfterViewInit {
   public comprovativos: IComprovativos[] = [];
 
   public newComp: IComprovativos = {
@@ -30,9 +30,8 @@ export class ComprovativosComponent implements OnInit {
     "clientId": "",
     "fiscalId": "",
     "companyName": "",
-    "contactName": "",
+    "commercialName":"",
     "shortName": "",
-    "observations": "",
     "headquartersAddress": {
       "address": "",
       "postalCode": "",
@@ -51,33 +50,22 @@ export class ComprovativosComponent implements OnInit {
       "capital": 0,
       "date": "1966-08-30"
     },
-    "bylaws": "",
-    "mainEconomicActivity": {
-      "code": "",
-      "branch": ""
-    },
-    "otherEconomicActivities": [
-      {
-        "code": "",
-        "branch": ""
-      },
-      {
-        "code": "",
-        "branch": ""
-      }
-    ],
+    "byLaws": "",
+    "mainEconomicActivity": "",
+    "otherEconomicActivities": [""],
     "mainOfficeAddress": {
       "address": "",
       "postalCode": "",
       "postalArea": "",
-      "country": ""
+      "country": "",
+      "locality": ""
     },
     "establishmentDate": "2009-12-16",
     "businessGroup": {
       "type": "",
       "fiscalId": ""
     },
-    "sales": {
+    "knowYourSales": {
       "estimatedAnualRevenue": 0,
       "averageTransactions": 0,
       "servicesOrProductsSold": [
@@ -158,6 +146,9 @@ export class ComprovativosComponent implements OnInit {
 
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('checkListDocs') checkListDocs;
+
+  validatedDocuments: boolean = false;
+
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
   private modalService: BsModalService, private data: DataService) {
 
@@ -170,7 +161,7 @@ export class ComprovativosComponent implements OnInit {
       this.comprovativos = result;
       console.log(result);
     }, error => console.error(error));
-    this.updateData(true, 2);
+    this.updateData(false, 4);
   }
 
   ngOnInit(): void {
@@ -266,8 +257,8 @@ export class ComprovativosComponent implements OnInit {
     this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
   }
 
-  obterStakeholders() {
-    this.route.navigate(['stakeholders/']);
+  obterOfertaComercial() {
+    this.route.navigate(['/commercial-offert-list']);
   }
 
   confirmDelete() {
@@ -295,5 +286,13 @@ export class ComprovativosComponent implements OnInit {
 
   declineCheckList() {
     this.checkListModalRef?.hide();
+  }
+
+  ngAfterViewInit() {
+    this.onCheckList();
+  }
+
+  validatedDocumentsChange(value: boolean) {
+    this.validatedDocuments = value;
   }
 }

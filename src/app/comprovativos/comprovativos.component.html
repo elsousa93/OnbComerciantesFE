@@ -1,191 +1,276 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<br>
-<br>
-<div class="container conteudo">
-  <div class="offset-xxl-1 col-xxl-10">
-    <div class="table-responsive">
-      <form #contactForm="ngForm">
-        <table class="table" *ngIf="client" style="overflow-x: hidden !important;">
-          <thead class="table-primary align-middle">
-            <tr class="align-middle">
-              <th scope="col" class="text-center align-middle">Tipo</th>
-              <th scope="col" class="text-center">Interveniente</th>
-              <th scope="col" class="text-center">Data Validade</th>
-              <th scope="col" class="text-center">Data Entrega</th>
-              <th scope="col" class="text-center">Status</th>
-              <th scope="col" class="text-center">Denominação Social</th>
-              <th scope="col" class="text-center" colspan="2">Ficheiro</th>
-              <th scope="col" class="text-center"></th>
+<div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+   <div class="row ms-0 me-0 ps-0 pe-0">
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="bg-primary col-12 mt-0 pt-0 ps-0 pe-0 shadow-none">
+      </div>
+      <div class="row">
+         <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+               <span class="navbar-text text-light">
+                  <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+               </span>
+               <span class="navbar-text">
+                  <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+                     COMPROVATIVOS</h5>
+               </span>
+            </nav>
+         </div>
+      </div>
+      <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
+         <div class="table-responsive me-2 ps-3 pe-4">
+            <form #contactForm="ngForm">
+               <table class="table table-success" *ngIf="client" style="overflow-x: hidden !important;">
+                  <thead class="table-primary">
+                     <tr class="text-center text-primary table-light">
+                        <th scope="col" class="align-baseline text-primary table-white">Tipo</th>
+                        <th scope="col" class="text-center">Interveniente</th>
+                        <th scope="col" class="text-center">Data de Validade</th>
+                        <th scope="col" class="text-center">Data de Entrada</th>
+                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center"></th>
+                     </tr>
+                  </thead>
+                  <tbody class="table-light text-primary">
+                     <tr class="table-white text-primary">
+                        <input type="hidden" name="id" id="id" value={{client.clientId}}>
+                        <td class="text-center">{{client.companyName}}</td>
+                        <td class="text-center">{{client.commercialName}}</td>
+                        <td class="text-center">{{client.crc.code}}</td>
+                        <td class="text-center">{{client.crc.validUntil}}</td>
+                        <td class="text-center">{{client.documentationDeliveryMethod}}</td>
+                        <td class="text-center">{{client.documentationDeliveryMethod}}</td>
+                        <td class="text-center">
+                           <div class="row" *ngFor="let files of comprovativos">
+                              <div class="col-sm">
+                                 {{ files.filename }}
+                              </div>
+                              <div class="col-sm">
+                                 <td class="text-center">
+                                    <button type="button" class="btn btn-default btn-sm"
+                                       (click)="onDelete(files.id,files.clientId, files.filename)">
+                                       <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub;">
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm"
+                                       (click)="search(files.url, files.filename)">
+                                       <img src="assets/images/search._blue.svg" style="height: 25px !important; vertical-align: sub;">
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm"
+                                       (click)="download(files.url, files.filename)">
+                                       <img src="assets/images/file_download.svg" style="height: 25px !important; vertical-align: sub;">
+                                    </button>
+                                 </td>
+                              </div>
+                           </div>
+                        </td>
+                        <td></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </form>
+         </div>
+         <div class="row">
+            <div class="col ms-0 ps-3">
+               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4 pt-5 ps-3">
+                  <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                     <button id="btn5a5" (click)="onCheckList()"
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                        wappler-command="editContent">CONSULTAR CHECKLIST&nbsp;<img src="assets/images/checklist.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                     <input type="file" id="btn5a6" accept=".pdf" (change)="selectFile($event,client)"
+                        wappler-command="editContent" hidden>
+                        <label class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" for="btn5a6">ANEXAR DOCUMENTOS&nbsp;
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <input type="hidden" name="id" id="id" value={{client.clientId}}>
-              <td class="text-center">{{client.companyName}}</td>
-              <td class="text-center">{{client.contactName}}</td>
-              <td class="text-center">{{client.crc.code}}</td>
-              <td class="text-center">{{client.crc.validUntil}}</td>
-              <td class="text-center">{{client.documentationDeliveryMethod}}</td>
-              <td class="text-center">{{client.documentationDeliveryMethod}}</td>
-              <td class="text-center">
-                <div class="row" *ngFor="let files of comprovativos">
-                  <div class="col-sm">
-                    {{ files.filename }}
-                  </div>
-                  <div class="col-sm">
-                    <td class="text-center">
-                      <button type="button" class="btn btn-default btn-sm"
-                        (click)="onDelete(files.id,files.clientId, files.filename)"><i class="fas fa-trash"></i></button>
-                      <button type="button" class="btn btn-default btn-sm" (click)="search(files.url, files.filename)"><i
-                          class="fas fa-search"></i></button>
-                      <button type="button" class="btn btn-default btn-sm" (click)="download(files.url, files.filename)"><i
-                          class="fas fa-download"></i></button>
-                    </td>
-
-                  </div>
-                </div>
-              </td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-    </div>
-  </div>
-
-  <div class="offset-xxl-1 col-xxl-10">
-    <div style="text-align: left;">
-      <button type="button" class="btn titulo-form-simples" (click)="onCheckList()">Checklist de Documentos >>></button>
-    </div>
-    <p class="titulo-form-simples" for="observacoes">Observações:</p>
-    <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
-      id="observacoes" class="form-control campo_form" [(ngModel)]="client.observations" readonly rows="3"></textarea>
-    <div style="text-align: right;">
-      <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
-      <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
-        accept=".pdf">
-    </div>
-  </div>
+                           <img src="assets/images/file_upload.svg" style="height: 25px !important; vertical-align: sub;">
+                        </label>
+                        
+                        
+                  </span>
+               </nav>
+               <p class="titulo-form-simples" for="observacoes">Observações:</p>
+               <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
+               id="observacoes" class="form-control campo_form" rows="3"></textarea>
+         <!-- [(ngModel)]="client.observations"  -->
+            </div>
+         </div>
+   <!-- <div style="text-align: left;">
+         <button type="button" class="btn titulo-form-simples" (click)="onCheckList()">Checklist de Documentos >>></button>
+         </div>
+         <p class="titulo-form-simples" for="observacoes">Observações:</p>
+         <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
+         id="observacoes" class="form-control campo_form" [(ngModel)]="client.observations" rows="3"></textarea>
+         <div style="text-align: right;">
+         <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
+         <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
+           accept=".pdf">
+         </div>
+         </div>
+         </div> -->
+         <div class="row">
+            <div class="ms-3 me-3 ps-3 pe-3 col-7">
+               <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="validate" name="validate" [checked]="validatedDocuments"
+                     (change)="validatedDocumentsChange($event.target.checked)">
+                  <label class="form-check-label" for="validate">Validou que os documentos necessários foram efetivamente os carregados?
+                  </label>
+               </div>
+            </div>
+            <br>
+         </div>
+         <div class="row">
+            <div class="ms-3 me-3 ps-3 pe-3 col-7">
+               <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="clientPresence" name="clientPresence" value="clientPresence">
+                  <label class="form-check-label" for="clientPresence">Na presença do cliente?</label>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col">
+               <hr>
+            </div>
+         </div>
+      </div>
+   <br>
+   <ng-template #deleteModal>
+      <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
+         <p>Tem certeza que deseja excluir?</p>
+         <button type="button" class="btn btn-primary" (click)="confirmDelete()">Sim</button>
+         <button type="button" class="btn btn-primary" (click)="declineDelete()">Não</button>
+      </div>
+   </ng-template>
+   <ng-template #checkListDocs>
+      <div style="margin: auto;width: 100%;padding: 6px;" class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+         <div class="modal-content-checkdocuments row">
+            <div class="modal-header-checkdocuments offset-1 bg-white align-self-center col-10 ps-3">
+               <h4 class="modal-title-checkdocuments text-primary mt-4 ps-0">QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?</h4>
+               <span style="cursor: pointer !important;" class="w3-button w3-display-topright"
+                  (click)="declineCheckList()">&times;</span>
+            </div>
+            <div class="modal-body-checkdocuments offset-1 bg-white align-self-center col-10 ps-3">
+               <p class="ps-0">Deverão ser associados ao processo de Onboarding os seguintes documentos:</p>
+                  <div>
+                     <span *ngIf="client" class="titulo-form-simples mt-0 pb-1 ps-3"> Para o cliente empresa {{ client.companyName }}</span>
+                        <form #contactForm="ngForm">
+                           <div class="table-responsive me-2 ps-3 pe-4">
+                              <table class="table table-success align-middle" *ngIf="client">
+                                 <thead class="table-primary align-middle text-primary">
+                                    <tr class="text-center text-primary align-middle table-primary">
+                                       <th scope="col" class="align-baseline text-primary table-white">Nome</th>
+                                       <th scope="col">Comnprovativo de Sociedade</th>
+                                       <th scope="col">Comprovativo BEF</th>
+                                       <th scope="col">Comprovativo Fiscal Pessoa coletiva</th>
+                                       <th scope="col">Comprovativo de IBAN</th>
+                                       <th scope="col">Comprovativo de RCBE</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody class="table-light text-primary">
+                                    <tr class="table-white text-primary">
+                                       <th scope="row" class="text-center text-dark">EMPRESA TESTE UNIPESSOAL</th>
+                                       <td class="text-center text-dark">{{ client.companyName }}</td>
+                                       <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
+                                       <td>N/A</td>
+                                       <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
+                                       <td class="text-center text-dark"><i class="glyphicon glyphicon-remove"></i></td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div>
+                              <p class="titulo-form-simples mt-0 pb-1 ps-3">Para A NATUREZA JURÍDICA SELECIONADA SOCIEDADE UNIPESSOAL POR QUOTAS OS DOCUMENTOS OBRIGATÓRIOS:&nbsp;</p>
+                              <p class="mt-0 pb-1 ps-3 caixa_azul">Certidão de conservatória do Registo Comercial Permanente ou Retirada a certidão se Cliente fornecer o código de Acesso à Certidão (www.portaldaempresa.pt)</p>
+                           </div>
+                           <div>
+                              <p class="titulo-form-simples mt-0 pb-1 ps-3"><i class="far fa-file-alt"></i>&nbsp;Para o/os interveniente(s):</p>
+                              <div class="table-responsive me-2 ps-3 pe-4">
+                                 <table class="table table-success align-middle" *ngIf="client">
+                                    <thead class="table-primary align-middle text-primary">
+                                       <tr class="text-center text-primary align-middle table-primary">
+                                          <th scope="col" class="align-baseline text-primary table-white">Nome</th>
+                                          <th scope="col">Comprovativo de Documento de Identificação
+                                          </th>
+                                          <th scope="col">Comprovativo Fiscal Particular</th>
+                                          <th scope="col">Procuração Cliente</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody class="table-light text-primary">
+                                       <tr class="table-white text-primary">
+                                          <td class="text-center text-dark">{{ client.shortName }}</td>
+                                          <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
+                                          <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
+                                          <td class="text-center text-dark">N/A</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>   
+                              <div>
+                                 <p class="titulo-form-simples mt-0 pb-1 ps-3"><i class="far fa-file-alt">&nbsp;</i>Para A/AS LOJA(S):</p>
+                                    <div class="table-responsive me-2 ps-3 pe-4">
+                                       <table class="table table-success align-middle" *ngIf="client">
+                                          <thead class="table-primary align-middle text-primary">
+                                             <tr class="text-center text-primary align-middle table-primary">
+                                                <th scope="col" class="align-baseline text-primary table-white">Nome</th>
+                                                <th scope="col" >Comprovativo de IBAN</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody class="table-light text-primary">
+                                             <tr class="table-white text-primary">
+                                                <th scope="row" class="text-center text-dark">Teste1</th>
+                                                <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                 </div>
+                              </div>
+                  
+                              <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+                                 <div class="row">
+                                    <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-9">
+                                       <p class="titulo-form-simples mt-0 pb-1 ps-3"><i class="fas fa-info-circle">&nbsp;</i>LEGENDAS:<br /></p>
+                                       <p class="mt-0 pb-1 ps-3">
+                                          <font face="Font Awesome 5 Free"><b>A </b>- Já existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp; X </b>- Não existe em arquivo&nbsp; &nbsp; |&nbsp; &nbsp;<b>N/A</b> - Não aplicável&nbsp; &nbsp;</font>
+                                       </p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                     
+         </div>
+      </div>
+   </ng-template>
+   <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0">
+      <div class="row">
+         <div class="col ms-0 ps-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+               <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                  <button id="btn5a" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3"
+                     [routerLink]="['/']" wappler-command="editContent">
+                     SAIR&nbsp;
+                     <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                  </button>
+               </span>
+               <button id="btn5a" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+                  CANCELAR&nbsp;
+                  <img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">
+               </button>
+               <button id="btn5a" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent"
+                  [routerLink]="['/client']">
+                  <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">
+                  VOLTAR&nbsp;
+               </button>
+               <button *ngIf="validatedDocuments" id="btn5a"
+                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+                  SUBMETER PEDIDO&nbsp;
+                  <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
+               </button>
+            </nav>
+         </div>
+      </div>
+   </div>
 </div>
-
-<input type="checkbox" id="validate" name="validate" value="validateClient">
-<label for="validate">Validou que os documentos necessários foram efetivamente os carregados?
-</label><br>
-<input type="checkbox" id="clientPresence" name="clientPresence" value="clientPresence">
-<label for="clientPresence">Na presença do cliente?
-</label><br>
-<ng-template #deleteModal>
-  <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
-    <p>Tem certeza que deseja excluir?</p>
-    <button type="button" class="btn btn-primary" (click)="confirmDelete()">Sim</button>
-    <button type="button" class="btn btn-primary" (click)="declineDelete()">Não</button>
-  </div>
-</ng-template>
-
-<ng-template #checkListDocs>
-  <div style="margin: auto;width: 100%;padding: 6px;" >
-    <div class="modal-content-checkdocuments">
-      <div class="modal-header-checkdocuments">
-        <h4 class="modal-title-checkdocuments">CHECKLIST DE DOCUMENTOS</h4>
-      </div>
-      <div class="modal-body-checkdocuments">
-        <span>
-          QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?
-        </span><br>
-        <span> Deverão ser associados ao processo de Onboarding os seguintes documentos</span>
-        <span *ngIf="client"> Para o cliente empresa {{ client.companyName }}</span><br>
-        <form #contactForm="ngForm">
-          <table class="table" *ngIf="client">
-            <thead class="table-primary align-middle">
-              <tr class="align-middle">
-                <th scope="col" class="text-center">Nome</th>
-                <th scope="col" class="text-center align-middle">Comnprovativo de Sociedade</th>
-                <th scope="col" class="text-center">Comprovativo REF</th>
-                <th scope="col" class="text-center">Comprovativo Fiscal Pessoa coletiva</th>
-                <th scope="col" class="text-center">Comprovativo de RCBE</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ client.companyName }}</td>
-                <td><i class="glyphicon glyphicon-ok"></i></td>
-                <td>N/A</td>
-                <td><i class="glyphicon glyphicon-ok"></i></td>
-                <td><i class="glyphicon glyphicon-remove"></i></td>
-              </tr>
-            </tbody>
-          </table>
-          <br>     
-          <span> Para a Natureza Jurídica selecionada Sociedade unipessoal por quotas os documentos obrigatórios:</span><br>
-          <span style="background-color: rgb(231, 227, 227);"> 
-            <li>Certidão da Conservatória do Registo Comercial ou Certidão Permanente ou Retirada a certidão se Cliente fornecer o código de Acesso à Certidão (www.portaldaempresa.pt). </li>
-          </span><br>
-          <span> Para o/os interveniente(s):</span><br>
-          <table class="table" *ngIf="client">
-            <thead class="table-primary align-middle">
-              <tr class="align-middle">
-                <th scope="col" class="text-center">Nome</th>
-                <th scope="col" class="text-center align-middle">Comnprovativo de Documento de Identificação</th>
-                <th scope="col" class="text-center">Comprovativo Fiscal Particular</th>
-                <th scope="col" class="text-center">Procuração Cliente</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ client.shortName }}</td>
-                <td><i class="glyphicon glyphicon-ok"></i></td>
-                <td><i class="glyphicon glyphicon-ok"></i></td>
-                <td>N/A</td>
-              </tr>
-            </tbody>
-          </table>
-          <br>       
-          <span> Para o/os interveniente(s):</span><br>
-          <table class="table" *ngIf="client">
-            <thead class="table-primary align-middle">
-              <tr class="align-middle">
-                <th scope="col" class="text-center">Nome</th>
-                <th scope="col" class="text-center align-middle">Comprovativo</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Teste1</td>
-                <td><i class="glyphicon glyphicon-ok"></i></td>
-              </tr>
-            </tbody>
-          </table>
-          <br>
-          <span> <b>Legenda: </b></span><br>
-          <span> 
-            <i class="glyphicon glyphicon-ok"> - Já existe em arquivo </i>&nbsp;&nbsp;&nbsp;&nbsp;
-            <i class="glyphicon glyphicon-remove"> - Não existe em arquivo</i>&nbsp;&nbsp;&nbsp;&nbsp;
-            <label>N/A - Não aplicável</label>
-          </span>      
-        </form>
-      </div>
-      <div class="modal-footer-checkdocuments">
-        <button type="button" class="btn botao_azul" (click)="declineCheckList()" >FECHAR</button>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<div>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-    [routerLink]="['/']">
-    Sair&nbsp;
-  </button>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
-    Cancelar&nbsp;
-  </button>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-    [routerLink]="['/client']">
-    Voltar&nbsp;
-  </button>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-    (click)="obterStakeholders()">
-    Submeter Pedido&nbsp;<i class="fas fa-angle-right">&nbsp;</i>
-  </button>
 </div>

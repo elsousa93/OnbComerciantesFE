@@ -3,5 +3,23 @@
     "target": "https://www.mtrust.pt",
     "secure": false,
     "changeOrigin": true
+  },
+  "/mockaco/*": {
+    "target": "http://localhost/Mockaco/",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/mockaco": ""
+    },
+    "changeOrigin": false
+  },
+  "/DOCAS/*": {
+    "target": "http://localhost:11000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": false,
+    "pathRewrite": {
+      "^/DOCAS": ""
+    }
   }
 }

@@ -7,41 +7,45 @@ import { CountryInformation, EconomicActivityInformation, LegalNature, PEPTypes,
 })
 export class TableInfoService {
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http: HttpClient, @Inject('ACQUIRING_URL') private acquiringUrl: string) { }
 
-  GetAllCountries(): any {
-    return this.http.get<CountryInformation[]>(this.baseUrl + 'GetAllCountries');
+  GetAllCountries(): any{
+    return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country');
   }
 
-  GetCountryById(code: string): any {
-    return this.http.get<CountryInformation>(this.baseUrl + 'GetCountry/' + code);
+  GetCountryById(code: string){
+    return this.http.get<CountryInformation>(this.acquiringUrl + 'country/' + code);
   }
 
   GetAllCAEs() {
-    return this.http.get<EconomicActivityInformation[]>(this.baseUrl + 'GetAllCAEs');
+    return this.http.get<EconomicActivityInformation[]>(this.acquiringUrl + 'merchant/economicactivity');
+  }
+
+  GetCAEByCode(code: string){
+    return this.http.get<EconomicActivityInformation>(this.acquiringUrl + 'merchant/economicactivity/' + code);
   }
 
   GetAllLegalNatures() {
-    return this.http.get<LegalNature[]>(this.baseUrl + 'GetAllLegalNatures');
+    return this.http.get<LegalNature[]>(this.acquiringUrl + 'merchant/legalnature');
   }
 
   GetAllStakeholderRoles() {
-    return this.http.get<StakeholderRole[]>(this.baseUrl + 'GetAllStakeholderRoles');
+    return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'merchant/stakeholder/role');
   }
 
   GetAllShopActivities() {
-    return this.http.get<ShopActivity[]>(this.baseUrl + 'GetAllShopActivities');
+    return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity');
   }
 
   GetAllPEPTypes() {
-    return this.http.get<PEPTypes[]>(this.baseUrl + 'GetAllPEPTypes');
+    return this.http.get<PEPTypes[]>(this.acquiringUrl + 'pep/types');
   }
 
   GetAllPOS() {
-    return this.http.get<POS[]>(this.baseUrl + 'GetAllPOS');
+    return this.http.get<POS[]>(this.acquiringUrl + 'pos');
   }
 
   GetAllProducts() {
-    return this.http.get<Product[]>(this.baseUrl + 'GetAllProducts');
+    return this.http.get<Product[]>(this.acquiringUrl + 'product');
   }
 }

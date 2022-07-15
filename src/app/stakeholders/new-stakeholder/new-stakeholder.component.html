@@ -1,85 +1,90 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<div class="container-fluid conteudo me-0 mb-0 pt-0 pb-0 ps-0 pe-0">
-  <div class="row mb-5 mt-3">
-    <div class="offset-1 bg-white col-7 col-8">
-      <span class="mt-4 mb-4">
-        <h2 class="mt-4 text-primary">Identificação do Interveniente </h2>
-      </span>
+<div class="container-fluid mt-5 ms-0 me-0 pt-5 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <span class="navbar-text text-light">
+          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70" />
+        </span>
+        <span class="navbar-text">
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INTERVENIENTES
+          </h5>
+        </span>
+      </nav>
     </div>
+    <div class="offset-1 bg-white align-self-center col-10 ps-3">
+      <h2 class="text-primary mt-5 ps-0"><img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;NOVO
+        INTERVENIENTE</h2>
+      <p class="titul campo_obrigatrio">* campo obrigatório</p>
+      <div class="row ms-0 me-0">
+				<div class="col-6 ms-0 me-0 ps-0 pe-5">
+          <p class="titulo-form-simples mb-1">Associado ao Contrato:*</p>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+              <div class="form-check">
+                <input class="form-check-input" required formControlName="contractAssociation" name="contractAssociation"
+                  type="radio" value=true id="contractAssociation" />
+                <label class="form-check-label radio pe-5" for="radio8">SIM</label>
+              </div>
+            </span>
+            <span class="navbar-text">
+              <div class="form-check">
+                <input class="form-check-input" required formControlName="contractAssociation" name="contractAssociation"
+                  type="radio" value=false id="contractAssociation" />
+                <label class="form-check-label radio" for="radio2">NÃO</label>
+              </div>
+            </span>
+          </nav>
+          <p class="titulo-form-simples mb-1">PRETENDE EFECTUAR&nbsp; A ATUALIZAÇÃO ELECTRÓNICA DOS DADOS UTILIZANDO O
+          CARTÃO DO CIDADÃO?*</p>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="flagRecolhaEletronica"
+                    name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC"
+                    (click)="validateCC(true)" />
+                  <label class="form-check-label radio pe-5" for="radio2">SIM</label>
+                </div>
+              </span>
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input input class="form-check-input" formControlName="flagRecolhaEletronica"
+                    name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica"
+                    (click)="validateCC(false)" />
+                  <label class="form-check-label radio" for="radio2">NÃO</label>
+                </div>
+              </span>
+            </nav>
+          <p class="titulo-form-simples"></p>
+        </div>
+      <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
+        <p class="titulo-form-simples mb-3">Procurador:*</p>
 
-
-
-
-<!--<div class="container">
-  <form #contactForm="ngForm">
-    <div class="form-group">
-      <label for="stakeholderType">Tipo de Interveniente</label>
-      <input required ngModel #stakeholderType="ngModel" name="stakeholderType" type="text" id="stakeholderType"
-        class="form-control" [(ngModel)]="newStake.stakeholderType">
-      <div class="alert alert-danger" *ngIf="stakeholderType.touched && !stakeholderType.valid">
-        O parâmetro "tipo de interveniente" é obrigatório.
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <span class="navbar-text">
+            <div class="form-check">
+              <input class="form-check-input" required formControlName="procurator" name="procurator" type="radio"
+                value=true id="procurator" />
+              <label class="form-check-label radio pe-5" for="radio1">SIM</label>
+            </div>
+          </span>
+          <span class="navbar-text">
+            <div class="form-check">
+              <input class="form-check-input" required formControlName="procurator" name="procurator" type="radio"
+                value=false id="procurator" />
+              <label class="form-check-label radio" for="radio1">NÃO</label>
+            </div>
+          </span>
+        </nav>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="electronicCollectFlag">Recolha eletrónica</label>
-      <input required ngModel name="electronicCollectFlag" type="radio" value=true #electronicCollectFlag="ngModel"
-        [value]="true" id="electronicCollectFlag" [(ngModel)]="newStake.electronicCollectFlag">
-      <label for="sim">Sim</label>
-      <input required ngModel name="electronicCollectFlag" type="radio" value=false #electronicCollectFlag="ngModel"
-        [value]="false" id="electronicCollectFlag" [(ngModel)]="newStake.electronicCollectFlag">
-      <label for="nao">Não</label>
-      <div class="alert alert-danger" *ngIf="!electronicCollectFlag.touched && !electronicCollectFlag.valid">
-        electronicCollectFlag is required.
-      </div>
-    </div>
-  -->
-
-<!--FORM TAG-->
-<div class="offset-1 bg-white col-7 col-10">
-<p class="">Associado ao Contrato:*</p>
-    <div class="form-check">
-      <input class="form-check-input" required formControlName="contractAssociation" name="contractAssociation" type="radio" value=true
-              id="contractAssociation">
-      <label class="radio">Sim</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" required formControlName="contractAssociation" name="contractAssociation" type="radio" value=false
-              id="contractAssociation">
-      <label class="radio" for="radio2">Não</label>
-    </div>
-    <p></p>
-
-    <p class="">Procurador:*</p>
-    <div class="form-check">
-      <input class="form-check-input" required formControlName="procurator" name="procurator" type="radio" value=true
-              id="procurator">
-      <label class="radio">Sim</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" required formControlName="procurator" name="procurator" type="radio" value=false
-              id="procurator">
-      <label class="radio" for="radio2">Não</label>
-    </div>
-
-    <p class="">Pretende efetuar a Atualização Eletrónica dos Dados utilizando o Cartão de Cidadão?:*</p>
-    <div class="form-check">
-      <input class="form-check-input" required formControlName="flagRecolhaEletronica" name="flagRecolhaEletronica" type="radio" value=true
-              id="flagRecolhaEletronica" (click)="validateCC(true)">
-      <label class="radio">Sim</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" required formControlName="procurflagRecolhaEletronicaator" name="flagRecolhaEletronica" type="radio" value=false
-              id="flagRecolhaEletronica" (click)="validateCC(false)">
-      <label class="radio" for="radio2">Não</label>
-    </div>
 
 
-<!--Sem CC-->
+    <!--Sem CC-->
+    <div class="col-6 ms-0 me-0 ps-0 pe-5">
+      <div *ngIf="showYesCC && !showNoCC">
+        <form [formGroup]="formNewStakeholder" (ngSubmit)="submit(formNewStakeholder.value)">
 
-<div *ngIf="showNoCC">
-  <form [formGroup]="formNewStakeholder" (ngSubmit)="submit(formNewStakeholder.value)">
-
-    <!--<div class="form-group">
+          <!--<div class="form-group">
       <label for="fullName">Nome do Cliente</label>
       <input type="text" formControlName="fullName"
              id="fullName" class="form-control" [(ngModel)]="newStake.fullName">
@@ -93,177 +98,131 @@
         </div>
       </div>
     </div>-->
-    <div class="form-group">
-      <label for="documentType">
-        Tipo de Documento de Identificação (1ª Nacionalidade):*
-      </label>
-      <input name="identificationDocumentType" formControlName="documentType"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.type">
-      <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
+        <p class="titulo-form-simples mt-0">Tipo de Documento de Identificação (1ª Nacionalidade):*</p>
+        <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form"
+        [(ngModel)]="newStake.identificationDocument.type">
+            <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
         documentType is required.
       </div>-->
-    </div>
-
-    
-
-    <div class="form-group">
-      <label for="documentCountry">
-        País de Documento de Identificação (1ª Nacionalidade):*
-      </label>
-      <input name="documentCountry" formControlName="documentCountry"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.country.code">
-      <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
+        <p class="titulo-form-simples">País de Documento de Identificação (1ª Nacionalidade):*</p>
+        <input readonly name="documentCountry" formControlName="documentCountry" class="form-control campo_form"
+        [(ngModel)]="newStake.identificationDocument.country">
+        <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
         documentCountry is required.
-      </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="identificationDocumentId">
-        Nº Documento de Identificação (1ª Nacionalidade):*
-      </label>
-      <input name="identificationDocumentId" formControlName="identificationDocumentId"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.number">
-      <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
+        </div>-->
+        <p class="titulo-form-simples">Nº Documento de Identificação (1ª Nacionalidade):*</p>
+        <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+        class="form-control campo_form" [(ngModel)]="newStake.identificationDocument.number">
+        <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
         nrDocumentoID is required.
-      </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="identificationDocumentValidUntil">
-        Data de Validade Doc. de Identificação (1ª Nacionalidade):*
-      </label>
-      <input name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil" cols="30" rows="10"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.expirationDate">
-      <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
+        </div>-->
+        <p class="titulo-form-simples">Data de Validade Doc. de Identificação (1ª Nacionalidade):*</p>
+        <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+          cols="30" rows="10" class="form-control campo_form" [(ngModel)]="newStake.identificationDocument.expirationDate">
+        <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
         dataDocumentoID is required.
-      </div>-->
-    </div>
-  </form>
-</div>
+        </div>-->
+        </form>
+      </div>
+        
+      <div *ngIf="!showYesCC && showNoCC">
+        <p class="titulo-form-simples mt-0">NIF</p>
+        <input id="fiscalId" class="form-control campo_form" type="text" #box [(ngModel)]="newStake.fiscalId">
 
-<p><b>Identificação do Interveniente II</b></p>
-<div class="form-group">
-  <div class="col-xxl">
-    <p class="titulo-form-simples ">
-      NIF &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <input id="fiscalId" type="text" #box [(ngModel)]="newStake.fiscalId">
-  </div>
-  
-  <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
+
+        <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
     O parâmetro "NIF" é obrigatório.
   </div>-->
 
-  <div class="col-xxl">
-    <p class="titulo-form-simples ">
-      Cargo &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <input id="roleStakeholder" type="text" #box>
-  </div>
-  <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-    O parâmetro "Cargo" é obrigatório.
-  </div>-->
-
-  <div class="col-xxl">
-    <p class="titulo-form-simples ">
-      País da Morada Fiscal &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <input id="streetAdressStakeholder" type="text" #box [(ngModel)]="newStake.fiscalAddress.address">
-  </div>
-  <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
+        <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
+        <input id="streetAdressStakeholder" class="form-control campo_form" type="text" #box
+          [(ngModel)]="newStake.fiscalAddress.address">
+        <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
     O parâmetro "Morada Fiscal" é obrigatório.
   </div>-->
 
-  <div class="col-xxl">
-    <p class="titulo-form-simples ">
-      Código Postal &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <input id="postCodeAdressStakeholder" type="text" #box [(ngModel)]="newStake.fiscalAddress.postalCode">
-  </div>
-  <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
+        <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
+        <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" #box
+          [(ngModel)]="newStake.fiscalAddress.postalCode">
+        <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
     O parâmetro "Código postal" é obrigatório.
   </div>-->
-
-  <div class="col-xxl">
-    <p class="titulo-form-simples ">
-      Localidade &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <input id="areaBillingAdressStakeholder" type="text" #box [(ngModel)]="newStake.fiscalAddress.postalArea">
-  </div>
-  <!--<div class="alert alert-danger"
-    *ngIf="postalArea.touched && !postalArea.valid">
-    O parâmetro "Código postal" é obrigatório.
-  </div>-->
-
-  <div class="col-xxl">
-    <p class="titulo-form-simples ">
-      Morada Fiscal &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <input id="countryBillingAdressStakeholder" type="text" #box [(ngModel)]="newStake.fiscalAddress.country">
-  </div>
-  <!--<div class="alert alert-danger"
-    *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
-    O parâmetro "Código postal" é obrigatório.
-  </div>-->
-
-
-
-  <div *ngIf="showYesCC">
-    <!-- Parte feita pelo Filipe, ver consequencias de alterar-->
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="form-group" *ngIf="readcard" style="width:450px">
-          Nome:<input ngModel #clientName="ngModel" name="clientName" type="text" id="clientName" class="form-control"
-                      [(ngModel)]="readcard[0]" readonly>
-          Nr Doc:<input ngModel #nrDocumentoID="ngModel" name="nrDocumentoID" type="text" id="nrDocumentoID"
-                        class="form-control" [(ngModel)]="readcard[1]" readonly>
-          Data Documento:<input ngModel #dateDocumentID="ngModel" name="dateDocumentID" type="text"
-                                id="dateDocumentID" class="form-control" [(ngModel)]="readcard[2]" readonly>
-          Nif:<input ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif"
-                     class="form-control" [(ngModel)]="readcard[3]" readonly>
-          Nacionalidade:<input ngModel #documentCountry="ngModel" name="documentCountry" type="text"
-                               id="documentCountry" class="form-control" [(ngModel)]="readcard[4]" readonly>
-          Morada:<input ngModel #streetAdressStakeholder="ngModel" name="streetAdressStakeholder" type="text"
-                        id="streetAdressStakeholder" class="form-control" [(ngModel)]="readcard[8]" readonly>
-          Morada:<input ngModel #postCodeAdressStakeholder="ngModel" name="postCodeAdressStakeholder" type="text"
-                        id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="readcard[9]" readonly>
-          Área:<input ngModel #areaBillingAdressStakeholder="ngModel" name="areaBillingAdressStakeholder" type="text"
-                      id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="readcard[6]" readonly>
-          País Morada Fiscal:<input ngModel #countryBillingAdressStakeholder="ngModel"
-                                    name="countryBillingAdressStakeholder" type="text" id="countryBillingAdressStakeholder"
-                                    class="form-control" [(ngModel)]="readcard[5]" readonly>
-        </div>
+        <p class="titulo-form-simples"></p>
       </div>
     </div>
-  </div>
+    <div class="col-6 ms-0 me-0 ps-5 pe-0">
+      <div *ngIf="!showYesCC && showNoCC">
+      <p class="titulo-form-simples mt-0">CARGO</p>
+      <input id="roleStakeholder" class="form-control campo_form" type="text" #box class="form-control campo_form">
+      <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
+      O parâmetro "Cargo" é obrigatório.
+      </div>-->
 
-  <button type="submit" (click)="submit(formNewStakeholder.value)"> Submeter </button>
+      <p class="titulo-form-simples ">LOCALIDADE</p>
+      <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" #box
+        [(ngModel)]="newStake.fiscalAddress.postalArea">
+      <!--<div class="alert alert-danger"
+        *ngIf="postalArea.touched && !postalArea.valid">
+        O parâmetro "Código postal" é obrigatório.
+      </div>-->
+
+      <p class="titulo-form-simples ">MORADA FISCAL</p>
+      <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" #box
+        [(ngModel)]="newStake.fiscalAddress.country">
+      <!--<div class="alert alert-danger"
+        *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
+        O parâmetro "Código postal" é obrigatório.
+      </div>-->
+      <p class="titulo-form-simples"></p>
+    </div>
+    </div>
+      <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
+          <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
+          <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span>
+        </nav>
+      </div>
+    </div>
 
 
-</div>
+    <!--<div *ngIf="showYesCC">
+           Parte feita pelo Filipe, ver consequencias de alterar
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="form-group" *ngIf="readcard" style="width:450px">
+                Nome:<input ngModel #clientName="ngModel" name="clientName" type="text" id="clientName"
+                  class="form-control" [(ngModel)]="readcard[0]" readonly>
+                Nr Doc:<input ngModel #nrDocumentoID="ngModel" name="nrDocumentoID" type="text" id="nrDocumentoID"
+                  class="form-control" [(ngModel)]="readcard[1]" readonly>
+                Data Documento:<input ngModel #dateDocumentID="ngModel" name="dateDocumentID" type="text"
+                  id="dateDocumentID" class="form-control" [(ngModel)]="readcard[2]" readonly>
+                Nif:<input ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif"
+                  class="form-control" [(ngModel)]="readcard[3]" readonly>
+                Nacionalidade:<input ngModel #documentCountry="ngModel" name="documentCountry" type="text"
+                  id="documentCountry" class="form-control" [(ngModel)]="readcard[4]" readonly>
+                Morada:<input ngModel #streetAdressStakeholder="ngModel" name="streetAdressStakeholder" type="text"
+                  id="streetAdressStakeholder" class="form-control" [(ngModel)]="readcard[8]" readonly>
+                Morada:<input ngModel #postCodeAdressStakeholder="ngModel" name="postCodeAdressStakeholder" type="text"
+                  id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="readcard[9]" readonly>
+                Área:<input ngModel #areaBillingAdressStakeholder="ngModel" name="areaBillingAdressStakeholder"
+                  type="text" id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="readcard[6]" readonly>
+                País Morada Fiscal:<input ngModel #countryBillingAdressStakeholder="ngModel"
+                  name="countryBillingAdressStakeholder" type="text" id="countryBillingAdressStakeholder"
+                  class="form-control" [(ngModel)]="readcard[5]" readonly>
+              </div>
+            </div>
+          </div>
+        </div>-->
 
-<br>
-<br>
-
-<button (click)="onClickDelete(newStake.fiscalId, newStake.fullName)" class="btn btn-primary">Eliminar</button>
-
-<br>
-<br>
-<br>
-Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
-
-<form>
-  <button type="submit">Ler Cartão de Cidadão</button>
-</form>
-
-
-
-<div>
-  All countries test API
-  <form>
-    <button (click)="getAll()">Get Countries</button>
-  </form>
-</div>
-</div>
+        <div class="col ms-0 ps-0">
+          <hr>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+             <span class="navbar-text me-2 align-self-center ms-0 me-0">
+              <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button></span>
+             <button id="btn5a4" [routerLink]="['/stakeholders']" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+             <button id="btn5a2" [routerLink]="['/stores']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+          </nav>
+         </div>
+      </div>
 </div>
 </div>

@@ -141,7 +141,7 @@ export class UpdateStakeholderComponent implements OnInit {
     this.formUpdateStakeholder = this.fb.group({
       fullName: this.newStake.fullName,
       documentType: this.newStake.identificationDocument.type,
-      documentCountry: this.newStake.identificationDocument.country.code,
+      documentCountry: this.newStake.identificationDocument.country,
       identificationDocumentId: this.newStake.identificationDocument.number,
       identificationDocumentValidUntil: this.newStake.identificationDocument.expirationDate,
       fiscalId: this.newStake.fiscalId,
@@ -162,7 +162,7 @@ export class UpdateStakeholderComponent implements OnInit {
    
     this.newStake.fullName = formUpdateStakeholder.fullName;
     this.newStake.identificationDocument.type = formUpdateStakeholder.documentType;
-    this.newStake.identificationDocument.country.code = formUpdateStakeholder.documentCountry;
+    this.newStake.identificationDocument.country = formUpdateStakeholder.documentCountry;
     this.newStake.identificationDocument.number = formUpdateStakeholder.identificationDocumentId;
     this.newStake.identificationDocument.expirationDate = formUpdateStakeholder.identificationDocumentValidUntil;
     this.newStake.fiscalId = formUpdateStakeholder.fiscalId;

@@ -1,208 +1,7 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<!--div class="container-fluid conteudo me-0 mb-0 pt-0 pb-0 ps-0 pe-0">
-  <div class="row mb-5 mt-3">
-    <div class="offset-1 bg-white col-7 col-8">
-      <span class="mt-4 mb-4">
-        <h2 class="mt-4 text-primary">Qual a tipologia do Comerciante?*</h2>
-      </span>
-    </div>
-    <div class="offset-1 bg-white col-7 col-10">
-      <div class="form-check">
-        <p></p>
-        <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
-               #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
-        <label class="radio">EMPRESA</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-               #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)">
-        <label class="radio" for="radio2">ENI</label>
-      </div>
-      <div>
-        <p></p>
-        <div *ngIf="showButtons">
-          <div class="row">
-            <form>
-              <div class="row" *ngIf="showENI == false">
-                <div class="col col-6">
-                  <p class="titulo-form-simples">Tipo de Documento:*</p>
-                  <select class="form-select campo-form-select" id="docType"
-                          [(ngModel)]="newClient.documentationDeliveryMethod">
-                    <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
-                      {{docType.docTypeOption}}
-                    </option>
-                  </select>
-                  <button id="btn5a2"
-                          class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
-                          >
-                    PESQUISAR
-                    <i class="fas fa-search">&nbsp;</i>
-                  </button>
-                </div>
-                <div class="col">
-                  <p class="titulo-form-simples ">
-                    Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span [class]="errorMsg">{{ resultError }}</span>
-                  </p>
-                  <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
-                         #clientId="ngModel" [class]="errorInput">
-                </div>
-              </div>
-
-
-
-              <div *ngIf="showENI">
-                <div class="row">
-                  <div class="col col-6">
-                    <p class="titulo-form-simples">Tipo de Documento:*</p>
-                    <select class="form-select campo-form-select" id="docType"
-                            [(ngModel)]="newClient.documentationDeliveryMethod">
-                      <option *ngFor="let docType of ListaDocTypeENI" value={{docType.docTypeOption}}>
-                        {{docType.docTypeOption}}
-                      </option>
-                    </select>
-                    <p class="titulo-form-CC"> Clique em ler cartão para proceder à Leitura do Cartão Cidadão</p>
-                  </div>
-                  <div class="col">
-                    <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
-                    <p class="titulo-form">
-                      Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
-                    </p>
-                    <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
-                           #flagAutCol="ngModel" [value]="true" id="flagAutCol">
-                    <label class="form-check-label"
-                           for="radio3">SIM</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
-                           #flagAutCol="ngModel" [value]="false" id="flagAutCol">
-                    <label class="form-check-label" for="radio3">NÃO</label>
-                  </div>
-
-                  <div style="width: 600px;" *ngIf="ccInfo">
-                    <div>
-                      <p class="titulo-form-simples">País do documento:</p>
-                      <input id="n-doc" type="text" value="{{ ccInfo[1] }}" readonly>
-                    </div>
-                    <br>
-                    <div class="card">
-                      <div class="card-body">
-                        <table>
-                          <tr>
-                            <td class="titulo-form-simples">Nome:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[0] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Id:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[3] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Nif:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[5] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Dt. Nasc.:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[2] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Morada:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[7] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Codigo Postal:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[6] }}</td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <button id="btn5a2"
-                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
-                        (click)="getValueENI()">
-                  Ler Cartão Cidadão
-                  <i class="fas fa-search">&nbsp;</i>
-                </button>
-              </div>
-              <br>
-
-              <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="submit" (click)="aButtons(true)">Pesquisar/Adicionar</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="offset-1 col-10" *ngIf="showWarning == true">
-    <div class="table-responsive">
-      <form #contactForm="ngForm">
-        <table class="table">
-          <thead class="table-primary align-middle">
-            <tr class="align-middle">
-              <th scope="col" class="text-center"></th>
-              <th scope="col" class="text-center align-middle">ID Interno</th>
-              <th scope="col" class="text-center">Nº de Cliente</th>
-              <th scope="col" class="text-center">Morada</th>
-              <th scope="col" class="text-center">Código Postal</th>
-              <th scope="col" class="text-center">Localidade</th>
-              <th scope="col" class="text-center">País</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
-              <th scope="row" class="text-center">
-                <input type="radio" value={{newClient.documentationDeliveryMethod}}
-                       (click)="aButtons(true)">
-              </th>
-              <td class="text-center">{{newClient.clientId}}</td>
-              <td class="text-center">{{newClient.headquartersAddress.address}}</td>
-              <td class="text-center">{{newClient.headquartersAddress.postalCode}}</td>
-              <td class="text-center">{{newClient.headquartersAddress.locality}}</td>
-              <td class="text-center">{{newClient.headquartersAddress.country}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-    </div>
-  </div>
-  <div class="container" *ngIf="hasNewClient == false">
-    <div class="row" id="divshow" text="red">
-      <div class="col offset-1 col-5 offset-1 col-10 mb-5">
-        <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
-                (click)="newSearch()">
-          NOVA PESQUISA&nbsp;
-          <i class="fas fa-search"></i>
-        </button>
-        <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                [routerLink]="['/clientbyid/']">
-          NOVO COMERCIANTE&nbsp;
-          <i class="far fa-user">&nbsp;</i>
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="container" *ngIf="showSeguinte == true">
-    <div class="row">
-      <div class="col offset-1 col-5 offset-1 col-10 mb-5">
-        <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
-                (click)="close()">
-          SAIR&nbsp;
-          <i class="fas fa-angle-down"></i>
-        </button>
-        <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                (click)="obterSelecionado()">
-          AVANÇAR&nbsp;
-          <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
-        </button>
-      </div>
-    </div>
-  </div>
-</div-->
-
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row ms-0 me-0 ps-0 pe-0">
-    <div class="bg-primary col-12 mt-0 pt-0 ps-0 pe-0 shadow-none">
-    </div>
-    <div class="row">
-      <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span
             class="navbar-text text-light">
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
@@ -213,81 +12,95 @@
           </span>
         </nav>
       </div>
-    </div>
-    <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0">
-      <h2 class="text-primary mt-5 ps-3"><span class="material-symbols-rounded icon-titulos m-align">
-          <img src="assets/images/group_add.svg" width="70">
+    <div class="offset-1 bg-white center-align col-10 ps-3">
+      <h2 class="text-primary mt-5 ps-0 center-align"><span class="material-symbols-rounded icon-titulos m-align">
+        <img src="assets/images/group_add_blue.svg" class="img_add">
         </span>&nbsp;IDENTIFICAÇÃO DO CLIENTE EMPRESA<br></h2>
       <p class="titul campo_obrigatrio">* campo obrigatório</p>
-      <div *ngIf="showButtons">
-        <div class="row">
-          <div class="col-6 ms-3 me-3 ps-3 pe-3">
-            <p class="titulo-form-simples">QUAL A TIPOLOGIA DO COMERCIANTE?</p>
-            <div class="form-check">
-              <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
-                #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)">
-              <label class="form-check-label radio">EMPRESA</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-                #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)">
-              <label class="form-check-label radio" for="radio2">ENI</label>
-            </div>
+
+        <div class="row ms-0 me-0">
+          <div class="col-9 ms-0 me-0 ps-0 pe-0">  <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
+              <p class="titulo-form-simples">QUAL A TIPOLOGIA DO CLIENTE EMPRESA?*</p>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
+                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)"/>
+                  <label class="form-check-label radio pe-5" for="radio3">EMPRESA</label>
+                </div>
+              </span>
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
+                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)"/>
+                  <label class="form-check-label radio" for="radio3">ENI</label>
+                </div>
+              </span>
+            </nav>   
             <div>
               <div *ngIf="showButtons">
-                <div class="row">
                   <form>
-                    <div class="row" *ngIf="showENI == false">
+                  <div class="row me-0" *ngIf="!showENI">
                       <div class="col">
-                        <p class="titulo-form-simples">Tipo de documento*</p>
+                        <div class="me-0 ps-0 pe-0 col-7">
+                        <p class="titulo-form-simples">Tipo de Documento:*</p>
                         <select class="form-select campo-form-select" id="docType"
-                          [(ngModel)]="newClient.documentationDeliveryMethod">
+                                [(ngModel)]="newClient.documentationDeliveryMethod">
                           <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                             {{docType.docTypeOption}}
                           </option>
                         </select>
-                        <p class="titulo-form-simples">Número do Documento:* &nbsp;&nbsp;&nbsp;&nbsp;<span
-                            [class]="errorMsg">{{
-                            resultError }}</span></p>
-                        <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
-                          #clientId="ngModel" [class]="errorInput">
-                        <p class="titulo-form-simples">
-                          <button id="btn5a2" class="btn botao_azul_pesquisa">
-                            PESQUISAR
-                            &nbsp;<span class="material-symbols-rounded m-align "><img
-                                src="assets/images/person_search.svg" style="height: 25px !important;">
-                            </span>
-                          </button>
-                        </p>
+                      </div>
                       </div>
                     </div>
-                    <div *ngIf="showENI">
-                      <div class="row">
-                        <div class="col col-6">
+                    <div class="row me-0" *ngIf="showENI">
+                        <div class="col">
+                          <div class="me-0 ps-0 pe-0 col-7">
                           <p class="titulo-form-simples">Tipo de Documento:*</p>
-                          <select class="form-select campo-form-select" id="docType"
-                            [(ngModel)]="newClient.documentationDeliveryMethod">
+                          <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+                  id="documentType" formControlName="documentType">
                             <option *ngFor="let docType of ListaDocTypeENI" value={{docType.docTypeOption}}>
                               {{docType.docTypeOption}}
                             </option>
                           </select>
-                          <p class="titulo-form-CC"> Clique em ler cartão para proceder à Leitura do Cartão Cidadão
-                          </p>
                         </div>
-                        <div class="col">
-                          <p class="titulo-form">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
-                          <p class="titulo-form">
+                      </div>                      
+                        <div *ngIf="isCC" class="offset-1 col-5 ms-5 me-0 ps-5 pe-0">
+                          <p class="titulo-form-simples mb-3">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
+                          
                             Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
-                          </p>
-                          <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
-                            #flagAutCol="ngModel" [value]="true" id="flagAutCol">
-                          <label class="form-check-label"
-                            for="radio3">SIM</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
-                            #flagAutCol="ngModel" [value]="false" id="flagAutCol">
-                          <label class="form-check-label" for="radio3">NÃO</label>
-                        </div>
+                          
 
+                            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                              <span class="navbar-text">
+                                <div class="form-check">
+                                  <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=true
+                                  id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true"/>
+                                  <label class="form-check-label radio pe-5" for="radio3">SIM</label>
+                                </div>
+                              </span>
+                              <span class="navbar-text">
+                                <div class="form-check">
+                                  <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=false
+                                  id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false"/>
+                                  <label class="form-check-label radio" for="radio3">NÃO</label>
+                                </div>
+                              </span>
+                            </nav>   
+                        </div>
+                      </div>
+                      <div class="row me-0">
+                        <div class="col">
+                      <div class="me-0 ps-0 pe-0 col-7">
+                      <p class="titulo-form-simples" >
+                        Número do Documento:* <span [class]="errorMsg" >
+                          {{
+                          resultError
+                          }}
+                        </span>
+                      </p>
+                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
+                           #clientId="ngModel" [class]="errorInput"></div></div></div>
                         <div style="width: 600px;" *ngIf="ccInfo">
                           <div>
                             <p class="titulo-form-simples">País do documento:</p>
@@ -324,57 +137,75 @@
                               </table>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <button id="btn5a2"
-                        class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg mb-5 ms-0"
-                        (click)="getValueENI()">
-                        Ler Cartão Cidadão
-                        <i class="fas fa-search">&nbsp;</i>
-                      </button>
-                      <br>
-                      <button class="btn botao_azul" type="submit" (click)="aButtons(true)">Pesquisar/Adicionar</button>
-                    </div>
+                    </div></form>
 
-                  </form>
+                      <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
+                      <!--<div class="row me-0">
+                        <div class="col">
+                           <p class="titulo-form-simples" >
+                            Número do Documento:* <span [class]="errorMsg" >
+                              {{
+                              resultError
+                              }}
+                            </span>
+                          </p>
+                    <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
+                           #clientId="ngModel" [class]="errorInput"></div></div>--><div *ngIf="isNoDataReadable && isCC"> 
+                            Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+              
+                            <form>
+                              <button class="btn botao_azul_pesquisa" type="submit">Ler Cartão de Cidadão</button>
+                            </form>
+                          </div>
+                    <p class="titulo-form-simples">
+                      <button id="btn5a2" class="btn botao_azul_pesquisa" (click)="onSearchSimulation(clientId.value)">
+                        <!--onSearchSimulation(clientId.value)-->
+                        PESQUISAR
+                        &nbsp;<span class="material-symbols-rounded m-align ">
+                          <img src="assets/images/person_search.svg" style="height: 25px !important;">
+                        </span>
+                      </button>
+                    </p>
+                    
                 </div>
               </div>
             </div>
-          </div>
-          < </div>
-        </div>
+          </div> <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
+        </div> <!--row ends-->
       </div>
 
 
-      <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0">
+      <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="showFoundClient == true">
         <div class="row me-0 pe-0">
           <div class="col mt-2 ms-0 me-0 pt-4 ps-3 pe-3">
             <h4 class="text-primary mb-4">RESULTADOS: CLIENTES ENCONTRADOS</h4>
             <div class="table-responsive mb-5">
               <form #contactForm="ngForm">
+
                 <table class="table">
-                  <thead class="table-primary align-middle">
-                    <tr class="align-middle">
-                      <th scope="col" class="text-center"></th>
-                      <th scope="col" class="text-center align-middle">ID Interno</th>
-                      <th scope="col" class="text-center">Nº de Cliente</th>
-                      <th scope="col" class="text-center">Morada</th>
-                      <th scope="col" class="text-center">Código Postal</th>
-                      <th scope="col" class="text-center">Localidade</th>
-                      <th scope="col" class="text-center">País</th>
+                  <thead class="text-primary table-primary">
+                    <tr class="table-white text-primary">
+                      <th scope="col" class="text-center text-primary bg-light table-white"></th>
+                      <th scope="col" class="text-center bg-light">Nº de Cliente</th>
+                      <th scope="col" class="text-center bg-light">Cliente</th>
+                      <th scope="col" class="text-center bg-white">Morada</th>
+                      <th scope="col" class="text-center bg-white">Código Postal</th>
+                      <th scope="col" class="text-center bg-white">Localidade</th>
+                      <th scope="col" class="text-center bg-white">País</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
-                      <th scope="row" class="text-center">
+                      <th scope="row" class="text-primary text-center">
                         <input type="radio" value={{newClient.documentationDeliveryMethod}} (click)="aButtons(true)">
                       </th>
-                      <td class="text-center">{{newClient.clientId}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.address}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.postalCode}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.locality}}</td>
-                      <td class="text-center">{{newClient.headquartersAddress.country}}</td>
+                      <td class="text-primary text-center">{{newClient.clientId}}</td>
+                      <td class="text-primary text-center">{{newClient.commercialName}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.address}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.postalCode}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.locality}}</td>
+                      <td class="text-primary text-center">{{newClient.headquartersAddress.country}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -384,30 +215,6 @@
         </div>
         <hr>
       </div>
-
-      <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="hasNewClient == false">
-        <div class="row">
-          <div class="col">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-              <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                <button id="btn5a3" class="btn botao_azul" wappler-command="editContent" (click)="newSearch()">
-                  NOVA PESQUISA&nbsp;
-                  <span class="material-symbols-rounded m-align">
-                    <img src="assets/images/person_search.svg" style="height: 25px !important;">
-                  </span>
-                </button>
-                <button id="btn5a1" class="btn botao_branco" wappler-command="editContent"
-                  [routerLink]="['/clientbyid/']">NOVO COMERCIANTE&nbsp;
-                  <span class="material-symbols-rounded m-align">
-                    <img src="assets/images/person_add.svg" style="height: 25px !important;">
-                  </span>
-                </button>
-              </span>
-            </nav>
-          </div>
-        </div>
-      </div>
-
       <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="showSeguinte == true">
         <div class="row">
           <div class="col">
@@ -427,4 +234,3 @@
         </div>
       </div>
     </div>
-  </div>

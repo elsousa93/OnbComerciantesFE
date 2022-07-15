@@ -16,17 +16,18 @@ export interface PepDetails {
   fullName: string
   contactName: string
   shortName: string
-  address: Address
+  fiscalAddress: Address
   kind: string
   sinceWhen: string
+  country: string
 }
 
 export interface Address {
-  address: string
-  postalCode: string
-  postalArea: string
-  locality: string
-  country: Country
+  address?: string
+  postalCode?: string
+  postalArea?: string
+  locality?: string
+  country?: string
 }
 
 export interface RelatedPep {

@@ -1,131 +1,141 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-
-<button class="btn" routerLink="/info-declarativa">Comerciante</button>
-<button class="btn" routerLink="/info-declarativa-stakeholder">Intervenientes</button>
-<button class="btn" routerLink="/info-declarativa-assinatura">Assinatura Digital</button>
-
-
-<!--
-
-
-
-       flagElectableStakeholder : boolean,
-       flagValidStakeholder:boolean,
-       callingCodeStakeholder: string,
-       phoneStakeholder: number,
-       emailStakeholder: string,
-       hourContractStar: number,
-       hourContractEnd: number,
-       schoolingStakeholder: string,
-       maritalStatusStakeholder: string,
-       finEstateStakeholder: number,
-       monthlyEarnsStakeholder: number
-  -->
-
-<div class="offset-xxl-1 col-xxl-10">
-  <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" class="table">
-      <ng-container matColumnDef="fiscalId">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Nº Cliente </th>
-        <td mat-cell *matCellDef="let stake" class="text-center"> {{stake.fiscalId}} </td>
-      </ng-container>
-      <ng-container matColumnDef="shortName">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Nome Cliente </th>
-        <td mat-cell *matCellDef="let stake" class="text-center"> {{stake.shortName}} </td>
-      </ng-container>
-      <ng-container matColumnDef="identificationDocumentId">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> NIF </th>
-        <td mat-cell *matCellDef="let stake" class="text-center"> {{stake.identificationDocument.number}} </td>
-      </ng-container>
-      <ng-container matColumnDef="elegible">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Elegível </th>
-        <td mat-cell *matCellDef="let stake" class="text-center"> - </td>
-      </ng-container>
-      <ng-container matColumnDef="valid">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Válido </th>
-        <td mat-cell *matCellDef="let stake" class="text-center"> - </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary align-middle text-center"></tr>
-      <tr mat-row
-          (click)="clickRow(row.fiscalId)"
-          *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                   showFirstLastButtons
-                   aria-label="Select page of periodic elements">
-    </mat-paginator>
-  </div>
-</div>
-
-
-<p><strong>Contactos</strong></p>
-<p>Preencha pelo menos 1 contacto</p>
-
-
-<form [formGroup]="formContactos">
-  <div class="container" style="display: flex">
-    <div class="country-code-dropdown">
-      <p>Indicativo:</p>
-
-      <select class="form-select" #countryCode formControlName="countryCode" (click)="changeListElement(callingCodeStakeholder, $event)" id="countryCode">
-        <option value="">Indicativo:</option>
-        <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
-      </select>
-      <!--<p>{{callingCodeStakeholder}}</p>-->
-
-      <div class="alert alert-danger" *ngIf="phoneNumber.value && !countryCode.value">
-        is required.
-      </div>
+<div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <div class="row">
+     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <span class="navbar-text text-light">
+          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+        </span>
+        <span class="navbar-text">
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INFORMÇÃO
+            DECLARATIVA</h5>
+        </span>
+      </nav>
     </div>
-    <div class="form-group">
-      <label for="phoneStakeholder">Telefone:</label>
-      <input #phoneNumber formControlName="phoneNumber" name="phoneStakeholder" type="text" id="phoneStakeholder" class="form-control">
+    <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
+      <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link btn-outline-primary activo_tabs activo-tabd" routerLink="/info-declarativa"
+            id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab"
+            aria-controls="navTabs1_1" aria-selected="true">Cliente Empresa</a>
+        </li>
+        <li class="nav-item_x">
+          <a class="nav-link active btn-primary" routerLink="/info-declarativa-stakeholder" id="navTabs1_2_tab"
+            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
+            aria-selected="false">Interveniente</a>
+        </li>
+        <li class="nav-item_x">
+          <a class="nav-link btn-outline-primary" routerLink="/info-declarativa-lojas" id="navTabs1_3_tab"
+            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+            aria-selected="false">Lojas</a>
+        </li>
+        <li class="nav-item_x">
+          <a class="nav-link btn-outline-primary" routerLink="/info-declarativa-assinatura" id="navTabs1_3_tab1"
+            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+            aria-selected="false">Assinatura Pack</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="navTabs1_content">
+        <div class="tab-pane fade show active" id="navTabs1_2" role="tabpanel">
+          <div class="container-fluid mt-0 ps-3 pe-3">
+            <div class="row">
+              <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+                <div class="table-responsive mb-5">
+                  <table class="table">
+                    <thead class="text-primary table-primary">
+                      <tr class="table-white text-primary">
+                        <th scope="col" class="text-center text-primary bg-light table-white">Nº Cliente</th>
+                        <th scope="col" class="text-center bg-light">Nome Cliente</th>
+                        <th scope="col" class="text-center bg-white">NIF</th>
+                        <th scope="col" class="text-center bg-white">Elegível</th>
+                        <th scope="col" class="text-center bg-white">Válido?</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row" class="text-primary text-center">12345</th>
+                        <td class="text-primary text-center">Bual de Canela</td>
+                        <td class="text-primary text-center">162243889</td>
+                        <td class="text-primary text-center"></td>
+                        <td class="text-primary text-center"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="bg-white align-self-center col-12 style53 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
+                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;CONTACTOS
+                </h2>
+                <p class="titul campo_obrigatrio">* campo obrigatório</p>
+                <div class="row ms-0 me-0">
+                  <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                    <div class="row">
+                      <div class="col-4">
+                        <p class="titulo-form-simples mt-0">INDICATIVO:</p>
+                        <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode"
+                          (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
+                          <option value="">Indicativo:</option>
+                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} ({{country.internationalCallingCode}}) </option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
+                          is required.
+                        </div>
+                      </div>
+                      <div class="col">
+                        <form [formGroup]="formContactos">
+                          <p class="titulo-form-simples mt-0">TELEFONE:*</p>
+                          <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber"
+                            class="form-control" formControlName="phone1PhoneNumber">
+                          <div class="alert alert-danger"
+                            *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
+                            is required.
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <p class="titulo-form-simples mt-0">EMAIL*</p>
+                        <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
+                          formControlName="email">
+                        <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
+                          is required.
+                        </div>
+                      </div>
+                    </div>
 
-      <div class="alert alert-danger" *ngIf="phoneNumber.touched && !phoneNumber.valid || countryCode.value && !phoneNumber.value">
-        is required.
+                    <p class="titulo-form-simples"></p>
+                  </div>
+                </div>
+
+                <div class="col ms-0 ps-0">
+                  <hr>
+                  <nav
+                    class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                    <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                      <button id="btn5a1" [routerLink]="['/']"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg"
+                          style="height: 25px !important; vertical-align: sub;"></button></span>
+                    <button id="btn5a3" [routerLink]="['/']"
+                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3"
+                      wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/cancel.svg"
+                        style="height: 25px !important; vertical-align: sub;"></button>
+                    <button id="btn5a4" [routerLink]="['/info-declarativa']"
+                      class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
+                      wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+                        style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+                    <button id="btn5a2" [routerLink]="['/info-declarativa-lojas']"
+                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                      wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg"
+                        style="height: 25px !important; vertical-align: sub;"></button>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <!-- </form> -->
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="emailStakeholder">Email:</label>
-    <input required formControlName="email" name="email" type="text" id="email" class="form-control">
-  </div>
-</form>
-<!--<div class="form-group">
-  <label for="hourContractStart">Melhor hora de início:</label>
-  <input required ngModel #hourContractStart="ngModel" name="hourContractStart" type="text" id="hourContractStart" class="form-control" [(ngModel)]="newStakeholder.hourContractStart">
-  <div class="alert alert-danger" *ngIf="hourContractStart.touched && !hourContractStart.valid">
-    hourContractStart is required.
-  </div>
-</div>
-<div class="form-group">
-  <label for="hourContractEnd">Melhor hora de fim:</label>
-  <input required ngModel #hourContractEnd="ngModel" name="hourContractEnd" type="text" id="hourContractEnd" class="form-control" [(ngModel)]="newStakeholder.hourContractEnd">
-  <div class="alert alert-danger" *ngIf="hourContractEnd.touched && !hourContractEnd.valid">
-    hourContractEnd is required.
-  </div>
-</div>
-<p><strong>Dados Pessoais</strong>:</p>
-<div class="schooling-drop-down" formGroupName="formSchooling">
-  <label for="schoolingStakeholder">Grau de Instrução:</label>
-  <form [formGroup]="formSchooling">
-    <select class="form-select" formControlName="schoolingStakeholder" (click)="changeListElementSchool(schoolingStakeholder, $event)" id="schoolingStakeholder" [(ngModel)]="newStakeholder.schoolingStakeholder">
-      <option value="disabled">Grau de Instrução:</option>
-      <option *ngFor="let SchoolingData of ListaSchoolingStatus" value={{SchoolingData.schooling}}>{{SchoolingData.schooling}} </option>
-    </select>
-    <p>{{schoolingStakeholder}}</p>
-  </form>
-</div>
-<div class="marital-drop-down" formGroupName="formMarital">
-  <label for="maritalStatusStakeholder">Estado civil:</label>
-  <form [formGroup]="formMarital">
-    <select class="form-select" formControlName="maritalStatusStakeholder" (click)="changeListElementMarital(maritalStatusStakeholder, $event)" id="maritalStatusStakeholder" [(ngModel)]="newStakeholder.maritalStatusStakeholder">
-      <option value="disabled">Estado civil:</option>
-      <option *ngFor="let maritalStatus of ListaMaritalStatus" value={{maritalStatus.maritalOption}}>{{maritalStatus.maritalOption}} </option>
-    </select>
-    <p>{{maritalStatusStakeholder}}</p>
-  </form>
-</div>-->
-<!-- add more-->
 
-<app-pep></app-pep>
+        <!-- <app-pep></app-pep> -->

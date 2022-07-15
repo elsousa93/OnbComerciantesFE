@@ -10,14 +10,19 @@ export class SubmissionService {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   GetSubmissionByID(submissionID: string): any {
-    return this.http.get<SubmissionGetTemplate>(this.baseUrl + 'GetSubmission/' + submissionID);
+    return this.http.get<SubmissionGetTemplate>(this.baseUrl + 'submission/' + submissionID);
   }
 
   InsertSubmission(submissionToInsert: SubmissionPostTemplate): any {
-    return this.http.post<SubmissionPostResponse>(this.baseUrl + 'CreateSubmission', submissionToInsert);
+    return this.http.post<SubmissionPostResponse>(this.baseUrl + 'submission/', submissionToInsert);
   }
 
   EditSubmission(submissionID: string, submissionToEdit: SubmissionPutTemplate): any {
-    return this.http.put<any>(this.baseUrl + 'EditSubmission/' + submissionID, submissionToEdit);
+    return this.http.put<SubmissionPutTemplate>(this.baseUrl + 'submission/' + submissionID, submissionToEdit);
+  }
+
+  GetSubmissionByProcessNumber(processNumber: string): any {
+    var treatedProcessNumber = encodeURIComponent(processNumber);
+    return this.http.get<SubmissionGetTemplate>(this.baseUrl + 'submission?ProcessNumber=' + treatedProcessNumber);
   }
 }
