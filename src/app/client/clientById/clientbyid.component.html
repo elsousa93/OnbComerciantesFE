@@ -906,10 +906,12 @@
                   <hr>
                 </div>
               </div>
-              <div class="offset-1 bg-white col-7 col-xxl-10"> <!-- Data da constituição --> 
+
+
+              <div class="offset-1 bg-white col-7 col-xxl-10">        <!-- Data de constituição   offset-1 bg-white col-7 col-xxl-10 //col-xxl col-6  -->
                 <div class="row">
                   <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
+                    <p class="titulo-form-simples" for="dataConst">Data de Constituição: </p>
                     <input required formControlName="constitutionDate" type="date"
                            id="dataConst" class="form-control campo_form" [readonly]="clientExists">
                     <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
@@ -920,7 +922,7 @@
                   </div>
                 </div>
               </div>
-              <div class="offset-1 bg-white col-10 col-xxl-10">   <!--País da Sede Social-->
+              <div class="bg-white col-12 col-xxl-12">   <!--País da Sede Social-->
                 <div class="row">
                   <div class="col-xxl col-6">
                     <div>
@@ -972,16 +974,9 @@
                   </div>
                 </div>
               </div>
-
-
-
-            </div> 
+            </div> <!-- Fecha comercial society -->
           </div>
-
           <div>
-
-
-
         </div>
       </div> <!--Fecha primeiros 3 campos-->
                         <!--Se NÃO for sociedade comercial-->
@@ -1018,7 +1013,7 @@
 
 
 
-                        <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0">
+                        <div class=" bg-white col-7 col-10 mb-5 pb-0 pe-0">
                           <div class="row me-0 pe-0">
                             <hr>
                           </div>
