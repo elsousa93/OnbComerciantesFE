@@ -6,7 +6,7 @@ import { IStakeholders } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IReadCard } from './IReadCard.interface';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { TableinfoService } from '../../tableinfo.service';
+import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -56,7 +56,7 @@ export class NewStakeholderComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableinfoService) {
+    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableInfoService) {
 
     this.ngOnInit();
 
@@ -70,7 +70,7 @@ export class NewStakeholderComponent implements OnInit {
 
   ngOnInit(): void {
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
-    console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
+    // console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
     
     this.createForm();
     console.log('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
@@ -173,8 +173,39 @@ export class NewStakeholderComponent implements OnInit {
 
 
   getAll() {
-    console.log(this.data.getAllCountriesList());
-    return this.data.getAllCountriesList();
+    console.log(this.data.GetAllCountries());
+    return this.data.GetAllCountries();
+  }
+
+  searchZipCode() {
+    console.log("ola");
+    var size = this.newStake.fiscalAddress.postalCode.length;
+    var hasSlash = (this.newStake.fiscalAddress.postalCode.split('-').length - 1) == 1;
+
+    //const replaced =
+    //  this.newStake.fiscalAddress.postalCode.substring(0, 4) +
+    //  '-' +
+    //  this.newStake.fiscalAddress.postalCode.substring(4 + size);
+
+    //console.log(hasSlash);
+
+    //if (!hasSlash && size > 4)
+    //  this.newStake.fiscalAddress.postalCode = replaced;
+
+    if (!hasSlash) {
+      console.log("entrou1");
+      if (size > 3) {
+        console.log("entrou2");
+        this.newStake.fiscalAddress.postalCode += '-';
+      }
+    }
+
+    if (size == 7 && hasSlash) {
+      var zipCode = this.newStake.fiscalAddress.postalCode.split('-');
+      var morada = this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1]));
+      console.log("ja tou a pesquisar");
+      console.log(morada);
+    }
   }
 }
 

@@ -676,8 +676,7 @@
     <hr>
   </div>
 </form-->
-
-
+<form [formGroup]="form" name="form" (ngSubmit)="submit()">
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row ms-0 me-0 ps-0 pe-0">
     <div class="bg-primary col-12 mt-0 pt-0 ps-0 pe-0 shadow-none">
@@ -730,8 +729,8 @@
           <div *ngIf="getCommercialSociety()">
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
-            <input required minlength="2" ngModel formControlName="crcCode" name="crcCode" type="text"
-                   id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" />
+            <input required maxlength="14" formControlName="crcCode" name="crcCode" type="text"
+                   id="crcCode" class="form-control campo_form" (keypress)="searchByCRC()" />
 
             <!--crc fim-->
 
@@ -1054,3 +1053,6 @@
         </div>
       </div>
     </div>
+</div>
+</div>
+</form>

@@ -32,7 +32,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)"/>
+                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(false)"/>
                   <label class="form-check-label radio" for="radio3">ENI</label>
                 </div>
               </span>
@@ -99,7 +99,7 @@
                           }}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
+                      <input id="clientId" (click)="changeSearch()" type="text" [(ngModel)]="newClient.clientId" name="clientId" [disabled]="isCC && isNoDataReadable"
                            #clientId="ngModel" [class]="errorInput"></div></div></div>
                         <div style="width: 600px;" *ngIf="ccInfo">
                           <div>
@@ -150,32 +150,28 @@
                             </span>
                           </p>
                     <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
-                           #clientId="ngModel" [class]="errorInput"></div></div>--><div *ngIf="isNoDataReadable && isCC"> 
-                            Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+                           #clientId="ngModel" [class]="errorInput"></div></div>-->
+                           <div *ngIf="isNoDataReadable && isCC && toShowReadCC">
+                            <div> 
+                              Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+                              </div>
+                              <button class="btn botao_azul_pesquisa" (click)="getValueENI()" type="submit">Ler Cartão de Cidadão</button>
+                            </div>
+                          
+                          <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
+                            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                              <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
+                                <button *ngIf = "toSearch" id="btn5a2" class="btn botao_azul" (click)="onSearchSimulation(clientId.value)" wappler-command="editContent">PESQUISAR COMERCIANTE&nbsp;&nbsp;
+                                  <img src="assets/images/person_search.svg" class="img_btn">
+                                </button></span>
+                              <span class="navbar-text me-2"><button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient(clientId.value)" routerLink="/add-stakeholder"
+                                  class="btn botao_branco" wappler-command="editContent">ADICIONAR COMERCIANTE&nbsp;
+                                  <img src="assets/images/person_add_blue.svg" class="img_btn">
+                                </button></span>
               
-                            <form>
-                              <button class="btn botao_azul_pesquisa" type="submit">Ler Cartão de Cidadão</button>
-                            </form>
+                            </nav>
                           </div>
-                    <p class="titulo-form-simples">
-                      <button id="btn5a2" class="btn botao_azul_pesquisa" (click)="onSearchSimulation(clientId.value)">
-                        <!--onSearchSimulation(clientId.value)-->
-                        PESQUISAR
-                        &nbsp;<span class="material-symbols-rounded m-align ">
-                          <img src="assets/images/person_search.svg" style="height: 25px !important;">
-                        </span>
-                      </button>
-                    </p>
-                    <div *ngIf="!showFoundClient && searchDone" class="titulo-form-simples">
-                      <button id="btn5a2" class="btn botao_azul_pesquisa">
-                        <!--onSearchSimulation(clientId.value)-->
-                        ADICIONAR
-                        &nbsp;<span class="material-symbols-rounded m-align ">
-                          <img src="assets/images/person_search.svg" style="height: 25px !important;">
-                        </span>
-                      </button>
                     </div>
-                    
                 </div>
               </div>
             </div>
@@ -242,4 +238,3 @@
           </div>
         </div>
       </div>
-    </div>

@@ -9,6 +9,9 @@ import { DataService } from './nav-menu-interna/data.service';
   providedIn: 'root'
 })
 export class TableinfoService {
+  GetAddressByZipCode(arg0: string, arg1: string) {
+      throw new Error('Method not implemented.');
+  }
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
