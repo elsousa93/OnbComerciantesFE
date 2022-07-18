@@ -32,7 +32,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)"/>
+                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(false)"/>
                   <label class="form-check-label radio" for="radio3">ENI</label>
                 </div>
               </span>
@@ -154,7 +154,7 @@
                             Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
               
                             <form>
-                              <button class="btn botao_azul_pesquisa" type="submit">Ler Cartão de Cidadão</button>
+                              <button class="btn botao_azul_pesquisa" (click)="getValueENI()" type="submit">Ler Cartão de Cidadão</button>
                             </form>
                           </div>
                     <p class="titulo-form-simples">

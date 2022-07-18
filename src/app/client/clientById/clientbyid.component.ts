@@ -33,7 +33,7 @@ export class ClientByIdComponent implements OnInit {
   public clientId: string = "0";
   
   //client: Client = {} as Client;
-  client: Client = {
+  public client: Client = {
     "clientId": "22181900000011",
     "fiscalId": "22181900000011",
     "companyName": "SILVESTRE LIMITADA",
@@ -47,8 +47,12 @@ export class ClientByIdComponent implements OnInit {
       "country": "PT"
     },
     "merchantType": "Company",
-    "legalNature": "",
-    "legalNature2": "",
+
+    "legalNature": {
+      "code": "06",
+      "description": "Organismo de Administração Pública"
+    },
+    "legalNature2": "01",
     "crc": {
       "code": "123",
       "validUntil": "2023-06-29T17:52:08.336Z"
@@ -118,7 +122,7 @@ export class ClientByIdComponent implements OnInit {
     },
     "documentationDeliveryMethod": "",
     "billingEmail": ""
-  };
+  } as unknown as Client;
   tempClient: any;
 
 
@@ -356,6 +360,7 @@ export class ClientByIdComponent implements OnInit {
     this.tableInfo.GetAllLegalNatures().subscribe(result => {
       this.legalNatureList = result;
       console.log("FETCH LEGAL NATURES");
+      console.log(result);
     }, error => console.log(error));
 
     //Chamada à API para receber todos os Paises
@@ -398,6 +403,7 @@ export class ClientByIdComponent implements OnInit {
   }
 
   setCommercialSociety(id: boolean) {
+    this.crcFound = false;
     if (id == true) {
       this.isCommercialSociety = true
     } else {
