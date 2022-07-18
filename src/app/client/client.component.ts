@@ -39,6 +39,7 @@ export class ClientComponent implements OnInit {
   //Pesquisa 
   showFoundClient: boolean = false;     //sem backend: true // antigo nome: showWarning
   idToSeacrh: number;
+  searchDone: boolean = false;
 
   showButtons: boolean = false;
   
@@ -270,6 +271,8 @@ export class ClientComponent implements OnInit {
       this.showFoundClient = false;
       this.resultError = "*  Não existe Comerciante com esse número.";
     }
+
+    this.searchDone = true;
   }
 
   sendToParent() {
