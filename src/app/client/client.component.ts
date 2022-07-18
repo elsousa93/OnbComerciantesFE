@@ -216,7 +216,7 @@ export class ClientComponent implements OnInit {
   }
 
   getValueENI() {
-    //this.activateButtons(true);
+   // this.activateButtons(true);
     console.log("chamar a funcao de leitura do cartao: ");
     this.http.get(this.neyondBackUrl + 'CitizenCard/searchCC').subscribe(result => {
       if (result == null) {

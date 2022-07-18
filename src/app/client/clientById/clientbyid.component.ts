@@ -31,7 +31,7 @@ export class ClientByIdComponent implements OnInit {
   public clientId: string = "0";
   
   //client: Client = {} as Client;
-  client: Client = {
+  public client: Client = {
     "clientId": "22181900000011",
     "fiscalId": "22181900000011",
     "companyName": "SILVESTRE LIMITADA",
@@ -45,8 +45,12 @@ export class ClientByIdComponent implements OnInit {
       "country": "PT"
     },
     "merchantType": "Company",
-    "legalNature": "",
-    "legalNature2": "",
+
+    "legalNature": {
+      "code": "06",
+      "description": "Organismo de Administração Pública"
+    },
+    "legalNature2": "01",
     "crc": {
       "code": "123",
       "validUntil": "2023-06-29T17:52:08.336Z"
@@ -116,7 +120,7 @@ export class ClientByIdComponent implements OnInit {
     },
     "documentationDeliveryMethod": "",
     "billingEmail": ""
-  };
+  } as unknown as Client;
   tempClient: any;
 
 
@@ -233,8 +237,8 @@ export class ClientByIdComponent implements OnInit {
       country: new FormControl(this.client.headquartersAddress.country, Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
       crcCode: new FormControl(this.client.crc.code, Validators.required),
-      natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
-      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
+      natJuridicaN1: new FormControl(''),
+      natJuridicaN2: new FormControl(''), // { value: this.client.legalNature2}
       socialDenomination: new FormControl(this.client.shortName, Validators.required),
       CAE1Branch: new FormControl(this.client.mainEconomicActivity),
       CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0]),
@@ -344,6 +348,7 @@ export class ClientByIdComponent implements OnInit {
     this.tableInfo.GetAllLegalNatures().subscribe(result => {
       this.legalNatureList = result;
       console.log("FETCH LEGAL NATURES");
+      console.log(result);
     }, error => console.log(error));
 
     //Chamada à API para receber todos os Paises
