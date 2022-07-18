@@ -202,8 +202,9 @@ export class NewStakeholderComponent implements OnInit {
 
     if (size == 7 && hasSlash) {
       var zipCode = this.newStake.fiscalAddress.postalCode.split('-');
-      this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1]));
+      var morada = this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1]));
       console.log("ja tou a pesquisar");
+      console.log(morada);
     }
   }
 }
