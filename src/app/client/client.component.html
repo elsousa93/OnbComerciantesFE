@@ -151,10 +151,12 @@
                           </p>
                     <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
                            #clientId="ngModel" [class]="errorInput"></div></div>-->
-                           <div *ngIf="isNoDataReadable && isCC"> 
-                            Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+                           <div *ngIf="isNoDataReadable && isCC && toShowReadCC">
+                            <div> 
+                              Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+                              </div>
                               <button class="btn botao_azul_pesquisa" (click)="getValueENI()" type="submit">Ler Cartão de Cidadão</button>
-                          </div>
+                            </div>
                           
                           <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">

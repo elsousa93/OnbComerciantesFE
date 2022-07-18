@@ -47,6 +47,7 @@ export class ClientComponent implements OnInit {
   showENI: boolean = false;
   isENI: boolean = false;
   isCC: boolean = false;
+  toShowReadCC = false;
   toSearch: boolean = false;
   resultError: string = "";
   clientTypology: string ="";
@@ -364,6 +365,7 @@ export class ClientComponent implements OnInit {
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;
     this.toSearch = false;
+    this.toShowReadCC = readable;
   }
 
   activateButtons(id: boolean) {
