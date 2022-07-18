@@ -47,6 +47,7 @@ export class ClientComponent implements OnInit {
   showENI: boolean = false;
   isENI: boolean = false;
   isCC: boolean = false;
+  toSearch: boolean = false;
   resultError: string = "";
   clientTypology: string ="";
   newClient: Client = {
@@ -275,6 +276,10 @@ export class ClientComponent implements OnInit {
     this.searchDone = true;
   }
 
+  changeSearch(){
+    this.toSearch=true;
+  }
+
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
@@ -354,6 +359,7 @@ export class ClientComponent implements OnInit {
 
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;
+    this.toSearch = false;
   }
 
   activateButtons(id: boolean) {
@@ -361,6 +367,7 @@ export class ClientComponent implements OnInit {
     this.ccInfo = null;
     this.showButtons = true;
     this.isCC = false;
+    this.toSearch = false;
     if (id == true) {
       this.showENI = false;
       this.isENI=false;
