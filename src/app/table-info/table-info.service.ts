@@ -48,4 +48,8 @@ export class TableInfoService {
   GetAllProducts() {
     return this.http.get<Product[]>(this.acquiringUrl + 'product');
   }
+
+  GetAddressByZipCode(cp4: number, cp3: number) {
+    return this.http.get<any>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
+  }
 }
