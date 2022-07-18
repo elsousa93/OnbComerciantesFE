@@ -14,13 +14,13 @@
   //  },
   //  "changeOrigin": false
   //},
-  "/DOCAS/*": {
-    "target": "http://localhost:11000/",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": false,
-    "pathRewrite": {
-      "^/DOCAS": ""
-    }
-  }
+  //"/DOCAS/*": {
+  //  "target": "http://localhost:11000/",
+  //  "secure": false,
+  //  "logLevel": "debug",
+  //  "changeOrigin": false,
+  //  "pathRewrite": {
+  //    "^/DOCAS": ""
+  //  }
+  //}
 }

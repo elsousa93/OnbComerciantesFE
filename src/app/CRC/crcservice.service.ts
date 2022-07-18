@@ -19,16 +19,15 @@ export class CRCService {
     const HTTP_OPTIONS = {
       headers: new HttpHeaders({
         //'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + "eyJhbGciOiJSUzI1NiIsImtpZCI6IkM1QkE4RDUwNjcyNTg5NTcwOEI5QkUyMDJBOEU5MjJFQUE1MjE2OUYiLCJ4NXQiOiJ4YnFOVUdjbGlWY0l1YjRnS282U0xxcFNGcDgiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI0YmQ4NmRlNy01NjQwLTQwNDgtODg3ZS03ZWNiNmNlZGIwMWQiLCJuYW1lIjoiRE9DQVMiLCJvaV9wcnN0IjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwiY2xpZW50X2lkIjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwib2lfdGtuX2lkIjoiMTFmNDViNjktZTU2Ny00MzllLTljMTQtN2ExYzdiNzgzMzljIiwiZXhwIjoxNjU3ODk2NzY5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjEwMDAwLyIsImlhdCI6MTY1NzgxMDM2OX0.jQFIEG1cA2uPdXIg74izZzOX2IaB4fRqy9gDNEXaPCqwzbMRLyfT7Fw3LdGI-xgSEPUdhvEdamvFJaxerfoi1YRTrV-ULvPFnbKRv05ZZBg5SHh2DvtPb1pLFR3r2cTMqbdyI-xZbLwLtXTSM9CRvaXAHGXMqzikk7SUOCy0m2Gz0L2TF7K084dLVh9VRaMbGJCxkH13ClW9PTuZyaWWreQI_KdwKcwsNNqyCZEwvxH4Lu7LL5gtjUGE5BKTECdKNtpH4ge95FCj7Sl2VO_-5tQKYwdD8vz66VFxrPZlbe0EYZnUj090nK-KNKdkNixWoJ-lrzQzB1_PqwIr2UnmGg",
-        'Access-Control-Allow-Origin': '*'
+        'Authorization': 'Bearer ' + "eyJhbGciOiJSUzI1NiIsImtpZCI6IkM1QkE4RDUwNjcyNTg5NTcwOEI5QkUyMDJBOEU5MjJFQUE1MjE2OUYiLCJ4NXQiOiJ4YnFOVUdjbGlWY0l1YjRnS282U0xxcFNGcDgiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI0YmQ4NmRlNy01NjQwLTQwNDgtODg3ZS03ZWNiNmNlZGIwMWQiLCJuYW1lIjoiRE9DQVMiLCJvaV9wcnN0IjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwiY2xpZW50X2lkIjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwib2lfdGtuX2lkIjoiMDNhZmIzZmMtMWVkNi00MGFjLWFjM2QtODU5ZWM1NDkxMTM1IiwiZXhwIjoxNjU4MjU0Mjk0LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjEwMDAwLyIsImlhdCI6MTY1ODE2Nzg5NH0.EEJh7EKgar1JyeSuVcyNgvnGMAVAznLf5ijj4vDCPnK24K_nm2JnTUud3xTlrBwEXOp-3PZQoOKJ0l_aWRz1RjqgIq6tIHAgly-BD09cVK6N-Tq_ZIFmILJwuLHwUv8a9yAlkc3EZoM5A8mXqst3TJgNKFZTj1Aq3c8CPs7SlnFsqUM4_2m-VInLn63MHC-ykGVV79Ag7cJe6rOuoWuEMB2ic4iTBc_lBcK7XOScxptpfyvGnC5pGF4c2V35j1HmXLzd0LOPuq9rtC6vhbwGlkLnuOLL3ySfMS15Hmz7FU4fk7o3EiNNOFNIX5fF3z2x-5J7_2GKIDHsT9yiWxyHvQ",
+        'Access-Control-Allow-Origin': 'http://localhost:12000'
       }),
     }
     ////////////////////////
 
-    var URI = this.docasURL + "api/v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
+    var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
-
   /*
     {
   "requestId": "77bfafbd-361f-4dec-85b8-1c3a51ecfd26",
