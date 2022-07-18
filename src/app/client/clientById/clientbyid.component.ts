@@ -575,4 +575,24 @@ export class ClientByIdComponent implements OnInit {
       this.associatedWithGroupOrFranchise = false;
     }
   }
+
+  GetCountryByZipCode() {
+    var zipCode = this.client.mainOfficeAddress.address.split('-');
+
+    this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+      var addressToShow = address[0];
+      //this.newStake.fiscalAddress.address = addressToShow.address;
+      //this.newStake.fiscalAddress.country = addressToShow.country;
+      //this.newStake.fiscalAddress.postalArea = addressToShow.postalArea;
+      //this.newStake.fiscalAddress.postalCode = addressToShow.postalCode;
+    });
+  }
+
+  GetCAEByCode() {
+    var cae = this.form.value["CAE1"];
+
+    console.log(cae);
+
+    //var caeResult = this.tableInfo.GetCAEByCode(cae);
+  }
 }

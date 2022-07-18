@@ -942,7 +942,7 @@
                       <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
                       <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
                              type="text" id="ZIPCode" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             [readonly]="clientExists" >
                       <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
                         <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
                           O parâmetro acima é obrigatório.

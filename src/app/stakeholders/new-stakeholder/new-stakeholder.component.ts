@@ -43,14 +43,14 @@ export class NewStakeholderComponent implements OnInit {
       type: "",
       number: "",
       country: {
-        code: "nisi mollit"
+        code: ""
       },
     },
     fiscalAddress: {
-      address: "ullamco minim fugiat veniam",
-      postalCode: "sed nulla consequat et",
-      postalArea: "commodo",
-      country: "ex dolor "
+      address: "",
+      postalCode: "",
+      postalArea: "",
+      country: ""
     },
   } as unknown as IStakeholders
 
@@ -192,20 +192,26 @@ export class NewStakeholderComponent implements OnInit {
     //if (!hasSlash && size > 4)
     //  this.newStake.fiscalAddress.postalCode = replaced;
 
-    if (!hasSlash) {
-      console.log("entrou1");
-      if (size > 3) {
-        console.log("entrou2");
-        this.newStake.fiscalAddress.postalCode += '-';
-      }
-    }
+    //if (!hasSlash) {
+    //  console.log("entrou1");
+    //  if (size > 3) {
+    //    console.log("entrou2");
+    //    this.newStake.fiscalAddress.postalCode += '-';
+    //  }
+    //}
 
-    if (size == 7 && hasSlash) {
+    /*if (size === 8 && hasSlash) {*/
       var zipCode = this.newStake.fiscalAddress.postalCode.split('-');
-      var morada = this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1]));
+      this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+        var addressToShow = address[0];
+        this.newStake.fiscalAddress.address = addressToShow.address;
+        this.newStake.fiscalAddress.country = addressToShow.country;
+        this.newStake.fiscalAddress.postalArea = addressToShow.postalArea;
+        this.newStake.fiscalAddress.postalCode = addressToShow.postalCode;
+      });
       console.log("ja tou a pesquisar");
-      console.log(morada);
-    }
+    //  console.log(morada);
+    //}
   }
 }
 
