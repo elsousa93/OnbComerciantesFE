@@ -99,7 +99,7 @@
                           }}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
+                      <input id="clientId" (click)="changeSearch()" type="text" [(ngModel)]="newClient.clientId" name="clientId" [disabled]="isCC && isNoDataReadable"
                            #clientId="ngModel" [class]="errorInput"></div></div></div>
                         <div style="width: 600px;" *ngIf="ccInfo">
                           <div>
@@ -157,7 +157,7 @@
                               <button class="btn botao_azul_pesquisa" (click)="getValueENI()" type="submit">Ler Cartão de Cidadão</button>
                             </form>
                           </div>
-                    <p class="titulo-form-simples">
+                    <p *ngIf = "toSearch" class="titulo-form-simples">
                       <button id="btn5a2" class="btn botao_azul_pesquisa" (click)="onSearchSimulation(clientId.value)">
                         <!--onSearchSimulation(clientId.value)-->
                         PESQUISAR
@@ -166,7 +166,7 @@
                         </span>
                       </button>
                     </p>
-                    <div *ngIf="!showFoundClient && searchDone" class="titulo-form-simples">
+                    <p *ngIf="!showFoundClient && searchDone" class="titulo-form-simples">
                       <button id="btn5a2" class="btn botao_azul_pesquisa">
                         <!--onSearchSimulation(clientId.value)-->
                         ADICIONAR
@@ -174,7 +174,7 @@
                           <img src="assets/images/person_search.svg" style="height: 25px !important;">
                         </span>
                       </button>
-                    </div>
+                    </p>
                     
                 </div>
               </div>

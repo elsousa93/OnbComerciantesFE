@@ -235,6 +235,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
   }
 
+  removeSelectedFile(index) {
+    // Delete the item from fileNames list
+    this.compClientId.splice(index, 1);
+    // delete file from FileList
+    this.compClientId.splice(index, 1);
+  }
+
   load() {
     location.reload()
   }
