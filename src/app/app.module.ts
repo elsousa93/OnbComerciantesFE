@@ -58,6 +58,7 @@ import { NumberCounterComponent } from './number-counter/number-counter.componen
 import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
 import { TableInfoService } from './table-info/table-info.service';
 import { InfoDeclarativaLojasComponent } from './client/info-declarativa/info-declarativa-lojas/info-declarativa-lojas.component';
+import { CountrysComponent } from './countrys/countrys.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -107,7 +108,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaAssinaturaComponent,
 
     NumberCounterComponent,
-      InfoDeclarativaLojasComponent
+    InfoDeclarativaLojasComponent,
+    CountrysComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -166,7 +168,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'acceptance/:submissionID', component: AcceptanceComponent },
       { path: 'process', component: ProcessComponent },
       { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent },
-      { path: 'info-declarativa-lojas', component: InfoDeclarativaLojasComponent }
+      { path: 'info-declarativa-lojas', component: InfoDeclarativaLojasComponent },
+      { path: 'client-additional-info/:id', component: CountrysComponent }
       
     ]),
     TranslateModule.forRoot({

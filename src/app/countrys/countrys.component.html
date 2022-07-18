@@ -1,72 +1,203 @@
-<div class="row">
-    <div class="col">
-        <hr>
-        <p class="titulo-form-simples mb-2 pb-3 ps-3">PAÍSES DE DESTINO DOS PRODUTOS SERVIÇOS:*<br></p>
-    </div>
-</div>
+<app-nav-menu-interna></app-nav-menu-interna>
+<br>
+<br>
+<br>
+<br>
+<form [formGroup]="form" name="form" (ngSubmit)="submit()">
+  <div class="offset-1 bg-white col-7 col-xxl-10">
+    <div class="row">
+      <div class="col-xxl col-6">
 
-<form #form="ngForm">
-    <div class="row ms-0 me-0">
+        <p class="titulo-form-simples" for="expectableAnualInvoicing">Faturação Anual Expectável* </p>
+        <input required minlength="2" maxlength="100" formControlName="expectableAnualInvoicing"
+               name="expectableAnualInvoicing" type="number" id="expectableAnualInvoicing"
+               class="form-control campo_form" [readonly]="clientExists">
+        <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
+          <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
+            O parâmetro acima é obrigatório.
+          </div>
+        </div>
+
+        <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados* </p>
+        <input required minlength="2" maxlength="100" formControlName="services" name="services" type="text"
+               id="services" class="form-control campo_form" [readonly]="clientExists">
+        <div class="alert alert-danger" *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
+          <div *ngIf="this.form.get('services').errors && this.form.get('services').errors?.['required']">
+            O parâmetro acima é obrigatório.
+          </div>
+        </div>
+
+        <p class="titulo-form-simples" for="transactionsAverage">Transações Média* </p>
+        <input required minlength="2" maxlength="100" formControlName="transactionsAverage"
+               name="transactionsAverage" type="number" id="transactionsAverage" class="form-control campo_form"
+               [readonly]="clientExists">
+        <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
+          <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
+            O parâmetro acima é obrigatório.
+          </div>
+        </div>
+
+
+        <div>
+          <p class="titulo-form-simples" for="preferenceDocuments">
+            Selecione a sua preferência de receção de
+            documentação:
+          </p>
+          <input required name="preferenceDocuments" type="radio" value="100digital"
+                 formControlName="preferenceDocuments" id="preferenceDocuments">
+          <label class="titulo-form-simples" for="100digital">100% Digital</label> &nbsp;&nbsp;
+
+          <input required name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta"
+                 formControlName="preferenceDocuments" id="preferenceDocuments">
+          <label class="titulo-form-simples" for="documetacaoPorCarta">Documentação por carta</label><br><br>
+
+          <div class="alert alert-danger" *ngIf="this.form.get('preferenceDocuments').touched && !this.form.get('preferenceDocuments').valid">
+            <div *ngIf="this.form.get('preferenceDocuments').errors && this.form.get('preferenceDocuments').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="titulo-form-simples" for="">Pretende associar a empresa a Grupo/Franchise existente? </p>
+
+          <input name="associatedWithGroupOrFranchise" type="radio" [value]="true"
+                 formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)">
+          <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">Sim</label> &nbsp;&nbsp;
+
+          <input name="associatedWithGroupOrFranchise" type="radio" [value]="false"
+                 formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)">
+          <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">Não</label><br><br>
+
+        </div>
+
+        <div *ngIf="associatedWithGroupOrFranchise">
+
+          <div>
+            <p class="titulo-form-simples" for="franchiseName"> Nome Franchise</p>
+            <input required formControlName="franchiseName" name="franchiseName"
+                   type="text" id="franchiseName" class="form-control campo_form"
+                   [readonly]="clientExists || isAssociatedWithFranchise == false">
+            <div class="alert alert-danger" *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
+              <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
+                O parâmetro acima é obrigatório.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p class="titulo-form-simples" for="NIPCGroup">NIPC Grupo</p>
+
+            <input required minlength="2" maxlength="100" formControlName="NIPCGroup"
+                   name="NIPCGroup" type="number" id="NIPCGroup" class="form-control campo_form" [readonly]="clientExists || isAssociatedWithFranchise" />
+            <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
+              <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
+                O parâmetro acima é obrigatório.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="">
+          <p class="titulo-form-simples" for="">Documentos do cliente </p>
+          <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+            <div class="table-responsive mb-5">
+              <table class="table">
+                <thead class="text-primary table-primary">
+                  <tr class="table-white text-primary">
+                    <th scope="col" class="text-center text-primary bg-light table-white">Tipo de Comprovativo</th>
+                    <th scope="col" class="text-center bg-light">Data de Receção</th>
+                    <th scope="col" class="text-center bg-white">Data de Validade</th>
+                    <th scope="col" class="text-center bg-white"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="text-primary text-center">CS - Certidão do Registo Comercial</th>
+                    <td class="text-primary text-center">02-11-2021</td>
+                    <td class="text-primary text-center">02-11-2022</td>
+                    <td class="text-primary text-center"><img src="assets/images/search.svg" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+          <hr>
+          <p class="titulo-form-simples mb-2 pb-3 ps-3">PAÍSES DE DESTINO DOS PRODUTOS SERVIÇOS:*<br></p>
+      <div class="row ms-0 me-0">
         <div class="col-9">
-            <div class="row ps-3" *ngFor="let items of lstPaisPreenchido; index as i">
-                <textarea id="text5" class="form-control campo_form">{{ items }}</textarea>
-            </div>
+          <div class="row ps-3" *ngFor="let items of lstPaisPreenchido; index as i">
+            <textarea id="text5" class="form-control campo_form">{{ items }}</textarea>
+          </div>
         </div>
-    </div>
-    <div class="row ms-0 me-0">
+      </div>
+      <div class="row ms-0 me-0">
         <div class="row ms-0 me-0">
-            <div class="col quadro_paises_tracejado">
-                <p class="titulo-form-simples vertical-align"></p>
-                <p class="titulo_paises mt-0"></p>
-                <div class="form-check">
-                    <input type="checkbox" [(ngModel)]="inputEuropa" value="EUROPA" id="EUROPA" name="EUROPA"
-                        class="form-check-input" (click)="countrys('EUROPA')">
-                    <label class="form-check-label radio" for="EUROPA">EUROPA</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" [(ngModel)]="inputAfrica" value="AFRICA" id="AFRICA" name="AFRICA"
-                        class="form-check-input" (click)="countrys('AFRICA')">
-                    <label class="form-check-label radio" for="AFRICA">ÁFRICA</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" [(ngModel)]="inputAsia" value="ASIA" name="ASIA" class="form-check-input"
-                        (click)="countrys('ASIA')">
-                    <label class="form-check-label radio" for="ASIA">ÁSIA</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" [(ngModel)]="inputAmericas" value="AMERICA DO NORTE / SUL" name="AMERICA"
-                        class="form-check-input" (click)="countrys('AMERICA DO NORTE / SUL')">
-                    <label class="form-check-label radio" for="AMERICA DO NORTE / SUL">AMERICA DO NORTE / SUL</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" [(ngModel)]="inputOceania" value="OCEANIA" name="OCEANIA"
-                        class="form-check-input" (click)="countrys('OCEANIA')">
-                    <label class="form-check-label radio" for="OCEANIA">OCEÂNIA</label>
-                </div>
+          <div class="col quadro_paises_tracejado">
+            <p class="titulo-form-simples vertical-align"></p>
+            <p class="titulo_paises mt-0"></p>
+            <div class="form-check">
+              <input type="checkbox" formControlName="inputEuropa" value="EUROPA" id="EUROPA" name="EUROPA"
+                     class="form-check-input" (click)="countrys('EUROPA')">
+              <label class="form-check-label radio" for="EUROPA">EUROPA</label>
             </div>
-            <div class="col ps-5">
-                <div class="form-check" *ngFor="let item of lstCountry; index as i">
-                    <input class="form-check-input" type="checkbox" [(ngModel)]="contPais[item]" name="input16">{{item |
-                    uppercase }}
-                </div>
+            <div class="form-check">
+              <input type="checkbox" formControlName="inputAfrica" value="AFRICA" id="AFRICA" name="AFRICA"
+                     class="form-check-input" (click)="countrys('AFRICA')">
+              <label class="form-check-label radio" for="AFRICA">ÁFRICA</label>
             </div>
-            <div class="col">
-                <div class="form-check" *ngFor="let item of lstCountry1; index as i">
-                    <input class="form-check-input" type="checkbox" [(ngModel)]="contPais[item]" name="input16">{{item |
-                    uppercase }}
-                </div>
+            <div class="form-check">
+              <input type="checkbox" formControlName="inputAsia" value="ASIA" name="ASIA" class="form-check-input"
+                     (click)="countrys('ASIA')">
+              <label class="form-check-label radio" for="ASIA">ÁSIA</label>
             </div>
-            <div class="col">
-                <div class="form-check" *ngFor="let item of lstCountry2; index as i">
-                    <input class="form-check-input" type="checkbox" [(ngModel)]="contPais[item]" name="input16">{{item |
-                    uppercase }}
-                </div>
+            <div class="form-check">
+              <input type="checkbox" formControlName="inputAmericas" value="AMERICA DO NORTE / SUL" name="AMERICA"
+                     class="form-check-input" (click)="countrys('AMERICA DO NORTE / SUL')">
+              <label class="form-check-label radio" for="AMERICA DO NORTE / SUL">AMERICA DO NORTE / SUL</label>
             </div>
-            <button id="btn5a3"
+            <div class="form-check">
+              <input type="checkbox" formControlName="inputOceania" value="OCEANIA" name="OCEANIA"
+                     class="form-check-input" (click)="countrys('OCEANIA')">
+              <label class="form-check-label radio" for="OCEANIA">OCEÂNIA</label>
+            </div>
+          </div>
+          <div class="col ps-5">
+            <div class="form-check" *ngFor="let item of lstCountry; index as i">
+              <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)">{{item.description | uppercase}}
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-check" *ngFor="let item of lstCountry1; index as i">
+              <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)">{{item.description | uppercase}}
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-check" *ngFor="let item of lstCountry2; index as i">
+              <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)">{{item.description | uppercase}}
+            </div>
+          </div>
+
+          <button id="btn5a3"
                 class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
-                wappler-command="editContent" (click)="inserirText(form)"><span
-                    class="material-symbols-rounded m-align">
-                    public</span> ESCOLHER&nbsp;</button>
+                wappler-command="editContent" (click)="inserirText(this.form)" type="button">
+            <span class="material-symbols-rounded m-align">
+            public
+            </span> ESCOLHER&nbsp;
+          </button>
+          <button id="btn5a2"
+                class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                wappler-command="editContent" type="submit">
+            CONTINUAR&nbsp;<span class="material-symbols-rounded m-align">
+            <img src="../assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
+            </span>
+          </button>
+
         </div>
+      </div>
+    </div>
     </div>
 </form>

@@ -47,6 +47,7 @@ export class ClientComponent implements OnInit {
   showENI: boolean = false;
   isENI: boolean = false;
   isCC: boolean = false;
+  toShowReadCC = false;
   toSearch: boolean = false;
   resultError: string = "";
   clientTypology: string ="";
@@ -238,7 +239,7 @@ export class ClientComponent implements OnInit {
         this.clientIdNew = result;
         this.toggleShowFoundClient(false);
         this.errorInput = "form-control campo_form_coment_error";
-        this.resultError = "*  Não existe Comerciante com esse número.";
+        this.resultError = "Não existe Comerciante com esse número.";
         this.errorMsg = "titulo-form-error";
       } else {
         this.newClient = result;
@@ -270,7 +271,7 @@ export class ClientComponent implements OnInit {
     }
     if (!(idToSeacrh==22181900000011)) {
       this.showFoundClient = false;
-      this.resultError = "*  Não existe Comerciante com esse número.";
+      this.resultError = "Não existe Comerciante com esse número.";
     }
 
     this.searchDone = true;
@@ -323,7 +324,6 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado() {
-    console.log("aaa");
     console.log(this.newClient.clientId);
     let navigationExtras: NavigationExtras = {
       state: {
@@ -337,29 +337,10 @@ export class ClientComponent implements OnInit {
     //isto nao esta a aparecer na versao mais nova.
   }
 
-  // activateButtonsENI(id: boolean) {
-  //   if (id == true) {
-  //     this.showENI = true;
-  //     this.showFoundClient = false;
-  //     this.ccInfo = null;
-  //     this.isENI=true;
-  //     this.showButtons = true;
-  //     this.isCC=false;
-  //   } else {
-  //     this.showENI = false;
-  //     this.showFoundClient = false;
-  //     this.ccInfo = null;
-  //     this.isENI = false;
-  //     this.showButtons = true;
-  //     this.isCC=false;
-  //   }
-
-  //   this.tipologia = "ENI";
-  // }
-
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;
     this.toSearch = false;
+    this.toShowReadCC = readable;
   }
 
   activateButtons(id: boolean) {
@@ -388,16 +369,15 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  createNewClient() {
-    //Funcao para ir buscar o numero do ultimo cliente e incrementar
-   // this.http.post(this.baseUrl + 'BEClients/GetLastId/', this.newClient).subscribe(result => {
-   //   console.log(result);
-    // if (result != null) {
-     //   this.newId = result;
-        this.route.navigate(['/app-new-client/']);
-     // }
-    //}, error => console.error(error));
+  createNewClient(clientId: string) {
+    let navigationExtras: NavigationExtras = {
+      state: {
+      tipologia: this.tipologia,
+      NIFNIPC: this.newClient.clientId
+    }
+  };
 
+  this.route.navigate(['/clientbyid', clientId], navigationExtras);
   }
 
   close() {

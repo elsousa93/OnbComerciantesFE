@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Client } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
@@ -219,7 +219,7 @@ export class ClientByIdComponent implements OnInit {
     console.log("inicializar form controls");
     console.log(this.route.getCurrentNavigation().extras.state["NIFNIPC"]);
     this.form = new FormGroup({
-      commercialSociety: new FormControl(true, Validators.required),
+      commercialSociety: new FormControl(null, Validators.required),
       franchiseName: new FormControl(this.client.companyName),
       natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
@@ -551,8 +551,13 @@ export class ClientByIdComponent implements OnInit {
       this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
     }
 
-    this.updateData(true, 1);
-    this.route.navigate(["/stakeholders"]);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        clientExists: this.clientExists,
+      }
+    };
+
+    this.route.navigate(["/client-additional-info/", this.router.snapshot.paramMap.get('id')], navigationExtras);
   }
 
   redirectBeginningClient() {

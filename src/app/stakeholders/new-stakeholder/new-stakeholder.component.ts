@@ -70,7 +70,7 @@ export class NewStakeholderComponent implements OnInit {
 
   ngOnInit(): void {
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
-    console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
+    // console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
     
     this.createForm();
     console.log('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
