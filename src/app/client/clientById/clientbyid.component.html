@@ -729,7 +729,7 @@
           <div *ngIf="getCommercialSociety()">
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
-            <input required minlength="2" formControlName="crcCode" name="crcCode" type="text"
+            <input required maxlength="14" formControlName="crcCode" name="crcCode" type="text"
                    id="crcCode" class="form-control campo_form" (keypress)="searchByCRC()" />
 
             <!--crc fim-->
