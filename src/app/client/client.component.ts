@@ -39,6 +39,7 @@ export class ClientComponent implements OnInit {
   //Pesquisa 
   showFoundClient: boolean = false;     //sem backend: true // antigo nome: showWarning
   idToSeacrh: number;
+  searchDone: boolean = false;
 
   showButtons: boolean = false;
   
@@ -138,7 +139,7 @@ export class ClientComponent implements OnInit {
       this.clients = result;
     }, error => console.error(error));
     this.updateData(false, 1);
-    this.activateButtons(false);
+    // this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
@@ -270,6 +271,8 @@ export class ClientComponent implements OnInit {
       this.showFoundClient = false;
       this.resultError = "*  Não existe Comerciante com esse número.";
     }
+
+    this.searchDone = true;
   }
 
   sendToParent() {
@@ -304,7 +307,7 @@ export class ClientComponent implements OnInit {
   }
 
   changeListElementDocType(docType, e: any) {
-    this.activateButtons(true);
+    // this.activateButtons(true);
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
     if (this.docType === 'Cartão do Cidadão') {
@@ -329,35 +332,42 @@ export class ClientComponent implements OnInit {
     //isto nao esta a aparecer na versao mais nova.
   }
 
-  activateButtonsENI(id: boolean) {
-    if (id == true) {
-      this.showENI = true;
-      this.showFoundClient = false;
-      this.ccInfo = null;
-      this.isENI=true;
-      this.showButtons = true;
-    } else {
-      this.showENI = false;
-      this.showFoundClient = false;
-      this.ccInfo = null;
-      this.isENI = false;
-      this.showButtons = true;
-    }
+  // activateButtonsENI(id: boolean) {
+  //   if (id == true) {
+  //     this.showENI = true;
+  //     this.showFoundClient = false;
+  //     this.ccInfo = null;
+  //     this.isENI=true;
+  //     this.showButtons = true;
+  //     this.isCC=false;
+  //   } else {
+  //     this.showENI = false;
+  //     this.showFoundClient = false;
+  //     this.ccInfo = null;
+  //     this.isENI = false;
+  //     this.showButtons = true;
+  //     this.isCC=false;
+  //   }
 
-    this.tipologia = "ENI";
-  }
+  //   this.tipologia = "ENI";
+  // }
 
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;
   }
 
   activateButtons(id: boolean) {
+    this.showFoundClient = false;
+    this.ccInfo = null;
+    this.showButtons = true;
+    this.isCC = false;
     if (id == true) {
-      this.showButtons = true;
-      // this.showENI = false;
+      this.showENI = false;
+      this.isENI=false;
+
     } else {
-      this.showButtons = false;
-      // this.showENI = false;
+      this.showENI = true;
+      this.isENI=true;
     }
 
     this.tipologia = "Company";

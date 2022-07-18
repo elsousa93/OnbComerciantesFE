@@ -32,7 +32,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtonsENI(true)"/>
+                  #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(false)"/>
                   <label class="form-check-label radio" for="radio3">ENI</label>
                 </div>
               </span>
@@ -166,6 +166,15 @@
                         </span>
                       </button>
                     </p>
+                    <div *ngIf="!showFoundClient && searchDone" class="titulo-form-simples">
+                      <button id="btn5a2" class="btn botao_azul_pesquisa">
+                        <!--onSearchSimulation(clientId.value)-->
+                        ADICIONAR
+                        &nbsp;<span class="material-symbols-rounded m-align ">
+                          <img src="assets/images/person_search.svg" style="height: 25px !important;">
+                        </span>
+                      </button>
+                    </div>
                     
                 </div>
               </div>
