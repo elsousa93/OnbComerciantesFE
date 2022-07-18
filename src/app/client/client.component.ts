@@ -238,7 +238,7 @@ export class ClientComponent implements OnInit {
         this.clientIdNew = result;
         this.toggleShowFoundClient(false);
         this.errorInput = "form-control campo_form_coment_error";
-        this.resultError = "*  Não existe Comerciante com esse número.";
+        this.resultError = "Não existe Comerciante com esse número.";
         this.errorMsg = "titulo-form-error";
       } else {
         this.newClient = result;
@@ -270,7 +270,7 @@ export class ClientComponent implements OnInit {
     }
     if (!(idToSeacrh==22181900000011)) {
       this.showFoundClient = false;
-      this.resultError = "*  Não existe Comerciante com esse número.";
+      this.resultError = "Não existe Comerciante com esse número.";
     }
 
     this.searchDone = true;
@@ -294,6 +294,10 @@ export class ClientComponent implements OnInit {
       this.hasNewClient = false;
       this.showSeguinte = false;
     }
+  }
+
+  onClickNew(){
+    console.log("add new client");
   }
 
   ngOnInit(): void {
