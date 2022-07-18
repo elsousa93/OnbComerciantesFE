@@ -164,7 +164,7 @@
                                 <button *ngIf = "toSearch" id="btn5a2" class="btn botao_azul" (click)="onSearchSimulation(clientId.value)" wappler-command="editContent">PESQUISAR COMERCIANTE&nbsp;&nbsp;
                                   <img src="assets/images/person_search.svg" class="img_btn">
                                 </button></span>
-                              <span class="navbar-text me-2"><button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="onClickNew()" routerLink="/add-stakeholder"
+                              <span class="navbar-text me-2"><button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient(clientId.value)" routerLink="/add-stakeholder"
                                   class="btn botao_branco" wappler-command="editContent">ADICIONAR COMERCIANTE&nbsp;
                                   <img src="assets/images/person_add_blue.svg" class="img_btn">
                                 </button></span>

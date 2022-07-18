@@ -219,7 +219,7 @@ export class ClientByIdComponent implements OnInit {
     console.log("inicializar form controls");
     console.log(this.route.getCurrentNavigation().extras.state["NIFNIPC"]);
     this.form = new FormGroup({
-      commercialSociety: new FormControl(true, Validators.required),
+      commercialSociety: new FormControl(null, Validators.required),
       franchiseName: new FormControl(this.client.companyName),
       natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),

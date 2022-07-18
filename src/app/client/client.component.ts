@@ -297,10 +297,6 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  onClickNew(){
-    console.log("add new client");
-  }
-
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -328,7 +324,6 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado() {
-    console.log("aaa");
     console.log(this.newClient.clientId);
     let navigationExtras: NavigationExtras = {
       state: {
@@ -341,26 +336,6 @@ export class ClientComponent implements OnInit {
 
     //isto nao esta a aparecer na versao mais nova.
   }
-
-  // activateButtonsENI(id: boolean) {
-  //   if (id == true) {
-  //     this.showENI = true;
-  //     this.showFoundClient = false;
-  //     this.ccInfo = null;
-  //     this.isENI=true;
-  //     this.showButtons = true;
-  //     this.isCC=false;
-  //   } else {
-  //     this.showENI = false;
-  //     this.showFoundClient = false;
-  //     this.ccInfo = null;
-  //     this.isENI = false;
-  //     this.showButtons = true;
-  //     this.isCC=false;
-  //   }
-
-  //   this.tipologia = "ENI";
-  // }
 
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;
@@ -394,16 +369,15 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  createNewClient() {
-    //Funcao para ir buscar o numero do ultimo cliente e incrementar
-   // this.http.post(this.baseUrl + 'BEClients/GetLastId/', this.newClient).subscribe(result => {
-   //   console.log(result);
-    // if (result != null) {
-     //   this.newId = result;
-        this.route.navigate(['/app-new-client/']);
-     // }
-    //}, error => console.error(error));
+  createNewClient(clientId: string) {
+    let navigationExtras: NavigationExtras = {
+      state: {
+      tipologia: this.tipologia,
+      NIFNIPC: this.newClient.clientId
+    }
+  };
 
+  this.route.navigate(['/clientbyid', clientId], navigationExtras);
   }
 
   close() {
