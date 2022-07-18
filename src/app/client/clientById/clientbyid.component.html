@@ -942,7 +942,7 @@
                       <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
                       <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
                              type="text" id="ZIPCode" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             [readonly]="clientExists" >
                       <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
                         <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -1042,7 +1042,7 @@
                 </button>
                 <button id="btn5a2"
                         class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                        wappler-command="editContent">
+                        wappler-command="editContent" (click)="submit()">
                   CONTINUAR&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="../assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                   </span>

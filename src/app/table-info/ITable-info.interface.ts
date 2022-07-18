@@ -67,3 +67,10 @@ export interface StakeholderRole {
   code: string
   description: string
 }
+
+export interface Address {
+  address: string
+  postalCode: string
+  postalArea: string
+  country: string
+}
