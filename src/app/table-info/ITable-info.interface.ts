@@ -64,6 +64,16 @@ export interface SubActivities {
 }
 
 export interface StakeholderRole {
-  code: string
-  description: string
+  code?: string
+  description?: string
+  role?: string
+  isBeneficiary?: boolean
+  capitalHeldPercentage?: number
+}
+
+export interface Address {
+  address: string
+  postalCode: string
+  postalArea: string
+  country: string
 }

@@ -183,45 +183,45 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   selectFile(event: any, comp: any) {
-    console.log("a");
     this.file = <File>event.target.files[0];
     const sizeFile = this.file.size / (1024 * 1024);
     var extensoesPermitidas = /(.pdf)$/i;
     const limSize = 10
     this.compToShow = { tipo: "pdf", interveniente: "Manuel", dataValidade: new Date() + "", dataEntrada: new Date() + "", status: "A ser avaliado" }
-    this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
+    this.newComp.clientId="2";
+    this.newComp.id=1;
+    this.newComp.filename="teste";
+    this.newComp.url="url";
+    // this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
 
-    this.newComp.clientId = String(this.clientNr);
-    console.log(this.clientNr);
-    this.http.post(this.url + 'ServicesComprovativos/GetLastId/', this.newComp).subscribe(result => {
-      console.log("b");
-      if (result != null) {
-        console.log("c");
-        this.compClientId = result;
+    // this.newComp.clientId = String(this.clientNr);
+    this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
+    // .subscribe(result => {
+      // console.log(this.result);
+      if (this.result != null) {
+        // this.compClientId = this.result;
         if ((sizeFile <= limSize) && (extensoesPermitidas.exec(this.file.name))) {
-          console.log("d");
           if (event.target.files && event.target.files[0]) {
-            console.log("e");
             var reader = new FileReader();
             reader.onload = (event: any) => {
               this.localUrl = event.target.result;
             }
             reader.readAsDataURL(event.target.files[0]);
-            this.uploadFile(comp.clientId, this.compClientId);
+            this.uploadFile(this.newComp.clientId);
           }
         } else {
           alert("Verifique o tipo / tamanho do ficheiro");
         }
       }
-    }, error => console.error(error));
+    // }, error => console.error(error));
   }
 
-  uploadFile(id: any, compClient: any) {
+  uploadFile(id: any) {
     if (this.file != undefined) {
-      this.compService.uploadFile(this.file, id, compClient).subscribe(data => {
+      this.compService.uploadFile(this.file, id).subscribe(data => {
+        console.log(data);
         if (data != null) {
           alert("Upload efetuado!");
-          var elemento = document.getElementById(id);
           this.load();
         }
 
@@ -233,13 +233,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     } else {
       alert("Selecione um arquivo!")
     }
-  }
-
-  removeSelectedFile(index) {
-    // Delete the item from fileNames list
-    this.compClientId.splice(index, 1);
-    // delete file from FileList
-    this.compClientId.splice(index, 1);
   }
 
   load() {
@@ -257,7 +250,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   }
 
-  download(url: any, imgName: any) {
+  download(imgName: any) {
     const fileName = new Blob([imgName], { type: 'application/pdf;base64' });
     const blob = window.URL.createObjectURL(fileName);
     const link = document.createElement('a');
@@ -279,7 +272,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   confirmDelete() {
     this.deleteModalRef?.hide();
-    this.compService.delFile(this.id,this.clientId,this.filename).subscribe(data => {
+    this.compService.delFile(this.id).subscribe(data => {
+      console.log("DATA: ", data);
       if (data != null) {
         alert("Ficheiro apagado com sucesso!!");
         this.load();

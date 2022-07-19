@@ -320,9 +320,8 @@ export class AcceptanceComponent implements OnInit {
   }
 
   uploadFiles() {
-    console.log("ola");
     for (var i = 0; i < this.files.length; i++) {
-      this.compService.uploadFile(this.files[i], 999, 0).subscribe(data => {
+      this.compService.uploadFile(this.files[i], 999).subscribe(data => {
         if (data != null) {
           console.log("upload feito com sucesso");
         }

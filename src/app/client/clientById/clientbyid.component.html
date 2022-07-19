@@ -746,7 +746,7 @@
                               (change)="onLegalNatureSelected()">
                         <option value="">Selecione</option>
 
-                        <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}> {{legalNature.code}}{{legalNature.description}}</option>
+                        <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
 
                       </select>
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
@@ -931,7 +931,7 @@
                     <div>
                       <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
                       <input required minlength="2" maxlength="100" ngModel formControlName="country" name="country"
-                             type="text" id="country" class="form-control campo_form" [value]="getPaisSedeSocial()" [readonly]="clientExists">
+                             type="text" id="country" class="form-control campo_form" readonly> <!-- [value]="getPaisSedeSocial()" -->
                       <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
                         <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -941,8 +941,8 @@
                     <div>
                       <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
                       <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
-                             type="text" id="ZIPCode" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             type="text" id="ZIPCode" class="form-control campo_form" (keypress)="GetCountryByZipCode()"
+                             [readonly]="clientExists" >
                       <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
                         <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -955,7 +955,7 @@
                       <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
                       <input required minlength="2" maxlength="100" formControlName="location"
                              name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
                         <div *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -966,7 +966,7 @@
                       <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
                       <input required minlength="2" maxlength="100" formControlName="address"
                              name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
-                             [readonly]="clientExists" rows="3">
+                             rows="3" readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
                         <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
                           O parâmetro acima é obrigatório.

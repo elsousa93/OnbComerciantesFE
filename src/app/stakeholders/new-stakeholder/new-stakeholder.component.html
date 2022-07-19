@@ -35,7 +35,7 @@
               </div>
             </span>
           </nav>
-          <p class="titulo-form-simples mb-1">PRETENDE EFECTUAR&nbsp; A ATUALIZAÇÃO ELECTRÓNICA DOS DADOS UTILIZANDO O
+          <p class="titulo-form-simples mb-1">PRETENDE EFECTUAR A ATUALIZAÇÃO ELECTRÓNICA DOS DADOS UTILIZANDO O
           CARTÃO DO CIDADÃO?*</p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
@@ -136,14 +136,14 @@
 
         <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
         <input id="streetAdressStakeholder" class="form-control campo_form" type="text" #box
-          [(ngModel)]="newStake.fiscalAddress.address">
+          [(ngModel)]="newStake.fiscalAddress.address" readonly>
         <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
     O parâmetro "Morada Fiscal" é obrigatório.
   </div>-->
 
         <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
         <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" #box
-          [(ngModel)]="newStake.fiscalAddress.postalCode" (keypress)="searchZipCode()">
+          [(ngModel)]="newStake.fiscalAddress.postalCode" (keypress)="searchZipCode()" maxlength="8">
         <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
     O parâmetro "Código postal" é obrigatório.
   </div>-->
@@ -160,7 +160,7 @@
 
       <p class="titulo-form-simples ">LOCALIDADE</p>
       <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" #box
-        [(ngModel)]="newStake.fiscalAddress.postalArea">
+        [(ngModel)]="newStake.fiscalAddress.postalArea" readonly>
       <!--<div class="alert alert-danger"
         *ngIf="postalArea.touched && !postalArea.valid">
         O parâmetro "Código postal" é obrigatório.
@@ -168,7 +168,7 @@
 
       <p class="titulo-form-simples ">MORADA FISCAL</p>
       <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" #box
-        [(ngModel)]="newStake.fiscalAddress.country">
+        [(ngModel)]="newStake.fiscalAddress.country" readonly>
       <!--<div class="alert alert-danger"
         *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
         O parâmetro "Código postal" é obrigatório.

@@ -3,7 +3,7 @@
     [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp position-fixed">
     <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up':'down'">
       <div class="accordion" id="accordion">
-
+        <button (click)="testeDocas()">Teste DOCAS</button>
         
         <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button"  href="index.html" id="anchor">

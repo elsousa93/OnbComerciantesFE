@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { CountryInformation, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, ShopActivity, StakeholderRole } from './ITable-info.interface';
+import { Address, CountryInformation, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, ShopActivity, StakeholderRole } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +50,6 @@ export class TableInfoService {
   }
 
   GetAddressByZipCode(cp4: number, cp3: number) {
-    return this.http.get<any>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
+    return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
   }
 }
