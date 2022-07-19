@@ -6,7 +6,17 @@
 <br> 
 <div class="container-fluid mt-5 ms-0 me-0 pt-5 ps-0 pe-0">
   <div class="row">
-
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <span class="navbar-text text-light">
+          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70" />
+        </span>
+        <span class="navbar-text">
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INTERVENIENTES
+          </h5>
+        </span>
+      </nav>
+    </div>
     <div class="offset-1 bg-white col-7 col-xxl-10">
       <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
         <div class="table-responsive mb-5">
@@ -14,7 +24,7 @@
             <thead class="text-primary table-primary">
               <tr class="table-white text-primary">
                 <th scope="col" class="text-center text-primary bg-light table-white">Associado ao Contrato</th>
-                <th scope="col" class="text-center bg-light">Nº Client</th>
+                <th scope="col" class="text-center bg-light">Nº Cliente</th>
                 <th scope="col" class="text-center bg-white">Nome Cliente</th>
                 <th scope="col" class="text-center bg-white">NIF</th>
                 <th scope="col" class="text-center bg-white">Elegível</th>
@@ -106,11 +116,12 @@
             <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                 <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                  <button id="btn5a2" class="btn botao_azul" wappler-command="editContent">PESQUISAR
+                  <button *ngIf="stakeType && stakeDocType" id="btn5a2" class="btn botao_azul" wappler-command="editContent">PESQUISAR
                     INTERVENIENTE&nbsp;&nbsp;
                     <img src="assets/images/person_search.svg" class="img_btn">
                   </button></span>
-                <span class="navbar-text me-2"><button id="btn5a2" (click)="onClickNew()" routerLink="/add-stakeholder"
+                <span class="navbar-text me-2">
+                    <button *ngIf="stakeType && stakeDocType" id="btn5a2" (click)="onClickNew()" routerLink="/add-stakeholder"
                     class="btn botao_branco" wappler-command="editContent">ADICIONAR INTERVENIENTE&nbsp;
                     <img src="assets/images/person_add_blue.svg" class="img_btn">
                   </button></span>

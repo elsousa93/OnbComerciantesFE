@@ -465,11 +465,4 @@ export class SidenavPresencialComponent implements OnInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-
-  testeDocas() {
-    this.crcService.getCRC("001", "001", "001").subscribe(d => {
-      console.log("get company CRC");
-      console.log(d);
-    });
-  }
 }

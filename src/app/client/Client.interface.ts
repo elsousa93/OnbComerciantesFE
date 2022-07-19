@@ -1,119 +1,119 @@
 export interface Client {
-  id?: String,
-  fiscalId?: String,
-  companyName?: String,
-  commercialName?: String,
-  shortName?: String,
+  id?: string,
+  fiscalId?: string,
+  companyName?: string,
+  commercialName?: string,
+  shortName?: string,
   headquartersAddress?: HeadquartersAddress,
-  merchantType?: String,
-  legalNature?: String,
-  legalNature2?: String,
+  merchantType?: string,
+  legalNature?: string,
+  legalNature2?: string,
   crc?: Crc,
   shareCapital?: ShareCapital,
-  byLaws?: String,
-  mainEconomicActivity?: String,
-  otherEconomicActivities?: String[],
+  byLaws?: string,
+  mainEconomicActivity?: string,
+  otherEconomicActivities?: string[],
   mainOfficeAddress?: MainOfficeAddress,
-  establishmentDate?: String,
+  establishmentDate?: string,
   bankInformation?: BankInformation,
   contacts?: Contacts,
-  documentationDeliveryMethod?: String,
-  billingEmail?: String,
+  documentationDeliveryMethod?: string,
+  billingEmail?: string,
   knowYourSales?: Sales,
   foreignFiscalInformation?: ForeignFiscalInformation,
   businessGroup?: BusinessGroup,
-  clientId?: String,
-  legalName?: String
+  clientId?: string,
+  legalName?: string
 }
 
 export interface HeadquartersAddress {
-  address?: String,
-  postalCode?: String,
-  postalArea?: String,
-  locality?: String,
-  country?: String,
+  address?: string,
+  postalCode?: string,
+  postalArea?: string,
+  locality?: string,
+  country?: string,
 }
 
 export interface Crc {
-  code?: String,
-  validUntil?: String,
+  code?: string,
+  validUntil?: string,
 }
 
 export interface ShareCapital {
   capital?: Number,
-  date?: String,
+  date?: string,
 }
 
 export interface MainEconomicActivity {
-  code: String,
-  branch: String,
+  code: string,
+  branch: string,
 }
 
 export interface OtherEconomicActivity {
-  code: String,
-  branch: String,
+  code: string,
+  branch: string,
 }
 
 export interface MainOfficeAddress {
-  address?: String,
-  postalCode?: String,
-  postalArea?: String,
-  locality?: String,
-  country?: String
+  address?: string,
+  postalCode?: string,
+  postalArea?: string,
+  locality?: string,
+  country?: string
   
 }
 
 export interface BusinessGroup {
-  type?: String,
-  fiscalId?: String,
+  type?: string,
+  fiscalId?: string,
 }
 
 export interface Sales {
   estimatedAnualRevenue?: Number,
   averageTransactions?: Number,
-  servicesOrProductsSold?: String[],
-  servicesOrProductsDestinations?: String[],
+  servicesOrProductsSold?: string[],
+  servicesOrProductsDestinations?: string[],
 }
 
 export interface ForeignFiscalInformation {
-  issuerCountry?: String,
-  issuanceIndicator?: String,
-  fiscalId?: String,
-  issuanceReason?: String,
+  issuerCountry?: string,
+  issuanceIndicator?: string,
+  fiscalId?: string,
+  issuanceReason?: string,
 }
 
 export interface BankInformation {
-  bank?: String,
-  branch?: String,
-  iban?: String,
-  accountOpenedAt?: String,
+  bank?: string,
+  branch?: string,
+  iban?: string,
+  accountOpenedAt?: string,
 }
 
 export interface Contacts {
-  preferredMethod?: String,
+  preferredMethod?: string,
   preferredPeriod?: PreferredPeriod,
   phone1?: Phone1,
   phone2?: Phone2,
   fax?: Fax,
-  email?: String,
+  email?: string,
 }
 
 export interface PreferredPeriod {
-  startsAt: String,
-  endsAt: String,
+  startsAt: string,
+  endsAt: string,
 }
 
 export interface Phone1 {
-  countryCode: String,
-  phoneNumber: String,
+  countryCode: string,
+  phoneNumber: string,
 }
 
 export interface Phone2 {
-  countryCode: String,
-  phoneNumber: String,
+  countryCode: string,
+  phoneNumber: string,
 }
 
 export interface Fax {
-  countryCode: String,
-  phoneNumber: String,
+  countryCode: string,
+  phoneNumber: string,
 }

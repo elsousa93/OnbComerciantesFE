@@ -47,6 +47,9 @@ export class StakeholdersComponent implements OnInit {
   ngForm!: FormGroup;
   public stakes: IStakeholders[] = [];
   public stakeShow: IStakeholders[] = [];
+  public stakeType: boolean = false;
+  public showFoundStake: boolean = null;
+  public stakeDocType: boolean = false;
   public stakeholderId : number = 0;
   public fiscalId: number = 0;
   public clientNr: number = 8875;
@@ -129,7 +132,6 @@ export class StakeholdersComponent implements OnInit {
   }
 
   onClickNew() {
-    console.log("add new");
     let navigationExtras: NavigationExtras = {
       state: {
         isCC: this.isCC
@@ -155,6 +157,7 @@ export class StakeholdersComponent implements OnInit {
     } else {
       this.isParticular=false;
     }
+    this.stakeType = true;
   }
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
@@ -166,6 +169,7 @@ export class StakeholdersComponent implements OnInit {
     } else {
       this.isCC = false;
     }
+    this.stakeDocType = true;
   }
 
   toggleShow(stake: IStakeholders) {

@@ -47,10 +47,14 @@ export class ClientComponent implements OnInit {
   showENI: boolean = false;
   isENI: boolean = false;
   isCC: boolean = false;
-  toShowReadCC = false;
+  toShowReadCC: boolean = false;
+  documentType: boolean = false;
   toSearch: boolean = false;
   resultError: string = "";
-  clientTypology: string ="";
+  clientTypology: string = "";
+
+  clientsToShow: Client[];
+
   newClient: Client = {
     "clientId": "22181900000011",
     "fiscalId": "22181900000011",
@@ -256,6 +260,17 @@ export class ClientComponent implements OnInit {
 
   }
 
+
+  searchClient() {
+    this.clientService.getClientByID(this.newClient.id, "", "").subscribe(o => {
+      console.log(o);
+
+      var results = o;
+
+      this.clientsToShow = results;
+    });
+  }
+
   /**
    * SIMULAÇÃO da Pesquisa -- Enquanto não temos API
    * Chamar esta função no botão de Pesquisar
@@ -321,6 +336,11 @@ export class ClientComponent implements OnInit {
     } else {
       this.isCC = false;
     }
+    this.documentType = true;
+  }
+
+  changeDocType(){
+    this.documentType = true;
   }
 
   obterSelecionado() {
@@ -350,6 +370,7 @@ export class ClientComponent implements OnInit {
     this.showButtons = true;
     this.isCC = false;
     this.toSearch = false;
+    this.documentType = false;
     if (id == true) {
       this.showENI = false;
       this.isENI=false;

@@ -23,9 +23,7 @@
 
 
         <h4 class="text-primary mt-5 ps-0 ">
-          <span class="material-symbols-rounded icon-titulos m-align">
-            manage_accounts
-          </span>&nbsp;INFORMAÇÃO COMPLEMENTAR DA EMPRESA
+          <img src="assets/images/manage_accounts.svg" class="img_add">&nbsp;INFORMAÇÃO COMPLEMENTAR DA EMPRESA
         </h4>
         <p class="titul campo_obrigatrio">* campo obrigatório</p>
 
@@ -135,7 +133,7 @@
                   <div class="form-check">
                     <input type="checkbox" formControlName="inputAmericas" value="AMERICA DO NORTE / SUL" name="AMERICA"
                            class="form-check-input" (click)="countrys('AMERICA DO NORTE / SUL')">
-                    <label class="form-check-label radio" for="AMERICA DO NORTE / SUL">AMERICA DO NORTE / SUL</label>
+                    <label class="form-check-label radio" for="AMERICA DO NORTE / SUL">AMÉRICA DO NORTE / SUL</label>
                   </div>
                   <div class="form-check">
                     <input type="checkbox" formControlName="inputOceania" value="OCEANIA" name="OCEANIA"
@@ -159,16 +157,14 @@
                   </div>
                 </div>
 
-                <button id="btn5a3"
-                        class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
-                        wappler-command="editContent" (click)="inserirText(this.form)" type="button">
-                  <span class="material-symbols-rounded m-align">
-                    public
-                  </span> ESCOLHER&nbsp;
-                </button>
 
-              </div>
-            </div>
+
+              </div>                
+            </div><button id="btn5a3"
+                        class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
+                        wappler-command="editContent"  (click)="inserirText(this.form)" type="button">
+                        <img src="assets/images/public.svg" style="height: 23px;" class="img_add"> ESCOLHER&nbsp;
+                </button>
 
 
 
@@ -217,14 +213,14 @@
               <table class="table">
                 <thead class="text-primary table-primary">
                   <tr class="table-white text-primary">
-                    <th scope="col" class="text-center text-primary bg-light table-white">CS-Certidão do Registo Comercial</th>
+                    <th scope="col" class="text-center text-primary bg-light table-white">Tipo de Comprovativo</th>
                     <th scope="col" class="text-center bg-light">Data de Receção</th>
                     <th scope="col" class="text-center bg-white">Data de Validade</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="text-primary text-center">SIM</td>
+                    <td class="text-primary text-center">Certidão</td>
                     <td class="text-primary text-center">02-11-2021</td>
                     <td class="text-primary text-center">02-11-2022</td>
                   </tr>
