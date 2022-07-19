@@ -47,7 +47,8 @@ export class ClientComponent implements OnInit {
   showENI: boolean = false;
   isENI: boolean = false;
   isCC: boolean = false;
-  toShowReadCC = false;
+  toShowReadCC: boolean = false;
+  documentType: boolean = false;
   toSearch: boolean = false;
   resultError: string = "";
   clientTypology: string ="";
@@ -321,6 +322,11 @@ export class ClientComponent implements OnInit {
     } else {
       this.isCC = false;
     }
+    this.documentType = true;
+  }
+
+  changeDocType(){
+    this.documentType = true;
   }
 
   obterSelecionado() {
@@ -350,6 +356,7 @@ export class ClientComponent implements OnInit {
     this.showButtons = true;
     this.isCC = false;
     this.toSearch = false;
+    this.documentType = false;
     if (id == true) {
       this.showENI = false;
       this.isENI=false;

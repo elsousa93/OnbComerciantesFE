@@ -106,11 +106,12 @@
             <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                 <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                  <button id="btn5a2" class="btn botao_azul" wappler-command="editContent">PESQUISAR
+                  <button *ngIf="stakeType && stakeDocType" id="btn5a2" class="btn botao_azul" wappler-command="editContent">PESQUISAR
                     INTERVENIENTE&nbsp;&nbsp;
                     <img src="assets/images/person_search.svg" class="img_btn">
                   </button></span>
-                <span class="navbar-text me-2"><button id="btn5a2" (click)="onClickNew()" routerLink="/add-stakeholder"
+                <span class="navbar-text me-2">
+                    <button *ngIf="stakeType && stakeDocType" id="btn5a2" (click)="onClickNew()" routerLink="/add-stakeholder"
                     class="btn botao_branco" wappler-command="editContent">ADICIONAR INTERVENIENTE&nbsp;
                     <img src="assets/images/person_add_blue.svg" class="img_btn">
                   </button></span>

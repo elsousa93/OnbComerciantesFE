@@ -44,7 +44,7 @@
                       <div class="col">
                         <div class="me-0 ps-0 pe-0 col-7">
                         <p class="titulo-form-simples">Tipo de Documento:*</p>
-                        <select class="form-select campo-form-select" id="docType"
+                        <select class="form-select campo-form-select" (click)="changeDocType()" id="docType"
                                 [(ngModel)]="newClient.documentationDeliveryMethod">
                           <option *ngFor="let docType of ListaDocType" value={{docType.docTypeOption}}>
                             {{docType.docTypeOption}}
@@ -161,7 +161,7 @@
                           <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                                <button *ngIf = "toSearch" id="btn5a2" class="btn botao_azul" (click)="onSearchSimulation(clientId.value)" wappler-command="editContent">PESQUISAR COMERCIANTE&nbsp;&nbsp;
+                                <button *ngIf = "toSearch && documentType" id="btn5a2" class="btn botao_azul" (click)="onSearchSimulation(clientId.value)" wappler-command="editContent">PESQUISAR COMERCIANTE&nbsp;&nbsp;
                                   <img src="assets/images/person_search.svg" class="img_btn">
                                 </button></span>
                               <span class="navbar-text me-2"><button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient(clientId.value)" routerLink="/add-stakeholder"
