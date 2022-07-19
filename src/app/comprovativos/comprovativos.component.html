@@ -45,13 +45,13 @@
                       <td></td>
                       <td class="text-center">
                         <span>
-                           <img src="assets/images/delete_blue.svg" (click)="removeSelectedFile(client)" style="height: 25px !important; vertical-align: sub;">
+                           <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                         </span>
                         <span>
-                           <img src="assets/images/search_blue.svg" style="height: 25px !important; vertical-align: sub;">
+                           <img src="assets/images/search_blue.svg" (click)="search(newComp.url, newComp.filename)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                         </span>
                         <span>
-                           <img src="assets/images/file_download.svg" style="height: 25px !important; vertical-align: sub;">
+                           <img src="assets/images/file_download.svg" (click)="download(newComp.filename)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                         </span>
                       <td></td>
                     </tr>
@@ -125,9 +125,9 @@
    <br>
    <ng-template #deleteModal>
       <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
-         <p>Tem certeza que deseja excluir?</p>
+         <p>Tem a certeza que deseja excluir o ficheiro?</p>
          <button type="button" class="btn btn-primary" (click)="confirmDelete()">Sim</button>
-         <button type="button" class="btn btn-primary" (click)="declineDelete()">Não</button>
+         <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="declineDelete()">Não</button>
       </div>
    </ng-template>
    <ng-template #checkListDocs>
