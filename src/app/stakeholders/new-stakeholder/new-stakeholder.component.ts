@@ -178,7 +178,6 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   searchZipCode() {
-    console.log("ola");
     var size = this.newStake.fiscalAddress.postalCode.length;
     var hasSlash = (this.newStake.fiscalAddress.postalCode.split('-').length - 1) == 1;
 
@@ -201,6 +200,8 @@ export class NewStakeholderComponent implements OnInit {
     //}
 
     /*if (size === 8 && hasSlash) {*/
+    if (size > 7) {
+      console.log("Ola");
       var zipCode = this.newStake.fiscalAddress.postalCode.split('-');
       this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
         var addressToShow = address[0];
@@ -210,6 +211,7 @@ export class NewStakeholderComponent implements OnInit {
         this.newStake.fiscalAddress.postalCode = addressToShow.postalCode;
       });
       console.log("ja tou a pesquisar");
+    }
     //  console.log(morada);
     //}
   }

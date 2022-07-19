@@ -328,7 +328,8 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        NIFNIPC: this.newClient.clientId
+        NIFNIPC: this.newClient.clientId,
+        clientExists: true
       }
     };
 
@@ -373,7 +374,8 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
       tipologia: this.tipologia,
-      NIFNIPC: this.newClient.clientId
+        NIFNIPC: this.newClient.clientId,
+        exists: false
     }
   };
 

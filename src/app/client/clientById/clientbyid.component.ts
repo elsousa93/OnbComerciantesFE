@@ -126,7 +126,7 @@ export class ClientByIdComponent implements OnInit {
   tempClient: any;
 
 
-  clientExists: boolean = true;
+  clientExists: boolean;
   crcFound: boolean = false;
 
   isCommercialSociety: boolean = null;
@@ -215,9 +215,37 @@ export class ClientByIdComponent implements OnInit {
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
 
+  initializeTableInfo() {
+    //Chamada à API para obter as naturezas juridicas
+    this.tableInfo.GetAllLegalNatures().subscribe(result => {
+      this.legalNatureList = result;
+      console.log("FETCH LEGAL NATURES");
+      console.log(result);
+      console.log(this.legalNatureList);
+    }, error => console.log(error));
+
+    //Chamada à API para receber todos os Paises
+    this.tableInfo.GetAllCountries().subscribe(result => {
+      this.countryList = result;
+      console.log("FETCH PAISES");
+    }, error => console.log(error));
+
+    //Chamada à API para obter a lista de CAEs
+    //this.tableInfo.GetAllCAEs().subscribe(result => {
+    //  this.CAEsList = result;
+    //  console.log("FETCH OS CAEs");
+    //});
+    this.createContinentsList();
+
+    //Chamada à API para obter a lista de CAEs
+    //this.tableInfo.GetAllCAEs().subscribe(result => {
+    //  this.CAEsList = result;
+    //});
+  }
+
+
   initializeFormControls() {
     console.log("inicializar form controls");
-    console.log(this.route.getCurrentNavigation().extras.state["NIFNIPC"]);
     this.form = new FormGroup({
       commercialSociety: new FormControl(null, Validators.required),
       franchiseName: new FormControl(this.client.companyName),
@@ -234,7 +262,7 @@ export class ClientByIdComponent implements OnInit {
       CAESecondary3: new FormControl(''),
       constitutionDate: new FormControl(this.client.establishmentDate),
       address: new FormControl(this.client.headquartersAddress.address, Validators.required),
-      ZIPCode: new FormControl(this.client.headquartersAddress.postalCode, Validators.required),
+      ZIPCode: new FormControl('', Validators.required),
       location: new FormControl(this.client.headquartersAddress.postalArea, Validators.required),
       country: new FormControl(this.client.headquartersAddress.country, Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
@@ -352,35 +380,15 @@ export class ClientByIdComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state) {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
+      this.clientExists = this.route.getCurrentNavigation().extras.state["exists"];
       console.log(this.tipologia);
     }
     this.initializeDefaultClient();
     
-    //Chamada à API para obter as naturezas juridicas
-    this.tableInfo.GetAllLegalNatures().subscribe(result => {
-      this.legalNatureList = result;
-      console.log("FETCH LEGAL NATURES");
-      console.log(result);
-    }, error => console.log(error));
-
-    //Chamada à API para receber todos os Paises
-    this.tableInfo.GetAllCountries().subscribe(result => {
-      this.countryList = result;
-      console.log("FETCH PAISES");
-    }, error => console.log(error));
-
-    //Chamada à API para obter a lista de CAEs
-    this.tableInfo.GetAllCAEs().subscribe(result => {
-      this.CAEsList = result;
-      console.log("FETCH OS CAEs");
-    });
-    this.createContinentsList();
-
-    //Chamada à API para obter a lista de CAEs
-    this.tableInfo.GetAllCAEs().subscribe(result => {
-      this.CAEsList = result;
-    });
+    
     this.getFormValidationErrors();
+
+    this.initializeTableInfo();
     //this.createContinentsList();
   } //fim do construtor
 
@@ -488,6 +496,7 @@ export class ClientByIdComponent implements OnInit {
     var crcInserted = this.form.get('crcCode');
     console.log("codigo CRC:" , this.form.get('crcCode').value);
     console.log(crcInserted);
+    this.crcFound = true;
 
     //if (crcInserted === '123') {
     //  this.crcFound = true;
@@ -501,12 +510,12 @@ export class ClientByIdComponent implements OnInit {
     return this.form.get('crcCode').value;
   }
 
-  getPaisSedeSocial() {
-    console.log(this.form.get('headquartersAddress.country').value);
-    console.log(this.form.get('headquartersAddress.country'));
+  //getPaisSedeSocial() {
+  //  console.log(this.form.get('headquartersAddress.country').value);
+  //  console.log(this.form.get('headquartersAddress.country'));
 
-    return this.form.get('headquartersAddress.country').value;
-  }
+  //  return this.form.get('headquartersAddress.country').value;
+  //}
 
 
   submit() {
@@ -582,15 +591,22 @@ export class ClientByIdComponent implements OnInit {
   }
 
   GetCountryByZipCode() {
-    var zipCode = this.client.mainOfficeAddress.address.split('-');
+    var zipcode = this.form.value['ZIPCode'];
+    console.log(zipcode);
+    if (zipcode.length === 8) {
+      console.log("country zip code client by id");
+      var zipCode = zipcode.split('-');
 
-    this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
-      var addressToShow = address[0];
-      //this.newStake.fiscalAddress.address = addressToShow.address;
-      //this.newStake.fiscalAddress.country = addressToShow.country;
-      //this.newStake.fiscalAddress.postalArea = addressToShow.postalArea;
-      //this.newStake.fiscalAddress.postalCode = addressToShow.postalCode;
-    });
+      this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+        
+        var addressToShow = address[0];
+
+        console.log(addressToShow);
+        this.form.get('address').setValue(addressToShow.address);
+        this.form.get('country').setValue(addressToShow.country);
+        this.form.get('location').setValue(addressToShow.postalArea);
+      });
+    }
   }
 
   GetCAEByCode() {
@@ -600,4 +616,5 @@ export class ClientByIdComponent implements OnInit {
 
     //var caeResult = this.tableInfo.GetCAEByCode(cae);
   }
+
 }
