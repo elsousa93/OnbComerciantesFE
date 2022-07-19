@@ -730,7 +730,7 @@
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
             <input required maxlength="14" formControlName="crcCode" name="crcCode" type="text"
-                   id="crcCode" class="form-control campo_form" (keypress)="searchByCRC()" />
+                   id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" />
 
             <!--crc fim-->
 

@@ -127,7 +127,21 @@ export class ClientByIdComponent implements OnInit {
     "billingEmail": ""
   } as unknown as Client;
 
-  processClient: CRCProcess;
+  processClient: CRCProcess = {
+    capitalStock: {},
+    code: '',
+    companyName: '',
+    mainEconomicActivity: '',
+    secondaryEconomicActivity: [],
+    expirationDate: '',
+    fiscalId: '',
+    hasOutstandingFacts: false,
+    headquartersAddress: {},
+    legalNature: '',
+    pdf: '',
+    requestId: '',
+    stakeholders: []
+  };
 
 
   tempClient: any;
@@ -251,12 +265,15 @@ export class ClientByIdComponent implements OnInit {
   }
 
   updateFormControls() {
+
+    console.log("durante");
+    console.log(this.processClient);
     var crcCodeInput = this.form.get('crcCode').value;
 
     this.form = new FormGroup({
       commercialSociety: new FormControl(null, Validators.required),
       franchiseName: new FormControl(this.processClient.companyName),
-      natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
+      natJuridicaNIFNIPC: new FormControl('', Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
       preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
       //Pretende associar a grupo/franchise
@@ -264,29 +281,31 @@ export class ClientByIdComponent implements OnInit {
       transactionsAverage: new FormControl(this.client.knowYourSales.averageTransactions, Validators.required),
       destinationCountries: new FormControl('', Validators.required),
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required),
-      CAESecondary1: new FormControl(this.client.otherEconomicActivities[0]),
-      CAESecondary2: new FormControl(this.client.otherEconomicActivities[1]),
-      CAESecondary3: new FormControl(''),
+      CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''),
+      CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''),
+      CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''),
       constitutionDate: new FormControl(this.client.establishmentDate),
       address: new FormControl(this.processClient.headquartersAddress.address, Validators.required),
-      ZIPCode: new FormControl('', Validators.required),
+      ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required),
       location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required),
       country: new FormControl(this.processClient.headquartersAddress.country, Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
       crcCode: new FormControl(crcCodeInput, [Validators.required]),
-      natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
+      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }),
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
-      socialDenomination: new FormControl(this.client.shortName, Validators.required),
-      CAE1Branch: new FormControl(this.client.mainEconomicActivity),
-      CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0]),
-      CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1]),
-      CAESecondary3Branch: new FormControl(this.client.otherEconomicActivities[2]),
+      socialDenomination: new FormControl(this.processClient.companyName, Validators.required),
+      CAE1Branch: new FormControl(''),
+      CAESecondary1Branch: new FormControl(''),
+      CAESecondary2Branch: new FormControl(''),
+      CAESecondary3Branch: new FormControl(''),
 
       merchantType: new FormControl(this.client.merchantType),
       associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
       NIPCGroup: new FormControl(this.client.businessGroup.fiscalId),
 
     });
+
+    console.log("pos");
     //var a = this.form.get('CAE1Branch').validato
   }
 
@@ -294,7 +313,7 @@ export class ClientByIdComponent implements OnInit {
     console.log("inicializar form controls");
     this.form = new FormGroup({
       commercialSociety: new FormControl(null, Validators.required),
-      franchiseName: new FormControl(this.processClient.companyName),
+      franchiseName: new FormControl(''),
       natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
       preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
@@ -302,15 +321,15 @@ export class ClientByIdComponent implements OnInit {
       services: new FormControl('', Validators.required),
       transactionsAverage: new FormControl(this.client.knowYourSales.averageTransactions, Validators.required),
       destinationCountries: new FormControl('', Validators.required),
-      CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required),
+      CAE1: new FormControl('', Validators.required),
       CAESecondary1: new FormControl(this.client.otherEconomicActivities[0]),
       CAESecondary2: new FormControl(this.client.otherEconomicActivities[1]),
       CAESecondary3: new FormControl(''),
       constitutionDate: new FormControl(this.client.establishmentDate),
-      address: new FormControl(this.processClient.headquartersAddress.address, Validators.required),
+      address: new FormControl('', Validators.required),
       ZIPCode: new FormControl('', Validators.required),
-      location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required),
-      country: new FormControl(this.processClient.headquartersAddress.country, Validators.required),
+      location: new FormControl('', Validators.required),
+      country: new FormControl('', Validators.required),
       preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
       crcCode: new FormControl('', [Validators.required]),
       natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
@@ -331,12 +350,12 @@ export class ClientByIdComponent implements OnInit {
 
     this.form.get("crcCode").valueChanges.subscribe(v => {
 
-      var times = v.split('-').length - 1;
+      //var times = v.split('-').length - 1;
 
-      if (times != 2) {
-        if (v.length == 4 || v.length == 9)
-          this.form.get("crcCode").setValue(v + "-");
-      }
+      //if (times != 2) {
+      //  if (v.length == 4 || v.length == 9)
+      //    this.form.get("crcCode").setValue(v + "-");
+      //}
     });
 
     this.form.get("CAE1").valueChanges.subscribe(v => {
@@ -543,10 +562,13 @@ export class ClientByIdComponent implements OnInit {
     //console.log("codigo CRC:" , this.form.get('crcCode').value);
     //console.log(crcInserted);
     //this.crcFound = true;
-
-    this.crcService.getCRC('001', '001').subscribe(o => {
+    var crcInserted = this.form.get('crcCode').value;
+    this.crcService.getCRC(crcInserted, '001').subscribe(o => {
       console.log("CRC ENCONTRADO YJASKMSADJS");
       var clientByCRC = o;
+
+      console.log(clientByCRC);
+
       this.crcFound = true;
       this.processClient.legalNature = clientByCRC.legalNature;
       this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
@@ -574,8 +596,11 @@ export class ClientByIdComponent implements OnInit {
       this.processClient.code = clientByCRC.code;
       this.processClient.requestId = clientByCRC.requestId;
 
+      console.log(this.processClient);
+
       this.updateFormControls();
 
+      console.log("depois");
     });
 
     //if (crcInserted === '123') {

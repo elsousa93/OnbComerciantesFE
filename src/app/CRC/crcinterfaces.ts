@@ -12,7 +12,7 @@ export interface CRCProcess {
   hasOutstandingFacts?: boolean
   headquartersAddress?: HeadquartersAddress
   legalNature?: string
-  pdf: string
-  requestId: string
-  stakeholders: StakeholderRole[]
+  pdf?: string
+  requestId?: string
+  stakeholders?: StakeholderRole[]
 }
