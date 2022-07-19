@@ -134,6 +134,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   mostrar: boolean = false;
   deleteModalRef: BsModalRef | undefined;
   checkListModalRef: BsModalRef | undefined;
+  firstSubmissionModalRef: BsModalRef | undefined;
   compClientId;
 
   comerciante: string;
@@ -149,6 +150,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('checkListDocs') checkListDocs;
+  @ViewChild('firstSubmissionModal') firstSubmissionModal;
 
   validatedDocuments: boolean = false;
 
@@ -270,6 +272,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.route.navigate(['/commercial-offert-list']);
   }
 
+  firstSubmission() {
+    this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-sm' });
+  }
+
   confirmDelete() {
     this.deleteModalRef?.hide();
     this.compService.delFile(this.id).subscribe(data => {
@@ -292,6 +298,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   declineDelete() {
     this.deleteModalRef?.hide();
+  }
+
+  continue() {
+    this.firstSubmissionModalRef?.hide();
+    this.route.navigate(['/commercial-offert-list']);
+  }
+
+  back() {
+    this.firstSubmissionModalRef?.hide();
   }
 
   declineCheckList() {
