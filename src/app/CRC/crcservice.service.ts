@@ -20,7 +20,7 @@ export class CRCService {
       headers: new HttpHeaders({
         //'Content-Type': 'multipart/form-data',
         'Authorization': 'Bearer ' + "eyJhbGciOiJSUzI1NiIsImtpZCI6IkM1QkE4RDUwNjcyNTg5NTcwOEI5QkUyMDJBOEU5MjJFQUE1MjE2OUYiLCJ4NXQiOiJ4YnFOVUdjbGlWY0l1YjRnS282U0xxcFNGcDgiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI0YmQ4NmRlNy01NjQwLTQwNDgtODg3ZS03ZWNiNmNlZGIwMWQiLCJuYW1lIjoiRE9DQVMiLCJvaV9wcnN0IjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwiY2xpZW50X2lkIjoiNGJkODZkZTctNTY0MC00MDQ4LTg4N2UtN2VjYjZjZWRiMDFkIiwib2lfdGtuX2lkIjoiMDNhZmIzZmMtMWVkNi00MGFjLWFjM2QtODU5ZWM1NDkxMTM1IiwiZXhwIjoxNjU4MjU0Mjk0LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjEwMDAwLyIsImlhdCI6MTY1ODE2Nzg5NH0.EEJh7EKgar1JyeSuVcyNgvnGMAVAznLf5ijj4vDCPnK24K_nm2JnTUud3xTlrBwEXOp-3PZQoOKJ0l_aWRz1RjqgIq6tIHAgly-BD09cVK6N-Tq_ZIFmILJwuLHwUv8a9yAlkc3EZoM5A8mXqst3TJgNKFZTj1Aq3c8CPs7SlnFsqUM4_2m-VInLn63MHC-ykGVV79Ag7cJe6rOuoWuEMB2ic4iTBc_lBcK7XOScxptpfyvGnC5pGF4c2V35j1HmXLzd0LOPuq9rtC6vhbwGlkLnuOLL3ySfMS15Hmz7FU4fk7o3EiNNOFNIX5fF3z2x-5J7_2GKIDHsT9yiWxyHvQ",
-        'Access-Control-Allow-Origin': 'http://localhost:12000'
+      //  "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
       }),
     }
     ////////////////////////

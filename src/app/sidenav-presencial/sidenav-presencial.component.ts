@@ -385,10 +385,10 @@ export class SidenavPresencialComponent implements OnInit {
       console.log("edit client");
       console.log(d);
     });
-    this.crcService.getCRC("001", "001", "001").subscribe(d => {
-      console.log("get company CRC");
-      console.log(d);
-    });
+    //this.crcService.getCRC("001", "001", "001").subscribe(d => {
+    //  console.log("get company CRC");
+    //  console.log(d);
+    //});
   //  alert(this.isAutoHide);
 
     this.tableInfo.GetAllCAEs().subscribe(d => {
@@ -464,5 +464,12 @@ export class SidenavPresencialComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  testeDocas() {
+    this.crcService.getCRC("001", "001", "001").subscribe(d => {
+      console.log("get company CRC");
+      console.log(d);
+    });
   }
 }
