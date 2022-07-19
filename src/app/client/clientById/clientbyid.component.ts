@@ -235,6 +235,7 @@ export class ClientByIdComponent implements OnInit {
 
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
+  NIFNIPC: any;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -256,7 +257,6 @@ export class ClientByIdComponent implements OnInit {
     //  this.CAEsList = result;
     //  console.log("FETCH OS CAEs");
     //});
-    this.createContinentsList();
 
     //Chamada à API para obter a lista de CAEs
     //this.tableInfo.GetAllCAEs().subscribe(result => {
@@ -446,6 +446,7 @@ export class ClientByIdComponent implements OnInit {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["exists"];
+      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"]
       console.log(this.tipologia);
     }
     this.initializeDefaultClient();
@@ -667,6 +668,8 @@ export class ClientByIdComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         clientExists: this.clientExists,
+        tipologia: this.tipologia,
+        NIFNIPC :this.NIFNIPC
       }
     };
 
