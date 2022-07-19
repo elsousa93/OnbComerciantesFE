@@ -741,14 +741,17 @@
                   <div class="col-xxl col-6">
                     <div>
                       <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
-                      <select required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+
+                      <select *ngIf="!clientExists" required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                               class="form-control campo_form"
                               (change)="onLegalNatureSelected()">
                         <option value="">Selecione</option>
-
                         <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
 
                       </select>
+                      <input *ngIf="clientExists" type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                             class="form-control campo_form" />
+
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                         <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
                           O parâmetro acima é obrigatórioaa.
@@ -930,7 +933,7 @@
                   <div class="col-xxl col-6">
                     <div>
                       <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" ngModel formControlName="country" name="country"
+                      <input required minlength="2" maxlength="100" formControlName="country" name="country"
                              type="text" id="country" class="form-control campo_form" readonly> <!-- [value]="getPaisSedeSocial()" -->
                       <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
                         <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">

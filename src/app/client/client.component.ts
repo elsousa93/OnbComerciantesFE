@@ -50,7 +50,10 @@ export class ClientComponent implements OnInit {
   toShowReadCC = false;
   toSearch: boolean = false;
   resultError: string = "";
-  clientTypology: string ="";
+  clientTypology: string = "";
+
+  clientsToShow: Client[];
+
   newClient: Client = {
     "clientId": "22181900000011",
     "fiscalId": "22181900000011",
@@ -254,6 +257,17 @@ export class ClientComponent implements OnInit {
     }, error => console.error(error));
     return this.newClient;
 
+  }
+
+
+  searchClient() {
+    this.clientService.getClientByID(this.newClient.id, "", "").subscribe(o => {
+      console.log(o);
+
+      var results = o;
+
+      this.clientsToShow = results;
+    });
   }
 
   /**
