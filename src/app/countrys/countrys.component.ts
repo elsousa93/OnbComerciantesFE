@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { CountryInformation } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -47,7 +47,10 @@ export class CountrysComponent implements OnInit {
 
   countryList: CountryInformation[] = [];
   continentsList: string[] = [];
-  checkedContinents = []; 
+  checkedContinents = [];
+
+  tipologia: any;
+  NIFNIPC: any;
 
   ngOnInit() {
     this.initializeForm();
@@ -57,24 +60,27 @@ export class CountrysComponent implements OnInit {
   }
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService) {
+    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService,
+    private router: ActivatedRoute) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
+      this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
+      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      console.log("client exists ", this.clientExists);
+      console.log(this.route.getCurrentNavigation().extras);
     }
-
     //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
       console.log("FETCH PAISES");
     }, error => console.log(error));
 
-    this.teste();
   }
 
   initializeForm() {
     this.form = new FormGroup({
-      franchiseName: new FormControl(/*this.client.companyName*/),
+      franchiseName: new FormControl(/*this.client.companyName*/'', ),
       expectableAnualInvoicing: new FormControl(/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required*/),
       services: new FormControl('', /*Validators.required*/),
       transactionsAverage: new FormControl(/*this.client.knowYourSales.averageTransactions, Validators.required*/),
@@ -134,41 +140,41 @@ export class CountrysComponent implements OnInit {
       this.contPais.push(event.target.id);
     }
 
-    var index1 = this.lstCountry.findIndex(elem => {
-      if (elem.description == event.target.id.description) {
-        return true;
-      }
-      return false;
-    });
-    if (index1 > -1) {
-      this.lstCountry.splice(index1, 1);
-    } else {
-      this.lstCountry.push(event.target.id);
-    }
+    //var index1 = this.lstCountry.findIndex(elem => {
+    //  if (elem.description == event.target.id.description) {
+    //    return true;
+    //  }
+    //  return false;
+    //});
+    //if (index1 > -1) {
+    //  this.lstCountry.splice(index1, 1);
+    //} else {
+    //  this.lstCountry.push(event.target.id);
+    //}
 
-    var index2 = this.lstCountry1.findIndex(elem => {
-      if (elem.description == event.target.id.description) {
-        return true;
-      }
-      return false;
-    });
-    if (index2 > -1) {
-      this.lstCountry1.splice(index2, 1);
-    } else {
-      this.lstCountry1.push(event.target.id);
-    }
+    //var index2 = this.lstCountry1.findIndex(elem => {
+    //  if (elem.description == event.target.id.description) {
+    //    return true;
+    //  }
+    //  return false;
+    //});
+    //if (index2 > -1) {
+    //  this.lstCountry1.splice(index2, 1);
+    //} else {
+    //  this.lstCountry1.push(event.target.id);
+    //}
 
-    var index3 = this.lstCountry2.findIndex(elem => {
-      if (elem.description == event.target.id.description) {
-        return true;
-      }
-      return false;
-    });
-    if (index3 > -1) {
-      this.lstCountry2.splice(index3, 1);
-    } else {
-      this.lstCountry2.push(event.target.id);
-    }
+    //var index3 = this.lstCountry2.findIndex(elem => {
+    //  if (elem.description == event.target.id.description) {
+    //    return true;
+    //  }
+    //  return false;
+    //});
+    //if (index3 > -1) {
+    //  this.lstCountry2.splice(index3, 1);
+    //} else {
+    //  this.lstCountry2.push(event.target.id);
+    //}
 
   }
 
@@ -210,18 +216,18 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-          //this.lstCountry = ['Albânia', 'Alemanha', 'Andorra', 'Áustria', 'Bélgica', 'Bielorrússia', 'Bósnia e Herzegovina', 'Bulgária', 'Chipre', 'Cosovo', 'Croácia', 'Dinamarca', 'Eslováquia', 'Eslovénia', 'Espanha', 'Estónia', 'Finlândia', 'França', 'Grécia', 'Hungria'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-          //this.lstCountry1 = ['Irlanda', 'Islândia', 'Itália', 'Letónia', 'Listenstaine', 'Lituânia', 'Luxemburgo', 'Macedónia do Norte', 'Malta', 'Moldávia', 'Mónaco', 'Montenegro', 'Noruega', 'Países Baixos', 'Polónia', 'Portugal', 'Reino Unido', 'República Checa', 'Roménia', 'Rússia']
-          //for (var i = 0; i <= this.lstCountry1.length; i++) {
-          //  this.contPais[this.lstCountry1[i]] = true;
-          //}
-          //this.lstCountry2 = ['São Marinho', 'Sérvia', 'Suécia', 'Suíça', 'Ucrânia', 'Vaticano'];
-          //for (var i = 0; i <= this.lstCountry2.length; i++) {
-          //  this.contPais[this.lstCountry2[i]] = true;
-          //}
+          this.lstCountry = ['Albânia', 'Alemanha', 'Andorra', 'Áustria', 'Bélgica', 'Bielorrússia', 'Bósnia e Herzegovina', 'Bulgária', 'Chipre', 'Cosovo', 'Croácia', 'Dinamarca', 'Eslováquia', 'Eslovénia', 'Espanha', 'Estónia', 'Finlândia', 'França', 'Grécia', 'Hungria'];
+          for (var i = 0; i <= this.lstCountry.length; i++) {
+            this.contPais[this.lstCountry[i]] = true;
+          }
+          this.lstCountry1 = ['Irlanda', 'Islândia', 'Itália', 'Letónia', 'Listenstaine', 'Lituânia', 'Luxemburgo', 'Macedónia do Norte', 'Malta', 'Moldávia', 'Mónaco', 'Montenegro', 'Noruega', 'Países Baixos', 'Polónia', 'Portugal', 'Reino Unido', 'República Checa', 'Roménia', 'Rússia']
+          for (var i = 0; i <= this.lstCountry1.length; i++) {
+            this.contPais[this.lstCountry1[i]] = true;
+          }
+          this.lstCountry2 = ['São Marinho', 'Sérvia', 'Suécia', 'Suíça', 'Ucrânia', 'Vaticano'];
+          for (var i = 0; i <= this.lstCountry2.length; i++) {
+            this.contPais[this.lstCountry2[i]] = true;
+          }
           this.continenteName = continente;
         } else {
           this.inputEuropa = false;
@@ -526,54 +532,37 @@ export class CountrysComponent implements OnInit {
   inserirText(form: any) {
     console.log('Lista contPais', this.contPais);
     this.contPais.forEach(element => {
-      this.lstPaisPreenchido.push(element);
-      console.log('Elementos na lista contPais ', element);
+      var index = this.lstPaisPreenchido.findIndex(elem => {
+        if (element.description == elem.description) {
+          return true;
+        }
+        return false;
+      });
+      if (index == -1) {
+        this.lstPaisPreenchido.push(element);
+        console.log('Elementos na lista contPais ', element);
+      }
     });
     
     
     console.log('Lista de todos os elementos passados (lstPaisPreenchido) ', this.lstPaisPreenchido);
 
+    this.lstPaisPreenchido.forEach(country => {
+      $('#text5').val($('#text5').val() + country.description + ', ' );
+    });
   }
 
-  array: CountryInformation[] = [{
-    "code": "CL",
-    "description": "Chile",
-    "internationalCallingCode": "+56",
-    "continent": "América Sul"
-  },
-    {
-      "code": "CN",
-      "description": "China",
-      "internationalCallingCode": "+86",
-      "continent": "Ásia"
-    },
-    {
-      "code": "CY",
-      "description": "Chipre",
-      "internationalCallingCode": "+357",
-      "continent": "Europa"
-    },
-    {
-      "code": "CO",
-      "description": "Colômbia",
-      "internationalCallingCode": "+57",
-      "continent": "América Sul"
-    }];
-
-  teste() {
-    var chile = {
-      "code": "CL",
-      "description": "Chile",
-      "internationalCallingCode": "+56",
-      "continent": "América Sul"
-    } as CountryInformation;
-
-    const index = this.array.findIndex(elem => {
-      if (elem.description == chile.description) {
-        return true;
+  redirectToClientById() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        NIFNIPC: this.NIFNIPC,
+        tipologia: this.tipologia
       }
-      return false;
-    });
-    console.log('Valor do index ' ,index);
+    };
+    this.route.navigate(["/clientbyid", this.router.snapshot.paramMap.get('id')], navigationExtras);
+  }
+
+  goBackToHomePage() {
+    this.route.navigate(["/"]);
   }
 }

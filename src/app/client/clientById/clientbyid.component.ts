@@ -215,6 +215,8 @@ export class ClientByIdComponent implements OnInit {
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
 
+  NIFNIPC: any;
+
   initializeFormControls() {
     console.log("inicializar form controls");
     console.log(this.route.getCurrentNavigation().extras.state["NIFNIPC"]);
@@ -352,6 +354,7 @@ export class ClientByIdComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state) {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
+      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"]
       console.log(this.tipologia);
     }
     this.initializeDefaultClient();
@@ -554,6 +557,8 @@ export class ClientByIdComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         clientExists: this.clientExists,
+        tipologia: this.tipologia,
+        NIFNIPC :this.NIFNIPC
       }
     };
 
