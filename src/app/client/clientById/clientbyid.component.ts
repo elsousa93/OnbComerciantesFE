@@ -269,11 +269,10 @@ export class ClientByIdComponent implements OnInit {
     console.log("durante");
     console.log(this.processClient);
     var crcCodeInput = this.form.get('crcCode').value;
-
     this.form = new FormGroup({
       commercialSociety: new FormControl(null, Validators.required),
       franchiseName: new FormControl(this.processClient.companyName),
-      natJuridicaNIFNIPC: new FormControl('', Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
       preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
       //Pretende associar a grupo/franchise
@@ -314,7 +313,7 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       commercialSociety: new FormControl(null, Validators.required),
       franchiseName: new FormControl(''),
-      natJuridicaNIFNIPC: new FormControl(this.route.getCurrentNavigation().extras.state["NIFNIPC"], Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
       preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
       //Pretende associar a grupo/franchise
@@ -445,7 +444,7 @@ export class ClientByIdComponent implements OnInit {
     if (this.route.getCurrentNavigation().extras.state) {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
-      this.clientExists = this.route.getCurrentNavigation().extras.state["exists"];
+      this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"]
       console.log(this.tipologia);
     }
@@ -456,6 +455,9 @@ export class ClientByIdComponent implements OnInit {
 
     this.initializeTableInfo();
     //this.createContinentsList();
+
+    console.log(this.clientExists);
+
   } //fim do construtor
 
   ngOnInit(): void {
