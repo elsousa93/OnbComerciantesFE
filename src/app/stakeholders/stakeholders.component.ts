@@ -8,6 +8,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
+import { StakeholderService } from './stakeholder.service';
 
 
 /** Listagem Intervenientes / Intervenientes
@@ -20,6 +21,7 @@ import { DataService } from '../nav-menu-interna/data.service';
 })
 export class StakeholdersComponent implements OnInit {
 
+  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
   newStake: IStakeholders = { 
     "fiscalId": "",
@@ -70,7 +72,7 @@ export class StakeholdersComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder) {
+    private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
 
     this.ngOnInit();
    
@@ -179,12 +181,20 @@ export class StakeholdersComponent implements OnInit {
        
    }
 
-  searchStakeholder(formStakeholderSearch) {
-    console.log(formStakeholderSearch);
-    this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
-      console.log(result);
-      this.toggleShow(result);
-    }, error => console.error(error));
+  //searchStakeholder(formStakeholderSearch) {
+  //  console.log(formStakeholderSearch);
+  //  this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
+  //    console.log(result);
+  //    this.toggleShow(result);
+  //  }, error => console.error(error));
+  //}
+
+  searchStakeholder() {
+    //this.formStakeholderSearch
+    console.log("ola");
+    this.stakeholderService.getStakeholderByID("75c99155-f3a8-45e2-9bd3-56a39d8a68ae", this.UUIDAPI, "2").subscribe(o => {
+      console.log(o);
+    });
   }
 
   refreshDiv() {

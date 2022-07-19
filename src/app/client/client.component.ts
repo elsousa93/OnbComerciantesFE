@@ -15,6 +15,10 @@ import { ClientService } from './client.service';
 })
 
 export class ClientComponent implements OnInit {
+  //UUID
+  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
+
+
   public clients: Client[] = [];
   public searchParameter: any;
   public result: any;
@@ -261,7 +265,10 @@ export class ClientComponent implements OnInit {
 
 
   searchClient() {
-    this.clientService.getClientByID(this.newClient.id, "", "").subscribe(o => {
+    console.log(this.newClient.id);
+    
+    this.clientService.getClientByID("75c99155-f3a8-45e2-9bd3-56a39d8a68ae", this.UUIDAPI, "2").subscribe(o => {
+      console.log("ta a pesquisar um cliente");
       console.log(o);
 
       var results = o;
