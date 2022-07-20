@@ -219,4 +219,21 @@ export class InfoDeclarativaComponent implements OnInit {
     this.data.changeCurrentPage(currentPage);
   }
 
+  // validação dos números de telefone
+  validatePhone(phoneCountryCode: string, phoneNumber: string){
+    if (phoneCountryCode == "+351") { //Indicativo de Portugal
+      if (phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
+        console.log("Válido");
+      } else {
+        console.log("Inválido");
+      }
+    } else { // Indicativo não é de Portugal
+      if (phoneNumber.length <= 16) {
+        console.log("Válido");
+      } else {
+        console.log("Inválido");
+      }
+    }
+  }
+
 }
