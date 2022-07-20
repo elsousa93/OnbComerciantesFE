@@ -266,15 +266,17 @@ export class ClientComponent implements OnInit {
 
   searchClient() {
     console.log(this.newClient.id);
+
+    this.onSearchSimulation(22181900000011);
     
-    this.clientService.getClientByID("75c99155-f3a8-45e2-9bd3-56a39d8a68ae", this.UUIDAPI, "2").subscribe(o => {
-      console.log("ta a pesquisar um cliente");
-      console.log(o);
+    //this.clientService.getClientByID("88dab4e9-3818-4491-addb-f518ae649e5a", this.UUIDAPI, "2").subscribe(o => {
+    //  console.log("ta a pesquisar um cliente");
+    //  console.log(o);
 
-      var results = o;
+    //  var results = o;
 
-      this.clientsToShow = results;
-    });
+    //  this.clientsToShow = results;
+    //});
   }
 
   /**
