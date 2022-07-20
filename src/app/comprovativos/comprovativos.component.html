@@ -35,7 +35,7 @@
                      </tr>
                   </thead>
                   <tbody class="table-light text-primary">
-                    <tr class="table-white text-primary" *ngIf="compToShow">
+                    <tr class="table-white text-primary" *ngFor="let file of files">
                       <input type="hidden" name="id" id="id" value={{client.clientId}}>
                       <td class="text-center text-primary">{{compToShow.tipo}}</td>
                       <td class="text-center">{{compToShow.interveniente}}</td>
@@ -45,13 +45,13 @@
                       <td></td>
                       <td class="text-center">
                         <span>
-                           <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                           <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename, file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                         </span>
                         <span>
-                           <img src="assets/images/search_blue.svg" (click)="search(newComp.url, newComp.filename)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                           <img src="assets/images/search_blue.svg" (click)="search(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                         </span>
                         <span>
-                           <img src="assets/images/file_download.svg" (click)="download(newComp.filename)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                           <img src="assets/images/file_download.svg" (click)="download(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                         </span>
                       <td></td>
                     </tr>
@@ -74,7 +74,7 @@
 
                      </label>
                        <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
-                              accept=".pdf">
+                              accept=".pdf" multiple>
 
                   </span>
                </nav>
@@ -232,6 +232,13 @@
          </div>
       </div>
    </ng-template>
+   <ng-template #firstSubmissionModal>
+      <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
+         <p>Após efetuar a primeira submissão, o BackOffice irá reiniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.</p>
+         <button type="button" class="btn btn-primary" (click)="back()">Voltar</button>
+         <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="continue()">Continuar</button>
+      </div>
+   </ng-template>
    <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0">
       <div class="row">
          <div class="col ms-0 ps-0">
@@ -252,7 +259,7 @@
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">
                   VOLTAR&nbsp;
                </button>
-               <button *ngIf="validatedDocuments" id="btn5a"
+               <button *ngIf="validatedDocuments" id="btn5a" (click)="firstSubmission()"
                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
                   SUBMETER PEDIDO&nbsp;
                   <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">

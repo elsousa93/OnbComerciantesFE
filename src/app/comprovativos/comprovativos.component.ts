@@ -128,12 +128,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   pageName = "";
   file?: File;
+  files?: File[] = [];
+  fileToDelete?: File;
   localUrl: any;
   fileName: any;
   urlImage: string | any;
   mostrar: boolean = false;
   deleteModalRef: BsModalRef | undefined;
   checkListModalRef: BsModalRef | undefined;
+  firstSubmissionModalRef: BsModalRef | undefined;
   compClientId;
 
   comerciante: string;
@@ -149,6 +152,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('checkListDocs') checkListDocs;
+  @ViewChild('firstSubmissionModal') firstSubmissionModal;
 
   validatedDocuments: boolean = false;
 
@@ -183,39 +187,76 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   selectFile(event: any, comp: any) {
-    this.file = <File>event.target.files[0];
-    const sizeFile = this.file.size / (1024 * 1024);
-    var extensoesPermitidas = /(.pdf)$/i;
-    const limSize = 10
     this.compToShow = { tipo: "pdf", interveniente: "Manuel", dataValidade: new Date() + "", dataEntrada: new Date() + "", status: "A ser avaliado" }
-    this.newComp.clientId="2";
-    this.newComp.id=1;
-    this.newComp.filename="teste";
-    this.newComp.url="url";
-    // this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
-
-    // this.newComp.clientId = String(this.clientNr);
-    this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
-    // .subscribe(result => {
-      // console.log(this.result);
+    this.newComp.clientId = "2";
+    this.newComp.id = 1;
+    this.newComp.filename = "teste";
+    this.newComp.url = "img/";
+    const files = <File[]>event.target.files;
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      const sizeFile = file.size / (1024 * 1024);
+      var extensoesPermitidas = /(.pdf)$/i;
+      const limSize = 10;
+      this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
       if (this.result != null) {
-        // this.compClientId = this.result;
-        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(this.file.name))) {
-          if (event.target.files && event.target.files[0]) {
+        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+          if (event.target.files && files[i]) {
             var reader = new FileReader();
             reader.onload = (event: any) => {
               this.localUrl = event.target.result;
             }
-            reader.readAsDataURL(event.target.files[0]);
-            this.uploadFile(this.newComp.clientId);
+            reader.readAsDataURL(files[i]);
+            this.files.push(file);
+          } else {
+            alert("Verifique o tipo / tamanho do ficheiro");
           }
-        } else {
-          alert("Verifique o tipo / tamanho do ficheiro");
+
         }
       }
+
+    }
+    console.log(this.files);
+
+    //this.file = <File>event.target.files[0];
+    //const sizeFile = this.file.size / (1024 * 1024);
+    //var extensoesPermitidas = /(.pdf)$/i;
+    //const limSize = 10
+
+
+    
+    // this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
+
+    // this.newComp.clientId = String(this.clientNr);
+    //this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
+    //// .subscribe(result => {
+    //  // console.log(this.result);
+    //  if (this.result != null) {
+    //    // this.compClientId = this.result;
+    //    if ((sizeFile <= limSize) && (extensoesPermitidas.exec(this.file.name))) {
+    //      if (event.target.files && event.target.files[0]) {
+    //        var reader = new FileReader();
+    //        reader.onload = (eve: any) => {
+    //          //console.log('Local URL ', event);
+    //          //this.localUrl = event.target.result;
+              
+    //          let blob = new Blob(event.target.files, { type: event.target.files[0].type });
+    //          let url = window.URL.createObjectURL(blob);
+    //          console.log(event.target.files);
+    //          this.localUrl = url;
+    //          console.log('URKLSDLSDSDMSLK ',url);
+    //        }
+    //        reader.readAsDataURL(event.target.files[0]);
+    //        this.uploadFile(this.newComp.clientId);
+    //      }
+    //    } else {
+    //      alert("Verifique o tipo / tamanho do ficheiro");
+    //    }
+    //  }
     // }, error => console.error(error));
   }
 
+  //recebe o ficheiro que vai dar upload
   uploadFile(id: any) {
     if (this.file != undefined) {
       this.compService.uploadFile(this.file, id).subscribe(data => {
@@ -239,8 +280,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     location.reload()
   }
 
-  search(url: any, imgName: any) {
-    window.open(url + imgName, '_blank',
+  //mandamos uma lista dos ficheiros (for)  recebemos um ficheiro e transformamos esse ficheiro em blob e depois redirecionamos para essa página
+  search(/*url: any, imgName: any*/ file: File) {
+    //console.log('url ', url);
+    //console.log('image name ', imgName);
+    let blob = new Blob([file], { type: file.type });
+    let url = window.URL.createObjectURL(blob);
+
+    window.open(url, '_blank',
       `margin: auto;
       width: 50%;
       padding: 10px;
@@ -250,28 +297,43 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   }
 
-  download(imgName: any) {
-    const fileName = new Blob([imgName], { type: 'application/pdf;base64' });
-    const blob = window.URL.createObjectURL(fileName);
+  //mandar como parametro o ficheiro ou o nome do ficheiro
+  download(/*imgName: any*/ file: File) {
+    //const fileName = new Blob([imgName], { type: 'application/pdf;base64' });
+    //const blob = window.URL.createObjectURL(fileName);
+
+    let blob = new Blob([file], { type: file.type });
+    let url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.href = blob;
-    link.download = imgName;
+    link.href = url;
+    link.download = file.name;
     link.click();
+
+    
   }
 
-  onDelete(id: any, clientId: any, filename: any) {
+  onDelete(id: any, clientId: any, filename: any, file: File) {
     this.id = id;
     this.clientId = clientId;
     this.filename = filename;
     this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
+    this.fileToDelete = file;
   }
 
   obterOfertaComercial() {
     this.route.navigate(['/commercial-offert-list']);
   }
 
+  firstSubmission() {
+    this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-sm' });
+  }
+
   confirmDelete() {
     this.deleteModalRef?.hide();
+    const index = this.files.indexOf(this.fileToDelete);
+    if (index > -1) {
+      this.files.splice(index, 1);
+    }
     this.compService.delFile(this.id).subscribe(data => {
       console.log("DATA: ", data);
       if (data != null) {
@@ -292,6 +354,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   declineDelete() {
     this.deleteModalRef?.hide();
+  }
+
+  continue() {
+    this.firstSubmissionModalRef?.hide();
+    this.route.navigate(['/commercial-offert-list']);
+  }
+
+  back() {
+    this.firstSubmissionModalRef?.hide();
   }
 
   declineCheckList() {
