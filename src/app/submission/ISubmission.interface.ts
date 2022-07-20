@@ -90,14 +90,14 @@ export interface Merchant {
 }
 
 interface Document {
-  documentType: string
-  documentPurpose: string
-  file: DocumentFile
-  validUntil: string
-  data: string
+  documentType?: string
+  documentPurpose?: string
+  file?: DocumentFile
+  validUntil?: string
+  data?: string
 }
 
 interface DocumentFile{
-  fileType: string
-  binary: string
+  fileType?: string
+  binary?: string
 }
