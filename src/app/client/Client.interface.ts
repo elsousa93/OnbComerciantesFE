@@ -23,7 +23,8 @@ export interface Client {
   foreignFiscalInformation?: ForeignFiscalInformation,
   businessGroup?: BusinessGroup,
   clientId?: string,
-  legalName?: string
+  legalName?: string,
+  merchantRegistrationId?: string
 }
 
 export interface HeadquartersAddress {
@@ -65,7 +66,7 @@ export interface MainOfficeAddress {
 
 export interface BusinessGroup {
   type?: string,
-  fiscalId?: string,
+  branch?: string,
 }
 
 export interface Sales {

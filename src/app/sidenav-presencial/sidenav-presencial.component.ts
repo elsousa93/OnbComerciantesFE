@@ -90,7 +90,8 @@ export class SidenavPresencialComponent implements OnInit {
     "isClientAwaiting": true,
     "submissionUser": {
       "user": "joao.silvestre",
-      "employer": "SIBS"
+      "branch": "",
+      "partner": ""
     },
     "documents": [],
     "isComplete": true,
@@ -169,7 +170,11 @@ export class SidenavPresencialComponent implements OnInit {
           "postalArea": "Povoa de Santa Iria",
           "country": "PT"
         },
-        "phone": {
+        "phone1": {
+          "countryCode": "+351",
+          "phoneNumber": "919654422"
+        },
+        "phone2": {
           "countryCode": "+351",
           "phoneNumber": "919654422"
         },
@@ -187,7 +192,8 @@ export class SidenavPresencialComponent implements OnInit {
     "isClientAwaiting": true,
     "submissionUser": {
       "user": "joao.silvestre",
-      "employer": "SIBS"
+      "branch": "",
+      "partner": ""
     },
     "isComplete": true,
     "id": "1a1e127a-ef25-49a1-a0c6-4e99b3c4c949",
@@ -212,7 +218,11 @@ export class SidenavPresencialComponent implements OnInit {
       "country": "PT"
     },
     "isProxy": false,
-    "phone": {
+    "phone1": {
+      "countryCode": "+351",
+      "phoneNumber": "919654422"
+    },
+    "phone2": {
       "countryCode": "+351",
       "phoneNumber": "919654422"
     },
@@ -272,7 +282,11 @@ export class SidenavPresencialComponent implements OnInit {
       "country": "PT"
     },
     "isProxy": false,
-    "phone": {
+    "phone1": {
+      "countryCode": "+351",
+      "phoneNumber": "919654422"
+    },
+    "phone2": {
       "countryCode": "+351",
       "phoneNumber": "919654422"
     },

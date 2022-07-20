@@ -94,7 +94,7 @@ export class ClientComponent implements OnInit {
     "establishmentDate": "2009-12-16",
     "businessGroup": {
       "type": "",
-      "fiscalId": ""
+      "branch": ""
     },
     "knowYourSales": {
       "estimatedAnualRevenue": 1000000,

@@ -66,7 +66,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "establishmentDate": "2009-12-16",
     "businessGroup": {
       "type": "",
-      "fiscalId": ""
+      "branch": ""
     },
     "knowYourSales": {
       "estimatedAnualRevenue": 0,

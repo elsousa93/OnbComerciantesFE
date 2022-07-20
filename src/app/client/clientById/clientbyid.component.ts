@@ -300,7 +300,7 @@ export class ClientByIdComponent implements OnInit {
 
       merchantType: new FormControl(this.client.merchantType),
       associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
-      NIPCGroup: new FormControl(this.client.businessGroup.fiscalId),
+      NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/),
 
     });
 
@@ -341,7 +341,7 @@ export class ClientByIdComponent implements OnInit {
 
       merchantType: new FormControl(this.client.merchantType),
       associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
-      NIPCGroup: new FormControl(this.client.businessGroup.fiscalId),
+      NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/),
 
     });
     //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);
@@ -646,7 +646,7 @@ export class ClientByIdComponent implements OnInit {
     this.client.knowYourSales.servicesOrProductsSold.push(this.form.value["services"]);
     //Paises destino
     this.client.establishmentDate = this.form.value["constitutionDate"];
-    this.client.crc = this.form.value["crcCode"];
+    this.client.crc.code = this.form.value["crcCode"];
     this.client.legalNature = this.form.value["natJuridicaN1"];
 
     this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
@@ -664,14 +664,15 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.associatedWithGroupOrFranchise) {
       this.client.companyName = this.form.value["franchiseName"];
-      this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
+      //this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
     }
 
     let navigationExtras: NavigationExtras = {
       state: {
         clientExists: this.clientExists,
         tipologia: this.tipologia,
-        NIFNIPC :this.NIFNIPC
+        NIFNIPC: this.NIFNIPC,
+        client: this.client
       }
     };
 
