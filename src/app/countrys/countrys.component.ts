@@ -123,14 +123,14 @@ export class CountrysComponent implements OnInit {
 
   newSubmission: SubmissionPostTemplate = {
     documents: [{
-      data: "",
-      documentPurpose: "",
-      documentType: "",
+      data: "string",
+      documentPurpose: "Identification",
+      documentType: "string",
       file: {
         binary: btoa(""), // converter
-        fileType: ""
+        fileType: "PDF"
       },
-      validUntil: ""
+      validUntil: "2023-10-08"
     }],
     bank: "0800",
     isClientAwaiting: true,
@@ -145,14 +145,14 @@ export class CountrysComponent implements OnInit {
       user: "joao.silvestre",
       partner: ""
     },
-    startedAt: "",
+    startedAt: "2020-10-15",
     stakeholders: [{
       fiscalId: "",
       identificationDocument: {
         type: "",
         number: "",
         country: "",
-        expirationDate: ""
+        expirationDate: "2020-10-10"
       },
       fullName: "",
       contactName: "",
@@ -173,7 +173,7 @@ export class CountrysComponent implements OnInit {
         phoneNumber: ""
       },
       email: "",
-      birthDate: ""
+      birthDate: "1920-01-01"
 
     }],
     merchant: {
@@ -195,11 +195,11 @@ export class CountrysComponent implements OnInit {
       legalNature2: "",
       crc: {
         code: "",
-        validUntil: ""
+        validUntil: "2022-09-09"
       },
       shareCapital: {
         capital: 0,
-        date: ""
+        date: "2021-05-05"
       },
       byLaws: "",
       mainEconomicActivity: "",
@@ -211,7 +211,7 @@ export class CountrysComponent implements OnInit {
         locality: "",
         country: ""
       },
-      establishmentDate: "",
+      establishmentDate: "2015-01-01",
       businessGroup: {
         type: "Isolated",
         branch: ""
