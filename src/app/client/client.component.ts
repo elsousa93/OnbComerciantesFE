@@ -28,8 +28,8 @@ export class ClientComponent implements OnInit {
   public displayValueSearch: any;
   public isNoDataReadable: boolean;
 
-  //process: any;
-  
+  //Processo
+  process: any;
 
   clientIdNew;
   ccInfo;
@@ -355,21 +355,25 @@ export class ClientComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
 
-    //var context = this;
+    var context = this;
 
-    //var processToInsert = {
-    //  "processNumber": "5",
-    //  "goal": "merchantOnboarding",
-    //  "startedByUsername": "string",
-    //  "startedByPartner": "string",
-    //  "startedAt": "string"
-    //} as Process;
+    var processToInsert = {
+      "processNumber": "5",
+      "goal": "merchantOnboarding",
+      "startedByUsername": "string",
+      "startedByBranch": "string",
+      "startedByPartner": "string",
+      "startedAt": "2022-05-05"
+    } as Process;
 
-    //this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
-    //  context.process = o;
+    this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
+      console.log("começou um processo");
+      console.log(o);
 
-    //  console.log(context.process);
-    //});
+      context.process = o;
+
+      console.log(context.process);
+    });
   }
 
   //função que altera o valor do map e da currentPage
@@ -399,13 +403,13 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado() {
-    console.log(this.newClient.clientId);
+    console.log(this.process.processId);
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
         NIFNIPC: this.newClient.clientId,
         clientExists: true,
-        //processID: this.process.processId
+        processID: this.process.processId
       }
     };
 
@@ -453,7 +457,7 @@ export class ClientComponent implements OnInit {
       tipologia: this.tipologia,
         NIFNIPC: this.newClient.clientId,
         exists: false,
-        /*processId: this.process.processId*/
+        processID: this.process.processId
     }
   };
 
