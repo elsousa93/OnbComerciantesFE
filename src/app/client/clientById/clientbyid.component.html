@@ -982,10 +982,8 @@
               </div>
             </div> <!-- Fecha comercial society -->
           </div>
-          <div>
-          </div>
         </div> <!--Fecha primeiros 3 campos-->
-        <!--Se NÃO for sociedade comercial-->
+        <!--Se NÃO for sociedade comercial e for Company-->
         <div *ngIf="isCommercialSociety == false && tipologia==='Company'">
           <div class="bg-white col-7 col-xxl-10">
             <div class="row">
@@ -1015,6 +1013,15 @@
 
             </div>
           </div>
+        </div><!--fecha div "se NÃO for sociedade comercial"-->
+        <!-- Se Não for Sociedade Comercial e for ENI -->
+        <div *ngIf="isCommercialSociety == false && tipologia==='ENI'">
+              <div class="col-10 ms-3 me-3 ps-3 pe-3">
+                <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
+                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+                       name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+                       [(ngModel)]="client.companyName" style="width: 906px;">
+              </div>
         </div><!--fecha div "se NÃO for sociedade comercial"-->
 
 

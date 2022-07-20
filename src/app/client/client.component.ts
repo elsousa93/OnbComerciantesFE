@@ -374,13 +374,13 @@ export class ClientComponent implements OnInit {
     if (id == true) {
       this.showENI = false;
       this.isENI=false;
+      this.tipologia = "Company";
 
     } else {
       this.showENI = true;
       this.isENI=true;
+      this.tipologia = "ENI";
     }
-
-    this.tipologia = "Company";
   }
 
   aButtons(id: boolean) {
