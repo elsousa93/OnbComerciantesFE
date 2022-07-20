@@ -49,7 +49,7 @@
         <p class="titul campo_obrigatrio">* campo obrigatório</p>
 
         <p class="ps-0">Por favor, pesquise o Interveniente:</p>
-        <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder(formStakeholderSearch.value)">
+        <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
           <div class="row ms-0 me-0">
             <div class="col-5 ms-0 me-0 ps-0 pe-0">
               <p class="titulo-form-simples">Tipo de Interveniente: *</p>
@@ -116,7 +116,7 @@
             <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                 <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                  <button *ngIf="stakeType && stakeDocType" id="btn5a2" class="btn botao_azul" wappler-command="editContent">PESQUISAR
+                  <button *ngIf="stakeType && stakeDocType" id="btn5a2" class="btn botao_azul" wappler-command="editContent" (click)="searchStakeholder()" >PESQUISAR
                     INTERVENIENTE&nbsp;&nbsp;
                     <img src="assets/images/person_search.svg" class="img_btn">
                   </button></span>

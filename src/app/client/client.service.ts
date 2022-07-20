@@ -23,7 +23,11 @@ export class ClientService {
     return this.http.put<Client>(this.baseUrl + 'submission/' + clientID + "/merchant", newClient);
   }
 
-  SearchClientByQuery(searchID: string, searchType: string, messageID: string, userID: string, processID: string, countryID?: string, partnerID?: string, branchID?): any {
+  ///////////////////
+  //CLIENT OUTBOUND//
+  ///////////////////
+
+  SearchClientByQuery(searchID: string, searchType: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?): any {
 
     var URI = this.urlOutbound + "api/v1/merchant?searchId=" + searchID + "&searchType=" + searchType;
 
@@ -35,24 +39,48 @@ export class ClientService {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Content-Type': 'multipart/form-data',
-        'Message-Id': messageID,
+        'Request-Id': requestID,
         'Date': data.toISOString(),
-        'X-Acquiring-UserId': userID,
-        'X-Acquiring-ProcessId': processID
+        'X-Acquiring-UserId': AcquiringUserID,
       }),
     }
 
-    if (partnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", partnerID);
-    if (branchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", branchID);
+    if (AcquiringPartnerID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
+    if (AcquiringBranchID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    if (AcquiringProcessID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
   getClientByID(clientID: string, requestID: string, AcquiringUserID:string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
-
+    console.log("ygijkldsuishdushdshd uhsudhsud hsudhhusd");
     var URI = this.urlOutbound + "api/v1/merchant/" + clientID;
+
+    var data = new Date();
+    //'Request-Date': data.toISOString(),
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Request-Id': requestID,
+        'X-Acquiring-UserId': AcquiringUserID
+      }),
+    }
+
+    if (AcquiringPartnerID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
+    if (AcquiringBranchID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    if (AcquiringProcessID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+
+    return this.http.get<any>(URI, HTTP_OPTIONS);
+  }
+
+  createClient(client: Client, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
+
+    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/merchant";
 
     var data = new Date();
 
@@ -72,34 +100,10 @@ export class ClientService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    return this.http.get<any>(URI, HTTP_OPTIONS);
-  }
-
-  createClient(client: Client, processReferenceID: string, messageID: string, AcquiringUserID: string, AcquiringProcessID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
-
-    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/merchant";
-
-    var data = new Date();
-
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Content-Type': 'multipart/form-data',
-        'Message-Id': messageID,
-        'Date': data.toISOString(),
-        'X-Acquiring-UserId': AcquiringUserID,
-        'X-Acquiring-ProcessId': AcquiringProcessID
-      }),
-    }
-
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-
     return this.http.post<any>(URI, client, HTTP_OPTIONS);
   }
 
-  updateClient(client: Client, processReferenceID: string, clientID: string, messageID: string, AcquiringUserID: string, AcquiringProcessID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
+  updateClient(client: Client, processReferenceID: string, clientID: string, RequestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 
     var treatedProcessNumber = encodeURIComponent(AcquiringProcessID);
 
@@ -110,10 +114,9 @@ export class ClientService {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Content-Type': 'multipart/form-data',
-        'Message-Id': messageID,
+        'Request-Id': RequestID,
         'Date': data.toISOString(),
-        'X-Acquiring-UserId': AcquiringUserID,
-        'X-Acquiring-ProcessId': treatedProcessNumber
+        'X-Acquiring-UserId': AcquiringUserID
       }),
     }
 
@@ -121,6 +124,8 @@ export class ClientService {
       HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
     if (AcquiringBranchID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    if (AcquiringProcessID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
     return this.http.put<any>(URI, client, HTTP_OPTIONS);
   }

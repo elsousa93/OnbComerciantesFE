@@ -15,6 +15,10 @@ import { ClientService } from './client.service';
 })
 
 export class ClientComponent implements OnInit {
+  //UUID
+  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
+
+
   public clients: Client[] = [];
   public searchParameter: any;
   public result: any;
@@ -262,13 +266,18 @@ export class ClientComponent implements OnInit {
 
 
   searchClient() {
-    this.clientService.getClientByID(this.newClient.id, "", "").subscribe(o => {
-      console.log(o);
+    console.log(this.newClient.id);
 
-      var results = o;
+    this.onSearchSimulation(22181900000011);
+    
+    //this.clientService.getClientByID("88dab4e9-3818-4491-addb-f518ae649e5a", this.UUIDAPI, "2").subscribe(o => {
+    //  console.log("ta a pesquisar um cliente");
+    //  console.log(o);
 
-      this.clientsToShow = results;
-    });
+    //  var results = o;
+
+    //  this.clientsToShow = results;
+    //});
   }
 
   /**
@@ -374,13 +383,13 @@ export class ClientComponent implements OnInit {
     if (id == true) {
       this.showENI = false;
       this.isENI=false;
+      this.tipologia = "Company";
 
     } else {
       this.showENI = true;
       this.isENI=true;
+      this.tipologia = "ENI";
     }
-
-    this.tipologia = "Company";
   }
 
   aButtons(id: boolean) {
