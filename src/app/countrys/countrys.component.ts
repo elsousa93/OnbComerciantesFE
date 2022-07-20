@@ -239,7 +239,7 @@ export class CountrysComponent implements OnInit {
     this.updateData(true, 1);
     this.newSubmission.merchant.commercialName = this.form.get("franchiseName").value;
     this.newSubmission.merchant.billingEmail = this.client.billingEmail;
-    this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+    //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
     this.newSubmission.merchant.bankInformation = this.client.bankInformation;
     this.newSubmission.merchant.byLaws = this.client.byLaws;
     this.newSubmission.merchant.clientId = this.client.clientId;
@@ -255,19 +255,14 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
     this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
     this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-    //if (this.lstPaisPreenchido.length > 0) {
-    //  this.lstPaisPreenchido.forEach(elem => {
-    //    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations.push(elem.code);
-    //  });
-    //}
     this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido; //tenho de mandar apenas o CODE
     this.newSubmission.merchant.legalName = this.client.legalName;
     this.newSubmission.merchant.legalNature = this.client.legalNature;
     this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
     this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
     this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
-    this.newSubmission.merchant.merchantType = this.client.merchantType;
-    this.newSubmission.merchant.otherEconomicActivities = [];
+    //this.newSubmission.merchant.merchantType = this.client.merchantType;
+    this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
     this.newSubmission.merchant.shareCapital = this.client.shareCapital;
     this.newSubmission.merchant.shortName = this.client.shortName;
     

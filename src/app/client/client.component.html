@@ -200,17 +200,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <input type="hidden" name="id" id="id" value={{newClient.clientId}}>
+                    <tr *ngFor="let client of clientsToShow">
+                      <input type="hidden" name="id" id="id" value={{client.clientId}}>
                       <th scope="row" class="text-primary text-center">
-                        <input type="radio" value={{newClient.documentationDeliveryMethod}} (click)="aButtons(true)">
+                        <input type="radio" value={{client.documentationDeliveryMethod}} (click)="aButtons(true)">
                       </th>
-                      <td class="text-primary text-center">{{newClient.clientId}}</td>
-                      <td class="text-primary text-center">{{newClient.commercialName}}</td>
-                      <td class="text-primary text-center">{{newClient.headquartersAddress.address}}</td>
-                      <td class="text-primary text-center">{{newClient.headquartersAddress.postalCode}}</td>
-                      <td class="text-primary text-center">{{newClient.headquartersAddress.locality}}</td>
-                      <td class="text-primary text-center">{{newClient.headquartersAddress.country}}</td>
+                      <td class="text-primary text-center">{{client.clientId}}</td>
+                      <td class="text-primary text-center">{{client.commercialName}}</td>
+                      <td class="text-primary text-center">{{client.address}}</td>
+                      <td class="text-primary text-center">{{client.ZIPCode}}</td>
+                      <td class="text-primary text-center">{{client.locality}}</td>
+                      <td class="text-primary text-center">{{client.country}}</td>
+
                     </tr>
                   </tbody>
                 </table>

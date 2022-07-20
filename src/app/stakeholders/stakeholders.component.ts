@@ -45,6 +45,9 @@ export class StakeholdersComponent implements OnInit {
   ListDocTypeE = docTypeListE;
   documentType?: string = "";
 
+  stakeholdersToShow: any[] = [];
+
+
 
   ngForm!: FormGroup;
   public stakes: IStakeholders[] = [];
@@ -195,9 +198,42 @@ export class StakeholdersComponent implements OnInit {
 
   searchStakeholder() {
     //this.formStakeholderSearch
-    console.log("ola");
-    this.stakeholderService.getStakeholderByID("75c99155-f3a8-45e2-9bd3-56a39d8a68ae", this.UUIDAPI, "2").subscribe(o => {
-      console.log(o);
+    //console.log("ola");
+    //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
+    //  console.log(o);
+    //});
+
+    var context = this;
+
+    /*this.onSearchSimulation(22181900000011);*/
+    this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
+      var clients = o;
+
+      var context2 = this;
+
+      clients.forEach(function (value, index) {
+        console.log(value);
+        context2.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+          console.log(c);
+          var stakeholder = {
+            "stakeholderNumber": c.stakeholderId,
+            "stakeholderName": c.shortName,
+            "stakeholderNIF": c.fiscalIdentification.fiscalId,
+            "elegible": "elegivel",
+            "associated": "SIM"
+          }
+
+          context.stakeholdersToShow.push(stakeholder);
+          console.log(context.stakeholdersToShow);
+        });
+      })
+    }, error => {
+      console.log("deu erro no stakeholders search request");
+      //context.showFoundClient = false;
+      //console.log("entrou aqui no erro huajshudsj");
+      //context.resultError = "Não existe Comerciante com esse número.";
+      //this.searchDone = true;
+
     });
   }
 
