@@ -38,9 +38,7 @@ export class ClientService {
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Content-Type': 'multipart/form-data',
         'Request-Id': requestID,
-        'Date': data.toISOString(),
         'X-Acquiring-UserId': AcquiringUserID,
       }),
     }

@@ -31,12 +31,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row" class="text-primary text-center">SIM</th>
-                <td class="text-primary text-center">1032</td>
-                <td class="text-primary text-center">BIJAL DE CANELA</td>
-                <td class="text-primary text-center">162243839</td>
-                <td class="text-primary text-center">Elegivel</td>
+              <tr *ngFor="let stakeholder of stakeholdersToShow">
+                <th scope="row" class="text-primary text-center">{{stakeholder.associated}}</th>
+                <td class="text-primary text-center">{{stakeholder.stakeholderNumber}}</td>
+                <td class="text-primary text-center">{{stakeholder.stakeholderName}}</td>
+                <td class="text-primary text-center">{{stakeholder.stakeholderNIF}}</td>
+                <td class="text-primary text-center">{{stakeholder.associated}}</td>
               </tr>
             </tbody>
           </table>
@@ -83,7 +83,7 @@
                 </select>
               </div>
               <p class="titulo-form-simples">Número do Documento:</p><input [readonly]="isCC && isNoDataReadable"
-                id="text1" name="text1" type="text" class="form-control campo_form">
+                id="text1" name="text1" type="text" class="form-control campo_form" formControlName="docNumber">
               </div>
               <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0"  *ngIf="isCC">
                 <p class="titulo-form-simples mb-3">Recolha eletrónica dos dados do Cartão de Cidadão?</p>

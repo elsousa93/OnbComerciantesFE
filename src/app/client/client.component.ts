@@ -57,7 +57,7 @@ export class ClientComponent implements OnInit {
   resultError: string = "";
   clientTypology: string = "";
 
-  clientsToShow: Client[];
+  clientsToShow: Client[] = [];
 
   newClient: Client = {
     "clientId": "22181900000011",
@@ -266,18 +266,43 @@ export class ClientComponent implements OnInit {
 
 
   searchClient() {
-    console.log(this.newClient.id);
+    console.log(this.newClient.clientId);
 
-    this.onSearchSimulation(22181900000011);
-    
-    //this.clientService.getClientByID("88dab4e9-3818-4491-addb-f518ae649e5a", this.UUIDAPI, "2").subscribe(o => {
-    //  console.log("ta a pesquisar um cliente");
-    //  console.log(o);
+    var context = this;
 
-    //  var results = o;
+    /*this.onSearchSimulation(22181900000011);*/
+    this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
+      this.showFoundClient = true;
+      var clients = o;
 
-    //  this.clientsToShow = results;
-    //});
+      var context2 = this;
+
+      clients.forEach(function (value, index) {
+        console.log(value);
+        context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
+          console.log(c);
+          var client = {
+            "clientId": c.merchantId,
+            "commercialName": c.commercialName,
+            "address": "Rua Gomes Artur",
+            "ZIPCode": "1000-001",
+            "locality": "Lisboa",
+            "country": "Portugal"
+          }
+          
+
+
+          context.clientsToShow.push(client);
+          console.log(context.clientsToShow);
+        });
+      })
+    }, error => {
+      context.showFoundClient = false;
+      console.log("entrou aqui no erro huajshudsj");
+      context.resultError = "Não existe Comerciante com esse número.";
+      this.searchDone = true;
+
+    });
   }
 
   /**
