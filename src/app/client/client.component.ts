@@ -7,6 +7,9 @@ import { docType, docTypeENI } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
 import { ClientService } from './client.service';
+import { ProcessService } from '../process/process.service';
+import { Process } from '../process/process.interface';
+
 
 @Component({
   selector: 'app-client',
@@ -24,6 +27,8 @@ export class ClientComponent implements OnInit {
   public result: any;
   public displayValueSearch: any;
   public isNoDataReadable: boolean;
+
+  //process: any;
   
 
   clientIdNew;
@@ -141,7 +146,7 @@ export class ClientComponent implements OnInit {
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
   private baseUrl: string, @Inject('NEYONDBACK_URL')
-    private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService) {
+    private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService) {
 
     this.ngOnInit();
     console.log(baseUrl);
@@ -349,6 +354,22 @@ export class ClientComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+
+    //var context = this;
+
+    //var processToInsert = {
+    //  "processNumber": "5",
+    //  "goal": "merchantOnboarding",
+    //  "startedByUsername": "string",
+    //  "startedByPartner": "string",
+    //  "startedAt": "string"
+    //} as Process;
+
+    //this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
+    //  context.process = o;
+
+    //  console.log(context.process);
+    //});
   }
 
   //função que altera o valor do map e da currentPage
@@ -383,7 +404,8 @@ export class ClientComponent implements OnInit {
       state: {
         tipologia: this.tipologia,
         NIFNIPC: this.newClient.clientId,
-        clientExists: true
+        clientExists: true,
+        //processID: this.process.processId
       }
     };
 
@@ -430,7 +452,8 @@ export class ClientComponent implements OnInit {
       state: {
       tipologia: this.tipologia,
         NIFNIPC: this.newClient.clientId,
-        exists: false
+        exists: false,
+        /*processId: this.process.processId*/
     }
   };
 

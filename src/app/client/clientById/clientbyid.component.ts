@@ -627,6 +627,8 @@ export class ClientByIdComponent implements OnInit {
 
 
   submit() {
+    console.log("submit de um novo cliente");
+
     var formValues = this.form.value;
 
     this.client.contacts.preferredMethod = this.form.value["preferenceContacts"];

@@ -32,6 +32,31 @@ export class ProcessService {
       return this.http.get<ISubmission>(this.baseUrl + 'BEProcess/GetSubmissionByID/' + id);
   }
 
+
+  //OUTBOUND API
+
+  startProcess(process: Process, RequestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
+
+    var URI = this.urlOutbound + "api/v1/process/";
+
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Request-Id': RequestID,
+        'X-Acquiring-UserId': AcquiringUserID
+      }),
+    }
+
+    if (AcquiringPartnerID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
+    if (AcquiringBranchID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    if (AcquiringProcessID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+
+    return this.http.post<any>(URI, process, HTTP_OPTIONS);
+  }
+
+
   createStakeholder(process: Process, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 
     var URI = this.urlOutbound + "api/v1/process/";
