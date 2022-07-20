@@ -113,8 +113,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   submit(e) {
     console.log(e);
     this.newStakeholder.email = this.formContactos.value.email;
-    this.newStakeholder.phone.countryCode = this.formContactos.value.countryCode;
-    this.newStakeholder.phone.phoneNumber = this.formContactos.value.phoneNumber;
+    this.newStakeholder.phone1.countryCode = this.formContactos.value.countryCode;
+    this.newStakeholder.phone1.phoneNumber = this.formContactos.value.phoneNumber;
     this.route.navigate(['/info-declarativa-lojas']);
   }
 

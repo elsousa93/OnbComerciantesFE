@@ -8,6 +8,8 @@ import { SubmissionService } from '../submission/service/submission-service.serv
 import { CountryInformation } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import * as $ from 'jquery';
+import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
+import { Client } from '../client/Client.interface';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -51,6 +53,7 @@ export class CountrysComponent implements OnInit {
 
   tipologia: any;
   NIFNIPC: any;
+  client: Client
 
   ngOnInit() {
     this.initializeForm();
@@ -67,6 +70,7 @@ export class CountrysComponent implements OnInit {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      this.client = this.route.getCurrentNavigation().extras.state["client"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
@@ -117,10 +121,176 @@ export class CountrysComponent implements OnInit {
     this.data.changeCurrentPage(currentPage);
   }
 
-  submit() {
-    this.updateData(true, 1);
+  newSubmission: SubmissionPostTemplate = {
+    documents: [{
+      data: "",
+      documentPurpose: "",
+      documentType: "",
+      file: {
+        binary: btoa(""), // converter
+        fileType: ""
+      },
+      validUntil: ""
+    }],
+    bank: "0800",
+    isClientAwaiting: true,
+    isComplete: true,
+    processKind: "MerchantOnboarding",
+    state: "Incomplete",
+    processNumber: "",
+    processType: "Standard",
+    submissionType: "DigitalFirstHalf",
+    submissionUser: {
+      branch: "SIBS",
+      user: "joao.silvestre",
+      partner: ""
+    },
+    startedAt: "",
+    stakeholders: [{
+      fiscalId: "",
+      identificationDocument: {
+        type: "",
+        number: "",
+        country: "",
+        expirationDate: ""
+      },
+      fullName: "",
+      contactName: "",
+      shortName: "",
+      isProxy: false,
+      fiscalAddress: {
+        address: "",
+        postalCode: "",
+        postalArea: "",
+        country: ""
+      },
+      phone1: {
+        countryCode: "",
+        phoneNumber: ""
+      },
+      phone2: {
+        countryCode: "",
+        phoneNumber: ""
+      },
+      email: "",
+      birthDate: ""
 
-    this.route.navigate(['stakeholders/']);
+    }],
+    merchant: {
+      clientId: "",
+      fiscalId: "",
+      //companyName: "",
+      commercialName: "",
+      legalName: "",
+      shortName: "",
+      headquartersAddress: {
+        address: "",
+        postalCode: "",
+        postalArea: "",
+        //locality: "",
+        country: ""
+      },
+      merchantType: "Corporate",
+      legalNature: "",
+      legalNature2: "",
+      crc: {
+        code: "",
+        validUntil: ""
+      },
+      shareCapital: {
+        capital: 0,
+        date: ""
+      },
+      byLaws: "",
+      mainEconomicActivity: "",
+      otherEconomicActivities: [],
+      mainOfficeAddress: {
+        address: "",
+        postalCode: "",
+        postalArea: "",
+        locality: "",
+        country: ""
+      },
+      establishmentDate: "",
+      businessGroup: {
+        type: "Isolated",
+        branch: ""
+      },
+      knowYourSales: {
+        estimatedAnualRevenue: 0,
+        averageTransactions: 0,
+        servicesOrProductsSold: [""],
+        servicesOrProductsDestinations: [""]
+      },
+      bankInformation: {
+        bank: "",
+        //branch: "",
+        iban: "",
+        //accountOpenedAt: ""
+      },
+      contacts: {
+        email: "",
+        phone1: {
+          countryCode: "",
+          phoneNumber: ""
+        },
+        phone2: {
+          countryCode: "",
+          phoneNumber: ""
+        },
+        fax: {
+          countryCode: "",
+          phoneNumber: ""
+        }
+      },
+      documentationDeliveryMethod: "",
+      billingEmail: "",
+      merchantRegistrationId: ""
+    },
+  }
+
+  submit() {
+    console.log('Cliente recebido ', this.client);
+    this.updateData(true, 1);
+    this.newSubmission.merchant.commercialName = this.form.get("franchiseName").value;
+    this.newSubmission.merchant.billingEmail = this.client.billingEmail;
+    this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+    this.newSubmission.merchant.bankInformation = this.client.bankInformation;
+    this.newSubmission.merchant.byLaws = this.client.byLaws;
+    this.newSubmission.merchant.clientId = this.client.clientId;
+    this.newSubmission.merchant.companyName = this.client.companyName;
+    this.newSubmission.merchant.contacts = this.client.contacts;
+    this.newSubmission.merchant.crc = this.client.crc;
+    this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+    this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
+    this.newSubmission.merchant.fiscalId = this.client.fiscalId;
+    this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
+    this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+    this.newSubmission.merchant.id = this.client.id;
+    this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+    this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+    this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = this.form.get("services").value;
+    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido; //tenho de mandar apenas o CODE
+    this.newSubmission.merchant.legalName = this.client.legalName;
+    this.newSubmission.merchant.legalNature = this.client.legalNature;
+    this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
+    this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
+    this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
+    this.newSubmission.merchant.merchantType = this.client.merchantType;
+    this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
+    this.newSubmission.merchant.shareCapital = this.client.shareCapital;
+    this.newSubmission.merchant.shortName = this.client.shortName;
+    
+
+    console.log('Submissao ', this.newSubmission);
+
+    this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
+      console.log('Resultado obtido ', result);
+    });
+
+
+
+    //this.route.navigate(['stakeholders/']);
   }
 
   setAssociatedWith(value: boolean) {
@@ -565,4 +735,6 @@ export class CountrysComponent implements OnInit {
   goBackToHomePage() {
     this.route.navigate(["/"]);
   }
+
+
 }

@@ -10,7 +10,8 @@ export interface IStakeholders {
   fiscalAddress?: Address
   foreignFiscalInformation?: ForeignFiscalInformation
   isProxy?: boolean
-  phone?: Phone
+  phone1?: Phone
+  phone2?: Phone
   email?: string
   birthDate?: string
   pep?: IPep

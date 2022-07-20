@@ -15,6 +15,7 @@ export interface ISubmission {
 export interface SubmissionPostTemplate {
   submissionType?: string
   processNumber?: string
+  state?: string
   processKind?: string
   processType?: string
   isClientAwaiting?: boolean
@@ -23,7 +24,8 @@ export interface SubmissionPostTemplate {
   bank?: string
   merchant?: Client
   stakeholders?: IStakeholders[]
-  documents?: Document[]
+  documents?: Document[],
+  startedAt?: string
 }
 
 export interface SubmissionPostResponse {
@@ -39,7 +41,7 @@ export interface SubmissionPostResponse {
   processType?: string
   isClientAwaiting?: boolean
   submissionUser?: SubmissionUser
-  isComplete?: boolean
+  isComplete?: boolean,
 }
 
 export interface SubmissionPutTemplate {
@@ -78,10 +80,24 @@ interface SimplifiedReference {
 
 interface SubmissionUser {
   user?: string
-  employer?: string
+  branch?: string
+  partner?: string
 }
 
 export interface Merchant {
   fiscalId: string
   name: string
+}
+
+interface Document {
+  documentType: string
+  documentPurpose: string
+  file: DocumentFile
+  validUntil: string
+  data: string
+}
+
+interface DocumentFile{
+  fileType: string
+  binary: string
 }
