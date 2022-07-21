@@ -57,7 +57,7 @@ export class CountrysComponent implements OnInit {
   client: Client;
   clientId: string;
 
-  currentClient: any;
+  currentClient: any = {};
   documentsList = []; //lista de documentos do utilizador
 
 
@@ -81,14 +81,22 @@ export class CountrysComponent implements OnInit {
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
+
+    this.clientId = String(this.router.snapshot.params['id']);
+
+    console.log(this.clientId);
     //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
       console.log("FETCH PAISES");
     }, error => console.log(error));
 
-    this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+    console.log("por entrar no clientbyid");
+    this.clientService.getClientByID("88dab4e9-3818-4491-addb-f518ae649e5a", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+      console.log("entrou no getclientbyid");
       this.currentClient = result;
+      console.log(result);
+      console.log(this.currentClient);
     });
   }
 

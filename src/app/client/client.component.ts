@@ -294,9 +294,6 @@ export class ClientComponent implements OnInit {
             "locality": "Lisboa",
             "country": "Portugal",
           }
-          
-
-
           context.clientsToShow.push(client);
           console.log(context.clientsToShow);
         });
@@ -409,7 +406,7 @@ export class ClientComponent implements OnInit {
         tipologia: this.tipologia,
         NIFNIPC: this.newClient.clientId,
         clientExists: true,
-        clientId: this.clientId
+        clientId: this.clientId,
         processID: this.process.processId
       }
     };
@@ -465,7 +462,8 @@ export class ClientComponent implements OnInit {
     }
   };
 
-  this.route.navigate(['/clientbyid', clientId], navigationExtras);
+    this.route.navigate(['/clientbyid', clientId], navigationExtras);
+  //  this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 
   close() {
