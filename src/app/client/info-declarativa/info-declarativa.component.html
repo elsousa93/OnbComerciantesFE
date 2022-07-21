@@ -55,8 +55,7 @@
                         <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
                         <select class="form-select" #phone1CountryCode formControlName="phone1CountryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
                           <option value="">Indicativo:</option>
-                          <option value="adsadsa">Teste</option>
-                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
                           is required.
@@ -64,7 +63,7 @@
                       </div>
                       <div class="col">
                         <p class="titulo-form-simples mt-0">TELEFONE 1:*</p>
-                        <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phone1PhoneNumber">
+                        <input #phone1PhoneNumber (click)="validatePhone(phone1CountryCode.value, phone1PhoneNumber.value)" name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phone1PhoneNumber">
                         <div class="alert alert-danger" *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
                           is required.
                         </div>
@@ -76,8 +75,7 @@
                         <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
                         <select class="form-select" #phone2CountryCode formControlName="phone2CountryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode">
                           <option value="">Indicativo:</option>
-                          <option value="adsadsa">Teste</option>
-                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} (+{{country.internationalCallingCode}}) </option>
+                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
                           is required.
@@ -85,7 +83,7 @@
                       </div>
                       <div class="col">
                         <p class="titulo-form-simples mt-0">TELEFONE 2:*</p>
-                        <input #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phone2PhoneNumber">
+                        <input #phone2PhoneNumber (click)="validatePhone(phone2CountryCode.value, phone2PhoneNumber.value)" name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phone2PhoneNumber">
                         <div class="alert alert-danger" *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
                           is required.
                         </div>

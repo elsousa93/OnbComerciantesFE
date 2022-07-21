@@ -25,6 +25,9 @@ import { CRCProcess } from '../../CRC/crcinterfaces';
 
 export class ClientByIdComponent implements OnInit {
   lastSize: number = 14;
+  processId: string;
+
+
 
   @Input() tipologia: string;
   @ViewChild('searchInput') input: ElementRef;
@@ -447,6 +450,8 @@ export class ClientByIdComponent implements OnInit {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      this.processId = this.route.getCurrentNavigation().extras.state["processId"];
+      console.log(this.processId);
       this.idClient = this.route.getCurrentNavigation().extras.state["clientId"];
       console.log(this.tipologia);
     }
@@ -464,6 +469,12 @@ export class ClientByIdComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientId = String(this.router.snapshot.params['id']);
+
+    console.log(this.router.snapshot.params['processID']);
+    this.processId = this.router.snapshot.params['processID'];
+    console.log("-------- process ID clientbyid ----------");
+    console.log(this.processId);
+    console.log("-----------------------------------------");
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
