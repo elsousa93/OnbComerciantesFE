@@ -59,6 +59,7 @@ import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/up
 import { TableInfoService } from './table-info/table-info.service';
 import { InfoDeclarativaLojasComponent } from './client/info-declarativa/info-declarativa-lojas/info-declarativa-lojas.component';
 import { CountrysComponent } from './countrys/countrys.component';
+import { DevolucaoComponent } from './devolucao/devolucao.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -138,6 +139,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
+      { path: 'app-devolucao', component: DevolucaoComponent },
+      { path: 'app-devolucao/:id', component: DevolucaoComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
