@@ -13,43 +13,45 @@
          </nav>
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-         <div class="table-responsive me-2 ps-3 pe-3">
-            <form #contactForm="ngForm">
-               <table class="table table-success" *ngIf="client" style="overflow-x: hidden !important;">
-                  <thead class="table-primary">
-                     <tr class="text-center text-primary table-light">
-                        <th scope="col" class="align-baseline text-primary table-white">Tipo</th>
-                        <th scope="col" class="text-center">Interveniente</th>
-                        <th scope="col" class="text-center">Data de Validade</th>
-                        <th scope="col" class="text-center">Data de Entrada</th>
-                        <th scope="col" class="text-center">Status</th>
-                        <th scope="col" class="text-center"></th>
+         <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+            <div class="table-responsive me-2 ps-3 pe-3">
+               <form #contactForm="ngForm">
+                  <table class="table table-success" *ngIf="client" style="overflow-x: hidden !important;">
+                     <thead class="table-primary text-primary">
+                        <tr class="text-center text-primary table-light">
+                           <th scope="col" class="align-baseline text-primary table-white">Tipo</th>
+                           <th scope="col" class="text-center bg-light">Interveniente</th>
+                           <th scope="col" class="text-center bg-white">Data de Validade</th>
+                           <th scope="col" class="text-center bg-white">Data de Entrada</th>
+                           <th scope="col" class="text-center bg-white">Status</th>
+                           <th scope="col" class="text-center bg-white"></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                     <tr *ngFor="let file of files">
+                        <input type="hidden" name="id" id="id" value={{client.clientId}}>
+                        <td class="text-primary text-center text-primary">{{compToShow.tipo}}</td>
+                        <td class="text-primary text-center">{{compToShow.interveniente}}</td>
+                        <td class="text-primary text-center">{{compToShow.dataValidade}}</td>
+                        <td class="text-primary text-center">{{compToShow.dataEntrada}}</td>
+                        <td class="text-primary text-center">{{compToShow.status}}</td>
+                        <td></td>
+                        <td class="text-center text-primary">
+                           <span>
+                              <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename, file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                           </span>
+                           <span>
+                              <img src="assets/images/search_blue.svg" (click)="search(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                           </span>
+                           <span>
+                              <img src="assets/images/file_download.svg" (click)="download(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                           </span>
+                        <td></td>
                      </tr>
-                  </thead>
-                  <tbody class="table-light text-primary">
-                    <tr class="table-white text-primary" *ngFor="let file of files">
-                      <input type="hidden" name="id" id="id" value={{client.clientId}}>
-                      <td class="text-center text-primary">{{compToShow.tipo}}</td>
-                      <td class="text-center">{{compToShow.interveniente}}</td>
-                      <td class="text-center">{{compToShow.dataValidade}}</td>
-                      <td class="text-center">{{compToShow.dataEntrada}}</td>
-                      <td class="text-center">{{compToShow.status}}</td>
-                      <td></td>
-                      <td class="text-center">
-                        <span>
-                           <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename, file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-                        </span>
-                        <span>
-                           <img src="assets/images/search_blue.svg" (click)="search(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-                        </span>
-                        <span>
-                           <img src="assets/images/file_download.svg" (click)="download(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-                        </span>
-                      <td></td>
-                    </tr>
-                  </tbody>
-               </table>
-            </form>
+                     </tbody>
+                  </table>
+               </form>
+            </div>
          </div>
          <div class="row">
             <div class="col ms-2 ps-3">
@@ -166,104 +168,100 @@
       </div> -->
    </ng-template>
    <ng-template #checkListDocs>
-      <div style="margin: auto;width: 100%;padding: 6px;" class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-         <div class="modal-content-checkdocuments row">
-            <div class="modal-header-checkdocuments offset-1 bg-white align-self-center col-10 ps-3">
-               <h4 class="modal-title-checkdocuments text-primary mt-4 ps-0">QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?</h4>
-               <span style="cursor: pointer !important;" class="w3-button w3-display-topright"
-                  (click)="declineCheckList()">&times;</span>
-            </div>
-            <div class="modal-body-checkdocuments offset-1 bg-white align-self-center col-10 ps-3">
+      <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+         <div class="row">
+            <div class="offset-1 bg-white align-self-center col-10 ps-3">
+               <h4 class="text-primary mt-4 ps-0">QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?</h4>
+               <span style="cursor: pointer !important;" (click)="declineCheckList()">&times;</span>
                <p class="ps-0">Deverão ser associados ao processo de Onboarding os seguintes documentos:</p>
-                  <div>
-                     <span *ngIf="client" class="titulo-form-simples mt-0 pb-1 ps-3"> Para o cliente empresa {{ client.companyName }}</span>
-                        <form #contactForm="ngForm">
-                           <div class="table-responsive me-2 ps-3 pe-4">
-                              <table class="table table-success align-middle" *ngIf="client">
-                                 <thead class="table-primary align-middle text-primary">
-                                    <tr class="text-center text-primary align-middle table-primary">
-                                       <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                                       <th scope="col">Comnprovativo de Sociedade</th>
-                                       <th scope="col">Comprovativo BEF</th>
-                                       <th scope="col">Comprovativo Fiscal Pessoa coletiva</th>
-                                       <th scope="col">Comprovativo de IBAN</th>
-                                       <th scope="col">Comprovativo de RCBE</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody class="table-light text-primary">
-                                    <tr class="table-white text-primary">
-                                       <th scope="row" class="text-center text-dark">EMPRESA TESTE UNIPESSOAL</th>
-                                       <td class="text-center text-dark">{{ client.companyName }}</td>
-                                       <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
-                                       <td>N/A</td>
-                                       <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
-                                       <td class="text-center text-dark"><i class="glyphicon glyphicon-remove"></i></td>
-                                    </tr>
-                                 </tbody>
-                              </table>
-                           </div>
-                           <div>
-                              <p class="titulo-form-simples mt-0 pb-1 ps-3">Para A NATUREZA JURÍDICA SELECIONADA SOCIEDADE UNIPESSOAL POR QUOTAS OS DOCUMENTOS OBRIGATÓRIOS:&nbsp;</p>
-                              <p class="mt-0 pb-1 ps-3 caixa_azul">Certidão de conservatória do Registo Comercial Permanente ou Retirada a certidão se Cliente fornecer o código de Acesso à Certidão (www.portaldaempresa.pt)</p>
-                           </div>
-                           <div>
-                              <p class="titulo-form-simples mt-0 pb-1 ps-3"><i class="far fa-file-alt"></i>&nbsp;Para o/os interveniente(s):</p>
-                              <div class="table-responsive me-2 ps-3 pe-4">
-                                 <table class="table table-success align-middle" *ngIf="client">
-                                    <thead class="table-primary align-middle text-primary">
-                                       <tr class="text-center text-primary align-middle table-primary">
-                                          <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                                          <th scope="col">Comprovativo de Documento de Identificação
-                                          </th>
-                                          <th scope="col">Comprovativo Fiscal Particular</th>
-                                          <th scope="col">Procuração Cliente</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody class="table-light text-primary">
-                                       <tr class="table-white text-primary">
-                                          <td class="text-center text-dark">{{ client.shortName }}</td>
-                                          <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
-                                          <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
-                                          <td class="text-center text-dark">N/A</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>   
-                              <div>
-                                 <p class="titulo-form-simples mt-0 pb-1 ps-3"><i class="far fa-file-alt">&nbsp;</i>Para A/AS LOJA(S):</p>
-                                    <div class="table-responsive me-2 ps-3 pe-4">
-                                       <table class="table table-success align-middle" *ngIf="client">
-                                          <thead class="table-primary align-middle text-primary">
-                                             <tr class="text-center text-primary align-middle table-primary">
-                                                <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                                                <th scope="col" >Comprovativo de IBAN</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody class="table-light text-primary">
-                                             <tr class="table-white text-primary">
-                                                <th scope="row" class="text-center text-dark">Teste1</th>
-                                                <td class="text-center text-dark"><i class="glyphicon glyphicon-ok"></i></td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                    </div>
-                                 </div>
-                              </div>
+            </div>
+            <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
+               <p *ngIf="client" class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;Para o cliente empresa {{ client.companyName }}</p>
+               <form #contactForm="ngForm">
+                  <div class="table-responsive me-2 ps-3 pe-4">
+                     <table class="table table-success align-middle" *ngIf="client">
+                        <thead class="table-primary align-middle text-primary">
+                           <tr class="text-center text-primary align-middle table-primary">
+                              <th scope="col" class="align-baseline text-primary table-white">Nome</th>
+                              <th scope="col">Comnprovativo de Sociedade</th>
+                              <th scope="col">Comprovativo BEF</th>
+                              <th scope="col">Comprovativo Fiscal Pessoa coletiva</th>
+                              <th scope="col">Comprovativo de IBAN</th>
+                              <th scope="col">Comprovativo de RCBE</th>
+                           </tr>
+                        </thead>
+                        <tbody class="table-light text-primary">
+                           <tr class="table-white text-primary">
+                              <th scope="row" class="text-center text-dark">EMPRESA TESTE UNIPESSOAL</th>
+                              <td class="text-center text-dark">{{ client.companyName }}</td>
+                              <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                              <td>N/A</td>
+                              <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                              <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </form>
+            </div>
+            <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
+               <p class="titulo-form-simples mt-0 pb-1 ps-3">Para A NATUREZA JURÍDICA SELECIONADA SOCIEDADE UNIPESSOAL POR QUOTAS OS DOCUMENTOS OBRIGATÓRIOS:&nbsp;</p>
+               <p class="mt-0 pb-1 ps-3 caixa_azul">Certidão de conservatória do Registo Comercial Permanente ou Retirada a certidão se Cliente fornecer o código de Acesso à Certidão (www.portaldaempresa.pt)</p>
+            </div>
+            <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
+               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;Para o/os interveniente(s):</p>
+               <div class="table-responsive me-2 ps-3 pe-4">
+                  <table class="table table-success align-middle" *ngIf="client">
+                     <thead class="table-primary align-middle text-primary">
+                        <tr class="text-center text-primary align-middle table-primary">
+                           <th scope="col" class="align-baseline text-primary table-white">Nome</th>
+                           <th scope="col">Comprovativo de Documento de Identificação
+                           </th>
+                           <th scope="col">Comprovativo Fiscal Particular</th>
+                           <th scope="col">Procuração Cliente</th>
+                        </tr>
+                     </thead>
+                     <tbody class="table-light text-primary">
+                        <tr class="table-white text-primary">
+                           <td class="text-center text-dark">{{ client.shortName }}</td>
+                           <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                           <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                           <td class="text-center text-dark">N/A</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>   
+            <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-5">
+               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;Para A/AS LOJA(S):</p>
+               <div class="table-responsive me-2 ps-3 pe-4">
+                  <table class="table table-success align-middle" *ngIf="client">
+                     <thead class="table-primary align-middle text-primary">
+                        <tr class="text-center text-primary align-middle table-primary">
+                           <th scope="col" class="align-baseline text-primary table-white">Nome</th>
+                           <th scope="col">Comprovativo de IBAN</th>
+                        </tr>
+                     </thead>
+                     <tbody class="table-light text-primary">
+                        <tr class="table-white text-primary">
+                           <th scope="row" class="text-center text-dark">Teste1</th>
+                           <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
                   
-                              <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-                                 <div class="row">
-                                    <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-9">
-                                       <p class="titulo-form-simples mt-0 pb-1 ps-3"><i class="fas fa-info-circle">&nbsp;</i>LEGENDAS:<br /></p>
-                                       <p class="mt-0 pb-1 ps-3">
-                                          <font face="Font Awesome 5 Free"><b>A </b>- Já existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp; X </b>- Não existe em arquivo&nbsp; &nbsp; |&nbsp; &nbsp;<b>N/A</b> - Não aplicável&nbsp; &nbsp;</font>
-                                       </p>
-                                    </div>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                     </div>
-                     
+      <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+         <div class="row">
+            <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-9">
+               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/circle-info-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;LEGENDAS:<br /></p>
+               <p class="mt-0 pb-1 ps-3">
+                  <font face="Font Awesome 5 Free"><b>A </b>- Já existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp; X </b>- Não existe em arquivo&nbsp; &nbsp; |&nbsp; &nbsp;<b>N/A</b> - Não aplicável&nbsp; &nbsp;</font>
+               </p>
+            </div>
          </div>
       </div>
    </ng-template>
@@ -303,5 +301,3 @@
          </div>
       </div>
    </div>
-</div>
-</div>
