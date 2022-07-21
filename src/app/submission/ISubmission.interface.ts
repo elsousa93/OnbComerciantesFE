@@ -89,7 +89,7 @@ export interface Merchant {
   name: string
 }
 
-interface Document {
+export interface Document {
   documentType?: string
   documentPurpose?: string
   file?: DocumentFile
