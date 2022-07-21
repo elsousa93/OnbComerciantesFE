@@ -1,10 +1,5 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<br>
-<br>
-<br>
-<br>
-<br> 
-<div class="container-fluid mt-5 ms-0 me-0 pt-5 ps-0 pe-0">
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
@@ -17,8 +12,8 @@
         </span>
       </nav>
     </div>
-    <div class="offset-1 bg-white col-7 col-xxl-10">
-      <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+    <div class="offset-1 center-align bg-white col-10 ps-3">
+      <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
         <div class="table-responsive mb-5">
           <table class="table">
             <thead class="text-primary table-primary">
@@ -44,8 +39,8 @@
       </div>
       
 
-      <div class="offset-1 bg-white align-self-center col-10 ps-3">
-        <h2 class="text-primary mt-5 ps-0"><img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;PESQUISAR OU ADICIONAR INTERVENIENTE</h2>
+        <h2 class="text-primary mt-5 ps-0 center-align">
+          <span class="material-symbols-rounded icon-titulos m-align"><img src="assets/images/group_add_blue.svg" class="img_add"></span>&nbsp;PESQUISAR OU ADICIONAR INTERVENIENTE<br></h2>
         <p class="titul campo_obrigatrio">* campo obrigatório</p>
 
         <p class="ps-0">Por favor, pesquise o Interveniente:</p>
@@ -116,7 +111,7 @@
             <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                 <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                  <button *ngIf="stakeType && stakeDocType" id="btn5a2" class="btn botao_azul" wappler-command="editContent" (click)="searchStakeholder()" >PESQUISAR
+                  <button *ngIf="stakeType && stakeDocType" id="btn5a2" class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="searchStakeholder()">PESQUISAR
                     INTERVENIENTE&nbsp;&nbsp;
                     <img src="assets/images/person_search.svg" class="img_btn">
                   </button></span>
@@ -128,6 +123,7 @@
 
               </nav>
             </div>
+            
             <!-- <div class="col ms-0 ps-0"> Caso seja preciso os botões clássicos no final da página
               <hr />
               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -150,7 +146,6 @@
               </nav>
             </div> -->
         </form>
-      </div>
 
       <!-- Cria FORM diferente ?-->
       <div *ngIf="isShown" class="row container-fluid" id="divshow">
