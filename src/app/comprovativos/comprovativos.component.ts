@@ -6,7 +6,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { Client } from '../client/Client.interface';
+import { ClientService } from '../client/client.service';
 import { DataService } from '../nav-menu-interna/data.service';
+import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { SubmissionService } from '../submission/service/submission-service.service';
 import { CheckDocumentsComponent } from './check-documents/check-documents.component';
 import { IComprovativos } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
@@ -156,8 +159,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   validatedDocuments: boolean = false;
 
+  submission: any;
+  submissionClient: any;
+  stakeholdersList: any[] = [];
+
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
-  private modalService: BsModalService, private data: DataService) {
+    private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService) {
 
     this.url = baseUrl;
     this.ngOnInit();
@@ -169,6 +176,23 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       console.log(result);
     }, error => console.error(error));
     this.updateData(false, 4);
+
+    this.submissionService.GetSubmissionByID("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
+      this.submission = result;
+    });
+
+    this.clientService.getClientByID(this.submission.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+      this.submissionClient = result;
+    });
+
+    this.submission.stakeholders.forEach(stake => {
+      this.stakeholderService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+        this.stakeholdersList.push(result);
+      });
+    });
+    console.log('Submission ', this.submission);
+    console.log('Client ', this.client);
+    console.log('stakeholders list ', this.stakeholdersList);
   }
 
   ngOnInit(): void {

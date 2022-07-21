@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IReadCard } from './IReadCard.interface';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
+import { StakeholderService } from '../stakeholder.service';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -54,9 +55,11 @@ export class NewStakeholderComponent implements OnInit {
     },
   } as unknown as IStakeholders
 
+  currentStakeholder: any;
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableInfoService) {
+    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableInfoService, private stakeService: StakeholderService) {
 
     this.ngOnInit();
 
@@ -66,6 +69,9 @@ export class NewStakeholderComponent implements OnInit {
         this.newStake = result;
       }, error => console.error(error));
     }
+
+   
+
   }
 
   ngOnInit(): void {
@@ -214,6 +220,38 @@ export class NewStakeholderComponent implements OnInit {
     }
     //  console.log(morada);
     //}
+  }
+
+  b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    const blobUrl = window.URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank',
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;` );
+  }
+
+  chooseStakeholder(stake: any) {
+    this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+      this.currentStakeholder = result;
+    });
   }
 }
 

@@ -313,20 +313,10 @@ export class CountrysComponent implements OnInit {
       padding: 10px;
       text-align: center;
       border: 3px solid green;` );
-
-    //return blob;
   }
 
   setAssociatedWith(value: boolean) {
     this.associatedWithGroupOrFranchise = value;
-
-    this.newSubmission.documents.forEach(elem => {
-      this.b64toBlob(elem.file.binary, 'application/pdf', 512);
-    });
-
-    
-
-
   }
 
   onCountryChange(event) {
