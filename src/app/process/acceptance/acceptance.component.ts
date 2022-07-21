@@ -229,11 +229,11 @@ export class AcceptanceComponent implements OnInit {
 
     const HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Content-Type': 'multipart/form-data',
-        'Authorization': 'Basic ' + secret,
+        //'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + secret,
       }),
       params: {
-        'grant_type': 'password',
+        //'grant_type': 'password',
         'username': 'PRT/CC/99000245/505767457/4a3d88cbfc37465a999aa3c5fdd19e75ec21e594c81e',
         'password': '',
         'client_id': 'ca0c3470904dc3b2ddfe691dd0950d29',
@@ -242,11 +242,11 @@ export class AcceptanceComponent implements OnInit {
 
     }
 
-    const body = new HttpParams().set('grant_type', 'password')
-      .set('username', 'PRT/CC/99000245/505767457/4a3d88cbfc37465a999aa3c5fdd19e75ec21e594c81e')
-      .set('password', '')
-      .set('client_id', 'ca0c3470904dc3b2ddfe691dd0950d29')
-      .set('client_secret', 'n%3Fw0%21uH7h6853%23k6A0fg')
+    const body = new HttpParams()//.set('grant_type', 'password')
+      //.set('username', 'PRT/CC/99000245/505767457/4a3d88cbfc37465a999aa3c5fdd19e75ec21e594c81e')
+      //.set('password', '')
+      //.set('client_id', 'ca0c3470904dc3b2ddfe691dd0950d29')
+      //.set('client_secret', 'n%3Fw0%21uH7h6853%23k6A0fg')
       ;
 
     this.http.post("mtrust/oauth/token", body, HTTP_OPTIONS)
