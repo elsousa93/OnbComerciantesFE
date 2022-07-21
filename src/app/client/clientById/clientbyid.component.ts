@@ -764,7 +764,8 @@ export class ClientByIdComponent implements OnInit {
         tipologia: this.tipologia,
         NIFNIPC: this.NIFNIPC,
         client: this.client,
-        clientId: this.idClient
+        clientId: this.idClient,
+        processId: this.processId
       }
     };
 
