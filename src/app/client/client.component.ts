@@ -292,7 +292,7 @@ export class ClientComponent implements OnInit {
             "address": "Rua Gomes Artur",
             "ZIPCode": "1000-001",
             "locality": "Lisboa",
-            "country": "Portugal"
+            "country": "Portugal",
           }
           
 
@@ -409,6 +409,7 @@ export class ClientComponent implements OnInit {
         tipologia: this.tipologia,
         NIFNIPC: this.newClient.clientId,
         clientExists: true,
+        clientId: this.clientId
         processID: this.process.processId
       }
     };
@@ -443,9 +444,12 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  aButtons(id: boolean) {
+  clientId: string
+
+  aButtons(id: boolean, clientId: string) {
     if (id == true) {
       this.showSeguinte = true
+      this.clientId = clientId;
     } else {
       this.showSeguinte = false
     }

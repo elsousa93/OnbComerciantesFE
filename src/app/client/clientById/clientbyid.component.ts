@@ -240,6 +240,7 @@ export class ClientByIdComponent implements OnInit {
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
   NIFNIPC: any;
+  idClient: string;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -703,7 +704,8 @@ export class ClientByIdComponent implements OnInit {
         clientExists: this.clientExists,
         tipologia: this.tipologia,
         NIFNIPC: this.NIFNIPC,
-        client: this.client
+        client: this.client,
+        clientId: this.idClient
       }
     };
 
