@@ -102,34 +102,16 @@ export class CountrysComponent implements OnInit {
 
   initializeForm() {
     this.form = new FormGroup({
-      franchiseName: new FormControl(/*this.client.companyName*/'', ),
       expectableAnualInvoicing: new FormControl(/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required*/),
       services: new FormControl('', /*Validators.required*/),
       transactionsAverage: new FormControl(/*this.client.knowYourSales.averageTransactions, Validators.required*/),
       associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
-      NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/),
       preferenceDocuments: new FormControl(/*this.client.documentationDeliveryMethod, Validators.required*/),
       inputEuropa: new FormControl(this.inputEuropa),
       inputAfrica: new FormControl(this.inputAfrica),
       inputAmerica: new FormControl(this.inputAmericas),
       inputOceania: new FormControl(this.inputOceania),
       inputAsia: new FormControl(this.inputTypeAsia)
-    })
-
-    this.form.get("franchiseName").valueChanges.subscribe(v => {
-      if (v !== '') {
-        this.isAssociatedWithFranchise = true;
-      } else {
-        this.isAssociatedWithFranchise = undefined;
-      }
-    })
-
-    this.form.get("NIPCGroup").valueChanges.subscribe(v => {
-      if (v !== null) {
-        this.isAssociatedWithFranchise = false;
-      } else {
-        this.isAssociatedWithFranchise = undefined;
-      }
     })
   }
 
@@ -290,9 +272,6 @@ export class CountrysComponent implements OnInit {
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log('Resultado obtido ', result);
     });
-
-    
-   
 
     //this.route.navigate(['stakeholders/']);
   }
