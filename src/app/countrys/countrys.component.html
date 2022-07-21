@@ -102,6 +102,7 @@
           <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
 
             <p class="titulo-form-simples mt-0 mb-3">PAÍSES DE DESTINO DOS PRODUTOS/SERVIÇOS*</p>
+            <textarea id="text5" class="form_control campo_form"></textarea>
             <div class="row ms-0 me-0">
               <div class="row ms-0 me-0">
                 <div class="col quadro_paises_tracejado">
@@ -211,10 +212,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="text-primary text-center">Certidão</td>
-                    <td class="text-primary text-center">02-11-2021</td>
-                    <td class="text-primary text-center">02-11-2022</td>
+                  <tr *ngFor="let elem of currentClient.documents">
+                    <td class="text-primary text-center">{{elem.documentType}}</td>
+                    <td class="text-primary text-center">02-11-2021</td><!--Não sei o que equivale a este campo nos documents-->
+                    <td class="text-primary text-center">{{elem.validUntil}}</td>
+                    <td>
+                      <span>
+                        <img src="assets/images/search_blue.svg" (click)="b64toBlob(elem.file.binary, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                      </span>
+                    </td>
                   </tr>
                   <tr>
                   </tr>
