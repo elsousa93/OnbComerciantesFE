@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Client } from '../client/Client.interface';
 import { ISubmission } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
@@ -57,17 +58,13 @@ export class ProcessService {
   }
 
 
-  createStakeholder(process: Process, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
-
-    var URI = this.urlOutbound + "api/v1/process/";
-
-    var data = new Date();
+  createMerchant(client: Client, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
+    
+    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/merchant";
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Content-Type': 'multipart/form-data',
         'Request-Id': requestID,
-        'Date': data.toISOString(),
         'X-Acquiring-UserId': AcquiringUserID
       }),
     }
@@ -79,6 +76,6 @@ export class ProcessService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    return this.http.post<any>(URI, process, HTTP_OPTIONS);
+    return this.http.post<any>(URI, client, HTTP_OPTIONS);
   }
 }

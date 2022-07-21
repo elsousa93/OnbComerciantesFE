@@ -220,7 +220,8 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
   // validação dos números de telefone
-  validatePhone(phoneCountryCode: string, phoneNumber: string){
+  validatePhone(phoneCountryCode: string, phoneNumber: string) {
+    console.log(".");
     if (phoneCountryCode == "+351") { //Indicativo de Portugal
       if (phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
         console.log("Válido");
