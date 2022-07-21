@@ -91,10 +91,11 @@ export interface Merchant {
 
 export interface Document {
   documentType?: string
-  documentPurpose?: string
-  file?: DocumentFile
+  purpose?: string
+  uniqueReference?: string
   validUntil?: string
-  data?: string
+  receivedAt?: string
+  archiveSource?: string
 }
 
 interface DocumentFile{
