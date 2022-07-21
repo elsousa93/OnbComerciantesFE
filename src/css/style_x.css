@@ -1409,3 +1409,22 @@ mat-paginator {
   .modal-footer-checkdocuments > * {
     margin: .25rem
   }
+
+  .laterais_tabs {
+    border-top-color: #dbe2e8;
+    border-bottom: .01rem solid #dbe2e8;
+    border-left: .01rem solid #dbe2e8;
+    border-right: .01rem solid #dbe2e8;
+    }
+.laterais_tabs2 {
+    border-top-color: #dbe2e8;
+    border-bottom: .0 rem solid #fff;
+    border-left: .01rem solid #dbe2e8;
+    border-right: .01rem solid #dbe2e8;
+    }
+    .laterais_tabs4 {
+    border-top-color: #dbe2e8;
+    border-bottom: .01rem solid #dbe2e8;
+    border-left: .01rem solid #dbe2e8;
+    border-right: .01rem solid #dbe2e8;
+    }

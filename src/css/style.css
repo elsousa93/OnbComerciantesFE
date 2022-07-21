@@ -558,14 +558,14 @@ main {
 
 
 .botao_branco {
-  margin: 8px 6px;
-  padding: 10px;
   color: #1e66b0;
   border: 2px solid #1e66b0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  margin: 8px 0px;
+  padding: 10px;
   }
 
 .botao_branco:hover {
@@ -579,8 +579,6 @@ main {
 }
 
 .botao_azul {
-  margin: 8px 6px;
-  padding: 10px;
   border: 2px solid #1e66b0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -588,6 +586,8 @@ main {
   border-bottom-right-radius: 5px;
   color: #fff;
   background-color: #1e66b0;
+  margin: 8px 0px ; 
+  padding: 10px;
   }
 
 .botao_azul:hover {
