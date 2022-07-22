@@ -711,12 +711,12 @@
           </div>
           <p class="titulo-form-simples">a empresa é uma sociedade comercial?*</p>
           <div class="form-check">
-            <input class="form-check-input" formControlName="commercialSociety" name="commercialSociety"
+            <input class="form-check-input" name="commercialSociety"
                    type="radio" value="true" id="commercialSociety" (click)="setCommercialSociety(true)">
             <label class="form-check-label radio">Sim</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input"  formControlName="commercialSociety" name="commercialSociety"
+            <input class="form-check-input" name="commercialSociety"
                    type="radio" value="false" id="commercialSociety" (click)="setCommercialSociety(false)">
             <label class="form-check-label radio" for="radio2">Não</label>
           </div>
@@ -979,7 +979,7 @@
           </div>
         </div> <!--Fecha primeiros 3 campos-->
         <!--Se NÃO for sociedade comercial e for Company-->
-        <div *ngIf="isCommercialSociety == false && tipologia==='Company'">
+        <div *ngIf="isCommercialSociety == false">
           <div class="bg-white col-7 col-xxl-10">
             <div class="row">
               <div class="col-xxl col-6">
@@ -1015,6 +1015,9 @@
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div class="col-xxl col-7">
                 <div>
                   <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
                   <input minlength="2" maxlength="100" formControlName="socialDenomination"
