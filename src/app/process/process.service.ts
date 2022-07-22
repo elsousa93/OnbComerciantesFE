@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Client } from '../client/Client.interface';
+import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, Sales, ShareCapital } from '../client/Client.interface';
+import { CRCProcess } from '../CRC/crcinterfaces';
+import { FiscalAddress, IdentificationDocument } from '../stakeholders/IStakeholders.interface';
 import { ISubmission } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
@@ -58,7 +60,7 @@ export class ProcessService {
   }
 
 
-  createMerchant(client: Client, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
+  createMerchant(client: ClientForProcess, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
     
     var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/merchant";
 
@@ -78,4 +80,45 @@ export class ProcessService {
 
     return this.http.post<any>(URI, client, HTTP_OPTIONS);
   }
+}
+
+export interface ClientForProcess {
+  legalName?: string,
+  commercialName?: string,
+  shortName?: string,
+  headquartersAddress?: HeadquartersAddress,
+  context?: string,
+  contextId?: string,
+  fiscalIdentification?: ForeignFiscalInformation,
+  merchantType?: string,
+  legalNature?: string,
+  legalNature2?: string,
+  certificate?: {
+    code?: string,
+    validUntil?: string
+  },
+  shareCapital?: ShareCapital,
+  estabilishmentDate?: string,
+  bylaws?: string,
+  principalEconomicActivity?: string,
+  otherEconomicActivities?: string[],
+  sales?: {
+    annualEstimatedRevenue?: number,
+    productsOrServicesSold?: string[],
+    productsOrServicesCountries?: string[],
+    averageTransactions?: number
+  },
+  documentationDeliveryMethod?: string,
+  bankingInformation?: BankInformation,
+  merchantRegistrationId?: string,
+  contacts?: Contacts,
+  billingEmail?: string,
+  documents: {
+    purpose?: string,
+    documentType?: string,
+    receivedAt?: string,
+    validUntil?: string,
+    uniqueReference?: string,
+    archiveSource?: string
+  }[]
 }
