@@ -197,7 +197,9 @@ export class SidenavPresencialComponent implements OnInit {
     },
     "isComplete": true,
     "id": "1a1e127a-ef25-49a1-a0c6-4e99b3c4c949",
-    "bank": "0800"
+    "bank": "0800",
+    "state": "Incomplete",
+    "startedAt": "2020-10-10"
   }
 
   stakeholderTeste: IStakeholders = {

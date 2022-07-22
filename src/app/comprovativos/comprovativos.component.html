@@ -187,7 +187,7 @@
                         <thead class="table-primary align-middle text-primary">
                            <tr class="text-center text-primary align-middle table-primary">
                               <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                              <th scope="col">Comnprovativo de Sociedade</th>
+                              <th scope="col">Comprovativo de Sociedade</th>
                               <th scope="col">Comprovativo BEF</th>
                               <th scope="col">Comprovativo Fiscal Pessoa coletiva</th>
                               <th scope="col">Comprovativo de IBAN</th>
@@ -198,7 +198,7 @@
                            <tr class="table-white text-primary">
                               <td scope="row" class="text-center text-dark">EMPRESA TESTE UNIPESSOAL</td>
                               <td class="text-center text-dark">{{ client.companyName }}</td>
-                              <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                              <td class="text-center text-dark"><img [src]="checkClientDocumentExistsInArchive('Comprovativo de Sociedade')" style="height: 20px !important; vertical-align: sub;"></td>
                               <td>N/A</td>
                               <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
                               <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
@@ -215,21 +215,20 @@
             <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
                <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;Para o/os interveniente(s):</p>
                <div class="table-responsive me-2 ps-3">
-                  <table class="table table-success align-middle" *ngIf="client">
+                  <table class="table table-success align-middle" *ngFor="let stake of stakeholdersList">
                      <thead class="table-primary align-middle text-primary">
                         <tr class="text-center text-primary align-middle table-primary">
                            <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                           <th scope="col">Comprovativo de Documento de Identificação
-                           </th>
+                           <th scope="col">Comprovativo de Documento de Identificação</th>
                            <th scope="col">Comprovativo Fiscal Particular</th>
                            <th scope="col">Procuração Cliente</th>
                         </tr>
                      </thead>
                      <tbody class="table-light text-primary">
                         <tr class="table-white text-primary">
-                           <td class="text-center text-dark">{{ client.shortName }}</td>
-                           <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
-                           <td class="text-center text-dark"><img src="assets/images/check-solid.svg" style="height: 20px !important; vertical-align: sub;"></td>
+                           <td class="text-center text-dark">{{stake.shortName}}</td>
+                           <td class="text-center text-dark"><img [src]="checkStakeDocumentExistsInArchive('Comprovativo de Documento de Identificação', stake)" style="height: 20px !important; vertical-align: sub;"></td>
+                           <td class="text-center text-dark"><img [src]="checkStakeDocumentExistsInArchive('Comprovativo Fiscal Particular', stake)" style="height: 20px !important; vertical-align: sub;"></td>
                            <td class="text-center text-dark">N/A</td>
                         </tr>
                      </tbody>

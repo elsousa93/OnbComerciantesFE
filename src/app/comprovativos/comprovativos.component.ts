@@ -9,6 +9,7 @@ import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { CheckDocumentsComponent } from './check-documents/check-documents.component';
 import { IComprovativos } from './IComprovativos.interface';
@@ -159,8 +160,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   validatedDocuments: boolean = false;
 
-  submission: any;
-  submissionClient: any;
+  submission: any = {};
+  submissionClient: any = {};
   stakeholdersList: any[] = [];
 
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
@@ -179,17 +180,21 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     this.submissionService.GetSubmissionByID("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
       this.submission = result;
-    });
+      console.log('Submission ', result);
 
-    this.clientService.getClientByID(this.submission.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-      this.submissionClient = result;
-    });
+      this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
+        this.submissionClient = c;
+        console.log('Cliente ', c);
+      });
 
-    this.submission.stakeholders.forEach(stake => {
-      this.stakeholderService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-        this.stakeholdersList.push(result);
+      this.submission.stakeholders.forEach(stake => {
+        this.stakeholderService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+          console.log('Stakeholder ', result);
+          this.stakeholdersList.push(result);
+        });
       });
     });
+
     console.log('Submission ', this.submission);
     console.log('Client ', this.client);
     console.log('stakeholders list ', this.stakeholdersList);
@@ -380,8 +385,28 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.deleteModalRef?.hide();
   }
 
+  submissionPutTeste: SubmissionPutTemplate = {
+    "submissionType": "DigitalFirstHalf",
+    "processNumber": "",
+    "processKind": "MerchantOnboarding",
+    "processType": "Standard",
+    "isClientAwaiting": true,
+    "submissionUser": {
+      "user": "joao.silvestre",
+      "branch": "",
+      "partner": ""
+    },
+    "startedAt": "2022-10-10",
+    "id": "1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", //uuid
+    "bank": "0800",
+    "state": "Ready"
+  }
+
   continue() {
     this.firstSubmissionModalRef?.hide();
+
+    this.submissionService.EditSubmission("", this.submissionPutTeste);
+
     this.route.navigate(['/commercial-offert-list']);
   }
 
@@ -400,4 +425,31 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   validatedDocumentsChange(value: boolean) {
     this.validatedDocuments = value;
   }
+
+  checkClientDocumentExistsInArchive(documentType: string) {
+      this.submissionClient.documents.forEach(doc => {
+        if (documentType == doc.documentType) {
+          if (doc.archiveSource == "undefined") {
+            return 'assets/images/xmark-solid.svg'; //caso n exista no arquivo
+          } else {
+            return 'assets/images/check-solid.svg'; //caso exista no arquivo
+          }
+        }
+      });
+      return ''; //caso não seja obrigatorio
+  }
+
+  checkStakeDocumentExistsInArchive(documentType: string, stake: any) {
+    stake.documents.forEach(doc => {
+      if (documentType == doc.documentType) {
+        if (doc.archiveSource == "undefined") {
+          return 'assets/images/xmark-solid.svg'; //caso n exista no arquivo
+        } else {
+          return 'assets/images/check-solid.svg'; //caso exista no arquivo
+        }
+      }
+    });
+    return ''; //caso não seja obrigatorio
+  }
 }
+
