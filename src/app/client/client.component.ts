@@ -17,8 +17,7 @@ import { readCCAddress } from '../citizencard/CitizenCardController.js';
 
 //Funcao da SIBS 
 declare function OpenCCDialog(): any;
-declare var readCC; 
-declare var readCCAddress;
+
 //CC
 interface ICCInfo {
   BI: string;
