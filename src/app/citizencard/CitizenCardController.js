@@ -224,7 +224,7 @@ function submit(data) {
 }
 
 export function readCCAddress() {
-  conosle.log("read cc address");
+  console.log("read cc address");
     ClearCCFields();
     //let url = BASE_URL + '/api/citizencard/generateccpluginrequestwithaddress';
     //const processid = $("#CCCallProcessId").text();
