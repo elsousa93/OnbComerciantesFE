@@ -54,6 +54,8 @@ export interface SubmissionPutTemplate {
   isComplete?: boolean
   id?: string
   bank?: string
+  startedAt?: string
+  state: string
 }
 
 export interface SubmissionGetTemplate {
