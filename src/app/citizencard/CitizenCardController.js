@@ -224,9 +224,9 @@ function submit(data) {
 }
 
 export function readCCAddress() {
-  conosle.log("read cc address");
+  console.log("read cc address");
     ClearCCFields();
-    //let url = BASE_URL + '/api/citizencard/generateccpluginrequestwithaddress';
+    let url = BASE_URL + '/api/citizencard/generateccpluginrequestwithaddress';
     //const processid = $("#CCCallProcessId").text();
     //if (processid && processid != '') {
     //    url = url + '?processId=' + processid;
@@ -243,7 +243,7 @@ export function readCCAddress() {
 export function readCC() {
   conosle.log("read cc");
     ClearCCFields();
-    //let url = BASE_URL + '/api/citizencard/generateccpluginrequest';
+    let url = BASE_URL + '/api/citizencard/generateccpluginrequest';
     //const processid = $("#CCCallProcessId").text();
     //if (processid && processid != '') {
     //    url = url + '?processId=' + processid;
