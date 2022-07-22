@@ -294,9 +294,6 @@ export class ClientComponent implements OnInit {
             "locality": "Lisboa",
             "country": "Portugal",
           }
-          
-
-
           context.clientsToShow.push(client);
           console.log(context.clientsToShow);
         });
@@ -435,12 +432,12 @@ export class ClientComponent implements OnInit {
     if (id == true) {
       this.showENI = false;
       this.isENI=false;
-      this.tipologia = "Company";
+      this.tipologia = "Corporate";
 
     } else {
       this.showENI = true;
       this.isENI=true;
-      this.tipologia = "ENI";
+      this.tipologia = "Entrepeneur";
     }
   }
 
@@ -465,7 +462,8 @@ export class ClientComponent implements OnInit {
     }
   };
 
-  this.route.navigate(['/clientbyid', clientId], navigationExtras);
+    this.route.navigate(['/clientbyid', clientId], navigationExtras);
+  //  this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 
   close() {

@@ -100,7 +100,7 @@
 
                       <input required formControlName="CAE1" name="CAE1" type="search" id="CAE1"
                              class="form-control campo-form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched && !this.form.get('CAE1').valid">
                         <div *ngIf="this.form.get('CAE1').errors && this.form.get('CAE1').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -111,7 +111,7 @@
                       <p class="titulo-form-simples" for="CAESecondary1">CAE Secundário 1: </p>
                       <input required minlength="2" maxlength="100" formControlName="CAESecondary1" name="CAESecondary1"
                              type="text" id="CAESecondary1" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
                         <div *ngIf="this.form.get('CAESecondary1').errors && this.form.get('CAESecondary1').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -122,7 +122,7 @@
                       <p class="titulo-form-simples" for="CAESecondary2">CAE Secundário 2: </p>
                       <input required minlength="2" maxlength="100" formControlName="CAESecondary2" name="CAESecondary2"
                              type="text" id="CAESecondary2" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2').touched && !this.form.get('CAESecondary2').valid">
                         <div *ngIf="this.form.get('CAESecondary2').errors && this.form.get('CAESecondary2').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -135,7 +135,7 @@
                     <div>
                       <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:</p>
                       <input required minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
-                             name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" [readonly]="clientExists" />
+                             name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
                         <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -146,7 +146,7 @@
                       <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
                       <input required minlength="2" maxlength="100" formControlName="socialDenomination"
                              name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
                         <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -158,11 +158,11 @@
                       <div *ngIf="this.form.get('CAE1').errors">
                          tem erros, nao pode receber -->
 <!--<input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                   type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                   type="text" id="CAE1Branch" class="form-control campo_form" readonly>
           </div>
           <div *ngIf="!this.form.get('CAE1').errors">
             <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                   type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                   type="text" id="CAE1Branch" class="form-control campo_form" readonly>
           </div>
           <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
             <div *ngIf="this.form.get('CAE1').errors">
@@ -182,7 +182,7 @@
           <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
           <input required minlength="2" maxlength="100" formControlName="CAESecondary1Branch" name="ramoSecundario1"
                  type="text" id="ramoSecundario1" class="form-control campo_form"
-                 [readonly]="clientExists">
+                 readonly>
           <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
             <div *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
               O parâmetro acima é obrigatório.
@@ -193,7 +193,7 @@
           <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
           <input required minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario2"
                  type="text" id="ramoSecundario2" class="form-control campo_form"
-                 [readonly]="clientExists">
+                 readonly>
           <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
             <div *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
               O parâmetro acima é obrigatório.
@@ -209,7 +209,7 @@
       <div class="col-xxl col-6">
         <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
         <input required formControlName="constitutionDate" type="date"
-               id="dataConst" class="form-control campo_form" [readonly]="clientExists">
+               id="dataConst" class="form-control campo_form" readonly>
         <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
           <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
             O parâmetro acima é obrigatório.
@@ -225,7 +225,7 @@
           <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
           <input required minlength="2" maxlength="100" formControlName="country" name="paisSedeSocial"
                  type="text" id="paisSedeSocial" class="form-control campo_form"
-                 [readonly]="clientExists">
+                 readonly>
           <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
             <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
               O parâmetro acima é obrigatório.
@@ -236,7 +236,7 @@
           <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
           <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
                  type="text" id="ZIPCode" class="form-control campo_form"
-                 [readonly]="clientExists">
+                 readonly>
           <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
             <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
               O parâmetro acima é obrigatório.
@@ -249,7 +249,7 @@
           <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
           <input required minlength="2" maxlength="100" formControlName="location"
                  name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
-                 [readonly]="clientExists">
+                 readonly>
           <div class="alert alert-danger" *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
             <div *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
               O parâmetro acima é obrigatório.
@@ -260,7 +260,7 @@
           <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
           <textarea required minlength="2" maxlength="100" formControlName="address"
                     name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
-                    [readonly]="clientExists" rows="3"></textarea>
+                    readonly rows="3"></textarea>
           <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
             <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
               O parâmetro acima é obrigatório.
@@ -312,7 +312,7 @@
         <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
         <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
                name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-               [readonly]="clientExists">
+               readonly>
         <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
           <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
             O parâmetro acima é obrigatório.
@@ -324,11 +324,11 @@
         <div *ngIf="this.form.get('CAE1').errors"-->
 <!-- tem erros, nao pode receber -->
 <!--input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                             type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                             type="text" id="CAE1Branch" class="form-control campo_form" readonly>
                     </div>
                     <div *ngIf="!this.form.get('CAE1').errors">
                       <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                             type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                             type="text" id="CAE1Branch" class="form-control campo_form" readonly>
                     </div>
                     <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
                       <div *ngIf="this.form.get('CAE1').errors">
@@ -348,7 +348,7 @@
                     <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
                     <input required minlength="2" maxlength="100" formControlName="CAESecondary1Branch" name="ramoSecundario1"
                            type="text" id="ramoSecundario1" class="form-control campo_form"
-                           [readonly]="clientExists">
+                           readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
                       <div *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -359,7 +359,7 @@
                     <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
                     <input required minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario2"
                            type="text" id="ramoSecundario2" class="form-control campo_form"
-                           [readonly]="clientExists">
+                           readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
                       <div *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -375,7 +375,7 @@
                 <div class="col-xxl col-6">
                   <p class="titulo-form-simples" for="dataConst">Data Constituição: </p>
                   <input required formControlName="constitutionDate" type="date"
-                         id="dataConst" class="form-control campo_form" [readonly]="clientExists">
+                         id="dataConst" class="form-control campo_form" readonly>
                   <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
                     <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
                       O parâmetro acima é obrigatório.
@@ -391,7 +391,7 @@
                     <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
                     <input required minlength="2" maxlength="100" formControlName="country" name="paisSedeSocial"
                            type="text" id="paisSedeSocial" class="form-control campo_form"
-                           [readonly]="clientExists">
+                           readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
                       <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -402,7 +402,7 @@
                     <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
                     <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
                            type="text" id="ZIPCode" class="form-control campo_form"
-                           [readonly]="clientExists">
+                           readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
                       <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -415,7 +415,7 @@
                     <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
                     <input required minlength="2" maxlength="100" formControlName="location"
                            name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
-                           [readonly]="clientExists">
+                           readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
                       <div *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -426,7 +426,7 @@
                     <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
                     <textarea required minlength="2" maxlength="100" formControlName="address"
                               name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
-                              [readonly]="clientExists" rows="3"></textarea>
+                              readonly rows="3"></textarea>
                     <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
                       <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -498,7 +498,7 @@
               <p class="titulo-form-simples" for="expectableAnualInvoicing">Faturação Anual Expectável* </p>
               <input required minlength="2" maxlength="100" formControlName="expectableAnualInvoicing"
                      name="expectableAnualInvoicing" type="number" id="expectableAnualInvoicing"
-                     class="form-control campo_form" [readonly]="clientExists">
+                     class="form-control campo_form" readonly>
               <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
                 <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
                   O parâmetro acima é obrigatório.
@@ -507,7 +507,7 @@
 
               <p class="titulo-form-simples" for="services">Produtos Vendidos/ Serviços Prestados* </p>
               <input required minlength="2" maxlength="100" formControlName="services" name="services" type="text"
-                     id="services" class="form-control campo_form" [readonly]="clientExists">
+                     id="services" class="form-control campo_form" readonly>
               <div class="alert alert-danger" *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
                 <div *ngIf="this.form.get('services').errors && this.form.get('services').errors?.['required']">
                   O parâmetro acima é obrigatório.
@@ -517,7 +517,7 @@
               <p class="titulo-form-simples" for="transactionsAverage">Transações Média* </p>
               <input required minlength="2" maxlength="100" formControlName="transactionsAverage"
                      name="transactionsAverage" type="number" id="transactionsAverage" class="form-control campo_form"
-                     [readonly]="clientExists">
+                     readonly>
               <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
                 <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
                   O parâmetro acima é obrigatório.
@@ -676,7 +676,7 @@
     <hr>
   </div>
 </form-->
-<form [formGroup]="form" name="form">
+<form [formGroup]="form" name="form" (ngSubmit)="submit()">
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
@@ -701,7 +701,7 @@
       <div class="col-10">
         <div class="col-10 ms-3 me-3 ps-3 pe-3">
           <p class="titulo-form-simples">NIF/NIPC*</p>
-          <input required minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC"
+          <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC"
                  type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
           <div class="alert alert-danger"
                *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
@@ -711,25 +711,25 @@
           </div>
           <p class="titulo-form-simples">a empresa é uma sociedade comercial?*</p>
           <div class="form-check">
-            <input class="form-check-input" required formControlName="commercialSociety" name="commercialSociety"
-                   type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)">
+            <input class="form-check-input" formControlName="commercialSociety" name="commercialSociety"
+                   type="radio" value="true" id="commercialSociety" (click)="setCommercialSociety(true)">
             <label class="form-check-label radio">Sim</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" required formControlName="commercialSociety" name="commercialSociety"
-                   type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)">
+            <input class="form-check-input"  formControlName="commercialSociety" name="commercialSociety"
+                   type="radio" value="false" id="commercialSociety" (click)="setCommercialSociety(false)">
             <label class="form-check-label radio" for="radio2">Não</label>
           </div>
 
-          <div *ngIf="getCommercialSociety()">
+          <div *ngIf="this.form.get('commercialSociety').value">
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
-            <input required maxlength="14" formControlName="crcCode" name="crcCode" type="text"
+            <input maxlength="14" formControlName="crcCode" name="crcCode" type="text"
                    id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" />
 
             <!--crc fim-->
 
-            <div *ngIf="isCommercialSociety && crcFound">
+            <div *ngIf="this.form.get('commercialSociety').value && crcFound">
               <!--*ngIf="isCommercialSociety && crcFound"-->
               <div>
                 <div class="row">
@@ -737,15 +737,15 @@
                     <div>
                       <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
 
-                      <select *ngIf="!clientExists" required formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                      <!--<select *ngIf="!clientExists" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                               class="form-control campo_form"
-                              (change)="onLegalNatureSelected()">
+                              (change)="onLegalNatureSelected()" readonly>
                         <option value="">Selecione</option>
                         <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
 
-                      </select>
-                      <input *ngIf="clientExists" type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
-                             class="form-control campo_form" />
+                      </select>-->
+                      <input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                             class="form-control campo_form" readonly/>
 
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                         <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
@@ -755,7 +755,7 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
-                      <select required formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+                      <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                               class="form-control campo_form">
                         <option value="" selected disabled hidden>Selecione</option>
                         <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
@@ -774,9 +774,9 @@
                         </mat-option>
                       </mat-autocomplete>
 
-                      <input required formControlName="CAE1" name="CAE1" type="search" id="CAE1"
+                      <input formControlName="CAE1" name="CAE1" type="search" id="CAE1"
                              class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched && !this.form.get('CAE1').valid">
                         <div *ngIf="this.form.get('CAE1').errors && this.form.get('CAE1').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -785,9 +785,9 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="CAESecondary1">CAE Secundário 1: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary1" name="CAESecondary1"
+                      <input minlength="2" maxlength="100" formControlName="CAESecondary1" name="CAESecondary1"
                              type="text" id="CAESecondary1" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
                         <div *ngIf="this.form.get('CAESecondary1').errors && this.form.get('CAESecondary1').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -796,9 +796,9 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="CAESecondary2">CAE Secundário 2: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary2" name="CAESecondary2"
+                      <input minlength="2" maxlength="100" formControlName="CAESecondary2" name="CAESecondary2"
                              type="text" id="CAESecondary2" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2').touched && !this.form.get('CAESecondary2').valid">
                         <div *ngIf="this.form.get('CAESecondary2').errors && this.form.get('CAESecondary2').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -808,9 +808,9 @@
 
                     <div>
                       <p class="titulo-form-simples" for="CAESecondary3">CAE Secundário 3: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary3" name="CAESecondary3"
+                      <input minlength="2" maxlength="100" formControlName="CAESecondary3" name="CAESecondary3"
                              type="text" id="CAESecondary3" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary3').touched && !this.form.get('CAESecondary3').valid">
                         <div *ngIf="this.form.get('CAESecondary3').errors && this.form.get('CAESecondary3').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -823,8 +823,8 @@
                   <div class="col-xxl col-7">
                     <div>
                       <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:*</p>
-                      <input required minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
-                             name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" [readonly]="clientExists" />
+                      <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
+                             name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
                         <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -833,9 +833,9 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
-                      <input required minlength="2" maxlength="100" formControlName="socialDenomination"
+                      <input minlength="2" maxlength="100" formControlName="socialDenomination"
                              name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
                         <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -846,11 +846,11 @@
                       <p class="titulo-form-simples" for="CAE1Branch">Ramo de Negócio de Objeto Social Principal*: </p>
 
                       <input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                             type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                             type="text" id="CAE1Branch" class="form-control campo_form" readonly>
 
                       <!--<div *ngIf="!this.form.get('CAE1').errors">
                         <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                               type="text" id="CAE1Branch" class="form-control campo_form" [readonly]="clientExists">
+                               type="text" id="CAE1Branch" class="form-control campo_form" readonly>
                       </div>-->
                       <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
                         <div *ngIf="this.form.get('CAE1').errors">
@@ -868,9 +868,9 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="ramoSecundario1">Ramo de Negócio de Objeto Social Secundário 1: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary1Branch" name="ramoSecundario1"
+                      <input minlength="2" maxlength="100" formControlName="CAESecondary1Branch" name="ramoSecundario1"
                              type="text" id="ramoSecundario1" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
                         <div *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -879,9 +879,9 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="ramoSecundario2">Ramo de Negócio de Objeto Social Secundário 2: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario2"
+                      <input minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario2"
                              type="text" id="ramoSecundario2" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
                         <div *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -891,9 +891,9 @@
 
                     <div>
                       <p class="titulo-form-simples" for="ramoSecundario3">Ramo de Negócio de Objeto Social Secundário 3: </p>
-                      <input required minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario3"
+                      <input minlength="2" maxlength="100" formControlName="CAESecondary2Branch" name="ramoSecundario3"
                              type="text" id="ramoSecundario3" class="form-control campo_form"
-                             [readonly]="clientExists">
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('CAESecondary3Branch').touched && !this.form.get('CAESecondary3Branch').valid">
                         <div *ngIf="this.form.get('CAESecondary3Branch').errors && this.form.get('CAESecondary3Branch').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -912,8 +912,8 @@
                 <div class="row">
                   <div class="col-xxl col-6">
                     <p class="titulo-form-simples" for="dataConst">Data de Constituição: </p>
-                    <input required formControlName="constitutionDate" type="date"
-                           id="dataConst" class="form-control campo_form" [readonly]="clientExists">
+                    <input formControlName="constitutionDate" type="date"
+                           id="dataConst" class="form-control campo_form" readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
                       <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -928,7 +928,7 @@
                   <div class="col-xxl col-6">
                     <div>
                       <p class="titulo-form-simples" for="paisSedeSocial">País da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="country" name="country"
+                      <input minlength="2" maxlength="100" formControlName="country" name="country"
                              type="text" id="country" class="form-control campo_form" readonly> <!-- [value]="getPaisSedeSocial()" -->
                       <div class="alert alert-danger" *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
                         <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
@@ -938,9 +938,9 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
+                      <input minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
                              type="text" id="ZIPCode" class="form-control campo_form" (keypress)="GetCountryByZipCode()"
-                             [readonly]="clientExists" >
+                             readonly >
                       <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
                         <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -951,7 +951,7 @@
                   <div class="col-xxl col-10">
                     <div>
                       <p class="titulo-form-simples" for="localidadeSedeSocial">Localidade da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="location"
+                      <input minlength="2" maxlength="100" formControlName="location"
                              name="localidadeSedeSocial" type="text" id="localidadeSedeSocial" class="form-control campo_form"
                              readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
@@ -962,7 +962,7 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
-                      <input required minlength="2" maxlength="100" formControlName="address"
+                      <input minlength="2" maxlength="100" formControlName="address"
                              name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
                              rows="3" readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
@@ -984,7 +984,7 @@
             <div class="row">
               <div class="col-xxl col-6">
                 <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
-                <select required ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
+                <select ngModel #natJuridicaN1="ngModel" name="natJuridicaN1" id="natJuridicaN1"
                         class="form-control campo_form" [(ngModel)]="client.legalNature"
                         (change)="onLegalNatureSelected()">
                   <option value="">Selecione:</option>
@@ -1001,7 +1001,7 @@
               </div>
               <div class="col-xxl col-7">
                 <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
-                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+                <input minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
                        name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
                        [(ngModel)]="client.companyName" readonly>
               </div>
@@ -1013,7 +1013,7 @@
         <div *ngIf="isCommercialSociety == false && tipologia==='ENI'">
               <div class="col-10 ms-3 me-3 ps-3 pe-3">
                 <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
-                <input required minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
+                <input minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
                        name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
                        [(ngModel)]="client.companyName" style="width: 906px;">
               </div>
@@ -1047,7 +1047,7 @@
                 </button>
                 <button id="btn5a2"
                         class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                        wappler-command="editContent" (click)="submit()">
+                        wappler-command="editContent">
                   CONTINUAR&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="../assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                   </span>

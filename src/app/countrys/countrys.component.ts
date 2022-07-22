@@ -11,6 +11,7 @@ import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
+import { ProcessService } from '../process/process.service';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -56,8 +57,9 @@ export class CountrysComponent implements OnInit {
   NIFNIPC: any;
   client: Client;
   clientId: string;
+  processId: string;
 
-  currentClient: any;
+  currentClient: any = {};
   documentsList = []; //lista de documentos do utilizador
 
 
@@ -69,7 +71,7 @@ export class CountrysComponent implements OnInit {
   }
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService,
+    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
     private router: ActivatedRoute, private clientService: ClientService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -78,50 +80,41 @@ export class CountrysComponent implements OnInit {
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.client = this.route.getCurrentNavigation().extras.state["client"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
+      this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
+
+    this.clientId = String(this.router.snapshot.params['id']);
+
+    console.log(this.clientId);
     //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
       console.log("FETCH PAISES");
     }, error => console.log(error));
 
-    this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+    console.log("por entrar no clientbyid");
+    this.clientService.getClientByID("88dab4e9-3818-4491-addb-f518ae649e5a", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+      console.log("entrou no getclientbyid");
       this.currentClient = result;
+      console.log(result);
+      console.log(this.currentClient);
     });
   }
 
   initializeForm() {
     this.form = new FormGroup({
-      franchiseName: new FormControl(/*this.client.companyName*/'', ),
       expectableAnualInvoicing: new FormControl(/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required*/),
       services: new FormControl('', /*Validators.required*/),
       transactionsAverage: new FormControl(/*this.client.knowYourSales.averageTransactions, Validators.required*/),
       associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
-      NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/),
       preferenceDocuments: new FormControl(/*this.client.documentationDeliveryMethod, Validators.required*/),
       inputEuropa: new FormControl(this.inputEuropa),
       inputAfrica: new FormControl(this.inputAfrica),
       inputAmerica: new FormControl(this.inputAmericas),
       inputOceania: new FormControl(this.inputOceania),
       inputAsia: new FormControl(this.inputTypeAsia)
-    })
-
-    this.form.get("franchiseName").valueChanges.subscribe(v => {
-      if (v !== '') {
-        this.isAssociatedWithFranchise = true;
-      } else {
-        this.isAssociatedWithFranchise = undefined;
-      }
-    })
-
-    this.form.get("NIPCGroup").valueChanges.subscribe(v => {
-      if (v !== null) {
-        this.isAssociatedWithFranchise = false;
-      } else {
-        this.isAssociatedWithFranchise = undefined;
-      }
     })
   }
 
@@ -245,7 +238,7 @@ export class CountrysComponent implements OnInit {
   submit() {
     console.log('Cliente recebido ', this.client);
     this.updateData(true, 1);
-    this.newSubmission.merchant.commercialName = this.form.get("franchiseName").value;
+    this.newSubmission.merchant.commercialName = "string";
     this.newSubmission.merchant.billingEmail = this.client.billingEmail;
     //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
     this.newSubmission.merchant.bankInformation = this.client.bankInformation;
@@ -281,8 +274,11 @@ export class CountrysComponent implements OnInit {
       console.log('Resultado obtido ', result);
     });
 
-    
-   
+    this.processService.createMerchant(this.newSubmission.merchant, "por mudar", "por mudar", "por mudar").subscribe(o => {
+      console.log("deu create merchant");
+      console.log(o);
+      
+    });
 
     //this.route.navigate(['stakeholders/']);
   }
