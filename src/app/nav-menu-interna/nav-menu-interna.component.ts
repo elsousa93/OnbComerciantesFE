@@ -108,7 +108,8 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   setImage(page: number) {
-    if (page == this.currentPage) {
+    if (page == this.currentPage) 
+    {
       return 'icone-menu-secundario'; //caso seja a página atual
     }
   }
