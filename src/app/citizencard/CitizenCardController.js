@@ -152,7 +152,7 @@ function SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     $("#submitDataFromCC").click();
 }
 
-const BASE_URL = window.location.href.substring(0, window.location.href.indexOf('#') - 1);
+const BASE_URL = 'http://localhost:7269'; //FIXME
 
 (function () {
     /* http://stackoverflow.com/questions/12404528/ie-parameters-get-undefined-when-using-them-in-settimeout/12404562#12404562 */
@@ -202,7 +202,7 @@ function submit(data) {
         }
         xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-        xhr.setRequestHeader('X-API-TOKEN', angular.element(document).injector().get('$rootScope').repository.loggedUser.token);
+        //xhr.setRequestHeader('X-API-TOKEN', angular.element(document).injector().get('$rootScope').repository.loggedUser.token);
         xhr.onreadystatechange = function () {
 
             if (this.readyState == 4 && this.status == 200) {
@@ -241,7 +241,7 @@ export function readCCAddress() {
 }
 
 export function readCC() {
-  conosle.log("read cc");
+  console.log("read cc");
     ClearCCFields();
     let url = BASE_URL + '/api/citizencard/generateccpluginrequest';
     //const processid = $("#CCCallProcessId").text();
@@ -376,7 +376,7 @@ var autenticacaoGovPT = (function operations() {
             _noGenerator = setTimeout(function (count) { (count > 0) ? ccOperation(--count) : _callBack(generic_error('Gerador de pedidos não está disponível', _ERRO_GENERICO_)); }, _timeout, count);
             xhr.open('POST', _endpoint.requestGeneratorUrl, true);
             xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-            xhr.setRequestHeader('X-API-TOKEN', angular.element(document).injector().get('$rootScope').repository.loggedUser.token);
+            //xhr.setRequestHeader('X-API-TOKEN', angular.element(document).injector().get('$rootScope').repository.loggedUser.token);
             xhr.send(JSON.stringify({ agent: _agent.uuid, cms: _endpoint.cms }));
         }
     };
