@@ -88,7 +88,6 @@ export class StakeholdersComponent implements OnInit {
       }, error => console.error(error));
     this.updateData(false, 2);
 
-
   }
 
   //função que altera o valor do map e da currentPage
