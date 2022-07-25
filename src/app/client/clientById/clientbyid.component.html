@@ -966,7 +966,7 @@
                     <div>
                       <p class="titulo-form-simples" for="moradaSedeSocial">Morada da Sede Social: </p>
                       <input minlength="2" maxlength="100" formControlName="address"
-                             name="moradaSedeSocial" type="text" id="moradaSedeSocial" class="form-control campo_form"
+                             name="address" type="text" id="address" class="form-control campo_form"
                              rows="3" readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
                         <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">

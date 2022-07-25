@@ -56,7 +56,7 @@ export class CountrysComponent implements OnInit {
 
   tipologia: any;
   NIFNIPC: any;
-  client: Client;
+  client: any;
   clientId: string;
   processId: string;
 
@@ -113,13 +113,13 @@ export class CountrysComponent implements OnInit {
   }
 
   initializeForm() {
-    console.log("cliente atual");
-    console.log(this.currentClient);
-
+    console.log("cliente atual: ");
+    console.log(this.client);
+   
     this.form = new FormGroup({
-      expectableAnualInvoicing: new FormControl(this.currentClient.knowYourSales.estimatedAnualRevenue, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+      expectableAnualInvoicing: new FormControl(this.client.sales.annualEstimatedRevenue, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
       services: new FormControl('', Validators.required),
-      transactionsAverage: new FormControl(this.currentClient.knowYourSales.estimatedAnualRevenue, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+      transactionsAverage: new FormControl(this.client.sales.transactionsAverage, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
       associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
       preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
       inputEuropa: new FormControl(this.inputEuropa),
@@ -127,7 +127,9 @@ export class CountrysComponent implements OnInit {
       inputAmerica: new FormControl(this.inputAmericas),
       inputOceania: new FormControl(this.inputOceania),
       inputAsia: new FormControl(this.inputTypeAsia)
-    })
+    });
+
+    console.log(this.form);
   }
 
   updateData(value: boolean, currentPage: number) {
@@ -341,7 +343,7 @@ export class CountrysComponent implements OnInit {
       localStorage.setItem("submissionId", result.id);
     });
 
-    //this.route.navigate(['stakeholders/']);
+    this.route.navigate(['stakeholders/']);
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {

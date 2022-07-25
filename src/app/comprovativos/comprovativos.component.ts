@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { utf8Encode } from '@angular/compiler/src/util';
 import { AfterViewInit, Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
@@ -407,7 +408,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   continue() {
     this.firstSubmissionModalRef?.hide();
-
+    let utf8encode = new TextEncoder();
     this.files.forEach(doc => {
 
       this.readBase64(doc).then((data) => {
@@ -416,7 +417,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           "documentPurpose": "Identification",
           "file": {
             "fileType": "PDF",
-            "binary": data
+            "binary": utf8encode.encode(data).toString()
           },
           "validUntil": "2022-07-20T11:03:13.001Z",
           "data": "string"

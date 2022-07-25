@@ -371,7 +371,7 @@ export class ClientByIdComponent implements OnInit {
       CAESecondary2Branch: new FormControl(''), //talvez
       CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
       CAESecondary3Branch: new FormControl(''), //talvez
-      constitutionDate: new FormControl(Date.parse(this.processClient.capitalStock.date).toLocaleString()), //sim this.processClient.capitalStock.date + ''
+      constitutionDate: new FormControl('2020-20-20'), //sim this.processClient.capitalStock.date + ''
       country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
       location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
@@ -591,6 +591,7 @@ export class ClientByIdComponent implements OnInit {
       clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
         this.clientExists = true;
         this.client = result;
+        console.log(this.client);
       })
     }
 
@@ -782,16 +783,25 @@ export class ClientByIdComponent implements OnInit {
 
     var formValues = this.form.value;
     if (this.isCommercialSociety) {
-      this.client.headquartersAddress.address = this.form.value["address"];
-      this.client.headquartersAddress.country = this.form.value["country"];
-      this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
-      this.client.headquartersAddress.postalArea = this.form.value["location"];
+      this.client.headquartersAddress = {
+        address: this.form.value["address"],
+        country: this.form.value["country"],
+        postalCode: this.form.value["ZIPCode"],
+        postalArea: this.form.value["location"]
+      }
+      //this.client.headquartersAddress.address = this.form.value["address"];
+      //this.client.headquartersAddress.country = this.form.value["country"];
+      //this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
+      //this.client.headquartersAddress.postalArea = this.form.value["location"];
       this.client.mainEconomicActivity = this.form.value["CAE1"];
       this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);
       this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"], this.form.value["CAESecondary2Branch"]);
       //Paises destino
       this.client.establishmentDate = this.form.value["constitutionDate"];
-      this.client.crc.code = this.form.value["crcCode"];
+      //this.client.crc.code = this.form.value["crcCode"];
+      this.client.crc = {
+        code: this.form.value["crcCode"]
+      }
       this.client.legalNature = this.form.value["natJuridicaN1"];
 
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
@@ -828,6 +838,9 @@ export class ClientByIdComponent implements OnInit {
     //  console.log(error);
     //});
 
+
+    console.log("por mandar: huasusa");
+    console.log(this.client);
     if(this.form.valid)
       this.route.navigate(["/client-additional-info/", this.router.snapshot.paramMap.get('id')], navigationExtras);
   }
