@@ -34,10 +34,10 @@ export interface FiscalAddress {
 }
 
 export interface ForeignFiscalInformation {
-  issuerCountry: string
-  issuanceIndicator: string
-  fiscalId: string
-  issuanceReason: string
+  issuerCountry?: string
+  issuanceIndicator?: string
+  fiscalId?: string
+  issuanceReason?: string
 }
 
 export interface Phone {

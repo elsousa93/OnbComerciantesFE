@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -11,7 +11,7 @@ import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
-import { ProcessService } from '../process/process.service';
+import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 @Component({
   selector: 'app-countrys',
@@ -114,11 +114,11 @@ export class CountrysComponent implements OnInit {
 
   initializeForm() {
     this.form = new FormGroup({
-      expectableAnualInvoicing: new FormControl(/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required*/),
-      services: new FormControl('', /*Validators.required*/),
-      transactionsAverage: new FormControl(/*this.client.knowYourSales.averageTransactions, Validators.required*/),
-      associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
-      preferenceDocuments: new FormControl(/*this.client.documentationDeliveryMethod, Validators.required*/),
+      expectableAnualInvoicing: new FormControl(0, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+      services: new FormControl('', Validators.required),
+      transactionsAverage: new FormControl(0, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+      associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
+      preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
       inputEuropa: new FormControl(this.inputEuropa),
       inputAfrica: new FormControl(this.inputAfrica),
       inputAmerica: new FormControl(this.inputAmericas),
@@ -247,6 +247,8 @@ export class CountrysComponent implements OnInit {
   submit() {
     console.log('Cliente recebido ', this.client);
     this.updateData(true, 1);
+
+    console.log(this.form);
     this.newSubmission.merchant.commercialName = "string";
     this.newSubmission.merchant.billingEmail = this.client.billingEmail;
     //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
@@ -271,23 +273,66 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
     this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
     this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
-    //this.newSubmission.merchant.merchantType = this.client.merchantType;
+    this.newSubmission.merchant.merchantType = "Corporate";
     this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
     this.newSubmission.merchant.shareCapital = this.client.shareCapital;
     this.newSubmission.merchant.shortName = this.client.shortName;
-    
 
-    console.log('Submissao ', this.newSubmission);
+    console.log(this.newSubmission.merchant);
+
+    //var clientToAdd = {} as ClientForProcess;
+
+    //clientToAdd.legalName = "perguntar"; //confirmar
+    //clientToAdd.commercialName = "perguntar"; //confirmar
+    //clientToAdd.shortName = "perguntar"; //confirmar
+    //clientToAdd.headquartersAddress = this.client.headquartersAddress;
+    //clientToAdd.context = "isolated"; //que dado ir buscar
+    //clientToAdd.fiscalIdentification = {
+    //  fiscalId: "",
+    //  issuerCountry: ""
+    //};
+    //clientToAdd.merchantType = "Corporation"; //esta relacionado com o radio button empresa ou ENI?
+    //clientToAdd.legalNature = this.client.legalNature;
+    //clientToAdd.legalNature2 = this.client.legalNature2;
+    //clientToAdd.certificate = {
+    //  code: ""
+    //}; //que dado ir buscar
+    //clientToAdd.shareCapital = this.client.shareCapital; //talvez tenha que mudar
+    //clientToAdd.estabilishmentDate = this.client.establishmentDate;
+    ////clientToAdd.bylaws = this.client.byLaws;
+    //clientToAdd.principalEconomicActivity = this.client.mainEconomicActivity;
+    //clientToAdd.otherEconomicActivities = this.client.otherEconomicActivities;
+    //clientToAdd.sales = {
+    //  annualEstimatedRevenue: this.form.get("expectableAnualInvoicing").value,
+    //  productsOrServicesSold: [],
+    //  productsOrServicesCountries: this.lstPaisPreenchido,
+    //  averageTransactions: this.form.get("transactionsAverage").value
+    //};
+    //clientToAdd.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+
+    //clientToAdd.bankingInformation = {
+    //  bank: "",
+    //  iban: ""
+    //};
+    //clientToAdd.contacts = {
+    //  phone1: {
+    //    phoneNumber: ""
+    //  },
+    //  phone2: {
+    //    phoneNumber: ""
+    //  },
+    //  fax: {
+    //    phoneNumber: ""
+    //  }
+    //};
+    //clientToAdd.documents = []; //verificar se funciona
+
+
+    //console.log('Submissao ', this.newSubmission);
 
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log('Resultado obtido ', result);
       localStorage.setItem("submissionId", result.id);
-    });
-
-    this.processService.createMerchant(this.newSubmission.merchant, "por mudar", "por mudar", "por mudar").subscribe(o => {
-      console.log("deu create merchant");
-      console.log(o);
-      
     });
 
     //this.route.navigate(['stakeholders/']);
@@ -879,7 +924,7 @@ export class CountrysComponent implements OnInit {
         return false;
       });
       if (index == -1) {
-        this.lstPaisPreenchido.push(element);
+        this.lstPaisPreenchido.push(element.code);
         console.log('Elementos na lista contPais ', element);
       }
     });

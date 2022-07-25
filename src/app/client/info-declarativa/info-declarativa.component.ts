@@ -221,18 +221,20 @@ export class InfoDeclarativaComponent implements OnInit {
 
   // validação dos números de telefone
   validatePhone(phoneCountryCode: string, phoneNumber: string) {
-    console.log(".");
+    console.log("Entrei na validação de telefones");
     if (phoneCountryCode == "+351") { //Indicativo de Portugal
+      console.log("Portugal");
       if (phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
         console.log("Válido");
       } else {
-        console.log("Inválido");
+        alert("Este número de telefone é inválido!");
       }
     } else { // Indicativo não é de Portugal
+      console.log("Fora de Portugal");
       if (phoneNumber.length <= 16) {
         console.log("Válido");
       } else {
-        console.log("Inválido");
+        alert("Este número de telefone é inválido!");
       }
     }
   }

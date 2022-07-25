@@ -432,12 +432,12 @@ export class ClientComponent implements OnInit {
     if (id == true) {
       this.showENI = false;
       this.isENI=false;
-      this.tipologia = "Corporate";
+      this.tipologia = "Company";
 
     } else {
       this.showENI = true;
       this.isENI=true;
-      this.tipologia = "Entrepeneur";
+      this.tipologia = "ENI";
     }
   }
 

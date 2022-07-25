@@ -16,6 +16,8 @@ export class DataService {
     .set(5, undefined)
     .set(6, undefined));
 
+  historyStream$ = new BehaviorSubject<boolean>(false);
+
   //número da página em que estamos atualmente
   private dataPage = new BehaviorSubject(0);
 
@@ -32,5 +34,9 @@ export class DataService {
   //mudar o valor da página atual
   changeCurrentPage(value: number) {
     this.dataPage.next(value);
+  }
+
+  ngOnDestroy(){
+    this.historyStream$?.complete();
   }
 }

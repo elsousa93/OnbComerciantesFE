@@ -13,6 +13,7 @@ import { SubmissionService } from '../submission/service/submission-service.serv
 import { TableInfoService } from '../table-info/table-info.service';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { DataService } from '../nav-menu-interna/data.service';
 
 @Component({
   selector: 'app-sidenav-presencial',
@@ -341,7 +342,8 @@ export class SidenavPresencialComponent implements OnInit {
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private submissionService: SubmissionService,
-    private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService ) {
+    private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
+    private dataService: DataService ) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -472,6 +474,10 @@ export class SidenavPresencialComponent implements OnInit {
   }
 
   assignMenus() {
+  }
+
+  hideHistoryTab(){
+    this.dataService.historyStream$.next(false); 
   }
 
   public toggleSideNav(toggled: boolean) {

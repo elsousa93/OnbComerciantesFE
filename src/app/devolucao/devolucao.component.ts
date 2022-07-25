@@ -28,7 +28,7 @@ export class DevolucaoComponent implements OnInit{
   private router: ActivatedRoute) {
 
     this.ngOnInit();
-    this.updateData(false, 1);
+    this.updateData(false, 0);
   
 }
 

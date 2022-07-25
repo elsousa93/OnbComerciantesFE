@@ -23,9 +23,9 @@
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
 
             <p class="titulo-form-simples mt-0">FATURAÇÃO ANUAL EXPECTÁVEL*</p>
-            <input type="number" class="form-control campo_form" required formControlName="expectableAnualInvoicing"
+            <input type="number" class="form-control campo_form" formControlName="expectableAnualInvoicing"
                    name="expectableAnualInvoicing" id="expectableAnualInvoicing"
-                   [readonly]="clientExists">
+                   >
             <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
               <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
                 O parâmetro acima é obrigatório.
@@ -34,8 +34,8 @@
 
 
             <p class="titulo-form-simples">PRODUTOS VENDIDOS/SERVIÇOS PRESTADOS*</p>
-            <input required formControlName="services" name="services" type="text"
-                   id="services" class="form-control campo_form" [readonly]="clientExists">
+            <input formControlName="services" name="services" type="text"
+                   id="services" class="form-control campo_form" >
 
             <div class="alert alert-danger" *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
               <div *ngIf="this.form.get('services').errors && this.form.get('services').errors?.['required']">
@@ -45,9 +45,9 @@
 
 
             <p class="titulo-form-simples mb-1">Transações média*</p>
-            <input required minlength="2" maxlength="100" formControlName="transactionsAverage"
+            <input minlength="2" maxlength="100" formControlName="transactionsAverage"
                    name="transactionsAverage" type="number" id="transactionsAverage" class="form-control campo_form"
-                   [readonly]="clientExists">
+                   >
             <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
               <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
                 O parâmetro acima é obrigatório.
@@ -59,13 +59,13 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
-                  <input class="form-check-input" required name="preferenceDocuments" type="radio" value="MAIL"
+                  <input class="form-check-input" name="preferenceDocuments" type="radio" value="Portal"
                          formControlName="preferenceDocuments" id="preferenceDocuments">
                   <label class="form-check-label radio pe-5" for="preferenceDocuments">100% DIGITAL</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
-                  <input class="form-check-input" required name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta"
+                  <input class="form-check-input" name="preferenceDocuments" type="radio" value="Mail"
                          formControlName="preferenceDocuments" id="preferenceDocuments">
                   <label class="form-check-label radio" for="preferenceDocuments">DOCUMENTAÇÃO POR CARTA</label>
                 </div>
@@ -90,11 +90,6 @@
               </span>
 
             </nav>
-
-
-
-
-
 
             <p class="titulo-form-simples"></p>
           </div>
@@ -186,7 +181,7 @@
             <p class="titulo-form-simples mt-0">NIPC GRUPO</p>
 
 
-            <input class="form-control campo_form" required formControlName="NIPCGroup"
+            <input class="form-control campo_form" formControlName="NIPCGroup"
                    name="NIPCGroup" type="number" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise">
             <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
               <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">

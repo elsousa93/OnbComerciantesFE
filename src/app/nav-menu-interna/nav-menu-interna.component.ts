@@ -36,12 +36,15 @@ export class NavMenuInternaComponent implements OnInit {
 
   //subscription para os valores do map e da currentPage que vêm do dataService
   public subscription: Subscription;
+  public historySubscription: Subscription;
 
   public isActive: boolean;
 
   public startedEditing: boolean; //preciso de ter associado a página
 
-  prevScrollpos:number = window.pageYOffset;
+  prevScrollpos: number = window.pageYOffset;
+
+  public isHistory: boolean = false;
 
   constructor(private data: DataService, private route: Router) {
   }
@@ -51,10 +54,14 @@ export class NavMenuInternaComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
 
     var prevScrollpos = window.pageYOffset;
-    
+
     window.addEventListener("scroll", this.autohide.bind(this), false);
 
     console.log(this.map);
+
+    this.historySubscription = this.data.historyStream$.subscribe((result) => {
+      this.isHistory = result;
+    });
   }
 
   setListItem(page: number) {
@@ -88,7 +95,7 @@ export class NavMenuInternaComponent implements OnInit {
 
   setAnchor(page: number) {
     if (page == this.currentPage) {
-      return 'active text-white texto-menu-secundario' ; // página atual -> atualizado
+      return 'active text-white texto-menu-secundario'; // página atual -> atualizado
     } else {
       if (this.map.get(page)) {
         return 'texto-menu-secundario text-success'; //pagina visitada e concluida -> atualizado
@@ -101,7 +108,8 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   setImage(page: number) {
-    if (page == this.currentPage) {
+    if (page == this.currentPage) 
+    {
       return 'icone-menu-secundario'; //caso seja a página atual
     }
   }
@@ -153,6 +161,10 @@ export class NavMenuInternaComponent implements OnInit {
       this.isAutohideBarra = true;
     }
     this.prevScrollpos = currentScrollPos;
+  }
+
+  ngOnDestroy(){
+    this.historySubscription?.unsubscribe();
   }
 }
 

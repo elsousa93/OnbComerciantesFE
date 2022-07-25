@@ -313,15 +313,41 @@ export class ClientByIdComponent implements OnInit {
   initializeBasicFormControl() {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-      commercialSociety: new FormControl('true', [Validators.required]), //sim
+      //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
     });
+
+    //this.form.get("commercialSociety").valueChanges.subscribe(data => {
+    //  console.log("valor mudou commercial society");
+    //  console.log(data);
+    //  if (data == 'true') {
+    //    console.log("true entrou");
+    //    this.initializeFormControlCRC();
+    //  } else {
+    //    console.log("false entrou");
+    //    this.initializeFormControlOther();
+    //  }
+    //});
+  }
+
+  initializeFormControlOther() {
+    console.log("entrou aqui no formcontrolother");
+    console.log(this.form.get("commercialSociety").value);
+    this.form = new FormGroup({
+      //commercialSociety: new FormControl('false', [Validators.required]), //sim
+      natJuridicaN1: new FormControl('', [Validators.required]), //sim
+      natJuridicaN2: new FormControl(''), //sim
+      socialDenomination: new FormControl('', Validators.required) //sim
+    });
+
   }
 
   initializeFormControlCRC() {
     this.crcCode = this.form.get("crcCode").value;
+    console.log("entrou aqui no formcontrolcrc");
+    console.log(this.form.get("commercialSociety").value);
     this.form = new FormGroup({
-      commercialSociety: new FormControl('true', [Validators.required]), //sim
+      //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
@@ -536,6 +562,7 @@ export class ClientByIdComponent implements OnInit {
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
     this.ngOnInit();
+
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
       http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
         this.clientExists = true;
@@ -586,11 +613,16 @@ export class ClientByIdComponent implements OnInit {
   }
 
   setCommercialSociety(id: boolean) {
+    console.log(this.form);
     this.crcFound = false;
     if (id == true) {
       this.isCommercialSociety = true
+      this.initializeBasicFormControl();
+      console.log(this.form);
     } else {
       this.isCommercialSociety = false
+      this.initializeFormControlOther();
+      console.log(this.form);
     }
   }
 
@@ -706,6 +738,7 @@ export class ClientByIdComponent implements OnInit {
       this.processClient.code = clientByCRC.code;
       this.processClient.requestId = clientByCRC.requestId;
 
+      console.log("o crc chamou o initialize");
       this.initializeFormControlCRC();
     });
 
@@ -739,7 +772,6 @@ export class ClientByIdComponent implements OnInit {
     this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
     this.client.headquartersAddress.postalArea = this.form.value["location"];
     this.client.mainEconomicActivity = this.form.value["CAE1"];
-    this.client.mainEconomicActivity = this.form.value["CAE1Branch"];
     this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);
     this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"], this.form.value["CAESecondary2Branch"]);
     //Paises destino
@@ -777,11 +809,11 @@ export class ClientByIdComponent implements OnInit {
     console.log("-------------------------------");
     console.log(this.form);
     console.log("-------------------------------");
-    this.processService.createMerchant(this.client, this.processId, "por mudar", "por mudar").subscribe(o => {
-      console.log("sucesso");
-    }, error => {
-      console.log(error);
-    });
+    //this.processService.createMerchant(this.client, this.processId, "por mudar", "por mudar").subscribe(o => {
+    //  console.log("sucesso");
+    //}, error => {
+    //  console.log(error);
+    //});
 
     if(this.form.valid)
       this.route.navigate(["/client-additional-info/", this.router.snapshot.paramMap.get('id')], navigationExtras);

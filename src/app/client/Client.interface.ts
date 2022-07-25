@@ -93,9 +93,9 @@ export interface BankInformation {
 export interface Contacts {
   preferredMethod?: string,
   preferredPeriod?: PreferredPeriod,
-  phone1?: Phone1,
-  phone2?: Phone2,
-  fax?: Fax,
+  phone1?: Phone,
+  phone2?: Phone,
+  fax?: Phone,
   email?: string,
 }
 
@@ -104,9 +104,9 @@ export interface PreferredPeriod {
   endsAt: string,
 }
 
-export interface Phone1 {
-  countryCode: string,
-  phoneNumber: string,
+export interface Phone {
+  countryCode?: string,
+  phoneNumber?: string,
 }
 
 export interface Phone2 {

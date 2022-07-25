@@ -9,7 +9,7 @@ import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
-import { PostDocument } from '../submission/document/isubmission-document';
+import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';

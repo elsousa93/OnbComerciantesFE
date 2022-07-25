@@ -3,7 +3,59 @@
         [@AutoHideSidenavAdjustBarraTopo]="isAutohideBarra ? 'up' : 'down'">
         <nav
             class="navbar navbar-light bg-primary justify-content-around navbar-expand pt-0 pb-0 shadow justify-content-center">
-            <ul class="navbar-nav mb-2 mb-lg-0 justify-content-around flex-wrap align-content-around shadow-none">
+            <ul class="navbar-nav mb-2 mb-lg-0 justify-content-around flex-wrap align-content-around shadow-none" *ngIf = "isHistory">
+                <li class="nav-item" [ngClass]="setListItem(0)" >
+                    <img [src]="setImageSrc(0)" [ngClass]="setImage(0)" style="height: 25px !important;"><a
+                        class="nav-link" [ngClass]="setAnchor(0)" aria-current="page" [routerLink]="['/app-devolucao']"
+                        data-bs-toggle="button">HISTÓRICO</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item" [ngClass]="setListItem(1)">
+                    <img [src]="setImageSrc(1)" [ngClass]="setImage(1)" style="height: 25px !important;"><a
+                        class="nav-link" [ngClass]="setAnchor(1)" aria-current="page" [routerLink]="['/client']"
+                        data-bs-toggle="button">CLIENTE EMPRESA</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item" [ngClass]="setListItem(2)">
+                    <img [src]="setImageSrc(2)" style="height: 25px !important;" [ngClass]="setImage(2)"><a
+                        class="nav-link" [ngClass]="setAnchor(2)" [routerLink]="['/stakeholders']">INTERVENIENTES</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <img src="assets/images/angle-right-solid.svg" class="seta_direita"  style="height: 30px !important;">
+                </li>
+                <li class="nav-item" [ngClass]="setListItem(3)">
+                    <img [src]="setImageSrc(3)" style="height: 25px !important;" [ngClass]="setImage(3)"><a
+                        class="nav-link" [ngClass]="setAnchor(3)" [routerLink]="['/store-comp']">LOJAS</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item" [ngClass]="setListItem(4)">
+                    <img [src]="setImageSrc(4)" class="icone-menu-secundario-inactivo" [ngClass]="setImage(4)" style="height: 25px !important;"><a
+                        class="nav-link" [ngClass]="setAnchor(4)" [routerLink]="['/comprovativos']">COMPROVATIVOS</a>
+                </li>
+                <li class="nav-item align-self-center">
+
+                    <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item" [ngClass]="setListItem(5)">
+                    <img [src]="setImageSrc(5)" style="height: 25px !important;" [ngClass]="setImage(5)"><a
+                        class="nav-link" [ngClass]="setAnchor(5)" [routerLink]="['/commercial-offert-list']">OFERTA COMERCIAL</a>
+                </li>
+                <li class="nav-item align-self-center">
+
+                    <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
+                </li>
+                <li class="nav-item" [ngClass]="setListItem(6)">
+                    <img [src]="setImageSrc(6)" style="height: 25px !important;" [ngClass]="setImage(6)"><a
+                        class="nav-link" [ngClass]="setAnchor(6)" [routerLink]="['/info-declarativa']">INFO DECLARATIVA</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mb-2 mb-lg-0 justify-content-around flex-wrap align-content-around shadow-none" *ngIf = "!isHistory">
                 <li class="nav-item" [ngClass]="setListItem(1)">
                     <img [src]="setImageSrc(1)" [ngClass]="setImage(1)" style="height: 25px !important;"><a
                         class="nav-link" [ngClass]="setAnchor(1)" aria-current="page" [routerLink]="['/client']"
