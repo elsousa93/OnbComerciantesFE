@@ -12,6 +12,7 @@ import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { ProcessService } from '../process/process.service';
+import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -72,7 +73,7 @@ export class CountrysComponent implements OnInit {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService) {
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
@@ -100,6 +101,14 @@ export class CountrysComponent implements OnInit {
       this.currentClient = result;
       console.log(result);
       console.log(this.currentClient);
+    });
+
+    this.documentService.GetSubmissionDocuments("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
+      console.log('Lista de documentos de uma submissao ', result);
+      this.documentService.GetSubmissionDocumentById("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id).subscribe(resul => {
+        console.log("Info de um documento ", resul);
+        this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
+      });
     });
   }
 
@@ -272,6 +281,7 @@ export class CountrysComponent implements OnInit {
 
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log('Resultado obtido ', result);
+      localStorage.setItem("submissionId", result.id);
     });
 
     this.processService.createMerchant(this.newSubmission.merchant, "por mudar", "por mudar", "por mudar").subscribe(o => {

@@ -9,6 +9,8 @@ import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { PostDocument } from '../submission/document/isubmission-document';
+import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { CheckDocumentsComponent } from './check-documents/check-documents.component';
@@ -165,7 +167,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   stakeholdersList: any[] = [];
 
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
-    private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService) {
+    private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.url = baseUrl;
     this.ngOnInit();
@@ -198,6 +200,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     console.log('Submission ', this.submission);
     console.log('Client ', this.client);
     console.log('stakeholders list ', this.stakeholdersList);
+    console.log('Submission id ', localStorage.getItem("submissionId"));
   }
 
   ngOnInit(): void {
@@ -387,7 +390,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   submissionPutTeste: SubmissionPutTemplate = {
     "submissionType": "DigitalFirstHalf",
-    "processNumber": "",
+    "processNumber": "string",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,
@@ -405,9 +408,34 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   continue() {
     this.firstSubmissionModalRef?.hide();
 
-    this.submissionService.EditSubmission("", this.submissionPutTeste);
+    this.files.forEach(doc => {
 
-    this.route.navigate(['/commercial-offert-list']);
+      this.readBase64(doc).then((data) => {
+        var docToSend: PostDocument = {
+          "documentType": "string",
+          "documentPurpose": "Identification",
+          "file": {
+            "fileType": "PDF",
+            "binary": data
+          },
+          "validUntil": "2022-07-20T11:03:13.001Z",
+          "data": "string"
+        }
+        console.log('Binário do objeto ', docToSend.file.binary);
+        this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
+          console.log('Ficheiro foi submetido ', result);
+        });
+      })      
+    });
+    
+
+    this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
+      console.log('Editar sub ', result);
+    });
+
+
+
+    //this.route.navigate(['/commercial-offert-list']);
   }
 
   back() {
@@ -426,30 +454,21 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.validatedDocuments = value;
   }
 
-  checkClientDocumentExistsInArchive(documentType: string) {
-      this.submissionClient.documents.forEach(doc => {
-        if (documentType == doc.documentType) {
-          if (doc.archiveSource == "undefined") {
-            return 'assets/images/xmark-solid.svg'; //caso n exista no arquivo
-          } else {
-            return 'assets/images/check-solid.svg'; //caso exista no arquivo
-          }
-        }
-      });
-      return ''; //caso não seja obrigatorio
+
+  private readBase64(file): Promise<any> {
+    const reader = new FileReader();
+    const future = new Promise((resolve, reject) => {
+      reader.addEventListener('load', function () {
+        resolve(reader.result);
+      }, false);
+      reader.addEventListener('error', function (event) {
+        reject(event);
+      }, false);
+
+      reader.readAsDataURL(file);
+    });
+    return future;
   }
 
-  checkStakeDocumentExistsInArchive(documentType: string, stake: any) {
-    stake.documents.forEach(doc => {
-      if (documentType == doc.documentType) {
-        if (doc.archiveSource == "undefined") {
-          return 'assets/images/xmark-solid.svg'; //caso n exista no arquivo
-        } else {
-          return 'assets/images/check-solid.svg'; //caso exista no arquivo
-        }
-      }
-    });
-    return ''; //caso não seja obrigatorio
-  }
 }
 
