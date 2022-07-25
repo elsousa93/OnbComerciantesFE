@@ -237,6 +237,9 @@ export class CountrysComponent implements OnInit {
 
   submit() {
     console.log('Cliente recebido ', this.client);
+
+    console.log("lista de paises preenchidos");
+    console.log(this.lstPaisPreenchido);
     this.updateData(true, 1);
 
     console.log(this.form);
@@ -914,7 +917,7 @@ export class CountrysComponent implements OnInit {
         return false;
       });
       if (index == -1) {
-        this.lstPaisPreenchido.push(element.code);
+        this.lstPaisPreenchido.push(element);
         console.log('Elementos na lista contPais ', element);
       }
     });

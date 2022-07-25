@@ -343,12 +343,10 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeFormControlCRC() {
-    this.crcCode = this.form.get("crcCode").value;
-    console.log("entrou aqui no formcontrolcrc");
-    console.log(this.form.get("commercialSociety").value);
+    console.log("a");
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
+      crcCode: new FormControl('5', [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
@@ -367,7 +365,7 @@ export class ClientByIdComponent implements OnInit {
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
       address: new FormControl(this.processClient.headquartersAddress.address, Validators.required) //sim
     });
-
+    console.log("b");
     this.form.get("CAE1").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.controls["CAE1Branch"].setValidators([Validators.required]);
@@ -376,7 +374,7 @@ export class ClientByIdComponent implements OnInit {
       }
       this.form.controls["CAE1Branch"].updateValueAndValidity();
     });
-
+    console.log("c");
     this.form.get("CAESecondary1").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.controls["CAESecondary1Branch"].setValidators([Validators.required]);
@@ -385,7 +383,7 @@ export class ClientByIdComponent implements OnInit {
       }
       this.form.controls["CAESecondary1Branch"].updateValueAndValidity();
     });
-
+    console.log("d");
     this.form.get("CAESecondary2").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.controls["CAESecondary2Branch"].setValidators([Validators.required]);
@@ -394,7 +392,7 @@ export class ClientByIdComponent implements OnInit {
       }
       this.form.controls["CAESecondary2Branch"].updateValueAndValidity();
     });
-
+    console.log("e");
     this.form.get("CAESecondary3").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.controls["CAESecondary3Branch"].setValidators([Validators.required]);
@@ -613,16 +611,15 @@ export class ClientByIdComponent implements OnInit {
   }
 
   setCommercialSociety(id: boolean) {
-    console.log(this.form);
     this.crcFound = false;
     if (id == true) {
-      this.isCommercialSociety = true
       this.initializeBasicFormControl();
-      console.log(this.form);
+      this.isCommercialSociety = true;
+      console.log("entrou no true");
     } else {
-      this.isCommercialSociety = false
       this.initializeFormControlOther();
-      console.log(this.form);
+      this.isCommercialSociety = false;
+      console.log("entrou no false");
     }
   }
 
@@ -706,10 +703,7 @@ export class ClientByIdComponent implements OnInit {
     //this.crcFound = true;
     var crcInserted = this.form.get('crcCode').value;
     this.crcService.getCRC(crcInserted, '001').subscribe(o => {
-      console.log("CRC ENCONTRADO YJASKMSADJS");
       var clientByCRC = o;
-
-      console.log(clientByCRC);
 
       this.crcFound = true;
       this.processClient.legalNature = clientByCRC.legalNature;
@@ -763,7 +757,6 @@ export class ClientByIdComponent implements OnInit {
 
 
   submit() {
-    console.log("submit de um novo cliente");
 
     var formValues = this.form.value;
 
@@ -801,14 +794,7 @@ export class ClientByIdComponent implements OnInit {
       }
     };
 
-    console.log(this.client);
-    console.log(this.form.valid);
-
-    console.log("--------- erros do form -------");
-    console.log(this.form.errors);
-    console.log("-------------------------------");
-    console.log(this.form);
-    console.log("-------------------------------");
+    
     //this.processService.createMerchant(this.client, this.processId, "por mudar", "por mudar").subscribe(o => {
     //  console.log("sucesso");
     //}, error => {
@@ -842,16 +828,13 @@ export class ClientByIdComponent implements OnInit {
 
   GetCountryByZipCode() {
     var zipcode = this.form.value['ZIPCode'];
-    console.log(zipcode);
     if (zipcode.length === 8) {
-      console.log("country zip code client by id");
       var zipCode = zipcode.split('-');
 
       this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
         
         var addressToShow = address[0];
 
-        console.log(addressToShow);
         this.form.get('address').setValue(addressToShow.address);
         this.form.get('country').setValue(addressToShow.country);
         this.form.get('location').setValue(addressToShow.postalArea);
@@ -861,8 +844,6 @@ export class ClientByIdComponent implements OnInit {
 
   GetCAEByCode() {
     var cae = this.form.value["CAE1"];
-
-    console.log(cae);
 
     //var caeResult = this.tableInfo.GetCAEByCode(cae);
   }
