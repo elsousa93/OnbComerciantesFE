@@ -92,7 +92,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ClientExtendedComponent,
     ReadcardComponent,
-
+    DevolucaoComponent,
     ReadcardComponent,
     NavMenuInternaComponent,
     FooterComponent,

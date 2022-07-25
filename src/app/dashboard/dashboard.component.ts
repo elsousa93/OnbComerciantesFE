@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
 import { Sort } from '@angular/material/sort';
+import { DataService } from '../nav-menu-interna/data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -173,7 +174,7 @@ export class DashboardComponent implements OnInit {
   userPermissions: MenuPermissions;
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -204,6 +205,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  streamHistoryMenu(){
+    this.dataService.historyStream$.next(true); 
   }
 
   ngAfterViewInit() {

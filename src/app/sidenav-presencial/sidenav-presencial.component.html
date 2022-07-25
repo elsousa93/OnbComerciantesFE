@@ -12,7 +12,7 @@
           </a>
         </div>
         <div class="nav-item" *ngIf="userPermissions.HomePage">
-          <a role="button" [routerLink]="['/client']" id="anchor">
+          <a role="button" [routerLink]="['/client']" (click)="hideHistoryTab()" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/folder_open.svg"
                 class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Abertura de Processo &nbsp;
