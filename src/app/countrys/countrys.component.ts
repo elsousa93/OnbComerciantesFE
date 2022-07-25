@@ -85,7 +85,7 @@ export class CountrysComponent implements OnInit {
       console.log(this.route.getCurrentNavigation().extras);
     }
 
-    this.clientId = String(this.router.snapshot.params['id']);
+    
 
     console.log(this.clientId);
     //Chamada à API para receber todos os Paises
@@ -95,7 +95,7 @@ export class CountrysComponent implements OnInit {
     }, error => console.log(error));
 
     console.log("por entrar no clientbyid");
-    this.clientService.getClientByID("88dab4e9-3818-4491-addb-f518ae649e5a", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+    this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
       console.log("entrou no getclientbyid");
       this.currentClient = result;
       console.log(result);
@@ -104,10 +104,13 @@ export class CountrysComponent implements OnInit {
   }
 
   initializeForm() {
+    console.log("cliente atual");
+    console.log(this.currentClient);
+
     this.form = new FormGroup({
-      expectableAnualInvoicing: new FormControl(0, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+      expectableAnualInvoicing: new FormControl(this.currentClient.knowYourSales.estimatedAnualRevenue, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
       services: new FormControl('', Validators.required),
-      transactionsAverage: new FormControl(0, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+      transactionsAverage: new FormControl(this.currentClient.knowYourSales.estimatedAnualRevenue, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
       associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
       preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
       inputEuropa: new FormControl(this.inputEuropa),
@@ -248,7 +251,7 @@ export class CountrysComponent implements OnInit {
     //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
     this.newSubmission.merchant.bankInformation = this.client.bankInformation;
     this.newSubmission.merchant.byLaws = this.client.byLaws;
-    this.newSubmission.merchant.clientId = this.client.clientId;
+    //this.newSubmission.merchant.clientId = this.client.clientId;
     this.newSubmission.merchant.companyName = this.client.companyName;
     this.newSubmission.merchant.contacts = this.client.contacts;
     this.newSubmission.merchant.crc = this.client.crc;
@@ -261,7 +264,7 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
     this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
     this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido; //tenho de mandar apenas o CODE
+    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
     this.newSubmission.merchant.legalName = this.client.legalName;
     this.newSubmission.merchant.legalNature = this.client.legalNature;
     this.newSubmission.merchant.legalNature2 = this.client.legalNature2;

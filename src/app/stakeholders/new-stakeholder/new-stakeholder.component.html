@@ -1,279 +1,285 @@
 <app-nav-menu-interna></app-nav-menu-interna>
-<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row">
-    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
-      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
-        <span class="navbar-text text-light">
-          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70" />
-        </span>
-        <span class="navbar-text">
-          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INTERVENIENTES
-          </h5>
-        </span>
-      </nav>
-    </div>
-    <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-      <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
-        <div class="table-responsive me-2 ps-3 pe-3">
-          <table class="table table-success">
-            <thead class="text-primary table-primary">
-              <tr class="table-light text-center text-primary">
-                <th scope="col" class="align-baseline text-primary table-white">Associado ao Contrato</th>
-                <th scope="col" class="text-center bg-light">Nº Cliente</th>
-                <th scope="col" class="text-center bg-white">Nome Cliente</th>
-                <th scope="col" class="text-center bg-white">NIF</th>
-                <th scope="col" class="text-center bg-white">Elegível</th>
-              </tr>
-            </thead>
-            <tbody> <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
-              <tr (click)="chooseStakeholder(newStake)"> <!-- Ao carregar num stakeholder, vamos buscar os dados dele à API, incluindo os docs -->
-                <th scope="row" class="text-primary text-center">SIM</th>
-                <td class="text-primary text-center">1032</td>
-                <td class="text-primary text-center">BIJAL DE CANELA</td>
-                <td class="text-primary text-center">162243839</td>
-                <td class="text-primary text-center">Elegivel</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+<form [formGroup]="formNewStakeholder" (ngSubmit)="submit()">
+
+  <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+    <!--<form [formGroup]="formNewStakeholder" (ngSubmit)="submit(formNewStakeholder.value)">-->
+    <div class="row">
+      <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+          <span class="navbar-text text-light">
+            <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70" />
+          </span>
+          <span class="navbar-text">
+            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+              INTERVENIENTES
+            </h5>
+          </span>
+        </nav>
       </div>
-      <h2 class="text-primary mt-5 ps-0 center-align"><img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;NOVO
-        INTERVENIENTE</h2>
-      <p class="titul campo_obrigatrio">* campo obrigatório</p>
-      <div class="row ms-0 me-0">
-				<div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mb-1">Associado ao Contrato:*</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <span class="navbar-text">
-              <div class="form-check">
-                <input class="form-check-input" required formControlName="contractAssociation" name="contractAssociation"
-                  type="radio" value=true id="contractAssociation" />
-                <label class="form-check-label radio pe-5" for="radio8">SIM</label>
-              </div>
-            </span>
-            <span class="navbar-text">
-              <div class="form-check">
-                <input class="form-check-input" required formControlName="contractAssociation" name="contractAssociation"
-                  type="radio" value=false id="contractAssociation" />
-                <label class="form-check-label radio" for="radio2">NÃO</label>
-              </div>
-            </span>
-          </nav>
-          <p class="titulo-form-simples mb-1">PRETENDE EFECTUAR A ATUALIZAÇÃO ELECTRÓNICA DOS DADOS UTILIZANDO O
-          CARTÃO DO CIDADÃO?*</p>
+      <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
+        <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+          <div class="table-responsive me-2 ps-3 pe-3">
+            <table class="table table-success">
+              <thead class="text-primary table-primary">
+                <tr class="table-light text-center text-primary">
+                  <th scope="col" class="align-baseline text-primary table-white">Associado ao Contrato</th>
+                  <th scope="col" class="text-center bg-light">Nº Cliente</th>
+                  <th scope="col" class="text-center bg-white">Nome Cliente</th>
+                  <th scope="col" class="text-center bg-white">NIF</th>
+                  <th scope="col" class="text-center bg-white">Elegível</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
+                <tr (click)="chooseStakeholder(newStake)">
+                  <!-- Ao carregar num stakeholder, vamos buscar os dados dele à API, incluindo os docs -->
+                  <th scope="row" class="text-primary text-center">SIM</th>
+                  <td class="text-primary text-center">1032</td>
+                  <td class="text-primary text-center">BIJAL DE CANELA</td>
+                  <td class="text-primary text-center">162243839</td>
+                  <td class="text-primary text-center">Elegivel</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h2 class="text-primary mt-5 ps-0 center-align">
+          <img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;NOVO
+          INTERVENIENTE
+        </h2>
+        <p class="titul campo_obrigatrio">* campo obrigatório</p>
+        <div class="row ms-0 me-0">
+          <div class="col-6 ms-0 me-0 ps-0 pe-5">
+            <p class="titulo-form-simples mb-1">Associado ao Contrato:*</p>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
+                         type="radio" value=true id="contractAssociation" />
+                  <label class="form-check-label radio pe-5" for="radio8">SIM</label>
+                </div>
+              </span>
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
+                         type="radio" value=false id="contractAssociation" />
+                  <label class="form-check-label radio" for="radio2">NÃO</label>
+                </div>
+              </span>
+            </nav>
+            <p class="titulo-form-simples mb-1">
+              PRETENDE EFECTUAR A ATUALIZAÇÃO ELECTRÓNICA DOS DADOS UTILIZANDO O
+              CARTÃO DO CIDADÃO?*
+            </p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="flagRecolhaEletronica"
-                    name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC"
-                    (click)="validateCC(true)" />
+                         name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC"
+                         (click)="validateCC(true)" />
                   <label class="form-check-label radio pe-5" for="radio2">SIM</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input input class="form-check-input" formControlName="flagRecolhaEletronica"
-                    name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica"
-                    (click)="validateCC(false)" />
+                         name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica"
+                         (click)="validateCC(false)" />
                   <label class="form-check-label radio" for="radio2">NÃO</label>
                 </div>
               </span>
             </nav>
-          <p class="titulo-form-simples"></p>
-        </div>
-      <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
-        <p class="titulo-form-simples mb-3">Procurador:*</p>
+            <p class="titulo-form-simples"></p>
+          </div>
+          <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
+            <p class="titulo-form-simples mb-3">Procurador:*</p>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <span class="navbar-text">
-            <div class="form-check">
-              <input class="form-check-input" required formControlName="procurator" name="procurator" type="radio"
-                value=true id="procurator" />
-              <label class="form-check-label radio pe-5" for="radio1">SIM</label>
-            </div>
-          </span>
-          <span class="navbar-text">
-            <div class="form-check">
-              <input class="form-check-input" required formControlName="procurator" name="procurator" type="radio"
-                value=false id="procurator" />
-              <label class="form-check-label radio" for="radio1">NÃO</label>
-            </div>
-          </span>
-        </nav>
-      </div>
-
-
-    <!--Sem CC-->
-    <div class="col-6 ms-0 me-0 ps-0 pe-5">
-      <div *ngIf="showYesCC && !showNoCC">
-        <form [formGroup]="formNewStakeholder" (ngSubmit)="submit(formNewStakeholder.value)">
-
-          <!--<div class="form-group">
-      <label for="fullName">Nome do Cliente</label>
-      <input type="text" formControlName="fullName"
-             id="fullName" class="form-control" [(ngModel)]="newStake.fullName">
-      <div class="alert alert-danger" *ngIf="fullName.touched && !fullName.valid">
-        <div *ngIf="clientName.errors && clientName.errors['required']">Client Name is required.</div>
-        <div *ngIf="clientName.errors && clientName.errors['minlength']">
-          Client Name must have at least 2 characters.
-        </div>
-        <div *ngIf="clientName.errors && clientName.errors['maxlength']">
-          Clients Name has a maximum of 100 characters.
-        </div>
-      </div>
-    </div>-->
-        <p class="titulo-form-simples mt-0">Tipo de Documento de Identificação (1ª Nacionalidade):*</p>
-        <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form"
-        [(ngModel)]="newStake.identificationDocument.type">
-            <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
-        documentType is required.
-      </div>-->
-        <p class="titulo-form-simples">País de Documento de Identificação (1ª Nacionalidade):*</p>
-        <input readonly name="documentCountry" formControlName="documentCountry" class="form-control campo_form"
-        [(ngModel)]="newStake.identificationDocument.country">
-        <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
-        documentCountry is required.
-        </div>-->
-        <p class="titulo-form-simples">Nº Documento de Identificação (1ª Nacionalidade):*</p>
-        <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
-        class="form-control campo_form" [(ngModel)]="newStake.identificationDocument.number">
-        <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
-        nrDocumentoID is required.
-        </div>-->
-        <p class="titulo-form-simples">Data de Validade Doc. de Identificação (1ª Nacionalidade):*</p>
-        <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
-          cols="30" rows="10" class="form-control campo_form" [(ngModel)]="newStake.identificationDocument.expirationDate">
-        <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
-        dataDocumentoID is required.
-        </div>-->
-        </form>
-      </div>
-        
-      <div *ngIf="!showYesCC && showNoCC">
-        <p class="titulo-form-simples mt-0">NIF</p>
-        <input id="fiscalId" class="form-control campo_form" type="text" #box [(ngModel)]="newStake.fiscalId">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
+                         value=true id="proxy" />
+                  <label class="form-check-label radio pe-5" for="radio1">SIM</label>
+                </div>
+              </span>
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
+                         value=false id="proxy" />
+                  <label class="form-check-label radio" for="radio1">NÃO</label>
+                </div>
+              </span>
+            </nav>
+          </div>
 
 
-        <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
+          <!--Sem CC-->
+          <div class="col-6 ms-0 me-0 ps-0 pe-5">
+            <div *ngIf="showYesCC && !showNoCC">
+              <!--<form [formGroup]="formNewStakeholder" (ngSubmit)="submit(formNewStakeholder.value)">-->
+              <!--<div class="form-group">
+                <label for="fullName">Nome do Cliente</label>
+                <input type="text" formControlName="fullName"
+                       id="fullName" class="form-control" [(ngModel)]="newStake.fullName">
+                <div class="alert alert-danger" *ngIf="fullName.touched && !fullName.valid">
+                  <div *ngIf="clientName.errors && clientName.errors['required']">Client Name is required.</div>
+                  <div *ngIf="clientName.errors && clientName.errors['minlength']">
+                    Client Name must have at least 2 characters.
+                  </div>
+                  <div *ngIf="clientName.errors && clientName.errors['maxlength']">
+                    Clients Name has a maximum of 100 characters.
+                  </div>
+                </div>
+              </div>-->
+              <p class="titulo-form-simples mt-0">Tipo de Documento de Identificação (1ª Nacionalidade):*</p>
+              <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form"
+                     >
+              <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
+                documentType is required.
+              </div>-->
+              <p class="titulo-form-simples">País de Documento de Identificação (1ª Nacionalidade):*</p>
+              <input readonly name="documentCountry" formControlName="documentCountry" class="form-control campo_form"
+                     >
+              <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
+              documentCountry is required.
+              </div>-->
+              <p class="titulo-form-simples">Nº Documento de Identificação (1ª Nacionalidade):*</p>
+              <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+                     class="form-control campo_form">
+              <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
+              nrDocumentoID is required.
+              </div>-->
+              <p class="titulo-form-simples">Data de Validade Doc. de Identificação (1ª Nacionalidade):*</p>
+              <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+                     cols="30" rows="10" class="form-control campo_form">
+              <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
+              dataDocumentoID is required.
+              </div>-->
+<!--</form>-->
+</div>
+
+<div *ngIf="!showYesCC && showNoCC">
+  <p class="titulo-form-simples mt-0">NIF</p>
+  <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF">
+
+
+  <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
     O parâmetro "NIF" é obrigatório.
   </div>-->
 
-        <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
-        <input id="streetAdressStakeholder" class="form-control campo_form" type="text" #box
-          [(ngModel)]="newStake.fiscalAddress.address" readonly>
-        <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
+  <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
+  <input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">
+  <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
     O parâmetro "Morada Fiscal" é obrigatório.
   </div>-->
 
-        <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
-        <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" #box
-          [(ngModel)]="newStake.fiscalAddress.postalCode" (keypress)="searchZipCode()" maxlength="8">
-        <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
+  <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
+  <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="searchZipCode()" maxlength="8">
+  <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
     O parâmetro "Código postal" é obrigatório.
   </div>-->
-        <p class="titulo-form-simples"></p>
-      </div>
+  <p class="titulo-form-simples"></p>
+</div>
     </div>
-    <div class="col-6 ms-0 me-0 ps-5 pe-0">
-      <div *ngIf="!showYesCC && showNoCC">
-      <p class="titulo-form-simples mt-0">CARGO</p>
-      <input id="roleStakeholder" class="form-control campo_form" type="text" #box class="form-control campo_form">
-      <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-      O parâmetro "Cargo" é obrigatório.
-      </div>-->
+<div class="col-6 ms-0 me-0 ps-5 pe-0">
+  <div *ngIf="!showYesCC && showNoCC">
+    <p class="titulo-form-simples mt-0">CARGO</p>
+    <input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role">
+    <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
+    O parâmetro "Cargo" é obrigatório.
+    </div>-->
 
-      <p class="titulo-form-simples ">LOCALIDADE</p>
-      <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" #box
-        [(ngModel)]="newStake.fiscalAddress.postalArea" readonly>
-      <!--<div class="alert alert-danger"
-        *ngIf="postalArea.touched && !postalArea.valid">
-        O parâmetro "Código postal" é obrigatório.
-      </div>-->
+    <p class="titulo-form-simples ">LOCALIDADE</p>
+    <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality">
+    <!--<div class="alert alert-danger"
+      *ngIf="postalArea.touched && !postalArea.valid">
+      O parâmetro "Código postal" é obrigatório.
+    </div>-->
 
-      <p class="titulo-form-simples ">MORADA FISCAL</p>
-      <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" #box
-        [(ngModel)]="newStake.fiscalAddress.country" readonly>
-      <!--<div class="alert alert-danger"
-        *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
-        O parâmetro "Código postal" é obrigatório.
-      </div>-->
-      <p class="titulo-form-simples"></p>
-    </div>
-    </div>
-      <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
-          <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
-          <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span>
-        </nav>
-      </div>
+    <p class="titulo-form-simples ">MORADA FISCAL</p>
+    <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address">
+    <!--<div class="alert alert-danger"
+      *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
+      O parâmetro "Código postal" é obrigatório.
+    </div>-->
+    <p class="titulo-form-simples"></p>
+  </div>
+</div>
+<div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
+    <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
+    <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span>
+  </nav>
+</div>
     </div>
 
 
-    <!--<div *ngIf="showYesCC">
-           Parte feita pelo Filipe, ver consequencias de alterar
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="form-group" *ngIf="readcard" style="width:450px">
-                Nome:<input ngModel #clientName="ngModel" name="clientName" type="text" id="clientName"
-                  class="form-control" [(ngModel)]="readcard[0]" readonly>
-                Nr Doc:<input ngModel #nrDocumentoID="ngModel" name="nrDocumentoID" type="text" id="nrDocumentoID"
-                  class="form-control" [(ngModel)]="readcard[1]" readonly>
-                Data Documento:<input ngModel #dateDocumentID="ngModel" name="dateDocumentID" type="text"
-                  id="dateDocumentID" class="form-control" [(ngModel)]="readcard[2]" readonly>
-                Nif:<input ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif"
-                  class="form-control" [(ngModel)]="readcard[3]" readonly>
-                Nacionalidade:<input ngModel #documentCountry="ngModel" name="documentCountry" type="text"
-                  id="documentCountry" class="form-control" [(ngModel)]="readcard[4]" readonly>
-                Morada:<input ngModel #streetAdressStakeholder="ngModel" name="streetAdressStakeholder" type="text"
-                  id="streetAdressStakeholder" class="form-control" [(ngModel)]="readcard[8]" readonly>
-                Morada:<input ngModel #postCodeAdressStakeholder="ngModel" name="postCodeAdressStakeholder" type="text"
-                  id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="readcard[9]" readonly>
-                Área:<input ngModel #areaBillingAdressStakeholder="ngModel" name="areaBillingAdressStakeholder"
-                  type="text" id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="readcard[6]" readonly>
-                País Morada Fiscal:<input ngModel #countryBillingAdressStakeholder="ngModel"
-                  name="countryBillingAdressStakeholder" type="text" id="countryBillingAdressStakeholder"
-                  class="form-control" [(ngModel)]="readcard[5]" readonly>
-              </div>
-            </div>
-          </div>
-        </div>-->
-        <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
-          <div class="table-responsive mt-5 mb-5 pb-5">
-            <table class="table">
-              <thead class="text-primary table-primary">
-                <tr class="table-white text-primary">
-                  <th scope="col" class="text-center text-primary bg-light table-white">Tipo de Comprovativo</th>
-                  <th scope="col" class="text-center bg-light">Data de Receção</th>
-                  <th scope="col" class="text-center bg-white">Data de Validade</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let elem of currentStakeholder.documents">
-                  <td class="text-primary text-center">Certidão</td>
-                  <td class="text-primary text-center">02-11-2021</td>
-                  <td class="text-primary text-center">02-11-2022</td>
-                  <td>
-                    <span>
-                      <img src="assets/images/search_blue.svg" (click)="b64toBlob(elem.uniqueReference, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;"/>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                </tr>
-              </tbody>
-            </table>
+<!--<div *ngIf="showYesCC">
+       Parte feita pelo Filipe, ver consequencias de alterar
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="form-group" *ngIf="readcard" style="width:450px">
+            Nome:<input ngModel #clientName="ngModel" name="clientName" type="text" id="clientName"
+              class="form-control" [(ngModel)]="readcard[0]" readonly>
+            Nr Doc:<input ngModel #nrDocumentoID="ngModel" name="nrDocumentoID" type="text" id="nrDocumentoID"
+              class="form-control" [(ngModel)]="readcard[1]" readonly>
+            Data Documento:<input ngModel #dateDocumentID="ngModel" name="dateDocumentID" type="text"
+              id="dateDocumentID" class="form-control" [(ngModel)]="readcard[2]" readonly>
+            Nif:<input ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif"
+              class="form-control" [(ngModel)]="readcard[3]" readonly>
+            Nacionalidade:<input ngModel #documentCountry="ngModel" name="documentCountry" type="text"
+              id="documentCountry" class="form-control" [(ngModel)]="readcard[4]" readonly>
+            Morada:<input ngModel #streetAdressStakeholder="ngModel" name="streetAdressStakeholder" type="text"
+              id="streetAdressStakeholder" class="form-control" [(ngModel)]="readcard[8]" readonly>
+            Morada:<input ngModel #postCodeAdressStakeholder="ngModel" name="postCodeAdressStakeholder" type="text"
+              id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="readcard[9]" readonly>
+            Área:<input ngModel #areaBillingAdressStakeholder="ngModel" name="areaBillingAdressStakeholder"
+              type="text" id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="readcard[6]" readonly>
+            País Morada Fiscal:<input ngModel #countryBillingAdressStakeholder="ngModel"
+              name="countryBillingAdressStakeholder" type="text" id="countryBillingAdressStakeholder"
+              class="form-control" [(ngModel)]="readcard[5]" readonly>
           </div>
         </div>
-        <div class="col ms-0 ps-0">
-          <hr>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-             <span class="navbar-text me-2 align-self-center ms-0 me-0">
-              <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
-              <button id="btn5a4" [routerLink]="['/stakeholders']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
-              <button id="btn5a2" [routerLink]="['/stores']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
-          </span>
-            </nav>
-         </div>
+      </div>
+    </div>-->
+<div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
+  <div class="table-responsive mt-5 mb-5 pb-5">
+    <table class="table">
+      <thead class="text-primary table-primary">
+        <tr class="table-white text-primary">
+          <th scope="col" class="text-center text-primary bg-light table-white">Tipo de Comprovativo</th>
+          <th scope="col" class="text-center bg-light">Data de Receção</th>
+          <th scope="col" class="text-center bg-white">Data de Validade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--<tr *ngFor="let elem of currentStakeholder.documents">
+          <td class="text-primary text-center">Certidão</td>
+          <td class="text-primary text-center">02-11-2021</td>
+          <td class="text-primary text-center">02-11-2022</td>
+          <td>
+            <span>
+              <img src="assets/images/search_blue.svg" (click)="b64toBlob(elem.uniqueReference, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;" />
+            </span>
+          </td>
+        </tr>-->
+        <tr>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="col ms-0 ps-0">
+  <hr>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+    <span class="navbar-text me-2 align-self-center ms-0 me-0">
+      <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
+      <button id="btn5a4" [routerLink]="['/stakeholders']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+      <button id="btn5a2" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+    </span>
+  </nav>
+</div>
       </div>
 </div>
 </div>
+</form>

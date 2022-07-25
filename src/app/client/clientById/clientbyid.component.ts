@@ -35,7 +35,7 @@ export class ClientByIdComponent implements OnInit {
   form: FormGroup;
   myControl = new FormControl('');
 
-  public clientId: string = "0";
+  public clientId: string;
   
   //client: Client = {} as Client;
   public client: Client = {
@@ -144,7 +144,6 @@ export class ClientByIdComponent implements OnInit {
     requestId: '',
     stakeholders: []
   };
-
 
   tempClient: any;
 
@@ -268,48 +267,48 @@ export class ClientByIdComponent implements OnInit {
     //});
   }
 
-  updateFormControls() {
+  //updateFormControls() {
 
-    console.log("durante");
-    console.log(this.processClient);
-    var crcCodeInput = this.form.get('crcCode').value;
-    this.form = new FormGroup({
-      commercialSociety: new FormControl(null, Validators.required), //sim
-      franchiseName: new FormControl(this.processClient.companyName), //sim
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-      //expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
-      //preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
-      //Pretende associar a grupo/franchise
-      //services: new FormControl('', Validators.required),
-      //transactionsAverage: new FormControl(this.client.knowYourSales.averageTransactions, Validators.required),
-      //destinationCountries: new FormControl('', Validators.required),
-      CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
-      CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
-      CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
-      CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
-      constitutionDate: new FormControl(this.client.establishmentDate), //sim
-      address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
-      ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
-      location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
-      country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
-      preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
-      crcCode: new FormControl(crcCodeInput, [Validators.required]), //sim
-      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }), //sim
-      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
-      socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
-      CAE1Branch: new FormControl(''), //talvez
-      CAESecondary1Branch: new FormControl(''), //talvez
-      CAESecondary2Branch: new FormControl(''), //talvez
-      CAESecondary3Branch: new FormControl(''), //talvez
+  //  console.log("durante");
+  //  console.log(this.processClient);
+  //  var crcCodeInput = this.form.get('crcCode').value;
+  //  this.form = new FormGroup({
+  //    commercialSociety: new FormControl(null, Validators.required), //sim
+  //    franchiseName: new FormControl(this.processClient.companyName), //sim
+  //    natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
+  //    //expectableAnualInvoicing: new FormControl(this.client.knowYourSales.estimatedAnualRevenue, Validators.required),
+  //    //preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
+  //    //Pretende associar a grupo/franchise
+  //    //services: new FormControl('', Validators.required),
+  //    //transactionsAverage: new FormControl(this.client.knowYourSales.averageTransactions, Validators.required),
+  //    //destinationCountries: new FormControl('', Validators.required),
+  //    CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
+  //    CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
+  //    CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
+  //    CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
+  //    constitutionDate: new FormControl(this.client.establishmentDate), //sim
+  //    address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
+  //    ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
+  //    location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
+  //    country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
+  //    preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
+  //    crcCode: new FormControl(crcCodeInput, [Validators.required]), //sim
+  //    natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }), //sim
+  //    natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
+  //    socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
+  //    CAE1Branch: new FormControl(''), //talvez
+  //    CAESecondary1Branch: new FormControl(''), //talvez
+  //    CAESecondary2Branch: new FormControl(''), //talvez
+  //    CAESecondary3Branch: new FormControl(''), //talvez
 
-      //merchantType: new FormControl(this.client.merchantType), //talvez
-      //associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise), //talvez
+  //    //merchantType: new FormControl(this.client.merchantType), //talvez
+  //    //associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise), //talvez
 
-    });
+  //  });
 
-    console.log("pos");
-    //var a = this.form.get('CAE1Branch').validato
-  }
+  //  console.log("pos");
+  //  //var a = this.form.get('CAE1Branch').validato
+  //}
   initializeBasicFormControl() {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
@@ -331,22 +330,35 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeFormControlOther() {
-    console.log("entrou aqui no formcontrolother");
-    console.log(this.form.get("commercialSociety").value);
+
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
       socialDenomination: new FormControl('', Validators.required) //sim
     });
 
+    this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
+      
+      this.onLegalNatureSelected();
+
+      if (this.legalNatureList2.length > 0)
+        this.form.controls["natJuridicaN2"].setValidators([Validators.required]);
+      else
+        this.form.controls["natJuridicaN2"].clearValidators();
+      this.form.controls["natJuridicaN2"].updateValueAndValidity();
+    });
   }
 
   initializeFormControlCRC() {
     console.log("a");
+    console.log(this.crcCode);
+    console.log(this.processClient.capitalStock.date);
+    this.crcCode = this.form.get("crcCode").value;
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl('5', [Validators.required]), //sim
+      crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
@@ -359,13 +371,14 @@ export class ClientByIdComponent implements OnInit {
       CAESecondary2Branch: new FormControl(''), //talvez
       CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
       CAESecondary3Branch: new FormControl(''), //talvez
-      constitutionDate: new FormControl(this.client.establishmentDate), //sim
+      constitutionDate: new FormControl(Date.parse(this.processClient.capitalStock.date).toLocaleString()), //sim this.processClient.capitalStock.date + ''
       country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
       location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
       address: new FormControl(this.processClient.headquartersAddress.address, Validators.required) //sim
     });
-    console.log("b");
+
+    console.log(this.form);
     this.form.get("CAE1").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.controls["CAE1Branch"].setValidators([Validators.required]);
@@ -558,27 +571,30 @@ export class ClientByIdComponent implements OnInit {
   }
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
+    private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
     this.ngOnInit();
 
-    if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
-      http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientId).subscribe(result => {
-        this.clientExists = true;
-        this.client = result;
-      }, error => console.error(error));
-    }
+    
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
-      this.processId = this.route.getCurrentNavigation().extras.state["processID"];
+      this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       console.log("------------");
       console.log(this.processId);
       console.log("------------");
     }
-    this.initializeDefaultClient();
+
+    if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
+      clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
+        this.clientExists = true;
+        this.client = result;
+      })
+    }
+
+    //this.initializeDefaultClient();
     
     this.initializeTableInfo();
     //this.createContinentsList();
@@ -669,8 +685,14 @@ export class ClientByIdComponent implements OnInit {
 
   onLegalNatureSelected() {
     var exists = false;
+    console.log("entrou no legalnatureselected");
+
+    console.log(this.legalNatureList);
     this.legalNatureList.forEach(legalNat => {
-      if (this.client.legalNature == legalNat.code) {
+      var legalNatureToSearch = this.form.get('natJuridicaN1').value;
+      console.log(legalNatureToSearch);
+      if (legalNatureToSearch == legalNat.code) {
+        console.log("chegou aqui");
         exists = true;
         this.legalNatureList2 = legalNat.secondaryNatures;
       }
@@ -759,21 +781,26 @@ export class ClientByIdComponent implements OnInit {
   submit() {
 
     var formValues = this.form.value;
+    if (this.isCommercialSociety) {
+      this.client.headquartersAddress.address = this.form.value["address"];
+      this.client.headquartersAddress.country = this.form.value["country"];
+      this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
+      this.client.headquartersAddress.postalArea = this.form.value["location"];
+      this.client.mainEconomicActivity = this.form.value["CAE1"];
+      this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);
+      this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"], this.form.value["CAESecondary2Branch"]);
+      //Paises destino
+      this.client.establishmentDate = this.form.value["constitutionDate"];
+      this.client.crc.code = this.form.value["crcCode"];
+      this.client.legalNature = this.form.value["natJuridicaN1"];
 
-    this.client.headquartersAddress.address = this.form.value["address"];
-    this.client.headquartersAddress.country = this.form.value["country"];
-    this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
-    this.client.headquartersAddress.postalArea = this.form.value["location"];
-    this.client.mainEconomicActivity = this.form.value["CAE1"];
-    this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);
-    this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"], this.form.value["CAESecondary2Branch"]);
-    //Paises destino
-    this.client.establishmentDate = this.form.value["constitutionDate"];
-    this.client.crc.code = this.form.value["crcCode"];
-    this.client.legalNature = this.form.value["natJuridicaN1"];
-
-    this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
-    this.client.companyName = this.form.value["socialDenomination"];
+      this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+      this.client.companyName = this.form.value["socialDenomination"];
+    } else {
+      this.client.legalNature = this.form.value["natJuridicaN1"];
+      this.client.legalNature2 = this.form.value["natJuridicaN2"];
+      this.client.companyName = this.form.value["socialDenomination"];
+    }
     ////Social Denomination
 
     //this.client.merchantType = this.tipologia;

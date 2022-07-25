@@ -755,11 +755,14 @@
                     </div>
                     <div>
                       <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
-                      <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
-                              class="form-control campo_form">
-                        <option value="" selected disabled hidden>Selecione</option>
-                        <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
-                      </select>
+                      <!--<select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+          class="form-control campo_form" readonly>
+    <option value="" selected disabled hidden>Selecione</option>
+    <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
+  </select>-->
+                      <input type="text" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+                             class="form-control campo_form" readonly />
+
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
                         <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -911,7 +914,7 @@
                 <!-- Data de constituição   offset-1 bg-white col-7 col-xxl-10 //col-xxl col-6  -->
                 <div class="row">
                   <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="dataConst">Data de Constituição: </p>
+                    <p class="titulo-form-simples" for="constitutionDate">Data de Constituição: </p>
                     <input formControlName="constitutionDate" type="date"
                            id="dataConst" class="form-control campo_form" readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
@@ -985,16 +988,12 @@
               <div class="col-xxl col-6">
                 <div>
                   <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
-
-                  <!--<select *ngIf="!clientExists" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
-            class="form-control campo_form"
-            (change)="onLegalNatureSelected()" readonly>
-      <option value="">Selecione</option>
-      <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
-
-    </select>-->
-                  <input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
-                         class="form-control campo_form" readonly />
+                  <select formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                          class="form-control campo_form"
+                          (change)="onLegalNatureSelected()">
+                    <option value="">Selecione</option>
+                    <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
+                  </select>
 
                   <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                     <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
@@ -1006,14 +1005,14 @@
                   <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
                   <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                           class="form-control campo_form">
-                    <option value="" selected disabled hidden>Selecione</option>
+                    <option value="" selected disabled>Selecione</option>
                     <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
                   </select>
-                  <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
+                  <!--<div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
                     <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
                       O parâmetro acima é obrigatório.
                     </div>
-                  </div>
+                  </div>-->
                 </div>
               </div>
 
@@ -1021,8 +1020,7 @@
                 <div>
                   <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
                   <input minlength="2" maxlength="100" formControlName="socialDenomination"
-                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                         readonly>
+                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form">
                   <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
                     <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
                       O parâmetro acima é obrigatório.

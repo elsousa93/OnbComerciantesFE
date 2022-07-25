@@ -400,18 +400,18 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado() {
-    console.log(this.process.processId);
-    let navigationExtras: NavigationExtras = {
-      state: {
-        tipologia: this.tipologia,
-        NIFNIPC: this.newClient.clientId,
-        clientExists: true,
-        clientId: this.clientId,
-        processID: this.process.processId
-      }
-    };
+    console.log(this.clientId);
 
-    this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
+      let navigationExtras: NavigationExtras = {
+        state: {
+          tipologia: this.tipologia,
+          NIFNIPC: this.newClient.clientId,
+          clientExists: true,
+          clientId: this.clientId,
+        }
+      };
+
+      this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }
@@ -458,7 +458,6 @@ export class ClientComponent implements OnInit {
       tipologia: this.tipologia,
         NIFNIPC: this.newClient.clientId,
         exists: false,
-        processID: this.process.processId
     }
   };
 

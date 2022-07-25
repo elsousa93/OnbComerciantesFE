@@ -69,24 +69,34 @@ export class NewStakeholderComponent implements OnInit {
         this.newStake = result;
       }, error => console.error(error));
     }
-
-   
-
   }
+
+  initializeFormWithoutCC() {
+    this.formNewStakeholder = new FormGroup({
+      contractAssociation: new FormControl('', Validators.required),
+      proxy: new FormControl('', Validators.required),
+      NIF: new FormControl('', Validators.required),
+      Role: new FormControl('', Validators.required),
+      Country: new FormControl('', Validators.required),
+      ZIPCode: new FormControl('', Validators.required),
+      Locality: new FormControl('', Validators.required),
+      Address: new FormControl('', Validators.required)
+    })
+  }
+
 
   ngOnInit(): void {
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
+    console.log(this.newStake.fiscalId);
     // console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
-    
-    this.createForm();
-    console.log('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
+    this.initializeFormWithoutCC();
+    //this.createForm();
+    //console.log('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
     this.showYesCC = this.route.getCurrentNavigation().extras.state["isCC"];
-    this.formNewStakeholder.get('flagRecolhaEletronica').setValue(this.showYesCC);
+    //this.formNewStakeholder.get('flagRecolhaEletronica').setValue(this.showYesCC);
     if (this.showYesCC) {
       this.flagRecolhaEletronica = this.showYesCC;
     }
-    console.log('flag ', this.flagRecolhaEletronica);
-    console.log('value depois ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
   }
 
   //@Output()  newStakeholderAdded = new EventEmitter<any>();
@@ -109,38 +119,43 @@ export class NewStakeholderComponent implements OnInit {
 
     });
   }
-  submit(formNewStakeholder) {
 
-    //fazer isto para todos os campos --------------- TO DO
-    this.newStake.fullName = formNewStakeholder.fullName;
+  submit() {
+    console.log(this.formNewStakeholder);
+  }
 
+  //submit(formNewStakeholder) {
 
-    console.log(formNewStakeholder);
-    console.log(typeof this.newStake);
-
-    //Nao esta a ser usado
-    this.stringJson = JSON.stringify(this.newStake);
-    console.log("String json object :", this.stringJson);
-    console.log("Type :", typeof this.stringJson);
-
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    }
-
-    this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/PostNewStakeholder/'
-      + this.newStake.fiscalId, this.newStake).subscribe(result => {
-        console.log(result);
-      }, error => console.error(error));
-
-    //Edit EditStakeholderById
-    this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/EditStakeholderById/'
-      + this.newStake.fiscalId + '/edit', this.newStake).subscribe(result => {
-        console.log("EditStakeholderById");
-        console.log(result);
-      }, error => console.error(error));
+  //  //fazer isto para todos os campos --------------- TO DO
+  //  this.newStake.fullName = formNewStakeholder.fullName;
 
 
-  }//Fim do submit
+  //  console.log(formNewStakeholder);
+  //  console.log(typeof this.newStake);
+
+  //  //Nao esta a ser usado
+  //  this.stringJson = JSON.stringify(this.newStake);
+  //  console.log("String json object :", this.stringJson);
+  //  console.log("Type :", typeof this.stringJson);
+
+  //  const httpOptions = {
+  //    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  //  }
+
+  //  this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/PostNewStakeholder/'
+  //    + this.newStake.fiscalId, this.newStake).subscribe(result => {
+  //      console.log(result);
+  //    }, error => console.error(error));
+
+  //  //Edit EditStakeholderById
+  //  this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/EditStakeholderById/'
+  //    + this.newStake.fiscalId + '/edit', this.newStake).subscribe(result => {
+  //      console.log("EditStakeholderById");
+  //      console.log(result);
+  //    }, error => console.error(error));
+
+
+  //}//Fim do submit
 
   onClickDelete(nif, clientNr) {
     this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
