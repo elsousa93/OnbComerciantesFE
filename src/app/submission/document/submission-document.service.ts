@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './isubmission-document';
+import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmission-document';
 
 @Injectable({
   providedIn: 'root'
