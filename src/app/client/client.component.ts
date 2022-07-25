@@ -17,6 +17,8 @@ import { readCCAddress } from '../citizencard/CitizenCardController.js';
 
 //Funcao da SIBS 
 declare function OpenCCDialog(): any;
+
+
 //CC
 interface ICCInfo {
   BI: string;
@@ -80,7 +82,7 @@ export class ClientComponent implements OnInit {
   }
   callreadCCAddress() {
     readCCAddress();
-  }
+}
 
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
