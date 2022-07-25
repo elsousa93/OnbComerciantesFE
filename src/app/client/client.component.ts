@@ -77,7 +77,12 @@ export class ClientComponent implements OnInit {
   public isNoDataReadable: boolean;
   
   //------------- Cartão de Cidadao
-
+  callreadCC() {
+    readCC();
+  }
+  callreadCCAddress() {
+    readCCAddress();
+}
 
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
