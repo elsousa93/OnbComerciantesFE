@@ -75,17 +75,36 @@ export class ClientComponent implements OnInit {
   public result: any;
   public displayValueSearch: any;
   public isNoDataReadable: boolean;
-  
-  //------------- Cartão de Cidadao
+  public showCC: boolean; 
+  //---- Cartão de Cidadao ------
   callreadCC() {
-    readCC(SetNewCCData);
+    readCC(this.SetNewCCData);
   }
   callreadCCAddress() {
-    readCCAddress(SetNewCCData);
-}
- SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+    readCCAddress(this.SetNewCCData);
+  }
+
+/**
+ * Information from the Citizen Card will be associated to the client structure
+ * cardNumber não é guardado
+ * 
+ * */
+  SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
   gender, height, nationality, expiryDate, nameFather, nameMother,
-  nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {}
+   nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {
+    
+   // this.newClient.legalName = name;
+    console.log("Name: ", name);
+   // this.newClient.fiscalId = nif;
+    console.log("Fiscal ID: ", nif);
+  //  this.idToSearch = cardNumber;
+    this.ccInfo = true;
+
+   // this.CCID.NIF = nif;
+    console.log("NIF: ", this.CCID.NIF);
+     
+ 
+ }
 
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
@@ -106,7 +125,7 @@ export class ClientComponent implements OnInit {
 
  //----------------
   clientIdNew;
-  ccInfo;
+  ccInfo ;
   newId;
   ListaDocType = docType;
   ListaDocTypeENI = docTypeENI;
@@ -121,7 +140,7 @@ export class ClientComponent implements OnInit {
 
   //Pesquisa 
   showFoundClient: boolean = false;     //sem backend: true // antigo nome: showWarning
-  idToSeacrh: number;
+  idToSearch: number;
   searchDone: boolean = false;
 
   showButtons: boolean = false;
@@ -347,15 +366,15 @@ export class ClientComponent implements OnInit {
    * Chamar esta função no botão de Pesquisar
    * 
    **/
-  onSearchSimulation(idToSeacrh: number) {
+  onSearchSimulation(idToSearch: number) {
     //No New SubmissionResponse, este é o valor do merchant.id
-    if (idToSeacrh == 22181900000011) {
+    if (idToSearch == 22181900000011) {
      //Cliente Encontrado
       console.log("Cliente Encontrado");
       this.showFoundClient = true;
 
     }
-    if (!(idToSeacrh==22181900000011)) {
+    if (!(idToSearch==22181900000011)) {
       this.showFoundClient = false;
       this.resultError = "Não existe Comerciante com esse número.";
     }
@@ -439,13 +458,14 @@ export class ClientComponent implements OnInit {
   }
 
   launchNewModal() {
-
     this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' } )
     this.newModal.result.then(function (result: boolean): void {
       if (result) {
         this.Window.readCCAddress();
       } else {
         this.Window.readCC();
+        console.log("fechar");
+        this.closeModal();
       }
     }.bind(this));
   }
