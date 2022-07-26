@@ -18,7 +18,15 @@ export class PackContratualComponent implements OnInit{
   public currentPage: number;
   public subscription: Subscription;
 
+  public result: any;
+
+  // apagar quando tiver com API
+  public docToShow: {nome:string, NIF: string, poderRepresentacao: string, selecao: boolean};
+  files?: File[] = [];
+
   isPaper: boolean = null;
+  showObservations: boolean = false;
+  validatedDocuments: boolean = false;
 
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
@@ -35,11 +43,46 @@ ngOnInit(): void {
 }
 
 paperSignature(paper: boolean) {
+  this.showObservations = true;
   if (paper){
     this.isPaper = true;
   } else {
     this.isPaper = false;
   }
 }
+
+validatedDocumentsChange(value: boolean) {
+  this.validatedDocuments = value;
+}
+
+selectFile(event: any) {
+  this.docToShow = { nome: "Teste", NIF: "123456789", poderRepresentacao: "Assina Sozinho", selecao: true }
+  const files = <File[]>event.target.files;
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    const sizeFile = file.size / (1024 * 1024);
+    var extensoesPermitidas = /(.pdf)$/i;
+    const limSize = 10;
+    this.result = "teste";
+    if (this.result != null) {
+      if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+        if (event.target.files && files[i]) {
+          var reader = new FileReader();
+          reader.onload = (event: any) => {
+            // this.localUrl = event.target.result;
+          }
+          reader.readAsDataURL(files[i]);
+          this.files.push(file);
+        } else {
+          alert("Verifique o tipo / tamanho do ficheiro");
+        }
+
+      }
+    }
+
+  }
+  console.log(this.files);
+
+  }
 
 }

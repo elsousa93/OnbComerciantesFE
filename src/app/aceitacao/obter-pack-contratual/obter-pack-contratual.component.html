@@ -77,7 +77,13 @@
                     <td class="text-primary text-center align-middle">Bual de Canela</td>
                     <td class="text-primary text-center align-middle">162243889</td>
                     <td class="text-primary text-center align-middle">A</td>
-                    <td></td>
+                    <td>
+                    <span>
+                      <img src="assets/images/delete_blue.svg" style="height: 25px !important; margin-right: 10px !important; vertical-align: sub; cursor: pointer;">
+                   </span>
+                   <span>
+                      <img src="assets/images/search_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                   </span></td>
                   </tr>
                   </tbody>
                 </table><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0"></span>
@@ -91,7 +97,8 @@
                   </button>
                 </div>
                 <div class="col mb-0 pb-5">
-                <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input2" name="input2">
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input2" name="input2" [checked]="validatedDocuments"
+                  (change)="validatedDocumentsChange($event.target.checked)">
                   <label class="form-check-label" for="input2">Validou que os documentos necessários foram efectivamente&nbsp; os carregados?</label>
                 </div>
                 <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input3" name="input3">
@@ -112,7 +119,7 @@
             <button id="btn5a6" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" wappler-command="editContent">DEVOLVER AO BACKOFFICE&nbsp;
               <img src="assets/images/assignment_returned_white.svg" style="height: 30px; vertical-align: bottom;">
             </button>
-            <button id="btn5a6" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
+            <button *ngIf="validatedDocuments" id="btn5a6" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
               <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
             </button>
             <button id="btn5a6" class="btn botao_branco center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
