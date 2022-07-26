@@ -1,0 +1,91 @@
+
+<div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span class="navbar-text text-light"><img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70"></span><span class="navbar-text">
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">CONSULTAS</h5>
+        </span></nav>
+    </div>
+    <div class="offset-1 bg-white align-self-center col-10 ps-3">
+      <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg" style="height: 30px; vertical-align: bottom;">&nbsp;PESQUISA</h4>
+      <div class="row ms-0 me-0">
+        <div class="col-6 ms-0 me-0 ps-0 pe-5">
+          <p class="titulo-form-simples mt-0">Nº DE PEDIDO</p><input id="text8" name="text5" type="text" class="form-control campo_form">
+          <p class="titulo-form-simples">ESTADO</p><select id="select1" class="form-select  campo_form">
+            <option value="1">Em curso</option>
+            <option value="2">Outro1</option>
+            <option value="3">Outro2</option>
+          </select>
+          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - DE:</p><input id="text1" name="text1" type="date" class="form-control campo_form">
+          <p class="titulo-form-simples"></p>
+        </div>
+        <div class="col-6 ms-0 me-0 ps-0 pe-5">
+          <p class="titulo-form-simples mt-0">TIPO DE DOCUMENTO</p><select id="select3" class="form-select  campo_form">
+            <option value="1"></option>
+            <option value="2">Outro1</option>
+            <option value="3">Outro2</option>
+          </select>
+          <p class="titulo-form-simples">Nº DE DOCUMENTO</p><input id="text3" name="text3" type="text" class="form-control campo_form">
+          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - ATÉ:</p><input id="text2" name="text2" type="date" class="form-control campo_form">
+          <p class="titulo-form-simples"></p>
+        </div>
+        <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">PESQUISA
+          &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;"></button>
+          <table class="table mt-5 pt-5">
+            <thead class="text-primary table-primary">
+            <tr class="table-white text-primary">
+              <th scope="col" class="text-center text-primary bg-light table-white">Nº PEDIDO</th>
+              <th scope="col" class="text-center bg-light">NIPC</th>
+              <th scope="col" class="text-center bg-white">NOME DA EMPRESA</th>
+              <th scope="col" class="text-center bg-white">ESTADO</th>
+              <th scope="col" class="text-center bg-white">ESTADO DE CONCLUSÃO</th>
+              <th scope="col" class="text-center bg-white"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="text-primary text-center align-middle">240370</td>
+              <td class="text-primary text-center align-middle">529463466</td>
+              <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
+              <td class="text-primary text-center align-middle">PENDENTE DE ARQUIVO FÍSICO</td>
+              <td class="text-primary text-center align-middle">EM CURSO</td>
+              <td class="text-primary text-center align-middle"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
+            </tr>
+            <tr>
+              <td class="text-primary text-center align-middle">240380</td>
+              <td class="text-primary text-center align-middle">529463466</td>
+              <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
+              <td class="text-primary text-center align-middle">PENDENTE DE ARQUIVO FÍSICO</td>
+              <td class="text-primary text-center align-middle">EM CURSO</td>
+              <td class="text-primary text-center align-middle"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col ms-0 ps-0">
+        <hr>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+          <span class="navbar-text me-2 align-self-center ms-0 me-0">
+            <button [routerLink]="['/']" style="margin-right: 0px !important;" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+            wappler-command="editContent">SAIR&nbsp;
+            <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+          </button>
+        </span>
+        <button id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" 
+        wappler-command="editContent">CANCELAR&nbsp;
+        <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+      </button>
+      <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" 
+      wappler-command="editContent">
+      <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;
+    </button>
+    <button id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-1 me-0 pt-3 pb-3 ps-3" 
+    wappler-command="editContent">SEGUINTE&nbsp;
+    <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
+  </button>
+</nav>
+      </div>
+    </div>
+  </div>
+</div>

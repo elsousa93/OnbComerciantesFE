@@ -19,6 +19,9 @@ export class ObterPackContratualComponent implements OnInit{
   public subscription: Subscription;
 
   
+  validatedDocuments: boolean = false;
+
+  
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
   private route: Router,
   private router: ActivatedRoute) {
@@ -30,6 +33,10 @@ export class ObterPackContratualComponent implements OnInit{
 ngOnInit(): void {
 
   var context = this;
+}
+
+validatedDocumentsChange(value: boolean) {
+  this.validatedDocuments = value;
 }
 
 }
