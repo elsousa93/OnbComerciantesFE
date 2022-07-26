@@ -118,15 +118,15 @@
       </div>
    <br>
    <ng-template #deleteModal>
-         <div class="modal-dialog">
-            <div class="modal-content">
-              <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0">
-                <div class="container-fluid ms-0 me-0 ps-0 pe-0">
+         <!-- <div class="modal-dialog">
+            <div class="modal-content"> -->
+              <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+                <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
                   <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
                     <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
-                      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                      <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
                         <span class="navbar-text ms-auto align-self-start">
-                          <h2 class="text-light mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 pe-4"  data-bs-dismiss="modal">x</h2>
+                          <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4"  data-bs-dismiss="modal">x</h2>
                         </span>
                       </nav>
                     </div>
@@ -147,10 +147,10 @@
                         <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                           <span class="navbar-text"></span>
                           <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
-                              class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3"
+                              class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
                               wappler-command="editContent" (click)="confirmDelete()" data-bs-dismiss="modal">SIM</button></span>
                           <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
-                              class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
+                              class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4"
                               wappler-command="editContent" (click)="declineDelete()">NÃO</button></span>
                         </nav>
                      </div>
@@ -158,8 +158,8 @@
                   </div>
                 </div>
               </main>
-            </div>
-          </div>
+            <!-- </div>
+          </div> -->
         
       <!-- <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
          <p>Tem a certeza que deseja excluir o ficheiro?</p>
