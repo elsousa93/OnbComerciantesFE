@@ -126,7 +126,7 @@
                     <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
                       <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
                         <span class="navbar-text ms-auto align-self-start">
-                          <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4"  data-bs-dismiss="modal">x</h2>
+                          <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;" (click)="declineDeleteDoc()">x</h2>
                         </span>
                       </nav>
                     </div>
@@ -141,16 +141,16 @@
                         <nav
                           class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
                           <span class="navbar-text">
-                            <h3 class="fw-bold text-light mb-2">Tem a certeza que deseja excluir o ficheiro?</h3>
+                            <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">Tem a certeza que deseja excluir o ficheiro?</h5>
                           </span>
                         </nav>
                         <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                           <span class="navbar-text"></span>
                           <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
-                              class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                              class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
                               wappler-command="editContent" (click)="confirmDelete()" data-bs-dismiss="modal">SIM</button></span>
                           <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
-                              class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4"
+                              class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
                               wappler-command="editContent" (click)="declineDelete()">NÃO</button></span>
                         </nav>
                      </div>
@@ -269,11 +269,42 @@
       </div>
    </ng-template>
    <ng-template #firstSubmissionModal>
-      <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
+      <!-- <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
          <p>Após efetuar a primeira submissão, o BackOffice irá reiniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.</p>
          <button type="button" class="btn btn-primary" (click)="back()">Voltar</button>
          <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="continue()">Continuar</button>
-      </div>
+      </div> -->
+      <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+         <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+             <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+                 <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                     <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                         <span class="navbar-text ms-auto align-self-start">
+                             <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" (click)="declineFirstSubmission()" style="cursor: pointer;">x</h2>
+                        </span>
+                     </nav>
+                 </div>
+                 <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+                     <div class="mb-5 ps-0 pe-0 col-12">
+                         <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                             <span class="navbar-text"></span>
+                             <img src="assets/images/warning.svg" class="img_warning">
+                         </nav>
+                         <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                             <span class="navbar-text">
+                                 <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">Após efetuar a primeira submissão, o BackOffice irá iniciar a recolha de informação existente nos documentos&nbsp; comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.&nbsp;</h5>
+                             </span>
+                         </nav>
+                         <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+                             <span class="navbar-text"></span>
+                             <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">VOLTAR</button></span>
+                             <span class="navbar-text pt-0 pb-0"><button id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">CONTINUAR</button></span>
+                         </nav>
+                        </div>
+                 </div>
+             </div>
+         </div>
+     </main>
    </ng-template>
    <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0">
       <div class="row">
