@@ -1,6 +1,8 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
+import { ProcessNumberService } from './process-number.service';
 
 @Component({
   selector: 'app-nav-menu-presencial',
@@ -31,12 +33,18 @@ export class NavMenuPresencialComponent implements OnInit {
 
   @HostBinding('style.--navPosition') public navPosition: string = '0';
 
-  prevScrollpos:number = window.pageYOffset;
+  prevScrollpos: number = window.pageYOffset;
 
-  constructor() {
+  processNumber: string = "";
+  subscription: Subscription;
+
+  constructor(private processNrService: ProcessNumberService) {
+    this.processNrService.changeProcessNumber(localStorage.getItem("submissionId"));
   }
 
   ngOnInit(): void {
+    this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
+
     setTimeout(this.toggleEvent.bind(this), 800);
 
     //this.navPosition = '0';
