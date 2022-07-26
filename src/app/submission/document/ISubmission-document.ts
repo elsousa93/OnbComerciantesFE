@@ -17,7 +17,7 @@ export interface PostDocument{
   documentPurpose: string
   file: FileDocument
   validUntil: string
-  data: string
+  data: any
 }
 
 interface FileDocument {

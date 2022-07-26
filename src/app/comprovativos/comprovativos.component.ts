@@ -4,7 +4,7 @@ import { AfterViewInit, Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription, take } from 'rxjs';
+import { buffer, Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
@@ -401,7 +401,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       "partner": ""
     },
     "startedAt": "2022-10-10",
-    "id": "1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", //uuid
+    "id": localStorage.getItem("submissionId"), //uuid
     "bank": "0800",
     "state": "Ready"
   }
@@ -410,19 +410,26 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.firstSubmissionModalRef?.hide();
     let utf8encode = new TextEncoder();
     this.files.forEach(doc => {
-
+      
       this.readBase64(doc).then((data) => {
+        //var buf = new ArrayBuffer(data.length * 2); // 2 bytes for each char
+        //var bufView = new Uint16Array(buf);
+        //for (var i = 0, strLen = data.length; i < strLen; i++) {
+        //  bufView[i] = data.charCodeAt(i);
+        //}
+        //console.log('Array ', buf);
+        //console.log('String ', buf.toString());
+        //console.log('Buf View ', bufView);
         var docToSend: PostDocument = {
           "documentType": "string",
           "documentPurpose": "Identification",
           "file": {
             "fileType": "PDF",
-            "binary": utf8encode.encode(data).toString()
+            "binary": data.split(',')[1] //para retirar a parte inicial "data:application/pdf;base64"
           },
           "validUntil": "2022-07-20T11:03:13.001Z",
-          "data": "string"
+          "data": {}
         }
-        console.log('Binário do objeto ', docToSend.file.binary);
         this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
           console.log('Ficheiro foi submetido ', result);
         });
@@ -436,7 +443,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
 
 
-    //this.route.navigate(['/commercial-offert-list']);
+    this.route.navigate(['/commercial-offert-list']);
   }
 
   back() {
@@ -470,6 +477,21 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     });
     return future;
   }
+
+   readFile(file) {
+  return new Promise((resolve, reject) => {
+    // Create file reader
+    let reader = new FileReader()
+
+    // Register event listeners
+    reader.addEventListener("loadend", e => resolve(e.target.result))
+    reader.addEventListener("error", reject)
+
+    // Read file
+    reader.readAsArrayBuffer(file)
+  })
+}
+
 
 }
 

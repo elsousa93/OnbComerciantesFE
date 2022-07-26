@@ -80,6 +80,20 @@ export class ProcessService {
 
     return this.http.post<any>(URI, client, HTTP_OPTIONS);
   }
+
+  //ACQUIRING API
+
+  searchProcessByNumber(processNumber: string) {
+    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?number=' + processNumber);
+  }
+
+  searchProcessByState(state: string) {
+    return this.http.get<ProcessGet[]>(this.baseUrl + 'process' + '?state=' + state);
+  }
+
+  getProcessById(processId: string) {
+    return this.http.get<ProcessGet>(this.baseUrl + 'process/' + processId);
+  }
 }
 
 export interface ClientForProcess {
@@ -121,4 +135,20 @@ export interface ClientForProcess {
     uniqueReference?: string,
     archiveSource?: string
   }[]
+}
+
+export interface ProcessGet {
+  processId: string
+  processNumber: string
+  processType: string
+  processKind: string
+  state: string
+  isClientAwaiting: boolean
+  startedBy: StartedBy
+}
+
+interface StartedBy {
+  user: string
+  partner: string
+  partnerBranch: string
 }

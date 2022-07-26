@@ -116,37 +116,37 @@
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                 data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSource" matSort #empTbSort="matSort">
+                <mat-table [dataSource]="dataSourcePendentes" matSort #empTbSort="matSort">
                   <!-- Nº Pedido Column -->
-                  <ng-container matColumnDef="id">
+                  <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="name">
+                  <ng-container matColumnDef="contractNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nº Contrato
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Data Pedido Column -->
-                  <ng-container matColumnDef="progress">
+                  <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Data Pedido
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="color">
+                  <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      {{row.color}}
+                      {{row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
-                  <ng-container matColumnDef="teste">
+                  <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
                       &nbsp;&nbsp;&nbsp;Editar Processo
                     </mat-header-cell>
@@ -204,46 +204,41 @@
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                 data-bs-parent="#accordionFlushExample">
                 <!--dataSourceWithObjectColumn-->
-                <mat-table [dataSource]="dataSource1" matSort #empTbSortWithObject="matSort">
+                <mat-table [dataSource]="dataSourceTratamento" matSort #empTbSortWithObject="matSort">
                   <!-- Nº Pedido Column -->
-                  <ng-container matColumnDef="id">
+                  <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="name">
+                  <ng-container matColumnDef="contractNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nº Contrato
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Data Pedido Column -->
-                  <ng-container matColumnDef="progress">
+                  <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Data Pedido
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="color">
+                  <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      {{row.color}}
+                      {{row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
-                  <ng-container matColumnDef="teste">
+                  <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
                       &nbsp;&nbsp;&nbsp;Editar Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <span class="material-symbols-rounded delete-icon">
-                          &nbsp;&nbsp;<img src="assets/images/delete.svg">
-                        </span>
-                      </a>
                       <a href="#">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg">
@@ -292,35 +287,35 @@
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceDevolvidos" matSort #empTbSortDevolvidos="matSort">
                   <!-- Nº Pedido Column -->
-                  <ng-container matColumnDef="id">
+                  <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="name">
+                  <ng-container matColumnDef="contractNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nº Contrato
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Data Pedido Column -->
-                  <ng-container matColumnDef="progress">
+                  <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Data Pedido
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="color">
+                  <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      {{row.color}}
+                      {{row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
-                  <ng-container matColumnDef="teste">
+                  <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
                       &nbsp;&nbsp;&nbsp;Editar Processo
                     </mat-header-cell>
@@ -330,7 +325,7 @@
                           &nbsp;&nbsp;<img src="assets/images/delete.svg">
                         </span>
                       </a>
-                      <a [routerLink]="['/app-devolucao']" (click)="streamHistoryMenu()">
+                      <a [routerLink]="['/app-devolucao/{{row.processId}}']" (click)="streamHistoryMenu()">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg">
                         </span>
@@ -379,35 +374,35 @@
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceAceitacao" matSort #empTbSortAceitacao="matSort">
                   <!-- Nº Pedido Column -->
-                  <ng-container matColumnDef="id">
+                  <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="name">
+                  <ng-container matColumnDef="contractNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nº Contrato
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Data Pedido Column -->
-                  <ng-container matColumnDef="progress">
+                  <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Data Pedido
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="color">
+                  <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      {{row.color}}
+                      {{row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
-                  <ng-container matColumnDef="teste">
+                  <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
                       &nbsp;&nbsp;&nbsp;Editar Processo
                     </mat-header-cell>
@@ -417,7 +412,7 @@
                           &nbsp;&nbsp;<img src="assets/images/delete.svg">
                         </span>
                       </a>
-                      <a [routerLink]="['/app-aceitacao']">
+                      <a [routerLink]="['/app-aceitacao/{{row.processId}}']">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg">
                         </span>
@@ -466,45 +461,39 @@
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceArquivoFisico" matSort #empTbSortArquivoFisico="matSort">
                   <!-- Nº Pedido Column -->
-                  <ng-container matColumnDef="id">
+                  <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="name">
+                  <ng-container matColumnDef="contractNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nº Contrato
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Data Pedido Column -->
-                  <ng-container matColumnDef="progress">
+                  <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Data Pedido
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="color">
+                  <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      {{row.color}}
+                      {{row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
-                  <ng-container matColumnDef="teste">
+                  <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
                       &nbsp;&nbsp;&nbsp;Editar Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        <span class="material-symbols-rounded delete-icon">
-                          &nbsp;&nbsp;<img src="assets/images/delete.svg">
-                        </span>
-                      </button>
                       <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded edit-icon">
