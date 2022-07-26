@@ -7,7 +7,8 @@ import { docTypeListE } from './docType';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { DataService } from '../nav-menu-interna/data.service';
+import { readCC } from '../citizencard/CitizenCardController.js';
+import { readCCAddress } from '../citizencard/CitizenCardController.js'; import { DataService } from '../nav-menu-interna/data.service';
 
 
 /** Listagem Intervenientes / Intervenientes
@@ -20,20 +21,94 @@ import { DataService } from '../nav-menu-interna/data.service';
 })
 export class StakeholdersComponent implements OnInit {
 
+  callreadCC() {
+    readCC(this.SetNewCCData);
+  }
+  callreadCCAddress() {
+    readCCAddress(this.SetNewCCData);
+  }
 
-  newStake: IStakeholders = { 
-    "fiscalId": "",
-    "identificationDocument": {
-      "type": "",
-      "number": "",
-      "country": "",
-      "expirationDate": "",
+  /**
+   * Information from the Citizen Card will be associated to the client structure
+   * cardNumber não é guardado
+   * 
+   * */
+  SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+    gender, height, nationality, expiryDate, nameFather, nameMother,
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {
+
+    //this.newStake.legalName = name;
+    //console.log("Name: ", name);
+    //this.newStake.fiscalId = nif;
+    //console.log("Fiscal ID: ", nif);
+    //this.idToSearch = cardNumber;
+    //this.ccInfo = true;
+
+    //this.CCID.NIF = nif;
+    //console.log("NIF: ",
+    //  this.CCID.NIF);
+  }
+
+  newStake: IStakeholders = {
+
+    "id": "22199900000051",
+    "merchantType": null,
+    "commercialName": "CAFE CENTRAL",
+    "legalNature": "35",
+    "legalNature2": null,
+    "incorporationStatement": {
+      "code": "0000-0000-0001",
+      "validUntil": "2023-06-29T18:52:08.336+01:00"
     },
-    "fullName": "",
-    "contactName": "",
-    "shortName": ""
+    "shareCapital": {
+      "capital": 50000.2,
+      "date": "2028-06-29T18:52:08.336+01:00"
+    },
+    "byLaws": "O Joao pode assinar tudo, like a boss",
+    "mainEconomicActivity": "90010",
+    "otherEconomicActivities": [
+      "055111"
+    ],
+    "incorporationDate": "2020-03-01T17:52:08.336+00:00",
+    "businessGroup": null,
+    "knowYourSales": {
+      "estimatedAnualRevenue": 1000000,
+      "transactionsAverage": 30000,
+      "servicesOrProductsSold": [
+        "Cafe"
+      ],
+      "servicesOrProductsDestinations": [
+        "PT"
+      ]
+    },
+    "bankInformation": {
+      "bank": "0033",
+      "iban": "PT00333506518874499677629"
+    },
+    "contacts": {
+      "email": "joao@silvestre.pt",
+      "phone1": {
+        "countryCode": "+351",
+        "phoneNumber": "919654422"
+      },
+      "phone2": null
+    },
+    "documentationDeliveryMethod": null,
+    "billingEmail": null,
+    "merchantRegistrationId": null,
+    "clientId": null,
+    "fiscalId": "585597928",
+    "legalName": null,
+    "shortName": "SILVESTRE LDA",
+    "headquartersAddress": {
+      "address": "Rua da Azoia 4",
+      "postalCode": "2625-236",
+      "postalArea": "Povoa de Santa Iria",
+      "country": "PT"
+    }
+
   } as IStakeholders
-  
+
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
   stakeholderType?: string = "";
@@ -47,7 +122,7 @@ export class StakeholdersComponent implements OnInit {
   ngForm!: FormGroup;
   public stakes: IStakeholders[] = [];
   public stakeShow: IStakeholders[] = [];
-  public stakeholderId : number = 0;
+  public stakeholderId: number = 0;
   public fiscalId: number = 0;
   public clientNr: number = 8875;
   public totalUrl: string = "";
@@ -62,9 +137,9 @@ export class StakeholdersComponent implements OnInit {
 
   public map: Map<number, boolean>;
   public currentPage: number;
-  public subscription: Subscription; 
+  public subscription: Subscription;
 
-  public isParticular: boolean=false;
+  public isParticular: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
@@ -73,11 +148,11 @@ export class StakeholdersComponent implements OnInit {
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder) {
 
     this.ngOnInit();
-   
-      http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes' ).subscribe(result => {
-        console.log(result);
-        this.stakes = result;
-      }, error => console.error(error));
+
+    http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
+      console.log(result);
+      this.stakes = result;
+    }, error => console.error(error));
     this.updateData(false, 2);
 
 
@@ -90,18 +165,18 @@ export class StakeholdersComponent implements OnInit {
     this.data.changeCurrentPage(currentPage);
   }
 
-  changeDataReadable(readable: boolean){
-    this.isNoDataReadable=readable;
+  changeDataReadable(readable: boolean) {
+    this.isNoDataReadable = readable;
   }
- 
+
   ngOnInit(): void {
     //Get Id from the store
-   // this.clientNr = Number(this.router.snapshot.params['nif']);
-   //this.form = new FormGroup({
-   //   stakeholderType: new FormControl(''),
-   //   tipoDocumento: new FormControl(''),
-   //   stakeholderNif: new FormControl(''),
-   // });
+    // this.clientNr = Number(this.router.snapshot.params['nif']);
+    //this.form = new FormGroup({
+    //   stakeholderType: new FormControl(''),
+    //   tipoDocumento: new FormControl(''),
+    //   stakeholderNif: new FormControl(''),
+    // });
     this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -150,17 +225,17 @@ export class StakeholdersComponent implements OnInit {
 
   changeListElementStakeType(stakeType: string, e: any) {
     this.stakeholderType = e.target.value;
-    if (this.stakeholderType === 'Particular'){
+    if (this.stakeholderType === 'Particular') {
       this.isParticular = true;
     } else {
-      this.isParticular=false;
+      this.isParticular = false;
     }
   }
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
-    
+
     this.newStake.identificationDocument.type = this.documentType;
-    
+
     if (this.documentType === 'Cartão do Cidadão') {
       this.isCC = true;
     } else {
@@ -169,15 +244,15 @@ export class StakeholdersComponent implements OnInit {
   }
 
   toggleShow(stake: IStakeholders) {
-   //clear the array
-   this.stakeShow = [];
+    //clear the array
+    this.stakeShow = [];
     this.isShown = !this.isShown;
 
-   this.stakeShow.push(stake);
+    this.stakeShow.push(stake);
     console.log("stakeShow array: " + this.stakeShow[0]);
-   // GetByid(StakeholderNif, 0)
-       
-   }
+    // GetByid(StakeholderNif, 0)
+
+  }
 
   searchStakeholder(formStakeholderSearch) {
     console.log(formStakeholderSearch);
@@ -194,6 +269,6 @@ export class StakeholdersComponent implements OnInit {
   }
 
 
-  }
+}
 
 
