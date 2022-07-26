@@ -401,7 +401,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       "partner": ""
     },
     "startedAt": "2022-10-10",
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6", //uuid
+    "id": localStorage.getItem("submissionId"), //uuid
     "bank": "0800",
     "state": "Ready"
   }
