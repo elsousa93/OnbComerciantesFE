@@ -414,7 +414,7 @@ var autenticacaoGovPT = (function operations() {
 
         if (exec) {
             Object.getOwnPropertyNames(response).forEach(function (val, idx, array) {
-                formData.append(val, response[val]);
+                formData.append(val.charAt(0).toUpperCase() + val.slice(1), response[val]);
             });
         }
 
