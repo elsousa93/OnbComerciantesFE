@@ -90,7 +90,7 @@ function ClearCCFields() {
 
 }
 
-function SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+/* function SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {
     if (name === "" && cardNumber === "") {
@@ -150,7 +150,7 @@ function SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     $("#CCDivCountry").text(country);
     FillWithCCdata();
     $("#submitDataFromCC").click();
-}
+} */
 
 const BASE_URL = 'http://localhost:7269'; //FIXME
 
@@ -209,21 +209,22 @@ function submit(data) {
                 let reply = JSON.parse(this.responseText);
                 var postalCode = "";
                 var addr = "";
-                if (reply.Address != null) {
-                    var posCodeP = reply.Address.indexOf("#");
-                    addr = reply.Address.substring(0, posCodeP);
-                    postalCode = reply.Address.substring(posCodeP + 1);
+                if (reply.address != null) {
+                    var posCodeP = reply.address.indexOf("#");
+                    addr = reply.address.substring(0, posCodeP);
+                    postalCode = reply.address.substring(posCodeP + 1);
                 }
-                SetNewCCData(reply.CCid.Name + " " + reply.CCid.Surname, reply.CCid.DocumentNumber, reply.CCid.TaxNo, reply.CCid.DateOfBirth, reply.Img64, reply.IsExpired,
-                    reply.CCid.Gender, reply.CCid.Heigh, reply.CCid.Nationality, reply.CCid.ValidityEndDate, reply.CCid.GivenNameFather + " " + reply.CCid.SurnameFather, reply.CCid.GivenNameMother + " " + reply.CCid.SurnameMother,
-                    reply.CCid.SocialSecurityNo, reply.CCid.HealthNo, addr, postalCode, reply.CCid.AccidentalIndications, reply.CCid.ValidityBeginDate, reply.CCid.LocalofRequest, reply.AddressCountry);
+                SetNewCCData(reply.cCid.name + " " + reply.cCid.surname, reply.cCid.documentNumber, reply.cCid.taxNo, reply.cCid.dateOfBirth, reply.img64, reply.isExpired,
+                    reply.cCid.gender, reply.cCid.heigh, reply.cCid.nationality, reply.cCid.validityEndDate, reply.cCid.givenNameFather + " " + reply.cCid.surnameFather, reply.cCid.givenNameMother + " " + reply.cCid.surnameMother,
+                    reply.cCid.socialSecurityNo, reply.cCid.healthNo, addr, postalCode, reply.cCid.accidentalIndications, reply.cCid.validityBeginDate, reply.cCid.localofRequest, reply.addressCountry);
             }
         };
         xhr.send(json);
     }
 }
 
-export function readCCAddress() {
+export function readCCAddress(componentCallback) {
+    SetNewCCData = componentCallback;
   console.log("read cc address");
     ClearCCFields();
     let url = BASE_URL + '/api/citizencard/generateccpluginrequestwithaddress';
@@ -240,7 +241,8 @@ export function readCCAddress() {
         });
 }
 
-export function readCC() {
+export function readCC(componentCallback) {
+    SetNewCCData = componentCallback;
   console.log("read cc");
     ClearCCFields();
     let url = BASE_URL + '/api/citizencard/generateccpluginrequest';
@@ -256,7 +258,7 @@ export function readCC() {
             cms: uuid()
         });
 };
-
+let SetNewCCData;
 var autenticacaoGovPT = (function operations() {
     'use strict';
 
