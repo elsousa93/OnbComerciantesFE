@@ -189,12 +189,19 @@ export class DashboardComponent implements OnInit {
   userType: string = "Banca";
   userPermissions: MenuPermissions;
 
+  incompleteProcessess: ProcessGet[] = [];
+  ongoingProcessess: ProcessGet[] = [];
+  returnedProcessess: ProcessGet[] = [];
+  contractAcceptanceProcessess: ProcessGet[] = [];
+  completeProcessess: ProcessGet[] = [];
+
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     localStorage.clear();
+
     //const users: UserData[] = [];
     //for (let i = 1; i <= 100; i++) {
     //  users.push(createNewUser(i));
@@ -206,36 +213,35 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Incomplete').subscribe(result => {
       console.log('Pendentes de envio ', result);
       console.log('Número total de processos incompletos ', result.length);
-      this.dataSourcePendentes = new MatTableDataSource(result);
+      this.incompleteProcessess = result;
     });
-
 
     //Tratamento BackOffice
     this.processService.searchProcessByState('Ongoing').subscribe(result => {
       console.log('Tratamento BackOffice ', result);
-      this.dataSourceTratamento = new MatTableDataSource(result);
-      
+      this.ongoingProcessess = result;     
     });
 
 
     //Devolvido BackOffice
     this.processService.searchProcessByState('Returned').subscribe(result => {
       console.log('Devolvidos BackOffice ', result);
-      this.dataSourceDevolvidos = new MatTableDataSource(result);
+      this.returnedProcessess = result;
     });
 
 
     //Fase de aceitação
-    this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
-      console.log('Fase de aceitação ', result);
-      this.dataSourceAceitacao = new MatTableDataSource(result);
-    });
-
+    //this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
+    //  console.log('Fase de aceitação ', result);
+    //  this.dataSourceAceitacao = new MatTableDataSource(result);
+    //});
+    
 
     //Arquivo Fisico
     this.processService.searchProcessByState('Completed').subscribe(result => {
       console.log('Completos ', result);
-      this.dataSourceArquivoFisico = new MatTableDataSource(result);
+      this.completeProcessess = result;
+      
     });
     
     
@@ -243,6 +249,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.userPermissions = getMenuPermissions(UserPermissions.DO);
+    this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
+    this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess);
+    this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess);
+    this.dataSourceAceitacao = new MatTableDataSource([]);
+    this.dataSourceArquivoFisico = new MatTableDataSource(this.completeProcessess);
   }
 
   assignMenus() {
