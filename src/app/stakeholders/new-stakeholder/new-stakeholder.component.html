@@ -55,14 +55,14 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
-                         type="radio" value=true id="contractAssociation" />
+                         type="radio" value='true' id="contractAssociation" />
                   <label class="form-check-label radio pe-5" for="radio8">SIM</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
-                         type="radio" value=false id="contractAssociation" />
+                         type="radio" value='false' id="contractAssociation" />
                   <label class="form-check-label radio" for="radio2">NÃO</label>
                 </div>
               </span>
@@ -174,7 +174,7 @@
   </div>-->
 
   <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
-  <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="searchZipCode()" maxlength="8">
+  <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="GetCountryByZipCode()" maxlength="8">
   <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
     O parâmetro "Código postal" é obrigatório.
   </div>-->

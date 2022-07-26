@@ -115,20 +115,35 @@ export class CountrysComponent implements OnInit {
   initializeForm() {
     console.log("cliente atual: ");
     console.log(this.client);
-   
-    this.form = new FormGroup({
-      expectableAnualInvoicing: new FormControl(this.client.sales.annualEstimatedRevenue, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-      services: new FormControl('', Validators.required),
-      transactionsAverage: new FormControl(this.client.sales.transactionsAverage, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
-      associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
-      preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
-      inputEuropa: new FormControl(this.inputEuropa),
-      inputAfrica: new FormControl(this.inputAfrica),
-      inputAmerica: new FormControl(this.inputAmericas),
-      inputOceania: new FormControl(this.inputOceania),
-      inputAsia: new FormControl(this.inputTypeAsia)
-    });
 
+    if (this.clientExists) {
+      this.form = new FormGroup({
+        expectableAnualInvoicing: new FormControl({ value: this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        services: new FormControl({value: '', disabled: true}, Validators.required),
+        transactionsAverage: new FormControl({ value: this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
+        preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        inputEuropa: new FormControl(this.inputEuropa),
+        inputAfrica: new FormControl(this.inputAfrica),
+        inputAmerica: new FormControl(this.inputAmericas),
+        inputOceania: new FormControl(this.inputOceania),
+        inputAsia: new FormControl(this.inputTypeAsia)
+      });
+    } else {
+      this.form = new FormGroup({
+        expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        services: new FormControl('', Validators.required),
+        transactionsAverage: new FormControl('', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
+        preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        inputEuropa: new FormControl(this.inputEuropa),
+        inputAfrica: new FormControl(this.inputAfrica),
+        inputAmerica: new FormControl(this.inputAmericas),
+        inputOceania: new FormControl(this.inputOceania),
+        inputAsia: new FormControl(this.inputTypeAsia)
+      });
+    }
+    console.log("form inicializado do country");
     console.log(this.form);
   }
 

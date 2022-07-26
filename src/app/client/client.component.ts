@@ -68,9 +68,9 @@ export class ClientComponent implements OnInit {
   clientsToShow: Client[] = [];
 
   newClient: Client = {
-    "clientId": "22181900000011",
+    "clientId": "",
     "fiscalId": "22181900000011",
-    "id": "22181900000011",
+    "id": "",
 
     "companyName": "J SILVESTRE LIMITADA",
     "commercialName":"CAFE CENTRAL",
@@ -171,7 +171,7 @@ export class ClientComponent implements OnInit {
   //TEMPORARIO!!!!
   initializeDefaultClient() {
     this.tempClient = {
-      "id": "22181900000011",
+      "id": "",
       "merchantId": "22181900000021",
       "fiscalId": "585597928",
       "companyName": "SILVESTRE LIMITADA",
@@ -290,6 +290,10 @@ export class ClientComponent implements OnInit {
 
       var context2 = this;
 
+      console.log("a");
+      console.log(context.clientsToShow);
+      context.clientsToShow = [];
+      console.log(context.clientsToShow);
       clients.forEach(function (value, index) {
         console.log(value);
         context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {

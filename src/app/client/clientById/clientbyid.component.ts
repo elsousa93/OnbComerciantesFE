@@ -18,10 +18,12 @@ import { ClientService } from '../client.service';
 import { CRCService } from '../../CRC/crcservice.service';
 import { CRCProcess } from '../../CRC/crcinterfaces';
 import { ProcessService } from '../../process/process.service';
+import { DatePipe, formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-client',
-  templateUrl: './clientbyid.component.html'
+  templateUrl: './clientbyid.component.html',
+  providers: [DatePipe]
 })
 
 export class ClientByIdComponent implements OnInit {
@@ -309,12 +311,22 @@ export class ClientByIdComponent implements OnInit {
   //  console.log("pos");
   //  //var a = this.form.get('CAE1Branch').validato
   //}
+
+  initializeENI() {
+    this.form = new FormGroup({
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
+      socialDenomination: new FormControl('', Validators.required) //sim
+    });
+  }
+
   initializeBasicFormControl() {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
     });
+
+    
 
     //this.form.get("commercialSociety").valueChanges.subscribe(data => {
     //  console.log("valor mudou commercial society");
@@ -353,9 +365,14 @@ export class ClientByIdComponent implements OnInit {
 
   initializeFormControlCRC() {
     console.log("a");
-    console.log(this.crcCode);
-    console.log(this.processClient.capitalStock.date);
     this.crcCode = this.form.get("crcCode").value;
+    console.log(this.processClient.capitalStock.date);
+    var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();
+    console.log("data formatada");
+    var separated = b.split('-');
+    var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+    console.log(formatedDate);
+    //var date = formatDate(this.processClient.capitalStock.date, 'MM-dd-yyyy', 'en-US');
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
@@ -371,12 +388,13 @@ export class ClientByIdComponent implements OnInit {
       CAESecondary2Branch: new FormControl(''), //talvez
       CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
       CAESecondary3Branch: new FormControl(''), //talvez
-      constitutionDate: new FormControl('2020-20-20'), //sim this.processClient.capitalStock.date + ''
+      constitutionDate: new FormControl(formatedDate), //sim this.processClient.capitalStock.date + ''
       country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
       location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
       address: new FormControl(this.processClient.headquartersAddress.address, Validators.required) //sim
     });
+      
 
     console.log(this.form);
     this.form.get("CAE1").valueChanges.subscribe(data => {
@@ -570,7 +588,7 @@ export class ClientByIdComponent implements OnInit {
     //}
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
     this.ngOnInit();
 
@@ -634,7 +652,10 @@ export class ClientByIdComponent implements OnInit {
       this.isCommercialSociety = true;
       console.log("entrou no true");
     } else {
-      this.initializeFormControlOther();
+      if (this.tipologia === 'Company')
+        this.initializeFormControlOther();
+      else
+        this.initializeENI();
       this.isCommercialSociety = false;
       console.log("entrou no false");
     }
@@ -807,8 +828,10 @@ export class ClientByIdComponent implements OnInit {
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client.companyName = this.form.value["socialDenomination"];
     } else {
-      this.client.legalNature = this.form.value["natJuridicaN1"];
-      this.client.legalNature2 = this.form.value["natJuridicaN2"];
+      if (this.tipologia === 'Company') {
+        this.client.legalNature = this.form.value["natJuridicaN1"];
+        this.client.legalNature2 = this.form.value["natJuridicaN2"];
+      }
       this.client.companyName = this.form.value["socialDenomination"];
     }
     ////Social Denomination
@@ -841,6 +864,7 @@ export class ClientByIdComponent implements OnInit {
 
     console.log("por mandar: huasusa");
     console.log(this.client);
+    console.log(this.form);
     if(this.form.valid)
       this.route.navigate(["/client-additional-info/", this.router.snapshot.paramMap.get('id')], navigationExtras);
   }

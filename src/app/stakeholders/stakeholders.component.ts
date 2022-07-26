@@ -23,7 +23,7 @@ export class StakeholdersComponent implements OnInit {
 
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
-  newStake: IStakeholders = { 
+  newStake: IStakeholders = {
     "fiscalId": "",
     "identificationDocument": {
       "type": "",
@@ -34,7 +34,11 @@ export class StakeholdersComponent implements OnInit {
     "fullName": "",
     "contactName": "",
     "shortName": ""
-  } as IStakeholders
+  } as IStakeholders;
+
+  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+
+  submissionStakeholders: IStakeholders[] = [];
   
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
@@ -81,12 +85,22 @@ export class StakeholdersComponent implements OnInit {
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
 
     this.ngOnInit();
-   
-      http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes' ).subscribe(result => {
-        console.log(result);
-        this.stakes = result;
-      }, error => console.error(error));
-    this.updateData(false, 2);
+
+    var context = this;
+
+    stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+      result.forEach(function (value, index) {
+        console.log(value);
+        context.stakeholderService.getStakeholderByID(value.id, "por mudar", "por mudar").subscribe(result => {
+          console.log(result);
+          context.submissionStakeholders.push(result);
+        }, error => {
+          console.log(error);
+        });
+      });
+    }, error => {
+      console.log(error);
+    });
 
   }
 
@@ -109,7 +123,7 @@ export class StakeholdersComponent implements OnInit {
    //   tipoDocumento: new FormControl(''),
    //   stakeholderNif: new FormControl(''),
    // });
-    this.createForm();
+    //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }

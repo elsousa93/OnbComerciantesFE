@@ -23,6 +23,9 @@ export class NewStakeholderComponent implements OnInit {
   public foo = 0;
   public displayValueSearch = "";
 
+  stakeholderNumber: string;
+  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+
   @Input() isCC: boolean;
 
   showBtnCC: boolean;
@@ -36,7 +39,7 @@ export class NewStakeholderComponent implements OnInit {
   flagRecolhaEletronica: boolean = null;
 
   formNewStakeholder!: FormGroup;
- 
+
   newStake: IStakeholders = {
     fiscalId: 0,
     fullName: '',
@@ -55,7 +58,7 @@ export class NewStakeholderComponent implements OnInit {
     },
   } as unknown as IStakeholders
 
-  currentStakeholder: any;
+  currentStakeholder: IStakeholders = {};
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
@@ -69,13 +72,42 @@ export class NewStakeholderComponent implements OnInit {
         this.newStake = result;
       }, error => console.error(error));
     }
-  }
+
+
+    this.currentStakeholder = {
+      fiscalId: '162243839',
+      id: '1032',
+      shortName: "Bijal de canela",
+      fiscalAddress: {
+        address: '',
+        country: '',
+        locality: '',
+        postalArea: '',
+        postalCode: ''
+      }
+    }
+
+    //this.stakeholderNumber = "999";
+
+    //stakeService.getStakeholderByID(this.stakeholderNumber, "", "").subscribe(success => {
+    //  console.log(success);
+    //  this.newStake = success;
+    //}, error => {
+    //  console.log(error);
+    //});
+
+    //Tirar o comentário depois de confirmar a página anterior (por enquanto usar um valor predefinido)
+    //if (this.route.getCurrentNavigation().extras.state) {
+    //  //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
+    //  this.stakeholderNumber = this.route.getCurrentNavigation().extras.state["stakeholderNumber"];
+    //}
+}
 
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
-      contractAssociation: new FormControl('', Validators.required),
-      proxy: new FormControl('', Validators.required),
-      NIF: new FormControl('', Validators.required),
+      contractAssociation: new FormControl('false', Validators.required),
+      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy: false, Validators.required),
+      NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: true }, Validators.required),
       Role: new FormControl('', Validators.required),
       Country: new FormControl('', Validators.required),
       ZIPCode: new FormControl('', Validators.required),
@@ -92,7 +124,11 @@ export class NewStakeholderComponent implements OnInit {
     this.initializeFormWithoutCC();
     //this.createForm();
     //console.log('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
-    this.showYesCC = this.route.getCurrentNavigation().extras.state["isCC"];
+
+    //Tirar o comentario
+    //this.showYesCC = this.route.getCurrentNavigation().extras.state["isCC"];
+    this.showYesCC = false;
+
     //this.formNewStakeholder.get('flagRecolhaEletronica').setValue(this.showYesCC);
     if (this.showYesCC) {
       this.flagRecolhaEletronica = this.showYesCC;
@@ -122,6 +158,22 @@ export class NewStakeholderComponent implements OnInit {
 
   submit() {
     console.log(this.formNewStakeholder);
+
+    if (this.formNewStakeholder.valid) {
+      this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
+      this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
+      this.currentStakeholder.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
+      this.currentStakeholder.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
+      this.currentStakeholder.isProxy = JSON.parse(this.formNewStakeholder.get("proxy").value);
+      
+
+      this.stakeService.CreateNewStakeholder(this.submissionId, this.currentStakeholder).subscribe(result => {
+        console.log("Resultado de criar um stakeholder a uma submissão existente");
+        console.log(result);
+      }, error => {
+        console.log(error);
+      });
+    }
   }
 
   //submit(formNewStakeholder) {
@@ -198,45 +250,6 @@ export class NewStakeholderComponent implements OnInit {
     return this.data.GetAllCountries();
   }
 
-  searchZipCode() {
-    var size = this.newStake.fiscalAddress.postalCode.length;
-    var hasSlash = (this.newStake.fiscalAddress.postalCode.split('-').length - 1) == 1;
-
-    //const replaced =
-    //  this.newStake.fiscalAddress.postalCode.substring(0, 4) +
-    //  '-' +
-    //  this.newStake.fiscalAddress.postalCode.substring(4 + size);
-
-    //console.log(hasSlash);
-
-    //if (!hasSlash && size > 4)
-    //  this.newStake.fiscalAddress.postalCode = replaced;
-
-    //if (!hasSlash) {
-    //  console.log("entrou1");
-    //  if (size > 3) {
-    //    console.log("entrou2");
-    //    this.newStake.fiscalAddress.postalCode += '-';
-    //  }
-    //}
-
-    /*if (size === 8 && hasSlash) {*/
-    if (size > 7) {
-      console.log("Ola");
-      var zipCode = this.newStake.fiscalAddress.postalCode.split('-');
-      this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
-        var addressToShow = address[0];
-        this.newStake.fiscalAddress.address = addressToShow.address;
-        this.newStake.fiscalAddress.country = addressToShow.country;
-        this.newStake.fiscalAddress.postalArea = addressToShow.postalArea;
-        this.newStake.fiscalAddress.postalCode = addressToShow.postalCode;
-      });
-      console.log("ja tou a pesquisar");
-    }
-    //  console.log(morada);
-    //}
-  }
-
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
@@ -267,6 +280,22 @@ export class NewStakeholderComponent implements OnInit {
     this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
       this.currentStakeholder = result;
     });
+  }
+
+  GetCountryByZipCode() {
+    var zipcode = this.formNewStakeholder.value['ZIPCode'];
+    if (zipcode.length === 8) {
+      var zipCode = zipcode.split('-');
+
+      this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+
+        var addressToShow = address[0];
+
+        this.formNewStakeholder.get('Address').setValue(addressToShow.address);
+        this.formNewStakeholder.get('Country').setValue(addressToShow.country);
+        this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
+      });
+    }
   }
 }
 

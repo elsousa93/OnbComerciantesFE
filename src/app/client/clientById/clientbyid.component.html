@@ -914,9 +914,9 @@
                 <!-- Data de constituição   offset-1 bg-white col-7 col-xxl-10 //col-xxl col-6  -->
                 <div class="row">
                   <div class="col-xxl col-6">
-                    <p class="titulo-form-simples" for="constitutionDate">Data de Constituição: </p>
+                    <p class="titulo-form-simples">Data de Constituição: </p>
                     <input formControlName="constitutionDate" type="date"
-                           id="dataConst" class="form-control campo_form" readonly>
+                           id="constitutionDate" class="form-control campo_form">
                     <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
                       <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -982,7 +982,7 @@
           </div>
         </div> <!--Fecha primeiros 3 campos-->
         <!--Se NÃO for sociedade comercial e for Company-->
-        <div *ngIf="isCommercialSociety == false">
+        <div *ngIf="isCommercialSociety == false && tipologia === 'Company'">
           <div class="bg-white col-7 col-xxl-10">
             <div class="row">
               <div class="col-xxl col-6">
@@ -1036,9 +1036,9 @@
         <div *ngIf="isCommercialSociety == false && tipologia==='ENI'">
               <div class="col-10 ms-3 me-3 ps-3 pe-3">
                 <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
-                <input minlength="2" maxlength="100" ngModel #socialDenomination="ngModel"
-                       name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                       [(ngModel)]="client.companyName" style="width: 906px;">
+                <input minlength="2" maxlength="100" formControlName="socialDenomination"
+                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+                         style="width: 906px;">
               </div>
         </div><!--fecha div "se NÃO for sociedade comercial"-->
 
