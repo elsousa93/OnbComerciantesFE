@@ -214,12 +214,21 @@ export class DashboardComponent implements OnInit {
       console.log('Pendentes de envio ', result);
       console.log('Número total de processos incompletos ', result.length);
       this.incompleteProcessess = result;
+      this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
+
+      this.dataSourcePendentes.paginator = this.paginator;
+      this.dataSourcePendentes.sort = this.sort;
     });
 
     //Tratamento BackOffice
     this.processService.searchProcessByState('Ongoing').subscribe(result => {
       console.log('Tratamento BackOffice ', result);
-      this.ongoingProcessess = result;     
+      this.ongoingProcessess = result;
+      this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess);
+
+      this.empTbSortWithObject.disableClear = true;
+      this.dataSourceTratamento.sort = this.empTbSortWithObject;
+      this.dataSourceTratamento.paginator = this.paginatorPageSize;
     });
 
 
@@ -227,21 +236,33 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Returned').subscribe(result => {
       console.log('Devolvidos BackOffice ', result);
       this.returnedProcessess = result;
+      this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess);
+
+      this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
+      this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
+
     });
 
 
     //Fase de aceitação
-    //this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
-    //  console.log('Fase de aceitação ', result);
-    //  this.dataSourceAceitacao = new MatTableDataSource(result);
-    //});
+    this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
+      console.log('Fase de aceitação ', result);
+      this.contractAcceptanceProcessess = result;
+      this.dataSourceAceitacao = new MatTableDataSource(result);
+
+      this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
+      this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
+    });
     
 
     //Arquivo Fisico
     this.processService.searchProcessByState('Completed').subscribe(result => {
       console.log('Completos ', result);
       this.completeProcessess = result;
-      
+      this.dataSourceArquivoFisico = new MatTableDataSource(this.completeProcessess);
+
+      this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
+      this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
     });
     
     
@@ -249,11 +270,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.userPermissions = getMenuPermissions(UserPermissions.DO);
-    this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
-    this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess);
-    this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess);
-    this.dataSourceAceitacao = new MatTableDataSource([]);
-    this.dataSourceArquivoFisico = new MatTableDataSource(this.completeProcessess);
   }
 
   assignMenus() {
@@ -272,22 +288,22 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSourcePendentes.paginator = this.paginator;
-    this.dataSourcePendentes.sort = this.sort;
+    //this.dataSourcePendentes.paginator = this.paginator;
+    //this.dataSourcePendentes.sort = this.sort;
 
-    //-------------------------------------
-    this.empTbSortWithObject.disableClear = true;
-    this.dataSourceTratamento.sort = this.empTbSortWithObject;
-    this.dataSourceTratamento.paginator = this.paginatorPageSize;
+    ////-------------------------------------
+    //this.empTbSortWithObject.disableClear = true;
+    //this.dataSourceTratamento.sort = this.empTbSortWithObject;
+    //this.dataSourceTratamento.paginator = this.paginatorPageSize;
 
-    this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
-    this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
+    //this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
+    //this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
 
-    this.dataSourceAceitacao.paginator = this.paginatorPageDevolvidos;
-    this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
+    //this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
+    //this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
 
-    this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
-    this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
+    //this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
+    //this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
 
   }
 
