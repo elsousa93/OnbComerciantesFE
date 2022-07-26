@@ -17,6 +17,18 @@ export class NavMenuPresencialComponent implements OnInit {
   isToggle: boolean = false;
   isAutohide: boolean = false;
 
+  // progress bar behaviour
+  isClientFirstPage: boolean = false;
+  isClientSecondPage: boolean = false;
+  isClientThirdPage: boolean = false;
+  isStakeholderFirstPage: boolean = false;
+  isStakeholderSecondPage: boolean = false;
+  isComprovativos: boolean = false;
+  isInfoDeclarativaClient: boolean = false;
+  isInfoDeclarativaStakeholder: boolean = false;
+  isInfoDeclarativaAssinaturaPack: boolean = false;
+
+
   @HostBinding('style.--navPosition') public navPosition: string = '0';
 
   prevScrollpos:number = window.pageYOffset;
@@ -30,6 +42,7 @@ export class NavMenuPresencialComponent implements OnInit {
     //this.navPosition = '0';
     var prevScrollpos = window.pageYOffset;
 
+    
     
     window.addEventListener("scroll", this.autohide.bind(this), false);
 

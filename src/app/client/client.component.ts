@@ -28,6 +28,9 @@ export class ClientComponent implements OnInit {
   public displayValueSearch: any;
   public isNoDataReadable: boolean;
 
+  // progress bar behaviour
+  public clientFirstPage: string;
+
   //Processo
   process: any;
 
@@ -139,6 +142,11 @@ export class ClientComponent implements OnInit {
   tempClient: any;
 
   @Output() nameEmitter = new EventEmitter<string>();
+  @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
+
+  emit(url: string) {
+    this.urlEmitter.emit(url);
+  }
 
   public map = new Map();
   public currentPage: number;

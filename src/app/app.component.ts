@@ -1,6 +1,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
+
 export class AppComponent {
 
   mobileQuery: MediaQueryList;
@@ -28,6 +29,8 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
+
+  @Input() url: string;
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
