@@ -91,7 +91,7 @@ export class StakeholdersComponent implements OnInit {
     stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
         console.log(value);
-        context.stakeholderService.getStakeholderByID(value.id, "por mudar", "por mudar").subscribe(result => {
+        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
           console.log(result);
           context.submissionStakeholders.push(result);
         }, error => {
@@ -102,6 +102,10 @@ export class StakeholdersComponent implements OnInit {
       console.log(error);
     });
 
+  }
+
+  redirectAddStakeholder() {
+    this.route.navigate(['/add-stakeholder/']);
   }
 
   //função que altera o valor do map e da currentPage

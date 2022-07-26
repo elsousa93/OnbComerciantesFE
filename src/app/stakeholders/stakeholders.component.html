@@ -26,12 +26,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let stakeholder of stakeholdersToShow">
-                <th scope="row" class="text-primary text-center">{{stakeholder.associated}}</th>
+              <tr *ngFor="let stakeholder of submissionStakeholders">
+                <th scope="row" class="text-primary text-center">Associado?</th>
+                <td class="text-primary text-center">{{stakeholder.id}}</td>
                 <td class="text-primary text-center">{{stakeholder.stakeholderNumber}}</td>
-                <td class="text-primary text-center">{{stakeholder.stakeholderName}}</td>
-                <td class="text-primary text-center">{{stakeholder.stakeholderNIF}}</td>
-                <td class="text-primary text-center">{{stakeholder.associated}}</td>
+                <td class="text-primary text-center">{{stakeholder.shortName}}</td>
+                <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
+                <td class="text-primary text-center">Elegivel?</td>
               </tr>
             </tbody>
           </table>
@@ -48,7 +49,7 @@
           </span>
           <span class="navbar-text me-2">
             <button id="btn5a2"
-                    class="btn botao_branco" wappler-command="editContent">
+                    class="btn botao_branco" wappler-command="editContent" (click)="redirectAddStakeholder()">
               ADICIONAR INTERVENIENTE&nbsp;
               <img src="assets/images/person_add_blue.svg" class="img_btn">
             </button>
