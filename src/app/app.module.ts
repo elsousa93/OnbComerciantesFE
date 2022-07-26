@@ -61,6 +61,7 @@ import { InfoDeclarativaLojasComponent } from './client/info-declarativa/info-de
 import { CountrysComponent } from './countrys/countrys.component';
 import { DevolucaoComponent } from './devolucao/devolucao.component';
 import { AceitacaoComponent } from './aceitacao/aceitacao.component';
+import { ConsultasComponent } from './consultas/consultas.component';
 import { PackContratualComponent } from './aceitacao/pack-contratual/pack-contratual.component';
 import { ObterPackContratualComponent } from './aceitacao/obter-pack-contratual/obter-pack-contratual.component';
 
@@ -97,6 +98,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReadcardComponent,
     DevolucaoComponent,
     AceitacaoComponent,
+    ConsultasComponent,
     PackContratualComponent,
     ObterPackContratualComponent,
     ReadcardComponent,
@@ -148,6 +150,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'app-aceitacao', component: AceitacaoComponent },
       { path: 'app-devolucao', component: DevolucaoComponent },
       { path: 'app-devolucao/:id', component: DevolucaoComponent },
+      { path: 'app-consultas', component: ConsultasComponent },
       { path: 'app-pack-contratual', component: PackContratualComponent},
       { path: 'app-obter-pack-contratual', component: ObterPackContratualComponent},
       { path: 'comprovativos', component: ComprovativosComponent },

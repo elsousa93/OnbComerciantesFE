@@ -126,7 +126,7 @@
           </div>
         </div>
         <div class="nav-item" *ngIf="userPermissions.Consultation">
-          <a role="button">
+          <a [routerLink]="['/app-consultas']" role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/search.svg"
                 class="material-symbols-rounded fa-lg icons-sidenav ">&nbsp;Consultas&nbsp;
