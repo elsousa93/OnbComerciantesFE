@@ -78,11 +78,14 @@ export class ClientComponent implements OnInit {
   
   //------------- Cartão de Cidadao
   callreadCC() {
-    readCC();
+    readCC(SetNewCCData);
   }
   callreadCCAddress() {
-    readCCAddress();
+    readCCAddress(SetNewCCData);
 }
+ SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+  gender, height, nationality, expiryDate, nameFather, nameMother,
+  nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {}
 
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
