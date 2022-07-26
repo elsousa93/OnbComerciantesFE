@@ -248,7 +248,7 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
       console.log('Fase de aceitação ', result);
       this.contractAcceptanceProcessess = result;
-      this.dataSourceAceitacao = new MatTableDataSource(result);
+      this.dataSourceAceitacao = new MatTableDataSource(this.contractAcceptanceProcessess);
 
       this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
       this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
