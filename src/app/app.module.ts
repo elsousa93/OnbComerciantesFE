@@ -148,6 +148,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },
       { path: 'app-aceitacao', component: AceitacaoComponent },
+      { path: 'app-aceitacao/:id', component: AceitacaoComponent },
       { path: 'app-devolucao', component: DevolucaoComponent },
       { path: 'app-devolucao/:id', component: DevolucaoComponent },
       { path: 'app-consultas', component: ConsultasComponent },

@@ -13,6 +13,7 @@ import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -63,17 +64,18 @@ export class CountrysComponent implements OnInit {
   currentClient: any = {};
   documentsList = []; //lista de documentos do utilizador
 
+  processNumber: string;
 
   ngOnInit() {
     this.initializeForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    
+    this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
   }
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService) {
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
@@ -332,7 +334,8 @@ export class CountrysComponent implements OnInit {
 
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log('Resultado obtido ', result);
-      localStorage.setItem("submissionId", result.id);
+      localStorage.setItem("submissionId", result.processNumber);
+      this.processNrService.changeProcessNumber(result.processNumber);
     });
 
     //this.route.navigate(['stakeholders/']);

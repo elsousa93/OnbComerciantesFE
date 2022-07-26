@@ -12,6 +12,8 @@ import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
 import { Sort } from '@angular/material/sort';
 import { DataService } from '../nav-menu-interna/data.service';
+import { ProcessGet, ProcessService } from '../process/process.service';
+import { Process } from '../process/process.interface';
 
 @Component({
   selector: 'app-dashboard',
@@ -136,10 +138,11 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  dataSource1: MatTableDataSource<UserData>;
-  dataSourceDevolvidos: MatTableDataSource<UserData>;
-  dataSourceAceitacao: MatTableDataSource<UserData>;
-  dataSourceArquivoFisico: MatTableDataSource<UserData>;
+  dataSourcePendentes: MatTableDataSource<ProcessGet>;
+  dataSourceTratamento: MatTableDataSource<ProcessGet>;
+  dataSourceDevolvidos: MatTableDataSource<ProcessGet>;
+  dataSourceAceitacao: MatTableDataSource<ProcessGet>;
+  dataSourceArquivoFisico: MatTableDataSource<ProcessGet>;
   
   @ViewChild('empTbSort') empTbSort = new MatSort();
   @ViewChild('empTbSortWithObject') empTbSortWithObject = new MatSort();
@@ -157,9 +160,22 @@ export class DashboardComponent implements OnInit {
   @Input() isToggle: boolean = false;
   @Input() isAutoHide: boolean = false;
 
-  displayedColumns = ['id', 'name', 'progress', 'color', 'teste'];
-  dataSource: MatTableDataSource<UserData>;
-  
+  displayedColumns = ['processNumber', 'contractNumber', 'requestDate', 'user', 'buttons'];
+
+  process: ProcessGet = {
+    processNumber: "",
+    isClientAwaiting: true,
+    processId: "",
+    processKind: "",
+    processType: "",
+    startedBy: {
+      partner: "",
+      partnerBranch: "",
+      user:""
+    },
+    state: ""
+  }
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -174,21 +190,54 @@ export class DashboardComponent implements OnInit {
   userPermissions: MenuPermissions;
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    localStorage.clear();
+    //const users: UserData[] = [];
+    //for (let i = 1; i <= 100; i++) {
+    //  users.push(createNewUser(i));
+    //}
 
-    const users: UserData[] = [];
-    for (let i = 1; i <= 100; i++) {
-      users.push(createNewUser(i));
-    }
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
-    this.dataSource1 = new MatTableDataSource(users);
-    this.dataSourceDevolvidos = new MatTableDataSource(users);
-    this.dataSourceAceitacao = new MatTableDataSource(users);
-    this.dataSourceArquivoFisico = new MatTableDataSource(users);
+
+    //Pendentes de envio
+    this.processService.searchProcessByState('Incomplete').subscribe(result => {
+      console.log('Pendentes de envio ', result);
+      console.log('Número total de processos incompletos ', result.length);
+      this.dataSourcePendentes = new MatTableDataSource(result);
+    });
+
+
+    //Tratamento BackOffice
+    this.processService.searchProcessByState('Ongoing').subscribe(result => {
+      console.log('Tratamento BackOffice ', result);
+      this.dataSourceTratamento = new MatTableDataSource(result);
+      
+    });
+
+
+    //Devolvido BackOffice
+    this.processService.searchProcessByState('Returned').subscribe(result => {
+      console.log('Devolvidos BackOffice ', result);
+      this.dataSourceDevolvidos = new MatTableDataSource(result);
+    });
+
+
+    //Fase de aceitação
+    this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
+      console.log('Fase de aceitação ', result);
+      this.dataSourceAceitacao = new MatTableDataSource(result);
+    });
+
+
+    //Arquivo Fisico
+    this.processService.searchProcessByState('Completed').subscribe(result => {
+      console.log('Completos ', result);
+      this.dataSourceArquivoFisico = new MatTableDataSource(result);
+    });
+    
     
   }
 
@@ -212,13 +261,13 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSourcePendentes.paginator = this.paginator;
+    this.dataSourcePendentes.sort = this.sort;
 
     //-------------------------------------
     this.empTbSortWithObject.disableClear = true;
-    this.dataSource1.sort = this.empTbSortWithObject;
-    this.dataSource1.paginator = this.paginatorPageSize;
+    this.dataSourceTratamento.sort = this.empTbSortWithObject;
+    this.dataSourceTratamento.paginator = this.paginatorPageSize;
 
     this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
     this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
@@ -234,13 +283,13 @@ export class DashboardComponent implements OnInit {
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+    this.dataSourcePendentes.filter = filterValue;
   }
 
   applyFilter1(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource1.filter = filterValue;
+    this.dataSourceTratamento.filter = filterValue;
   }
 
   applyFilterDevolvidos(filterValue: string) {

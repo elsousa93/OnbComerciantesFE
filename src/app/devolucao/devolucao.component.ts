@@ -8,6 +8,8 @@ import { Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { Client } from '../client/Client.interface';
 import { DataService } from '../nav-menu-interna/data.service';
+import { Process } from '../process/process.interface';
+import { ProcessGet, ProcessService } from '../process/process.service';
 
 
 @Component({
@@ -22,20 +24,26 @@ export class DevolucaoComponent implements OnInit{
   public currentPage: number;
   public subscription: Subscription;
 
-  
+  public processId: string;
+  public process: ProcessGet;
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-  private route: Router, private data: DataService,
-  private router: ActivatedRoute) {
+    private route: Router, private data: DataService,
+    private router: ActivatedRoute, private processService: ProcessService) {
 
     this.ngOnInit();
     this.updateData(false, 0);
-  
+    console.log('Process Id ', this.processId);
+
+    this.processService.getProcessById(this.processId).subscribe(result => {
+      this.process = result;
+    });
 }
 
 ngOnInit(): void {
   this.subscription = this.data.currentData.subscribe(map => this.map = map);
   this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-
+  this.processId = this.router.snapshot.paramMap.get('id');
   var context = this;
 }
 
