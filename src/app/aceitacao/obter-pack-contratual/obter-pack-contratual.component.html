@@ -36,22 +36,22 @@
           <p class="titulo-form-simples mt-0">NESTE PASSO, DEVE ENTREGAR A DOCUMENTAÇÃO GERADA AO CLIENTE PARA ASSINAR.</p>
           <div class="row mb-0 ms-0 me-0 pb-0 ps-0 pe-0">
             <div class="col-12 mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
-            <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-4 pt-3 pb-3 pe-4"><span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg" style="height: 25px !important; vertical-align: sub;"></span><span class="navbar-text ps-4 text-primary">CONTRATO DE ADESÃO AO SISTEMA REDUNIQ DE ACEITAÇÃO DE PAGAMENTOS COM CARTÕES&nbsp; (CP)</span><span class="navbar-text ms-auto"><input id="text2" name="text2" type="text" class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span></nav>
+            <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-4 pt-3 pb-3 pe-4"><span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg" (click)="downloadForm('assets/forms/contrato_adesao.pdf')" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></span><span class="navbar-text ps-4 text-primary">CONTRATO DE ADESÃO AO SISTEMA REDUNIQ DE ACEITAÇÃO DE PAGAMENTOS COM CARTÕES&nbsp; (CP)</span><span class="navbar-text ms-auto"><input id="text2" name="text2" type="text" class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span></nav>
             <p class="titulo-form-simples"></p>
             </div>
             <div class="col-12 mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
-            <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-0 pt-3 pb-3 pe-4"><span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg" style="height: 25px !important; vertical-align: sub;"></span><span class="navbar-text ps-4 text-primary">FORMULÁRIO 1&nbsp; (F1)</span><span class="navbar-text ms-auto"><input id="text3" name="text1" type="text" class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span></nav>
+            <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-0 pt-3 pb-3 pe-4"><span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg" (click)="downloadForm('assets/forms/contrato_adesao.pdf')" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></span><span class="navbar-text ps-4 text-primary">FORMULÁRIO 1&nbsp; (F1)</span><span class="navbar-text ms-auto"><input id="text3" name="text1" type="text" class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span></nav>
             <p class="titulo-form-simples"></p>
             </div>
             <div class="col-12 mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
-            <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-0 pt-3 pb-3 pe-4"><span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg" style="height: 25px !important; vertical-align: sub;"></span><span class="navbar-text ps-4 text-primary">FORMULÁRIO 2&nbsp; (F2)</span><span class="navbar-text ms-auto"><input id="text4" name="text3" type="text" class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span></nav>
+            <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-0 pt-3 pb-3 pe-4"><span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg" (click)="downloadForm('assets/forms/contrato_adesao.pdf')" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></span><span class="navbar-text ps-4 text-primary">FORMULÁRIO 2&nbsp; (F2)</span><span class="navbar-text ms-auto"><input id="text4" name="text3" type="text" class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span></nav>
             <p class="titulo-form-simples"></p>
             </div>
           </div>
           </div>
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-0 mb-5 pt-0 pb-5">
             <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-              <button id="btn5a1" class="btn botao_azul ms-0 btn-lg" wappler-command="editContent">DOWNLOAD TODOS&nbsp;
+              <button (click)="downloadFormAll()" id="btn5a1" class="btn botao_azul ms-0 btn-lg" wappler-command="editContent">DOWNLOAD TODOS&nbsp;
                 <img src="assets/images/file_download_white.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
               </span></nav>
@@ -60,7 +60,7 @@
 
               <h4 class="text-primary mt-3 ps-0">
                 <img src="assets/images/attach_file.svg" style="height: 25px !important; vertical-align: top;"> ADICIONAR AO PROCESSO</h4> 
-              <div class="table-responsive mb-5 pb-5">
+              <div class="table-responsive mb-5 pb-5" style="margin-bottom: 0px !important;">
                 <p class="titulo-form-simples mt-0 mb-3">DIGITALIZE / ANEXE OS DOCUMENTOS NECESSÁRIOS</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-0 mb-2 pt-0 pb-5">
                 <table class="table">
@@ -92,9 +92,14 @@
                 <p class="titulo-form-simples mt-0 pt-4">Observações:</p>
                 <div class="col pb-4">
                   <textarea id="text1" class="form-control"></textarea>
-                  <button id="btn5a3" class="btn botao_azul btn-lg mt-5 ms-0" wappler-command="editContent">ANEXAR&nbsp;
+                  <label for="arquivo" class="btn botao_azul btn-lg mt-5 ms-0" wappler-command="editContent">
+                    ANEXAR&nbsp;
                     <img src="assets/images/attach_file_white.svg" style="height: 25px !important; vertical-align: sub;">
-                  </button>
+
+                  </label>
+                    <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)" style="display: none"
+                           accept=".pdf" multiple>
+
                 </div>
                 <div class="col mb-0 pb-5">
                 <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input2" name="input2" [checked]="validatedDocuments"

@@ -18,8 +18,17 @@ export class ObterPackContratualComponent implements OnInit{
   public currentPage: number;
   public subscription: Subscription;
 
+  public docToShow: {tipo:string, interveniente: string, dataEntrada: string};
+
   
   validatedDocuments: boolean = false;
+  files?: File[] = [];
+  localUrl: any;
+
+  public url1: string = "assets/forms/contrato_adesao.pdf";
+  public url2: string = "assets/forms/contrato_adesao.pdf";
+  public url3: string = "assets/forms/contrato_adesao.pdf";
+
 
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
@@ -37,6 +46,63 @@ ngOnInit(): void {
 
 validatedDocumentsChange(value: boolean) {
   this.validatedDocuments = value;
+}
+
+downloadForm(url: string){
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = url.split("/")[2];
+  link.click();
+}
+
+downloadFormAll(){
+  // contrato de adesao ao sistema reduniq
+  const link1 = document.createElement('a');
+  link1.href = this.url1;
+  link1.download = this.url1.split("/")[2];
+  link1.click();
+
+  // formulário 1
+  const link2 = document.createElement('a');
+  link2.href = this.url2;
+  link2.download = this.url2.split("/")[2];
+  link2.click();
+
+  // formulário 2
+  const link3 = document.createElement('a');
+  link3.href = this.url3;
+  link3.download = this.url3.split("/")[2];
+  link3.click();
+}
+
+selectFile(event: any) {
+  this.docToShow = { tipo: "pdf", interveniente: "Manuel", dataEntrada: new Date() + ""}
+
+  const files = <File[]>event.target.files;
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    const sizeFile = file.size / (1024 * 1024);
+    var extensoesPermitidas = /(.pdf)$/i;
+    const limSize = 10;
+    // this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
+    // if (this.result != null) {
+      if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+        if (event.target.files && files[i]) {
+          var reader = new FileReader();
+          reader.onload = (event: any) => {
+            this.localUrl = event.target.result;
+          }
+          reader.readAsDataURL(files[i]);
+          this.files.push(file);
+        } else {
+          alert("Verifique o tipo / tamanho do ficheiro");
+        }
+
+       }
+   // }
+
+  }
+  console.log(this.files);
 }
 
 }
