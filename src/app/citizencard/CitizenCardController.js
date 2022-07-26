@@ -195,11 +195,11 @@ function submit(data) {
         let json = JSON.stringify(data);
 
         var xhr = new XMLHttpRequest();
-        const processid = $("#CCCallProcessId").text();
+        //const processid = $("#CCCallProcessId").text() || null;
         let url = BASE_URL + '/api/citizencard/readcitizencarddata';
-        if (processid && processid != '') {
-            url = url + '?processId=' + processid;
-        }
+        //if (processid && processid != '') {
+        //    url = url + '?processId=' + processid;
+        //}
         xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         //xhr.setRequestHeader('X-API-TOKEN', angular.element(document).injector().get('$rootScope').repository.loggedUser.token);
