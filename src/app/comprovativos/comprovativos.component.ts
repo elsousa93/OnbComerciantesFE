@@ -454,6 +454,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.checkListModalRef?.hide();
   }
 
+  declineDeleteDoc() {
+    this.deleteModalRef?.hide();
+  }
+
+  declineFirstSubmission(){
+    this.firstSubmissionModalRef?.hide();
+  }
+
   ngAfterViewInit() {
     this.onCheckList();
   }
