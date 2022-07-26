@@ -1,26 +1,20 @@
-import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IStakeholders } from './IStakeholders.interface';
-import { stakeTypeList } from './stakeholderType';
-import { docTypeListP } from './docType';
-import { docTypeListE } from './docType';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { DataService } from '../nav-menu-interna/data.service';
-import { StakeholderService } from './stakeholder.service';
+import { DataService } from '../../nav-menu-interna/data.service';
+import { docTypeListE, docTypeListP } from '../docType';
+import { IStakeholders } from '../IStakeholders.interface';
+import { StakeholderService } from '../stakeholder.service';
+import { stakeTypeList } from '../stakeholderType';
 
-
-/** Listagem Intervenientes / Intervenientes
- *
- */
 @Component({
-  selector: 'app-stakeholders',
-  templateUrl: './stakeholders.component.html',
-  styleUrls: ['./stakeholders.component.css']
+  selector: 'app-create-stakeholder',
+  templateUrl: './create-stakeholder.component.html',
+  styleUrls: ['./create-stakeholder.component.css']
 })
-export class StakeholdersComponent implements OnInit {
-
+export class CreateStakeholderComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
   newStake: IStakeholders = {
@@ -39,7 +33,7 @@ export class StakeholdersComponent implements OnInit {
   submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
-  
+
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
   stakeholderType?: string = "";
@@ -59,7 +53,7 @@ export class StakeholdersComponent implements OnInit {
   public stakeType: boolean = false;
   public showFoundStake: boolean = null;
   public stakeDocType: boolean = false;
-  public stakeholderId : number = 0;
+  public stakeholderId: number = 0;
   public fiscalId: number = 0;
   public clientNr: number = 8875;
   public totalUrl: string = "";
@@ -74,9 +68,9 @@ export class StakeholdersComponent implements OnInit {
 
   public map: Map<number, boolean>;
   public currentPage: number;
-  public subscription: Subscription; 
+  public subscription: Subscription;
 
-  public isParticular: boolean=false;
+  public isParticular: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
@@ -105,7 +99,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectAddStakeholder() {
-    this.route.navigate(['/create-stakeholder/']);
+    this.route.navigate(['/add-stakeholder/']);
   }
 
   redirectInfoStakeholder() {
@@ -119,18 +113,18 @@ export class StakeholdersComponent implements OnInit {
     this.data.changeCurrentPage(currentPage);
   }
 
-  changeDataReadable(readable: boolean){
-    this.isNoDataReadable=readable;
+  changeDataReadable(readable: boolean) {
+    this.isNoDataReadable = readable;
   }
- 
+
   ngOnInit(): void {
     //Get Id from the store
-   // this.clientNr = Number(this.router.snapshot.params['nif']);
-   //this.form = new FormGroup({
-   //   stakeholderType: new FormControl(''),
-   //   tipoDocumento: new FormControl(''),
-   //   stakeholderNif: new FormControl(''),
-   // });
+    // this.clientNr = Number(this.router.snapshot.params['nif']);
+    //this.form = new FormGroup({
+    //   stakeholderType: new FormControl(''),
+    //   tipoDocumento: new FormControl(''),
+    //   stakeholderNif: new FormControl(''),
+    // });
     //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -178,18 +172,18 @@ export class StakeholdersComponent implements OnInit {
 
   changeListElementStakeType(stakeType: string, e: any) {
     this.stakeholderType = e.target.value;
-    if (this.stakeholderType === 'Particular'){
+    if (this.stakeholderType === 'Particular') {
       this.isParticular = true;
     } else {
-      this.isParticular=false;
+      this.isParticular = false;
     }
     this.stakeType = true;
   }
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
-    
+
     this.newStake.identificationDocument.type = this.documentType;
-    
+
     if (this.documentType === 'Cartão do Cidadão') {
       this.isCC = true;
     } else {
@@ -199,15 +193,15 @@ export class StakeholdersComponent implements OnInit {
   }
 
   toggleShow(stake: IStakeholders) {
-   //clear the array
-   this.stakeShow = [];
+    //clear the array
+    this.stakeShow = [];
     this.isShown = !this.isShown;
 
-   this.stakeShow.push(stake);
+    this.stakeShow.push(stake);
     console.log("stakeShow array: " + this.stakeShow[0]);
-   // GetByid(StakeholderNif, 0)
-       
-   }
+    // GetByid(StakeholderNif, 0)
+
+  }
 
   //searchStakeholder(formStakeholderSearch) {
   //  console.log(formStakeholderSearch);
@@ -263,7 +257,5 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
   }
 
-  
-  }
 
-
+}

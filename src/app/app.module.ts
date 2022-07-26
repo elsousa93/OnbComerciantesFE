@@ -64,6 +64,8 @@ import { AceitacaoComponent } from './aceitacao/aceitacao.component';
 import { ConsultasComponent } from './consultas/consultas.component';
 import { PackContratualComponent } from './aceitacao/pack-contratual/pack-contratual.component';
 import { ObterPackContratualComponent } from './aceitacao/obter-pack-contratual/obter-pack-contratual.component';
+import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-stakeholder.component';
+import { CreateStakeholderComponent } from './stakeholders/create-stakeholder/create-stakeholder.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -118,7 +120,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
     NumberCounterComponent,
     InfoDeclarativaLojasComponent,
-    CountrysComponent
+    CountrysComponent,
+    CreateStakeholderComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -140,10 +143,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'client-extended/:id', component: ClientExtendedComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
       { path: 'stakeholders/:nif', component: StakeholdersComponent },
+      { path: 'create-stakeholder', component: CreateStakeholderComponent },
       { path: 'add-stakeholder', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
+      { path: 'info-stakeholders', component: InfoStakeholderComponent },
       { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
       { path: 'pep', component: PepComponent },
       { path: 'pep/:id', component: PepComponent },

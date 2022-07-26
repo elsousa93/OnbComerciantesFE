@@ -201,7 +201,7 @@ export class DashboardComponent implements OnInit {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     localStorage.clear();
-
+    this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
     //const users: UserData[] = [];
     //for (let i = 1; i <= 100; i++) {
     //  users.push(createNewUser(i));
@@ -210,11 +210,7 @@ export class DashboardComponent implements OnInit {
     // Assign the data to the data source for the table to render
 
     //Pendentes de envio
-    this.processService.searchProcessByState('Incomplete').subscribe(result => {
-      console.log('Pendentes de envio ', result);
-      console.log('Número total de processos incompletos ', result.length);
-      this.incompleteProcessess = result;
-    });
+    
 
     //Tratamento BackOffice
     this.processService.searchProcessByState('Ongoing').subscribe(result => {
@@ -249,7 +245,14 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.userPermissions = getMenuPermissions(UserPermissions.DO);
-    this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
+    this.processService.searchProcessByState('Incomplete').subscribe(result => {
+      console.log('Pendentes de envio ', result);
+      console.log('Número total de processos incompletos ', result.length);
+      this.incompleteProcessess = result;
+
+    });
+    console.log('Incomplete processes depois de ir bsucar á API ', this.incompleteProcessess);
+    
     this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess);
     this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess);
     this.dataSourceAceitacao = new MatTableDataSource([]);
