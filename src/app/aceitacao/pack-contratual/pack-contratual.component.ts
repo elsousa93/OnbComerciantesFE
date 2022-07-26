@@ -18,6 +18,8 @@ export class PackContratualComponent implements OnInit{
   public currentPage: number;
   public subscription: Subscription;
 
+  isPaper: boolean = null;
+
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
   private route: Router,
@@ -30,6 +32,14 @@ export class PackContratualComponent implements OnInit{
 ngOnInit(): void {
 
   var context = this;
+}
+
+paperSignature(paper: boolean) {
+  if (paper){
+    this.isPaper = true;
+  } else {
+    this.isPaper = false;
+  }
 }
 
 }
