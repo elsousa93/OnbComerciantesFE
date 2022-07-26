@@ -120,6 +120,40 @@
           <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input3" name="input3"><label class="form-check-label" for="input3">Na presença do cliente?</label></div>
           </div>
         </div>
+        <ng-template #assinaturaDigitalModal>
+          <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0 text-white" style="margin-top: 0px !important;">
+            <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+                <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+                    <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                        <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                            <span class="navbar-text ms-auto align-self-start">
+                                <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;" (click)="declineAssinaturaDigital()">x</h2>
+                            </span>
+                        </nav>
+                    </div> 
+                    <div class="row ms-0 me-0 ps-0 pe-0">
+                        <div class="mb-5 ps-0 pe-0 col-12">
+                            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                                <span class="navbar-text"></span>
+                                <img src="assets/images/warning.svg" class="img_warning">
+                            </nav>
+                            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                                <span class="navbar-text">
+                                    <h5 class="text-light  mb-0 pb-0" style="margin-bottom: 5px !important;">Processo enviado para assinatura digital:<br></h5>
+                                    <a class="text-light mt-3 mb-5 pb-0 link_h5" href="https://www.autenticacao.gov.pt/cmd-assinatura" target="_blank">PLATAFORMA DE ASSINATURA DIGITAL</a>
+                                </span>
+                            </nav>
+                            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 pt-0 pb-0">
+                                <span class="navbar-text"></span>
+                                <span class="navbar-text"></span>
+                                <span class="navbar-text pt-sm-0 mt-0 pb-0" style="margin-top: 25px !important;"><button style="color: white;" id="btn5a" class="btn boto_alerta_modal ps-lg-4 pe-lg-4 mt-0 mb-0 ms-3 me-3 pt-3 pb-3 ps-5 pe-5" (click)="declineAssinaturaDigital()" wappler-command="editContent">OK</button></span>
+                            </nav>
+                        </div>    
+                   </div>
+                </div>
+            </div>
+        </main>
+        </ng-template>
         <hr>
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <span class="navbar-text me-2 align-self-center ms-0 me-0">
@@ -133,7 +167,7 @@
           <button id="btn5a4" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" wappler-command="editContent">DEVOLVER AO BACKOFFICE&nbsp;
             <img src="assets/images/assignment_returned_white.svg" style="height: 30px; vertical-align: bottom;">
           </button>
-          <button *ngIf="validatedDocuments" id="btn5a5" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
+          <button *ngIf="validatedDocuments" id="btn5a5" (click)="openAssinaturaDigitalModal()" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
             <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
           </button>
           <button id="btn5a4" class="btn botao_branco center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
@@ -148,4 +182,6 @@
   <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
   </div>
   </div>
+
+
   

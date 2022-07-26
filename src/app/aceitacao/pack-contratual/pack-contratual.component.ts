@@ -4,6 +4,7 @@ import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/c
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -18,6 +19,8 @@ export class PackContratualComponent implements OnInit{
   public currentPage: number;
   public subscription: Subscription;
 
+  assinaturaDigitalModalRef: BsModalRef | undefined;
+
   public result: any;
 
   // apagar quando tiver com API
@@ -28,10 +31,12 @@ export class PackContratualComponent implements OnInit{
   showObservations: boolean = false;
   validatedDocuments: boolean = false;
 
+  @ViewChild('assinaturaDigitalModal') assinaturaDigitalModal;
+
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
   private route: Router,
-  private router: ActivatedRoute) {
+  private router: ActivatedRoute, private modalService: BsModalService,) {
 
     this.ngOnInit();
   
@@ -53,6 +58,14 @@ paperSignature(paper: boolean) {
 
 validatedDocumentsChange(value: boolean) {
   this.validatedDocuments = value;
+}
+
+openAssinaturaDigitalModal(){
+  this.assinaturaDigitalModalRef = this.modalService.show(this.assinaturaDigitalModal, { class: 'modal-sm' });
+}
+
+declineAssinaturaDigital(){
+  this.assinaturaDigitalModalRef?.hide();
 }
 
 selectFile(event: any) {

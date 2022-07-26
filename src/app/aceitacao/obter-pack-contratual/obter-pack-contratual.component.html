@@ -33,7 +33,7 @@
           <div class="row mb-2 ms-0 me-0 pb-3">
           <h4 class="text-primary mt-3 ps-0"><img src="assets/images/content_copy.svg"
             style="height: 30px !important; vertical-align: sub;">&nbsp;DOCUMENTAÇÃO GERADA NO PROCESSO</h4>
-          <p class="titulo-form-simples mt-0">NESTE PASSO, DEVE ENTREGAR A DOCUMENTAÇÃO GERADA AO CLIENTE PARA ASSINAR.</p>
+          <p class="titulo-form-simples mt-0">NESTE PASSO, DEVE ENTREGAR A DOCUMENTAÇÃO GERADA AO CLIENTE PARA ASSINAR</p>
           <div class="row mb-0 ms-0 me-0 pb-0 ps-0 pe-0">
             <div class="col-12 mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
             <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-4 pt-3 pb-3 pe-4"><span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg" (click)="downloadForm('assets/forms/contrato_adesao.pdf')" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></span><span class="navbar-text ps-4 text-primary">CONTRATO DE ADESÃO AO SISTEMA REDUNIQ DE ACEITAÇÃO DE PAGAMENTOS COM CARTÕES&nbsp; (CP)</span><span class="navbar-text ms-auto"><input id="text2" name="text2" type="text" class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span></nav>
@@ -74,9 +74,9 @@
                   </thead>
                   <tbody>
                   <tr>
-                    <td class="text-primary text-center align-middle">Bual de Canela</td>
-                    <td class="text-primary text-center align-middle">162243889</td>
-                    <td class="text-primary text-center align-middle">A</td>
+                    <td class="text-primary text-center align-middle">{{docToShow.tipo}}</td>
+                    <td class="text-primary text-center align-middle">{{docToShow.interveniente}}</td>
+                    <td class="text-primary text-center align-middle">{{docToShow.dataEntrada}}</td>
                     <td>
                     <span>
                       <img src="assets/images/delete_blue.svg" style="height: 25px !important; margin-right: 10px !important; vertical-align: sub; cursor: pointer;">
