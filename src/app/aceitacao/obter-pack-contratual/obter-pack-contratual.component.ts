@@ -4,6 +4,7 @@ import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/c
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -17,23 +18,27 @@ export class ObterPackContratualComponent implements OnInit{
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
+  deleteModalRef: BsModalRef | undefined;
+  submissionModalRef: BsModalRef | undefined;
 
   public docToShow: {tipo:string, interveniente: string, dataEntrada: string};
 
   
   validatedDocuments: boolean = false;
   files?: File[] = [];
+  fileToDelete?: File;
   localUrl: any;
 
   public url1: string = "assets/forms/contrato_adesao.pdf";
   public url2: string = "assets/forms/contrato_adesao.pdf";
   public url3: string = "assets/forms/contrato_adesao.pdf";
 
-
+  @ViewChild('deleteModal') deleteModal;
+  @ViewChild('submissionModal') submissionModal;
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
   private route: Router,
-  private router: ActivatedRoute) {
+  private router: ActivatedRoute, private modalService: BsModalService) {
 
     this.ngOnInit();
   
@@ -75,6 +80,19 @@ downloadFormAll(){
   link3.click();
 }
 
+// por terminar
+onDelete(tipo:string, interveniente: string, dataEntrada: string) {
+  this.docToShow.tipo = tipo;
+  this.docToShow.interveniente = interveniente;
+  this.docToShow.dataEntrada = dataEntrada;
+  this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
+  // this.fileToDelete = file;
+}
+
+submission(){
+  this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-sm' });
+}
+
 selectFile(event: any) {
   this.docToShow = { tipo: "pdf", interveniente: "Manuel", dataEntrada: new Date() + ""}
 
@@ -103,6 +121,26 @@ selectFile(event: any) {
 
   }
   console.log(this.files);
+}
+
+confirmDelete() {
+
+}
+
+declineDelete() {
+  this.deleteModalRef?.hide();
+}
+
+declineDeleteDoc() {
+  this.deleteModalRef?.hide();
+}
+
+declineSubmission() {
+  this.submissionModalRef?.hide();
+}
+
+confirmSubmission() {
+
 }
 
 }
