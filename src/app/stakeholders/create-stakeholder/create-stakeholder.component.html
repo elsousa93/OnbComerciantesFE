@@ -7,7 +7,7 @@
       <p class="titulo-form-simples">Tipo de Interveniente: *</p>
       <select class="form-select campo-form-select"
         (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
-        formControlName="stakeholderType">
+        formControlName="type">
         <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
           {{stakeType.stakeTypeOption}}
         </option>
@@ -32,7 +32,7 @@
         </select>
       </div>
       <p class="titulo-form-simples">Número do Documento:</p><input [readonly]="isCC && isNoDataReadable"
-        id="text1" name="text1" type="text" class="form-control campo_form" formControlName="docNumber">
+        id="text1" name="text1" type="text" class="form-control campo_form" formControlName="documentNumber">
       </div>
       <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0"  *ngIf="isCC">
         <p class="titulo-form-simples mb-3">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
@@ -67,7 +67,7 @@
             <img src="assets/images/person_search.svg" class="img_btn">
           </button></span>
         <span class="navbar-text me-2">
-            <button *ngIf="stakeType && stakeDocType" id="btn5a2" (click)="onClickNew()" routerLink="/add-stakeholder"
+            <button *ngIf="newStake" id="btn5a2" (click)="addStakeholder()"
             class="btn botao_branco" wappler-command="editContent">ADICIONAR INTERVENIENTE&nbsp;
             <img src="assets/images/person_add_blue.svg" class="img_btn">
           </button></span>
@@ -102,21 +102,21 @@
     <thead>
       <tr>
         <th>ID Fiscal</th>
-        <th>Nome Completo</th>
-        <th>Editar</th>
+        <th>Nome</th>
+        <!--<th>Editar</th>-->
       </tr>
     </thead>
     <tbody>
-      <tr class="table table-striped" *ngFor="let stake of stakeShow">
-        <th>{{stake.fiscalId}}</th>
-        <td>{{stake.fullName}}</td>
-        <td>
+      <tr class="table table-striped" *ngFor="let stake of stakeholdersToShow" (click)="selectedStakeholder(stake)">
+        <th>{{stake.stakeholderNIF}}</th>
+        <td>{{stake.stakeholderName}}</td>
+        <!--<td>
 
           <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
             <span class="glyphicon glyphicon-pencil"></span>Editar
           </button>
 
-        </td>
+        </td>-->
       </tr>
     </tbody>
   </table>

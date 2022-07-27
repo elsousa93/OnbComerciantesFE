@@ -66,6 +66,8 @@ export class CountrysComponent implements OnInit {
 
   processNumber: string;
 
+  stakeholdersToInsert: [];
+
   ngOnInit() {
     this.initializeForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -84,6 +86,7 @@ export class CountrysComponent implements OnInit {
       this.client = this.route.getCurrentNavigation().extras.state["client"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
+      this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
@@ -121,7 +124,7 @@ export class CountrysComponent implements OnInit {
     if (this.clientExists) {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-        services: new FormControl({value: '', disabled: true}, Validators.required),
+        services: new FormControl({value: 'aaaa', disabled: true}, Validators.required),
         transactionsAverage: new FormControl({ value: this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
@@ -134,7 +137,7 @@ export class CountrysComponent implements OnInit {
     } else {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-        services: new FormControl('', Validators.required),
+        services: new FormControl('aaaa', Validators.required),
         transactionsAverage: new FormControl('', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
@@ -302,6 +305,7 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
     this.newSubmission.merchant.shareCapital = this.client.shareCapital;
     this.newSubmission.merchant.shortName = this.client.shortName;
+    this.newSubmission.stakeholders = this.stakeholdersToInsert;
 
     console.log(this.newSubmission.merchant);
 
@@ -357,11 +361,11 @@ export class CountrysComponent implements OnInit {
 
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log('Resultado obtido ', result);
-      localStorage.setItem("submissionId", result.processNumber);
+      localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
+      this.route.navigate(['stakeholders/']);
+      
     });
-
-    this.route.navigate(['stakeholders/']);
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {

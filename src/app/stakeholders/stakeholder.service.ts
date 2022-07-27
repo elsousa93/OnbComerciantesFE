@@ -62,7 +62,8 @@ export class StakeholderService {
       HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
+    console.log("LINK URI SEARCHSTAKEHOLDERBYQUERY");
+    console.log(URI);
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
@@ -85,6 +86,10 @@ export class StakeholderService {
       HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+
+    console.log("ID STAKEHOLDER");
+    console.log(StakeholderID);
+
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }

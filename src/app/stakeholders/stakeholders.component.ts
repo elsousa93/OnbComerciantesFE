@@ -36,7 +36,9 @@ export class StakeholdersComponent implements OnInit {
     "shortName": ""
   } as IStakeholders;
 
-  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+  submissionId: string;
+
+  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
   
@@ -83,6 +85,10 @@ export class StakeholdersComponent implements OnInit {
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
+
+    this.submissionId = localStorage.getItem('submissionId');
+    console.log("foi buscar bem ao localstorage?");
+    console.log(this.submissionId);
 
     this.ngOnInit();
 

@@ -852,7 +852,8 @@ export class ClientByIdComponent implements OnInit {
     //  this.client.companyName = this.form.value["franchiseName"];
     //  //this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
     //}
-
+    console.log("Stakeholders a passar!! ");
+    console.log(this.processClient.stakeholders);
     let navigationExtras: NavigationExtras = {
       state: {
         clientExists: this.clientExists,
@@ -860,7 +861,8 @@ export class ClientByIdComponent implements OnInit {
         NIFNIPC: this.NIFNIPC,
         client: this.client,
         clientId: this.idClient,
-        processId: this.processId
+        processId: this.processId,
+        stakeholders: this.processClient.stakeholders
       }
     };
 
