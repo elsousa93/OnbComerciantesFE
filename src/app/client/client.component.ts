@@ -96,14 +96,19 @@ export class ClientComponent implements OnInit {
    // this.newClient.legalName = name;
     console.log("Name: ", name);
    // this.newClient.fiscalId = nif;
-    console.log("Fiscal ID: ", nif);
+    console.log("nationality: ", nationality);
+    console.log("birthDate: ", birthDate);
+    console.log("cardNumber: ", cardNumber);
+    console.log("nif: ", nif);
+    console.log("postalCode: ", postalCode);
+    console.log("address: ", address);
+
+
   //  this.idToSearch = cardNumber;
-    this.ccInfo = true;
+    this.ccInfo = [name, country, birthDate, cardNumber, 0, nif, 0, 0];
 
    // this.CCID.NIF = nif;
     console.log("NIF: ", this.CCID.NIF);
-     
- 
  }
 
   UibModal: BsModalRef | undefined;
