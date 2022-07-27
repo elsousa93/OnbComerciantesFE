@@ -486,21 +486,32 @@ export class CountrysComponent implements OnInit {
           this.continenteName = continente;
         } else {
           this.inputEuropa = false;
-
+          console.log("FORA DO FOR ANTES DE REMOVER lstCountry", this.lstCountry);
+          console.log("FORA DO FOR ANTES DE REMOVER lstCountry1", this.lstCountry1);
+          console.log("FORA DO FOR ANTES DE REMOVER lstCountry2", this.lstCountry2);
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
+              console.log('Antes de remover lstCountry', country);
               this.removeCountryFromList(country, this.lstCountry);
+              console.log('Depois de remover lstCountry', country);
+              console.log('Antes de remover lstCountry1', country);
               this.removeCountryFromList(country, this.lstCountry1);
+              console.log('Depois de remover lstCountry1', country);
+              console.log('Antes de remover lstCountry2', country);
               this.removeCountryFromList(country, this.lstCountry2);
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Europa") {
+              console.log('Depois de remover lstCountry2', country);
               this.removeCountryFromList(country, this.contPais);
             }
           });
+          console.log("FORA DO FOR DEPOIS DE REMOVER lstCountry", this.lstCountry);
+          console.log("FORA DO FOR DEPOIS DE REMOVER lstCountry1", this.lstCountry1);
+          console.log("FORA DO FOR DEPOIS DE REMOVER lstCountry", this.lstCountry2);
+          //remover os paises relativos a este continente
+          //this.countryList.forEach(country => {
+          //  if (country.continent == "Europa") {
+          //    this.removeCountryFromList(country, this.contPais);
+          //  }
+          //});
         }
         break;
       case 'AFRICA':
