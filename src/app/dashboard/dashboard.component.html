@@ -236,12 +236,12 @@
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Editar Processo
+                      &nbsp;&nbsp;&nbsp;Consultar Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#">
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/edit_square.svg">
+                          <img src="assets/images/search.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -328,6 +328,11 @@
                       <a [routerLink]="['/app-devolucao/{{row.processId}}']" (click)="streamHistoryMenu()">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg">
+                        </span>
+                      </a>
+                      <a>
+                        <span class="material-symbols-rounded edit-icon">
+                          <img src="assets/images/search.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -417,6 +422,11 @@
                           <img src="assets/images/edit_square.svg">
                         </span>
                       </a>
+                      <a>
+                        <span class="material-symbols-rounded edit-icon">
+                          <img src="assets/images/search.svg">
+                        </span>
+                      </a>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -491,13 +501,13 @@
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Editar Processo
+                      &nbsp;&nbsp;&nbsp;Consultar Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/edit_square.svg">
+                          <img src="assets/images/search.svg">
                         </span>
                       </button>
                     </mat-cell>

@@ -101,12 +101,27 @@
             <button id="btn5a3" class="btn botao_azul btn-lg ms-0" style="margin-left: 15px !important;" wappler-command="editContent">ANEXAR&nbsp;
               <img src="assets/images/file_upload.svg"
               style="height: 30px !important; vertical-align: bottom;"></button></span></nav>
-
-              <nav *ngIf="isPaper == false" style="padding-left: 0px;" class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-0 mb-4 pt-0">
+              <div *ngIf="showAnotherButtons" style="padding-left: 0px;" class="col pb-0">
+                <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">CARREGAR DOCUMENTOS DA PAD
+                  <img src="assets/images/publish.svg" style="height: 30px !important; vertical-align: bottom;">
+                </button>
+              </div>
+              <div *ngIf="showAnotherButtons" class="col pb-0">
+                <button id="btn5a8" class="btn botao_azul btn-lg mt-5 ms-1 me-1" wappler-command="editContent">CANCELAR DOCUMENTOS DA PAD
+                  <img src="assets/images/cancel_white.svg" style="height: 30px !important; vertical-align: bottom;">
+                </button>
+              </div>
+              <div *ngIf="isPaper == false" style="padding-left: 0px;" class="col mb-4 pb-5">
+                <button id="btn5a9" (click)="openAssinaturaDigitalModal()" [disabled]="showAnotherButtons" class="btn botao_azul btn-lg mt-5 ms-1 me-1" wappler-command="editContent">PLATAFORMA DE ASSINATURA DIGITAL
+                  <img src="assets/images/border_color.svg" style="height: 30px !important; vertical-align: bottom;">
+                </button>
+              </div>
+              
+              <!-- <nav *ngIf="isPaper == false" style="padding-left: 0px;" class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-0 mb-4 pt-0">
                 <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-                  <button *ngIf="isPaper == false" id="btn5a3" class="btn botao_azul btn-lg mt-5 ms-0" wappler-command="editContent">PLATAFORMA DE ASSINATURA DIGITAL&nbsp;
+                  <button *ngIf="isPaper == false" (click)="openAssinaturaDigitalModal()" id="btn5a3" class="btn botao_azul btn-lg mt-5 ms-0" wappler-command="editContent">PLATAFORMA DE ASSINATURA DIGITAL&nbsp;
                     <img src="assets/images/border_color.svg"
-                  style="height: 30px !important; vertical-align: bottom;"></button></span></nav>
+                  style="height: 30px !important; vertical-align: bottom;"></button></span></nav> -->
 
           <p *ngIf="showObservations" style="margin-top: 0px !important;" class="titulo-form-simples mt-5 pt-2">Observações:</p>
           <div class="col pb-4" style="padding-left: 0px !important;"><textarea *ngIf="showObservations" id="text1" class="form-control"></textarea>
@@ -114,7 +129,7 @@
           
             <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)" style="display: none"
             accept=".pdf" multiple></div>
-          <div *ngIf="isPaper" style="margin-top: 25px; margin-bottom: 0px !important; padding-left: 0px;">
+          <div *ngIf="isPaper || showAnotherButtons" style="margin-top: 25px; margin-bottom: 0px !important; padding-left: 0px;">
           <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input2" name="input2" [checked]="validatedDocuments"
             (change)="validatedDocumentsChange($event.target.checked)"><label class="form-check-label" for="input2">Validou que os documentos necessários foram efectivamente&nbsp; os carregados?</label></div>
           <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input3" name="input3"><label class="form-check-label" for="input3">Na presença do cliente?</label></div>
@@ -154,6 +169,40 @@
             </div>
         </main>
         </ng-template>
+        <ng-template #submeterPedidoModal>
+          <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0 text-white" style="margin-top: 0px !important">
+            <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+                <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+                    <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                        <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                            <span class="navbar-text ms-auto align-self-start">
+                                <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;" (click)="declineSubmeterPedido()">x</h2>
+                            </span>
+                        </nav>
+                    </div>
+                    <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+                        <div class="mb-5 ps-0 pe-0 col-12">
+                            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                                <span class="navbar-text"></span>
+                                <img src="assets/images/warning.svg" class="img_warning">
+                            </nav>
+                            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                                <span class="navbar-text">
+                                    <h5 class="text-light  mb-0 pb-0">Ao efectuar a submissão, o processo irá continuar o tratamento.<br></h5>
+                                    <h5 class="text-light mt-3 mb-5 pb-0 ">Deseja continuar?</h5>
+                                </span>
+                            </nav>
+                            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 pt-0 pb-0">
+                                <span class="navbar-text"></span>
+                                <span class="navbar-text pt-sm-0 mt-0 pb-0"><button (click)="declineSubmeterPedido()" style="color: white;" id="btn5a" class="btn boto_alerta_modal ps-lg-4 pe-lg-4 mt-0 mb-0 ms-3 me-3 pt-3 pb-3 ps-5 pe-5" wappler-command="editContent">VOLTAR</button></span>
+                                <span class="navbar-text mt-0 mb-0 pt-0 pb-0"><button style="color: white;" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 ps-lg-4 pe-lg-4 mt-0 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" wappler-command="editContent">CONTINUAR</button></span>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        </ng-template>
         <hr>
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <span class="navbar-text me-2 align-self-center ms-0 me-0">
@@ -167,10 +216,10 @@
           <button id="btn5a4" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" wappler-command="editContent">DEVOLVER AO BACKOFFICE&nbsp;
             <img src="assets/images/assignment_returned_white.svg" style="height: 30px; vertical-align: bottom;">
           </button>
-          <button *ngIf="validatedDocuments" id="btn5a5" (click)="openAssinaturaDigitalModal()" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
+          <button *ngIf="validatedDocuments" (click)="openSubmeterPedidoModal()" id="btn5a5" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
             <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
           </button>
-          <button id="btn5a4" class="btn botao_branco center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+          <button id="btn5a4" [routerLink]="['/app-aceitacao']" class="btn botao_branco center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
             <img src="assets/images/arrow_back_ios.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button></nav>
         </div>
       </div>
