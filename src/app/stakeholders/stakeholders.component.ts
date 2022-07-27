@@ -112,12 +112,6 @@ export class StakeholdersComponent implements OnInit {
     this.route.navigate(['/add-stakeholder/']);
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
 
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;

@@ -47,12 +47,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     console.log(this.representativesSelected);
   }
 
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
-
   redirectHomePage() {
 
     this.router.navigate(["/"]);

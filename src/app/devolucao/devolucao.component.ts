@@ -32,7 +32,7 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService) {
 
     this.ngOnInit();
-    this.updateData(false, 0);
+    this.data.updateData(false, 0);
     console.log('Process Id ', this.processId);
 
     this.processService.getProcessById(this.processId).subscribe(result => {
@@ -47,11 +47,5 @@ ngOnInit(): void {
   var context = this;
 }
 
-//função que altera o valor do map e da currentPage
-updateData(value: boolean, currentPage: number) {
-  this.map.set(currentPage, value);
-  this.data.changeData(this.map);
-  this.data.changeCurrentPage(currentPage);
-}
 
 }
