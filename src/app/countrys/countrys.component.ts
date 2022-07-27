@@ -486,32 +486,14 @@ export class CountrysComponent implements OnInit {
           this.continenteName = continente;
         } else {
           this.inputEuropa = false;
-          console.log("FORA DO FOR ANTES DE REMOVER lstCountry", this.lstCountry);
-          console.log("FORA DO FOR ANTES DE REMOVER lstCountry1", this.lstCountry1);
-          console.log("FORA DO FOR ANTES DE REMOVER lstCountry2", this.lstCountry2);
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
-              console.log('Antes de remover lstCountry', country);
               this.removeCountryFromList(country, this.lstCountry);
-              console.log('Depois de remover lstCountry', country);
-              console.log('Antes de remover lstCountry1', country);
               this.removeCountryFromList(country, this.lstCountry1);
-              console.log('Depois de remover lstCountry1', country);
-              console.log('Antes de remover lstCountry2', country);
               this.removeCountryFromList(country, this.lstCountry2);
-              console.log('Depois de remover lstCountry2', country);
               this.removeCountryFromList(country, this.contPais);
             }
           });
-          console.log("FORA DO FOR DEPOIS DE REMOVER lstCountry", this.lstCountry);
-          console.log("FORA DO FOR DEPOIS DE REMOVER lstCountry1", this.lstCountry1);
-          console.log("FORA DO FOR DEPOIS DE REMOVER lstCountry", this.lstCountry2);
-          //remover os paises relativos a este continente
-          //this.countryList.forEach(country => {
-          //  if (country.continent == "Europa") {
-          //    this.removeCountryFromList(country, this.contPais);
-          //  }
-          //});
         }
         break;
       case 'AFRICA':
@@ -533,23 +515,6 @@ export class CountrysComponent implements OnInit {
               count++;
             }
           });
-
-          //this.lstCountry = ['África do Sul', 'Angola', 'Argélia', 'Benim', 'Botsuana', 'Burquina Faso', 'Burúndi', 'Cabo Verde', 'Camarões', 'Chade', 'Comores', 'Congo-Brazzaville', 'Costa do Marfim', 'Egito', 'Eritreia', 'Essuatíni', 'Etiópia', 'Gabão', 'Gâmbia', 'Gana'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-
-          //this.lstCountry1 = ['Guiné', 'Guiné Equatorial', 'Guiné-Bissau', 'Jibuti', 'Lesoto', 'Libéria', 'Líbia', 'Madagáscar', 'Maláui', 'Mali', 'Marrocos', 'Maurícia', 'Mauritânia', 'Moçambique', 'Namíbia', 'Níger', 'Nigéria', 'Quénia', 'República Centro-Africana', 'República Democrática do Congo'];
-          //for (var i = 0; i <= this.lstCountry1.length; i++) {
-          //  this.contPais[this.lstCountry1[i]] = true;
-          //}
-
-          //this.lstCountry2 = ['Ruanda', 'São Tomé e Príncipe', 'Seicheles', 'Senegal', 'Serra Leoa', 'Somália', 'Sudão', 'Sudão do Sul', 'Tanzânia', 'Togo', 'Tunísia', 'Uganda', 'Zâmbia', 'Zimbábue'];
-          //for (var i = 0; i <= this.lstCountry2.length; i++) {
-          //  this.contPais[this.lstCountry2[i]] = true;
-          //}
-
-
           this.continenteName = continente;
         } else {
           this.inputAfrica = false;
@@ -559,12 +524,6 @@ export class CountrysComponent implements OnInit {
               this.removeCountryFromList(country, this.lstCountry);
               this.removeCountryFromList(country, this.lstCountry1);
               this.removeCountryFromList(country, this.lstCountry2);
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Africa") {
               this.removeCountryFromList(country, this.contPais);
             }
           });
@@ -599,12 +558,6 @@ export class CountrysComponent implements OnInit {
               this.removeCountryFromList(country, this.lstCountry);
               this.removeCountryFromList(country, this.lstCountry1);
               this.removeCountryFromList(country, this.lstCountry2);
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Oceania") {
               this.removeCountryFromList(country, this.contPais);
             }
           });
@@ -630,36 +583,15 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-          //this.lstCountry = ['Afeganistão', 'Arábia Saudita', 'Arménia', 'Azerbaijão', 'Bangladexe', 'Barém', 'Brunei', 'Butão', 'Camboja', 'Catar', 'Cazaquistão', 'China', 'Coreia do Norte', 'Coreia do Sul', 'Cuaite', 'Emirados Árabes Unidos', 'Estado da Palestina', 'Filipinas', 'Geórgia', 'Iémen'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-          //this.lstCountry1 = ['Iraque', 'Israel', 'Japão', 'Jordânia', 'Laus', 'Líbano', 'Malásia', 'Maldivas', 'Mianmar', 'Mongólia', 'Nepal', 'Omã', 'Paquistão', 'Quirguistão', 'Singapura', 'Síria', 'Sri Lanca', 'Tailândia', 'Taiuã', 'Tajiquistão'];
-          //for (var i = 0; i <= this.lstCountry1.length; i++) {
-          //  this.contPais[this.lstCountry1[i]] = true;
-          //}
-          //this.lstCountry2 = ['Turcomenistão', 'Turquia', 'Usbequistão', 'Vietname'];
-          //for (var i = 0; i <= this.lstCountry2.length; i++) {
-          //  this.contPais[this.lstCountry2[i]] = true;
-          //}
           this.continenteName = continente;
         } else {
           this.inputAsia = false;
-          //this.lstCountry = [];
-          //this.lstCountry1 = [];
-          //this.lstCountry2 = [];
 
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
               this.removeCountryFromList(country, this.lstCountry);
               this.removeCountryFromList(country, this.lstCountry1);
               this.removeCountryFromList(country, this.lstCountry2);
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Ásia") {
               this.removeCountryFromList(country, this.contPais);
             }
           });
@@ -694,18 +626,11 @@ export class CountrysComponent implements OnInit {
               this.removeCountryFromList(country, this.lstCountry);
               this.removeCountryFromList(country, this.lstCountry1);
               this.removeCountryFromList(country, this.lstCountry2);
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
               this.removeCountryFromList(country, this.contPais);
             }
           });
         }
         break;
-
     }
   }
 
@@ -725,16 +650,11 @@ export class CountrysComponent implements OnInit {
   }
 
   inserirText(form: any) {
-    console.log('Lista contPais', this.contPais);
+    this.lstPaisPreenchido = [];
+
     this.contPais.forEach(element => {
-      var index = this.lstPaisPreenchido.findIndex(elem => element.description == elem.description); 
-      if (index == -1) {
         this.lstPaisPreenchido.push(element);
-        console.log('Elementos na lista contPais ', element);
-      }
     });
-    
-    console.log('Lista de todos os elementos passados (lstPaisPreenchido) ', this.lstPaisPreenchido);
 
     this.lstPaisPreenchido.forEach(country => {
       $('#text5').val($('#text5').val() + country.description + ', ' );
