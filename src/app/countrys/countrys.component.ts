@@ -654,10 +654,21 @@ export class CountrysComponent implements OnInit {
   }
 
   inserirText(form: any) {
-    this.lstPaisPreenchido = [];
+    $('#text5').val('');
 
     this.contPais.forEach(element => {
+      var index = this.lstPaisPreenchido.findIndex(elem => elem.description == element.description);
+      if (index == -1) {
         this.lstPaisPreenchido.push(element);
+      }
+    });
+
+    //se a lstPaisPreenchido tiver um country que a contPais não tem
+    this.lstPaisPreenchido.forEach(element => {
+      var index = this.contPais.findIndex(elem => elem.description == element.description);
+      if (index == -1) {
+        this.lstPaisPreenchido.splice(index, 1);
+      }
     });
 
     this.lstPaisPreenchido.forEach(country => {
