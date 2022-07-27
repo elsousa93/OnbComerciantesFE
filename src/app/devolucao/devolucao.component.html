@@ -36,7 +36,7 @@
                     <p class="mb-0 text-primary text-start">-</p>
                     <p *ngIf="process.state == 'Returned'" class="mb-0 text-primary text-start">Devolvido do backoffice</p>
                     <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
-                    <p class="mb-0 text-primary text-start">{{process.startedBy.user}}</p>
+                    <p class="mb-0 text-primary text-start">{{process.startedBy.user === undefined ? "-" : process.startedBy.user}}</p>
                     <p class="mb-0 text-primary text-start">Queiram enviar CRC devidamente actualizada, visto que na inscrição nº3 verifica-se que a nomeação do gerente Bual de Canela é provisória.</p>
                   </div>
                  </div>
