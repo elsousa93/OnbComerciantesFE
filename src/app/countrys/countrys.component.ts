@@ -365,14 +365,14 @@ export class CountrysComponent implements OnInit {
       localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
 
-      this.stakeholdersToInsert.forEach(function (value, index) {
-        console.log("iteração");
-        console.log(value);
-        context.stakeholderService.CreateNewStakeholder(result.id, value).subscribe(success => {
-          console.log("dentro?");
-          console.log(success);
-        });
-      });
+      //this.stakeholdersToInsert.forEach(function (value, index) {
+      //  console.log("iteração");
+      //  console.log(value);
+      //  context.stakeholderService.CreateNewStakeholder(result.id, value).subscribe(success => {
+      //    console.log("dentro?");
+      //    console.log(success);
+      //  });
+      //});
 
       this.route.navigate(['stakeholders/']);
       
