@@ -99,7 +99,6 @@ export class InfoDeclarativaComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.ngOnInit();
-    this.data.updateData(false, 6);
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
@@ -182,6 +181,8 @@ export class InfoDeclarativaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false, 6, 1);
+
   }
 
 

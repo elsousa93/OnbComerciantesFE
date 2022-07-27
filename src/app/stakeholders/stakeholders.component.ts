@@ -128,6 +128,7 @@ export class StakeholdersComponent implements OnInit {
     //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false,2,1);
   }
 
   createForm() {

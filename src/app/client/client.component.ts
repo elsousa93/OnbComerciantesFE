@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
 import { ClientService } from './client.service';
 import { ProcessService } from '../process/process.service';
 import { Process } from '../process/process.interface';
-import { ProgressbarService } from '../nav-menu-presencial/progressbar.service';
 
 
 @Component({
@@ -155,7 +154,7 @@ export class ClientComponent implements OnInit {
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
   private baseUrl: string, @Inject('NEYONDBACK_URL')
-    private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, private progressService: ProgressbarService) {
+    private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService) {
 
     this.ngOnInit();
     console.log(baseUrl);
