@@ -163,9 +163,9 @@
             <select class="form-select  campo_form" formControlName="franchiseName" name="franchiseName"
                     id="franchiseName"
                     [attr.disabled]="clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null ">
-              <option value="1">ZARA</option>
-              <option value="2">Outro1</option>
-              <option value="3">Outro2</option>
+              <option value="1">Franchise 1</option>
+              <option value="2">Franchise 2</option>
+              <option value="3">Franchise 3</option>
             </select>
             <div class="alert alert-danger" *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
               <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
