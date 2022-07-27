@@ -48,11 +48,11 @@
                               <p class="mb-0 text-end text-primary">Observações</p>
                             </div>
                             <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2">
-                              <p class="mb-0 text-primary text-start">228060</p>
+                              <p class="mb-0 text-primary text-start">{{process.processNumber}}</p>
                               <p class="mb-0 text-primary text-start">-</p>
-                              <p class="mb-0 text-primary text-start">Pack Contratual - Aceitação</p>
+                              <p *ngIf="process.state == 'ContractAcceptance'" class="mb-0 text-primary text-start">Pack Contratual - Aceitação</p>
                               <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
-                              <p class="mb-0 text-primary text-start">Utilizador</p>
+                              <p class="mb-0 text-primary text-start">{{process.startedBy.user === undefined ? "-" : process.startedBy.user}}</p>
                               <p class="mb-0 text-primary text-start">Queiram enviar CRC devidamente actualizada, visto que na inscrição nº3 verifica-se que a nomeação do gerente Bual de Canela é provisória.</p>
                             </div>
                           </div>

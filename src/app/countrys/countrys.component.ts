@@ -504,13 +504,8 @@ export class CountrysComponent implements OnInit {
 
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+
+              var index = this.lstCountry.findIndex(elem => elem.description == country.description); 
               if (index > -1) {
                 this.lstCountry.splice(index, 1);
               }
@@ -520,13 +515,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry.splice(index, 1);
               //}
 
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index1 = this.lstCountry1.findIndex(elem => elem.description == country.description); 
               if (index1 > -1) {
                 this.lstCountry1.splice(index, 1);
               }
@@ -536,13 +525,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry1.splice(index, 1);
               //}
 
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index2 = this.lstCountry2.findIndex(elem => elem.description == country.description); 
               if (index2 > -1) {
                 this.lstCountry2.splice(index, 1);
               }
@@ -556,8 +539,10 @@ export class CountrysComponent implements OnInit {
           //remover os paises relativos a este continente
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              var index = this.contPais.findIndex(c => c.description == country.description);
+              if (index > -1) {
+                this.contPais.splice(index, 1);
+              }
             }
           });
         }
@@ -607,13 +592,7 @@ export class CountrysComponent implements OnInit {
 
           this.countryList.forEach(country => {
             if (country.continent == "Africa") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index = this.lstCountry.findIndex(elem => elem.description == country.description);
               if (index > -1) {
                 this.lstCountry.splice(index, 1);
               }
@@ -623,13 +602,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry.splice(index, 1);
               //}
 
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index1 = this.lstCountry1.findIndex(elem => elem.description == country.description);
               if (index1 > -1) {
                 this.lstCountry1.splice(index, 1);
               }
@@ -639,13 +612,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry1.splice(index, 1);
               //}
 
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index2 = this.lstCountry2.findIndex(elem => elem.description == country.description);
               if (index2 > -1) {
                 this.lstCountry2.splice(index, 1);
               }
@@ -655,8 +622,10 @@ export class CountrysComponent implements OnInit {
           //remover os paises relativos a este continente
           this.countryList.forEach(country => {
             if (country.continent == "Africa") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              var index = this.contPais.findIndex(c => c.description == country.description);
+              if (index > -1) {
+                this.contPais.splice(index, 1);
+              }
             }
           });
         }
@@ -695,13 +664,7 @@ export class CountrysComponent implements OnInit {
 
           this.countryList.forEach(country => {
             if (country.continent == "Oceania") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index = this.lstCountry.findIndex(elem => elem.description == country.description);
               if (index > -1) {
                 this.lstCountry.splice(index, 1);
               }
@@ -711,13 +674,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry.splice(index, 1);
               //}
 
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index1 = this.lstCountry1.findIndex(elem => elem.description == country.description);
               if (index1 > -1) {
                 this.lstCountry1.splice(index, 1);
               }
@@ -727,13 +684,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry1.splice(index, 1);
               //}
 
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index2 = this.lstCountry2.findIndex(elem => elem.description == country.description);
               if (index2 > -1) {
                 this.lstCountry2.splice(index, 1);
               }
@@ -743,8 +694,10 @@ export class CountrysComponent implements OnInit {
           //remover os paises relativos a este continente
           this.countryList.forEach(country => {
             if (country.continent == "Oceania") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              var index = this.contPais.findIndex(c => c.description == country.description);
+              if (index > -1) {
+                this.contPais.splice(index, 1);
+              }
             }
           });
         }
@@ -790,13 +743,7 @@ export class CountrysComponent implements OnInit {
 
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index = this.lstCountry.findIndex(elem => elem.description == country.description);
               if (index > -1) {
                 this.lstCountry.splice(index, 1);
               }
@@ -806,13 +753,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry.splice(index, 1);
               //}
 
-              var index1 = this.lstCountry1.findIndex(elem1 => {
-                if (elem1.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index1 = this.lstCountry1.findIndex(elem1 => elem1.description == country.description); 
               if (index1 > -1) {
                 this.lstCountry1.splice(index, 1);
               }
@@ -822,13 +763,7 @@ export class CountrysComponent implements OnInit {
               //  this.lstCountry1.splice(index, 1);
               //}
 
-              var index2 = this.lstCountry2.findIndex(elem2 => {
-                if (elem2.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index2 = this.lstCountry2.findIndex(elem2 => elem2.description == country.description); 
               if (index2 > -1) {
                 this.lstCountry2.splice(index, 1);
               }
@@ -838,8 +773,10 @@ export class CountrysComponent implements OnInit {
           //remover os paises relativos a este continente
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              var index = this.contPais.findIndex(c => c.description == country.description);
+              if (index > -1) {
+                this.contPais.splice(index, 1);
+              }
             }
           });
         }
@@ -884,35 +821,17 @@ export class CountrysComponent implements OnInit {
 
           this.countryList.forEach(country => {
             if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index = this.lstCountry.findIndex(elem => elem.description == country.description);
               if (index > -1) {
                 this.lstCountry.splice(index, 1);
               }
 
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index1 = this.lstCountry1.findIndex(elem => elem.description == country.description);
               if (index1 > -1) {
                 this.lstCountry1.splice(index, 1);
               }
 
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              var index2 = this.lstCountry2.findIndex(elem => elem.description == country.description);
               if (index2 > -1) {
                 this.lstCountry2.splice(index, 1);
               }
@@ -922,8 +841,10 @@ export class CountrysComponent implements OnInit {
           //remover os paises relativos a este continente
           this.countryList.forEach(country => {
             if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              var index = this.contPais.findIndex(c => c.description == country.description);
+              if (index > -1) {
+                this.contPais.splice(index, 1);
+              }
             }
           });
         }
