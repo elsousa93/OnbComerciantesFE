@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
@@ -45,8 +45,6 @@ export class CreateStakeholderComponent implements OnInit {
 
   stakeholdersToShow: any[] = [];
 
-
-
   ngForm!: FormGroup;
   public stakes: IStakeholders[] = [];
   public stakeShow: IStakeholders[] = [];
@@ -81,21 +79,38 @@ export class CreateStakeholderComponent implements OnInit {
     this.ngOnInit();
 
     var context = this;
+    this.initializeForm();
+    //stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+    //  result.forEach(function (value, index) {
+    //    console.log(value);
+    //    context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+    //      console.log(result);
+    //      context.submissionStakeholders.push(result);
+    //    }, error => {
+    //      console.log(error);
+    //    });
+    //  });
+    //}, error => {
+    //  console.log(error);
+    //});
 
-    stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-      result.forEach(function (value, index) {
-        console.log(value);
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          console.log(result);
-          context.submissionStakeholders.push(result);
-        }, error => {
-          console.log(error);
-        });
-      });
-    }, error => {
-      console.log(error);
+  }
+
+  initializeForm() {
+    this.formStakeholderSearch = new FormGroup({
+      type: new FormControl('', Validators.required),
+      documentType: new FormControl('', Validators.required),
+      documentNumber: new FormControl('', Validators.required)
     });
 
+    this.formStakeholderSearch.get("documentType").valueChanges.subscribe(data => {
+      if (data !== 'Cartão do Cidadão') {
+        this.formStakeholderSearch.controls["documentNumber"].setValidators([Validators.required]);
+      } else {
+        this.formStakeholderSearch.controls["documentNumber"].clearValidators();
+      }
+      this.formStakeholderSearch.controls["documentNumber"].updateValueAndValidity();
+    });
   }
 
   redirectAddStakeholder() {
@@ -218,10 +233,15 @@ export class CreateStakeholderComponent implements OnInit {
     //  console.log(o);
     //});
 
+    if (this.formStakeholderSearch.invalid)
+      return false;
+
     var context = this;
 
+    var documentNumberToSearch = this.formStakeholderSearch.get('documentNumber').value;
+
     /*this.onSearchSimulation(22181900000011);*/
-    this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
+    this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
 
       var context2 = this;
@@ -248,7 +268,6 @@ export class CreateStakeholderComponent implements OnInit {
       //console.log("entrou aqui no erro huajshudsj");
       //context.resultError = "Não existe Comerciante com esse número.";
       //this.searchDone = true;
-
     });
   }
 

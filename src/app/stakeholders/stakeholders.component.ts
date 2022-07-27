@@ -87,7 +87,7 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
 
     var context = this;
-
+    this.updateData(false, 2);
     stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
         console.log(value);
