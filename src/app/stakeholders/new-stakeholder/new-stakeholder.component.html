@@ -11,7 +11,7 @@
           </span>
           <span class="navbar-text">
             <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
-              INTERVENIENTES
+              INTERVENIENTES TESTE ASADJDSKJ
             </h5>
           </span>
         </nav>
@@ -31,13 +31,12 @@
               </thead>
               <tbody>
                 <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
-                <tr (click)="chooseStakeholder(newStake)">
-                  <!-- Ao carregar num stakeholder, vamos buscar os dados dele à API, incluindo os docs -->
-                  <th scope="row" class="text-primary text-center">SIM</th>
-                  <td class="text-primary text-center">1032</td>
-                  <td class="text-primary text-center">BIJAL DE CANELA</td>
-                  <td class="text-primary text-center">162243839</td>
-                  <td class="text-primary text-center">Elegivel</td>
+                <tr *ngFor="let stakeholder of submissionStakeholders" (click)="updateForm(stakeholder)">
+                  <th scope="row" class="text-primary text-center">Associado?</th>
+                  <td class="text-primary text-center">{{stakeholder.id}}</td>
+                  <td class="text-primary text-center">{{stakeholder.shortName}}</td>
+                  <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
+                  <td class="text-primary text-center">Elegivel?</td>
                 </tr>
               </tbody>
             </table>
@@ -98,14 +97,14 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value=true id="proxy" />
+                         value='true' id="proxy" />
                   <label class="form-check-label radio pe-5" for="radio1">SIM</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value=false id="proxy" />
+                         value='false' id="proxy" />
                   <label class="form-check-label radio" for="radio1">NÃO</label>
                 </div>
               </span>

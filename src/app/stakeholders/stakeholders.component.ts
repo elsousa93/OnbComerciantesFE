@@ -105,10 +105,12 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectAddStakeholder() {
+    console.log("errada");
     this.route.navigate(['/create-stakeholder/']);
   }
 
   redirectInfoStakeholder() {
+    console.log("certa");
     this.route.navigate(['/add-stakeholder/']);
   }
 

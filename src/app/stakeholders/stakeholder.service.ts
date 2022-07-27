@@ -26,6 +26,8 @@ export class StakeholderService {
   }
 
   UpdateStakeholder(submissionId: string, stakeholderId: string, newStake: IStakeholders) {
+    console.log("stakeholder recebido");
+    console.log(newStake);
     return this.http.put<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId, newStake);
   }
 

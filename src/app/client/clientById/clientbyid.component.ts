@@ -740,45 +740,55 @@ export class ClientByIdComponent implements OnInit {
     })
   }
 
-  searchByCRC() {
+  async searchByCRC() {
     //var crcInserted = this.form.get('crcCode');
     //console.log("codigo CRC:" , this.form.get('crcCode').value);
     //console.log(crcInserted);
     //this.crcFound = true;
     var crcInserted = this.form.get('crcCode').value;
-    this.crcService.getCRC(crcInserted, '001').subscribe(o => {
-      var clientByCRC = o;
+    var token;
+    this.crcService.getAccessToken().subscribe(b => {
+      token = b;
+      localStorage.setItem("accessToken", token.access_token);
 
-      this.crcFound = true;
-      this.processClient.legalNature = clientByCRC.legalNature;
-      this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
-      this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
+      this.crcService.getCRC(crcInserted, '001').subscribe(o => {
+        console.log("get crc!!!!");
+        console.log(o);
+        console.log("obtido");
+        var clientByCRC = o;
 
-      this.processClient.fiscalId = clientByCRC.fiscalId;
-      this.processClient.companyName = clientByCRC.companyName;
+        this.crcFound = true;
+        this.processClient.legalNature = clientByCRC.legalNature;
+        this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
+        this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
 
-      this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
-      this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
+        this.processClient.fiscalId = clientByCRC.fiscalId;
+        this.processClient.companyName = clientByCRC.companyName;
 
-      this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
-      this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
-      this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-      this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.district;
-      this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
+        this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
+        this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
 
-      this.processClient.expirationDate = clientByCRC.expirationDate;
-      this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
+        this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
+        this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
+        this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
+        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.district;
+        this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
 
-      this.processClient.stakeholders = clientByCRC.stakeholders;
+        this.processClient.expirationDate = clientByCRC.expirationDate;
+        this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
 
-      this.processClient.pdf = clientByCRC.pdf;
+        this.processClient.stakeholders = clientByCRC.stakeholders;
 
-      this.processClient.code = clientByCRC.code;
-      this.processClient.requestId = clientByCRC.requestId;
+        this.processClient.pdf = clientByCRC.pdf;
 
-      console.log("o crc chamou o initialize");
-      this.initializeFormControlCRC();
+        this.processClient.code = clientByCRC.code;
+        this.processClient.requestId = clientByCRC.requestId;
+
+        console.log("o crc chamou o initialize");
+        this.initializeFormControlCRC();
+      });
     });
+    
 
     //if (crcInserted === '123') {
     //  this.crcFound = true;

@@ -1,7 +1,6 @@
 <h2 class="text-primary mt-5 ps-0 center-align">
       <span class="material-symbols-rounded icon-titulos m-align"><img src="assets/images/group_add_blue.svg" class="img_add"></span>&nbsp;PESQUISAR OU ADICIONAR INTERVENIENTE<br></h2>
     <p class="titul campo_obrigatrio">* campo obrigatório</p>
-<p class="ps-0">Por favor, pesquise o Interveniente:</p>
 <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
   <div class="row ms-0 me-0">
     <div class="col-5 ms-0 me-0 ps-0 pe-0">
@@ -23,9 +22,6 @@
           </option>
         </select>
       </div>
-
-
-
       <div *ngIf="!isParticular">
         <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
           id="documentType" formControlName="documentType">
