@@ -14,6 +14,7 @@ import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { StakeholderService } from '../stakeholders/stakeholder.service';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -77,7 +78,7 @@ export class CountrysComponent implements OnInit {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService) {
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
@@ -305,7 +306,7 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
     this.newSubmission.merchant.shareCapital = this.client.shareCapital;
     this.newSubmission.merchant.shortName = this.client.shortName;
-    this.newSubmission.stakeholders = this.stakeholdersToInsert;
+    //this.newSubmission.stakeholders = this.stakeholdersToInsert;
 
     console.log(this.newSubmission.merchant);
 
@@ -358,11 +359,21 @@ export class CountrysComponent implements OnInit {
 
 
     //console.log('Submissao ', this.newSubmission);
-
+    var context = this;
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log('Resultado obtido ', result);
       localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
+
+      this.stakeholdersToInsert.forEach(function (value, index) {
+        console.log("iteração");
+        console.log(value);
+        context.stakeholderService.CreateNewStakeholder(result.id, value).subscribe(success => {
+          console.log("dentro?");
+          console.log(success);
+        });
+      });
+
       this.route.navigate(['stakeholders/']);
       
     });
