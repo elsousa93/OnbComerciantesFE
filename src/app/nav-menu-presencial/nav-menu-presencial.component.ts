@@ -74,6 +74,9 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   updateProgress(){
+    if (this.currentPage == 0 || this.currentSubPage == 0){
+      return;
+    }
     let progress = progressSteps[this.currentPage-1][this.currentSubPage-1];
     this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
   }
