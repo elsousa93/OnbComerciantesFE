@@ -214,7 +214,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
 
   selectFile(event: any, comp: any) {
-    this.compToShow = { tipo: "pdf", interveniente: "Manuel", dataValidade: new Date() + "", dataEntrada: new Date() + "", status: "A ser avaliado" }
+    this.compToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataValidade: "desconhecido", dataEntrada: "desconhecido", status: "desconhecido" }
     this.newComp.clientId = "2";
     this.newComp.id = 1;
     this.newComp.filename = "teste";
@@ -238,10 +238,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
-
         }
       }
-
     }
     console.log(this.files);
 
@@ -343,7 +341,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.id = id;
     this.clientId = clientId;
     this.filename = filename;
-    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
+    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
     this.fileToDelete = file;
   }
 
@@ -352,7 +350,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   firstSubmission() {
-    this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-sm' });
+    this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
   }
 
   confirmDelete() {

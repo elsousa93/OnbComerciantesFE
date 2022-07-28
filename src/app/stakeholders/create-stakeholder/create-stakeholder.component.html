@@ -1,9 +1,24 @@
 <app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <span class="navbar-text text-light">
+          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70" />
+        </span>
+        <span class="navbar-text">
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INTERVENIENTES
+          </h5>
+        </span>
+      </nav>
+    </div>
+    <div class="offset-1 bg-white center-align col-10 ps-3">
+      <h2 class="text-primary mt-5 ps-0 center-align">
+        <span class="material-symbols-rounded icon-titulos m-align">
+          <img src="assets/images/group_add_blue.svg" class="img_add">
+        </span>&nbsp;PESQUISAR OU ADICIONAR INTERVENIENTE<br></h2>
+      <p class="titul campo_obrigatrio">* campo obrigatório</p>
 
-<h2 class="text-primary mt-5 ps-0 center-align">
-  <span class="material-symbols-rounded icon-titulos m-align"><img src="assets/images/group_add_blue.svg" class="img_add"></span>&nbsp;PESQUISAR OU ADICIONAR INTERVENIENTE<br>
-</h2>
-<p class="titul campo_obrigatrio">* campo obrigatório</p>
 <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
   <div class="row ms-0 me-0">
     <div class="col-5 ms-0 me-0 ps-0 pe-0">
@@ -82,23 +97,22 @@
     </nav>
   </div>
   <div class="col ms-0 ps-0">
-    Caso seja preciso os botões clássicos no final da página
     <hr />
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
       <span class="navbar-text me-2 align-self-center ms-0 me-0">
-        <button [routerLink]="['/']" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+        <button [routerLink]="['/']" style="margin-left: 0px;" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
           SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
         </button>
       </span>
 
-      <button [routerLink]="['/']" id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+      <button [routerLink]="['/']" id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
         CANCELAR&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
       </button>
-      <button [routerLink]="['/client']" id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+      <button [routerLink]="['/stakeholders']" id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
         <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
         VOLTAR&nbsp;
       </button>
-      <button [routerLink]="['/']" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+      <button [routerLink]="['/']" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
         SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
       </button>
     </nav>

@@ -85,12 +85,12 @@ onDelete(tipo:string, interveniente: string, dataEntrada: string) {
   this.docToShow.tipo = tipo;
   this.docToShow.interveniente = interveniente;
   this.docToShow.dataEntrada = dataEntrada;
-  this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
+  this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
   // this.fileToDelete = file;
 }
 
 submission(){
-  this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-sm' });
+  this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-lg' });
 }
 
 selectFile(event: any) {
