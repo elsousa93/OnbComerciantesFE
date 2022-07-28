@@ -12,7 +12,7 @@ import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
 import { Sort } from '@angular/material/sort';
 import { DataService } from '../nav-menu-interna/data.service';
-import { ProcessGet, ProcessService } from '../process/process.service';
+import { ProcessGet, ProcessService, UpdateProcess } from '../process/process.service';
 import { Process } from '../process/process.interface';
 
 @Component({
@@ -245,14 +245,14 @@ export class DashboardComponent implements OnInit {
 
 
     //Fase de aceitação
-    this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
-      console.log('Fase de aceitação ', result);
-      this.contractAcceptanceProcessess = result;
-      this.dataSourceAceitacao = new MatTableDataSource(this.contractAcceptanceProcessess);
+    //this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
+    //  console.log('Fase de aceitação ', result);
+    //  this.contractAcceptanceProcessess = result;
+    //  this.dataSourceAceitacao = new MatTableDataSource(this.contractAcceptanceProcessess);
 
-      this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
-      this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
-    });
+    //  this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
+    //  this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
+    //});
     
 
     //Arquivo Fisico
@@ -266,6 +266,18 @@ export class DashboardComponent implements OnInit {
     });
     
     
+  }
+
+  cancelProcess(processId: string) {
+    var updateProcess: UpdateProcess = {
+      state: "canceled",
+      cancellationReason: "promptedByUser"
+    }
+
+    this.processService.UpdateProcess(processId, updateProcess, "fQkRbjO+7kGqtbjwnDMAag==", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").
+    subscribe(result => {
+      console.log("Processo cancelado ", result);
+    });
   }
 
   ngOnInit(): void {

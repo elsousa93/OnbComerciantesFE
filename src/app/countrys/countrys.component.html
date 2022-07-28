@@ -163,9 +163,9 @@
             <select class="form-select  campo_form" formControlName="franchiseName" name="franchiseName"
                     id="franchiseName"
                     [attr.disabled]="clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null ">
-              <option value="1">ZARA</option>
-              <option value="2">Outro1</option>
-              <option value="3">Outro2</option>
+              <option value="1">Franchise 1</option>
+              <option value="2">Franchise 2</option>
+              <option value="3">Franchise 3</option>
             </select>
             <div class="alert alert-danger" *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
               <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
@@ -234,8 +234,8 @@
           <div class="col ms-0 ps-0">
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-              <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                <button id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" type="button" (click)="goBackToHomePage()">
+              <span class="navbar-text align-self-center ms-0 me-0">
+                <button id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" type="button" (click)="goBackToHomePage()">
                   SAIR&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="../assets/images/exit_to_app.svg" style="height: 25px !important;">
                   </span>

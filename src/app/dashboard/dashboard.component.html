@@ -141,8 +141,8 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      -
+                    <mat-cell *matCellDef="let row">
+                      {{row.startedBy.user === undefined ? "-" : row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
@@ -229,19 +229,19 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      -
+                    <mat-cell *matCellDef="let row">
+                      {{row.startedBy.user === undefined ? "-" : row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Editar Processo
+                      &nbsp;&nbsp;&nbsp;Consultar Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#">
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/edit_square.svg">
+                          <img src="assets/images/search.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -310,8 +310,8 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      -
+                    <mat-cell *matCellDef="let row">
+                      {{row.startedBy.user === undefined ? "-" : row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
@@ -325,9 +325,14 @@
                           &nbsp;&nbsp;<img src="assets/images/delete.svg">
                         </span>
                       </a>
-                      <a [routerLink]="['/app-devolucao/{{row.processId}}']" (click)="streamHistoryMenu()">
+                      <a [routerLink]="['/app-devolucao/', row.processId]" (click)="streamHistoryMenu()">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg">
+                        </span>
+                      </a>
+                      <a>
+                        <span class="material-symbols-rounded edit-icon">
+                          <img src="assets/images/search.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -397,8 +402,8 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" [style.color]="row.color">
-                     -
+                    <mat-cell *matCellDef="let row">
+                      {{row.startedBy.user === undefined ? "-" : row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
@@ -412,9 +417,14 @@
                           &nbsp;&nbsp;<img src="assets/images/delete.svg">
                         </span>
                       </a>
-                      <a [routerLink]="['/app-aceitacao/{{row.processId}}']">
+                      <a [routerLink]="['/app-aceitacao/', row.processId]">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg">
+                        </span>
+                      </a>
+                      <a>
+                        <span class="material-symbols-rounded edit-icon">
+                          <img src="assets/images/search.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -484,20 +494,20 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       Nome Cliente Empresa
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" [style.color]="row.color">
-                      -
+                    <mat-cell *matCellDef="let row">
+                      {{row.startedBy.user === undefined ? "-" : row.startedBy.user}}
                     </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Editar Processo
+                      &nbsp;&nbsp;&nbsp;Consultar Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/edit_square.svg">
+                          <img src="assets/images/search.svg">
                         </span>
                       </button>
                     </mat-cell>

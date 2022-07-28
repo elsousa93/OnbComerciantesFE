@@ -55,17 +55,14 @@
                 <img src="assets/images/file_download_white.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
               </span></nav>
-
-              <!-- Só deve de aparecer depois de clicarmos no download -->
-
               <h4 class="text-primary mt-3 ps-0">
                 <img src="assets/images/attach_file.svg" style="height: 25px !important; vertical-align: top;"> ADICIONAR AO PROCESSO</h4> 
               <div class="table-responsive mb-5 pb-5" style="margin-bottom: 0px !important;">
                 <p class="titulo-form-simples mt-0 mb-3">DIGITALIZE / ANEXE OS DOCUMENTOS NECESSÁRIOS</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-0 mb-2 pt-0 pb-5">
-                <table class="table">
+                <table class="table" *ngIf="docToShow">
                   <thead class="text-primary table-primary">
-                  <tr class="table-white text-primary">
+                  <tr class="table-white text-primary" *ngFor="let file of files">
                     <th scope="col" class="text-center text-primary bg-light table-white">TIPO</th>
                     <th scope="col" class="text-center bg-light">INTERVENIENTE</th>
                     <th scope="col" class="text-center bg-white">DATA DE VALIDADE</th>
@@ -79,7 +76,7 @@
                     <td class="text-primary text-center align-middle">{{docToShow.dataEntrada}}</td>
                     <td>
                     <span>
-                      <img src="assets/images/delete_blue.svg" style="height: 25px !important; margin-right: 10px !important; vertical-align: sub; cursor: pointer;">
+                      <img src="assets/images/delete_blue.svg" (click)="onDelete(docToShow.tipo, docToShow.interveniente, docToShow.dataEntrada)" style="height: 25px !important; margin-right: 10px !important; vertical-align: sub; cursor: pointer;">
                    </span>
                    <span>
                       <img src="assets/images/search_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
@@ -110,6 +107,93 @@
                   <label class="form-check-label" for="input3">Na presença do cliente?</label>
                 </div>
                 </div>
+
+                <ng-template #deleteModal>
+                  <!-- <div class="modal-dialog">
+                     <div class="modal-content"> -->
+                       <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+                         <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+                           <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+                             <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                               <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                                 <span class="navbar-text ms-auto align-self-start">
+                                   <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;" (click)="declineDeleteDoc()">x</h2>
+                                 </span>
+                               </nav>
+                             </div>
+                             <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+                               <div class="mb-5 ps-0 pe-0 col-12">
+                                 <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                                   <span class="navbar-text"></span>
+                                   <span class="material-symbols-rounded icon_alerta">
+                                     <img src="assets/images/warning.svg" class="img_warning">
+                                   </span>
+                                 </nav>
+                                 <nav
+                                   class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                                   <span class="navbar-text">
+                                     <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">Tem a certeza que deseja excluir o ficheiro?</h5>
+                                   </span>
+                                 </nav>
+                                 <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+                                   <span class="navbar-text"></span>
+                                   <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
+                                       class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
+                                       wappler-command="editContent" (click)="confirmDelete()" data-bs-dismiss="modal">SIM</button></span>
+                                   <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
+                                       class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
+                                       wappler-command="editContent" (click)="declineDeleteDoc()">NÃO</button></span>
+                                 </nav>
+                              </div>
+                             </div>
+                           </div>
+                         </div>
+                       </main>
+                     <!-- </div>
+                   </div> -->
+                 
+               <!-- <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
+                  <p>Tem a certeza que deseja excluir o ficheiro?</p>
+                  <button type="button" class="btn btn-primary" (click)="confirmDelete()">Sim</button>
+                  <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="declineDelete()">Não</button>
+               </div> -->
+            </ng-template>
+            <ng-template #submissionModal>
+              <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0 text-white" style="margin-top: 0px !important;">
+                <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+                    <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+                        <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                            <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+        
+                                <span class="navbar-text ms-auto align-self-start">
+                                    <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;" (click)="declineSubmission()">x</h2>
+                                </span>
+                            </nav>
+                        </div>
+                        <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+                            <div class="mb-5 ps-0 pe-0 col-12">
+                                <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                                    <span class="navbar-text"></span>
+                                    <img src="assets/images/warning.svg" class="img_warning">
+                                </nav>
+                                <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                                    <span class="navbar-text">
+                                        <h5 class="text-light  mb-0 pb-0">Ao efectuar a submissão, o processo irá continuar o tratamento.<br></h5>
+                                        <h5 class="text-light mt-3 mb-5 pb-0 ">Deseja continuar?</h5>
+                                    </span>
+                                </nav>
+                                <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 pt-0 pb-0">
+                                    <span class="navbar-text"></span>
+                                    <span class="navbar-text pt-sm-0 mt-0 pb-0"><button (click)="declineSubmission()" id="btn5a" style="color: white;" class="btn boto_alerta_modal ps-lg-4 pe-lg-4 mt-0 mb-0 ms-3 me-3 pt-3 pb-3 ps-5 pe-5" wappler-command="editContent">VOLTAR</button></span>
+                                    <span class="navbar-text mt-0 mb-0 pt-0 pb-0"><button (click)="confirmSubmission()" id="btn5a1" style="color: white;" class="btn boto_alerta_modal mb-sm-0 ps-lg-4 pe-lg-4 mt-0 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" wappler-command="editContent">CONTINUAR</button></span>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            </ng-template>
         
               <hr>
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -124,7 +208,7 @@
             <button id="btn5a6" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" wappler-command="editContent">DEVOLVER AO BACKOFFICE&nbsp;
               <img src="assets/images/assignment_returned_white.svg" style="height: 30px; vertical-align: bottom;">
             </button>
-            <button *ngIf="validatedDocuments" id="btn5a6" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
+            <button *ngIf="validatedDocuments" (click)="submission()" id="btn5a6" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
               <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
             </button>
             <button id="btn5a6" class="btn botao_branco center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">

@@ -20,6 +20,7 @@ export class PackContratualComponent implements OnInit{
   public subscription: Subscription;
 
   assinaturaDigitalModalRef: BsModalRef | undefined;
+  submeterPedidoModalRef: BsModalRef | undefined;
 
   public result: any;
 
@@ -30,8 +31,10 @@ export class PackContratualComponent implements OnInit{
   isPaper: boolean = null;
   showObservations: boolean = false;
   validatedDocuments: boolean = false;
+  showAnotherButtons: boolean = false;
 
   @ViewChild('assinaturaDigitalModal') assinaturaDigitalModal;
+  @ViewChild('submeterPedidoModal') submeterPedidoModal;
 
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
@@ -66,6 +69,7 @@ openAssinaturaDigitalModal(){
 
 declineAssinaturaDigital(){
   this.assinaturaDigitalModalRef?.hide();
+  this.showAnotherButtons = true;
 }
 
 selectFile(event: any) {
@@ -96,6 +100,14 @@ selectFile(event: any) {
   }
   console.log(this.files);
 
+  }
+
+  openSubmeterPedidoModal(){
+    this.submeterPedidoModalRef = this.modalService.show(this.submeterPedidoModal, { class: 'modal-sm' });
+  }
+
+  declineSubmeterPedido(){
+    this.submeterPedidoModalRef?.hide();
   }
 
 }

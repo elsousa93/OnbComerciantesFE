@@ -14,6 +14,7 @@ import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { StakeholderService } from '../stakeholders/stakeholder.service';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -66,6 +67,8 @@ export class CountrysComponent implements OnInit {
 
   processNumber: string;
 
+  stakeholdersToInsert: [];
+
   ngOnInit() {
     this.initializeForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -76,7 +79,7 @@ export class CountrysComponent implements OnInit {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService) {
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
@@ -85,6 +88,7 @@ export class CountrysComponent implements OnInit {
       this.client = this.route.getCurrentNavigation().extras.state["client"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
+      this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
@@ -122,7 +126,7 @@ export class CountrysComponent implements OnInit {
     if (this.clientExists) {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-        services: new FormControl({value: '', disabled: true}, Validators.required),
+        services: new FormControl({value: 'aaaa', disabled: true}, Validators.required),
         transactionsAverage: new FormControl({ value: this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
@@ -135,7 +139,7 @@ export class CountrysComponent implements OnInit {
     } else {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-        services: new FormControl('', Validators.required),
+        services: new FormControl('aaaa', Validators.required),
         transactionsAverage: new FormControl('', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
@@ -297,6 +301,7 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
     this.newSubmission.merchant.shareCapital = this.client.shareCapital;
     this.newSubmission.merchant.shortName = this.client.shortName;
+    //this.newSubmission.stakeholders = this.stakeholdersToInsert;
 
     console.log(this.newSubmission.merchant);
 
@@ -349,14 +354,24 @@ export class CountrysComponent implements OnInit {
 
 
     //console.log('Submissao ', this.newSubmission);
-
+    var context = this;
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log('Resultado obtido ', result);
-      localStorage.setItem("submissionId", result.processNumber);
+      localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
-    });
 
-    this.route.navigate(['stakeholders/']);
+      //this.stakeholdersToInsert.forEach(function (value, index) {
+      //  console.log("iteração");
+      //  console.log(value);
+      //  context.stakeholderService.CreateNewStakeholder(result.id, value).subscribe(success => {
+      //    console.log("dentro?");
+      //    console.log(success);
+      //  });
+      //});
+
+      this.route.navigate(['stakeholders/']);
+      
+    });
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
@@ -478,81 +493,15 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-          //this.lstCountry = ['Albânia', 'Alemanha', 'Andorra', 'Áustria', 'Bélgica', 'Bielorrússia', 'Bósnia e Herzegovina', 'Bulgária', 'Chipre', 'Cosovo', 'Croácia', 'Dinamarca', 'Eslováquia', 'Eslovénia', 'Espanha', 'Estónia', 'Finlândia', 'França', 'Grécia', 'Hungria'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-          //this.lstCountry1 = ['Irlanda', 'Islândia', 'Itália', 'Letónia', 'Listenstaine', 'Lituânia', 'Luxemburgo', 'Macedónia do Norte', 'Malta', 'Moldávia', 'Mónaco', 'Montenegro', 'Noruega', 'Países Baixos', 'Polónia', 'Portugal', 'Reino Unido', 'República Checa', 'Roménia', 'Rússia']
-          //for (var i = 0; i <= this.lstCountry1.length; i++) {
-          //  this.contPais[this.lstCountry1[i]] = true;
-          //}
-          //this.lstCountry2 = ['São Marinho', 'Sérvia', 'Suécia', 'Suíça', 'Ucrânia', 'Vaticano'];
-          //for (var i = 0; i <= this.lstCountry2.length; i++) {
-          //  this.contPais[this.lstCountry2[i]] = true;
-          //}
           this.continenteName = continente;
         } else {
           this.inputEuropa = false;
-          //this.lstCountry = []; // só podemos retirar da lista os paises deste continente 
-          //this.lstCountry1 = []
-          //this.lstCountry2 = [];
-
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index > -1) {
-                this.lstCountry.splice(index, 1);
-              }
-
-              //if (this.lstCountry.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry.indexOf(country.description);
-              //  this.lstCountry.splice(index, 1);
-              //}
-
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index1 > -1) {
-                this.lstCountry1.splice(index, 1);
-              }
-
-              //if (this.lstCountry1.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry1.indexOf(country.description);
-              //  this.lstCountry1.splice(index, 1);
-              //}
-
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index2 > -1) {
-                this.lstCountry2.splice(index, 1);
-              }
-              //if (this.lstCountry2.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry2.indexOf(country.description);
-              //  this.lstCountry2.splice(index, 1);
-              //}
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Europa") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              this.removeCountryFromList(country, this.lstCountry);
+              this.removeCountryFromList(country, this.lstCountry1);
+              this.removeCountryFromList(country, this.lstCountry2);
+              this.removeCountryFromList(country, this.contPais);
             }
           });
         }
@@ -576,82 +525,16 @@ export class CountrysComponent implements OnInit {
               count++;
             }
           });
-
-          //this.lstCountry = ['África do Sul', 'Angola', 'Argélia', 'Benim', 'Botsuana', 'Burquina Faso', 'Burúndi', 'Cabo Verde', 'Camarões', 'Chade', 'Comores', 'Congo-Brazzaville', 'Costa do Marfim', 'Egito', 'Eritreia', 'Essuatíni', 'Etiópia', 'Gabão', 'Gâmbia', 'Gana'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-
-          //this.lstCountry1 = ['Guiné', 'Guiné Equatorial', 'Guiné-Bissau', 'Jibuti', 'Lesoto', 'Libéria', 'Líbia', 'Madagáscar', 'Maláui', 'Mali', 'Marrocos', 'Maurícia', 'Mauritânia', 'Moçambique', 'Namíbia', 'Níger', 'Nigéria', 'Quénia', 'República Centro-Africana', 'República Democrática do Congo'];
-          //for (var i = 0; i <= this.lstCountry1.length; i++) {
-          //  this.contPais[this.lstCountry1[i]] = true;
-          //}
-
-          //this.lstCountry2 = ['Ruanda', 'São Tomé e Príncipe', 'Seicheles', 'Senegal', 'Serra Leoa', 'Somália', 'Sudão', 'Sudão do Sul', 'Tanzânia', 'Togo', 'Tunísia', 'Uganda', 'Zâmbia', 'Zimbábue'];
-          //for (var i = 0; i <= this.lstCountry2.length; i++) {
-          //  this.contPais[this.lstCountry2[i]] = true;
-          //}
-
-
           this.continenteName = continente;
         } else {
           this.inputAfrica = false;
-          //this.lstCountry = [];
-          //this.lstCountry1 = [];
-          //this.lstCountry2 = [];
 
           this.countryList.forEach(country => {
             if (country.continent == "Africa") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index > -1) {
-                this.lstCountry.splice(index, 1);
-              }
-
-              //if (this.lstCountry.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry.indexOf(country.description);
-              //  this.lstCountry.splice(index, 1);
-              //}
-
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index1 > -1) {
-                this.lstCountry1.splice(index, 1);
-              }
-
-              //if (this.lstCountry1.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry1.indexOf(country.description);
-              //  this.lstCountry1.splice(index, 1);
-              //}
-
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index2 > -1) {
-                this.lstCountry2.splice(index, 1);
-              }
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Africa") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              this.removeCountryFromList(country, this.lstCountry);
+              this.removeCountryFromList(country, this.lstCountry1);
+              this.removeCountryFromList(country, this.lstCountry2);
+              this.removeCountryFromList(country, this.contPais);
             }
           });
         }
@@ -675,71 +558,17 @@ export class CountrysComponent implements OnInit {
               count++;
             }
           });
-          //this.lstCountry = ['Austrália', 'Fiji', 'Ilhas Marechal', 'Micronésia', 'Nauru', 'Nova Zelândia', 'Palau', 'Papua Nova Guiné', 'Quiribáti', 'Salomão', 'Samoa', 'Timor-Leste', 'Tonga', 'Tuvalu', 'Vanuatu'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-          //this.lstCountry1 = [];
-          //this.lstCountry2 = [];
+
           this.continenteName = continente;
         } else {
           this.inputOceania = false;
-          //this.lstCountry = [];
-          //this.lstCountry1 = [];
-          //this.lstCountry2 = [];
 
           this.countryList.forEach(country => {
             if (country.continent == "Oceania") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index > -1) {
-                this.lstCountry.splice(index, 1);
-              }
-
-              //if (this.lstCountry.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry.indexOf(country.description);
-              //  this.lstCountry.splice(index, 1);
-              //}
-
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index1 > -1) {
-                this.lstCountry1.splice(index, 1);
-              }
-
-              //if (this.lstCountry1.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry1.indexOf(country.description);
-              //  this.lstCountry1.splice(index, 1);
-              //}
-
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index2 > -1) {
-                this.lstCountry2.splice(index, 1);
-              }
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Oceania") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              this.removeCountryFromList(country, this.lstCountry);
+              this.removeCountryFromList(country, this.lstCountry1);
+              this.removeCountryFromList(country, this.lstCountry2);
+              this.removeCountryFromList(country, this.contPais);
             }
           });
         }
@@ -764,77 +593,16 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-          //this.lstCountry = ['Afeganistão', 'Arábia Saudita', 'Arménia', 'Azerbaijão', 'Bangladexe', 'Barém', 'Brunei', 'Butão', 'Camboja', 'Catar', 'Cazaquistão', 'China', 'Coreia do Norte', 'Coreia do Sul', 'Cuaite', 'Emirados Árabes Unidos', 'Estado da Palestina', 'Filipinas', 'Geórgia', 'Iémen'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-          //this.lstCountry1 = ['Iraque', 'Israel', 'Japão', 'Jordânia', 'Laus', 'Líbano', 'Malásia', 'Maldivas', 'Mianmar', 'Mongólia', 'Nepal', 'Omã', 'Paquistão', 'Quirguistão', 'Singapura', 'Síria', 'Sri Lanca', 'Tailândia', 'Taiuã', 'Tajiquistão'];
-          //for (var i = 0; i <= this.lstCountry1.length; i++) {
-          //  this.contPais[this.lstCountry1[i]] = true;
-          //}
-          //this.lstCountry2 = ['Turcomenistão', 'Turquia', 'Usbequistão', 'Vietname'];
-          //for (var i = 0; i <= this.lstCountry2.length; i++) {
-          //  this.contPais[this.lstCountry2[i]] = true;
-          //}
           this.continenteName = continente;
         } else {
           this.inputAsia = false;
-          //this.lstCountry = [];
-          //this.lstCountry1 = [];
-          //this.lstCountry2 = [];
 
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index > -1) {
-                this.lstCountry.splice(index, 1);
-              }
-
-              //if (this.lstCountry.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry.indexOf(country.description);
-              //  this.lstCountry.splice(index, 1);
-              //}
-
-              var index1 = this.lstCountry1.findIndex(elem1 => {
-                if (elem1.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index1 > -1) {
-                this.lstCountry1.splice(index, 1);
-              }
-
-              //if (this.lstCountry1.indexOf(country.description) > -1) {
-              //  var index = this.lstCountry1.indexOf(country.description);
-              //  this.lstCountry1.splice(index, 1);
-              //}
-
-              var index2 = this.lstCountry2.findIndex(elem2 => {
-                if (elem2.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index2 > -1) {
-                this.lstCountry2.splice(index, 1);
-              }
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "Ásia") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              this.removeCountryFromList(country, this.lstCountry);
+              this.removeCountryFromList(country, this.lstCountry1);
+              this.removeCountryFromList(country, this.lstCountry2);
+              this.removeCountryFromList(country, this.contPais);
             }
           });
         }
@@ -858,72 +626,28 @@ export class CountrysComponent implements OnInit {
               count++;
             }
           });
-          //this.lstCountry = ['Antiga e Barbuda', 'Argentina', 'Bahamas', 'Barbados', 'Belize', 'Bolívia', 'Brasil', 'Canadá', 'Chile', 'Colômbia', 'Costa Rica', 'Cuba', 'Dominica', 'Equador', 'Estados Unidos', 'Granada', 'Guatemala', 'Guiana'];
-          //for (var i = 0; i <= this.lstCountry.length; i++) {
-          //  this.contPais[this.lstCountry[i]] = true;
-          //}
-
-          //this.lstCountry1 = ['Haiti', 'Honduras', 'Jamaica', 'México', 'Nicarágua', 'Panamá', 'Paraguai', 'Peru', 'República Dominicana', 'Salvador', 'Santa Lúcia', 'São Cristóvão e Neves', 'São Vicente e Granadinas', 'Suriname', 'Trindade e Tobago', 'Uruguai', 'Venezuela'];
-          //for (var i = 0; i <= this.lstCountry1.length; i++) {
-          //  this.contPais[this.lstCountry1[i]] = true;
-          //}
-
-          //this.lstCountry2 = [];
 
           this.continenteName = continente;
         } else {
           this.inputAmericas = false;
-          //this.lstCountry = [];
-          //this.lstCountry1 = [];
-          //this.lstCountry2 = [];
 
           this.countryList.forEach(country => {
             if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              var index = this.lstCountry.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index > -1) {
-                this.lstCountry.splice(index, 1);
-              }
-
-              var index1 = this.lstCountry1.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index1 > -1) {
-                this.lstCountry1.splice(index, 1);
-              }
-
-              var index2 = this.lstCountry2.findIndex(elem => {
-                if (elem.description == country.description) {
-                  return true;
-                } else {
-                  return false;
-                }
-              });
-              if (index2 > -1) {
-                this.lstCountry2.splice(index, 1);
-              }
-            }
-          });
-
-          //remover os paises relativos a este continente
-          this.countryList.forEach(country => {
-            if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              var index = this.contPais.indexOf(country);
-              this.contPais.splice(index, 1);
+              this.removeCountryFromList(country, this.lstCountry);
+              this.removeCountryFromList(country, this.lstCountry1);
+              this.removeCountryFromList(country, this.lstCountry2);
+              this.removeCountryFromList(country, this.contPais);
             }
           });
         }
         break;
+    }
+  }
 
+  removeCountryFromList(country: CountryInformation, countryList: CountryInformation[]) {
+    var index = countryList.findIndex(elem => elem.description == country.description);
+    if (index > -1) {
+      countryList.splice(index, 1);
     }
   }
 
@@ -936,26 +660,31 @@ export class CountrysComponent implements OnInit {
   }
 
   inserirText(form: any) {
-    console.log('Lista contPais', this.contPais);
-    this.contPais.forEach(element => {
-      var index = this.lstPaisPreenchido.findIndex(elem => {
-        if (element.description == elem.description) {
-          return true;
+    if (this.contPais.length > 0) {
+      console.log('contPais tem valores :))))))))))))))))))))))))))))))))))))))))))))))))))))))))))');
+      this.contPais.forEach(element => {
+        var index = this.lstPaisPreenchido.findIndex(elem => elem.description == element.description);
+        if (index == -1) {
+          this.lstPaisPreenchido.push(element);
         }
-        return false;
       });
-      if (index == -1) {
-        this.lstPaisPreenchido.push(element);
-        console.log('Elementos na lista contPais ', element);
-      }
-    });
-    
-    
-    console.log('Lista de todos os elementos passados (lstPaisPreenchido) ', this.lstPaisPreenchido);
 
-    this.lstPaisPreenchido.forEach(country => {
-      $('#text5').val($('#text5').val() + country.description + ', ' );
-    });
+      //se a lstPaisPreenchido tiver um country que a contPais não tem
+      this.lstPaisPreenchido.forEach(element => {
+        var index = this.contPais.findIndex(elem => elem.description == element.description);
+        if (index == -1) {
+          this.lstPaisPreenchido.splice(index, 1);
+        }
+      });
+
+      this.lstPaisPreenchido.forEach(country => {
+        $('#text5').val($('#text5').val() + country.description + ', ');
+      });
+    } else {
+      console.log('contPais não tem valores AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+      $('#text5').val('');
+    }
+    
   }
 
   redirectToClientById() {
