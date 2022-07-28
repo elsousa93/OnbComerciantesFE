@@ -134,7 +134,7 @@ export class CountrysComponent implements OnInit {
     if (this.clientExists) {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-        services: new FormControl({ value: '', disabled: true }, Validators.required),
+        services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : this.client.documentationDeliveryMethod, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
@@ -147,7 +147,7 @@ export class CountrysComponent implements OnInit {
     } else {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : '', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-        services: new FormControl('', Validators.required),
+        services: new FormControl('aaa', Validators.required),
         transactionsAverage: new FormControl((this.returned != null) ? this.merchantInfo.sales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : 'Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
