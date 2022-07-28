@@ -21,7 +21,6 @@ export class ClientComponent implements OnInit {
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
-
   public clients: Client[] = [];
   public searchParameter: any;
   public result: any;

@@ -1,5 +1,9 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
+.selected-row{
+    background-color: red;
+}
+
 @font-face {
   font-family: 'roboto';
   src: url('Roboto-Regular.ttf') format('truetype');
