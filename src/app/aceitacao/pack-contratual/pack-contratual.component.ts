@@ -64,7 +64,7 @@ validatedDocumentsChange(value: boolean) {
 }
 
 openAssinaturaDigitalModal(){
-  this.assinaturaDigitalModalRef = this.modalService.show(this.assinaturaDigitalModal, { class: 'modal-sm' });
+  this.assinaturaDigitalModalRef = this.modalService.show(this.assinaturaDigitalModal, { class: 'modal-lg' });
 }
 
 declineAssinaturaDigital(){
@@ -103,7 +103,7 @@ selectFile(event: any) {
   }
 
   openSubmeterPedidoModal(){
-    this.submeterPedidoModalRef = this.modalService.show(this.submeterPedidoModal, { class: 'modal-sm' });
+    this.submeterPedidoModalRef = this.modalService.show(this.submeterPedidoModal, { class: 'modal-lg' });
   }
 
   declineSubmeterPedido(){

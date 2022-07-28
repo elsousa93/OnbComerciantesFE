@@ -916,7 +916,7 @@
                   <div class="col-xxl col-6">
                     <p class="titulo-form-simples">Data de Constituição: </p>
                     <input formControlName="constitutionDate" type="date"
-                           id="constitutionDate" class="form-control campo_form">
+                           id="constitutionDate" class="form-control campo_form" readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
                       <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
                         O parâmetro acima é obrigatório.

@@ -595,7 +595,6 @@ export class CountrysComponent implements OnInit {
 
   inserirText(form: any) {
     if (this.contPais.length > 0) {
-      console.log('contPais tem valores :))))))))))))))))))))))))))))))))))))))))))))))))))))))))))');
       this.contPais.forEach(element => {
         var index = this.lstPaisPreenchido.findIndex(elem => elem.description == element.description);
         if (index == -1) {
@@ -615,7 +614,6 @@ export class CountrysComponent implements OnInit {
         $('#text5').val($('#text5').val() + country.description + ', ');
       });
     } else {
-      console.log('contPais não tem valores AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
       $('#text5').val('');
     }
     

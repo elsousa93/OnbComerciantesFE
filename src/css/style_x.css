@@ -1501,3 +1501,7 @@ mat-paginator {
       color: #fff;
       border-color: rgba(123, 147, 171, 0.31);
       border-style: solid;}
+
+      .link_h5 {
+        text-decoration: underline;
+        }
