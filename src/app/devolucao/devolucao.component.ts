@@ -32,7 +32,6 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService) {
 
     this.ngOnInit();
-    this.data.updateData(false, 0);
     console.log('Process Id ', this.processId);
 
     this.processService.getProcessById(this.processId).subscribe(result => {

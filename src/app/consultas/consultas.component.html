@@ -34,36 +34,47 @@
 
           <!-- adicionar um if para aparecer a tabela caso sejam encontrados clientes -->
 
-          <table class="table mt-5 pt-5">
-            <thead class="text-primary table-primary">
-            <tr class="table-white text-primary">
-              <th scope="col" class="text-center text-primary bg-light table-white">Nº PEDIDO</th>
-              <th scope="col" class="text-center bg-light">NIPC</th>
-              <th scope="col" class="text-center bg-white">NOME DA EMPRESA</th>
-              <th scope="col" class="text-center bg-white">ESTADO</th>
-              <th scope="col" class="text-center bg-white">ESTADO DE CONCLUSÃO</th>
-              <th scope="col" class="text-center bg-white"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td class="text-primary text-center align-middle">240370</td>
-              <td class="text-primary text-center align-middle">529463466</td>
-              <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
-              <td class="text-primary text-center align-middle">PENDENTE DE ARQUIVO FÍSICO</td>
-              <td class="text-primary text-center align-middle">EM CURSO</td>
-              <td class="text-primary text-center align-middle"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
-            </tr>
-            <tr>
-              <td class="text-primary text-center align-middle">240380</td>
-              <td class="text-primary text-center align-middle">529463466</td>
-              <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
-              <td class="text-primary text-center align-middle">PENDENTE DE ARQUIVO FÍSICO</td>
-              <td class="text-primary text-center align-middle">EM CURSO</td>
-              <td class="text-primary text-center align-middle"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
-            </tr>
-            </tbody>
-          </table>
+          <mat-table *ngIf="processes" [dataSource]="processes" matSort>
+            <!-- Nº Pedido Column -->
+            <ng-container matColumnDef="processNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Nº PEDIDO </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+            </ng-container>
+            <!-- NIPC Column -->
+            <ng-container matColumnDef="nipc">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                NIPC
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nipc}} </mat-cell>
+            </ng-container>
+            <!-- Nome da Empresa Column -->
+            <ng-container matColumnDef="nome">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                NOME DA EMPRESA
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
+            </ng-container>
+            <!-- Estado Column -->
+            <ng-container matColumnDef="estado">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                ESTADO
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
+            </ng-container>
+            <!-- Estado de Conclusão Column -->
+            <ng-container matColumnDef="estadoDeConclusao">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                ESTADO DE CONCLUSÃO
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.estadoDeConclusao}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
+          </mat-table>
+          
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons >
+         </mat-paginator>
         </div>
       </div>
       <div class="col ms-0 ps-0">
