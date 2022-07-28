@@ -278,7 +278,7 @@ export class CountrysComponent implements OnInit {
     console.log("lista de paises preenchidos");
     console.log(this.lstPaisPreenchido);
     this.data.updateData(true, 1);
-
+    if (this.returned == null) { 
     this.newSubmission.merchant.commercialName = "string";
     this.newSubmission.merchant.billingEmail = this.client.billingEmail;
     //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
