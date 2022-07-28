@@ -6,27 +6,31 @@
           <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">CONSULTAS</h5>
         </span></nav>
     </div>
+    <form [formGroup]="form" (ngSubmit)="searchProcess()">
     <div class="offset-1 bg-white align-self-center col-10 ps-3">
       <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg" style="height: 30px; vertical-align: bottom;">&nbsp;PESQUISA</h4>
       <div class="row ms-0 me-0">
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mt-0">Nº DE PEDIDO</p><input id="text8" name="text5" type="text" class="form-control campo_form">
-          <p class="titulo-form-simples">ESTADO</p><select id="select1" class="form-select  campo_form">
-            <option value="1">Em curso</option>
-            <option value="2">Outro1</option>
-            <option value="3">Outro2</option>
+          <p class="titulo-form-simples mt-0">Nº DE PEDIDO</p><input id="text8" name="text5" type="text" class="form-control campo_form" formControlName="processNumber">
+          <p class="titulo-form-simples">ESTADO</p><select id="select1" class="form-select  campo_form" formControlName="state">
+            <option value="Incomplete">Incompleto</option>
+            <option value="Ongoing">A decorrer</option>
+            <option value="Completed">Completado</option>
+            <option value="Returned">Retornado</option>
+            <option value="Cancelled">Cancelado</option>
+            <option value="ContractAcceptance">ContractAcceptance</option>
           </select>
-          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - DE:</p><input id="text1" name="text1" type="date" class="form-control campo_form">
+          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - DE:</p><input id="text1" name="text1" type="date" class="form-control campo_form" formControlName="processDateStart">
           <p class="titulo-form-simples"></p>
         </div>
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mt-0">TIPO DE DOCUMENTO</p><select id="select3" class="form-select  campo_form">
+          <p class="titulo-form-simples mt-0">TIPO DE DOCUMENTO</p><select id="select3" class="form-select  campo_form" formControlName="documentType">
             <option value="1"></option>
             <option value="2">Outro1</option>
             <option value="3">Outro2</option>
           </select>
-          <p class="titulo-form-simples">Nº DE DOCUMENTO</p><input id="text3" name="text3" type="text" class="form-control campo_form">
-          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - ATÉ:</p><input id="text2" name="text2" type="date" class="form-control campo_form">
+          <p class="titulo-form-simples">Nº DE DOCUMENTO</p><input id="text3" name="text3" type="text" class="form-control campo_form" formControlName="documentNumber">
+          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - ATÉ:</p><input id="text2" name="text2" type="date" class="form-control campo_form" formControlName="processDateEnd">
           <p class="titulo-form-simples"></p>
         </div>
         <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">PESQUISA
@@ -46,7 +50,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+              <tr *ngFor="let process of processToDisplay">
+                <td class="text-primary text-center align-middle">{{process.processNumber}}</td>
+                <td class="text-primary text-center align-middle">529463466</td>
+                <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
+                <td class="text-primary text-center align-middle">{{process.state}}</td>
+                <td class="text-primary text-center align-middle">EM CURSO</td>
+                <td class="text-primary text-center align-middle" (click)="openProcess(process)"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
+              </tr>
+            <!--<tr>
               <td class="text-primary text-center align-middle">240370</td>
               <td class="text-primary text-center align-middle">529463466</td>
               <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
@@ -61,7 +73,7 @@
               <td class="text-primary text-center align-middle">PENDENTE DE ARQUIVO FÍSICO</td>
               <td class="text-primary text-center align-middle">EM CURSO</td>
               <td class="text-primary text-center align-middle"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
-            </tr>
+            </tr>-->
             </tbody>
           </table>
         </div>
@@ -78,5 +90,6 @@
 </nav>
       </div>
     </div>
+      </form>
   </div>
 </div>
