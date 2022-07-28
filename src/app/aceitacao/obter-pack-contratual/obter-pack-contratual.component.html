@@ -57,7 +57,7 @@
               </span></nav>
               <h4 class="text-primary mt-3 ps-0">
                 <img src="assets/images/attach_file.svg" style="height: 25px !important; vertical-align: top;"> ADICIONAR AO PROCESSO</h4> 
-              <div class="table-responsive mb-5 pb-5" style="margin-bottom: 0px !important;">
+              <div class="table-responsive pb-3 mb-2" style="margin-bottom: 0px !important;">
                 <p class="titulo-form-simples mt-0 mb-3">DIGITALIZE / ANEXE OS DOCUMENTOS NECESSÁRIOS</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-0 mb-2 pt-0 pb-5">
                 <table class="table" *ngIf="docToShow">
@@ -86,10 +86,9 @@
                 </table><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0"></span>
                 </nav>
                 </div>
-                <p class="titulo-form-simples mt-0 pt-4">Observações:</p>
                 <div class="col pb-4">
-                  <textarea id="text1" class="form-control"></textarea>
-                  <label for="arquivo" class="btn botao_azul btn-lg mt-5 ms-0" wappler-command="editContent">
+                  
+                  <label for="arquivo" class="btn botao_azul btn-lg ms-0" wappler-command="editContent">
                     ANEXAR&nbsp;
                     <img src="assets/images/attach_file_white.svg" style="height: 25px !important; vertical-align: sub;">
 
@@ -98,6 +97,8 @@
                            accept=".pdf" multiple>
 
                 </div>
+                <p class="titulo-form-simples mt-0 pt-4">Observações:</p>
+                <textarea id="text1" class="form-control" style="margin-bottom: 25px;"></textarea>
                 <div class="col mb-0 pb-5">
                 <div class="form-check"><input class="form-check-input" type="checkbox" value="" id="input2" name="input2" [checked]="validatedDocuments"
                   (change)="validatedDocumentsChange($event.target.checked)">
@@ -203,10 +204,10 @@
               <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
             </button>
             <button id="btn5a6" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" wappler-command="editContent">DEVOLVER AO COMERCIAL&nbsp;
-              <img src="assets/images/assignment_returned_white.svg" style="height: 30px; vertical-align: bottom;">
+              <img src="assets/images/assignment_return_white.svg" style="height: 30px; vertical-align: bottom;">
             </button>
             <button id="btn5a6" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" wappler-command="editContent">DEVOLVER AO BACKOFFICE&nbsp;
-              <img src="assets/images/assignment_returned_white.svg" style="height: 30px; vertical-align: bottom;">
+              <img src="assets/images/assignment_return_white.svg" style="height: 30px; vertical-align: bottom;">
             </button>
             <button *ngIf="validatedDocuments" (click)="submission()" id="btn5a6" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">SUBMETER PEDIDO&nbsp;
               <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">

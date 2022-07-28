@@ -97,7 +97,7 @@
           <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
 
             <p class="titulo-form-simples mt-0 mb-3">PAÍSES DE DESTINO DOS PRODUTOS/SERVIÇOS*</p>
-            <textarea id="text5" class="form_control campo_form"></textarea>
+            <textarea id="text5" class="form_control campo_form" readonly></textarea>
             <div class="row ms-0 me-0">
               <div class="row ms-0 me-0">
                 <div class="col quadro_paises_tracejado">
@@ -131,17 +131,17 @@
                 </div>
                 <div class="col ps-5">
                   <div class="form-check" *ngFor="let item of lstCountry; index as i">
-                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" checked>{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry1; index as i">
-                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" checked>{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry2; index as i">
-                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" checked>{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)">{{item.description | uppercase}}
                   </div>
                 </div>
 
