@@ -916,7 +916,7 @@
                   <div class="col-xxl col-6">
                     <p class="titulo-form-simples">Data de Constituição: </p>
                     <input formControlName="constitutionDate" type="date"
-                           id="constitutionDate" class="form-control campo_form">
+                           id="constitutionDate" class="form-control campo_form" readonly>
                     <div class="alert alert-danger" *ngIf="this.form.get('constitutionDate').touched && !this.form.get('constitutionDate').valid">
                       <div *ngIf="this.form.get('constitutionDate').errors && this.form.get('constitutionDate').errors?.['required']">
                         O parâmetro acima é obrigatório.
@@ -983,9 +983,9 @@
         </div> <!--Fecha primeiros 3 campos-->
         <!--Se NÃO for sociedade comercial e for Company-->
         <div *ngIf="isCommercialSociety == false && tipologia === 'Company'">
-          <div class="bg-white col-7 col-xxl-10">
+          <div class="bg-white col-12 col-xxl-12">
             <div class="row">
-              <div class="col-xxl col-6">
+              <div class="col-xxl col-6" style="padding-left: 30px;">
                 <div>
                   <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
                   <select formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"

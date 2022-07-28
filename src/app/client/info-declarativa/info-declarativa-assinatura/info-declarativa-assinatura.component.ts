@@ -34,6 +34,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false, 6,4);
   }
 
   changeRepresentativeSelected(event) {
@@ -45,12 +46,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     }
     console.log(this.stakeholders);
     console.log(this.representativesSelected);
-  }
-
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
   }
 
   redirectHomePage() {

@@ -14,6 +14,8 @@ import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -69,17 +71,20 @@ export class CountrysComponent implements OnInit {
   returned: string;
   merchantInfo: any;
 
+  stakeholdersToInsert: StakeholdersProcess[];
+
   ngOnInit() {
     this.initializeForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false, 1, 3);
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
   }
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService) {
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
@@ -88,6 +93,7 @@ export class CountrysComponent implements OnInit {
       this.client = this.route.getCurrentNavigation().extras.state["client"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
+      this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
@@ -104,7 +110,6 @@ export class CountrysComponent implements OnInit {
     //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
-      console.log("FETCH PAISES");
     }, error => console.log(error));
 
     //console.log("por entrar no clientbyid");
@@ -125,8 +130,6 @@ export class CountrysComponent implements OnInit {
   }
 
   initializeForm() {
-    console.log("cliente atual: ");
-    console.log(this.client);
 
     if (this.clientExists) {
       this.form = new FormGroup({
@@ -155,14 +158,7 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia)
       });
     }
-    console.log("form inicializado do country");
-    console.log(this.form);
-  }
-
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
+    
   }
 
   newSubmission: SubmissionPostTemplate = {
@@ -281,37 +277,38 @@ export class CountrysComponent implements OnInit {
 
     console.log("lista de paises preenchidos");
     console.log(this.lstPaisPreenchido);
-    this.updateData(true, 1);
-    if (this.returned == null) {
-      console.log(this.form);
-      this.newSubmission.merchant.commercialName = "string";
-      this.newSubmission.merchant.billingEmail = this.client.billingEmail;
-      //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
-      this.newSubmission.merchant.bankInformation = this.client.bankInformation;
-      this.newSubmission.merchant.byLaws = this.client.byLaws;
-      //this.newSubmission.merchant.clientId = this.client.clientId;
-      this.newSubmission.merchant.companyName = this.client.companyName;
-      this.newSubmission.merchant.contacts = this.client.contacts;
-      this.newSubmission.merchant.crc = this.client.crc;
-      this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
-      this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
-      this.newSubmission.merchant.fiscalId = this.client.fiscalId;
-      this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-      this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
-      this.newSubmission.merchant.id = this.client.id;
-      this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-      this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-      this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-      this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
-      this.newSubmission.merchant.legalName = this.client.legalName;
-      this.newSubmission.merchant.legalNature = this.client.legalNature;
-      this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
-      this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
-      this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
-      this.newSubmission.merchant.merchantType = "Corporate";
-      this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
-      this.newSubmission.merchant.shareCapital = this.client.shareCapital;
-      this.newSubmission.merchant.shortName = this.client.shortName;
+    this.data.updateData(true, 1);
+
+    this.newSubmission.merchant.commercialName = "string";
+    this.newSubmission.merchant.billingEmail = this.client.billingEmail;
+    //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+    this.newSubmission.merchant.bankInformation = this.client.bankInformation;
+    this.newSubmission.merchant.byLaws = this.client.byLaws;
+    //this.newSubmission.merchant.clientId = this.client.clientId;
+    this.newSubmission.merchant.companyName = this.client.companyName;
+    this.newSubmission.merchant.contacts = this.client.contacts;
+    this.newSubmission.merchant.crc = this.client.crc;
+    this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+    this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
+    this.newSubmission.merchant.fiscalId = this.client.fiscalId;
+    this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
+    this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+    this.newSubmission.merchant.id = this.client.id;
+    this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+    this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+    this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
+    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+    this.newSubmission.merchant.legalName = this.client.legalName;
+    this.newSubmission.merchant.legalNature = this.client.legalNature;
+    this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
+    this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
+    this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
+    this.newSubmission.merchant.merchantType = "Corporate";
+    this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
+    this.newSubmission.merchant.shareCapital = this.client.shareCapital;
+    this.newSubmission.merchant.shortName = this.client.shortName;
+    //this.newSubmission.stakeholders = this.stakeholdersToInsert;
+    var context = this;
 
       console.log(this.newSubmission.merchant);
     } else {
@@ -349,62 +346,30 @@ export class CountrysComponent implements OnInit {
 
     }
     //var clientToAdd = {} as ClientForProcess;
+    //var a = this.stakeholdersToInsert; 
+    //for (var i = 0, len = a.length; i < len; i++) {
+    //  this.newSubmission.stakeholders.push({
+    //    fiscalId: a[i].fiscalId,
+        
+    //  });
+    //}
 
-    //clientToAdd.legalName = "perguntar"; //confirmar
-    //clientToAdd.commercialName = "perguntar"; //confirmar
-    //clientToAdd.shortName = "perguntar"; //confirmar
-    //clientToAdd.headquartersAddress = this.client.headquartersAddress;
-    //clientToAdd.context = "isolated"; //que dado ir buscar
-    //clientToAdd.fiscalIdentification = {
-    //  fiscalId: "",
-    //  issuerCountry: ""
-    //};
-    //clientToAdd.merchantType = "Corporation"; //esta relacionado com o radio button empresa ou ENI?
-    //clientToAdd.legalNature = this.client.legalNature;
-    //clientToAdd.legalNature2 = this.client.legalNature2;
-    //clientToAdd.certificate = {
-    //  code: ""
-    //}; //que dado ir buscar
-    //clientToAdd.shareCapital = this.client.shareCapital; //talvez tenha que mudar
-    //clientToAdd.estabilishmentDate = this.client.establishmentDate;
-    ////clientToAdd.bylaws = this.client.byLaws;
-    //clientToAdd.principalEconomicActivity = this.client.mainEconomicActivity;
-    //clientToAdd.otherEconomicActivities = this.client.otherEconomicActivities;
-    //clientToAdd.sales = {
-    //  annualEstimatedRevenue: this.form.get("expectableAnualInvoicing").value,
-    //  productsOrServicesSold: [],
-    //  productsOrServicesCountries: this.lstPaisPreenchido,
-    //  averageTransactions: this.form.get("transactionsAverage").value
-    //};
-    //clientToAdd.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+    console.log("Submissao tratada! uysidghsiudghisudh");
+    console.log(this.newSubmission);
+    console.log("----------------------");
+    console.log(this.stakeholdersToInsert);
+    //console.log(this.newSubmission.merchant);
 
-    //clientToAdd.bankingInformation = {
-    //  bank: "",
-    //  iban: ""
-    //};
-    //clientToAdd.contacts = {
-    //  phone1: {
-    //    phoneNumber: ""
-    //  },
-    //  phone2: {
-    //    phoneNumber: ""
-    //  },
-    //  fax: {
-    //    phoneNumber: ""
-    //  }
-    //};
-    //clientToAdd.documents = []; //verificar se funciona
-
-
-    //console.log('Submissao ', this.newSubmission);
-
+    var context = this;
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-      console.log('Resultado obtido ', result);
-      localStorage.setItem("submissionId", result.processNumber);
+      console.log("dentro do submission service");
+      console.log(result);
+      localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
-    });
 
-    this.route.navigate(['stakeholders/']);
+      this.route.navigate(['stakeholders/']);
+      
+    });
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {

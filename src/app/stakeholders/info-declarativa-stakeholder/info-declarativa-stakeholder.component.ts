@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
+import { DataService } from 'src/app/nav-menu-interna/data.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -58,7 +59,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
+  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.ngOnInit();
     http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
@@ -87,6 +88,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   ngOnInit(): void {
+    this.data.updateData(false, 6, 2);
     this.formContactos = this.formBuilder.group({
       listF: [''],
       countryCode: new FormControl(''),

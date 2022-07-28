@@ -24,7 +24,9 @@ export class NewStakeholderComponent implements OnInit {
   public displayValueSearch = "";
 
   stakeholderNumber: string;
-  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+
+  submissionId: string;
+  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   @Input() isCC: boolean;
 
@@ -60,32 +62,42 @@ export class NewStakeholderComponent implements OnInit {
 
   currentStakeholder: IStakeholders = {};
 
+  submissionStakeholders: IStakeholders[] = [];
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableInfoService, private stakeService: StakeholderService) {
-
+    private baseUrl: string, private route: Router, private fb: FormBuilder,private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService) {
+    this.submissionId = localStorage.getItem('submissionId');
     this.ngOnInit();
 
-    if (this.newStake.fiscalId != "0") {
-      http.get<IStakeholders>(baseUrl + 'bestakeholders/EditStakeholderById/' + this.newStake.fiscalId).subscribe(result => {
-        console.log(result);
-        this.newStake = result;
-      }, error => console.error(error));
-    }
+    var context = this;
 
+    stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+      result.forEach(function (value, index) {
+        console.log(value);
+        context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+          console.log(result);
+          context.submissionStakeholders.push(result);
+        }, error => {
+          console.log(error);
+        });
+      });
+    }, error => {
+      console.log(error);
+    });
 
-    this.currentStakeholder = {
-      fiscalId: '162243839',
-      id: '1032',
-      shortName: "Bijal de canela",
-      fiscalAddress: {
-        address: '',
-        country: '',
-        locality: '',
-        postalArea: '',
-        postalCode: ''
-      }
-    }
+    //this.currentStakeholder = {
+    //  fiscalId: '162243839',
+    //  id: '1032',
+    //  shortName: "Bijal de canela",
+    //  fiscalAddress: {
+    //    address: '',
+    //    country: '',
+    //    locality: '',
+    //    postalArea: '',
+    //    postalCode: ''
+    //  }
+    //}
 
     //this.stakeholderNumber = "999";
 
@@ -101,12 +113,21 @@ export class NewStakeholderComponent implements OnInit {
     //  //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
     //  this.stakeholderNumber = this.route.getCurrentNavigation().extras.state["stakeholderNumber"];
     //}
-}
+  }
+
+  updateForm(stakeholder) {
+    console.log("chegou aqui");
+    console.log(stakeholder);
+    this.currentStakeholder = stakeholder;
+
+    console.log(this.currentStakeholder);
+    this.initializeFormWithoutCC();
+  }
 
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
-      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy: false, Validators.required),
+      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '': false, Validators.required),
       NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: true }, Validators.required),
       Role: new FormControl('', Validators.required),
       Country: new FormControl('', Validators.required),
@@ -118,6 +139,7 @@ export class NewStakeholderComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.data.updateData(false,2,2);
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
     console.log(this.newStake.fiscalId);
     // console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
@@ -164,10 +186,15 @@ export class NewStakeholderComponent implements OnInit {
       this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
       this.currentStakeholder.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
       this.currentStakeholder.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
-      this.currentStakeholder.isProxy = JSON.parse(this.formNewStakeholder.get("proxy").value);
-      
+      this.currentStakeholder.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
 
-      this.stakeService.CreateNewStakeholder(this.submissionId, this.currentStakeholder).subscribe(result => {
+      console.log(this.formNewStakeholder.get('proxy').value);
+      console.log((this.formNewStakeholder.get("proxy").value === 'true'));
+      this.currentStakeholder.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
+
+      console.log("current stakeholder");
+      console.log(this.currentStakeholder);
+      this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.id, this.currentStakeholder).subscribe(result => {
         console.log("Resultado de criar um stakeholder a uma submissão existente");
         console.log(result);
       }, error => {
@@ -246,8 +273,8 @@ export class NewStakeholderComponent implements OnInit {
 
 
   getAll() {
-    console.log(this.data.GetAllCountries());
-    return this.data.GetAllCountries();
+    console.log(this.tableData.GetAllCountries());
+    return this.tableData.GetAllCountries();
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
@@ -287,7 +314,7 @@ export class NewStakeholderComponent implements OnInit {
     if (zipcode.length === 8) {
       var zipCode = zipcode.split('-');
 
-      this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+      this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
 
         var addressToShow = address[0];
 

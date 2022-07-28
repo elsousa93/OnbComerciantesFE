@@ -21,7 +21,6 @@ export class ClientComponent implements OnInit {
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
-
   public clients: Client[] = [];
   public searchParameter: any;
   public result: any;
@@ -161,7 +160,7 @@ export class ClientComponent implements OnInit {
     http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
-    this.updateData(false, 1);
+    this.data.updateData(false, 1);
     // this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
 
@@ -362,7 +361,8 @@ export class ClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage)
+    ;
 
     var context = this;
 
@@ -385,12 +385,6 @@ export class ClientComponent implements OnInit {
     });
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
 
   submit(form: any) {
   }

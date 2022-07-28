@@ -6,27 +6,31 @@
           <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">CONSULTAS</h5>
         </span></nav>
     </div>
+    <form [formGroup]="form" (ngSubmit)="submitSearch()">
     <div class="offset-1 bg-white align-self-center col-10 ps-3">
       <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg" style="height: 30px; vertical-align: bottom;">&nbsp;PESQUISA</h4>
       <div class="row ms-0 me-0">
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mt-0">Nº DE PEDIDO</p><input id="text8" name="text5" type="text" class="form-control campo_form">
-          <p class="titulo-form-simples">ESTADO</p><select id="select1" class="form-select  campo_form">
-            <option value="1">Em curso</option>
-            <option value="2">Outro1</option>
-            <option value="3">Outro2</option>
+          <p class="titulo-form-simples mt-0">Nº DE PEDIDO</p><input id="text8" name="text5" type="text" class="form-control campo_form" formControlName="processNumber">
+          <p class="titulo-form-simples">ESTADO</p><select id="select1" class="form-select  campo_form" formControlName="state">
+            <option value="Incomplete">Incompleto</option>
+            <option value="Ongoing">A decorrer</option>
+            <option value="Completed">Completado</option>
+            <option value="Returned">Retornado</option>
+            <option value="Cancelled">Cancelado</option>
+            <option value="ContractAcceptance">ContractAcceptance</option>
           </select>
-          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - DE:</p><input id="text1" name="text1" type="date" class="form-control campo_form">
+          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - DE:</p><input id="text1" name="text1" type="date" class="form-control campo_form" formControlName="processDateStart">
           <p class="titulo-form-simples"></p>
         </div>
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mt-0">TIPO DE DOCUMENTO</p><select id="select3" class="form-select  campo_form">
+          <p class="titulo-form-simples mt-0">TIPO DE DOCUMENTO</p><select id="select3" class="form-select  campo_form" formControlName="documentType">
             <option value="1"></option>
             <option value="2">Outro1</option>
             <option value="3">Outro2</option>
           </select>
-          <p class="titulo-form-simples">Nº DE DOCUMENTO</p><input id="text3" name="text3" type="text" class="form-control campo_form">
-          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - ATÉ:</p><input id="text2" name="text2" type="date" class="form-control campo_form">
+          <p class="titulo-form-simples">Nº DE DOCUMENTO</p><input id="text3" name="text3" type="text" class="form-control campo_form" formControlName="documentNumber">
+          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - ATÉ:</p><input id="text2" name="text2" type="date" class="form-control campo_form" formControlName="processDateEnd">
           <p class="titulo-form-simples"></p>
         </div>
         <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">PESQUISA
@@ -34,36 +38,54 @@
 
           <!-- adicionar um if para aparecer a tabela caso sejam encontrados clientes -->
 
-          <table class="table mt-5 pt-5">
-            <thead class="text-primary table-primary">
-            <tr class="table-white text-primary">
-              <th scope="col" class="text-center text-primary bg-light table-white">Nº PEDIDO</th>
-              <th scope="col" class="text-center bg-light">NIPC</th>
-              <th scope="col" class="text-center bg-white">NOME DA EMPRESA</th>
-              <th scope="col" class="text-center bg-white">ESTADO</th>
-              <th scope="col" class="text-center bg-white">ESTADO DE CONCLUSÃO</th>
-              <th scope="col" class="text-center bg-white"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td class="text-primary text-center align-middle">240370</td>
-              <td class="text-primary text-center align-middle">529463466</td>
-              <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
-              <td class="text-primary text-center align-middle">PENDENTE DE ARQUIVO FÍSICO</td>
-              <td class="text-primary text-center align-middle">EM CURSO</td>
-              <td class="text-primary text-center align-middle"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
-            </tr>
-            <tr>
-              <td class="text-primary text-center align-middle">240380</td>
-              <td class="text-primary text-center align-middle">529463466</td>
-              <td class="text-primary text-center align-middle">EMPRESA UNIPESSOAL TESTES</td>
-              <td class="text-primary text-center align-middle">PENDENTE DE ARQUIVO FÍSICO</td>
-              <td class="text-primary text-center align-middle">EM CURSO</td>
-              <td class="text-primary text-center align-middle"><img src="assets/images/description.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;"></td>
-            </tr>
-            </tbody>
-          </table>
+          <mat-table *ngIf="processes" [dataSource]="processes" matSort>
+            <!-- Nº Pedido Column -->
+            <ng-container matColumnDef="processNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Nº PEDIDO </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+            </ng-container>
+            <!-- NIPC Column -->
+            <ng-container matColumnDef="nipc">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                NIPC
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nipc}} </mat-cell>
+            </ng-container>
+            <!-- Nome da Empresa Column -->
+            <ng-container matColumnDef="nome">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                NOME DA EMPRESA
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
+            </ng-container>
+            <!-- Estado Column -->
+            <ng-container matColumnDef="estado">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                ESTADO
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
+            </ng-container>
+            <!-- Estado de Conclusão Column -->
+            <ng-container matColumnDef="estadoDeConclusao">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                ESTADO DE CONCLUSÃO
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.estadoDeConclusao}} </mat-cell>
+            </ng-container>
+            <!-- Estado de Conclusão Column -->
+            <ng-container matColumnDef="abrirProcesso">
+              <mat-header-cell *matHeaderCellDef >
+                ABRIR PROCESSO
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> <img src="assets/images/description.svg" (click)="openProcess(row)" style="height: 25px !important; vertical-align: sub; cursor: pointer;"> </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
+          </mat-table>
+          
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons >
+         </mat-paginator>
         </div>
       </div>
       <div class="col ms-0 ps-0">
@@ -78,5 +100,6 @@
 </nav>
       </div>
     </div>
+      </form>
   </div>
 </div>

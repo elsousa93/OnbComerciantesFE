@@ -41,7 +41,7 @@ export class StoreComponent implements AfterViewInit{
       this.stores = result;
       this.dataSource.data = this.stores;
     }, error => console.error(error));
-    this.updateData(false, 3);
+    this.data.updateData(false, 3);
   }
   
   ngOnInit(): void {
@@ -49,12 +49,6 @@ export class StoreComponent implements AfterViewInit{
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
   
 
   /*Option to add a new store - redirect to the corresponding screen*/
@@ -63,7 +57,7 @@ export class StoreComponent implements AfterViewInit{
   }
 
   onCickContinue() {
-    this.updateData(true, this.currentPage);
+    this.data.updateData(true, this.currentPage);
     this.route.navigate(['/comprovativos']);
   }
 

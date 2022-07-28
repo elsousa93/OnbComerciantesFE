@@ -1,8 +1,12 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
+import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessNumberService } from './process-number.service';
+import { progressSteps } from './progressSteps';
 
 @Component({
   selector: 'app-nav-menu-presencial',
@@ -11,6 +15,10 @@ import { ProcessNumberService } from './process-number.service';
   animations: [AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo]
 })
 export class NavMenuPresencialComponent implements OnInit {
+
+  //Procura de processo
+  processNumberToSearch: string;
+  /////////////////////
 
   @Output() toggleNavEvent = new EventEmitter<boolean>();
   @Output() autoHide = new EventEmitter<boolean>();
@@ -38,12 +46,24 @@ export class NavMenuPresencialComponent implements OnInit {
   processNumber: string = "";
   subscription: Subscription;
 
-  constructor(private processNrService: ProcessNumberService) {
+  currentPage:number = 0;
+  currentSubPage:number = 0;
+  progressImage: string;
+
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService) {
     this.processNrService.changeProcessNumber(localStorage.getItem("submissionId"));
   }
 
   ngOnInit(): void {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
+    this.dataService.currentPage.subscribe((currentPage) => {
+      this.currentPage = currentPage;
+      this.updateProgress();
+    });
+    this.dataService.currentSubPage.subscribe((currentSubPage) => {
+      this.currentSubPage = currentSubPage
+      this.updateProgress();
+    });
 
     setTimeout(this.toggleEvent.bind(this), 800);
 
@@ -57,6 +77,14 @@ export class NavMenuPresencialComponent implements OnInit {
     //this.navPosition = '0';
     //this.autohide();
     
+  }
+
+  updateProgress(){
+    if (this.currentPage == 0 || this.currentSubPage == 0){
+      return;
+    }
+    let progress = progressSteps[this.currentPage-1][this.currentSubPage-1];
+    this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
   }
 
   toggleEvent() {
@@ -74,5 +102,10 @@ export class NavMenuPresencialComponent implements OnInit {
       this.isAutohide = true;
     }
     this.prevScrollpos = currentScrollPos;
+  }
+
+  searchProcess() {
+    console.log(this.processNumberToSearch);
+    this.route.navigate(['/app-consultas/', this.processNumberToSearch]);
   }
 }

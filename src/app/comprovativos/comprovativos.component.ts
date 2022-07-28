@@ -179,7 +179,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       this.comprovativos = result;
       console.log(result);
     }, error => console.error(error));
-    this.updateData(false, 4);
+    this.data.updateData(false, 4);
 
     this.submissionService.GetSubmissionByID("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
       this.submission = result;
@@ -212,15 +212,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
 
   selectFile(event: any, comp: any) {
-    this.compToShow = { tipo: "pdf", interveniente: "Manuel", dataValidade: new Date() + "", dataEntrada: new Date() + "", status: "A ser avaliado" }
+    this.compToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataValidade: "desconhecido", dataEntrada: "desconhecido", status: "Ativo" }
     this.newComp.clientId = "2";
     this.newComp.id = 1;
     this.newComp.filename = "teste";
@@ -244,10 +238,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
-
         }
       }
-
     }
     console.log(this.files);
 
@@ -349,7 +341,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.id = id;
     this.clientId = clientId;
     this.filename = filename;
-    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm' });
+    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
     this.fileToDelete = file;
   }
 
@@ -358,7 +350,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   firstSubmission() {
-    this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-sm' });
+    this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
   }
 
   confirmDelete() {

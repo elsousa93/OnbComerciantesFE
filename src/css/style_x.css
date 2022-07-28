@@ -1,5 +1,9 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
+.selected-row{
+    background-color: red;
+}
+
 @font-face {
   font-family: 'roboto';
   src: url('Roboto-Regular.ttf') format('truetype');
@@ -1501,3 +1505,7 @@ mat-paginator {
       color: #fff;
       border-color: rgba(123, 147, 171, 0.31);
       border-style: solid;}
+
+      .link_h5 {
+        text-decoration: underline;
+        }
