@@ -99,7 +99,6 @@ export class InfoDeclarativaComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.ngOnInit();
-    this.updateData(false, 6);
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
@@ -182,6 +181,8 @@ export class InfoDeclarativaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false, 6, 1);
+
   }
 
 
@@ -212,12 +213,6 @@ export class InfoDeclarativaComponent implements OnInit {
     this.router.navigate(['/info-declarativa-stakeholder']);
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
 
   // validação dos números de telefone
   validatePhone(phoneCountryCode: string, phoneNumber: string) {

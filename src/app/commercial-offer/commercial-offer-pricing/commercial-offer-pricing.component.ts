@@ -35,12 +35,6 @@ export class CommercialOfferPricingComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
 
   /*Edit pricing button*/
   editPricing(index: number) {
@@ -52,7 +46,7 @@ export class CommercialOfferPricingComponent implements OnInit {
 
   /*Controls the continue button*/
   onCickContinue() {
-    this.updateData(true, 5);
+    this.data.updateData(true, 5);
     /*Submit Pricing*/
     this.http.post<number>(this.baseUrl + 'becommercialoffer/PostPricing/' + this.clientID, this.prices).subscribe(result => {
       console.log(result);

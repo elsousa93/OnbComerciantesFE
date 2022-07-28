@@ -93,7 +93,6 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
 
     var context = this;
-    this.updateData(false, 2);
     stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
         console.log(value);
@@ -120,12 +119,6 @@ export class StakeholdersComponent implements OnInit {
     this.route.navigate(['/add-stakeholder/']);
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
 
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;
@@ -142,6 +135,7 @@ export class StakeholdersComponent implements OnInit {
     //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false,2,1);
   }
 
   createForm() {

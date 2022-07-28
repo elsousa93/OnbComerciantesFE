@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Istore } from '../../../store/IStore.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
@@ -53,7 +54,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private tableInfo: TableInfoService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.ngOnInit();
     /*Get from the backend the full list of stores existing for the client*/
     http.get<Istore[]>(baseUrl + 'BEStores/GetAllStores/' + this.clientID).subscribe(result => {
@@ -89,6 +90,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.data.updateData(false, 6, 3);
     this.listValue = new FormGroup({
       cellphoneCountryCode: new FormControl(''), //telemovel
       cellphoneNumber: new FormControl(''),

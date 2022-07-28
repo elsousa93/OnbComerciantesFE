@@ -20,9 +20,11 @@ export class DataService {
 
   //número da página em que estamos atualmente
   private dataPage = new BehaviorSubject(0);
+  private dataSubPage = new BehaviorSubject(0);
 
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
+  currentSubPage = this.dataSubPage.asObservable();
 
   constructor() { }
 
@@ -31,9 +33,24 @@ export class DataService {
     this.dataSource.next(values);
   }
 
+  //função que altera o valor do map e da currentPage
+  updateData(value: boolean, currentPage: number, currentSubPage: number = 1) {
+    let map = this.dataSource.getValue()
+    map.set(currentPage, value);
+    this.changeData(map);
+    this.changeCurrentPage(currentPage);
+    this.changeCurrentSubPage(currentSubPage);
+  }
+
   //mudar o valor da página atual
   changeCurrentPage(value: number) {
+    console.log("Page change "+value);
     this.dataPage.next(value);
+    this.dataSubPage.next(1);
+  }
+  changeCurrentSubPage(value: number) {
+    console.log("SubPage change "+value);
+    this.dataSubPage.next(value);
   }
 
   ngOnDestroy(){

@@ -28,7 +28,7 @@ export class ConsultasComponent implements OnInit{
   private router: ActivatedRoute) {
 
     this.ngOnInit();
-    this.updateData(false, 0);
+    this.data.updateData(false, 0);
   
 }
 
@@ -39,11 +39,5 @@ ngOnInit(): void {
   var context = this;
 }
 
-//função que altera o valor do map e da currentPage
-updateData(value: boolean, currentPage: number) {
-  this.map.set(currentPage, value);
-  this.data.changeData(this.map);
-  this.data.changeCurrentPage(currentPage);
-}
 
 }

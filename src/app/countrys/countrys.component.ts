@@ -73,6 +73,7 @@ export class CountrysComponent implements OnInit {
     this.initializeForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false, 1, 3);
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
   }
 
@@ -144,12 +145,6 @@ export class CountrysComponent implements OnInit {
       });
     }
     
-  }
-
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
   }
 
   newSubmission: SubmissionPostTemplate = {
@@ -264,8 +259,11 @@ export class CountrysComponent implements OnInit {
   }
 
   submit() {
-    
-    this.updateData(true, 1);
+    console.log('Cliente recebido ', this.client);
+
+    console.log("lista de paises preenchidos");
+    console.log(this.lstPaisPreenchido);
+    this.data.updateData(true, 1);
 
     this.newSubmission.merchant.commercialName = "string";
     this.newSubmission.merchant.billingEmail = this.client.billingEmail;

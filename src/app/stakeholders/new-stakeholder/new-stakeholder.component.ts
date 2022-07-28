@@ -64,7 +64,7 @@ export class NewStakeholderComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableInfoService, private stakeService: StakeholderService) {
+    private baseUrl: string, private route: Router, private fb: FormBuilder,private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService) {
 
     this.ngOnInit();
 
@@ -137,6 +137,7 @@ export class NewStakeholderComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.data.updateData(false,2,2);
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
     console.log(this.newStake.fiscalId);
     // console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
@@ -270,8 +271,8 @@ export class NewStakeholderComponent implements OnInit {
 
 
   getAll() {
-    console.log(this.data.GetAllCountries());
-    return this.data.GetAllCountries();
+    console.log(this.tableData.GetAllCountries());
+    return this.tableData.GetAllCountries();
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
@@ -311,7 +312,7 @@ export class NewStakeholderComponent implements OnInit {
     if (zipcode.length === 8) {
       var zipCode = zipcode.split('-');
 
-      this.data.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+      this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
 
         var addressToShow = address[0];
 

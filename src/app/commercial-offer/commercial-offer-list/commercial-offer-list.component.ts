@@ -31,7 +31,7 @@ export class CommercialOfferListComponent implements OnInit {
       console.log(result);
       this.stores = result;
     }, error => console.error(error));
-    this.updateData(false, 5);
+    this.data.updateData(false, 5);
   }
 
   ngOnInit(): void {
@@ -39,12 +39,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  //função que altera o valor do map e da currentPage
-  updateData(value: boolean, currentPage: number) {
-    this.map.set(currentPage, value);
-    this.data.changeData(this.map);
-    this.data.changeCurrentPage(currentPage);
-  }
 
   onCickContinue() {
     this.route.navigate(['commercial-offert-tariff']);

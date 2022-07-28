@@ -30,8 +30,8 @@
         <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;08/08/2022 10:28</a>
 
         <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
-
-        <h5><img src="assets/images/progress_bar/progress_bar_0.svg" style="width:200px; margin-top: 7px"></h5>
+        
+        <h5 *ngIf="progressImage"><img [src]="progressImage" style="width:200px; margin-top: 9px"></h5>
       </div>
     </nav>
   </div>
