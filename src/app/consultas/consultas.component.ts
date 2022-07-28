@@ -2,19 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 import { AfterViewInit, Renderer2 } from '@angular/core';
 import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { Client } from '../client/Client.interface';
 import { DataService } from '../nav-menu-interna/data.service';
+import { ProcessGet, ProcessService } from '../process/process.service';
+import { TableInfoService } from '../table-info/table-info.service';
 
 interface Process {
-  processNumber: number;
+  processNumber: string;
   nipc: number;
   nome: string;
   estado: string;
@@ -22,28 +24,28 @@ interface Process {
 }
 
 const testValues : Process[] = [
-  {processNumber: 240370, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240380, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240390, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240380, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240390, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240380, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240390, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: 240400, nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"}
+  {processNumber: "240370", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"}
 ]
 @Component({
   selector: 'app-consultas',
@@ -52,26 +54,113 @@ const testValues : Process[] = [
 })
 
 export class ConsultasComponent implements OnInit{
-  form: FormGroup;
   processes: MatTableDataSource<Process>;
 
-  displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'estadoDeConclusao'];
+  displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'estadoDeConclusao', 'abrirProcesso'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
 
+  //////////////////////
+  navbarProcessNumberSearch: string = '';
+  form: FormGroup;
+  availableStates = [];
+
+  //////////////////////
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
 
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-  private route: Router, private data: DataService,
-  private router: ActivatedRoute) {
+    private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
+              private router: ActivatedRoute) {
 
+    this.initializeForm();
+
+   
+      
+
+    //Initialize Form
+    
     this.ngOnInit();
-  
-}
+  }
+
+  initializeForm() {
+    this.form = new FormGroup({
+      processNumber: new FormControl(this.navbarProcessNumberSearch),
+      documentType: new FormControl(''), //Não é obrigatorio por enquanto
+      state: new FormControl(''), //Não é diretamente obrigatório
+      documentNumber: new FormControl(''), //Não é obrigatorio por enquanto
+      processDateStart: new FormControl(''), //Não é obrigatorio por enquanto
+      processDateEnd: new FormControl('') //Não é obrigatorio por enquanto
+    });
+
+    //this.form.get("processNumber").valueChanges.subscribe(data => {
+    //  if (data === '') {
+    //    this.form.controls["state"].setValidators([Validators.required]);
+    //  } else {
+    //    this.form.controls["state"].clearValidators();
+    //  }
+    //  this.form.controls["state"].updateValueAndValidity();
+    //});
+
+    //this.form.get("state").valueChanges.subscribe(data => {
+    //  if (data === '') {
+    //    this.form.controls["processNumber"].setValidators([Validators.required]);
+    //  } else {
+    //    this.form.controls["processNumber"].clearValidators();
+    //  }
+    //  this.form.controls["processNumber"].updateValueAndValidity();
+    //});
+  }
+
+  submitSearch() {
+    if (this.form.valid)
+      this.searchProcess();
+  }
+
+  searchProcess() {
+    console.log(this.form);
+
+      var processNumber = this.form.get('processNumber').value;
+      if (processNumber !== '') {
+        console.log(processNumber);
+        var encodedCode = encodeURIComponent(processNumber);
+        this.processService.searchProcessByNumber(encodedCode).subscribe(result => {
+          let processesArray: Process[] = result.map<Process>((process)=>{
+            return {processNumber: process.processId, 
+                    nipc:529463466,
+                    nome: "EMPRESA UNIPESSOAL TESTES", 
+                    estado: process.state, 
+                    estadoDeConclusao: "EM CURSO"};
+          })
+          this.loadProcesses(processesArray);
+          
+        }, error => {
+          console.log("deu erro");
+          console.log(error);
+        });
+      } else {
+        var processStateToSearch = this.form.get("state").value;
+        this.processService.searchProcessByState(processStateToSearch).subscribe(result => {
+          let processesArray: Process[] = result.map<Process>((process)=>{
+            return {processNumber: process.processId, 
+                    nipc:529463466,
+                    nome: "EMPRESA UNIPESSOAL TESTES", 
+                    estado: process.state, 
+                    estadoDeConclusao: "EM CURSO"};
+          })
+          this.loadProcesses(processesArray);
+        }, error => {
+          console.log(error);
+        });
+      }
+  }
+
+  openProcess(process) {
+    console.log(process)
+  }
 
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -85,8 +174,8 @@ export class ConsultasComponent implements OnInit{
     this.processes.sort = this.sort;
   }
 
-  loadProcesses(){
-    this.processes = new MatTableDataSource(testValues);
+  loadProcesses(processValues: Process[] = testValues){
+    this.processes = new MatTableDataSource(processValues);
   }
 
 }

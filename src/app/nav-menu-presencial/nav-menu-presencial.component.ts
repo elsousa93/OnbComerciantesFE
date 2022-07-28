@@ -1,5 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -13,6 +15,10 @@ import { progressSteps } from './progressSteps';
   animations: [AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo]
 })
 export class NavMenuPresencialComponent implements OnInit {
+
+  //Procura de processo
+  processNumberToSearch: string;
+  /////////////////////
 
   @Output() toggleNavEvent = new EventEmitter<boolean>();
   @Output() autoHide = new EventEmitter<boolean>();
@@ -44,7 +50,7 @@ export class NavMenuPresencialComponent implements OnInit {
   currentSubPage:number = 0;
   progressImage: string;
 
-  constructor(private processNrService: ProcessNumberService, private dataService: DataService) {
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService) {
     this.processNrService.changeProcessNumber(localStorage.getItem("submissionId"));
   }
 
@@ -96,5 +102,10 @@ export class NavMenuPresencialComponent implements OnInit {
       this.isAutohide = true;
     }
     this.prevScrollpos = currentScrollPos;
+  }
+
+  searchProcess() {
+    console.log(this.processNumberToSearch);
+    this.route.navigate(['/app-consultas/', this.processNumberToSearch]);
   }
 }

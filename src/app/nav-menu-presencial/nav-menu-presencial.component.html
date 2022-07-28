@@ -58,9 +58,9 @@
           </a>
           <span class="navbar-text text-light ms-auto">
             <form class="d-flex" style="margin-bottom: 0px;">
-              <input class="form-control me-2 form-control-sm" type="search" placeholder="Nº processo"
+              <input class="form-control me-2 form-control-sm" type="search" placeholder="Nº processo" [(ngModel)]="processNumberToSearch"
                 aria-label="Search">
-              <button class="btn btn-procurar btn-sm ms-1 me-4 pt-2 pb-2" type="submit">Procurar</button>
+              <button class="btn btn-procurar btn-sm ms-1 me-4 pt-2 pb-2" type="submit" (click)="searchProcess()">Procurar</button>
             </form>
           </span>
           <div id="navbar1_collapse">

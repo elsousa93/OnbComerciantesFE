@@ -157,6 +157,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'app-devolucao', component: DevolucaoComponent },
       { path: 'app-devolucao/:id', component: DevolucaoComponent },
       { path: 'app-consultas', component: ConsultasComponent },
+      { path: 'app-consultas/:id', component: ConsultasComponent },
       { path: 'app-pack-contratual', component: PackContratualComponent},
       { path: 'app-obter-pack-contratual', component: ObterPackContratualComponent},
       { path: 'comprovativos', component: ComprovativosComponent },

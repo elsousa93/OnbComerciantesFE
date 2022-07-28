@@ -117,7 +117,7 @@ export class ProcessService {
   }
 
   searchProcessByNumber(processNumber: string) {
-    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?number=' + processNumber);
+    return this.http.get<ProcessGet[]>(this.baseUrl + 'process' + '?number=' + processNumber);
   }
 
   searchProcessByState(state: string) {
