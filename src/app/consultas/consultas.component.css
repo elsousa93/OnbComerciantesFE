@@ -1,0 +1,7 @@
+.mat-cell:first-of-type, .mat-row{
+    padding-left: 0px !important;
+}
+.mat-cell,.mat-header-cell{
+    text-align: left !important;
+    align-self: end;
+}
