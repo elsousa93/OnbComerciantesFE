@@ -214,7 +214,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
 
   selectFile(event: any, comp: any) {
-    this.compToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataValidade: "desconhecido", dataEntrada: "desconhecido", status: "desconhecido" }
+    this.compToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataValidade: "desconhecido", dataEntrada: "desconhecido", status: "Ativo" }
     this.newComp.clientId = "2";
     this.newComp.id = 1;
     this.newComp.filename = "teste";
