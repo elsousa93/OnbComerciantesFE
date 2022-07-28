@@ -36,6 +36,8 @@ export class StakeholdersComponent implements OnInit {
     "shortName": ""
   } as IStakeholders;
 
+  currentStakeholder: IStakeholders = null;
+
   submissionId: string;
 
   //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
@@ -52,8 +54,6 @@ export class StakeholdersComponent implements OnInit {
   documentType?: string = "";
 
   stakeholdersToShow: any[] = [];
-
-
 
   ngForm!: FormGroup;
   public stakes: IStakeholders[] = [];
@@ -209,7 +209,16 @@ export class StakeholdersComponent implements OnInit {
     console.log("stakeShow array: " + this.stakeShow[0]);
    // GetByid(StakeholderNif, 0)
        
-   }
+  }
+
+  selectStakeholder(stakeholder) {
+    console.log(this.currentStakeholder);
+    console.log(stakeholder);
+    this.currentStakeholder = stakeholder;
+    console.log(this.currentStakeholder);
+    console.log(this.currentStakeholder === stakeholder);
+    
+  }
 
   //searchStakeholder(formStakeholderSearch) {
   //  console.log(formStakeholderSearch);
@@ -265,7 +274,12 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
   }
 
-  
+  deleteStakeholder() {
+    this.stakeholderService.DeleteStakeholder(this.submissionId, this.currentStakeholder.id).subscribe(s => {
+      console.log("stakeholder deleted");
+    });
+  }
+
   }
 
 
