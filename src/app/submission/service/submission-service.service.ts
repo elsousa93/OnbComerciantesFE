@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, SubmissionGetTemplate } from '../ISubmission.interface'
+import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, SubmissionGetTemplate, SubmissionGet } from '../ISubmission.interface'
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,6 @@ export class SubmissionService {
 
   GetSubmissionByProcessNumber(processNumber: string): any {
     var treatedProcessNumber = encodeURIComponent(processNumber);
-    return this.http.get<SubmissionGetTemplate>(this.baseUrl + 'submission?ProcessNumber=' + treatedProcessNumber);
+    return this.http.get<SubmissionGet[]>(this.baseUrl + 'submission?ProcessNumber=' + treatedProcessNumber);
   }
 }

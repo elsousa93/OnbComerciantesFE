@@ -66,11 +66,15 @@ export class CountrysComponent implements OnInit {
 
   processNumber: string;
 
+  returned: string;
+  merchantInfo: any;
+
   ngOnInit() {
     this.initializeForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
+    this.returned = localStorage.getItem("returned");
   }
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
@@ -84,11 +88,17 @@ export class CountrysComponent implements OnInit {
       this.client = this.route.getCurrentNavigation().extras.state["client"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
+      this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
 
-    
+    console.log('Fora do if do edit countries');
+    if (this.merchantInfo != null) {
+      console.log('Entrei no if do edit countries');
+      this.editCountries();
+    }
+    console.log('Depois do if do edit countries');
 
     console.log(this.clientId);
     //Chamada à API para receber todos os Paises
@@ -97,21 +107,21 @@ export class CountrysComponent implements OnInit {
       console.log("FETCH PAISES");
     }, error => console.log(error));
 
-    console.log("por entrar no clientbyid");
-    this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-      console.log("entrou no getclientbyid");
-      this.currentClient = result;
-      console.log(result);
-      console.log(this.currentClient);
-    });
+    //console.log("por entrar no clientbyid");
+    //this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+    //  console.log("entrou no getclientbyid");
+    //  this.currentClient = result;
+    //  console.log(result);
+    //  console.log(this.currentClient);
+    //});
 
-    this.documentService.GetSubmissionDocuments("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
-      console.log('Lista de documentos de uma submissao ', result);
-      this.documentService.GetSubmissionDocumentById("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id).subscribe(resul => {
-        console.log("Info de um documento ", resul);
-        this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
-      });
-    });
+    //this.documentService.GetSubmissionDocuments("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
+    //  console.log('Lista de documentos de uma submissao ', result);
+    //  this.documentService.GetSubmissionDocumentById("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id).subscribe(resul => {
+    //    console.log("Info de um documento ", resul);
+    //    this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
+    //  });
+    //});
   }
 
   initializeForm() {
@@ -120,11 +130,11 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
-        services: new FormControl({value: '', disabled: true}, Validators.required),
-        transactionsAverage: new FormControl({ value: this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        expectableAnualInvoicing: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        services: new FormControl({ value: '', disabled: true }, Validators.required),
+        transactionsAverage: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : this.client.documentationDeliveryMethod, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -133,11 +143,11 @@ export class CountrysComponent implements OnInit {
       });
     } else {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl((this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : '', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
         services: new FormControl('', Validators.required),
-        transactionsAverage: new FormControl('', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        transactionsAverage: new FormControl((this.returned != null) ? this.merchantInfo.sales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl('Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : 'Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -272,39 +282,72 @@ export class CountrysComponent implements OnInit {
     console.log("lista de paises preenchidos");
     console.log(this.lstPaisPreenchido);
     this.updateData(true, 1);
+    if (this.returned == null) {
+      console.log(this.form);
+      this.newSubmission.merchant.commercialName = "string";
+      this.newSubmission.merchant.billingEmail = this.client.billingEmail;
+      //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+      this.newSubmission.merchant.bankInformation = this.client.bankInformation;
+      this.newSubmission.merchant.byLaws = this.client.byLaws;
+      //this.newSubmission.merchant.clientId = this.client.clientId;
+      this.newSubmission.merchant.companyName = this.client.companyName;
+      this.newSubmission.merchant.contacts = this.client.contacts;
+      this.newSubmission.merchant.crc = this.client.crc;
+      this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+      this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
+      this.newSubmission.merchant.fiscalId = this.client.fiscalId;
+      this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
+      this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+      this.newSubmission.merchant.id = this.client.id;
+      this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+      this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+      this.newSubmission.merchant.legalName = this.client.legalName;
+      this.newSubmission.merchant.legalNature = this.client.legalNature;
+      this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
+      this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
+      this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
+      this.newSubmission.merchant.merchantType = "Corporate";
+      this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
+      this.newSubmission.merchant.shareCapital = this.client.shareCapital;
+      this.newSubmission.merchant.shortName = this.client.shortName;
 
-    console.log(this.form);
-    this.newSubmission.merchant.commercialName = "string";
-    this.newSubmission.merchant.billingEmail = this.client.billingEmail;
-    //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
-    this.newSubmission.merchant.bankInformation = this.client.bankInformation;
-    this.newSubmission.merchant.byLaws = this.client.byLaws;
-    //this.newSubmission.merchant.clientId = this.client.clientId;
-    this.newSubmission.merchant.companyName = this.client.companyName;
-    this.newSubmission.merchant.contacts = this.client.contacts;
-    this.newSubmission.merchant.crc = this.client.crc;
-    this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
-    this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
-    this.newSubmission.merchant.fiscalId = this.client.fiscalId;
-    this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-    this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
-    this.newSubmission.merchant.id = this.client.id;
-    this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-    this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-    this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
-    this.newSubmission.merchant.legalName = this.client.legalName;
-    this.newSubmission.merchant.legalNature = this.client.legalNature;
-    this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
-    this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
-    this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
-    this.newSubmission.merchant.merchantType = "Corporate";
-    this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
-    this.newSubmission.merchant.shareCapital = this.client.shareCapital;
-    this.newSubmission.merchant.shortName = this.client.shortName;
+      console.log(this.newSubmission.merchant);
+    } else {
+      this.newSubmission.merchant.commercialName = this.merchantInfo.companyName;
+      this.newSubmission.merchant.billingEmail = this.merchantInfo.billingEmail;
+      //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+      this.newSubmission.merchant.bankInformation = this.merchantInfo.bankInformation;
+      this.newSubmission.merchant.byLaws = this.merchantInfo.byLaws;
+      //this.newSubmission.merchant.clientId = this.client.clientId;
+      this.newSubmission.merchant.companyName = this.merchantInfo.companyName;
+      this.newSubmission.merchant.contacts = this.merchantInfo.contacts;
+      this.newSubmission.merchant.crc = this.merchantInfo.crc;
+      this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+      this.newSubmission.merchant.establishmentDate = this.merchantInfo.establishmentDate;
+      this.newSubmission.merchant.fiscalId = this.merchantInfo.fiscalId;
+      this.newSubmission.merchant.foreignFiscalInformation = this.merchantInfo.foreignFiscalInformation;
+      this.newSubmission.merchant.headquartersAddress = this.merchantInfo.headquartersAddress;
+      this.newSubmission.merchant.id = this.merchantInfo.merchantId;
+      this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+      this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+      this.newSubmission.merchant.legalName = this.merchantInfo.legalName;
+      this.newSubmission.merchant.legalNature = this.merchantInfo.legalNature;
+      this.newSubmission.merchant.legalNature2 = this.merchantInfo.legalNature2;
+      this.newSubmission.merchant.mainEconomicActivity = this.merchantInfo.mainEconomicActivity;
+      this.newSubmission.merchant.mainOfficeAddress = this.merchantInfo.mainOfficeAddress;
+      this.newSubmission.merchant.merchantType = "Corporate";
+      this.newSubmission.merchant.otherEconomicActivities = this.merchantInfo.otherEconomicActivities;
+      this.newSubmission.merchant.shareCapital = this.merchantInfo.shareCapital;
+      this.newSubmission.merchant.shortName = this.merchantInfo.shortName;
 
-    console.log(this.newSubmission.merchant);
+      this.newSubmission.processNumber = localStorage.getItem("processNumber");
 
+
+    }
     //var clientToAdd = {} as ClientForProcess;
 
     //clientToAdd.legalName = "perguntar"; //confirmar
@@ -478,7 +521,7 @@ export class CountrysComponent implements OnInit {
                   this.lstCountry2.push(country);
                 }
               }
-              this.contPais.push(country);
+              //this.contPais.push(country);
               count++;
             }
           });
@@ -511,7 +554,7 @@ export class CountrysComponent implements OnInit {
                   this.lstCountry2.push(country);
                 }
               }
-              this.contPais.push(country);
+              //this.contPais.push(country);
               count++;
             }
           });
@@ -544,7 +587,7 @@ export class CountrysComponent implements OnInit {
                   this.lstCountry2.push(country);
                 }
               }
-              this.contPais.push(country);
+              //this.contPais.push(country);
               count++;
             }
           });
@@ -578,7 +621,7 @@ export class CountrysComponent implements OnInit {
                   this.lstCountry2.push(country);
                 }
               }
-              this.contPais.push(country);
+             // this.contPais.push(country);
               count++;
             }
           });
@@ -612,7 +655,7 @@ export class CountrysComponent implements OnInit {
                   this.lstCountry2.push(country);
                 }
               }
-              this.contPais.push(country);
+              //this.contPais.push(country);
               count++;
             }
           });
@@ -651,7 +694,6 @@ export class CountrysComponent implements OnInit {
 
   inserirText(form: any) {
     if (this.contPais.length > 0) {
-      console.log('contPais tem valores :))))))))))))))))))))))))))))))))))))))))))))))))))))))))))');
       this.contPais.forEach(element => {
         var index = this.lstPaisPreenchido.findIndex(elem => elem.description == element.description);
         if (index == -1) {
@@ -671,7 +713,6 @@ export class CountrysComponent implements OnInit {
         $('#text5').val($('#text5').val() + country.description + ', ');
       });
     } else {
-      console.log('contPais não tem valores AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
       $('#text5').val('');
     }
     
@@ -689,6 +730,48 @@ export class CountrysComponent implements OnInit {
 
   goBackToHomePage() {
     this.route.navigate(["/"]);
+  }
+
+  editCountries() {
+    this.merchantInfo.sales.servicesOrProductsDestinations.forEach(countryID => {
+      this.tableInfo.GetCountryById(countryID).subscribe(result => {
+        console.log('Países encontrados na lista do merchant ', result);
+        if (result.continent == 'Europa') {
+          if (!this.inputEuropa) {
+            this.countrys('EUROPA');
+          }
+        }
+
+        if (result.continent == 'Africa') {
+          if (!this.inputEuropa) {
+            this.countrys('AFRICA');
+          }
+        }
+
+        if (result.continent == 'Ásia') {
+          if (!this.inputEuropa) {
+            this.countrys('ASIA');
+          }
+        }
+
+        if (result.continent == 'América Norte' || result.continent == 'América Central' || result.continent == 'América Sul') {
+          if (!this.inputEuropa) {
+            this.countrys('AMERICA DO NORTE / SUL');
+          }
+        }
+
+        if (result.continent == 'Oceania') {
+          if (!this.inputEuropa) {
+            this.countrys('OCEANIA');
+          }
+        }
+
+        this.contPais.push(result);
+      });
+    });
+    console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
+    this.inserirText(null);
+    console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
   }
 
 

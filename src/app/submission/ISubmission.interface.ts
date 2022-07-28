@@ -104,3 +104,13 @@ interface DocumentFile{
   fileType?: string
   binary?: string
 }
+
+export interface SubmissionGet {
+  processNumber: string
+  submissionId: string
+  submissionType: string
+  state: string
+  processKind: string
+  processType: string
+  merchant: Merchant
+}

@@ -749,7 +749,7 @@
 
                       <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                         <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
-                          O parâmetro acima é obrigatórioaa.
+                          O parâmetro acima é obrigatório.
                         </div>
                       </div>
                     </div>
@@ -992,12 +992,12 @@
                           class="form-control campo_form"
                           (change)="onLegalNatureSelected()">
                     <option value="">Selecione</option>
-                    <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
+                    <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}} [selected]="merchantInfo != null ? merchantInfo.legalNature == legalNature.code : ''">{{legalNature.description}}</option>
                   </select>
 
                   <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                     <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
-                      O parâmetro acima é obrigatórioaa.
+                      O parâmetro acima é obrigatório.
                     </div>
                   </div>
                 </div>

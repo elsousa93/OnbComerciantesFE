@@ -177,6 +177,9 @@ export class ClientByIdComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
+  returned: string; //variável para saber se estamos a editar um processo
+  merchantInfo: any;
+
   //TEMPORARIO!!!!
   initializeDefaultClient() {
     this.tempClient = {
@@ -315,7 +318,7 @@ export class ClientByIdComponent implements OnInit {
   initializeENI() {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl('', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
   }
 
@@ -323,7 +326,7 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null) ? this.merchantInfo.crc.code : this.crcCode, [Validators.required]), //sim
     });
 
     
@@ -348,7 +351,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
-      socialDenomination: new FormControl('', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -620,6 +623,18 @@ export class ClientByIdComponent implements OnInit {
 
     console.log(this.clientExists);
 
+    if (this.returned != null) {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log('Submissão com detalhes mais especificos ', resul);
+          this.clientService.GetClientById(resul.merchant.id).susbcribe(res => {
+            this.merchantInfo = res;
+          });
+        });
+      });
+    }
+
   } //fim do construtor
 
   ngOnInit(): void {
@@ -636,6 +651,8 @@ export class ClientByIdComponent implements OnInit {
     console.log(this.form.validator);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+
+    this.returned = localStorage.getItem("returned");
   }
 
   //função que altera o valor do map e da currentPage
@@ -850,7 +867,8 @@ export class ClientByIdComponent implements OnInit {
         NIFNIPC: this.NIFNIPC,
         client: this.client,
         clientId: this.idClient,
-        processId: this.processId
+        processId: this.processId,
+        merchantInfo: this.merchantInfo
       }
     };
 

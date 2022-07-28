@@ -42,6 +42,7 @@ export class DevolucaoComponent implements OnInit{
 ngOnInit(): void {
   this.subscription = this.data.currentData.subscribe(map => this.map = map);
   this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+  this.data.historyStream$.next(true);
   this.processId = this.router.snapshot.paramMap.get('id');
   var context = this;
 }
@@ -51,6 +52,16 @@ updateData(value: boolean, currentPage: number) {
   this.map.set(currentPage, value);
   this.data.changeData(this.map);
   this.data.changeCurrentPage(currentPage);
-}
+  }
+
+  nextPage() {
+    localStorage.setItem('returned', 'true');
+    console.log('Valor do returned', localStorage.getItem("returned"));
+
+    localStorage.setItem('processNumber', this.process.processNumber);
+    console.log('Valor do processNumber ', localStorage.getItem("processNumber"));
+
+    this.route.navigate(['/client']);
+  }
 
 }
