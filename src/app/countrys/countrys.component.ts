@@ -15,6 +15,7 @@ import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -67,7 +68,7 @@ export class CountrysComponent implements OnInit {
 
   processNumber: string;
 
-  stakeholdersToInsert: [];
+  stakeholdersToInsert: StakeholdersProcess[];
 
   ngOnInit() {
     this.initializeForm();
@@ -294,12 +295,26 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.shareCapital = this.client.shareCapital;
     this.newSubmission.merchant.shortName = this.client.shortName;
     //this.newSubmission.stakeholders = this.stakeholdersToInsert;
+    var context = this;
 
+    //var a = this.stakeholdersToInsert; 
+    //for (var i = 0, len = a.length; i < len; i++) {
+    //  this.newSubmission.stakeholders.push({
+    //    fiscalId: a[i].fiscalId,
+        
+    //  });
+    //}
+
+    console.log("Submissao tratada! uysidghsiudghisudh");
     console.log(this.newSubmission);
+    console.log("----------------------");
+    console.log(this.stakeholdersToInsert);
     //console.log(this.newSubmission.merchant);
 
     var context = this;
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
+      console.log("dentro do submission service");
+      console.log(result);
       localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
 

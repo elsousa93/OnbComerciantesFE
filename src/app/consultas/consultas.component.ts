@@ -20,7 +20,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 export class ConsultasComponent implements OnInit{
 
   //////////////////////
-
+  navbarProcessNumberSearch: string = '';
   form: FormGroup;
   processToDisplay: ProcessGet[] = [];
   availableStates = [];
@@ -35,17 +35,25 @@ export class ConsultasComponent implements OnInit{
     private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
               private router: ActivatedRoute) {
 
+    if (this.router.snapshot.queryParams['id']) {
+      this.navbarProcessNumberSearch = this.router.snapshot.paramMap.get('id');
+      this.initializeForm();
+      this.searchProcess();
+    } else {
+      this.initializeForm();
+    }
+   
+      
 
     //Initialize Form
-    this.initializeForm();
+    
     this.ngOnInit();
     this.data.updateData(false, 0);
-  
   }
 
   initializeForm() {
     this.form = new FormGroup({
-      processNumber: new FormControl('', Validators.required),
+      processNumber: new FormControl(this.navbarProcessNumberSearch),
       documentType: new FormControl(''), //Não é obrigatorio por enquanto
       state: new FormControl(''), //Não é diretamente obrigatório
       documentNumber: new FormControl(''), //Não é obrigatorio por enquanto
@@ -53,30 +61,32 @@ export class ConsultasComponent implements OnInit{
       processDateEnd: new FormControl('') //Não é obrigatorio por enquanto
     });
 
-    this.form.get("processNumber").valueChanges.subscribe(data => {
-      if (data === '') {
-        this.form.controls["state"].setValidators([Validators.required]);
-      } else {
-        this.form.controls["state"].clearValidators();
-      }
-      this.form.controls["state"].updateValueAndValidity();
-    });
+    //this.form.get("processNumber").valueChanges.subscribe(data => {
+    //  if (data === '') {
+    //    this.form.controls["state"].setValidators([Validators.required]);
+    //  } else {
+    //    this.form.controls["state"].clearValidators();
+    //  }
+    //  this.form.controls["state"].updateValueAndValidity();
+    //});
 
-    this.form.get("state").valueChanges.subscribe(data => {
-      if (data === '') {
-        this.form.controls["processNumber"].setValidators([Validators.required]);
-      } else {
-        this.form.controls["processNumber"].clearValidators();
-      }
-      this.form.controls["processNumber"].updateValueAndValidity();
-    });
+    //this.form.get("state").valueChanges.subscribe(data => {
+    //  if (data === '') {
+    //    this.form.controls["processNumber"].setValidators([Validators.required]);
+    //  } else {
+    //    this.form.controls["processNumber"].clearValidators();
+    //  }
+    //  this.form.controls["processNumber"].updateValueAndValidity();
+    //});
+  }
+
+  submitSearch() {
+    if (this.form.valid)
+      this.searchProcess();
   }
 
   searchProcess() {
     console.log(this.form);
-
-    if (this.form.valid) {
-      console.log("Consulta válida");
 
       var processNumber = this.form.get('processNumber').value;
       if (processNumber !== '') {
@@ -101,9 +111,6 @@ export class ConsultasComponent implements OnInit{
           console.log(error);
         });
       }
-    } else {
-      console.log("Form não está válido");
-    }
   }
 
   openProcess(process) {
@@ -116,6 +123,5 @@ ngOnInit(): void {
 
   var context = this;
 }
-
 
 }

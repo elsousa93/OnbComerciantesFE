@@ -1,5 +1,13 @@
 import { Address, IPep } from "../pep/IPep.interface"
 
+export interface StakeholdersProcess {
+  fiscalId?: string,
+  capitalHeldPercentage?: number,
+  isBeneficiary?: boolean,
+  name?: string,
+  role?: string
+}
+
 export interface IStakeholders {
   fiscalId?: string
   identificationDocument?: IdentificationDocument
