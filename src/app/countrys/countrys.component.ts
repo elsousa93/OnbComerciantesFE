@@ -92,21 +92,17 @@ export class CountrysComponent implements OnInit {
       console.log(this.route.getCurrentNavigation().extras);
     }
 
+    console.log("stakeholderstoinsert: ");
+    console.log(this.stakeholdersToInsert);
     
 
-    console.log(this.clientId);
     //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
-      console.log("FETCH PAISES");
     }, error => console.log(error));
 
-    console.log("por entrar no clientbyid");
     this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-      console.log("entrou no getclientbyid");
       this.currentClient = result;
-      console.log(result);
-      console.log(this.currentClient);
     });
 
     this.documentService.GetSubmissionDocuments("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
@@ -119,8 +115,6 @@ export class CountrysComponent implements OnInit {
   }
 
   initializeForm() {
-    console.log("cliente atual: ");
-    console.log(this.client);
 
     if (this.clientExists) {
       this.form = new FormGroup({
@@ -149,8 +143,7 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia)
       });
     }
-    console.log("form inicializado do country");
-    console.log(this.form);
+    
   }
 
   updateData(value: boolean, currentPage: number) {
@@ -271,13 +264,9 @@ export class CountrysComponent implements OnInit {
   }
 
   submit() {
-    console.log('Cliente recebido ', this.client);
-
-    console.log("lista de paises preenchidos");
-    console.log(this.lstPaisPreenchido);
+    
     this.updateData(true, 1);
 
-    console.log(this.form);
     this.newSubmission.merchant.commercialName = "string";
     this.newSubmission.merchant.billingEmail = this.client.billingEmail;
     //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
@@ -308,71 +297,13 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.merchant.shortName = this.client.shortName;
     //this.newSubmission.stakeholders = this.stakeholdersToInsert;
 
-    console.log(this.newSubmission.merchant);
+    console.log(this.newSubmission);
+    //console.log(this.newSubmission.merchant);
 
-    //var clientToAdd = {} as ClientForProcess;
-
-    //clientToAdd.legalName = "perguntar"; //confirmar
-    //clientToAdd.commercialName = "perguntar"; //confirmar
-    //clientToAdd.shortName = "perguntar"; //confirmar
-    //clientToAdd.headquartersAddress = this.client.headquartersAddress;
-    //clientToAdd.context = "isolated"; //que dado ir buscar
-    //clientToAdd.fiscalIdentification = {
-    //  fiscalId: "",
-    //  issuerCountry: ""
-    //};
-    //clientToAdd.merchantType = "Corporation"; //esta relacionado com o radio button empresa ou ENI?
-    //clientToAdd.legalNature = this.client.legalNature;
-    //clientToAdd.legalNature2 = this.client.legalNature2;
-    //clientToAdd.certificate = {
-    //  code: ""
-    //}; //que dado ir buscar
-    //clientToAdd.shareCapital = this.client.shareCapital; //talvez tenha que mudar
-    //clientToAdd.estabilishmentDate = this.client.establishmentDate;
-    ////clientToAdd.bylaws = this.client.byLaws;
-    //clientToAdd.principalEconomicActivity = this.client.mainEconomicActivity;
-    //clientToAdd.otherEconomicActivities = this.client.otherEconomicActivities;
-    //clientToAdd.sales = {
-    //  annualEstimatedRevenue: this.form.get("expectableAnualInvoicing").value,
-    //  productsOrServicesSold: [],
-    //  productsOrServicesCountries: this.lstPaisPreenchido,
-    //  averageTransactions: this.form.get("transactionsAverage").value
-    //};
-    //clientToAdd.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
-
-    //clientToAdd.bankingInformation = {
-    //  bank: "",
-    //  iban: ""
-    //};
-    //clientToAdd.contacts = {
-    //  phone1: {
-    //    phoneNumber: ""
-    //  },
-    //  phone2: {
-    //    phoneNumber: ""
-    //  },
-    //  fax: {
-    //    phoneNumber: ""
-    //  }
-    //};
-    //clientToAdd.documents = []; //verificar se funciona
-
-
-    //console.log('Submissao ', this.newSubmission);
     var context = this;
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-      console.log('Resultado obtido ', result);
       localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
-
-      //this.stakeholdersToInsert.forEach(function (value, index) {
-      //  console.log("iteração");
-      //  console.log(value);
-      //  context.stakeholderService.CreateNewStakeholder(result.id, value).subscribe(success => {
-      //    console.log("dentro?");
-      //    console.log(success);
-      //  });
-      //});
 
       this.route.navigate(['stakeholders/']);
       
