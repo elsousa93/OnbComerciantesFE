@@ -20,7 +20,6 @@ import { BrowserModule } from '@angular/platform-browser';
 //Funcao da SIBS 
 declare function OpenCCDialog(): any;
 
-
 //CC
 interface ICCInfo {
   BI: string;
@@ -88,24 +87,28 @@ export class ClientComponent implements OnInit {
 
   //---- Cartão de Cidadao - var glob -
 
-  public   nameCC = null;
+  public nameCC = null;
   public nationalityCC = null;
   public birthDateCC = null;
   public cardNumberCC = null;
   public nifCC = null;
+  public addressCC = null;
+  public postalCodeCC = null;
+
+
   public okCC = null;
   public dadosCC: Array<string> = [];
 
   //---- Cartão de Cidadao ------
-  callreadCC() {
-    readCC(this.SetNewCCData);
+   callreadCC() {
+    readCC(this.SetNewCCData.bind(this));
   }
   callreadCCAddress() {
-    readCCAddress(this.SetNewCCData);
+    readCCAddress(this.SetNewCCData.bind(this));
   }
   closeModal() {
-    this.newModal.hide();}
-
+    this.newModal.hide();
+  }
   setOkCC() {
     this.okCC = true;
     console.log("okCC valor: ", this.okCC);
@@ -127,12 +130,17 @@ export class ClientComponent implements OnInit {
       console.log("cardNumber: ", cardNumber);
       console.log("nif: ", nif);
 
-    this.nameCC = name; //nao funciona ERROR TypeError: Cannot set properties of undefined (setting 'nameCC')
-    //this.nationalityCC = nationality;
-    //this.birthDateCC = birthDate;
-    //this.cardNumberCC = cardNumber;
-    //this.nifCC = nif;
-    //console.log("nameCC variavel local: ", this.nameCC);
+    this.nameCC = name; 
+    this.nationalityCC = nationality;
+   // this.birthDateCC = birthDate;
+    this.cardNumberCC = cardNumber; // Nº do CC
+    this.nifCC = nif;
+
+    if (!(address == null)) {
+      this.addressCC = address;
+      this.postalCodeCC = postalCode;
+    }
+    
 
       //Abrir o div
     
