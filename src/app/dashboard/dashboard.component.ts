@@ -14,6 +14,7 @@ import { Sort } from '@angular/material/sort';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessGet, ProcessService, UpdateProcess } from '../process/process.service';
 import { Process } from '../process/process.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -195,13 +196,17 @@ export class DashboardComponent implements OnInit {
   contractAcceptanceProcessess: ProcessGet[] = [];
   completeProcessess: ProcessGet[] = [];
 
+  date: string;
+
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
+    private datePipe: DatePipe) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     localStorage.clear();
     this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
+    this.date = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
     //const users: UserData[] = [];
     //for (let i = 1; i <= 100; i++) {
     //  users.push(createNewUser(i));
