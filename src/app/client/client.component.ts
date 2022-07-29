@@ -15,6 +15,8 @@ import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { Process } from '../process/process.interface';
+import { ProcessService } from '../process/process.service';
 
 
 //Funcao da SIBS 
@@ -98,6 +100,7 @@ export class ClientComponent implements OnInit {
   public addressCC = null;
   public postalCodeCC = null;
 
+  process: any;
 
   public okCC = null;
   public dadosCC: Array<string> = [];
@@ -293,7 +296,7 @@ export class ClientComponent implements OnInit {
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
   private baseUrl: string, @Inject('NEYONDBACK_URL')
     private neyondBackUrl: string, private route: Router, private data: DataService, public modalService: BsModalService,
-    private clientService: ClientService) {
+    private clientService: ClientService, private processService: ProcessService) {
 
     this.ngOnInit();
     console.log(baseUrl);
@@ -501,8 +504,7 @@ export class ClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage)
-    ;
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
 
     var context = this;
 

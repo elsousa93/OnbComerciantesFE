@@ -376,6 +376,7 @@ export class CountrysComponent implements OnInit {
     console.log(this.newSubmission);
     console.log("----------------------");
     console.log(this.stakeholdersToInsert);
+    localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
     //console.log(this.newSubmission.merchant);
 
     this.stakeholdersToInsert.forEach(function (value, idx) {

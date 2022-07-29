@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 import { readCC } from '../citizencard/CitizenCardController.js';
-import { readCCAddress } from '../citizencard/CitizenCardController.js'; import { DataService } from '../nav-menu-interna/data.service';
+import { readCCAddress } from '../citizencard/CitizenCardController.js';
 
 
 /** Listagem Intervenientes / Intervenientes
@@ -38,6 +38,8 @@ export class StakeholdersComponent implements OnInit {
       "number": "",
       "country": "",
       "expirationDate": "",
+    }
+  }
   /**
    * Information from the Citizen Card will be associated to the client structure
    * cardNumber não é guardado
@@ -59,54 +61,54 @@ export class StakeholdersComponent implements OnInit {
     //  this.CCID.NIF);
   }
 
-  newStake: IStakeholders = {
+  //newStake: IStakeholders = {
 
-    "id": "22199900000051",
-    "merchantType": null,
-    "commercialName": "CAFE CENTRAL",
-    "legalNature": "35",
-    "legalNature2": null,
-    "incorporationStatement": {
-      "code": "0000-0000-0001",
-      "validUntil": "2023-06-29T18:52:08.336+01:00"
-    },
-    "shareCapital": {
-      "capital": 50000.2,
-      "date": "2028-06-29T18:52:08.336+01:00"
-    },
-    "byLaws": "O Joao pode assinar tudo, like a boss",
-    "mainEconomicActivity": "90010",
-    "otherEconomicActivities": [
-      "055111"
-    ],
-    "incorporationDate": "2020-03-01T17:52:08.336+00:00",
-    "businessGroup": null,
-    "knowYourSales": {
-      "estimatedAnualRevenue": 1000000,
-      "transactionsAverage": 30000,
-      "servicesOrProductsSold": [
-        "Cafe"
-      ],
-      "servicesOrProductsDestinations": [
-        "PT"
-      ]
-    },
-    "bankInformation": {
-      "bank": "0033",
-      "iban": "PT00333506518874499677629"
-    },
-    "contacts": {
-      "email": "joao@silvestre.pt",
-      "phone1": {
-        "countryCode": "+351",
-        "phoneNumber": "919654422"
-      },
-      "phone2": null
-    },
-    "fullName": "",
-    "contactName": "",
-    "shortName": ""
-  } as IStakeholders;
+  //  "id": "22199900000051",
+  //  "merchantType": null,
+  //  "commercialName": "CAFE CENTRAL",
+  //  "legalNature": "35",
+  //  "legalNature2": null,
+  //  "incorporationStatement": {
+  //    "code": "0000-0000-0001",
+  //    "validUntil": "2023-06-29T18:52:08.336+01:00"
+  //  },
+  //  "shareCapital": {
+  //    "capital": 50000.2,
+  //    "date": "2028-06-29T18:52:08.336+01:00"
+  //  },
+  //  "byLaws": "O Joao pode assinar tudo, like a boss",
+  //  "mainEconomicActivity": "90010",
+  //  "otherEconomicActivities": [
+  //    "055111"
+  //  ],
+  //  "incorporationDate": "2020-03-01T17:52:08.336+00:00",
+  //  "businessGroup": null,
+  //  "knowYourSales": {
+  //    "estimatedAnualRevenue": 1000000,
+  //    "transactionsAverage": 30000,
+  //    "servicesOrProductsSold": [
+  //      "Cafe"
+  //    ],
+  //    "servicesOrProductsDestinations": [
+  //      "PT"
+  //    ]
+  //  },
+  //  "bankInformation": {
+  //    "bank": "0033",
+  //    "iban": "PT00333506518874499677629"
+  //  },
+  //  "contacts": {
+  //    "email": "joao@silvestre.pt",
+  //    "phone1": {
+  //      "countryCode": "+351",
+  //      "phoneNumber": "919654422"
+  //    },
+  //    "phone2": null
+  //  },
+  //  "fullName": "",
+  //  "contactName": "",
+  //  "shortName": ""
+  //} as IStakeholders;
 
   currentStakeholder: IStakeholders = null;
 

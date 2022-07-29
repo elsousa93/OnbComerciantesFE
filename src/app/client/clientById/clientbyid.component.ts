@@ -324,10 +324,12 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
+    console.log(this.consult);
+    console.log(this.returned);
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.incorporationStatement.code : this.crcCode, [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
     
@@ -782,7 +784,10 @@ export class ClientByIdComponent implements OnInit {
     //console.log("codigo CRC:" , this.form.get('crcCode').value);
     //console.log(crcInserted);
     //this.crcFound = true;
+    console.log("crc search inserido");
     var crcInserted = this.form.get('crcCode').value;
+    console.log(crcInserted);
+    
     var token;
     this.crcService.getAccessToken().subscribe(b => {
       token = b;
