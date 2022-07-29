@@ -62,7 +62,7 @@
                       </div>
                       <div class="col">
                         <p class="titulo-form-simples mt-0">TELEFONE 1:*</p>
-                        <input #phone1PhoneNumber (keypress)="validatePhone(phone1CountryCode.value, phone1PhoneNumber.value)" name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phone1PhoneNumber">
+                        <input #phone1PhoneNumber (input)="validatePhone(phone1CountryCode.value, phone1PhoneNumber.value)" name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phone1PhoneNumber">
                         <div class="alert alert-danger" *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
                           is required.
                         </div>
@@ -81,7 +81,7 @@
                       </div>
                       <div class="col">
                         <p class="titulo-form-simples mt-0">TELEFONE 2:*</p>
-                        <input #phone2PhoneNumber (click)="validatePhone(phone2CountryCode.value, phone2PhoneNumber.value)" name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phone2PhoneNumber">
+                        <input #phone2PhoneNumber (input)="validatePhone(phone2CountryCode.value, phone2PhoneNumber.value)" name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phone2PhoneNumber">
                         <div class="alert alert-danger" *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
                           is required.
                         </div>
