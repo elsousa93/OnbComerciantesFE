@@ -1,7 +1,11 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-.selected-row{
-    background-color: red;
+.row-selected {
+  background-color: red !important;
+}
+
+.row-selected td{
+    background-color: red !important;
 }
 
 @font-face {

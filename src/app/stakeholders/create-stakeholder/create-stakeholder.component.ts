@@ -283,6 +283,7 @@ export class CreateStakeholderComponent implements OnInit {
   addStakeholder() {
     this.stakeholderService.CreateNewStakeholder(this.submissionId, this.newStake).subscribe(result => {
       console.log("Stakeholder criado com sucesso");
+      this.route.navigate(['/stakeholders/']);
     }, error => {
       console.log(error);
     });
