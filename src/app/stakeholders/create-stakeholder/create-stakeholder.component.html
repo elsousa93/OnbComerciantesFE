@@ -108,7 +108,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let stake of stakeholdersToShow" (click)="selectStakeholder(stake)" [ngClass]="{'row-selected': stake === newStake}">
+        <tr *ngFor="let stake of stakeholdersToShow" (click)="selectStakeholder(stake)" [ngClass]="{'row-selected': stake.stakeholderNIF === newStake.fiscalId}">
           <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
           <td class="text-primary text-center">{{stake.stakeholderName}}</td>
         </tr>

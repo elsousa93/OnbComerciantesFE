@@ -31,8 +31,8 @@ export class CreateStakeholderComponent implements OnInit {
     "shortName": ""
   } as IStakeholders;
 
-  submissionId: string;
-  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+  //submissionId: string;
+  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
 
@@ -74,6 +74,8 @@ export class CreateStakeholderComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
+  stakeholderNumber: string;
+
   foundStakeholders: boolean;
 
   constructor(private router: ActivatedRoute,
@@ -81,7 +83,7 @@ export class CreateStakeholderComponent implements OnInit {
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
 
-    this.submissionId = localStorage.getItem('submissionId');
+    //this.submissionId = localStorage.getItem('submissionId');
 
     //console.log("foi buscar bem ao localstorage?");
     //console.log(this.submissionId);
@@ -300,6 +302,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   selectStakeholder(stakeholder) {
     console.log(stakeholder);
+    
     this.newStake = {
       "fiscalId": stakeholder.stakeholderNIF,
       "identificationDocument": {},
@@ -308,11 +311,12 @@ export class CreateStakeholderComponent implements OnInit {
       "shortName": ''
     };
     console.log(this.newStake);
+    this.stakeholderNumber = stakeholder.stakeholderNumber;
   }
 
   addStakeholder() {
     if (this.foundStakeholders) {
-      this.stakeholderService.getStakeholderByID(this.newStake.stakeholderId, 'por mudar', 'por mudar').subscribe(stakeholder => {
+      this.stakeholderService.getStakeholderByID(this.stakeholderNumber, 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
 
         console.log("stakeholder procurado");
