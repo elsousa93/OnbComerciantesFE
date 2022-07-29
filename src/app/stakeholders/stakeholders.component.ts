@@ -38,9 +38,9 @@ export class StakeholdersComponent implements OnInit {
 
   currentStakeholder: IStakeholders = null;
 
-  submissionId: string;
+  //submissionId: string;
 
-  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
   
@@ -86,9 +86,9 @@ export class StakeholdersComponent implements OnInit {
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
 
-    this.submissionId = localStorage.getItem('submissionId');
-    console.log("foi buscar bem ao localstorage?");
-    console.log(this.submissionId);
+    //this.submissionId = localStorage.getItem('submissionId');
+    //console.log("foi buscar bem ao localstorage?");
+    //console.log(this.submissionId);
 
     this.ngOnInit();
 
@@ -277,6 +277,16 @@ export class StakeholdersComponent implements OnInit {
   deleteStakeholder() {
     this.stakeholderService.DeleteStakeholder(this.submissionId, this.currentStakeholder.id).subscribe(s => {
       console.log("stakeholder deleted");
+
+      const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
+      console.log(index);
+      if (index > -1) { // 
+        this.stakeholdersToShow.splice(index, 1);
+      }
+      //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
+      //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
+      //    this.stakeholdersToShow.splice(i, 1);
+      //}
     });
   }
 

@@ -31,8 +31,8 @@ export class CreateStakeholderComponent implements OnInit {
     "shortName": ""
   } as IStakeholders;
 
-  submissionId: string;
-  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+  //submissionId: string;
+  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
 
@@ -74,15 +74,17 @@ export class CreateStakeholderComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
+  foundStakeholders: boolean;
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
 
-    this.submissionId = localStorage.getItem('submissionId');
+    //this.submissionId = localStorage.getItem('submissionId');
 
-    console.log("foi buscar bem ao localstorage?");
-    console.log(this.submissionId);
+    //console.log("foi buscar bem ao localstorage?");
+    //console.log(this.submissionId);
     this.ngOnInit();
 
     var context = this;
@@ -101,6 +103,14 @@ export class CreateStakeholderComponent implements OnInit {
     //  console.log(error);
     //});
 
+  }
+
+  initializeNotFoundForm() {
+    this.formStakeholderSearch.addControl("socialDenomination", new FormControl('', Validators.required));
+  }
+
+  deactivateNotFoundForm() {
+    this.formStakeholderSearch.removeControl("socialDenomination");
   }
 
   initializeForm() {
@@ -243,10 +253,12 @@ export class CreateStakeholderComponent implements OnInit {
     /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
-
+      console.log("searched interveniente");
+      console.log(clients);
       var context2 = this;
 
       context.isShown = true;
+      context.foundStakeholders = true;
 
       clients.forEach(function (value, index) {
         context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
