@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
+import { StakeholderService } from '../stakeholder.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -29,6 +30,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   callingCodeStakeholder?: string = "";
 
   displayValueSearch = '';
+
+  submissionStakeholders: IStakeholders[] = [];
+  submissionId: string;
+  currentStakeholder: IStakeholders = null;
 
 
   //Informação de campos/tabelas
@@ -59,13 +64,34 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService, private tableInfo: TableInfoService) {
+  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     this.ngOnInit();
+    
     http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
       this.dataSource.data = this.stakeholders;
     }, error => console.error(error));
 
+    this.tableInfo.GetAllCountries().subscribe(result => {
+      this.internationalCallingCodes = result;
+    });
+
+    var context = this;
+    stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+      result.forEach(function (value, index) {
+        console.log(value);
+        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+          console.log(result);
+          context.submissionStakeholders.push(result);
+        }, error => {
+          console.log(error);
+        });
+      });
+    }, error => {
+      console.log(error);
+    });
+
+    
     this.callingCodeStakeholder = tableInfo.GetAllCountries();
 
     this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
@@ -122,6 +148,15 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   clickRow(stake: any) {
     this.selectedStakeholder = stake;
+  }
+
+  selectStakeholder(stakeholder) {
+    console.log(this.currentStakeholder);
+    console.log(stakeholder);
+    this.currentStakeholder = stakeholder;
+    console.log(this.currentStakeholder);
+    console.log(this.currentStakeholder === stakeholder);
+    
   }
 
 }

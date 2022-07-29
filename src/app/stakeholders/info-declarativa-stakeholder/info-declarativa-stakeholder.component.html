@@ -52,10 +52,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row" class="text-primary text-center">12345</th>
-                        <td class="text-primary text-center">Bual de Canela</td>
-                        <td class="text-primary text-center">162243889</td>
+                      <tr *ngFor="let stakeholder of submissionStakeholders" (click)="selectStakeholder(stakeholder)" [ngClass]="{'row-selected': currentStakeholder === stakeholder}">
+                        <th scope="row" class="text-primary text-center">{{stakeholder.stakeholderNumber}}</th>
+                        <td class="text-primary text-center">{{stakeholder.shortName}}</td>
+                        <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                         <td class="text-primary text-center"></td>
                         <td class="text-primary text-center"></td>
                       </tr>
