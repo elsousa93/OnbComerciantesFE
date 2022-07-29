@@ -100,6 +100,7 @@ export class CountrysComponent implements OnInit {
     }
 
     console.log('Fora do if do edit countries');
+    console.log('MerchantInfo ', this.merchantInfo);
     if (this.merchantInfo != null) {
       console.log('Entrei no if do edit countries');
       this.editCountries();

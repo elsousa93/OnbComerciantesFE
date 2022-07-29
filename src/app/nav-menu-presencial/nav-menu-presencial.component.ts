@@ -51,7 +51,7 @@ export class NavMenuPresencialComponent implements OnInit {
   progressImage: string;
 
   constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService) {
-    this.processNrService.changeProcessNumber(localStorage.getItem("submissionId"));
+    this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
   }
 
   ngOnInit(): void {

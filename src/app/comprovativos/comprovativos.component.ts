@@ -383,7 +383,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   submissionPutTeste: SubmissionPutTemplate = {
     "submissionType": "DigitalFirstHalf",
-    "processNumber": "string",
+    "processNumber": "",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,
@@ -427,7 +427,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         });
       })      
     });
-    
+
+    if (localStorage.getItem("returned") != null) {
+      console.log("Entrei no if dos comprovativos quando faço o submit ");
+      this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
+      console.log("Objeto com os valores atualizados ", this.submissionPutTeste);
+    }
 
     this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
       console.log('Editar sub ', result);
