@@ -31,7 +31,7 @@
               </thead>
               <tbody>
                 <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
-                <tr *ngFor="let stakeholder of submissionStakeholders" (click)="updateForm(stakeholder)">
+                <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}" >
                   <th scope="row" class="text-primary text-center">Associado?</th>
                   <td class="text-primary text-center">{{stakeholder.id}}</td>
                   <td class="text-primary text-center">{{stakeholder.shortName}}</td>

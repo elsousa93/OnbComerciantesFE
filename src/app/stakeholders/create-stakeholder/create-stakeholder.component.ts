@@ -258,21 +258,33 @@ export class CreateStakeholderComponent implements OnInit {
       var context2 = this;
 
       context.isShown = true;
-      context.foundStakeholders = true;
-
-      clients.forEach(function (value, index) {
-        context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-          var stakeholder = {
-            "stakeholderNumber": c.stakeholderId,
-            "stakeholderName": c.shortName,
-            "stakeholderNIF": c.fiscalIdentification.fiscalId,
-            "elegible": "elegivel",
-            "associated": "SIM"
-          }
-
-          context.stakeholdersToShow.push(stakeholder);
-        });
-      })
+      
+      if (clients.length > 0) {
+        context.deactivateNotFoundForm();
+        context.foundStakeholders = true;
+        context.stakeholdersToShow = [];
+        clients.forEach(function (value, index) {
+          console.log(value);
+          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+            console.log("ja a ir buscar");
+            console.log(c);
+            var stakeholder = {
+              "stakeholderNumber": c.stakeholderId,
+              "stakeholderName": c.shortName,
+              "stakeholderNIF": c.fiscalIdentification.fiscalId,
+              "elegible": "elegivel",
+              "associated": "SIM"
+            }
+            console.log("stakeholder adicionado:");
+            console.log(stakeholder);
+            context.stakeholdersToShow.push(stakeholder);
+          });
+        })
+      } else {
+        context.initializeNotFoundForm();
+        context.stakeholdersToShow = [];
+        context.foundStakeholders = false;
+      }
     }, error => {
       //context.showFoundClient = false;
       //console.log("entrou aqui no erro huajshudsj");
@@ -286,19 +298,41 @@ export class CreateStakeholderComponent implements OnInit {
     this.ngOnInit();
   }
 
-  selectedStakeholder(stakeholder) {
+  selectStakeholder(stakeholder) {
     console.log(stakeholder);
     this.newStake = stakeholder;
     console.log(this.newStake);
   }
 
   addStakeholder() {
-    this.stakeholderService.CreateNewStakeholder(this.submissionId, this.newStake).subscribe(result => {
-      console.log("Stakeholder criado com sucesso");
-      this.route.navigate(['/stakeholders/']);
-    }, error => {
-      console.log(error);
-    });
+    if (this.foundStakeholders) {
+      this.stakeholderService.CreateNewStakeholder(this.submissionId, this.newStake).subscribe(result => {
+        console.log(this.newStake);
+        this.route.navigate(['/stakeholders/']);
+      }, error => {
+        console.log(error);
+      });
+    } else {
+      console.log("form");
+      console.log(this.formStakeholderSearch);
+
+      var stakeholderToInsert: IStakeholders = {
+        "fiscalId": this.formStakeholderSearch.get("documentNumber").value,
+        "identificationDocument": {
+          "type": this.formStakeholderSearch.get("documentType").value,
+          "number": this.formStakeholderSearch.get("documentNumber").value,
+        },
+        "phone1": {},
+        "phone2": {},
+        "shortName": this.formStakeholderSearch.get("socialDenomination").value
+      }
+      console.log("Stakeholder a adicionar");
+      console.log(stakeholderToInsert);
+      this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+        console.log("Stakeholder criado com sucesso");
+        this.route.navigate(['/stakeholders/']);
+      });
+    }
   }
 
 }

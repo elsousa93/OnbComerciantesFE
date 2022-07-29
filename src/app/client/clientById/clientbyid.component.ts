@@ -628,7 +628,7 @@ export class ClientByIdComponent implements OnInit {
         console.log('Submissão retornada quando pesquisada pelo número de processo', result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           console.log('Submissão com detalhes mais especificos ', resul);
-          this.clientService.GetClientById(resul.merchant.id).susbcribe(res => {
+          this.clientService.GetClientById(resul.merchant.id).subscribe(res => {
             this.merchantInfo = res;
           });
         });
