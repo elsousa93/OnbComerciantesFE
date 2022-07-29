@@ -31,8 +31,8 @@ export class CreateStakeholderComponent implements OnInit {
     "shortName": ""
   } as IStakeholders;
 
-  //submissionId: string;
-  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+  submissionId: string;
+  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
 
@@ -81,7 +81,7 @@ export class CreateStakeholderComponent implements OnInit {
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
 
-    //this.submissionId = localStorage.getItem('submissionId');
+    this.submissionId = localStorage.getItem('submissionId');
 
     //console.log("foi buscar bem ao localstorage?");
     //console.log(this.submissionId);
@@ -300,17 +300,31 @@ export class CreateStakeholderComponent implements OnInit {
 
   selectStakeholder(stakeholder) {
     console.log(stakeholder);
-    this.newStake = stakeholder;
+    this.newStake = {
+      "fiscalId": stakeholder.stakeholderNIF,
+      "identificationDocument": {},
+      "fullName": '',
+      "contactName": '',
+      "shortName": ''
+    };
     console.log(this.newStake);
   }
 
   addStakeholder() {
     if (this.foundStakeholders) {
-      this.stakeholderService.CreateNewStakeholder(this.submissionId, this.newStake).subscribe(result => {
-        console.log(this.newStake);
-        this.route.navigate(['/stakeholders/']);
-      }, error => {
-        console.log(error);
+      this.stakeholderService.getStakeholderByID(this.newStake.stakeholderId, 'por mudar', 'por mudar').subscribe(stakeholder => {
+        var stakeholderToInsert = stakeholder;
+
+        console.log("stakeholder procurado");
+        console.log(stakeholderToInsert);
+        this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+          console.log("add stakeholder existente");
+          console.log(this.newStake);
+
+          this.route.navigate(['/stakeholders/']);
+        }, error => {
+          console.log(error);
+        });
       });
     } else {
       console.log("form");

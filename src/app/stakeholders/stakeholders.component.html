@@ -28,7 +28,7 @@
             <tbody>
               <tr *ngFor="let stakeholder of submissionStakeholders" (click)="selectStakeholder(stakeholder)" [ngClass]="{'row-selected': currentStakeholder === stakeholder}">
                 <th scope="row" class="text-primary text-center">Associado?</th>
-                <td class="text-primary text-center">{{stakeholder.id}}</td>
+                <!--<td class="text-primary text-center">{{stakeholder.id}}</td>-->
                 <td class="text-primary text-center">{{stakeholder.stakeholderNumber}}</td>
                 <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                 <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
