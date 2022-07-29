@@ -161,8 +161,8 @@
           <div class="col-6 ms-0 me-0 ps-0 pe-5" *ngIf="associatedWithGroupOrFranchise">
             <p class="titulo-form-simples mt-0">NOME FRANCHISE</p>
             <select class="form-select  campo_form" formControlName="franchiseName" name="franchiseName"
-                    id="franchiseName"
-                    [attr.disabled]="clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null ">
+                    id="franchiseName">
+                    <!-- [attr.disabled]="clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null " -->
               <option value="1">Franchise 1</option>
               <option value="2">Franchise 2</option>
               <option value="3">Franchise 3</option>
