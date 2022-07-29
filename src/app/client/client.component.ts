@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 //import '../citizencard/CitizenCardController.js';
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
+
+import { BrowserModule } from '@angular/platform-browser';
 
 
 //Funcao da SIBS 
@@ -69,13 +71,31 @@ interface addresstranformed {
   styleUrls: ['./client.component.css']
 })
 
+//declare var nameCC: any;
+//declare var nationalityCC: any;
+//declare var birthDateCC: any ;
+//declare var cardNumberCC: any ;
+//declare var nifCC: any;
+//declare var okCC: any ;
+
 export class ClientComponent implements OnInit {
   public clients: Client[] = [];
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
   public isNoDataReadable: boolean;
-  public showCC: boolean; 
+  public showCC: boolean;
+
+  //---- Cartão de Cidadao - var glob -
+
+  public   nameCC = null;
+  public nationalityCC = null;
+  public birthDateCC = null;
+  public cardNumberCC = null;
+  public nifCC = null;
+  public okCC = null;
+  public dadosCC: Array<string> = [];
+
   //---- Cartão de Cidadao ------
   callreadCC() {
     readCC(this.SetNewCCData);
@@ -83,7 +103,13 @@ export class ClientComponent implements OnInit {
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData);
   }
+  closeModal() {
+    this.newModal.hide();}
 
+  setOkCC() {
+    this.okCC = true;
+    console.log("okCC valor: ", this.okCC);
+  }
 /**
  * Information from the Citizen Card will be associated to the client structure
  * cardNumber não é guardado
@@ -92,23 +118,27 @@ export class ClientComponent implements OnInit {
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
   gender, height, nationality, expiryDate, nameFather, nameMother,
    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {
+
+
+      console.log("Name: ", name, "type: ", typeof (name));
+
+      console.log("nationality: ", nationality);
+      console.log("birthDate: ", birthDate);
+      console.log("cardNumber: ", cardNumber);
+      console.log("nif: ", nif);
+
+    this.nameCC = name; //nao funciona ERROR TypeError: Cannot set properties of undefined (setting 'nameCC')
+    //this.nationalityCC = nationality;
+    //this.birthDateCC = birthDate;
+    //this.cardNumberCC = cardNumber;
+    //this.nifCC = nif;
+    //console.log("nameCC variavel local: ", this.nameCC);
+
+      //Abrir o div
     
-   // this.newClient.legalName = name;
-    console.log("Name: ", name);
-   // this.newClient.fiscalId = nif;
-    console.log("nationality: ", nationality);
-    console.log("birthDate: ", birthDate);
-    console.log("cardNumber: ", cardNumber);
-    console.log("nif: ", nif);
-    console.log("postalCode: ", postalCode);
-    console.log("address: ", address);
 
-
-  //  this.idToSearch = cardNumber;
-    this.ccInfo = [name, country, birthDate, cardNumber, 0, nif, 0, 0];
-
-   // this.CCID.NIF = nif;
-    console.log("NIF: ", this.CCID.NIF);
+   //  this.dadosCC =  [name, nationality]; ERROR
+   
  }
 
   UibModal: BsModalRef | undefined;
@@ -130,7 +160,8 @@ export class ClientComponent implements OnInit {
 
  //----------------
   clientIdNew;
-  ccInfo ;
+  ccInfo;
+   //Dados lidos do CC, activa Div 
   newId;
   ListaDocType = docType;
   ListaDocTypeENI = docTypeENI;
@@ -456,10 +487,6 @@ export class ClientComponent implements OnInit {
     this.isNoDataReadable=readable;
     this.toSearch = false;
     this.toShowReadCC = readable;
-
-    if (readable) {
-      this.launchNewModal();
-    }
   }
 
   launchNewModal() {
@@ -468,8 +495,9 @@ export class ClientComponent implements OnInit {
       if (result) {
         this.Window.readCCAddress();
       } else {
-        this.Window.readCC();
         console.log("fechar");
+        this.Window.readCC();
+       
         this.closeModal();
       }
     }.bind(this));
@@ -477,7 +505,7 @@ export class ClientComponent implements OnInit {
 
   activateButtons(id: boolean) {
     this.showFoundClient = false;
-    this.ccInfo = null;
+  //  this.ccInfo = null;
     this.showButtons = true;
     this.isCC = false;
     this.toSearch = false;

@@ -89,10 +89,20 @@
                         </span>
                       </nav>
                     </div>
+                    <div  *ngIf="isCC" >
+                      ---------------
+                      <div *ngFor ="let item of dadosCC">
+                        {{dadosCC}}
+                        ----------
+                      </div>
+
+
+                    </div>
+
                   </div>
                   <div class="row me-0">
                     <div class="col">
-                      <div class="me-0 ps-0 pe-0 col-7">
+                      <div class="me-0 ps-0 pe-0 col-7" >
                         <p class="titulo-form-simples">
                           Número do Documento:* <span [class]="errorMsg">
                             {{
@@ -105,43 +115,7 @@
                       </div>
                     </div>
                   </div>
-                  <div style="width: 600px;" *ngIf="ccInfo">
-                    <div>
-                      <p class="titulo-form-simples">País do documento:</p>
-                      <input id="n-doc" type="text" value="{{ ccInfo[1] }}" readonly>
-                    </div>
-                    <br>
-                    <div class="card">
-                      <div class="card-body">
-                        <table>
-                          <tr>
-                            <td class="titulo-form-simples">Nome:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[0] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Id:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[3] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Nif:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[5] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Dt. Nasc.:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[2] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Morada:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[7] }}</td>
-                          </tr>
-                          <tr>
-                            <td class="titulo-form-simples">Codigo Postal:</td>
-                            <td class="titulo-form-simples">{{ ccInfo[6] }}</td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
+
                 </form>
 
                 <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
@@ -161,6 +135,9 @@
                     Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
                   </div>
                   <button class="btn botao_azul_pesquisa" (click)="launchNewModal()" type="submit">Ler Cartão de Cidadão</button>
+
+                  
+
                 </div>
 
                 <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
@@ -186,16 +163,29 @@
                   <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
                     <p>Tem o pin de acesso aos dados da morada?</p>
                     <button type="button" class="btn btn-primary" value="true" (click)="callreadCCAddress()">Sim</button>
-                    <button type="button" class="btn btn-primary" value="false" (click)="callreadCC()">Não</button>
+                    <button type="button" class="btn btn-primary" value="false" (click)="callreadCC(); closeModal(); setOkCC()">Não</button>
+                    <button type="button" class="btn btn-primary"  (click)=" closeModal()">Fechar</button>
                   </div></ng-template>
                 
               </div>
                 </div>
+       
+
+
+             <div *ngIf="!(okCC == null)">
+         
+
+            CC DADOS {{nameCC}}</div>
+
+
               </div>
             </div>
           </div> <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
         </div> <!--row ends-->
       </div>
+
+
+
 
 
       <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="showFoundClient == true">
@@ -256,3 +246,4 @@
           </div>
         </div>
       </div>
+
