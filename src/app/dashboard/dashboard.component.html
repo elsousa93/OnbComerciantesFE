@@ -150,15 +150,21 @@
                     <mat-header-cell *matHeaderCellDef>
                       &nbsp;&nbsp;&nbsp;Editar Processo
                     </mat-header-cell>
+                    
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon img">
-                          &nbsp;&nbsp;<img src="assets/images/delete.svg" title="Delete">
+                          &nbsp;&nbsp;<img src="assets/images/delete_blue.svg" title="Delete">
                         </span>
                       </a>
                       <a [routerLink]="['/app-devolucao/', row.processId]">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg" title="Edit">
+                        </span>
+                      </a>
+                      <a>
+                        <span class="material-symbols-rounded edit-icon">
+                          <img src="assets/images/search_blue.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -241,7 +247,7 @@
                     <mat-cell *matCellDef="let row">
                       <a href="#">
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/search.svg">
+                          <img src="assets/images/search_blue.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -322,7 +328,7 @@
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon">
-                          &nbsp;&nbsp;<img src="assets/images/delete.svg">
+                          &nbsp;&nbsp;<img src="assets/images/delete_blue.svg">
                         </span>
                       </a>
                       <a [routerLink]="['/app-devolucao/', row.processId]" (click)="streamHistoryMenu()">
@@ -332,7 +338,7 @@
                       </a>
                       <a>
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/search.svg">
+                          <img src="assets/images/search_blue.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -414,7 +420,7 @@
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon">
-                          &nbsp;&nbsp;<img src="assets/images/delete.svg">
+                          &nbsp;&nbsp;<img src="assets/images/delete_blue.svg">
                         </span>
                       </a>
                       <a [routerLink]="['/app-aceitacao/', row.processId]">
@@ -424,7 +430,7 @@
                       </a>
                       <a>
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/search.svg">
+                          <img src="assets/images/search_blue.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -507,7 +513,7 @@
                       <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded edit-icon">
-                          <img src="assets/images/search.svg">
+                          <img src="assets/images/search_blue.svg">
                         </span>
                       </button>
                     </mat-cell>
