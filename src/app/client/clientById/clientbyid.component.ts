@@ -179,6 +179,7 @@ export class ClientByIdComponent implements OnInit {
 
   returned: string; //variável para saber se estamos a editar um processo
   merchantInfo: any;
+  consult: string; //variavel para saber se estamos a consultar um processo
 
   //TEMPORARIO!!!!
   initializeDefaultClient() {
@@ -318,7 +319,7 @@ export class ClientByIdComponent implements OnInit {
   initializeENI() {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
   }
 
@@ -326,7 +327,7 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null) ? this.merchantInfo.crc.code : this.crcCode, [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.incorporationStatement.code : this.crcCode, [Validators.required]), //sim
     });
 
     
@@ -351,7 +352,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
-      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -623,16 +624,39 @@ export class ClientByIdComponent implements OnInit {
 
     console.log(this.clientExists);
 
-    if (this.returned != null) {
+    if (this.returned != null || this.consult != null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         console.log('Submissão retornada quando pesquisada pelo número de processo', result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           console.log('Submissão com detalhes mais especificos ', resul);
-          this.clientService.GetClientById(resul.merchant.id).subscribe(res => {
+          this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
           });
         });
       });
+
+      if (this.consult != null) {
+        console.log("Entrei no if do consult");
+        this.NIFNIPC = this.merchantInfo.fiscalId;
+        console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
+        if (this.merchantInfo.incorporationStatement.code !== "") {
+          console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
+          this.initializeBasicFormControl();
+          this.isCommercialSociety = true;
+          this.searchByCRC();
+        } else {
+          if (this.merchantInfo.legalNature !== "") {
+            console.log("O merchant tem uma legal nature ", this.merchantInfo.legalNature);
+            this.isCommercialSociety = false;
+            this.tipologia === 'Company';
+            this.initializeFormControlOther();
+          } else {
+            console.log("O merchant não tem uma legal nature");
+            this.tipologia === 'ENI';
+            this.initializeENI();
+          }
+        }
+      }
     }
 
   } //fim do construtor
@@ -654,6 +678,7 @@ export class ClientByIdComponent implements OnInit {
     this.data.updateData(false, 1, 2);
 
     this.returned = localStorage.getItem("returned");
+    this.consult = localStorage.getItem("consult");
   }
 
 
@@ -937,4 +962,14 @@ export class ClientByIdComponent implements OnInit {
     //var caeResult = this.tableInfo.GetCAEByCode(cae);
   }
 
+  GetLegalNatureByCode(code: string) {
+    var legalNature = this.legalNatureList.find(element => {
+      if (element.code == code) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return legalNature.description;
+  }
 }

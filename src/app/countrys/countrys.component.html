@@ -25,7 +25,7 @@
             <p class="titulo-form-simples mt-0">FATURAÇÃO ANUAL EXPECTÁVEL*</p>
             <input type="number" class="form-control campo_form" formControlName="expectableAnualInvoicing"
                    name="expectableAnualInvoicing" id="expectableAnualInvoicing"
-                   >
+                   [readonly]="consult != null">
             <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
               <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
                 O parâmetro acima é obrigatório.
@@ -35,7 +35,7 @@
 
             <p class="titulo-form-simples">PRODUTOS VENDIDOS/SERVIÇOS PRESTADOS*</p>
             <input formControlName="services" name="services" type="text"
-                   id="services" class="form-control campo_form" >
+                   id="services" class="form-control campo_form" [readonly]="consult != null">
 
             <div class="alert alert-danger" *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
               <div *ngIf="this.form.get('services').errors && this.form.get('services').errors?.['required']">
@@ -47,7 +47,7 @@
             <p class="titulo-form-simples mb-1">Transações média*</p>
             <input minlength="2" maxlength="100" formControlName="transactionsAverage"
                    name="transactionsAverage" type="number" id="transactionsAverage" class="form-control campo_form"
-                   >
+                   [readonly]="consult != null">
             <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
               <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
                 O parâmetro acima é obrigatório.
@@ -60,13 +60,13 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Portal"
-                         formControlName="preferenceDocuments" id="preferenceDocuments">
+                         formControlName="preferenceDocuments" id="preferenceDocuments" [readonly]="consult != null">
                   <label class="form-check-label radio pe-5" for="preferenceDocuments">100% DIGITAL</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Mail"
-                         formControlName="preferenceDocuments" id="preferenceDocuments">
+                         formControlName="preferenceDocuments" id="preferenceDocuments" [readonly]="consult != null">
                   <label class="form-check-label radio" for="preferenceDocuments">DOCUMENTAÇÃO POR CARTA</label>
                 </div>
               </span>
@@ -78,13 +78,13 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]="true"
-                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)">
+                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)" [readonly]="consult != null">
                   <label class="form-check-label radio pe-5" for="associatedWithGroupOrFranchise">SIM</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]="false"
-                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)">
+                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)" [readonly]="consult != null">
                   <label class="form-check-label radio" for="associatedWithGroupOrFranchise">NÃO</label>
                 </div>
               </span>
@@ -105,43 +105,43 @@
                   <p class="titulo_paises mt-0"></p>
                   <div class="form-check">
                     <input type="checkbox" formControlName="inputEuropa" value="EUROPA" id="EUROPA" name="EUROPA"
-                           class="form-check-input" (click)="countrys('EUROPA')">
+                           class="form-check-input" (click)="countrys('EUROPA')" [readonly]="consult != null">
                     <label class="form-check-label radio" for="EUROPA">EUROPA</label>
                   </div>
                   <div class="form-check">
                     <input type="checkbox" formControlName="inputAfrica" value="AFRICA" id="AFRICA" name="AFRICA"
-                           class="form-check-input" (click)="countrys('AFRICA')">
+                           class="form-check-input" (click)="countrys('AFRICA')" [readonly]="consult != null">
                     <label class="form-check-label radio" for="AFRICA">ÁFRICA</label>
                   </div>
                   <div class="form-check">
                     <input type="checkbox" formControlName="inputAsia" value="ASIA" name="ASIA" class="form-check-input"
-                           (click)="countrys('ASIA')">
+                           (click)="countrys('ASIA')" [readonly]="consult != null">
                     <label class="form-check-label radio" for="ASIA">ÁSIA</label>
                   </div>
                   <div class="form-check">
-                    <input type="checkbox" formControlName="inputAmericas" value="AMERICA DO NORTE / SUL" name="AMERICA"
-                           class="form-check-input" (click)="countrys('AMERICA DO NORTE / SUL')">
+                    <input type="checkbox" formControlName="inputAmerica" value="AMERICA DO NORTE / SUL" name="AMERICA"
+                           class="form-check-input" (click)="countrys('AMERICA DO NORTE / SUL')" [readonly]="consult != null">
                     <label class="form-check-label radio" for="AMERICA DO NORTE / SUL">AMÉRICA DO NORTE / SUL</label>
                   </div>
                   <div class="form-check">
                     <input type="checkbox" formControlName="inputOceania" value="OCEANIA" name="OCEANIA"
-                           class="form-check-input" (click)="countrys('OCEANIA')">
+                           class="form-check-input" (click)="countrys('OCEANIA')" [readonly]="consult != null">
                     <label class="form-check-label radio" for="OCEANIA">OCEÂNIA</label>
                   </div>
                 </div>
                 <div class="col ps-5">
                   <div class="form-check" *ngFor="let item of lstCountry; index as i">
-                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" >{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" [readonly]="consult != null">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry1; index as i">
-                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" >{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" [readonly]="consult != null">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry2; index as i">
-                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" >{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [value]="countryExists(item)" name="input16" id="{{item}}" (change)="onCountryChange($event)" [readonly]="consult != null">{{item.description | uppercase}}
                   </div>
                 </div>
 
@@ -150,7 +150,7 @@
               </div>                
             </div><button id="btn5a3"
                         class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
-                        wappler-command="editContent"  (click)="inserirText(this.form)" type="button">
+                        wappler-command="editContent"  (click)="inserirText(this.form)" type="button" [disabled]="consult != null">
                         <img src="assets/images/public.svg" style="height: 23px;" class="img_add"> ESCOLHER&nbsp;
                 </button>
 
@@ -162,7 +162,7 @@
             <p class="titulo-form-simples mt-0">NOME FRANCHISE</p>
             <select class="form-select  campo_form" formControlName="franchiseName" name="franchiseName"
                     id="franchiseName">
-                    <!-- [attr.disabled]="clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null " -->
+                    <!-- [attr.disabled]="consult != null || clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null " -->
               <option value="1">Franchise 1</option>
               <option value="2">Franchise 2</option>
               <option value="3">Franchise 3</option>
@@ -182,7 +182,7 @@
 
 
             <input class="form-control campo_form" formControlName="NIPCGroup"
-                   name="NIPCGroup" type="number" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise">
+                   name="NIPCGroup" type="number" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || consult != null">
             <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
               <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
                 O parâmetro acima é obrigatório.

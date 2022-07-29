@@ -14,6 +14,8 @@ import { Client } from '../client/Client.interface';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessGet, ProcessService } from '../process/process.service';
 import { TableInfoService } from '../table-info/table-info.service';
+import { SubmissionService } from '../submission/service/submission-service.service';
+import { ClientService } from '../client/client.service';
 
 interface Process {
   processNumber: string;
@@ -74,7 +76,7 @@ export class ConsultasComponent implements OnInit{
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
-              private router: ActivatedRoute) {
+    private router: ActivatedRoute, private submissionService: SubmissionService, private clientService: ClientService) {
 
     this.initializeForm();
 
@@ -159,7 +161,20 @@ export class ConsultasComponent implements OnInit{
   }
 
   openProcess(process) {
-    console.log(process)
+    console.log(process);
+    localStorage.setItem("processNumber", process.processNumber);
+    localStorage.setItem("consult", 'true');
+
+    this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+      console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+        console.log('Submissão com detalhes mais especificos ', resul);
+        this.clientService.GetClientById(resul.id).subscribe(res => {
+          this.route.navigate(['clientbyid/', res.fiscalId]);
+        });
+      });
+    });
+
   }
 
   ngOnInit(): void {

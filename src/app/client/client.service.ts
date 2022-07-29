@@ -15,8 +15,8 @@ export class ClientService {
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router) { }
 
-  GetClientById(clientID: string): any {
-    return this.http.get<Client>(this.baseUrl + 'submission/' + clientID + "/merchant");
+  GetClientById(submissionID: string): any {
+    return this.http.get<Client>(this.baseUrl + 'submission/' + submissionID + "/merchant");
   }
 
   EditClient(clientID: string, newClient: Client) {
