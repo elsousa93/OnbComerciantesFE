@@ -9,6 +9,8 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { debounceTime, distinctUntilChanged, Subscription, tap } from 'rxjs';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { SubmissionService } from '../../submission/service/submission-service.service';
+import { ClientService } from '../client.service';
 
 
 @Component({
@@ -85,6 +87,9 @@ export class InfoDeclarativaComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
+  public returned: string;
+  public merchantInfo: any;
+
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
@@ -97,23 +102,29 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.ngOnInit();
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
     });
 
+    this.submissionService.GetSubmissionByID(localStorage.getItem("submissionId")).subscribe(result => {
+      this.clientService.GetClientById(result.id).subscribe(resul => {
+        this.merchantInfo = resul;
+      });
+    });
+
     this.listValue = this.formBuilder.group({
-      comercialName: new FormControl('', Validators.required),
+      comercialName: new FormControl((this.returned != null) ? this.merchantInfo.commercialName : '', Validators.required),
       phone1CountryCode: new FormControl(null),
-      phone1PhoneNumber: new FormControl(null),
+      phone1PhoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone1.phoneNumber : null),
       phone2CountryCode: new FormControl(''),
-      phone2PhoneNumber: new FormControl(''),
+      phone2PhoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone2.phoneNumber : ''),
       faxCountryCode: new FormControl(''),
       faxPhoneNumber: new FormControl(''),
-      email: new FormControl(this.newClient.contacts.email, Validators.required),
-      billingEmail: new FormControl(this.newClient.billingEmail)
+      email: new FormControl((this.returned != null) ? this.merchantInfo.contacts.email : '', Validators.required),
+      billingEmail: new FormControl((this.returned != null) ? this.merchantInfo.billingEmail : '')
     });
 
     this.listValue.get("phone1CountryCode").valueChanges.subscribe(data => {
@@ -182,7 +193,7 @@ export class InfoDeclarativaComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 6, 1);
-
+    this.returned = localStorage.getItem("returned");
   }
 
 
