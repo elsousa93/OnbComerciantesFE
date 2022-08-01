@@ -23,16 +23,22 @@
                 <th scope="col" class="text-center bg-white">Nome Cliente</th>
                 <th scope="col" class="text-center bg-white">NIF</th>
                 <th scope="col" class="text-center bg-white">Elegível</th>
+                <th scope="col" class="bg-white"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let stakeholder of submissionStakeholders" (click)="selectStakeholder(stakeholder)" [ngClass]="{'row-selected': currentStakeholder === stakeholder}">
                 <th scope="row" class="text-primary text-center">Associado?</th>
                 <!--<td class="text-primary text-center">{{stakeholder.id}}</td>-->
-                <td class="text-primary text-center">{{stakeholder.stakeholderNumber}}</td>
+                <td class="text-primary text-center">{{stakeholder.id}}</td>
                 <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                 <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                 <td class="text-primary text-center">Elegivel?</td>
+                <td>
+                  <span>
+                    <img src="assets/images/delete_blue.svg" (click)="deleteStakeholder()" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>

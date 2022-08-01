@@ -293,6 +293,7 @@ export class StakeholdersComponent implements OnInit {
       clients.forEach(function (value, index) {
         console.log(value);
         context2.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+          console.log("stakeholders a popular");
           console.log(c);
           var stakeholder = {
             "stakeholderNumber": c.stakeholderId,
@@ -324,12 +325,15 @@ export class StakeholdersComponent implements OnInit {
   deleteStakeholder() {
     this.stakeholderService.DeleteStakeholder(this.submissionId, this.currentStakeholder.id).subscribe(s => {
       console.log("stakeholder deleted");
-
-      const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
-      console.log(index);
-      if (index > -1) { // 
-        this.stakeholdersToShow.splice(index, 1);
-      }
+      this.route.navigateByUrl('stakeholders/');
+      //this.ngOnInit();
+      //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
+      //console.log(index);
+      //if (index > -1) { // 
+      //  this.stakeholdersToShow.splice(index, 1);
+      //}
+      //console.log("depois de apagar");
+      //console.log(this.stakeholdersToShow);
       //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
       //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
       //    this.stakeholdersToShow.splice(i, 1);

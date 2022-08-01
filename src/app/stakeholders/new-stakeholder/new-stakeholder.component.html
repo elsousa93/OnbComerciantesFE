@@ -33,7 +33,7 @@
                 <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
                 <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}" >
                   <th scope="row" class="text-primary text-center">Associado?</th>
-                  <td class="text-primary text-center">{{stakeholder.id}}</td>
+                  <td class="text-primary text-center">{{stakeholder.stakeholderNumber}}</td>
                   <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                   <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                   <td class="text-primary text-center">Elegivel?</td>
@@ -43,11 +43,10 @@
           </div>
         </div>
         <h2 class="text-primary mt-5 ps-0 center-align">
-          <img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;NOVO
+          <img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;IDENTIFICAÇÃO DO
           INTERVENIENTE
         </h2>
-        <p class="titul campo_obrigatrio">* campo obrigatório</p>
-        <div class="row ms-0 me-0">
+        <div class="row ms-0 me-0" *ngIf="isSelected">
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
             <p class="titulo-form-simples mb-1">Associado ao Contrato:*</p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -165,7 +164,10 @@
               </div>-->
 
               <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
-              <input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">
+              <!--<input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">-->
+              <select id="streetAddressStakeholder" class="form-select" formControlName="Country">
+                <option *ngFor="let country of countries" value="{{country.code}}">{{country.description}}</option>
+              </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
                 O parâmetro "Morada Fiscal" é obrigatório.
               </div>-->
