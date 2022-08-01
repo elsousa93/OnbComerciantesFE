@@ -23,14 +23,14 @@ import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
 export class CountrysComponent implements OnInit {
   continente = '';
 
-  lstCountry = [];
-  lstCountry1 = [];
-  lstCountry2 = [];
-  contPais = [];
+  lstCountry: CountryInformation[] = [];
+  lstCountry1 : CountryInformation[] = [];
+  lstCountry2 : CountryInformation[] = [];
+  contPais : CountryInformation[] = [];
 
   continenteName: string;
 
-  lstPaisPreenchido = [];
+  lstPaisPreenchido: CountryInformation[] = [];
 
   inputEuropa: boolean = false;
   inputOceania: boolean = false;
@@ -469,15 +469,15 @@ export class CountrysComponent implements OnInit {
     this.associatedWithGroupOrFranchise = value;
   }
 
-  onCountryChange(event) {
-    console.log('País selecionado ', event.target);
-    var index = this.contPais.findIndex(elem => elem.description == event.target.id.description);
+  onCountryChange(country) {
+    console.log('País selecionado ', country);
+    var index = this.contPais.findIndex(elem => elem.description == country.description);
     if (index > -1) {
       console.log('País existe no contPais');
       this.contPais.splice(index, 1);
     } else {
       console.log('País adicionado ');
-      this.contPais.push(event.target.id);
+      this.contPais.push(country);
       console.log("ContPais depois do pais ser add ", this.contPais);
     }
 
