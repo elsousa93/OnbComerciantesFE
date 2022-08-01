@@ -277,6 +277,16 @@ export class StakeholdersComponent implements OnInit {
   deleteStakeholder() {
     this.stakeholderService.DeleteStakeholder(this.submissionId, this.currentStakeholder.id).subscribe(s => {
       console.log("stakeholder deleted");
+
+      const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
+      console.log(index);
+      if (index > -1) { // 
+        this.stakeholdersToShow.splice(index, 1);
+      }
+      //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
+      //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
+      //    this.stakeholdersToShow.splice(i, 1);
+      //}
     });
   }
 

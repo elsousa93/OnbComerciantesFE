@@ -96,34 +96,39 @@
 
     </nav>
   </div>
+ 
   <div *ngIf="isShown" class="row container-fluid" id="divshow">
-  <h2>Interveniente Encontrado!</h2>
-  <table class="table table-success" aria-labelledby="tableLabel" *ngIf="stakeShow">
-    <thead class="text-primary table-primary">
-      <tr class="text-center text-primary table-light">
-        <th scope="col" class="align-baseline text-primary table-white">ID Fiscal</th>
-        <th scope="col" class="text-center bg-light">Nome</th>
-        <!--<th>Editar</th>-->
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="table table-striped" *ngFor="let stake of stakeholdersToShow" (click)="selectedStakeholder(stake)" ng-class="{'selected-row': stake === newStake}">
-        <td class="text-primary text-center">{{stake.stakeholderNIF}}</td>
-        <td class="text-primary text-center">{{stake.stakeholderName}}</td>
-        <!--<td>
-          <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
-            <span class="glyphicon glyphicon-pencil"></span>Editar
-          </button>
-        </td>-->
-      </tr>
-    </tbody>
-  </table>
+    <h2>Interveniente Encontrado!</h2>
 
-  <!--<div>
+    <table class="table table-success" *ngIf="stakeShow">
+      <thead class="text-primary table-primary">
+        <tr class="text-center text-primary table-light">
+          <th scope="col" class="align-baseline text-primary table-white">ID Fiscal</th>
+          <th scope="col" class="text-center bg-light">Nome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stake of stakeholdersToShow" (click)="selectStakeholder(stake)" [ngClass]="{'row-selected': stake === newStake}">
+          <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
+          <td class="text-primary text-center">{{stake.stakeholderName}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!foundStakeholders">
+      <p class="titulo-form-simples">Denominação Social:</p><input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
+
+      <!--<p class="titulo-form-simples">Denominação Social:</p><input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">-->
+    </div>
+    <!--<div>
+      <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" (click)="addStakeholder()" wappler-command="editContent">
+        <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+        Adicionar interveniente&nbsp;
+      </button>
+    </div>-->
+    <!--<div>
     Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
   </div>-->
-
-</div>
+  </div>
   <div class="col ms-0 ps-0">
     <hr />
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -136,11 +141,11 @@
       <!--<button [routerLink]="['/']" id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
         CANCELAR&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
       </button>-->
-      <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+      <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" [routerLink]="['/stakeholders/']">
         <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
         VOLTAR&nbsp;
       </button>
-      <button *ngIf="newStake" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" (click)="addStakeholder()" wappler-command="editContent">
+      <button *ngIf="(newStake !== null && newStake !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()">
         SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
       </button>
     </nav>

@@ -371,14 +371,23 @@ export class CountrysComponent implements OnInit {
         
     //  });
     //}
-
+    var context = this;
     console.log("Submissao tratada! uysidghsiudghisudh");
     console.log(this.newSubmission);
     console.log("----------------------");
     console.log(this.stakeholdersToInsert);
     //console.log(this.newSubmission.merchant);
 
-    var context = this;
+    this.stakeholdersToInsert.forEach(function (value, idx) {
+      context.newSubmission.stakeholders.push({
+        "fiscalId": value.fiscalId,
+        "shortName": value.name
+      })
+    });
+
+    console.log("|||||||||||||");
+    console.log(this.newSubmission);
+    
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log("dentro do submission service");
       console.log(result);

@@ -72,7 +72,7 @@
                     <div class="row">
                       <div class="col-4">
                         <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
-                        <select class="form-select" #phone2CountryCode formControlName="phone2CountryCode" (click)="changeListElement(phone2CountryCode, $event)" id="phone2CountryCode">
+                        <select class="form-select" #phone2CountryCode formControlName="phone2CountryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode">
                           <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">

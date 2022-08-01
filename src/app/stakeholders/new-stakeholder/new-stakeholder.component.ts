@@ -61,6 +61,7 @@ export class NewStakeholderComponent implements OnInit {
   } as unknown as IStakeholders
 
   currentStakeholder: IStakeholders = {};
+  currentIdx: number = 0;
 
   submissionStakeholders: IStakeholders[] = [];
 
@@ -115,10 +116,11 @@ export class NewStakeholderComponent implements OnInit {
     //}
   }
 
-  updateForm(stakeholder) {
+  updateForm(stakeholder, idx) {
     console.log("chegou aqui");
     console.log(stakeholder);
     this.currentStakeholder = stakeholder;
+    this.currentIdx = idx;
 
     console.log(this.currentStakeholder);
     this.initializeFormWithoutCC();
@@ -196,7 +198,12 @@ export class NewStakeholderComponent implements OnInit {
       console.log(this.currentStakeholder);
       this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.id, this.currentStakeholder).subscribe(result => {
         console.log("Resultado de criar um stakeholder a uma submissão existente");
-        console.log(result);
+        if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
+          this.currentIdx = this.currentIdx + 1;
+          this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
+          console.log(this.currentStakeholder);
+        }
+        
       }, error => {
         console.log(error);
       });
