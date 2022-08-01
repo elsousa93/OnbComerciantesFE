@@ -527,6 +527,7 @@ export class CountrysComponent implements OnInit {
   }
 
   countrys(item) {
+    console.log("item que passamos como parametro ", item);
     this.countriesCheckBox.forEach(val => {
       if (val.value == item.value) {
         val.isSelected = !val.isSelected;
@@ -535,9 +536,17 @@ export class CountrysComponent implements OnInit {
       }
     });
 
-    this.lstCountry = [];
-    this.lstCountry1 = [];
-    this.lstCountry2 = [];
+    console.log("lstCountry quando carregamos na checkbox ", this.lstCountry);
+    console.log("lstCountry1 quando carregamos na checkbox ", this.lstCountry1);
+    console.log("lstCountry2 quando carregamos na checkbox ", this.lstCountry2);
+
+    this.lstCountry.splice(0, this.lstCountry.length);
+    this.lstCountry1.splice(0, this.lstCountry1.length);
+    this.lstCountry2.splice(0, this.lstCountry2.length);
+
+    console.log("lstCountry quando carregamos na checkbox depois de esvaziar ", this.lstCountry);
+    console.log("lstCountry1 quando carregamos na checkbox depois de esvaziar ", this.lstCountry1);
+    console.log("lstCountry2 quando carregamos na checkbox deopis de esvaziar", this.lstCountry2);
 
     this.valueInput();
     var count = 0;
