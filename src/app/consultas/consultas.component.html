@@ -65,14 +65,6 @@
               </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
             </ng-container>
-            <!-- Estado de Conclusão Column -->
-            <ng-container matColumnDef="estadoDeConclusao">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>
-                ESTADO DE CONCLUSÃO
-              </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.estadoDeConclusao}} </mat-cell>
-            </ng-container>
-            <!-- Estado de Conclusão Column -->
             <ng-container matColumnDef="abrirProcesso">
               <mat-header-cell *matHeaderCellDef >
                 ABRIR PROCESSO
@@ -81,11 +73,10 @@
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons >
+           </mat-paginator>
           </mat-table>
-          
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-          showFirstLastButtons >
-         </mat-paginator>
         </div>
       </div>
       <div class="col ms-0 ps-0">

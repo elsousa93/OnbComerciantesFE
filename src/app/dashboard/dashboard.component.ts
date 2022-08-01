@@ -161,7 +161,7 @@ export class DashboardComponent implements OnInit {
   @Input() isToggle: boolean = false;
   @Input() isAutoHide: boolean = false;
 
-  displayedColumns = ['processNumber', 'contractNumber', 'requestDate', 'user', 'buttons'];
+  displayedColumns = ['processNumber', 'requestDate', 'user', 'buttons'];
 
   process: ProcessGet = {
     processNumber: "",

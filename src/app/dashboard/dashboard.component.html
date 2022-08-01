@@ -117,22 +117,15 @@
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourcePendentes" matSort #empTbSort="matSort">
-                  <!-- Nº Pedido Column -->
+                  <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
-                  <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nº Contrato
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
-                  </ng-container>
-                  <!-- Data Pedido Column -->
+                  <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Pedido
+                      Data Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
@@ -211,22 +204,15 @@
                 data-bs-parent="#accordionFlushExample">
                 <!--dataSourceWithObjectColumn-->
                 <mat-table [dataSource]="dataSourceTratamento" matSort #empTbSortWithObject="matSort">
-                  <!-- Nº Pedido Column -->
+                  <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
-                  <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nº Contrato
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
-                  </ng-container>
-                  <!-- Data Pedido Column -->
+                  <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Pedido
+                      Data Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
@@ -292,22 +278,15 @@
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceDevolvidos" matSort #empTbSortDevolvidos="matSort">
-                  <!-- Nº Pedido Column -->
+                  <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
-                  <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nº Contrato
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
-                  </ng-container>
-                  <!-- Data Pedido Column -->
+                  <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Pedido
+                      Data Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
@@ -384,22 +363,15 @@
               <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceAceitacao" matSort #empTbSortAceitacao="matSort">
-                  <!-- Nº Pedido Column -->
+                  <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
-                  <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nº Contrato
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
-                  </ng-container>
-                  <!-- Data Pedido Column -->
+                  <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Pedido
+                      Data Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
@@ -476,22 +448,15 @@
               <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceArquivoFisico" matSort #empTbSortArquivoFisico="matSort">
-                  <!-- Nº Pedido Column -->
+                  <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Pedido </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
-                  <!-- Nº Contrato Column -->
-                  <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nº Contrato
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
-                  </ng-container>
-                  <!-- Data Pedido Column -->
+                  <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Pedido
+                      Data Processo
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
