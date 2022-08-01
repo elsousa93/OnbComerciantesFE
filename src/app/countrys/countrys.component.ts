@@ -552,7 +552,7 @@ export class CountrysComponent implements OnInit {
     var count = 0;
     switch (item.value) {
       case 'EUROPA':
-        //if (this.inputEuropa == false) {
+        if (this.inputEuropa == false) {
           this.inputEuropa = true;
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
@@ -569,8 +569,8 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-        //} else {
-        //  this.inputEuropa = false;
+        } else {
+          this.inputEuropa = false;
         //  //this.countryList.forEach(country => {
         //  //  if (country.continent == "Europa") {
         //  //    this.removeCountryFromList(country, this.lstCountry);
@@ -579,10 +579,10 @@ export class CountrysComponent implements OnInit {
         //  //    //this.removeCountryFromList(country, this.contPais);
         //  //  }
         //  //});
-        //}
+        }
         break;
       case 'AFRICA':
-        //if (this.inputAfrica == false) {
+        if (this.inputAfrica == false) {
           this.inputAfrica = true;
 
           this.countryList.forEach(country => {
@@ -600,8 +600,8 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-        //} else {
-        //  this.inputAfrica = false;
+        } else {
+          this.inputAfrica = false;
 
         //  //this.countryList.forEach(country => {
         //  //  if (country.continent == "Africa") {
@@ -611,10 +611,10 @@ export class CountrysComponent implements OnInit {
         //  //    //this.removeCountryFromList(country, this.contPais);
         //  //  }
         //  //});
-        //}
+        }
         break;
       case 'OCEANIA':
-        //if (this.inputOceania == false) {
+        if (this.inputOceania == false) {
           this.inputOceania = true;
 
           this.countryList.forEach(country => {
@@ -632,8 +632,8 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-        //} else {
-        //  this.inputOceania = false;
+        } else {
+          this.inputOceania = false;
 
         //  //this.countryList.forEach(country => {
         //  //  if (country.continent == "Oceania") {
@@ -643,10 +643,10 @@ export class CountrysComponent implements OnInit {
         //  //    //this.removeCountryFromList(country, this.contPais);
         //  //  }
         //  //});
-        //}
+        }
         break;
       case 'ASIA':
-        //if (this.inputAsia == false) {
+        if (this.inputAsia == false) {
           this.inputAsia = true;
 
           this.countryList.forEach(country => {
@@ -664,8 +664,8 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-        //} else {
-        //  this.inputAsia = false;
+        } else {
+          this.inputAsia = false;
 
         //  //this.countryList.forEach(country => {
         //  //  if (country.continent == "Ásia") {
@@ -675,10 +675,10 @@ export class CountrysComponent implements OnInit {
         //  //    //this.removeCountryFromList(country, this.contPais);
         //  //  }
         //  //});
-        //}
+        }
         break;
       case 'AMERICA DO NORTE / SUL':
-        //if (this.inputAmericas == false) {
+        if (this.inputAmericas == false) {
           this.inputAmericas = true;
 
           this.countryList.forEach(country => {
@@ -696,8 +696,8 @@ export class CountrysComponent implements OnInit {
             }
           });
 
-        //} else {
-        //  this.inputAmericas = false;
+        } else {
+          this.inputAmericas = false;
 
         //  //this.countryList.forEach(country => {
         //  //  if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
@@ -707,7 +707,7 @@ export class CountrysComponent implements OnInit {
         //  //    //this.removeCountryFromList(country, this.contPais);
         //  //  }
         //  //});
-        //}
+        }
         break;
     }
   }
