@@ -554,6 +554,10 @@ export class CountrysComponent implements OnInit {
       case 'EUROPA':
         if (this.inputEuropa == false) {
           this.inputEuropa = true;
+          this.inputAfrica = false;
+          this.inputAmericas = false;
+          this.inputAsia = false;
+          this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
               if (count <= 19) {
@@ -584,7 +588,10 @@ export class CountrysComponent implements OnInit {
       case 'AFRICA':
         if (this.inputAfrica == false) {
           this.inputAfrica = true;
-
+          this.inputEuropa = false;
+          this.inputAmericas = false;
+          this.inputAsia = false;
+          this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Africa") {
               if (count <= 19) {
@@ -616,7 +623,10 @@ export class CountrysComponent implements OnInit {
       case 'OCEANIA':
         if (this.inputOceania == false) {
           this.inputOceania = true;
-
+          this.inputAfrica = false;
+          this.inputAmericas = false;
+          this.inputAsia = false;
+          this.inputEuropa = false;
           this.countryList.forEach(country => {
             if (country.continent == "Oceania") {
               if (count <= 19) {
@@ -648,7 +658,10 @@ export class CountrysComponent implements OnInit {
       case 'ASIA':
         if (this.inputAsia == false) {
           this.inputAsia = true;
-
+          this.inputAfrica = false;
+          this.inputAmericas = false;
+          this.inputEuropa = false;
+          this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
               if (count <= 19) {
@@ -680,7 +693,10 @@ export class CountrysComponent implements OnInit {
       case 'AMERICA DO NORTE / SUL':
         if (this.inputAmericas == false) {
           this.inputAmericas = true;
-
+          this.inputAfrica = false;
+          this.inputEuropa = false;
+          this.inputAsia = false;
+          this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
               if (count <= 19) {
