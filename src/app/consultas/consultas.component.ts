@@ -25,30 +25,30 @@ interface Process {
   estadoDeConclusao: string;
 }
 
-const testValues : Process[] = [
-  {processNumber: "240370", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"}
-]
+//const testValues : Process[] = [
+//  {processNumber: "240370", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
+//  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"}
+//]
 @Component({
   selector: 'app-consultas',
   templateUrl: './consultas.component.html',
@@ -131,7 +131,7 @@ export class ConsultasComponent implements OnInit{
         var encodedCode = encodeURIComponent(processNumber);
         this.processService.searchProcessByNumber(encodedCode).subscribe(result => {
           let processesArray: Process[] = result.map<Process>((process)=>{
-            return {processNumber: process.processId, 
+            return {processNumber: process.processNumber, 
                     nipc:529463466,
                     nome: "EMPRESA UNIPESSOAL TESTES", 
                     estado: process.state, 
@@ -147,7 +147,7 @@ export class ConsultasComponent implements OnInit{
         var processStateToSearch = this.form.get("state").value;
         this.processService.searchProcessByState(processStateToSearch).subscribe(result => {
           let processesArray: Process[] = result.map<Process>((process)=>{
-            return {processNumber: process.processId, 
+            return {processNumber: process.processNumber, 
                     nipc:529463466,
                     nome: "EMPRESA UNIPESSOAL TESTES", 
                     estado: process.state, 
@@ -182,14 +182,14 @@ export class ConsultasComponent implements OnInit{
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     var context = this;
 
-    this.loadProcesses();
+    //this.loadProcesses();
   }
   ngAfterViewInit(){
     this.processes.paginator = this.paginator;
     this.processes.sort = this.sort;
   }
 
-  loadProcesses(processValues: Process[] = testValues){
+  loadProcesses(processValues: Process[] /*= testValues*/){
     this.processes = new MatTableDataSource(processValues);
   }
 

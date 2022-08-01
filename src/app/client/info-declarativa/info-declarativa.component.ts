@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidationErrors, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Client } from '../Client.interface'
 import { FormBuilder } from '@angular/forms';
 import { codes } from './indicativo';
@@ -11,6 +11,7 @@ import { TableInfoService } from '../../table-info/table-info.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ClientService } from '../client.service';
+import { XhrFactory } from '@angular/common';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class InfoDeclarativaComponent implements OnInit {
 
   ListaInd = codes;
   listValue!: FormGroup;
+  phone1: AbstractControl;
+  phone2: AbstractControl;
   phone1CountryCode?: string = "";
   phone2CountryCode?: string = "";
   faxPhoneNumber?: string = "";
@@ -101,9 +104,44 @@ export class InfoDeclarativaComponent implements OnInit {
 
   }
 
+  //Custom Validators
+  //  Testa se o country code e o phone number passam o required check
+  //  Se não, testa se ambos falham
+  pairRequired(control: AbstractControl) : ValidationErrors | null {
+    let xor = (a,b)=>{return (a && b) || (!a && !b);};
+    let countryCodeExists = Validators.required(control.get("countryCode")) == null
+    let phoneNumberExists = Validators.required(control.get("phoneNumber")) == null
+    let validityCheck = xor(countryCodeExists,phoneNumberExists);
+    return validityCheck ? null : {"missingValue" : countryCodeExists ? "phoneNumber" : "countryCode"};
+  }
+
+  validPhoneNumber(control: AbstractControl) : ValidationErrors | null {
+    let phoneNumber = control.get("phoneNumber").value;
+    let countryCode = control.get("countryCode").value;
+    if (countryCode == "+351") { //Indicativo de Portugal
+      console.log("Portugal");
+      if (phoneNumber && phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
+        console.log("Válido");
+        return null;
+      } else {
+        return {invalidNumber : true}
+      }
+    } else { // Indicativo não é de Portugal
+      console.log("Fora de Portugal");
+      if (phoneNumber && phoneNumber.length <= 16) {
+        console.log("Válido");
+        return null;
+      } else {
+        return {invalidNumber : true}
+      }
+    }
+  }
+
+
 
   constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.ngOnInit();
+
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
@@ -115,19 +153,28 @@ export class InfoDeclarativaComponent implements OnInit {
       });
     });
 
+    //this.internationalCallingCodes = [{code:'POR', continent:"Europe", description:"thing", internationalCallingCode:"+351"}];
+
     this.listValue = this.formBuilder.group({
       comercialName: new FormControl((this.returned != null) ? this.merchantInfo.commercialName : '', Validators.required),
-      phone1CountryCode: new FormControl(null),
-      phone1PhoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone1.phoneNumber : null),
-      phone2CountryCode: new FormControl(''),
-      phone2PhoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone2.phoneNumber : ''),
+      phone1: this.formBuilder.group({
+        countryCode: new FormControl(null),
+        phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone1.phoneNumber : null),
+      },{validators: [this.pairRequired, this.validPhoneNumber]}),
+      phone2: this.formBuilder.group({
+        countryCode: new FormControl(''),
+        phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone2.phoneNumber : null),
+      },{validators: [this.pairRequired, this.validPhoneNumber]}),
       faxCountryCode: new FormControl(''),
       faxPhoneNumber: new FormControl(''),
       email: new FormControl((this.returned != null) ? this.merchantInfo.contacts.email : '', Validators.required),
       billingEmail: new FormControl((this.returned != null) ? this.merchantInfo.billingEmail : '')
     });
+    this.phone1 = this.listValue.get("phone1");
+    this.phone2 = this.listValue.get("phone2");
 
-    this.listValue.get("phone1CountryCode").valueChanges.subscribe(data => {
+
+    /* this.listValue.get("phone1CountryCode").valueChanges.subscribe(data => {
       if (data !== '') {
         this.listValue.controls["phone1PhoneNumber"].setValidators([Validators.required]);  
       } else {
@@ -161,7 +208,7 @@ export class InfoDeclarativaComponent implements OnInit {
         this.listValue.controls["phone2CountryCode"].clearValidators();
       }
       this.listValue.controls["phone2CountryCode"].updateValueAndValidity();
-    });
+    }); */
 
     //this.listValue.get("faxCountryCode").valueChanges.subscribe(data => {
     //  if (data !== '') {
@@ -212,10 +259,10 @@ export class InfoDeclarativaComponent implements OnInit {
 
   submit() {
     this.newClient.companyName = this.listValue.get('comercialName').value;
-    this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1CountryCode').value;
-    this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1PhoneNumber').value;
-    this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2CountryCode').value;
-    this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2PhoneNumber').value;
+    this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('CountryCode').value;
+    this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('PhoneNumber').value;
+    this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2').get('CountryCode').value;
+    this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2').get('PhoneNumber').value;
     this.newClient.contacts.email = this.listValue.get('email').value;
     this.newClient.contacts.fax.countryCode = this.listValue.get('faxCountryCode').value;
     this.newClient.contacts.fax.phoneNumber = this.listValue.get('faxPhoneNumber').value;
@@ -225,24 +272,5 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
 
-  // validação dos números de telefone
-  validatePhone(phoneCountryCode: string, phoneNumber: string) {
-    console.log("Entrei na validação de telefones");
-    if (phoneCountryCode == "+351") { //Indicativo de Portugal
-      console.log("Portugal");
-      if (phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
-        console.log("Válido");
-      } else {
-        alert("Este número de telefone é inválido!");
-      }
-    } else { // Indicativo não é de Portugal
-      console.log("Fora de Portugal");
-      if (phoneNumber.length <= 16) {
-        console.log("Válido");
-      } else {
-        alert("Este número de telefone é inválido!");
-      }
-    }
-  }
 
 }

@@ -25,8 +25,8 @@ export class NewStakeholderComponent implements OnInit {
 
   stakeholderNumber: string;
 
-  submissionId: string;
-  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+  //submissionId: string;
+  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   @Input() isCC: boolean;
 
@@ -68,7 +68,7 @@ export class NewStakeholderComponent implements OnInit {
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router, private fb: FormBuilder,private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService) {
-    this.submissionId = localStorage.getItem('submissionId');
+    //this.submissionId = localStorage.getItem('submissionId');
     this.ngOnInit();
 
     var context = this;

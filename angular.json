@@ -43,7 +43,8 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "./node_modules/popper.js/dist/umd/popper.min.js",
-              "src/bootstrap/5/js/bootstrap.min.js"
+              "src/bootstrap/5/js/bootstrap.min.js",
+              "src/app/citizencard/CitizenCardController.js"
             ]
           },
           "configurations": {
@@ -126,7 +127,13 @@
 
 
             ],
-            "scripts": []
+            "scripts": [
+              
+                "node_modules/jquery/dist/jquery.min.js",
+                "./node_modules/popper.js/dist/umd/popper.min.js",
+                "src/bootstrap/5/js/bootstrap.min.js",
+                "src/app/citizencard/CitizenCardController.js"
+              ]
           }
         }
       }
