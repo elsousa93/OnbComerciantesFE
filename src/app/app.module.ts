@@ -163,7 +163,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
-      { path: 'store-comp', component: StoreComponent, canActivate: [AuthGuard] },
+      { path: 'store-comp', component: StoreComponent },
       { path: 'add-store/:stroreid', component: AddStoreComponent },
       { path: 'add-store-iban/:stroreid', component: StoreIbanComponent },
       { path: 'commercial-offert-list', component: CommercialOfferListComponent },

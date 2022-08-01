@@ -709,7 +709,13 @@ main {
     margin-bottom: 5px;
     padding-left: 0px
   }
-
+  .titulo-form-simples-erro {
+    font-size: 16px;
+    color: red;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    padding-left: 0px
+  }
   .caixa_menu_footer {
     margin-top: 0px;
     padding: 0px
