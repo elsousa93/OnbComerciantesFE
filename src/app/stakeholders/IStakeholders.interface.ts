@@ -49,8 +49,8 @@ export interface ForeignFiscalInformation {
 }
 
 export interface Phone {
-  countryCode: string
-  phoneNumber: string
+  countryCode?: string
+  phoneNumber?: string
 }
 
 export interface Country {

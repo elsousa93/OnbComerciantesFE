@@ -31,8 +31,8 @@ export class CreateStakeholderComponent implements OnInit {
     "shortName": ""
   } as IStakeholders;
 
-  submissionId: string;
-  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+ submissionId: string;
+ // submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
 
@@ -74,6 +74,10 @@ export class CreateStakeholderComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
+  stakeholderNumber: string;
+
+  foundStakeholders: boolean;
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
@@ -81,8 +85,8 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.submissionId = localStorage.getItem('submissionId');
 
-    console.log("foi buscar bem ao localstorage?");
-    console.log(this.submissionId);
+    //console.log("foi buscar bem ao localstorage?");
+    //console.log(this.submissionId);
     this.ngOnInit();
 
     var context = this;
@@ -101,6 +105,14 @@ export class CreateStakeholderComponent implements OnInit {
     //  console.log(error);
     //});
 
+  }
+
+  initializeNotFoundForm() {
+    this.formStakeholderSearch.addControl("socialDenomination", new FormControl('', Validators.required));
+  }
+
+  deactivateNotFoundForm() {
+    this.formStakeholderSearch.removeControl("socialDenomination");
   }
 
   initializeForm() {
@@ -243,24 +255,38 @@ export class CreateStakeholderComponent implements OnInit {
     /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
-
+      console.log("searched interveniente");
+      console.log(clients);
       var context2 = this;
 
       context.isShown = true;
-
-      clients.forEach(function (value, index) {
-        context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-          var stakeholder = {
-            "stakeholderNumber": c.stakeholderId,
-            "stakeholderName": c.shortName,
-            "stakeholderNIF": c.fiscalIdentification.fiscalId,
-            "elegible": "elegivel",
-            "associated": "SIM"
-          }
-
-          context.stakeholdersToShow.push(stakeholder);
-        });
-      })
+      
+      if (clients.length > 0) {
+        context.deactivateNotFoundForm();
+        context.foundStakeholders = true;
+        context.stakeholdersToShow = [];
+        clients.forEach(function (value, index) {
+          console.log(value);
+          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+            console.log("ja a ir buscar");
+            console.log(c);
+            var stakeholder = {
+              "stakeholderNumber": c.stakeholderId,
+              "stakeholderName": c.shortName,
+              "stakeholderNIF": c.fiscalIdentification.fiscalId,
+              "elegible": "elegivel",
+              "associated": "SIM"
+            }
+            console.log("stakeholder adicionado:");
+            console.log(stakeholder);
+            context.stakeholdersToShow.push(stakeholder);
+          });
+        })
+      } else {
+        context.initializeNotFoundForm();
+        context.stakeholdersToShow = [];
+        context.foundStakeholders = false;
+      }
     }, error => {
       //context.showFoundClient = false;
       //console.log("entrou aqui no erro huajshudsj");
@@ -274,19 +300,57 @@ export class CreateStakeholderComponent implements OnInit {
     this.ngOnInit();
   }
 
-  selectedStakeholder(stakeholder) {
+  selectStakeholder(stakeholder) {
     console.log(stakeholder);
-    this.newStake = stakeholder;
+    
+    this.newStake = {
+      "fiscalId": stakeholder.stakeholderNIF,
+      "identificationDocument": {},
+      "fullName": '',
+      "contactName": '',
+      "shortName": ''
+    };
     console.log(this.newStake);
+    this.stakeholderNumber = stakeholder.stakeholderNumber;
   }
 
   addStakeholder() {
-    this.stakeholderService.CreateNewStakeholder(this.submissionId, this.newStake).subscribe(result => {
-      console.log("Stakeholder criado com sucesso");
-      this.route.navigate(['/stakeholders/']);
-    }, error => {
-      console.log(error);
-    });
+    if (this.foundStakeholders) {
+      this.stakeholderService.getStakeholderByID(this.stakeholderNumber, 'por mudar', 'por mudar').subscribe(stakeholder => {
+        var stakeholderToInsert = stakeholder;
+
+        console.log("stakeholder procurado");
+        console.log(stakeholderToInsert);
+        this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+          console.log("add stakeholder existente");
+          console.log(this.newStake);
+
+          this.route.navigate(['/stakeholders/']);
+        }, error => {
+          console.log(error);
+        });
+      });
+    } else {
+      console.log("form");
+      console.log(this.formStakeholderSearch);
+
+      var stakeholderToInsert: IStakeholders = {
+        "fiscalId": this.formStakeholderSearch.get("documentNumber").value,
+        "identificationDocument": {
+          "type": this.formStakeholderSearch.get("documentType").value,
+          "number": this.formStakeholderSearch.get("documentNumber").value,
+        },
+        "phone1": {},
+        "phone2": {},
+        "shortName": this.formStakeholderSearch.get("socialDenomination").value
+      }
+      console.log("Stakeholder a adicionar");
+      console.log(stakeholderToInsert);
+      this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+        console.log("Stakeholder criado com sucesso");
+        this.route.navigate(['/stakeholders/']);
+      });
+    }
   }
 
 }

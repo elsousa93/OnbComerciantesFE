@@ -319,15 +319,19 @@ export class ClientByIdComponent implements OnInit {
   initializeENI() {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
   }
 
   initializeBasicFormControl() {
+    console.log(this.consult);
+    console.log(this.returned);
+    console.log("Erro1");
+    console.log(this.merchantInfo);
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.incorporationStatement.code : this.crcCode, [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null && this.merchantInfo !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
     
@@ -352,7 +356,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
-      socialDenomination: new FormControl((this.returned != null || this.consult != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null ) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -624,7 +628,7 @@ export class ClientByIdComponent implements OnInit {
 
     console.log(this.clientExists);
 
-    if (this.returned != null || this.consult != null) {
+    if (this.returned === 'edit') {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         console.log('Submissão retornada quando pesquisada pelo número de processo', result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
@@ -634,11 +638,15 @@ export class ClientByIdComponent implements OnInit {
           });
         });
       });
+    }
 
-      if (this.consult != null) {
+
+      if (this.returned === 'consult') {
         console.log("Entrei no if do consult");
         this.NIFNIPC = this.merchantInfo.fiscalId;
         console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
+        console.log("Erro2");
+        console.log(this.merchantInfo);
         if (this.merchantInfo.incorporationStatement.code !== "") {
           console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
           this.initializeBasicFormControl();
@@ -659,7 +667,7 @@ export class ClientByIdComponent implements OnInit {
       }
     }
 
-  } //fim do construtor
+   //fim do construtor
 
   ngOnInit(): void {
     this.clientId = String(this.router.snapshot.params['id']);
@@ -678,7 +686,6 @@ export class ClientByIdComponent implements OnInit {
     this.data.updateData(false, 1, 2);
 
     this.returned = localStorage.getItem("returned");
-    this.consult = localStorage.getItem("consult");
   }
 
 
@@ -782,7 +789,10 @@ export class ClientByIdComponent implements OnInit {
     //console.log("codigo CRC:" , this.form.get('crcCode').value);
     //console.log(crcInserted);
     //this.crcFound = true;
+    console.log("crc search inserido");
     var crcInserted = this.form.get('crcCode').value;
+    console.log(crcInserted);
+    
     var token;
     this.crcService.getAccessToken().subscribe(b => {
       token = b;
