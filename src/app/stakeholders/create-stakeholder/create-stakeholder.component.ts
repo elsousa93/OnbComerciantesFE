@@ -31,8 +31,8 @@ export class CreateStakeholderComponent implements OnInit {
     "shortName": ""
   } as IStakeholders;
 
-  //submissionId: string;
-  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+ submissionId: string;
+ // submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
 

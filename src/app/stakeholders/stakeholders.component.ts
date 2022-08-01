@@ -13,6 +13,7 @@ import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 
 
+
 /** Listagem Intervenientes / Intervenientes
  *
  */
@@ -112,9 +113,9 @@ export class StakeholdersComponent implements OnInit {
 
   currentStakeholder: IStakeholders = null;
 
-  //submissionId: string;
+  submissionId: string;
 
-  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+//  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
   

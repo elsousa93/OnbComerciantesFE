@@ -49,7 +49,7 @@ ngOnInit(): void {
 
 
   nextPage() {
-    localStorage.setItem('returned', 'true');
+    localStorage.setItem('returned', 'edit');
     console.log('Valor do returned', localStorage.getItem("returned"));
 
     localStorage.setItem('processNumber', this.process.processNumber);
