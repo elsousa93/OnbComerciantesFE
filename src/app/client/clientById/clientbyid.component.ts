@@ -331,7 +331,7 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null && this.merchantInfo !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
     
