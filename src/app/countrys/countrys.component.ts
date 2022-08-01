@@ -23,14 +23,14 @@ import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
 export class CountrysComponent implements OnInit {
   continente = '';
 
-  lstCountry = [];
-  lstCountry1 = [];
-  lstCountry2 = [];
-  contPais = [];
+  lstCountry: CountryInformation[] = [];
+  lstCountry1: CountryInformation[] = [];
+  lstCountry2: CountryInformation[] = [];
+  contPais: CountryInformation[] = [];
 
   continenteName: string;
 
-  lstPaisPreenchido = [];
+  lstPaisPreenchido: CountryInformation[] = [];
 
   inputEuropa: boolean = false;
   inputOceania: boolean = false;

@@ -322,8 +322,10 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
   }
 
-  deleteStakeholder() {
-    this.stakeholderService.DeleteStakeholder(this.submissionId, this.currentStakeholder.id).subscribe(s => {
+  deleteStakeholder(stakeholder) {
+    console.log("delete");
+    console.log(stakeholder);
+    this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
       console.log("stakeholder deleted");
       this.route.navigateByUrl('stakeholders/');
       //this.ngOnInit();
