@@ -311,7 +311,6 @@ export class ClientComponent implements OnInit {
       })
     }, error => {
       context.showFoundClient = false;
-      console.log("entrou aqui no erro huajshudsj");
       context.resultError = "Não existe Comerciante com esse número.";
       this.searchDone = true;
 
