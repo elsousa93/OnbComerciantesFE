@@ -12,7 +12,7 @@ import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
 import { Sort } from '@angular/material/sort';
 import { DataService } from '../nav-menu-interna/data.service';
-import { ProcessGet, ProcessService, UpdateProcess } from '../process/process.service';
+import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../process/process.service';
 import { Process } from '../process/process.interface';
 import { DatePipe } from '@angular/common';
 
@@ -139,11 +139,11 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  dataSourcePendentes: MatTableDataSource<ProcessGet>;
-  dataSourceTratamento: MatTableDataSource<ProcessGet>;
-  dataSourceDevolvidos: MatTableDataSource<ProcessGet>;
-  dataSourceAceitacao: MatTableDataSource<ProcessGet>;
-  dataSourceArquivoFisico: MatTableDataSource<ProcessGet>;
+  dataSourcePendentes: MatTableDataSource<ProcessList>;
+  dataSourceTratamento: MatTableDataSource<ProcessList>;
+  dataSourceDevolvidos: MatTableDataSource<ProcessList>;
+  dataSourceAceitacao: MatTableDataSource<ProcessList>;
+  dataSourceArquivoFisico: MatTableDataSource<ProcessList>;
   
   @ViewChild('empTbSort') empTbSort = new MatSort();
   @ViewChild('empTbSortWithObject') empTbSortWithObject = new MatSort();
@@ -164,17 +164,28 @@ export class DashboardComponent implements OnInit {
   displayedColumns = ['processNumber', 'requestDate', 'user', 'buttons'];
 
   process: ProcessGet = {
-    processNumber: "",
-    isClientAwaiting: true,
-    processId: "",
-    processKind: "",
-    processType: "",
-    startedBy: {
-      partner: "",
-      partnerBranch: "",
-      user:""
-    },
-    state: ""
+    items: 
+      [
+        {
+          processNumber: "",
+          isClientAwaiting: true,
+          processId: "",
+          processKind: "",
+          processType: "",
+          startedBy: {
+            partner: "",
+            partnerBranch: "",
+            user: ""
+          },
+          state: ""
+        }
+      ],
+    pagination: {
+      total: 0,
+      count: 0,
+      from: 0
+    }
+    
   }
 
   @ViewChild(MatSort) sort: MatSort;
@@ -190,11 +201,17 @@ export class DashboardComponent implements OnInit {
   userType: string = "Banca";
   userPermissions: MenuPermissions;
 
-  incompleteProcessess: ProcessGet[] = [];
-  ongoingProcessess: ProcessGet[] = [];
-  returnedProcessess: ProcessGet[] = [];
-  contractAcceptanceProcessess: ProcessGet[] = [];
-  completeProcessess: ProcessGet[] = [];
+  incompleteProcessess: ProcessGet;
+  ongoingProcessess: ProcessGet;
+  returnedProcessess: ProcessGet;
+  contractAcceptanceProcessess: ProcessGet;
+  completeProcessess: ProcessGet;
+
+  incompleteCount: number;
+  ongoingCount: number;
+  returnedCount: number;
+  contractAcceptanceCount: number;
+  completeCount: number;
 
   date: string;
 
@@ -205,7 +222,6 @@ export class DashboardComponent implements OnInit {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     localStorage.clear();
-    this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
     this.date = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
     //const users: UserData[] = [];
     //for (let i = 1; i <= 100; i++) {
@@ -215,37 +231,46 @@ export class DashboardComponent implements OnInit {
     // Assign the data to the data source for the table to render
 
     //Pendentes de envio
-    this.processService.searchProcessByState('Incomplete').subscribe(result => {
-      console.log('Pendentes de envio ', result);
-      console.log('Número total de processos incompletos ', result.length);
-      this.incompleteProcessess = result;
-      this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess);
+    this.processService.searchProcessByState('Incomplete', 0, 0).subscribe(result => {
+      console.log('Pendentes de envio ', result.items);
+      this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
+        this.incompleteProcessess = resul;
+        this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
 
-      this.dataSourcePendentes.paginator = this.paginator;
-      this.dataSourcePendentes.sort = this.sort;
+        this.dataSourcePendentes.paginator = this.paginator;
+        this.dataSourcePendentes.sort = this.sort;
+        this.incompleteCount = result.pagination.total;
+      });
+
+
     });
 
     //Tratamento BackOffice
-    this.processService.searchProcessByState('Ongoing').subscribe(result => {
+    this.processService.searchProcessByState('Ongoing', 0, 0).subscribe(result => {
       console.log('Tratamento BackOffice ', result);
-      this.ongoingProcessess = result;
-      this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess);
+      this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
+        this.ongoingProcessess = resul;
+        this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess.items);
 
-      this.empTbSortWithObject.disableClear = true;
-      this.dataSourceTratamento.sort = this.empTbSortWithObject;
-      this.dataSourceTratamento.paginator = this.paginatorPageSize;
+        this.empTbSortWithObject.disableClear = true;
+        this.dataSourceTratamento.sort = this.empTbSortWithObject;
+        this.dataSourceTratamento.paginator = this.paginatorPageSize;
+        this.incompleteCount = result.pagination.total;
+      });
     });
 
 
     //Devolvido BackOffice
-    this.processService.searchProcessByState('Returned').subscribe(result => {
+    this.processService.searchProcessByState('Returned', 0, 0).subscribe(result => {
       console.log('Devolvidos BackOffice ', result);
-      this.returnedProcessess = result;
-      this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess);
+      this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
+        this.returnedProcessess = resul;
+        this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess.items);
 
-      this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
-      this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
-
+        this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
+        this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
+        this.returnedCount = result.pagination.total;
+      });
     });
 
 
@@ -261,16 +286,17 @@ export class DashboardComponent implements OnInit {
     
 
     //Arquivo Fisico
-    this.processService.searchProcessByState('Completed').subscribe(result => {
+    this.processService.searchProcessByState('Completed', 0, 0).subscribe(result => {
       console.log('Completos ', result);
-      this.completeProcessess = result;
-      this.dataSourceArquivoFisico = new MatTableDataSource(this.completeProcessess);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceArquivoFisico = new MatTableDataSource(this.completeProcessess.items);
 
-      this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
-      this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
+        this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
+        this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
+        this.completeCount = result.pagination.total;
+      });
     });
-    
-    
   }
 
   cancelProcess(processId: string) {
