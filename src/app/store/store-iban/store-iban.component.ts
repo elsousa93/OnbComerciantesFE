@@ -30,6 +30,12 @@ export class StoreIbanComponent implements OnInit {
   public result: any;
   localUrl: any;
 
+  public isCardPresent: boolean = false;
+  public isCardNotPresent: boolean = false;
+  public isCombinedOffer: boolean = false;
+
+  public isURLFilled: boolean = false;
+
   public newStore: Istore = {
     "id": 1,
     "nameEstab": "",
@@ -136,5 +142,28 @@ export class StoreIbanComponent implements OnInit {
 
   isIBAN(isIBANConsidered: boolean) {
     this.isIBANConsidered = isIBANConsidered;
+  }
+
+  chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean){
+    console.log("cardPresent: " + cardPresent);
+    console.log("cardNotPresent: " + cardNotPresent);
+    console.log("combinedOffer: " + combinedOffer);
+    if (cardPresent){
+      this.isCardPresent = cardPresent;
+      this.isCardNotPresent = false;
+      this.isCombinedOffer = false;
+    } else if (cardNotPresent){
+      this.isCardPresent = false;
+      this.isCardNotPresent = cardNotPresent;
+      this.isCombinedOffer = false;
+    } else if (combinedOffer) {
+      this.isCardPresent = false;
+      this.isCardNotPresent = false;
+      this.isCombinedOffer = combinedOffer;
+    }
+  }
+
+  URLFilled(filled: boolean){
+    this.isURLFilled = filled;
   }
 }
