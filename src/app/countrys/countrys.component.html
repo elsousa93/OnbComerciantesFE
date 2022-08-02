@@ -23,7 +23,7 @@
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
 
             <p class="titulo-form-simples mt-0">FATURAÇÃO ANUAL EXPECTÁVEL*</p>
-            <input type="number" class="form-control campo_form" formControlName="expectableAnualInvoicing"
+            <input type="text" class="form-control campo_form" formControlName="expectableAnualInvoicing"
                    name="expectableAnualInvoicing" id="expectableAnualInvoicing"
                    [readonly]="returned == 'edit'">
             <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
@@ -46,7 +46,7 @@
 
             <p class="titulo-form-simples mb-1">Transações média*</p>
             <input minlength="2" maxlength="100" formControlName="transactionsAverage"
-                   name="transactionsAverage" type="number" id="transactionsAverage" class="form-control campo_form"
+                   name="transactionsAverage" type="text" id="transactionsAverage" class="form-control campo_form"
                    [readonly]="returned == 'edit'">
             <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
               <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
