@@ -23,16 +23,22 @@
                 <th scope="col" class="text-center bg-white">Nome Cliente</th>
                 <th scope="col" class="text-center bg-white">NIF</th>
                 <th scope="col" class="text-center bg-white">Elegível</th>
+                <th scope="col" class="bg-white"></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let stakeholder of submissionStakeholders" (click)="selectStakeholder(stakeholder)" [ngClass]="{'row-selected': currentStakeholder === stakeholder}">
+              <tr *ngFor="let stakeholder of submissionStakeholders">
                 <th scope="row" class="text-primary text-center">Associado?</th>
                 <!--<td class="text-primary text-center">{{stakeholder.id}}</td>-->
-                <td class="text-primary text-center">{{stakeholder.stakeholderNumber}}</td>
+                <td class="text-primary text-center">{{stakeholder.id}}</td>
                 <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                 <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                 <td class="text-primary text-center">Elegivel?</td>
+                <td>
+                  <span>
+                    <img src="assets/images/delete_blue.svg" (click)="deleteStakeholder(stakeholder)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -40,13 +46,13 @@
       </div>
       <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-          <span *ngIf="currentStakeholder !== undefined && currentStakeholder !== null" class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
+          <!--<span *ngIf="currentStakeholder !== undefined && currentStakeholder !== null" class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
             <button id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="deleteStakeholder()">
               REMOVER
               INTERVENIENTE&nbsp;&nbsp;
               <img src="assets/images/person_search.svg" class="img_btn">
             </button>
-          </span>
+          </span>-->
           <span class="navbar-text me-2"><button id="btn5a2" (click)="redirectAddStakeholder()" 
             class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">ADICIONAR INTERVENIENTE&nbsp;
             <img src="assets/images/person_add_blue.svg" class="img_btn">

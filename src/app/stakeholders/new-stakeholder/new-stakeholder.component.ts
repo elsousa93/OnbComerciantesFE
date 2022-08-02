@@ -8,6 +8,7 @@ import { IReadCard } from './IReadCard.interface';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -22,11 +23,14 @@ import { StakeholderService } from '../stakeholder.service';
 export class NewStakeholderComponent implements OnInit {
   public foo = 0;
   public displayValueSearch = "";
+  isSelected = false;
 
   stakeholderNumber: string;
 
   //submissionId: string;
   submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+
+  countries: CountryInformation[] = [];
 
   @Input() isCC: boolean;
 
@@ -65,11 +69,23 @@ export class NewStakeholderComponent implements OnInit {
 
   submissionStakeholders: IStakeholders[] = [];
 
+  loadCountries() {
+    this.tableData.GetAllCountries().subscribe(result => {
+      this.countries = result;
+    }, error => {
+      console.log(error);
+    })
+  }
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
     private baseUrl: string, private route: Router, private fb: FormBuilder,private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService) {
+    this.loadCountries();
+
     this.submissionId = localStorage.getItem('submissionId');
     this.ngOnInit();
+
+    
 
     var context = this;
 
@@ -121,7 +137,7 @@ export class NewStakeholderComponent implements OnInit {
     console.log(stakeholder);
     this.currentStakeholder = stakeholder;
     this.currentIdx = idx;
-
+    this.isSelected = true;
     console.log(this.currentStakeholder);
     this.initializeFormWithoutCC();
   }
@@ -317,18 +333,25 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   GetCountryByZipCode() {
-    var zipcode = this.formNewStakeholder.value['ZIPCode'];
-    if (zipcode.length === 8) {
-      var zipCode = zipcode.split('-');
+    var currentCountry = this.formNewStakeholder.get('Country').value;
+    console.log("Pais escolhido atual");
 
-      this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+    if (currentCountry === 'PT') {
+      var zipcode = this.formNewStakeholder.value['ZIPCode'];
+      if (zipcode.length === 8) {
+        var zipCode = zipcode.split('-');
 
-        var addressToShow = address[0];
+        this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
 
-        this.formNewStakeholder.get('Address').setValue(addressToShow.address);
-        this.formNewStakeholder.get('Country').setValue(addressToShow.country);
-        this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
-      });
+          var addressToShow = address[0];
+
+          this.formNewStakeholder.get('Address').setValue(addressToShow.address);
+          this.formNewStakeholder.get('Country').setValue(addressToShow.country);
+          this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
+
+          this.formNewStakeholder.updateValueAndValidity();
+        });
+      }
     }
   }
 }

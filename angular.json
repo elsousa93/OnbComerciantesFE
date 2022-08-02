@@ -28,7 +28,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-             // "Web.config"
+
             ],
             "styles": [
               "src/custom-theme.scss",
