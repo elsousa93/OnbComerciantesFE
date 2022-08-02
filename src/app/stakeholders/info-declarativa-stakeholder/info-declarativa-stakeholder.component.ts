@@ -14,6 +14,7 @@ import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholder.service';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -24,6 +25,9 @@ import { StakeholderService } from '../stakeholder.service';
  * Nesta página há vários Form Groups
  * */
 export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewInit {
+  private baseUrl: string;
+
+
   //----------Ecrã Comerciante-----------
   ListaInd = codes;
   formContactos!: FormGroup;
@@ -64,10 +68,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
+  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
+    this.baseUrl = configuration.baseUrl;
+
+    
     this.ngOnInit();
     
-    http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
+    http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
       this.dataSource.data = this.stakeholders;
     }, error => console.error(error));

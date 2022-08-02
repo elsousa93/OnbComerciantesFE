@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, Sales, ShareCapital } from '../client/Client.interface';
+import { Configuration, configurationToken } from '../configuration';
 import { CRCProcess } from '../CRC/crcinterfaces';
 import { FiscalAddress, IdentificationDocument } from '../stakeholders/IStakeholders.interface';
 import { ISubmission } from '../submission/ISubmission.interface';
@@ -11,13 +12,16 @@ import { Process } from './process.interface';
   providedIn: 'root'
 })
 export class ProcessService {
-
-  urlOutbound: string = "http://localhost:12000/OutboundAPI/";
+  private baseUrl: string;
+  private urlOutbound: string;
 
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) { }
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+      this.baseUrl = configuration.baseUrl;
+      this.urlOutbound = configuration.outboundUrl;
+
+     }
 
    getAllProcessSubmissions(id) : any {
      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllProcesses/' + id);

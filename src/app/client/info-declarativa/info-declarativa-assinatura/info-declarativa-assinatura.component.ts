@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../../nav-menu-interna/data.service';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
@@ -13,6 +14,7 @@ import { TableInfoService } from '../../../table-info/table-info.service';
   styleUrls: ['./info-declarativa-assinatura.component.css']
 })
 export class InfoDeclarativaAssinaturaComponent implements OnInit {
+  private baseUrl: string;
 
   isSelected: boolean = true;
   isVisible: any;
@@ -23,9 +25,9 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
-  constructor(private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private router: Router, private data: DataService) {
-    http.get<IStakeholders[]>(baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
+  constructor(private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private data: DataService) {
+    this.baseUrl = configuration.baseUrl;
+    http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
     }, error => console.error(error));
 

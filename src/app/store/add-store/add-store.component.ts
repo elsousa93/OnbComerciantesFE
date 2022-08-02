@@ -25,6 +25,7 @@ export class AddStoreComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
+  private baseUrl;
 
 
   /*Variable declaration*/
@@ -80,14 +81,14 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseURL: string, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService) {
     this.ngOnInit();
 
     this.loadTableInfo();
 
     //WS call - Get the fields for the specific store if we are not creatig a new store
     if (this.stroreId != -1) {
-      http.get<Istore>(baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
+      http.get<Istore>(this.baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
         this.store = result;
         //Controles the default value of the turistic zone radio button
         if (this.store.turisticZone == true) {

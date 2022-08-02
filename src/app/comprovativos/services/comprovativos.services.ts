@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { map, catchError, retryWhen, delay, take } from 'rxjs/operators';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { HttpUtilService } from './http.services';
 
 
@@ -9,10 +10,14 @@ import { HttpUtilService } from './http.services';
 })
 export class ComprovativosService {
   API_URL:string = '';
+  private baseUrl: string;
+
   
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private httpUtil: HttpUtilService) {
-    this.API_URL = baseUrl;
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private httpUtil: HttpUtilService) {
+    this.baseUrl = configuration.baseUrl;
+
+    this.API_URL = this.baseUrl;
    }
 
   uploadFile(file: File, id: any) {

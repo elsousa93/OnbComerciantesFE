@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICommercialOffer } from '../ICommercialOffer';
 import { Istore } from '../../store/IStore.interface';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-commercial-offer-detail',
@@ -10,6 +11,9 @@ import { Istore } from '../../store/IStore.interface';
   styleUrls: ['./commercial-offer-detail.component.css']
 })
 export class CommercialOfferDetailComponent implements OnInit {
+
+  private baseUrl;
+
 
   public clientID: number = 12345678;
   public stroreId: number = 0;
@@ -62,11 +66,13 @@ export class CommercialOfferDetailComponent implements OnInit {
     communicationType: ''
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    this.baseUrl = configuration.baseUrl;
+    
     this.ngOnInit();
     /*In the case of beeing n exising offer*/
     if (this.commofid != -1) {
-      http.get<ICommercialOffer>(baseUrl + 'becommercialoffer/GetOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid).subscribe(result => {
+      http.get<ICommercialOffer>(this.baseUrl + 'becommercialoffer/GetOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid).subscribe(result => {
         /*Get commercial offer information*/
         this.commOffer = result;
         this.selectedBrands = this.commOffer.brands;
@@ -77,7 +83,7 @@ export class CommercialOfferDetailComponent implements OnInit {
     }
 
     /*Get all the stores*/
-    http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
+    http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
       this.stores = result;
     }, error => console.error(error));

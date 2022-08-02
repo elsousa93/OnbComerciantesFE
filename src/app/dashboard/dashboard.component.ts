@@ -240,6 +240,11 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendentes.paginator = this.paginator;
         this.dataSourcePendentes.sort = this.sort;
         this.incompleteCount = result.pagination.total;
+
+        console.log("--------------------------------------");
+        console.log(result.pagination);
+        console.log(this.incompleteCount);
+        console.log("--------------------------------------");
       });
 
 

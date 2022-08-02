@@ -13,6 +13,7 @@ import { TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
+import { Configuration, configurationToken } from '../configuration';
 
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
@@ -73,6 +74,10 @@ interface addresstranformed {
 })
 
 export class ClientComponent implements OnInit {
+  private baseUrl: string;
+  private neyondBackUrl: string;
+
+
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
@@ -283,14 +288,14 @@ export class ClientComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
-  private baseUrl: string, @Inject('NEYONDBACK_URL')
-    private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService,
-    private processService: ProcessService, public modalService: BsModalService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient,
+    @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService) {
+      this.baseUrl = configuration.baseUrl;
+      this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.ngOnInit();
-    console.log(baseUrl);
-    http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
+    console.log(this.baseUrl);
+    http.get<Client[]>(this.baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
     this.data.updateData(false, 1);

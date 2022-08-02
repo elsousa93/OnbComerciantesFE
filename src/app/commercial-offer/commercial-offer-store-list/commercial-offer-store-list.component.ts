@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { Istore } from '../../store/IStore.interface';
 import { ICommercialOffer } from '../ICommercialOffer';
 
@@ -10,6 +11,9 @@ import { ICommercialOffer } from '../ICommercialOffer';
   styleUrls: ['./commercial-offer-store-list.component.css']
 })
 export class CommercialOfferStoreListComponent implements OnInit {
+
+  private baseUrl;
+
 
   /*Commercial Offer Object*/
   public comercialOffers: ICommercialOffer[] = [];
@@ -32,17 +36,20 @@ export class CommercialOfferStoreListComponent implements OnInit {
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
 
+    this.baseUrl = configuration.baseUrl;
+
+    
     this.ngOnInit();
     /*Get all offers for that specific store*/
-    http.get<ICommercialOffer[]>(baseUrl + 'becommercialoffer/GetAllOffersByStores/' + this.clientID + '/' + this.stroreId).subscribe(result => {
+    http.get<ICommercialOffer[]>(this.baseUrl + 'becommercialoffer/GetAllOffersByStores/' + this.clientID + '/' + this.stroreId).subscribe(result => {
       console.log(result);
       this.comercialOffers = result;
     }, error => console.error(error));
 
     /*Get the list of all stores*/
-    http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
+    http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
       this.stores = result;
     }, error => console.error(error));

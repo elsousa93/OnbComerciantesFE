@@ -16,6 +16,7 @@ import { SubmissionDocumentService } from '../submission/document/submission-doc
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
+import { Configuration, configurationToken } from '../configuration';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -112,7 +113,7 @@ export class CountrysComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
     private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService) {
     this.ngOnInit();
@@ -421,18 +422,28 @@ export class CountrysComponent implements OnInit {
     //  });
     //}
 
+    var context = this;
     console.log("Submissao tratada! uysidghsiudghisudh");
     console.log(this.newSubmission);
     console.log("----------------------");
     console.log(this.stakeholdersToInsert);
+    localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
     //console.log(this.newSubmission.merchant);
 
-    var context = this;
+    this.stakeholdersToInsert.forEach(function (value, idx) {
+      context.newSubmission.stakeholders.push({
+        "fiscalId": value.fiscalId,
+        "shortName": value.name
+      })
+    });
+
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log("dentro do submission service");
       console.log(result);
       localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
+
+      //localStorage.setItem("crcStakeholders", JSON.stringify());
 
       this.route.navigate(['stakeholders/']);
       

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Process } from './process.interface';
 import { FormGroup, FormControl, NgForm } from '@angular/forms';
 import { ProcessService } from './process.service';
+import { Configuration, configurationToken } from '../configuration';
 
 
 @Component({
@@ -12,15 +13,18 @@ import { ProcessService } from './process.service';
   styleUrls: ['./process.component.css']
 })
 export class ProcessComponent implements OnInit {
+  private baseUrl: string;
 
   public allProcesses: Process[] = [];
   public allSuccessProcesses: Process[] = [];
   public allIncompletedProcesses: Process[] = [];
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router,
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+    private route: Router,
     private ProcessService: ProcessService) {
+    this.baseUrl = configuration.baseUrl;
+
 
     this.ngOnInit();
 
