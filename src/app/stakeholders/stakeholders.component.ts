@@ -9,7 +9,17 @@ import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/form
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
+import { TemplateRef, ViewChild } from '@angular/core';
+import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs';
+import { Configuration, configurationToken } from '../configuration';
 
+import { readCC } from '../citizencard/CitizenCardController.js';
+import { readCCAddress } from '../citizencard/CitizenCardController.js';
+import { ICCInfo } from '../citizencard/ICCInfo.interface';
+
+import { BrowserModule } from '@angular/platform-browser';
 
 
 /** Listagem Intervenientes / Intervenientes
@@ -23,7 +33,84 @@ import { StakeholderService } from './stakeholder.service';
 export class StakeholdersComponent implements OnInit {
 
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
- 
+
+  //---- Cartão de Cidadao - vars ------
+
+  public nameCC = null;
+  public nationalityCC = null;
+  public birthDateCC = null;
+  public cardNumberCC = null;
+  public nifCC = null;
+  public addressCC = null;
+  public postalCodeCC = null;
+  public countryCC = null;
+
+  public okCC = null;
+  public dadosCC: Array<string> = [];
+
+  //---- Cartão de Cidadao - funcoes -----
+  callreadCC() {
+    readCC(this.SetNewCCData.bind(this));
+  }
+  callreadCCAddress() {
+    readCCAddress(this.SetNewCCData.bind(this));
+  }
+
+  closeModal() {
+    this.newModal.hide();
+  }
+  setOkCC() {
+    this.okCC = true;
+    console.log("okCC valor: ", this.okCC);
+  }
+  /**
+   * Information from the Citizen Card will be associated to the client structure
+   * cardNumber não é guardado
+   * 
+   * */
+  SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+    gender, height, nationality, expiryDate, nameFather, nameMother,
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
+
+    console.log("Name: ", name, "type: ", typeof (name));
+
+    console.log("nationality: ", nationality);
+    console.log("birthDate: ", birthDate);
+    console.log("cardNumber: ", cardNumber);
+    console.log("nif: ", nif);
+
+    this.nameCC = name;
+    this.nationalityCC = nationality;
+    // this.birthDateCC = birthDate;
+    this.cardNumberCC = cardNumber; // Nº do CC
+    this.nifCC = nif;
+
+    this.countryCC = countryIssuer;
+
+    if (!(address == null)) {
+      this.addressCC = address;
+      this.postalCodeCC = postalCode;
+    }
+  }
+
+
+
+  UibModal: BsModalRef | undefined;
+  ShowSearchResults: boolean;
+  SearchDone: boolean;
+  ShowAddManual: boolean;
+  ValidadeSearchAddIntervenient: boolean;
+  // IntervenientsTableSearch: Array<IClientResult>;
+  HasInsolventIntervenients: boolean;
+  BlockClientName: boolean;
+  BlockNIF: boolean;
+  Validations: boolean;
+  DisableButtons: boolean;
+  //  DocumentTypes: Array<IRefData>;
+  IsInsolventCantPass: boolean;
+  CCReaderPresent: boolean;
+  CCReaderCCID: number;
+  CCID: ICCInfo;
 
   newStake: IStakeholders = {
     "fiscalId": "",
@@ -34,6 +121,7 @@ export class StakeholdersComponent implements OnInit {
       "expirationDate": "",
     }
   }
+  @ViewChild('newModal') newModal;
 
   //newStake: IStakeholders = {
 
@@ -130,7 +218,7 @@ export class StakeholdersComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
-  constructor(private router: ActivatedRoute,
+  constructor(private router: ActivatedRoute, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
 
     this.submissionId = localStorage.getItem('submissionId');
@@ -179,6 +267,21 @@ export class StakeholdersComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false,2,1);
+  }
+
+  //Modal que questiona se tem o PIN da Morada
+  launchNewModal() {
+    this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
+    this.newModal.result.then(function (result: boolean): void {
+      if (result) {
+        this.Window.readCCAddress();
+      } else {
+        console.log("fechar");
+        this.Window.readCC();
+
+        this.closeModal();
+      }
+    }.bind(this));
   }
 
   createForm() {
