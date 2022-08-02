@@ -54,7 +54,6 @@ export class ClientService {
   }
 
   getClientByID(clientID: string, requestID: string, AcquiringUserID:string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
-    console.log("ygijkldsuishdushdshd uhsudhsud hsudhhusd");
     var URI = this.urlOutbound + "api/v1/merchant/" + clientID;
 
     var data = new Date();
