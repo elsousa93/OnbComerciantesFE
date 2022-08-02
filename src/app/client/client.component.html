@@ -109,43 +109,6 @@
                     </div>
                   </div>
                 </div>
-                <div style="width: 600px;" *ngIf="ccInfo">
-                  <div>
-                    <p class="titulo-form-simples">País do documento:</p>
-                    <input id="n-doc" type="text" value="{{ ccInfo[1] }}" readonly>
-                  </div>
-                  <br>
-                  <div class="card">
-                    <div class="card-body">
-                      <table>
-                        <tr>
-                          <td class="titulo-form-simples">Nome:</td>
-                          <td class="titulo-form-simples">{{ ccInfo[0] }}</td>
-                        </tr>
-                        <tr>
-                          <td class="titulo-form-simples">Id:</td>
-                          <td class="titulo-form-simples">{{ ccInfo[3] }}</td>
-                        </tr>
-                        <tr>
-                          <td class="titulo-form-simples">Nif:</td>
-                          <td class="titulo-form-simples">{{ ccInfo[5] }}</td>
-                        </tr>
-                        <tr>
-                          <td class="titulo-form-simples">Dt. Nasc.:</td>
-                          <td class="titulo-form-simples">{{ ccInfo[2] }}</td>
-                        </tr>
-                        <tr>
-                          <td class="titulo-form-simples">Morada:</td>
-                          <td class="titulo-form-simples">{{ ccInfo[7] }}</td>
-                        </tr>
-                        <tr>
-                          <td class="titulo-form-simples">Codigo Postal:</td>
-                          <td class="titulo-form-simples">{{ ccInfo[6] }}</td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
               </form>
 
               <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
@@ -164,7 +127,7 @@
                 <div>
                   Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
                 </div>
-                <button class="btn botao_azul_pesquisa" (click)="getValueENI()" type="submit">Ler Cartão de Cidadão</button>
+                <button class="btn botao_azul_pesquisa" (click)="launchNewModal()" type="submit">Ler Cartão de Cidadão</button>
               </div>
 
               <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
@@ -200,6 +163,19 @@
           </div>
 
           <div *ngIf="!(okCC == null)">
+
+            <div class="row me-0">
+              <div class="col">
+                <div class="me-0 ps-0 pe-0 col-7 mb-5">
+                  <p class="titulo-form-simples">
+                    País do Documento:* <span>
+                    </span>
+                  </p>
+                  <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text" [disabled]="true">
+                </div>
+              </div>
+            </div>
+
             <table class="table table-sm table-light">
               <thead>
                 <tr class="titulo-form-simples">
@@ -227,6 +203,11 @@
                   <th scope="row" class="titulo-form-simples">Código Postal:</th>
                   <td>{{postalCodeCC}}</td>
                 </tr>
+                <tr>
+                  <th scope="row" class="titulo-form-simples">País emissor do Documento:</th>
+                  <td>{{countryCC}}</td>
+                </tr>
+
               </tbody>
             </table>
             <button class="btn botao_azul_pesquisa" type="submit">Adicionar</button>

@@ -18,6 +18,7 @@ import { Configuration, configurationToken } from '../configuration';
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 
+
 import { BrowserModule } from '@angular/platform-browser';
 
 //Funcao da SIBS 
@@ -102,6 +103,7 @@ export class ClientComponent implements OnInit {
   public nifCC = null;
   public addressCC = null;
   public postalCodeCC = null;
+  public countryCC = null;
 
 
   public okCC = null;
@@ -114,6 +116,7 @@ export class ClientComponent implements OnInit {
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData.bind(this));
   }
+
   closeModal() {
     this.newModal.hide();
   }
@@ -128,7 +131,7 @@ export class ClientComponent implements OnInit {
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
-    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
 
     console.log("Name: ", name, "type: ", typeof (name));
@@ -137,18 +140,24 @@ export class ClientComponent implements OnInit {
     console.log("birthDate: ", birthDate);
     console.log("cardNumber: ", cardNumber);
     console.log("nif: ", nif);
+   
 
     this.nameCC = name;
     this.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
     this.cardNumberCC = cardNumber; // Nº do CC
     this.nifCC = nif;
+   
+    this.countryCC = countryIssuer;
 
     if (!(address == null)) {
       this.addressCC = address;
       this.postalCodeCC = postalCode;
     }
   }
+
+
+
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
   SearchDone: boolean;
