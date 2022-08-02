@@ -43,12 +43,16 @@
                 <input formControlName="zipCodeStore" *ngIf="chooseAddressV" id="text4" name="text3" type="text" class="form-control campo_form" (keypress)="GetCountryByZipCode()">
                 <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ComercialCentreStore'|translate}}</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
-                  <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent">SIM</label></div>
+                  <div class="form-check"><input (click)="comercialCentre(true)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                    <label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent">SIM</label>
+                  </div>
                   </span><span class="navbar-text">
-                  <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio" for="radio2" wappler-command="editContent">NÃO</label></div>
+                  <div class="form-check"><input (click)="comercialCentre(false)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                    <label class="form-check-label radio" for="radio2" wappler-command="editContent">NÃO</label>
+                  </div>
                   </span></nav>
-                <p class="titulo-form-simples" wappler-command="editContent">{{'SubZoneStores'|translate}}</p>
-                <input formControlName="subZoneStore" select="" id="select1" class="form-select  campo_form">
+                <p *ngIf="isComercialCentreStore" class="titulo-form-simples" wappler-command="editContent">{{'SubZoneStores'|translate}}</p>
+                <input *ngIf="isComercialCentreStore" formControlName="subZoneStore" select="" id="select1" class="form-select  campo_form">
                 </div>
                 <div class="col-5 ms-0 me-0 ps-5 pe-0">
                   <p class="titulo-form-simples" wappler-command="editContent">{{'ContactPointName'|translate}}</p>
@@ -62,7 +66,9 @@
                   <input formControlName="addressStore" *ngIf="chooseAddressV" id="text5" name="text4" type="text" class="form-control campo_form">
                 </div>
                 <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
-                  <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3"><span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span></nav>
+                  <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
+                    <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
+                    <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span></nav>
                   </div>
                 </div>
                 </form>
