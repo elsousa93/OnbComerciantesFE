@@ -298,6 +298,9 @@ export class ClientComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
+  public returned: string;
+  public merchantInfo: any;
+
   constructor(private router: ActivatedRoute, private http: HttpClient,
       @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService, private submissionService: SubmissionService) {
       this.baseUrl = configuration.baseUrl;
