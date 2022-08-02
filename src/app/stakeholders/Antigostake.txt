@@ -1,0 +1,145 @@
+Antigo stake
+
+
+<!--<h2 class="text-primary mt-5 ps-0 center-align">
+  <span class="material-symbols-rounded icon-titulos m-align"><img src="assets/images/group_add_blue.svg" class="img_add"></span>&nbsp;PESQUISAR OU ADICIONAR INTERVENIENTE<br></h2>
+<p class="titul campo_obrigatrio">* campo obrigatório</p>-->
+<!--<p class="ps-0">Por favor, pesquise o Interveniente:</p>
+<form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
+  <div class="row ms-0 me-0">
+    <div class="col-5 ms-0 me-0 ps-0 pe-0">
+      <p class="titulo-form-simples">Tipo de Interveniente: *</p>
+      <select class="form-select campo-form-select"
+        (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
+        formControlName="stakeholderType">
+        <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
+          {{stakeType.stakeTypeOption}}
+        </option>
+      </select>
+      <p class="titulo-form-simples">Tipo de Documento: *</p>
+      <div *ngIf="isParticular">
+        <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
+          id="documentType" formControlName="documentType">
+
+          <option *ngFor="let docType of ListDocTypeP" value={{docType.documentTypeOption}}>
+            {{docType.documentTypeOption}}
+          </option>
+        </select>
+      </div>
+
+
+
+      <div *ngIf="!isParticular">
+        <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
+          id="documentType" formControlName="documentType">
+
+          <option *ngFor="let docType of ListDocTypeE" value={{docType.documentTypeOption}}>
+            {{docType.documentTypeOption}}
+          </option>
+        </select>
+      </div>
+      <p class="titulo-form-simples">Número do Documento:</p><input [readonly]="isCC && isNoDataReadable"
+        id="text1" name="text1" type="text" class="form-control campo_form" formControlName="docNumber">
+      </div>
+      <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0"  *ngIf="isCC">
+        <p class="titulo-form-simples mb-3">Recolha eletrónica dos dados do Cartão de Cidadão?</p>
+        Processo mais rápido e dispensa a apresentação de comprovativos em papel:*
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <span class="navbar-text">
+            <div class="form-check">
+              <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=true
+              id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true"/>
+              <label class="form-check-label radio pe-5" for="radio3">SIM</label>
+            </div>
+          </span>
+          <span class="navbar-text">
+            <div class="form-check">
+              <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=false
+              id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false"/>
+              <label class="form-check-label radio" for="radio3">NÃO</label>
+            </div>
+          </span>
+        </nav>
+      </div>
+    </div>
+    <div *ngIf="isNoDataReadable && isCC">
+      Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+
+      <form>
+        <button class="btn botao_azul_pesquisa" type="submit">Ler Cartão de Cidadão</button>
+      </form>
+    </div>
+    <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+        <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
+          <button *ngIf="stakeType && stakeDocType" id="btn5a2" class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="searchStakeholder()">PESQUISAR
+            INTERVENIENTE&nbsp;&nbsp;
+            <img src="assets/images/person_search.svg" class="img_btn">
+          </button></span>
+        <span class="navbar-text me-2">
+            <button *ngIf="stakeType && stakeDocType" id="btn5a2" (click)="onClickNew()" routerLink="/add-stakeholder"
+            class="btn botao_branco" wappler-command="editContent">ADICIONAR INTERVENIENTE&nbsp;
+            <img src="assets/images/person_add_blue.svg" class="img_btn">
+          </button></span>
+
+      </nav>
+    </div>-->
+<!-- <div class="col ms-0 ps-0"> Caso seja preciso os botões clássicos no final da página
+  <hr />
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+    <span class="navbar-text me-2 align-self-center ms-0 me-0">
+      <button [routerLink]="['/']" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+        SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+      </button>
+    </span>
+
+    <button [routerLink]="['/']" id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-3 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+      CANCELAR&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+    </button>
+    <button [routerLink]="['/client']" id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+      <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+      VOLTAR&nbsp;
+    </button>
+    <button [routerLink]="['/']" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent">
+      SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+    </button>
+  </nav>
+</div> -->
+<!--</form>-->
+<!-- Cria FORM diferente ?-->
+<!--<div *ngIf="isShown" class="row container-fluid" id="divshow">
+  <h2>Interveniente Encontrado!</h2>
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stakeShow">
+    <thead>
+      <tr>
+        <th>ID Fiscal</th>
+        <th>Nome Completo</th>
+        <th>Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table table-striped" *ngFor="let stake of stakeShow">
+        <th>{{stake.fiscalId}}</th>
+        <td>{{stake.fullName}}</td>
+        <td>
+
+          <button class="btn btn-primary" (click)="onClickEdit(stake.fiscalId)">
+            <span class="glyphicon glyphicon-pencil"></span>Editar
+          </button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
+    <form>
+      <button type="submit">Ler Cartão de Cidadão</button>
+    </form>
+  </div>
+
+</div>-->
+      </div>
+    </div>
+</div>
