@@ -231,7 +231,7 @@ export class DashboardComponent implements OnInit {
     // Assign the data to the data source for the table to render
 
     //Pendentes de envio
-    this.processService.searchProcessByState('Incomplete', 0, 0).subscribe(result => {
+    this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
       console.log('Pendentes de envio ', result.items);
       this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
         this.incompleteProcessess = resul;
@@ -246,7 +246,7 @@ export class DashboardComponent implements OnInit {
     });
 
     //Tratamento BackOffice
-    this.processService.searchProcessByState('Ongoing', 0, 0).subscribe(result => {
+    this.processService.searchProcessByState('Ongoing', 0, 1).subscribe(result => {
       console.log('Tratamento BackOffice ', result);
       this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
         this.ongoingProcessess = resul;
@@ -255,13 +255,13 @@ export class DashboardComponent implements OnInit {
         this.empTbSortWithObject.disableClear = true;
         this.dataSourceTratamento.sort = this.empTbSortWithObject;
         this.dataSourceTratamento.paginator = this.paginatorPageSize;
-        this.incompleteCount = result.pagination.total;
+        this.ongoingCount = result.pagination.total;
       });
     });
 
 
     //Devolvido BackOffice
-    this.processService.searchProcessByState('Returned', 0, 0).subscribe(result => {
+    this.processService.searchProcessByState('Returned', 0, 1).subscribe(result => {
       console.log('Devolvidos BackOffice ', result);
       this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
         this.returnedProcessess = resul;
@@ -286,7 +286,7 @@ export class DashboardComponent implements OnInit {
     
 
     //Arquivo Fisico
-    this.processService.searchProcessByState('Completed', 0, 0).subscribe(result => {
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       console.log('Completos ', result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.completeProcessess = resul;

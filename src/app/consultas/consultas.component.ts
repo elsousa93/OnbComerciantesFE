@@ -129,7 +129,7 @@ export class ConsultasComponent implements OnInit{
       if (processNumber !== '') {
         console.log(processNumber);
         var encodedCode = encodeURIComponent(processNumber);
-        this.processService.searchProcessByNumber(encodedCode, 0, 0).subscribe(result => {
+        this.processService.searchProcessByNumber(encodedCode, 0, 1).subscribe(result => {
           this.processService.searchProcessByNumber(encodedCode, 0, result.pagination.total).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
@@ -150,7 +150,7 @@ export class ConsultasComponent implements OnInit{
           
       } else {
         var processStateToSearch = this.form.get("state").value;
-        this.processService.searchProcessByState(processStateToSearch, 0, 0).subscribe(result => {
+        this.processService.searchProcessByState(processStateToSearch, 0, 1).subscribe(result => {
           this.processService.searchProcessByState(processStateToSearch, 0, result.pagination.total).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
