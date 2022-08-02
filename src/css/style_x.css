@@ -3,11 +3,13 @@
 .row-selected th {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity)) !important;
+  color:white !important;
 }
 
 .row-selected td {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity)) !important;
+  color:white !important;
 }
 
 

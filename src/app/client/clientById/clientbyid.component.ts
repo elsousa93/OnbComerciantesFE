@@ -318,7 +318,7 @@ export class ClientByIdComponent implements OnInit {
 
   initializeENI() {
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required),
       socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
   }
@@ -329,7 +329,7 @@ export class ClientByIdComponent implements OnInit {
     console.log("Erro1");
     console.log(this.merchantInfo);
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
+      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
@@ -349,11 +349,14 @@ export class ClientByIdComponent implements OnInit {
     //});
   }
 
-  initializeFormControlOther() {
+  searchBranch(code) {
+    return this.tableInfo.GetCAEByCode(code).toPromise();
+  }
 
+  initializeFormControlOther() {
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
       socialDenomination: new FormControl((this.returned != null ) ? this.merchantInfo.companyName : '', Validators.required) //sim
@@ -381,6 +384,22 @@ export class ClientByIdComponent implements OnInit {
     var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
     console.log(formatedDate);
     //var date = formatDate(this.processClient.capitalStock.date, 'MM-dd-yyyy', 'en-US');
+    var teste = '';
+
+    this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
+      .then((data) => {
+        console.log(data);
+        this.form.get("CAE1Branch").setValue(data.description);
+      });
+
+    if (this.processClient.secondaryEconomicActivity !== null) {
+      this.searchBranch(this.processClient.secondaryEconomicActivity[0].split("-")[0])
+        .then((data) => {
+          console.log(data);
+          this.form.get("CAESecondary1Branch").setValue(data.description);
+        });
+    }
+
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
@@ -389,7 +408,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
       socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
-      CAE1Branch: new FormControl(''), //talvez
+      CAE1Branch: new FormControl(teste), //talvez
       CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
       CAESecondary1Branch: new FormControl(''), //talvez
       CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim

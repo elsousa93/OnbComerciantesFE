@@ -27,8 +27,10 @@ export class NewStakeholderComponent implements OnInit {
 
   stakeholderNumber: string;
 
-  //submissionId: string;
-  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
+  crcStakeholders: IStakeholders[] = [];
+
+  submissionId: string;
+  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   countries: CountryInformation[] = [];
 
@@ -43,6 +45,8 @@ export class NewStakeholderComponent implements OnInit {
   flagAssociado: boolean = true;
   flagProcurador: boolean = true;
   flagRecolhaEletronica: boolean = null;
+
+  selectedStakeholderIsFromCRC = false;
 
   formNewStakeholder!: FormGroup;
 
@@ -83,6 +87,10 @@ export class NewStakeholderComponent implements OnInit {
     this.loadCountries();
 
     this.submissionId = localStorage.getItem('submissionId');
+    this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
+
+    console.log("CRC STAKEHOLDERS");
+    console.log(this.crcStakeholders);
     this.ngOnInit();
 
     
@@ -132,22 +140,40 @@ export class NewStakeholderComponent implements OnInit {
     //}
   }
 
+  isStakeholderFromCRC(stakeholder) {
+    console.log("PERTENCE AO CRC??");
+    console.log(stakeholder);
+    this.selectedStakeholderIsFromCRC = false;
+    var context = this;
+    this.crcStakeholders.forEach(function (value, idx) {
+      var stakeholderFromCRC = value;
+      console.log(stakeholderFromCRC);
+      console.log("----------------");
+      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
+        console.log("sim");
+        context.selectedStakeholderIsFromCRC = true;
+      }
+    });
+    console.log("------ NÃO ENCONTROU --------");
+  }
+
   updateForm(stakeholder, idx) {
     console.log("chegou aqui");
     console.log(stakeholder);
     this.currentStakeholder = stakeholder;
     this.currentIdx = idx;
     this.isSelected = true;
-    console.log(this.currentStakeholder);
+    this.isStakeholderFromCRC(this.currentStakeholder);
+    console.log(this.selectedStakeholderIsFromCRC);
     this.initializeFormWithoutCC();
   }
 
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
-      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '': false, Validators.required),
-      NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: true }, Validators.required),
-      Role: new FormControl('', Validators.required),
+      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
+      NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
+      Role: new FormControl({ value: '', disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
       Country: new FormControl('', Validators.required),
       ZIPCode: new FormControl('', Validators.required),
       Locality: new FormControl('', Validators.required),
