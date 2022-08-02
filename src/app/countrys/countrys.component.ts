@@ -9,7 +9,7 @@ import { CountryInformation } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
-import { Client } from '../client/Client.interface';
+import { Client, Crc } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
@@ -64,6 +64,7 @@ export class CountrysComponent implements OnInit {
   processId: string;
 
   currentClient: any = {};
+  crc;
   documentsList = []; //lista de documentos do utilizador
 
   processNumber: string;
@@ -125,6 +126,8 @@ export class CountrysComponent implements OnInit {
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
+      if (this.route.getCurrentNavigation().extras.state["crc"])
+        this.crc = this.route.getCurrentNavigation().extras.state["crc"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
@@ -324,13 +327,21 @@ export class CountrysComponent implements OnInit {
       }
     ],
     "documents": [
-      {
-        "archiveSource": "undefined",
-        "purpose": "undefined",
-        "validUntil": "2022-07-20",
-        "receivedAt": "2022-07-20",
-        "documentType": "",
-        "uniqueReference": "",
+      { //tive de mudar
+        //"archiveSource": "undefined",
+        //"purpose": "undefined",
+        //"validUntil": "2022-07-20",
+        //"receivedAt": "2022-07-20",
+        //"documentType": "",
+        //"uniqueReference": "",
+        documentType: '',
+        documentPurpose: '',
+        file: {
+          fileType: '',
+          binary: ''
+        },
+        validUntil: '',
+        data: ''
       }
     ]
   }
@@ -435,6 +446,19 @@ export class CountrysComponent implements OnInit {
         "shortName": value.name
       })
     });
+
+    console.log("CRC !!!");
+    console.log(this.crc);
+    this.newSubmission.documents.push({
+      documentType: '',
+      documentPurpose: '',
+      file: {
+        fileType: 'PDF',
+        binary: this.crc.pdf
+      },
+      validUntil: this.crc.expirationDate,
+      data: ''
+    })
 
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log("dentro do submission service");

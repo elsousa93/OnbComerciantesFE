@@ -427,22 +427,28 @@ export class ClientComponent implements OnInit {
       console.log(context.clientsToShow);
       context.clientsToShow = [];
       console.log(context.clientsToShow);
-      clients.forEach(function (value, index) {
-        console.log(value);
-        context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
-          console.log(c);
-          var client = {
-            "clientId": c.merchantId,
-            "commercialName": c.commercialName,
-            "address": "Rua Gomes Artur",
-            "ZIPCode": "1000-001",
-            "locality": "Lisboa",
-            "country": "Portugal",
-          }
-          context.clientsToShow.push(client);
-          console.log(context.clientsToShow);
-        });
-      })
+      if (clients.length > 0) {
+        clients.forEach(function (value, index) {
+          console.log(value);
+          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
+            console.log(c);
+            var client = {
+              "clientId": c.merchantId,
+              "commercialName": c.commercialName,
+              "address": "Rua Gomes Artur",
+              "ZIPCode": "1000-001",
+              "locality": "Lisboa",
+              "country": "Portugal",
+            }
+            context.clientsToShow.push(client);
+            console.log(context.clientsToShow);
+          });
+        })
+      } else {
+        this.showFoundClient = false;
+        context.resultError = "Não existe Comerciante com esse número.";
+        this.searchDone = true;
+      }
     }, error => {
       context.showFoundClient = false;
       context.resultError = "Não existe Comerciante com esse número.";

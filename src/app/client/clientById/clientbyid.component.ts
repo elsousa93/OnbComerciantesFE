@@ -933,7 +933,8 @@ export class ClientByIdComponent implements OnInit {
         clientId: this.idClient,
         processId: this.processId,
         stakeholders: this.processClient.stakeholders,
-        merchantInfo: this.merchantInfo
+        merchantInfo: this.merchantInfo,
+        crc: this.processClient
       }
     };
 
