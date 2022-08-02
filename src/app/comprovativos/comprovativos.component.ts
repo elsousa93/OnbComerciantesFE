@@ -13,10 +13,10 @@ import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
-import { SubmissionPutTemplate } from '../submission/ISubmission.interface';
+import { SubmissionGetTemplate, SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { CheckDocumentsComponent } from './check-documents/check-documents.component';
-import { IComprovativos } from './IComprovativos.interface';
+import { ComprovativosTemplate, IComprovativos } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
 
 
@@ -38,7 +38,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   };
 
   //SO PARA MOSTRAR, DEPOIS ATUALIZAR COM A API
-  public compToShow: {tipo:string, interveniente: string, dataValidade: string, dataEntrada: string, status: string};
+  public compToShow: { tipo: string, interveniente: string, dataValidade: string, dataEntrada: string, status: string };
+  public compsToShow: ComprovativosTemplate[] = [];
 
   public client: Client = {
     "clientId": "",
@@ -130,6 +131,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public result: any;
   public id: number = 0;
   public clientNr: number = 0;
+  submissionId: string = '83199e44-f089-471c-9588-f2a68e24b9ab';
 
   public subscription: Subscription;
   public currentPage: number;
@@ -166,11 +168,34 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   validatedDocuments: boolean = false;
 
-  submission: any = {};
+  submission: SubmissionGetTemplate = {};
   submissionClient: any = {};
   stakeholdersList: any[] = [];
-    public returned: string;
-  constructor(public http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
+
+
+  ///////////////////////
+  b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  }
+  // TESTE //////////////
+
+  constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
     private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
@@ -184,7 +209,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }, error => console.error(error));
     this.data.updateData(false, 4);
 
-    this.submissionService.GetSubmissionByID("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
+    this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
       this.submission = result;
       console.log('Submission ', result);
 
@@ -194,10 +219,57 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       });
 
       this.submission.stakeholders.forEach(stake => {
-        this.stakeholderService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+        this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
           console.log('Stakeholder ', result);
           this.stakeholdersList.push(result);
         });
+      });
+
+      this.submission.documents.forEach(document => {
+        console.log("entrou aqui1!!!");
+        var document = document;
+        var promise = documentService.GetSubmissionDocumentById(this.submissionId, document.id).toPromise();
+
+        promise.then((success) => {
+          console.log("entrou aqui2!!!!")
+          var currentDocument = success;
+          var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
+
+          this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
+            console.log("entrou aqui3!!!!!!!");
+          });
+
+          //fileImage.then((success) => {
+          //  console.log("entrou aqui3!!!!");
+          //  var teste = success.arraybuffer();
+          //  console.log(teste);
+          //  //var file = success;
+          //  //console.log("FICHEIRO PDF");
+          //  //console.log(file);
+          //  //this.files.push(file);
+          //  //this.compsToShow.push({
+          //  //  type: currentDocument.documentType,
+          //  //  stakeholder: '',
+          //  //  expirationDate: currentDocument.validUntil,
+          //  //  uploadDate: '',
+          //  //  status: '',
+          //  //  file: file
+          //  //});
+          //  //console.log("comps a mostrar");
+          //  //console.log(this.compsToShow);
+            
+          //}, error => {
+          //  console.log("deu erro!!!");
+          //  console.log(error);
+          //});
+        });
+
+        var blob = this.b64toBlob(document, 'application/pdf', 512);
+
+        var file = new File([blob], "crcTeste");
+        console.log("blob para ficheiro");
+        console.log(file);
+        this.files.push(file);
       });
     });
 

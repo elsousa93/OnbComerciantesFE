@@ -465,22 +465,28 @@ export class ClientComponent implements OnInit {
       console.log(context.clientsToShow);
       context.clientsToShow = [];
       console.log(context.clientsToShow);
-      clients.forEach(function (value, index) {
-        console.log(value);
-        context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
-          console.log(c);
-          var client = {
-            "clientId": c.merchantId,
-            "commercialName": c.commercialName,
-            "address": "Rua Gomes Artur",
-            "ZIPCode": "1000-001",
-            "locality": "Lisboa",
-            "country": "Portugal",
-          }
-          context.clientsToShow.push(client);
-          console.log(context.clientsToShow);
-        });
-      })
+      if (clients.length > 0) {
+        clients.forEach(function (value, index) {
+          console.log(value);
+          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
+            console.log(c);
+            var client = {
+              "clientId": c.merchantId,
+              "commercialName": c.commercialName,
+              "address": "Rua Gomes Artur",
+              "ZIPCode": "1000-001",
+              "locality": "Lisboa",
+              "country": "Portugal",
+            }
+            context.clientsToShow.push(client);
+            console.log(context.clientsToShow);
+          });
+        })
+      } else {
+        this.showFoundClient = false;
+        context.resultError = "Não existe Comerciante com esse número.";
+        this.searchDone = true;
+      }
     }, error => {
       context.showFoundClient = false;
       context.resultError = "Não existe Comerciante com esse número.";
@@ -582,10 +588,17 @@ export class ClientComponent implements OnInit {
   obterSelecionado() {
     console.log(this.clientId);
 
+    var NIFNIPC = '';
+    console.log("DOCUMENTAIONDELIVERYMETHOD -->");
+    console.log(this.newClient.documentationDeliveryMethod);
+    if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
+      console.log("entrou aqui no if complexo");
+      NIFNIPC = this.newClient.clientId;
+    }
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
-          NIFNIPC: this.newClient.clientId,
+          NIFNIPC: NIFNIPC,
           clientExists: true,
           clientId: this.clientId,
         }
