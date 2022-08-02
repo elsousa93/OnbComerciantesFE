@@ -6,6 +6,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 
 interface Stores {
@@ -49,6 +50,10 @@ const testValues : Stores[] = [
 })
 export class StoreComponent implements AfterViewInit{
   storesMat: MatTableDataSource<Stores>;
+
+  private baseUrl: string;
+
+
   /*variable declaration*/
   public stores: Istore[] = [];
   public clientID: number = 12345678;
@@ -66,11 +71,13 @@ export class StoreComponent implements AfterViewInit{
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService)
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService)
   {
+    this.baseUrl = configuration.baseUrl;
+
     this.ngOnInit();
     /*Get from the backend the full list of stores existing for the client*/
-    http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
+    http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       this.stores = result;
       this.dataSource.data = this.stores;
     }, error => console.error(error));

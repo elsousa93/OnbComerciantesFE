@@ -79,8 +79,7 @@ export class CreateStakeholderComponent implements OnInit {
   foundStakeholders: boolean;
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
 
     this.submissionId = localStorage.getItem('submissionId');

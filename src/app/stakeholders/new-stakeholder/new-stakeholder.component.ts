@@ -9,6 +9,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -21,6 +22,8 @@ import { CountryInformation } from '../../table-info/ITable-info.interface';
 */
 
 export class NewStakeholderComponent implements OnInit {
+  private baseUrl: string;
+
   public foo = 0;
   public displayValueSearch = "";
   isSelected = false;
@@ -82,10 +85,11 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder,private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService) {
+    private http: HttpClient,
+    @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, private fb: FormBuilder,private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService) {
     this.loadCountries();
-
+    this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem('submissionId');
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 

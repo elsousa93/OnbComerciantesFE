@@ -131,8 +131,7 @@ export class StakeholdersComponent implements OnInit {
   public isNoDataReadable: boolean;
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
+    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
 
     this.submissionId = localStorage.getItem('submissionId');
     console.log("foi buscar bem ao localstorage?");

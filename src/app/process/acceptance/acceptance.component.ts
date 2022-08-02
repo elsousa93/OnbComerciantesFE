@@ -8,6 +8,7 @@ import { ISubmission } from '../../submission/ISubmission.interface';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { ProcessService } from '../process.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-acceptance',
@@ -41,8 +42,7 @@ export class AcceptanceComponent implements OnInit {
   acceptancePage: boolean = false;
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router,
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router,
     private ProcessService: ProcessService,
     private compService: ComprovativosService, private modalService: BsModalService) {
 

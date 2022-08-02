@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
 import { CountryInformation, PEPTypes } from '../table-info/ITable-info.interface';
+import { Configuration, configurationToken } from '../configuration';
 
 @Component({
   selector: 'app-pep',
@@ -12,6 +13,7 @@ import { CountryInformation, PEPTypes } from '../table-info/ITable-info.interfac
   styleUrls: ['./pep.component.css']
 })
 export class PepComponent implements OnInit {
+  private baseUrl: string;
 
   //REACTIVE FORM
 
@@ -22,9 +24,10 @@ export class PepComponent implements OnInit {
   constructor(private router: ActivatedRoute,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    @Inject('BASE_URL')
-    private baseUrl: string, private route: Router,
-    private tableInfo: TableInfoService) {
+    @Inject(configurationToken) private configuration: Configuration, private route: Router,
+    private tableInfo: TableInfoService) {      
+      this.baseUrl = configuration.baseUrl;
+
   }
   newPep: IPep = {
     isPep: undefined,

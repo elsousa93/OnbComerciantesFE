@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { Istore } from '../IStore.interface';
 
 @Component({
@@ -13,6 +14,9 @@ import { Istore } from '../IStore.interface';
   //1. Use the iban from the cient.
   //2. Insert a new iban for the store
 export class StoreIbanComponent implements OnInit {
+
+  private baseUrl;
+
 
   /*variable declarations*/
   public stroreId: number = 0;
@@ -31,11 +35,13 @@ export class StoreIbanComponent implements OnInit {
 
   public files: File = null;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
     this.ngOnInit();
+    this.baseUrl = configuration.baseUrl;
+
 
     /*Get the information from the store we are editing*/
-    http.get<Istore>(baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
+    http.get<Istore>(this.baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
       this.store = result;
     }, error => console.error(error));
   }

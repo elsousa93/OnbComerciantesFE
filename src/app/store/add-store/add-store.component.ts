@@ -5,6 +5,7 @@ import { Istore } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-add-store',
@@ -20,6 +21,7 @@ export class AddStoreComponent implements OnInit {
   //Informação de campos/tabelas
   Countries: CountryInformation[] = [];
 
+  private baseUrl;
 
 
   /*Variable declaration*/
@@ -75,14 +77,16 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService) {
+    this.baseUrl = configuration.baseUrl;
+
     this.ngOnInit();
 
     this.loadTableInfo();
 
     //WS call - Get the fields for the specific store if we are not creatig a new store
     if (this.stroreId != -1) {
-      http.get<Istore>(baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
+      http.get<Istore>(this.baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
         this.store = result;
         //Controles the default value of the turistic zone radio button
         if (this.store.turisticZone == true) {
