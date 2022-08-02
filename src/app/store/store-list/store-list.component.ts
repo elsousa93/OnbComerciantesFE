@@ -74,7 +74,7 @@ export class StoreComponent implements AfterViewInit{
       this.stores = result;
       this.dataSource.data = this.stores;
     }, error => console.error(error));
-    this.data.updateData(false, 3);
+    this.data.updateData(false, 3, 1);
   }
   
   ngOnInit(): void {

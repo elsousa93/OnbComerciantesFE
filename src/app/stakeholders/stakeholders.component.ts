@@ -135,9 +135,6 @@ export class StakeholdersComponent implements OnInit {
     private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
 
     this.submissionId = localStorage.getItem('submissionId');
-    console.log("foi buscar bem ao localstorage?");
-    console.log(this.submissionId);
-
     this.ngOnInit();
 
     var context = this;
