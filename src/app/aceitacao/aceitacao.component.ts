@@ -4,7 +4,7 @@ import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/c
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
-import { ProcessGet, ProcessService, UpdateProcess } from '../process/process.service';
+import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../process/process.service';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class AceitacaoComponent implements OnInit{
   public subscription: Subscription;
 
   public processId: string;
-  public process: ProcessGet;
+  public process: ProcessList;
   
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
     private route: Router,
