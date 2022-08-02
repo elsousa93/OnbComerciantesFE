@@ -2,18 +2,24 @@ import { getLocaleDateTimeFormat } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Configuration, configurationToken } from '../configuration';
 import { Client } from './Client.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
+  private baseUrl: string;
 
-  urlOutbound: string = "http://localhost:12000/OutboundAPI/";
+
+  private urlOutbound: string;
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) { }
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+      this.baseUrl = configuration.baseUrl;
+      this.urlOutbound = configuration.outboundUrl;
+
+    }
 
   GetClientById(submissionID: string): any {
     return this.http.get<Client>(this.baseUrl + 'submission/' + submissionID + "/merchant");
@@ -54,7 +60,6 @@ export class ClientService {
   }
 
   getClientByID(clientID: string, requestID: string, AcquiringUserID:string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
-    console.log("ygijkldsuishdushdshd uhsudhsud hsudhhusd");
     var URI = this.urlOutbound + "api/v1/merchant/" + clientID;
 
     var data = new Date();

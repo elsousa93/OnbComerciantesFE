@@ -7,9 +7,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { Client } from '../client/Client.interface';
+import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
 import { Process } from '../process/process.interface';
-import { ProcessGet, ProcessService } from '../process/process.service';
+import { ProcessGet, ProcessList, ProcessService } from '../process/process.service';
 
 
 @Component({
@@ -25,9 +26,9 @@ export class DevolucaoComponent implements OnInit{
   public subscription: Subscription;
 
   public processId: string;
-  public process: ProcessGet;
+  public process: ProcessList;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService) {
 

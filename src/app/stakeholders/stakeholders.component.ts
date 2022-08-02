@@ -131,13 +131,9 @@ export class StakeholdersComponent implements OnInit {
   public isNoDataReadable: boolean;
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
+    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
 
     this.submissionId = localStorage.getItem('submissionId');
-    console.log("foi buscar bem ao localstorage?");
-    console.log(this.submissionId);
-
     this.ngOnInit();
 
     var context = this;
@@ -293,6 +289,7 @@ export class StakeholdersComponent implements OnInit {
       clients.forEach(function (value, index) {
         console.log(value);
         context2.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+          console.log("stakeholders a popular");
           console.log(c);
           var stakeholder = {
             "stakeholderNumber": c.stakeholderId,
@@ -321,15 +318,20 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
   }
 
-  deleteStakeholder() {
-    this.stakeholderService.DeleteStakeholder(this.submissionId, this.currentStakeholder.id).subscribe(s => {
+  deleteStakeholder(stakeholder) {
+    console.log("delete");
+    console.log(stakeholder);
+    this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
       console.log("stakeholder deleted");
-
-      const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
-      console.log(index);
-      if (index > -1) { // 
-        this.stakeholdersToShow.splice(index, 1);
-      }
+      this.route.navigateByUrl('stakeholders/');
+      //this.ngOnInit();
+      //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
+      //console.log(index);
+      //if (index > -1) { // 
+      //  this.stakeholdersToShow.splice(index, 1);
+      //}
+      //console.log("depois de apagar");
+      //console.log(this.stakeholdersToShow);
       //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
       //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
       //    this.stakeholdersToShow.splice(i, 1);

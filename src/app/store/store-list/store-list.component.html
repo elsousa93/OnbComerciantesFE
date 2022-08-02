@@ -1,63 +1,76 @@
-<h1 id="tableLabel">{{'TitleStores'|translate}}</h1>
-<br />
-<div class="offset-xxl-1 col-xxl-10">
-  <div class="table-responsive">
-    <!--<table class='table' *ngIf="stores">
-    <thead class="table-primary align-middle">
-      <tr class="align-middle">
-        <th scope="col" class="text-center">{{'NameStores'|translate}}</th>
-        <th scope="col" class="text-center">{{'ActivityStores'|translate}}</th>
-        <th scope="col" class="text-center">{{'SubActivityStores'|translate}}</th>
-        <th scope="col" class="text-center">{{'ZoneStores'|translate}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="clickable" *ngFor="let store of stores" [routerLink]="['/add-store/', store.id]">
-        <td class="text-center">{{ store.nameEstab}}</td>
-        <td class="text-center">{{ store.activityEstab }}</td>
-        <td class="text-center">{{ store.subActivityEstab }}</td>
-        <td class="text-center">{{ store.zoneEstab }}</td>
-      </tr>
-    </tbody>
-  </table>-->
-    <table mat-table [dataSource]="dataSource" class="table">
+<app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <form>
+  <div class="row">
+     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+       <span class="navbar-text text-light">
+       <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+       </span>
+       <span class="navbar-text">
+        <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">LOJAS</h5>
+       </span>
+      </nav>
+     </div>
+     <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
+      <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'TitleStores'|translate}}
+      </h2>
+      <p>Valide a(s) Loja(s) relacionadas com a Empresa. Caso pretenda, adicione ou remova Loja(s)</p>
+    <mat-table [dataSource]="dataSource" class="table" matSort>
       <ng-container matColumnDef="nameEstab">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'NameStores'|translate}} </th>
-        <td mat-cell *matCellDef="let store" class="text-center"> {{store.nameEstab}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let store"> {{store.nameEstab}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="activityEstab">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'ActivityStores'|translate}} </th>
-        <td mat-cell *matCellDef="let store" class="text-center"> {{store.activityEstab}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ActivityStores'|translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let store"> {{store.activityEstab}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="subActivityEstab">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'SubActivityStores'|translate}} </th>
-        <td mat-cell *matCellDef="let store" class="text-center"> {{store.subActivityEstab}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubActivityStores'|translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let store"> {{store.subActivityEstab}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="zoneEstab">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{'ZoneStores'|translate}} </th>
-        <td mat-cell *matCellDef="let store" class="text-center"> {{store.zoneEstab}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'ZoneStores'|translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let store"> {{store.zoneEstab}} </mat-cell>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary align-middle text-center"></tr>
-      <tr mat-row
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
           (click)="navigateTo(row.id)"
-          *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[3, 10, 20]"
-                   showFirstLastButtons
-                   aria-label="Select page of periodic elements">
-    </mat-paginator>
-  </div>
+          *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-paginator [pageSizeOptions]="[3, 10, 20]"
+          showFirstLastButtons>
+        </mat-paginator>
+        </mat-table>
 </div>
 
-<div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5">
-  <button id="btn4a" class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg"
-          (click)="onCickAdd()">
-    {{'AddStore'|translate}}&nbsp;
-    <i class="fas fa-angle-down"></i>
+<div class="offset-1 bg-white align-self-center col-10 mb-3 ps-0">
+  <div class="col ms-0 ps-0">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-5">
+      <span class="navbar-text align-self-center mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+  <button id="btn4a" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
+    {{'RemoveStoreButton'|translate}}&nbsp;
+    <img src="assets/images/store.svg" style="height: 25px !important; vertical-align: sub;">
   </button>
-  <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-          (click)="onCickContinue()">
-    {{'Continue'|translate}}&nbsp;
-    <i class="fas fa-angle-right">&nbsp;</i>
-  </button>
+  <button id="btn5a" [routerLink]="['/add-store']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
+    {{'AddStoreButton'|translate}}&nbsp;
+    <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
+  </button></span>
+</nav>
+</div>
+</div>
+<div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
+  <div class="col ms-0 ps-0">
+   <hr>
+   <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+    <span class="navbar-text me-2 align-self-center ms-0 me-0"><button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+    </button><button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
+    <button [routerLink]="['/stakeholders']" id="btn5a5" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+      style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+    <button [routerLink]="['/comprovativos']" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+    </span>
+   </nav>
+  </div>
+ </div>
+</div>
+</form>
 </div>

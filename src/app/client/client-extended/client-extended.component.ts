@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from '../Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-client-extended',
@@ -10,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./client-extended.component.css']
 })
 export class ClientExtendedComponent implements OnInit {
+  private baseUrl: string;
+
 
   public clients: Client[] = [];
   newClient: Client = {
@@ -112,8 +115,9 @@ export class ClientExtendedComponent implements OnInit {
 
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) {
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+      this.baseUrl = configuration.baseUrl;
+
 
     //Resquest
   //  this.http.post(baseUrl + 'BEClients/PostClientTest/', this.postData).toPromise().then(data => {

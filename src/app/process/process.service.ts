@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, Sales, ShareCapital } from '../client/Client.interface';
+import { Configuration, configurationToken } from '../configuration';
 import { CRCProcess } from '../CRC/crcinterfaces';
 import { FiscalAddress, IdentificationDocument } from '../stakeholders/IStakeholders.interface';
 import { ISubmission } from '../submission/ISubmission.interface';
@@ -11,13 +12,16 @@ import { Process } from './process.interface';
   providedIn: 'root'
 })
 export class ProcessService {
-
-  urlOutbound: string = "http://localhost:12000/OutboundAPI/";
+  private baseUrl: string;
+  private urlOutbound: string;
 
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) { }
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+      this.baseUrl = configuration.baseUrl;
+      this.urlOutbound = configuration.outboundUrl;
+
+     }
 
    getAllProcessSubmissions(id) : any {
      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllProcesses/' + id);
@@ -116,16 +120,16 @@ export class ProcessService {
     return this.http.get(this.baseUrl + 'process/' + processId + '/merchant');
   }
 
-  searchProcessByNumber(processNumber: string) {
-    return this.http.get<ProcessGet[]>(this.baseUrl + 'process' + '?number=' + processNumber);
+  searchProcessByNumber(processNumber: string, from: number, count: number) {
+    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?number=' + processNumber + "&from=" + from + '&count=' + count);
   }
 
-  searchProcessByState(state: string) {
-    return this.http.get<ProcessGet[]>(this.baseUrl + 'process' + '?state=' + state);
+  searchProcessByState(state: string, from: number, count: number) {
+    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?state=' + state + "&from=" + from + '&count=' + count);
   }
 
   getProcessById(processId: string) {
-    return this.http.get<ProcessGet>(this.baseUrl + 'process/' + processId);
+    return this.http.get<ProcessList>(this.baseUrl + 'process/' + processId);
   }
 
   getStakeholdersFromProcess(processId: string) {
@@ -187,13 +191,8 @@ export interface ClientForProcess {
 }
 
 export interface ProcessGet {
-  processId: string
-  processNumber: string
-  processType: string
-  processKind: string
-  state: string
-  isClientAwaiting: boolean
-  startedBy: StartedBy
+  items: ProcessList[]
+  pagination: Pagination
 }
 
 interface StartedBy {
@@ -205,4 +204,20 @@ interface StartedBy {
 export interface UpdateProcess {
   state: string //completed, canceled
   cancellationReason: string //merchantWithHighRisk, stakeholderWithHighRisk, merchantNotEligible, stakeholderNotEligible, promptedByUser
+}
+
+export interface ProcessList {
+  processId: string
+  processNumber: string
+  processType: string
+  processKind: string
+  state: string
+  isClientAwaiting: boolean
+  startedBy: StartedBy
+}
+
+interface Pagination {
+  from: number
+  count: number
+  total: number
 }

@@ -2,21 +2,25 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { merge, switchMap } from 'rxjs';
+import { Configuration, configurationToken } from '../configuration';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CRCService {
-
+  private DOCASUrl: string;
+  private authTokenUrl: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('DOCAS_URL')
-  private DOCASUrl: string, private route: Router) { }
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    this.DOCASUrl = configuration.DOCASUrl;
+    this.authTokenUrl = configuration.authTokenUrl
+  }
 
   getAccessToken() {
     var secret = btoa("4bd86de7-5640-4048-887e-7ecb6cedb01d" + ":" + "SIBS123456");
 
-    var URI = 'http://localhost:10000/connect/token'
+
 
     const HTTP_OPTIONS_AUTH = {
       headers: new HttpHeaders({
@@ -28,7 +32,7 @@ export class CRCService {
     console.log("a tentar obter o token");
     var token;
 
-    return this.http.post(URI, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH);
+    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH);
 
     //this.http.post(URI, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).subscribe(result => {
     //  console.log("Post feito");

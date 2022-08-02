@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { IPricing } from '../IPricing.interface';
 
@@ -12,6 +13,9 @@ import { IPricing } from '../IPricing.interface';
 })
 export class CommercialOfferPricingComponent implements OnInit {
 
+  private baseUrl;
+
+
   /*Pricing Object*/
   prices: IPricing[] = [];
   public clientID: number = 12345678;
@@ -20,10 +24,10 @@ export class CommercialOfferPricingComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router, private data: DataService) {
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
     /*Get pricing information*/
     this.ngOnInit();
-    http.get<IPricing[]>(baseUrl + 'becommercialoffer/GetPricing/' + this.clientID).subscribe(result => {
+    http.get<IPricing[]>(this.baseUrl + 'becommercialoffer/GetPricing/' + this.clientID).subscribe(result => {
       this.prices = result;
       console.log(this.prices)
 

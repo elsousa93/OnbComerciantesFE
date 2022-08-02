@@ -12,6 +12,7 @@ import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ClientService } from '../client.service';
 import { XhrFactory } from '@angular/common';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 
 @Component({
@@ -139,7 +140,8 @@ export class InfoDeclarativaComponent implements OnInit {
 
 
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
+  constructor(private formBuilder: FormBuilder, 
+    @Inject(configurationToken) private configuration: Configuration, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.ngOnInit();
 
 

@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, SubmissionGetTemplate, SubmissionGet } from '../ISubmission.interface'
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubmissionService {
+  private baseUrl;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+    this.baseUrl = configuration.baseUrl;
+
+  }
 
   GetSubmissionByID(submissionID: string): any {
     return this.http.get<SubmissionGetTemplate>(this.baseUrl + 'submission/' + submissionID);
