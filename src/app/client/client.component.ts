@@ -13,9 +13,11 @@ import { TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
+import { Configuration, configurationToken } from '../configuration';
 
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
+
 
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -73,6 +75,9 @@ interface addresstranformed {
 })
 
 export class ClientComponent implements OnInit {
+  private baseUrl: string;
+  private neyondBackUrl: string;
+
 
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
@@ -98,6 +103,7 @@ export class ClientComponent implements OnInit {
   public nifCC = null;
   public addressCC = null;
   public postalCodeCC = null;
+  public countryCC = null;
 
 
   public okCC = null;
@@ -110,6 +116,7 @@ export class ClientComponent implements OnInit {
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData.bind(this));
   }
+
   closeModal() {
     this.newModal.hide();
   }
@@ -124,7 +131,7 @@ export class ClientComponent implements OnInit {
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
-    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
 
     console.log("Name: ", name, "type: ", typeof (name));
@@ -133,18 +140,24 @@ export class ClientComponent implements OnInit {
     console.log("birthDate: ", birthDate);
     console.log("cardNumber: ", cardNumber);
     console.log("nif: ", nif);
+   
 
     this.nameCC = name;
     this.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
     this.cardNumberCC = cardNumber; // Nº do CC
     this.nifCC = nif;
+   
+    this.countryCC = countryIssuer;
 
     if (!(address == null)) {
       this.addressCC = address;
       this.postalCodeCC = postalCode;
     }
   }
+
+
+
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
   SearchDone: boolean;
@@ -284,14 +297,14 @@ export class ClientComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
-  private baseUrl: string, @Inject('NEYONDBACK_URL')
-    private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService,
-    private processService: ProcessService, public modalService: BsModalService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient,
+    @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService) {
+      this.baseUrl = configuration.baseUrl;
+      this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.ngOnInit();
-    console.log(baseUrl);
-    http.get<Client[]>(baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
+    console.log(this.baseUrl);
+    http.get<Client[]>(this.baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
     this.data.updateData(false, 1);

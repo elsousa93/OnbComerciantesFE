@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore } from '../../store/IStore.interface';
 
@@ -11,6 +12,8 @@ import { Istore } from '../../store/IStore.interface';
   styleUrls: ['./commercial-offer-list.component.css']
 })
 export class CommercialOfferListComponent implements OnInit {
+  private baseUrl: string;
+
 
   public stores: Istore[] = [];
   public clientID: number = 12345678;
@@ -24,10 +27,12 @@ export class CommercialOfferListComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage : number;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
+    this.baseUrl = configuration.baseUrl;
+
     /*Get stores list*/
     this.ngOnInit();
-    http.get<Istore[]>(baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
+    http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
       console.log(result);
       this.stores = result;
     }, error => console.error(error));

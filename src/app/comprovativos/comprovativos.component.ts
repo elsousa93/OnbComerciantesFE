@@ -8,6 +8,7 @@ import { buffer, Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
+import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { PostDocument } from '../submission/document/ISubmission-document';
@@ -24,6 +25,9 @@ import { ComprovativosService } from './services/comprovativos.services';
   templateUrl: './comprovativos.component.html'
 })
 export class ComprovativosComponent implements OnInit, AfterViewInit {
+  private baseUrl: string;
+
+
   public comprovativos: IComprovativos[] = [];
 
   public newComp: IComprovativos = {
@@ -133,7 +137,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public currentPage: number;
   public map: Map<number, boolean>;
 
-  public url: string;
 
   pageName = "";
   file?: File;
@@ -195,13 +198,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
     private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
-    //this.submissionId = localStorage.getItem("submissionId");
-    this.url = baseUrl;
+    this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
-    http.get<Client>(baseUrl + 'BEClients/GetClientById/' + this.clientNr).subscribe(result => {
+    http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + this.clientNr).subscribe(result => {
       this.client = result;
     }, error => console.error(error));
-    http.get<IComprovativos[]>(baseUrl + `BEComprovativos/` + this.clientNr).subscribe(result => {
+    http.get<IComprovativos[]>(this.baseUrl + `BEComprovativos/` + this.clientNr).subscribe(result => {
       this.comprovativos = result;
       console.log(result);
     }, error => console.error(error));
@@ -298,7 +300,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-      this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
+      this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', this.newComp.clientId);
       if (this.result != null) {
         if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
           if (event.target.files && files[i]) {

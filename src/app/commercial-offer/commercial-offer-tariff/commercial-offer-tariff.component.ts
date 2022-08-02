@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { ITariff } from '../ITariff.interface';
 
 @Component({
@@ -10,6 +11,9 @@ import { ITariff } from '../ITariff.interface';
 })
 export class CommercialOfferTariffComponent implements OnInit {
 
+  private baseUrl;
+
+
   /*Tariffs structure*/
   tariffs: ITariff[] = [];
   public clientID: number = 12345678;
@@ -17,9 +21,12 @@ export class CommercialOfferTariffComponent implements OnInit {
   selectedTarif: string = "";
   selectedNonTarif: string = "";
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    this.baseUrl = configuration.baseUrl;
+
+    
     /*Get Tariffs List*/
-    http.get<ITariff[]>(baseUrl + 'becommercialoffer/GetTariff/' + this.clientID).subscribe(result => {
+    http.get<ITariff[]>(this.baseUrl + 'becommercialoffer/GetTariff/' + this.clientID).subscribe(result => {
       this.tariffs = result;
       console.log(this.tariffs)
       /*Get the first element to display in each table*/

@@ -16,6 +16,7 @@ import { ProcessGet, ProcessService } from '../process/process.service';
 import { TableInfoService } from '../table-info/table-info.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { ClientService } from '../client/client.service';
+import { Configuration, configurationToken } from '../configuration';
 
 interface Process {
   processNumber: string;
@@ -74,7 +75,7 @@ export class ConsultasComponent implements OnInit{
   public subscription: Subscription;
 
   
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
     private router: ActivatedRoute, private submissionService: SubmissionService, private clientService: ClientService) {
 

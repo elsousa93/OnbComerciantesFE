@@ -19,6 +19,7 @@ import { CRCService } from '../../CRC/crcservice.service';
 import { CRCProcess } from '../../CRC/crcinterfaces';
 import { ProcessService } from '../../process/process.service';
 import { DatePipe, formatDate } from '@angular/common';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-client',
@@ -619,7 +620,7 @@ export class ClientByIdComponent implements OnInit {
     //}
   }
 
-  constructor(private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
     this.ngOnInit();
 

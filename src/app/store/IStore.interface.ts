@@ -9,7 +9,6 @@ export interface Istore {
   emailContact: string;
   cellphoneIndic: string;
   cellphoneNumber: string;
-  turisticZone: boolean;
   activityEstab: string;
   subActivityEstab: string;
   zoneEstab: string;

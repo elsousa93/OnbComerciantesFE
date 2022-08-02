@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISubmission } from './ISubmission.interface';
+import { Configuration, configurationToken } from '../configuration';
 
 @Component({
   selector: 'app-submission',
@@ -9,6 +10,7 @@ import { ISubmission } from './ISubmission.interface';
   styleUrls: ['./submission.component.css']
 })
 export class SubmissionComponent implements OnInit {
+  private baseUrl: string;
 
   isubmission: ISubmission;
   isTable: boolean = false;
@@ -18,12 +20,13 @@ export class SubmissionComponent implements OnInit {
 
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router) {
+    @Inject(configurationToken) private configuration: Configuration,
+    private http: HttpClient, private route: Router) {
+    this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
-     
+    
    
-    http.get<ISubmission>(baseUrl + 'BESubmission/').subscribe(result => {
+    http.get<ISubmission>(this.baseUrl + 'BESubmission/').subscribe(result => {
       this.submissionsList.push(result); //Recebe um object
       this.isTable = true;
       this.ngOnInit();

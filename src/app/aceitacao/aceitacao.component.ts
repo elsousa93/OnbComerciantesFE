@@ -22,7 +22,7 @@ export class AceitacaoComponent implements OnInit{
   public processId: string;
   public process: ProcessList;
   
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private http: HttpClient,
     private route: Router,
     private router: ActivatedRoute, private processService: ProcessService) {
 

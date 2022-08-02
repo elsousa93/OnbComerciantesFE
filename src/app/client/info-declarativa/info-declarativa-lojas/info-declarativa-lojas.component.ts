@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Istore } from '../../../store/IStore.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
@@ -15,6 +16,8 @@ import { TableInfoService } from '../../../table-info/table-info.service';
   styleUrls: ['./info-declarativa-lojas.component.css']
 })
 export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
+
+  private baseUrl: string;
 
   public stores: Istore[] = [];
   public clientID: number = 12345678;
@@ -54,10 +57,11 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private data: DataService, private tableInfo: TableInfoService) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService) {
+    this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
     /*Get from the backend the full list of stores existing for the client*/
-    http.get<Istore[]>(baseUrl + 'BEStores/GetAllStores/' + this.clientID).subscribe(result => {
+    http.get<Istore[]>(this.baseUrl + 'BEStores/GetAllStores/' + this.clientID).subscribe(result => {
       this.stores = result;
       this.dataSource.data = this.stores;
     }, error => console.error(error));
