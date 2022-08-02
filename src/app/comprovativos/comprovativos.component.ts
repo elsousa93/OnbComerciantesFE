@@ -172,7 +172,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   submissionClient: any = {};
   stakeholdersList: any[] = [];
 
-
+  public returned: string;
   ///////////////////////
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
