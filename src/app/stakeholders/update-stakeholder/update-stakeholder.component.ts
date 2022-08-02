@@ -4,6 +4,7 @@ import { IStakeholders } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Configuration, configurationToken } from 'src/app/configuration';
 //import { DataService } from '../nav-menu-interna/data.service';
 
 @Component({
@@ -12,6 +13,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./update-stakeholder.component.css']
 })
 export class UpdateStakeholderComponent implements OnInit {
+
+  private baseUrl;
+
 
   newStake: IStakeholders = {
   "fiscalId": 0,
@@ -92,9 +96,11 @@ export class UpdateStakeholderComponent implements OnInit {
   public subscription: Subscription;
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+    private http: HttpClient, 
+    @Inject(configurationToken) private configuration: Configuration,
     private route: Router,  private fb: FormBuilder) {
     //private data: DataService
+    this.baseUrl = configuration.baseUrl;
 
     this.ngOnInit();
   }

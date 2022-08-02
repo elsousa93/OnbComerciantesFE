@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class PackContratualComponent implements OnInit{
   @ViewChild('submeterPedidoModal') submeterPedidoModal;
 
   
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
   private route: Router,
   private router: ActivatedRoute, private modalService: BsModalService,) {
 

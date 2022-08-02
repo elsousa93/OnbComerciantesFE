@@ -1,53 +1,109 @@
-<h1>Definir Iban</h1>
-<br />
-<p><b>Pretende utilizar o IBAN do comerciante?</b></p>
-<div *ngFor="let selectionReplicate of selectionsReplicate; let idx = index">
-  <input type="radio" name="selectedReplicate" value="{{selectionReplicate}}" [checked]="(idx === 0)" (change)="radoChangehandler($event)" />{{selectionReplicate}}
-</div>
-<div *ngIf="selectedOption != 'Sim'">
-  <p><b>Por favor anexe o comprovativo de IBAN:</b></p>
-  <div>
-    <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
-    <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,null)" style="display: none" accept=".pdf" required>
-  </div>
-  <div *ngIf="files">
-    <table class='table table-striped' aria-labelledby="tableLabel">
-      <thead>
-        <tr>
-          <th>Tipo</th>
-          <th>Data do documento</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{files.name}}</td>
-          <td>{{files.lastModified | date:'dd/MM/yyyy'}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<br>
-<h1>Seleção de produtos</h1>
-<br>
-
-
-<div class="form">
-  <form #FormStoresIban="ngForm" (ngSubmit)="submit(FormStoresIban)">
-      <div class="form-group">
-        <!--<div class="input-form-group">
-          <label for="storeIban">Iban da loja</label>
-          <input #storeIban="ngModel" [disabled]=idisabled required minlength="5" maxlength="100" type="text" name="storeIban" class="form-control" [(ngModel)]="store.iban">
-          <span *ngIf="storeIban.touched && storeIban.invalid" class="error-block">
-            <span>Número do documento invalido:</span>
-            <span *ngIf="storeIban.errors?.['required']"> obrigatório</span>
-            <span *ngIf="storeIban.errors?.['minlength'||'maxlength']">deverá ter entre 5 e 100 caracteres</span>
-          </span>
-        </div>-->
+<app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <form>
+  <div class="row">
+     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+       <span class="navbar-text text-light">
+       <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+       </span>
+       <span class="navbar-text">
+        <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">LOJAS</h5>
+       </span>
+      </nav>
+     </div>
+     <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
+      <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/account_balance.svg" class="img_add">&nbsp;IDENTIFICAÇÃO DA CONTA BANCÁRIA ASSOCIADA À LOJA<span class="material-symbols-rounded"></span></h2>
       </div>
-    <div class="form-group col-12">
-      <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+      <div class="offset-1 col-10">
+      <div class="row">
+        <div class="ms-0 me-0 ps-0 pe-0 col-7">
+        <p class="titulo-form-simples" wappler-command="editContent">Banco de apoio</p><input select="" id="select2" class="form-select  campo_form">
+        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+        <p class="titulo-form-simples mb-3" wappler-command="editContent">PRETENDE considerar A informação bancária do cliente empresa?</p>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text">
+          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1"><label class="form-check-label radio pe-5" for="radio1" wappler-command="editContent">SIM</label></div>
+          </span><span class="navbar-text">
+          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1"><label class="form-check-label radio" for="radio1" wappler-command="editContent">NÃO</label></div>
+          </span></nav>
+        </div>
+      </div>
+      </div>
+      <div class="offset-1 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 col-5">
+      <p class="titulo-form-simples mb-3" wappler-command="editContent">por favor anexe o comprovativo de IBAN:</p>
+      <div class="table-responsive mb-2">
+        <table class="table">
+        <thead class="text-primary table-primary">
+          <tr class="table-white text-primary">
+          <th scope="col" class="text-center text-primary bg-light table-white">TIPO</th>
+          <th scope="col" class="text-center bg-light">DATA DO DOCUMENTO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td class="text-primary text-center">Comprovativo de IBAN</td>
+          <td class="text-primary text-center">11/02/2022</td>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+        </tbody>
+        </table>
+      </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4"><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
+        <button id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">ANEXAR&nbsp;
+          <img src="assets/images/attach_file_white.svg" style="height: 25px !important; vertical-align: sub;"><input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,null)" style="display: none" accept=".pdf" required></button></span></nav>
+      </div>
+      <div class="offset-1 col-10 mt-0 mb-0 pt-0 pb-0 ps-0 pe-0">
+      <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/add_card.svg" class="img_add">&nbsp;SECÇÃO DE PRODUTOS</h2>
+      </div>
+      <div class="offset-1 col-10 pt-3 ps-0">
+      <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">TIPO DE SOLUÇÃO</h5>
+      <p class=" mt-0 mb-3 ms-0 ps-0 S" wappler-command="editContent">Selecione tipo de solução UNICRE&nbsp;</p>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text text-primary">
+        <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent"><b>CARD PRESENT</b></label></div>
+        <div class="form-check"><label class="form-check-label" for="radio5">Transações presenciais</label></div>
+        </span><span class="navbar-text ms-3"><span class="navbar-text text-primary">
+          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2"><b>CARD NOT PRESENT</b></label></div>
+          <div class="form-check"><label class="form-check-label" for="radio5" wappler-command="editContent">Transações não presenciais</label></div>
+        </span></span><span class="navbar-text ms-3"><span class="navbar-text text-primary">
+          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent"><b>CARD PRESENT</b></label></div>
+          <div class="form-check"><label class="form-check-label" for="radio5"></label></div>
+        </span></span></nav>
+      </div>
+      <div class="offset-1 col-10 pt-0 ps-0">
+      <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">SUB PRODUTO</h5>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text text-primary">
+        <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio3" name="radio3"><label class="form-check-label radio pe-5" for="radio3" wappler-command="editContent"><b>EASY</b></label></div>
+        </span><span class="navbar-text ms-3"><span class="navbar-text text-primary">
+          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio3" name="radio3"><label class="form-check-label radio pe-5" for="radio3"><b>NORMAL</b></label></div>
+        </span></span><span class="navbar-text ms-3"></span></nav>
+      </div>
+      <div class="offset-1 col-5 pt-0 ps-0">
+      <p class="titulo-form-simples" wappler-command="editContent">URL</p><input id="text2" name="text2" type="text" class="form-control campo_form">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4"><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0"><button id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">ADICIONAR&nbsp;<img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;"></button></span></nav>
+      </div>
+      <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
+      <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+      </div>
+      <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
+      <div class="col ms-0 ps-0">
+        <hr>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+          <span class="navbar-text me-2 align-self-center ms-0 me-0">
+            <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">SAIR&nbsp;
+              <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+            </button>
+            <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">CANCELAR&nbsp;
+              <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+            </button>
+            <button id="btn5a1" [routerLink]="['/add-store']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
+              <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;
+            </button>
+            <button id="btn5a1" [routerLink]="['/comprovativos']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;
+              <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
+            </button>
+          </span>
+        </nav>
+      </div>
+      </div>
     </div>
-  </form>
-</div>

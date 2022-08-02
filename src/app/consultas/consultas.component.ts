@@ -16,6 +16,7 @@ import { ProcessGet, ProcessService } from '../process/process.service';
 import { TableInfoService } from '../table-info/table-info.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { ClientService } from '../client/client.service';
+import { Configuration, configurationToken } from '../configuration';
 
 interface Process {
   processNumber: string;
@@ -74,7 +75,7 @@ export class ConsultasComponent implements OnInit{
   public subscription: Subscription;
 
   
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
     private router: ActivatedRoute, private submissionService: SubmissionService, private clientService: ClientService) {
 
@@ -129,34 +130,43 @@ export class ConsultasComponent implements OnInit{
       if (processNumber !== '') {
         console.log(processNumber);
         var encodedCode = encodeURIComponent(processNumber);
-        this.processService.searchProcessByNumber(encodedCode).subscribe(result => {
-          let processesArray: Process[] = result.map<Process>((process)=>{
-            return {processNumber: process.processId, 
-                    nipc:529463466,
-                    nome: "EMPRESA UNIPESSOAL TESTES", 
-                    estado: process.state, 
-                    estadoDeConclusao: "EM CURSO"};
-          })
-          this.loadProcesses(processesArray);
+        this.processService.searchProcessByNumber(encodedCode, 0, 1).subscribe(result => {
+          this.processService.searchProcessByNumber(encodedCode, 0, result.pagination.total).subscribe(resul => {
+            let processesArray: Process[] = resul.items.map<Process>((process) => {
+              return {
+                processNumber: process.processId,
+                nipc: 529463466,
+                nome: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state,
+                estadoDeConclusao: "EM CURSO"
+              };
+            })
+            this.loadProcesses(processesArray);
+
+          }, error => {
+            console.log("deu erro");
+            console.log(error);
+          });
+          });
           
-        }, error => {
-          console.log("deu erro");
-          console.log(error);
-        });
       } else {
         var processStateToSearch = this.form.get("state").value;
-        this.processService.searchProcessByState(processStateToSearch).subscribe(result => {
-          let processesArray: Process[] = result.map<Process>((process)=>{
-            return {processNumber: process.processId, 
-                    nipc:529463466,
-                    nome: "EMPRESA UNIPESSOAL TESTES", 
-                    estado: process.state, 
-                    estadoDeConclusao: "EM CURSO"};
-          })
-          this.loadProcesses(processesArray);
-        }, error => {
-          console.log(error);
-        });
+        this.processService.searchProcessByState(processStateToSearch, 0, 1).subscribe(result => {
+          this.processService.searchProcessByState(processStateToSearch, 0, result.pagination.total).subscribe(resul => {
+            let processesArray: Process[] = resul.items.map<Process>((process) => {
+              return {
+                processNumber: process.processId,
+                nipc: 529463466,
+                nome: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state,
+                estadoDeConclusao: "EM CURSO"
+              };
+            })
+            this.loadProcesses(processesArray);
+          }, error => {
+            console.log(error);
+          });
+          });
       }
   }
 

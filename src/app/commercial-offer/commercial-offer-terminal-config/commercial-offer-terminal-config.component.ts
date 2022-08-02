@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { ICommercialOffer } from '../ICommercialOffer';
 
 @Component({
@@ -9,6 +10,9 @@ import { ICommercialOffer } from '../ICommercialOffer';
   styleUrls: ['./commercial-offer-terminal-config.component.css']
 })
 export class CommercialOfferTerminalConfigComponent implements OnInit {
+
+  private baseUrl;
+
 
   public clientID: number = 12345678;
   public stroreId: number = 0;
@@ -38,11 +42,14 @@ export class CommercialOfferTerminalConfigComponent implements OnInit {
   /*What terminal Types can the client choose?*/
   selectionsCommunicationType = ['GPRS', 'Linha Comutada'];
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    this.baseUrl = configuration.baseUrl;
+
+
     this.ngOnInit();
 
     if (this.commofid != -1) {
-      http.get<ICommercialOffer>(baseUrl + 'becommercialoffer/GetOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid).subscribe(result => {
+      http.get<ICommercialOffer>(this.baseUrl + 'becommercialoffer/GetOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid).subscribe(result => {
         this.commOffer = result;
       }, error => console.error(error));
     }

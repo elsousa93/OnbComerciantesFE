@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Istore } from '../IStore.interface';
 
 @Component({
@@ -14,10 +16,17 @@ import { Istore } from '../IStore.interface';
   //2. Insert a new iban for the store
 export class StoreIbanComponent implements OnInit {
 
+  private baseUrl;
+
+
   /*variable declarations*/
   public stroreId: number = 0;
   store: Istore = { id: -1 } as Istore
   public clientID: number = 12345678;
+
+  public map: Map<number, boolean>;
+  public currentPage: number;
+  public subscription: Subscription;
 
   /*CHANGE - Get via service from the clients */
   public commIban: string = "232323232";
@@ -31,18 +40,23 @@ export class StoreIbanComponent implements OnInit {
 
   public files: File = null;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseurl: string, private route: Router, private data: DataService) {
     this.ngOnInit();
+    this.baseUrl = baseurl;
+
 
     /*Get the information from the store we are editing*/
-    http.get<Istore>(baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
+    http.get<Istore>(this.baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
       this.store = result;
     }, error => console.error(error));
+    this.data.updateData(false, 3, 3);
   }
 
   ngOnInit(): void {
     //Get Id from the store
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
   /*Controles the radio button changes*/
