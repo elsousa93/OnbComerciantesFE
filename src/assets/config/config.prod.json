@@ -1,9 +1,0 @@
-{
-    "production": true,
-    "baseUrl": "http://localhost:12000/AcquiringAPI/api/",
-    "neyondBackUrl": "http://localhost:12000/BackendPortal/",
-    "DOCASUrl": "http://localhost:11000/api/",
-    "postmanUrl": "https://7929bf0d-1abd-4943-878b-1859269bc442.mock.pstmn.io/",
-    "acquiringAPIUrl": "http://localhost:12000/AcquiringAPI/api/",
-    "authTokenUrl": "http://localhost:10000/connect/token"      
-}
