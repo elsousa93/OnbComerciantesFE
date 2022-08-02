@@ -647,43 +647,40 @@ export class ClientByIdComponent implements OnInit {
 
     console.log(this.clientExists);
 
-    if (this.returned === 'edit') {
+    if (this.returned !== null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         console.log('Submissão retornada quando pesquisada pelo número de processo', result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           console.log('Submissão com detalhes mais especificos ', resul);
           this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
+            console.log(this.merchantInfo);
+            this.NIFNIPC = this.merchantInfo.fiscalId;
+            console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
+              if (this.merchantInfo.incorporationStatement !== null) {
+                console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
+                this.initializeBasicFormControl();
+                this.isCommercialSociety = true;
+                this.searchByCRC(); 
+              } else {
+                if (this.merchantInfo.legalNature !== "") {
+                  console.log("O merchant tem uma legal nature ", this.merchantInfo.legalNature);
+                  this.isCommercialSociety = false;
+                  this.tipologia === 'Company';
+                  this.initializeFormControlOther();
+                } else {
+                  console.log("O merchant não tem uma legal nature");
+                  this.tipologia === 'ENI';
+                  this.initializeENI();
+                }
+              }
           });
         });
       });
     }
 
 
-      if (this.returned === 'consult') {
-        console.log("Entrei no if do consult");
-        this.NIFNIPC = this.merchantInfo.fiscalId;
-        console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
-        console.log("Erro2");
-        console.log(this.merchantInfo);
-        if (this.merchantInfo.incorporationStatement.code !== "") {
-          console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
-          this.initializeBasicFormControl();
-          this.isCommercialSociety = true;
-          this.searchByCRC();
-        } else {
-          if (this.merchantInfo.legalNature !== "") {
-            console.log("O merchant tem uma legal nature ", this.merchantInfo.legalNature);
-            this.isCommercialSociety = false;
-            this.tipologia === 'Company';
-            this.initializeFormControlOther();
-          } else {
-            console.log("O merchant não tem uma legal nature");
-            this.tipologia === 'ENI';
-            this.initializeENI();
-          }
-        }
-      }
+      
     }
 
    //fim do construtor

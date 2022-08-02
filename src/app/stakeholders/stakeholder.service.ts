@@ -141,7 +141,12 @@ export class StakeholderService {
 
     return this.http.put<any>(URI, stakeholder, HTTP_OPTIONS);
   }
+
+  getStakeholdersById(submissionId: string, stakeholderId: string) {
+    return this.http.get<any[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
+  }
 }
+
 
 //OLD VERSION
 

@@ -18,6 +18,7 @@ import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { SubmissionService } from '../submission/service/submission-service.service';
 
 //Funcao da SIBS 
 declare function OpenCCDialog(): any;
@@ -283,10 +284,13 @@ export class ClientComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
+  public returned: string;
+  public merchantInfo: any;
+
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL')
   private baseUrl: string, @Inject('NEYONDBACK_URL')
     private neyondBackUrl: string, private route: Router, private data: DataService, private clientService: ClientService,
-    private processService: ProcessService, public modalService: BsModalService) {
+    private processService: ProcessService, public modalService: BsModalService, private submissionService: SubmissionService) {
 
     this.ngOnInit();
     console.log(baseUrl);
@@ -298,6 +302,27 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
+
+    if (this.returned !== null && this.returned !== undefined) {
+      console.log("ENTREI NO IF DO RETURNED");
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log('Submissão com detalhes mais especificos ', resul);
+          this.clientService.GetClientById(resul.id).subscribe(res => {
+            this.merchantInfo = res;
+            console.log("MERCHANT QUE FOMOS BUSCAR ", this.merchantInfo);
+            if (this.merchantInfo.merchantType == 'Corporate') {
+              console.log("O tipo é empresa");
+              this.activateButtons(true); // se for Empresa
+            } else {
+              console.log("O tipo é ENI");
+              this.activateButtons(false); // se for ENI
+            }
+          });
+        });
+      });
+    }
   }
 
   //TEMPORARIO!!!!
@@ -497,6 +522,7 @@ export class ClientComponent implements OnInit {
     this.modalService.onHide.subscribe((e) => {
       console.log('close', this.modalService);
     });
+    this.returned = localStorage.getItem("returned");
 
     var context = this;
 

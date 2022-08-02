@@ -9,6 +9,8 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { SubmissionService } from '../../submission/service/submission-service.service';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -73,6 +75,8 @@ export class NewStakeholderComponent implements OnInit {
 
   submissionStakeholders: IStakeholders[] = [];
 
+  returned: string;
+
   loadCountries() {
     this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
@@ -83,7 +87,7 @@ export class NewStakeholderComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder,private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService) {
+    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService) {
     this.loadCountries();
 
     this.submissionId = localStorage.getItem('submissionId');
@@ -96,20 +100,39 @@ export class NewStakeholderComponent implements OnInit {
     
 
     var context = this;
-
-    stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-      result.forEach(function (value, index) {
-        console.log(value);
-        context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          console.log(result);
-          context.submissionStakeholders.push(result);
-        }, error => {
-          console.log(error);
+    if (this.returned !== null) {
+      console.log("Entrei no IF do returned diferente de NULL nos stakes");
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log("Ir buscar submissão através do processNumber", result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
+          this.stakeService.getStakeholdersById(result[0].submissionId, resul.stakeholders.id).subscribe(res => {
+            console.log('Lista de stakeholders da submissão ', res);
+            res.forEach(function (value, index) {
+              console.log("Stake ", value);
+              context.submissionStakeholders.push(value);
+            }, error => {
+              console.log(error);
+            });
+          });
         });
       });
-    }, error => {
-      console.log(error);
-    });
+    } else {
+      stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+        result.forEach(function (value, index) {
+          console.log(value);
+          context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+            console.log(result);
+            context.submissionStakeholders.push(result);
+          }, error => {
+            console.log(error);
+          });
+        });
+      }, error => {
+        console.log(error);
+      });
+    }
+    
 
     //this.currentStakeholder = {
     //  fiscalId: '162243839',
@@ -174,10 +197,10 @@ export class NewStakeholderComponent implements OnInit {
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
       NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
       Role: new FormControl({ value: '', disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
-      Country: new FormControl('', Validators.required),
-      ZIPCode: new FormControl('', Validators.required),
-      Locality: new FormControl('', Validators.required),
-      Address: new FormControl('', Validators.required)
+      Country: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
+      ZIPCode: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
+      Locality: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
+      Address: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.address : '', Validators.required)
     })
   }
 

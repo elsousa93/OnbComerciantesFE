@@ -167,6 +167,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   submissionClient: any = {};
   stakeholdersList: any[] = [];
 
+  public returned: string;
+
   constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
     private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
@@ -210,6 +212,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.returned = localStorage.getItem("returned");
   }
 
 
@@ -400,18 +403,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   continue() {
     this.firstSubmissionModalRef?.hide();
-    let utf8encode = new TextEncoder();
     this.files.forEach(doc => {
       
       this.readBase64(doc).then((data) => {
-        //var buf = new ArrayBuffer(data.length * 2); // 2 bytes for each char
-        //var bufView = new Uint16Array(buf);
-        //for (var i = 0, strLen = data.length; i < strLen; i++) {
-        //  bufView[i] = data.charCodeAt(i);
-        //}
-        //console.log('Array ', buf);
-        //console.log('String ', buf.toString());
-        //console.log('Buf View ', bufView);
         var docToSend: PostDocument = {
           "documentType": "string",
           "documentPurpose": "Identification",
