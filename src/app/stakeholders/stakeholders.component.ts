@@ -9,6 +9,7 @@ import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/form
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
+import { SubmissionService } from '../submission/service/submission-service.service';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -218,27 +219,53 @@ export class StakeholdersComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
+  public returned: string;
+
+
   constructor(private router: ActivatedRoute, public modalService: BsModalService,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
+      private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
     this.submissionId = localStorage.getItem('submissionId');
+    this.returned = localStorage.getItem('returned');
+    console.log("foi buscar bem ao localstorage?");
+    console.log(this.submissionId);
+    console.log("returned ", this.returned);
+
     this.ngOnInit();
 
     var context = this;
-    stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-      result.forEach(function (value, index) {
-        console.log(value);
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          console.log(result);
-          context.submissionStakeholders.push(result);
-        }, error => {
-          console.log(error);
+    if (this.returned !== null) {
+      console.log("Entrei no IF do returned diferente de NULL nos stakes");
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log("Ir buscar submissão através do processNumber", result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
+          this.stakeholderService.getStakeholdersById(result[0].submissionId, resul.stakeholders.id).subscribe(res => {
+            console.log('Lista de stakeholders da submissão ', res);
+            res.forEach(function (value, index) {
+              console.log("Stake ", value);
+              context.submissionStakeholders.push(value);
+            }, error => {
+              console.log(error);
+            });
+          });
         });
       });
-    }, error => {
-      console.log(error);
-    });
-
+    } else {
+      stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+        result.forEach(function (value, index) {
+          console.log(value);
+          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+            console.log(result);
+            context.submissionStakeholders.push(result);
+          }, error => {
+            console.log(error);
+          });
+        });
+      }, error => {
+        console.log(error);
+      });
+    }
   }
 
   redirectAddStakeholder() {

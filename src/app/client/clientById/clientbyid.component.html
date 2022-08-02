@@ -702,7 +702,7 @@
         <div class="col-10 ms-3 me-3 ps-3 pe-3">
           <p class="titulo-form-simples">NIF/NIPC*</p>
           <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC"
-                 type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
+                 type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" />
           <div class="alert alert-danger"
                *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
             <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
@@ -990,7 +990,7 @@
                   <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
                   <select formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                           class="form-control campo_form"
-                          (change)="onLegalNatureSelected()" [disabled]="returned === 'consult'">
+                          (change)="onLegalNatureSelected()" [attr.disabled]="returned === 'consult'">
                     <option value="">Selecione</option>
                     <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}} [selected]="merchantInfo != null ? merchantInfo.legalNature == legalNature.code : ''">{{legalNature.description}}</option>
                   </select>
@@ -1004,7 +1004,7 @@
                 <div>
                   <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
                   <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
-                          class="form-control campo_form" [disabled]="returned === 'consult'">
+                          class="form-control campo_form" [attr.disabled]="returned === 'consult'">
                     <option value="" selected disabled>Selecione</option>
                     <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}} [selected]="merchantInfo != null ? merchantInfo.legalNature2 == legalNature2.code : ''" >{{legalNature2.description}}</option>
                   </select>
@@ -1068,7 +1068,7 @@
                     <img src="../assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
                   </span>VOLTAR&nbsp;
                 </button>
-                <button id="btn5a2"
+                <button id="btn5a2" [routerLink]="['/stakeholders']"
                         class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
                         wappler-command="editContent">
                   CONTINUAR&nbsp;<span class="material-symbols-rounded m-align">

@@ -9,7 +9,7 @@ import { CountryInformation } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
-import { Client } from '../client/Client.interface';
+import { Client, Crc } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
@@ -46,7 +46,7 @@ export class CountrysComponent implements OnInit {
   statusValue: boolean = false;
 
   clientExists: boolean;
-  associatedWithGroupOrFranchise: boolean = false;
+  associatedWithGroupOrFranchise: string = "false";
   isAssociatedWithFranchise: boolean;
   form: FormGroup;
 
@@ -65,6 +65,7 @@ export class CountrysComponent implements OnInit {
   processId: string;
 
   currentClient: any = {};
+  crc;
   documentsList = []; //lista de documentos do utilizador
 
   processNumber: string;
@@ -126,28 +127,30 @@ export class CountrysComponent implements OnInit {
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
+      if (this.route.getCurrentNavigation().extras.state["crc"])
+        this.crc = this.route.getCurrentNavigation().extras.state["crc"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
 
-    if (this.returned == 'consult') {
+    if (this.returned !== null) {
       if (this.merchantInfo.documentationDeliveryMethod == 'Portal') {
+        console.log("A preferencia de documentos é Portal");
         this.form.get("preferenceDocuments").setValue("Portal");
       } else {
+        console.log("A preferencia de documentos é Mail");
         this.form.get("preferenceDocuments").setValue("Mail");
       }
 
-      //por default fica a false
-      this.setAssociatedWith(false);
-    }
-
-    console.log('Fora do if do edit countries');
-    console.log('MerchantInfo ', this.merchantInfo);
-    if (this.merchantInfo != null) {
-      console.log('Entrei no if do edit countries');
+      if (this.merchantInfo.legalName !== null || this.merchantInfo.businessGroup !== null) {
+        console.log('Escolheu sim na parte do franchise');
+        this.setAssociatedWith('true');
+      } else {
+        console.log('Escolheu não na parte do franchise');
+        this.setAssociatedWith('false');
+      }
       this.editCountries();
     }
-    console.log('Depois do if do edit countries');
 
     console.log(this.clientId);
     //Chamada à API para receber todos os Paises
@@ -179,8 +182,8 @@ export class CountrysComponent implements OnInit {
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
-        associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : 'Portal'/*this.client.documentationDeliveryMethod*/, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''/*this.client.documentationDeliveryMethod*/, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -195,7 +198,7 @@ export class CountrysComponent implements OnInit {
         services: new FormControl('aaa', Validators.required),
         transactionsAverage: new FormControl((this.returned != null) ? this.merchantInfo.sales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : 'Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : '', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -248,7 +251,7 @@ export class CountrysComponent implements OnInit {
         "postalArea": "Aldeia Vegetariana",
         "country": "PT"
       },
-      "merchantType": "Corporate",
+      "merchantType": "Corporate", //ou Entrepreneur -> ENI
       "commercialName": "BATATAS FRITAS",
       "legalNature": "35",
       "crc": {
@@ -325,13 +328,21 @@ export class CountrysComponent implements OnInit {
       }
     ],
     "documents": [
-      {
-        "archiveSource": "undefined",
-        "purpose": "undefined",
-        "validUntil": "2022-07-20",
-        "receivedAt": "2022-07-20",
-        "documentType": "",
-        "uniqueReference": "",
+      { //tive de mudar
+        //"archiveSource": "undefined",
+        //"purpose": "undefined",
+        //"validUntil": "2022-07-20",
+        //"receivedAt": "2022-07-20",
+        //"documentType": "",
+        //"uniqueReference": "",
+        documentType: '',
+        documentPurpose: '',
+        file: {
+          fileType: '',
+          binary: ''
+        },
+        validUntil: '',
+        data: ''
       }
     ]
   }
@@ -342,7 +353,7 @@ export class CountrysComponent implements OnInit {
     console.log("lista de paises preenchidos");
     console.log(this.lstPaisPreenchido);
     this.data.updateData(true, 1);
-    
+    this.newSubmission.startedAt = new Date().toISOString();
     this.newSubmission.merchant.commercialName = "string";
     this.newSubmission.merchant.billingEmail = this.client.billingEmail;
     //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
@@ -437,6 +448,24 @@ export class CountrysComponent implements OnInit {
       })
     });
 
+    console.log("CRC !!!");
+    console.log(this.crc);
+    this.newSubmission.documents.push({
+      documentType: '',
+      documentPurpose: '',
+      file: {
+        fileType: 'PDF',
+        binary: this.crc.pdf
+      },
+      validUntil: this.crc.expirationDate,
+      data: ''
+    })
+
+    if (this.tipologia == 'Company')
+      this.newSubmission.merchant.merchantType = 'Corporate';
+    else
+      this.newSubmission.merchant.merchantType = 'Entrepreneur';
+
     this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
       console.log("dentro do submission service");
       console.log(result);
@@ -476,7 +505,7 @@ export class CountrysComponent implements OnInit {
       border: 3px solid green;` );
   }
 
-  setAssociatedWith(value: boolean) {
+  setAssociatedWith(value: string) {
     this.associatedWithGroupOrFranchise = value;
   }
 

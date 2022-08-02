@@ -9,7 +9,9 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 //Para local dev: 'https://localhost:7270/';
 //Para dev SIBS: 'http://localhost:12000/BackendPortal/';
 
-let path = window.location.href + (environment.production ? 'assets/config/config.prod.json' : 'assets/config/config.json');
+
+let path = environment.production ? '/onbComerciantesFE/assets/config/config.prod.json' : '/assets/config/config.json';
+
 
 fetch(path)
   .then(file => file.json())

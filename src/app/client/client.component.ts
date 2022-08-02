@@ -20,6 +20,7 @@ import { readCCAddress } from '../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../citizencard/ICCInfo.interface';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { SubmissionService } from '../submission/service/submission-service.service';
 
 @Component({
   selector: 'app-client',
@@ -245,8 +246,11 @@ export class ClientComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
+  public returned: string;
+  public merchantInfo: any;
+
   constructor(private router: ActivatedRoute, private http: HttpClient,
-    @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService) {
+      @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService, private submissionService: SubmissionService) {
       this.baseUrl = configuration.baseUrl;
       this.neyondBackUrl = configuration.neyondBackUrl;
 
@@ -260,6 +264,27 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
+
+    if (this.returned !== null && this.returned !== undefined) {
+      console.log("ENTREI NO IF DO RETURNED");
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log('Submissão com detalhes mais especificos ', resul);
+          this.clientService.GetClientById(resul.id).subscribe(res => {
+            this.merchantInfo = res;
+            console.log("MERCHANT QUE FOMOS BUSCAR ", this.merchantInfo);
+            if (this.merchantInfo.merchantType == 'Corporate') {
+              console.log("O tipo é empresa");
+              this.activateButtons(true); // se for Empresa
+            } else {
+              console.log("O tipo é ENI");
+              this.activateButtons(false); // se for ENI
+            }
+          });
+        });
+      });
+    }
   }
 
   //TEMPORARIO
@@ -388,22 +413,28 @@ export class ClientComponent implements OnInit {
       console.log(context.clientsToShow);
       context.clientsToShow = [];
       console.log(context.clientsToShow);
-      clients.forEach(function (value, index) {
-        console.log(value);
-        context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
-          console.log(c);
-          var client = {
-            "clientId": c.merchantId,
-            "commercialName": c.commercialName,
-            "address": "Rua Gomes Artur",
-            "ZIPCode": "1000-001",
-            "locality": "Lisboa",
-            "country": "Portugal",
-          }
-          context.clientsToShow.push(client);
-          console.log(context.clientsToShow);
-        });
-      })
+      if (clients.length > 0) {
+        clients.forEach(function (value, index) {
+          console.log(value);
+          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
+            console.log(c);
+            var client = {
+              "clientId": c.merchantId,
+              "commercialName": c.commercialName,
+              "address": "Rua Gomes Artur",
+              "ZIPCode": "1000-001",
+              "locality": "Lisboa",
+              "country": "Portugal",
+            }
+            context.clientsToShow.push(client);
+            console.log(context.clientsToShow);
+          });
+        })
+      } else {
+        this.showFoundClient = false;
+        context.resultError = "Não existe Comerciante com esse número.";
+        this.searchDone = true;
+      }
     }, error => {
       context.showFoundClient = false;
       context.resultError = "Não existe Comerciante com esse número.";
@@ -459,6 +490,7 @@ export class ClientComponent implements OnInit {
     this.modalService.onHide.subscribe((e) => {
       console.log('close', this.modalService);
     });
+    this.returned = localStorage.getItem("returned");
 
     var context = this;
 
@@ -504,10 +536,17 @@ export class ClientComponent implements OnInit {
   obterSelecionado() {
     console.log(this.clientId);
 
+    var NIFNIPC = '';
+    console.log("DOCUMENTAIONDELIVERYMETHOD -->");
+    console.log(this.newClient.documentationDeliveryMethod);
+    if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
+      console.log("entrou aqui no if complexo");
+      NIFNIPC = this.newClient.clientId;
+    }
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
-          NIFNIPC: this.newClient.clientId,
+          NIFNIPC: NIFNIPC,
           clientExists: true,
           clientId: this.clientId,
         }

@@ -175,15 +175,16 @@ export class ConsultasComponent implements OnInit{
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("consult", 'true');
 
-    this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-      console.log('Submissão retornada quando pesquisada pelo número de processo', result);
-      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-        console.log('Submissão com detalhes mais especificos ', resul);
-        this.clientService.GetClientById(resul.id).subscribe(res => {
-          this.route.navigate(['clientbyid/', res.fiscalId]);
-        });
-      });
-    });
+    this.route.navigate(['/client']);
+    //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+    //  console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+    //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+    //    console.log('Submissão com detalhes mais especificos ', resul);
+    //    this.clientService.GetClientById(resul.id).subscribe(res => {
+    //      this.route.navigate(['/client']);
+    //    });
+    //  });
+    //});
 
   }
 

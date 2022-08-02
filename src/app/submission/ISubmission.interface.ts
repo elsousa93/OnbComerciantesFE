@@ -1,5 +1,6 @@
 import { Client } from "../client/Client.interface"
 import { IStakeholders } from "../stakeholders/IStakeholders.interface"
+import { SimplifiedDocument } from "./document/ISubmission-document"
 
 
 export interface ISubmission {
@@ -24,8 +25,21 @@ export interface SubmissionPostTemplate {
   bank?: string
   merchant?: Client
   stakeholders?: IStakeholders[]
-  documents?: Document[],
+  documents?: SubmissionPostDocumentTemplate[],
   startedAt?: string
+}
+
+export interface SubmissionPostDocumentTemplate {
+  documentType?: string
+  documentPurpose?: string
+  file?: File
+  validUntil?: string
+  data?: string
+}
+
+export interface File {
+  fileType?: string,
+  binary?: string
 }
 
 export interface SubmissionPostResponse {
@@ -64,7 +78,7 @@ export interface SubmissionGetTemplate {
   bank?: string
   merchant?: SimplifiedReference
   stakeholders?: SimplifiedReference[]
-  documents?: Document[]
+  documents?: SimplifiedDocument[]
   submissionType?: string
   processNumber?: string
   processKind?: string
@@ -72,7 +86,6 @@ export interface SubmissionGetTemplate {
   isClientAwaiting?: boolean
   submissionUser?: SubmissionUser
   isComplete?: boolean
-  
 }
 
 interface SimplifiedReference {

@@ -7,9 +7,9 @@ export interface ISubmissionDocument {
 }
 
 export interface SimplifiedDocument{
-  id: string
-  href: string
-  type: string
+  id?: string
+  href?: string
+  type?: string
 }
 
 export interface PostDocument{
