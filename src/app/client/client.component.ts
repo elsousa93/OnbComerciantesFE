@@ -73,6 +73,7 @@ interface addresstranformed {
 })
 
 export class ClientComponent implements OnInit {
+
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
@@ -542,10 +543,17 @@ export class ClientComponent implements OnInit {
   obterSelecionado() {
     console.log(this.clientId);
 
+    var NIFNIPC = '';
+    console.log("DOCUMENTAIONDELIVERYMETHOD -->");
+    console.log(this.newClient.documentationDeliveryMethod);
+    if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
+      console.log("entrou aqui no if complexo");
+      NIFNIPC = this.newClient.clientId;
+    }
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
-          NIFNIPC: this.newClient.clientId,
+          NIFNIPC: NIFNIPC,
           clientExists: true,
           clientId: this.clientId,
         }

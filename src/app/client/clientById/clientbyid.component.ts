@@ -317,19 +317,21 @@ export class ClientByIdComponent implements OnInit {
   //}
 
   initializeENI() {
+    console.log(this.processClient);
+    console.log("--------");
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required),
+      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
     });
   }
 
   initializeBasicFormControl() {
-    console.log(this.consult);
-    console.log(this.returned);
-    console.log("Erro1");
-    console.log(this.merchantInfo);
+    console.log("-------- NIFNIPC --------");
+    console.log(this.NIFNIPC);
+    console.log((this.NIFNIPC !== ''));
+    console.log("-------------------------");
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required), //sim
+      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
@@ -354,9 +356,11 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeFormControlOther() {
+    console.log("--------");
+    console.log(this.processClient);
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
-      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required),
+      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
       socialDenomination: new FormControl((this.returned != null ) ? this.merchantInfo.companyName : '', Validators.required) //sim
