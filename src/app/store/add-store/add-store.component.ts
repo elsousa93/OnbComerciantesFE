@@ -7,6 +7,8 @@ import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
+import { Configuration, configurationToken } from 'src/app/configuration';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-store',
@@ -27,6 +29,8 @@ export class AddStoreComponent implements OnInit {
 
   private baseUrl;
 
+  public chooseAddressV: boolean = false;
+  formStores!: FormGroup;
 
   /*Variable declaration*/
   public stroreId: number = 0;
@@ -81,7 +85,7 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseURL: string, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService) {
     this.ngOnInit();
 
     this.loadTableInfo();
@@ -89,16 +93,7 @@ export class AddStoreComponent implements OnInit {
     //WS call - Get the fields for the specific store if we are not creatig a new store
     if (this.stroreId != -1) {
       http.get<Istore>(this.baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
-        this.store = result;
-        //Controles the default value of the turistic zone radio button
-        if (this.store.turisticZone == true) {
-          this.defaultZonaTuristica = 1;
-          this.store.turisticZone = true;
-        } else {
-          this.defaultZonaTuristica = 0;
-          this.store.turisticZone = false;
-        }
-        
+        this.store = result;        
       }, error => console.error(error));
     }
     this.data.updateData(false, 3, 2);
@@ -110,6 +105,8 @@ export class AddStoreComponent implements OnInit {
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+
+    this.initializeForm();
   }
 
   //When canceling the create new store feature the user must navigate back to store list
@@ -124,18 +121,6 @@ export class AddStoreComponent implements OnInit {
       }, error => console.error(error));
     }
     this.route.navigate(['store-comp']);
-  }
-
-  //Controles the result of the turistic zone radio button
-  radoChangehandler($event: any) {
-    console.log($event.target.value);
-    if ($event.target.value == "Sim") {
-      this.store.turisticZone = true;
-      console.log("Sim");
-    } else {
-      this.store.turisticZone = false;
-      console.log("Não");
-    }
   }
 
   /*Controles the radio button changes*/
@@ -207,7 +192,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   //Submit form to Back-end
-  submit(FormStores: any) {
+  submit() {
     if (this.stroreId == -1) {
       this.http.post<number>(this.baseUrl + 'bestores/PostStore/' + this.clientID, this.store).subscribe(result => {
         this.stroreId = result;
@@ -219,4 +204,45 @@ export class AddStoreComponent implements OnInit {
       }, error => console.error(error));
     }
   }
+
+  chooseAddress(toChoose: boolean) {
+    this.chooseAddressV = toChoose;
+  }
+
+  GetCountryByZipCode() {
+    var currentCountry = this.formStores.get('Country').value;
+    console.log("Pais escolhido atual");
+
+    if (currentCountry === 'PT') {
+      var zipcode = this.formStores.value['ZIPCode'];
+      if (zipcode.length === 8) {
+        var zipCode = zipcode.split('-');
+
+        this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+
+          var addressToShow = address[0];
+
+          this.formStores.get('Address').setValue(addressToShow.address);
+          this.formStores.get('Country').setValue(addressToShow.country);
+          this.formStores.get('Locality').setValue(addressToShow.postalArea);
+
+          this.formStores.updateValueAndValidity();
+        });
+      }
+    }
+  }
+
+  initializeForm() {
+    this.formStores = new FormGroup({
+      storeName: new FormControl('false', Validators.required),
+      activityStores: new FormControl('', Validators.required),
+      countryStore: new FormControl('', Validators.required),
+      zipCodeStore: new FormControl('', Validators.required),
+      subZoneStore: new FormControl('', Validators.required),
+      contactPoint: new FormControl('', Validators.required),
+      subactivityStores: new FormControl('', Validators.required),
+      localeStore: new FormControl('', Validators.required),
+      addressStore: new FormControl('', Validators.required)
+    })
+}
 }

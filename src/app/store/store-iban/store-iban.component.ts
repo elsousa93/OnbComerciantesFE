@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Istore } from '../IStore.interface';
+import { Configuration, configurationToken } from 'src/app/configuration';
 
 @Component({
   selector: 'app-store-iban',
@@ -24,6 +25,30 @@ export class StoreIbanComponent implements OnInit {
   store: Istore = { id: -1 } as Istore
   public clientID: number = 12345678;
 
+  public isIBANConsidered: boolean = null;
+  public IBANToShow: {tipo:string, dataDocumento: string};
+  public result: any;
+  localUrl: any;
+
+  public newStore: Istore = {
+    "id": 1,
+    "nameEstab": "",
+    "country": "",
+    "postalCode": "",
+    "address": "",
+    "fixedIP": "",
+    "postalLocality": "",
+    "emailContact": "",
+    "cellphoneIndic": "",
+    "cellphoneNumber": "",
+    "activityEstab": "",
+    "subActivityEstab": "",
+    "zoneEstab": "",
+    "subZoneEstab": "",
+    "iban": ""
+  };
+
+
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
@@ -38,11 +63,11 @@ export class StoreIbanComponent implements OnInit {
   selectedOption = 'Não';
   public idisabled: boolean = false;
 
-  public files: File = null;
+  files?: File[] = [];
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseurl: string, private route: Router, private data: DataService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
     this.ngOnInit();
-    this.baseUrl = baseurl;
+    // this.baseUrl = baseUrl;
 
 
     /*Get the information from the store we are editing*/
@@ -80,29 +105,36 @@ export class StoreIbanComponent implements OnInit {
     this.route.navigate(['store-comp']);
   }
 
-  selectFile(event: any, comp: any) {
+  selectFile(event: any) {
+    this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento:"01-08-2022" }
+    this.newStore.id = 1;
+    this.newStore.iban = "teste";
     const files = <File[]>event.target.files;
-    console.log(files);
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-      if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
-        if (event.target.files && files[i]) {
-          var reader = new FileReader();
-          reader.onload = (event: any) => {
-            //this.localUrl = event.target.result;
+      this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', this.newStore.id);
+      if (this.result != null) {
+        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+          if (event.target.files && files[i]) {
+            var reader = new FileReader();
+            reader.onload = (event: any) => {
+              this.localUrl = event.target.result;
+            }
+            reader.readAsDataURL(files[i]);
+            this.files.push(file);
+          } else {
+            alert("Verifique o tipo / tamanho do ficheiro");
           }
-          reader.readAsDataURL(files[i]);
-          console.log(file);
-          this.files = file;
-          
-          //this.files.push(file);
         }
-      } else {
-        alert("Verifique o tipo / tamanho do ficheiro");
       }
     }
+    console.log(this.files);
+  }
+
+  isIBAN(isIBANConsidered: boolean) {
+    this.isIBANConsidered = isIBANConsidered;
   }
 }

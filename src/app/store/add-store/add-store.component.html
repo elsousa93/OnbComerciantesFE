@@ -17,25 +17,30 @@
       <p class="titul campo_obrigatrio">* campo obrigatório</p>
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mb-3 ps-0">
-        <form #FormStores="ngForm" (ngSubmit)="submit(FormStores)">
+        <form [formGroup]="formStores" (ngSubmit)="submit()">
           <div class="row ms-0 me-0">
             <div class="col-5 ms-0 me-0 ps-0 pe-5">
-              <p class="titulo-form-simples" wappler-command="editContent">{{'NameStore'|translate}}</p><input #storeName="ngModel" [(ngModel)]="store.nameEstab" required minlength="5" maxlength="100" id="text2" name="text2" type="text" class="form-control campo_form">
-              <span *ngIf="storeName.touched && storeName.invalid" class="error-block">
-                <span>{{'WarningInvalid'|translate}}</span>
-                <span *ngIf="storeName.errors?.['required']"> {{'WarningMandatory'|translate}}</span>
-                <span *ngIf="storeName.errors?.['minlength'||'maxlength']">{{'Warning5to100char'|translate}}</span>
-              </span>
-              <p class="titulo-form-simples" wappler-command="editContent">{{'ActivityStores'|translate}}</p><input id="text2" name="text2" type="text" class="form-control campo_form">
+              <p class="titulo-form-simples"  wappler-command="editContent">{{'NameStore'|translate}}</p>
+                <input formControlName="storeName" id="text2" name="text2" type="text" class="form-control campo_form">
+                <div class="alert alert-danger"
+               *ngIf="this.formStores.get('storeName').touched && !this.formStores.get('storeName').valid">
+            <div *ngIf="this.formStores.get('storeName').errors && this.formStores.get('storeName').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>
+              <p class="titulo-form-simples" wappler-command="editContent">{{'ActivityStores'|translate}}</p>
+                <input id="text2" formControlName="activityStores" select="" name="text2" type="text" class="form-select campo_form">
               <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
               <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ReplicateAddStore'|translate}}</p>
               <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
-                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1"><label class="form-check-label radio pe-5" for="radio1" wappler-command="editContent">SIM</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1" (click)="chooseAddress(false)" checked><label class="form-check-label radio pe-5" for="radio1" wappler-command="editContent">SIM</label></div>
                 </span><span class="navbar-text">
-                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1"><label class="form-check-label radio" for="radio1" wappler-command="editContent">NÃO</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1" (click)="chooseAddress(true)"><label class="form-check-label radio" for="radio1" wappler-command="editContent">NÃO</label></div>
                 </span></nav>
-                <p class="titulo-form-simples" wappler-command="editContent">{{'ContryStore'|translate}}</p><input id="text1" name="text1" type="text" class="form-control campo_form">
-            		<p class="titulo-form-simples" wappler-command="editContent">{{'PostalCodeStore'|translate}}</p><input id="text4" name="text3" type="text" class="form-control campo_form">
+                <p *ngIf="chooseAddressV" class="titulo-form-simples" wappler-command="editContent">{{'ContryStore'|translate}}</p>
+                <input formControlName="countryStore" *ngIf="chooseAddressV" id="text1" name="text1" type="text" class="form-control campo_form">
+            		<p *ngIf="chooseAddressV" class="titulo-form-simples" wappler-command="editContent">{{'PostalCodeStore'|translate}}</p>
+                <input formControlName="zipCodeStore" *ngIf="chooseAddressV" id="text4" name="text3" type="text" class="form-control campo_form" (keypress)="GetCountryByZipCode()">
                 <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ComercialCentreStore'|translate}}</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
                   <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent">SIM</label></div>
@@ -43,14 +48,18 @@
                   <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio" for="radio2" wappler-command="editContent">NÃO</label></div>
                   </span></nav>
                 <p class="titulo-form-simples" wappler-command="editContent">{{'SubZoneStores'|translate}}</p>
-                <input select="" id="select1" class="form-select  campo_form">
+                <input formControlName="subZoneStore" select="" id="select1" class="form-select  campo_form">
                 </div>
                 <div class="col-5 ms-0 me-0 ps-5 pe-0">
-                  <p class="titulo-form-simples" wappler-command="editContent">{{'ContactPointName'|translate}}</p><input id="text5" name="text4" type="text" class="form-control campo_form">
-                  <p class="titulo-form-simples" wappler-command="editContent">{{'SubActivityStores'|translate}}</p><input style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">
+                  <p class="titulo-form-simples" wappler-command="editContent">{{'ContactPointName'|translate}}</p>
+                  <input formControlName="contactPoint" id="text5" name="text4" type="text" class="form-control campo_form">
+                  <p class="titulo-form-simples" wappler-command="editContent">{{'SubActivityStores'|translate}}</p>
+                  <input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">
                   <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-                  <p class="titulo-form-simples" wappler-command="editContent">{{'LocaleStore'|translate}}</p><input id="text5" name="text4" type="text" class="form-control campo_form">
-                  <p class="titulo-form-simples" wappler-command="editContent">{{'AddressStore'|translate}}</p><input id="text5" name="text4" type="text" class="form-control campo_form">
+                  <p *ngIf="chooseAddressV" class="titulo-form-simples" wappler-command="editContent">{{'LocaleStore'|translate}}</p>
+                  <input formControlName="localeStore" *ngIf="chooseAddressV" id="text5" name="text4" type="text" class="form-control campo_form">
+                  <p *ngIf="chooseAddressV" class="titulo-form-simples" wappler-command="editContent">{{'AddressStore'|translate}}</p>
+                  <input formControlName="addressStore" *ngIf="chooseAddressV" id="text5" name="text4" type="text" class="form-control campo_form">
                 </div>
                 <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
                   <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3"><span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span></nav>
