@@ -1,8 +1,11 @@
 {
-  "TitleStores": "Stores",
+  "TitleStores": "STORES IDENTIFICATION",
+  "RemoveStoreButton": "REMOVE STORE",
+  "AddStoreButton": "ADD STORE",
   "NameStores": "Name",
   "ActivityStores": "Activity",
   "SubActivityStores": " Sub Activity",
-  "ZoneStores": "Zone"
+  "ZoneStores": "Zone",
+  "ReplicateAddStore": "DO YOU WANT TO REPLICATE THE COMPANY CUSTOMER'S ADDRESS TO THE STORE?"
 }
 

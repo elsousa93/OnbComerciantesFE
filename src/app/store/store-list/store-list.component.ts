@@ -7,6 +7,39 @@ import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
+
+interface Stores {
+  storeName: string;
+  activity: string;
+  subactivity: string;
+  zone: string;
+}
+
+const testValues : Stores[] = [
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"},
+  {storeName: "TESTE 1, LDA", activity:"RESTAURAÇÃO",subactivity: "RESTAURAÇÃO", zone: "COIMBRA"}
+]
+
 //This component displays the list of the existing stores
 
 @Component({
@@ -15,7 +48,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./store-list.component.css']
 })
 export class StoreComponent implements AfterViewInit{
-
+  storesMat: MatTableDataSource<Stores>;
   /*variable declaration*/
   public stores: Istore[] = [];
   public clientID: number = 12345678;
@@ -47,22 +80,16 @@ export class StoreComponent implements AfterViewInit{
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-  }
 
-  
-
-  /*Option to add a new store - redirect to the corresponding screen*/
-  onCickAdd() {
-    this.route.navigate(['add-store/-1']);
-  }
-
-  onCickContinue() {
-    this.data.updateData(true, this.currentPage);
-    this.route.navigate(['/comprovativos']);
+    this.loadStores();
   }
 
   navigateTo(id: number) {
     this.route.navigate(['/add-store/', id]);
   }
 
+  loadStores(storesValues: Stores[] = testValues){
+    this.storesMat = new MatTableDataSource(storesValues);
+  }
+  
 }
