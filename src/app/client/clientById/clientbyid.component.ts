@@ -942,9 +942,6 @@ export class ClientByIdComponent implements OnInit {
     //});
 
 
-    console.log("por mandar: huasusa");
-    console.log(this.client);
-    console.log(this.form);
     if(this.form.valid)
       this.route.navigate(["/client-additional-info/", this.router.snapshot.paramMap.get('id')], navigationExtras);
   }
