@@ -143,7 +143,7 @@ function ClearCCFields() {
     $("#submitDataFromCC").click();
 } */
 
-const BASE_URL = 'http://localhost:7269'; //FIXME
+const BASE_URL = 'http://localhost:12000/BackendPortal'; //FIXME
 
 (function () {
   /* http://stackoverflow.com/questions/12404528/ie-parameters-get-undefined-when-using-them-in-settimeout/12404562#12404562 */
@@ -207,7 +207,9 @@ function submit(data) {
         }
         SetNewCCData(reply.cCid.name + " " + reply.cCid.surname, reply.cCid.documentNumber, reply.cCid.taxNo, reply.cCid.dateOfBirth, reply.img64, reply.isExpired,
           reply.cCid.gender, reply.cCid.heigh, reply.cCid.nationality, reply.cCid.validityEndDate, reply.cCid.givenNameFather + " " + reply.cCid.surnameFather, reply.cCid.givenNameMother + " " + reply.cCid.surnameMother,
-          reply.cCid.socialSecurityNo, reply.cCid.healthNo, addr, postalCode, reply.cCid.accidentalIndications, reply.cCid.validityBeginDate, reply.cCid.localofRequest, reply.addressCountry);
+          reply.cCid.socialSecurityNo, reply.cCid.healthNo, addr, postalCode, reply.cCid.accidentalIndications, reply.cCid.validityBeginDate, reply.cCid.localofRequest, reply.addressCountry, reply.cCid.issuingEntity );
+        console.log(reply);
+      
       }
     };
     xhr.send(json);
@@ -249,7 +251,10 @@ export function readCC(componentCallback) {
       cms: uuid()
     });
 };
-let SetNewCCData;
+
+  let SetNewCCData;
+  let SetNewCCcountry;
+
 var autenticacaoGovPT = (function operations() {
   'use strict';
 

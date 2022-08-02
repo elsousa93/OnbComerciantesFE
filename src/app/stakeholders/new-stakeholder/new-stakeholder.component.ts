@@ -9,6 +9,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { error } from '@angular/compiler/src/util';
 
@@ -23,6 +24,8 @@ import { error } from '@angular/compiler/src/util';
 */
 
 export class NewStakeholderComponent implements OnInit {
+  private baseUrl: string;
+
   public foo = 0;
   public displayValueSearch = "";
   isSelected = false;
@@ -86,10 +89,11 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService) {
+    private http: HttpClient,
+    @Inject(configurationToken) private configuration: Configuration,
+      private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService) {
     this.loadCountries();
-
+    this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem('submissionId');
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 

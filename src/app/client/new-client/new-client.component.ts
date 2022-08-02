@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Configuration, configurationToken } from 'src/app/configuration';
 import { Client } from '../Client.interface';
 
 @Component({
@@ -106,7 +107,7 @@ export class NewClientComponent implements OnInit {
   form: FormGroup;
 
   //Comerciante cadastrado com sucesso!!
-  constructor(public bsModalRef: BsModalRef, private router: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: Router) {
+  constructor(public bsModalRef: BsModalRef, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
     console.log(this.addNewClient.clientId);
   }
 

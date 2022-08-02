@@ -19,8 +19,7 @@ export class InfoStakeholderComponent implements OnInit {
   
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject('BASE_URL')
-    private baseUrl: string, private route: Router, private fb: FormBuilder, private data: TableInfoService, private stakeService: StakeholderService) {
+    private http: HttpClient, private route: Router, private fb: FormBuilder, private data: TableInfoService, private stakeService: StakeholderService) {
 
     this.ngOnInit();
 

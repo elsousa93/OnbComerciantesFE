@@ -1,16 +1,22 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { Configuration, configurationToken } from '../configuration';
 import { IStakeholders } from './IStakeholders.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StakeholderService {
+  private baseUrl: string;
+  private urlOutbound: string;
 
-  urlOutbound: string = "http://localhost:12000/OutboundAPI/";
 
-  constructor(private http: HttpClient, @Inject('ACQUIRING_URL')
-    private baseUrl: string) { }
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+    this.baseUrl = configuration.acquiringAPIUrl;      
+    this.urlOutbound = configuration.outboundUrl;
+
+
+   }
 
   GetAllStakeholdersFromSubmission(submissionId: string): any {
     return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');

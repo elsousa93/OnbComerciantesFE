@@ -1,13 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { Configuration, configurationToken } from '../configuration';
 import { Address, CountryInformation, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, ShopActivity, StakeholderRole } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TableInfoService {
+  private acquiringUrl: string;
 
-  constructor(private http: HttpClient, @Inject('ACQUIRING_URL') private acquiringUrl: string) { }
+
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+    this.acquiringUrl = configuration.acquiringAPIUrl;
+
+   }
 
   GetAllCountries(): any{
     return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country');
