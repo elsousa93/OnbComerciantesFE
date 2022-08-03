@@ -234,29 +234,35 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
 
     var context = this;
-    if (this.returned !== null) {
-      console.log("Entrei no IF do returned diferente de NULL nos stakes");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         console.log("Ir buscar submissão através do processNumber", result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
-          this.stakeholderService.getStakeholdersById(result[0].submissionId, resul.stakeholders.id).subscribe(res => {
+          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
             console.log('Lista de stakeholders da submissão ', res);
             res.forEach(function (value, index) {
               console.log("Stake ", value);
-              context.submissionStakeholders.push(value);
+              context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                console.log("Info stakeholder ", r);
+                context.submissionStakeholders.push(r);
+              }, error => {
+                console.log(error);
+              });
             }, error => {
               console.log(error);
             });
           });
         });
       });
-    } else {
+
+    console.log("Lista que fomos buscar à submissão antiga ", this.submissionStakeholders);
+    if (this.submissionId !== null) {
+      console.log("O id da submissão existe", this.submissionId);
       stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
         result.forEach(function (value, index) {
-          console.log(value);
+          console.log("Value ", value);
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            console.log(result);
+            console.log("Info stake ", result);
             context.submissionStakeholders.push(result);
           }, error => {
             console.log(error);
@@ -266,6 +272,7 @@ export class StakeholdersComponent implements OnInit {
         console.log(error);
       });
     }
+      console.log("Lista depois de irmos buscar stakeholders à submissao atual (CRC) ", this.submissionStakeholders);
   }
 
   redirectAddStakeholder() {
@@ -451,22 +458,27 @@ export class StakeholdersComponent implements OnInit {
   deleteStakeholder(stakeholder) {
     console.log("delete");
     console.log(stakeholder);
-    this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
-      console.log("stakeholder deleted");
-      this.route.navigateByUrl('stakeholders/');
-      //this.ngOnInit();
-      //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
-      //console.log(index);
-      //if (index > -1) { // 
-      //  this.stakeholdersToShow.splice(index, 1);
-      //}
-      //console.log("depois de apagar");
-      //console.log(this.stakeholdersToShow);
-      //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
-      //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
-      //    this.stakeholdersToShow.splice(i, 1);
-      //}
-    });
+    if (this.returned !== 'consult') {
+      console.log("Como não é uma consulta, consegui apagar o stakeholder");
+      this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
+        console.log("stakeholder deleted");
+        this.route.navigateByUrl('stakeholders/');
+        //this.ngOnInit();
+        //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
+        //console.log(index);
+        //if (index > -1) { // 
+        //  this.stakeholdersToShow.splice(index, 1);
+        //}
+        //console.log("depois de apagar");
+        //console.log(this.stakeholdersToShow);
+        //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
+        //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
+        //    this.stakeholdersToShow.splice(i, 1);
+        //}
+      });
+    } else {
+      console.log("Estamos numa consulta logo nao é possivel eliminar um stakeholder");
+    }
   }
 
   }

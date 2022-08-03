@@ -173,7 +173,7 @@ export class ConsultasComponent implements OnInit{
   openProcess(process) {
     console.log(process);
     localStorage.setItem("processNumber", process.processNumber);
-    localStorage.setItem("consult", 'true');
+    localStorage.setItem("returned", 'consult');
 
     this.route.navigate(['/client']);
     //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
