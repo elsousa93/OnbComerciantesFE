@@ -992,7 +992,7 @@
                           class="form-control campo_form"
                           (change)="onLegalNatureSelected()" [attr.disabled]="returned === 'consult'">
                     <option value="">Selecione</option>
-                    <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}} [selected]="(merchantInfo != null && merchantInfo.legalNature == legalNature.code) ? true : null">{{legalNature.description}}</option>
+                    <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}} [attr.selected]="(merchantInfo != null && merchantInfo.legalNature == legalNature.code) ? true : null">{{legalNature.description}}</option>
                   </select>
 
                   <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
@@ -1006,7 +1006,7 @@
                   <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                           class="form-control campo_form" [attr.disabled]="returned === 'consult'">
                     <option value="" selected disabled>Selecione</option>
-                    <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}} [selected]="(merchantInfo != null && merchantInfo.legalNature2 == legalNature2.code) ? true : null" >{{legalNature2.description}}</option>
+                    <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}} [attr.selected]="(merchantInfo != null && merchantInfo.legalNature2 == legalNature2.code) ? true : null" >{{legalNature2.description}}</option>
                   </select>
                   <!--<div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
                     <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
