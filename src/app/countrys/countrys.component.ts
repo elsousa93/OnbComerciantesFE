@@ -134,9 +134,9 @@ export class CountrysComponent implements OnInit {
     }
 
     if (this.returned !== null) {
-      if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
+      if (this.merchantInfo.documentationDeliveryMethod == 'ViaDigital') {
         console.log("A preferencia de documentos é viaDigital");
-        this.form.get("preferenceDocuments").setValue("viaDigital");
+        this.form.get("preferenceDocuments").setValue("ViaDigital");
       } else {
         console.log("A preferencia de documentos é Mail");
         this.form.get("preferenceDocuments").setValue("Mail");
@@ -179,9 +179,9 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: (this.returned != null) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl({ value: (this.returned != null) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        transactionsAverage: new FormControl({ value: (this.returned != null) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''/*this.client.documentationDeliveryMethod*/, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
@@ -821,9 +821,10 @@ export class CountrysComponent implements OnInit {
 
   editCountries() {
     this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
-      console.log("Valores no country ", countryID);
+      console.log(countryID);
       this.tableInfo.GetCountryById(countryID).subscribe(result => {
         this.contPais.push(result);
+        console.log(result);
       });
       this.inserirText(null);
       console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);

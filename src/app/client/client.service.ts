@@ -10,8 +10,6 @@ import { Client } from './Client.interface';
 })
 export class ClientService {
   private baseUrl: string;
-
-
   private urlOutbound: string;
 
   constructor(private router: ActivatedRoute,
