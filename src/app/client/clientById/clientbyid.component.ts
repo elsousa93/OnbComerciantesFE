@@ -318,8 +318,7 @@ export class ClientByIdComponent implements OnInit {
   //}
 
   initializeENI() {
-    console.log(this.processClient);
-    console.log("--------");
+    this.NIFNIPC = this.form.get('natJuridicaNIFNIPC').value;
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required), //sim,
@@ -328,10 +327,6 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-    console.log("-------- NIFNIPC --------");
-    console.log(this.NIFNIPC);
-    console.log((this.NIFNIPC !== ''));
-    console.log("-------------------------");
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
@@ -358,8 +353,7 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeFormControlOther() {
-    console.log("--------");
-    console.log(this.processClient);
+    this.NIFNIPC = this.form.get('natJuridicaNIFNIPC').value;
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
@@ -406,6 +400,8 @@ export class ClientByIdComponent implements OnInit {
           this.form.get("CAESecondary1Branch").setValue(data.description);
         });
     }
+
+    this.NIFNIPC = this.form.get('natJuridicaNIFNIPC').value;
 
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim

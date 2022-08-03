@@ -191,7 +191,7 @@
 
 
             <input class="form-control campo_form" formControlName="NIPCGroup"
-                   name="NIPCGroup" type="number" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || returned == 'consult'">
+                   name="NIPCGroup" type="text" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || returned == 'consult'">
             <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
               <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
                 O parâmetro acima é obrigatório.
