@@ -32,6 +32,12 @@ export class ClientComponent implements OnInit {
   private baseUrl: string;
   private neyondBackUrl: string;
 
+  modalRef: BsModalRef;
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
@@ -64,11 +70,12 @@ export class ClientComponent implements OnInit {
   //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
     readCC(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
-
   closeModal() {
     this.newModal.hide();
   }
@@ -125,7 +132,7 @@ export class ClientComponent implements OnInit {
   CCReaderCCID: number;
   CCID: ICCInfo;
 
-  //--------- fim do CC ----------------------------
+  //--------- fim do CC ----------------------
 
   clientIdNew;
   ccInfo;
