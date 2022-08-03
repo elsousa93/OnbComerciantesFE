@@ -98,7 +98,7 @@
   </div>
  
   <div *ngIf="isShown" class="row container-fluid" id="divshow">
-    <h2>Interveniente Encontrado!</h2>
+    <h2 *ngIf="stakeShow">Interveniente Encontrado!</h2>
 
     <table class="table table-success" *ngIf="stakeShow">
       <thead class="text-primary table-primary">

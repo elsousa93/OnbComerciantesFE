@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { merge, switchMap } from 'rxjs';
+import { merge, Observable, switchMap } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 
 @Injectable({
@@ -15,12 +15,12 @@ export class CRCService {
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
     this.DOCASUrl = configuration.DOCASUrl;
     this.authTokenUrl = configuration.authTokenUrl
+
+    
   }
 
-  getAccessToken() {
+  async getAccessToken(): Promise<any> {
     var secret = btoa("4bd86de7-5640-4048-887e-7ecb6cedb01d" + ":" + "SIBS123456");
-
-
 
     const HTTP_OPTIONS_AUTH = {
       headers: new HttpHeaders({
@@ -30,10 +30,9 @@ export class CRCService {
     };
 
     console.log("a tentar obter o token");
-    var token;
+    //var token;
 
-    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH);
-
+    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
     //this.http.post(URI, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).subscribe(result => {
     //  console.log("Post feito");
     //  token = result;
@@ -43,26 +42,52 @@ export class CRCService {
     //});
   }
 
-  getCRC(code: string, requestReason: string, requestedBy?: string): any {
+  getCRC(code: string, requestReason: string, requestedBy?: string): any{
 
     //http://localhost:11000/api/v1/company/registry/001?requestReason=001&requestedBy=001
 
+    //await this.getAccessToken().then(
+    //  result => {
+    //    console.log("resultado");
+    //    console.log(result);
+    //    const HTTP_OPTIONS = {
+    //      headers: new HttpHeaders({
+    //        'Authorization': 'Bearer ' + result.access_token
+    //      }),
+    //    }
+
+    //    var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
+
+
+    //    console.log("chegou aqui resultado !!!");
+    //    return this.http.get<any>(URI, HTTP_OPTIONS);
+    //    //return new Promise(function (resolve, reject) {
+    //    //  var URI = context.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
+
+    //    //  context.http.get<any>(URI, HTTP_OPTIONS).subscribe(res => {
+    //    //    console.log("entrou no resolve");
+    //    //    resolve(res);
+    //    //  }, error => {
+    //    //    console.log("entrou no reject");
+    //    //    reject(error);
+    //    //  })
+    //    //});
+        
+    //  }, error => {
+    //    console.log("erro");
+    //    console.log(error);
+    //  }
+    //);
       const HTTP_OPTIONS = {
         headers: new HttpHeaders({
-          //'Content-Type': 'multipart/form-data',
           'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-          //  "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
         }),
       }
-      ////////////////////////
-
-      console.log("continua!!!j hsahkja hskjas");
 
       var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
-      var a = this.http.get<any>(URI, HTTP_OPTIONS);
-      console.log("chegou ao fim");
-      console.log(a);
-      return a;
+      var observable = this.http.get<any>(URI, HTTP_OPTIONS);
+
+      return observable;
     
   }
   /*

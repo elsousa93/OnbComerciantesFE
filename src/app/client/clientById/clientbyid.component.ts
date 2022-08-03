@@ -318,8 +318,9 @@ export class ClientByIdComponent implements OnInit {
   //}
 
   initializeENI() {
-    console.log(this.processClient);
-    console.log("--------");
+    console.log("-------- NIFNIPC --------");
+    console.log(this.NIFNIPC);
+    console.log(this.form.get("natJuridicaNIFNIPC").value);
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
@@ -357,8 +358,9 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeFormControlOther() {
-    console.log("--------");
-    console.log(this.processClient);
+    console.log("-------- NIFNIPC --------");
+    console.log(this.NIFNIPC);
+    console.log(this.form.get("natJuridicaNIFNIPC").value);
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
@@ -404,6 +406,10 @@ export class ClientByIdComponent implements OnInit {
           this.form.get("CAESecondary1Branch").setValue(data.description);
         });
     }
+
+    console.log("-------- NIFNIPC --------");
+    console.log(this.NIFNIPC);
+    console.log(this.form.get("natJuridicaNIFNIPC").value);
 
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
@@ -805,7 +811,7 @@ export class ClientByIdComponent implements OnInit {
     })
   }
 
-  async searchByCRC() {
+   searchByCRC() {
     //var crcInserted = this.form.get('crcCode');
     //console.log("codigo CRC:" , this.form.get('crcCode').value);
     //console.log(crcInserted);
@@ -813,13 +819,8 @@ export class ClientByIdComponent implements OnInit {
     console.log("crc search inserido");
     var crcInserted = this.form.get('crcCode').value;
     console.log(crcInserted);
-    
-    var token;
-    this.crcService.getAccessToken().subscribe(b => {
-      token = b;
-      localStorage.setItem("accessToken", token.access_token);
-
-      this.crcService.getCRC(crcInserted, '001').subscribe(o => {
+     console.log("---- teste ----");
+     this.crcService.getCRC(crcInserted, '001').subscribe(o => {
         console.log("get crc!!!!");
         console.log(o);
         console.log("obtido");
@@ -855,7 +856,6 @@ export class ClientByIdComponent implements OnInit {
         console.log("o crc chamou o initialize");
         this.initializeFormControlCRC();
       });
-    });
     
 
     //if (crcInserted === '123') {
@@ -932,7 +932,8 @@ export class ClientByIdComponent implements OnInit {
         processId: this.processId,
         stakeholders: this.processClient.stakeholders,
         merchantInfo: this.merchantInfo,
-        crc: this.processClient
+        crc: this.processClient,
+        crcCode: this.processClient.code
       }
     };
 

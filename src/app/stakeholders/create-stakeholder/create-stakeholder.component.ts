@@ -241,9 +241,6 @@ export class CreateStakeholderComponent implements OnInit {
     //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
     //  console.log(o);
     //});
-
-    
-
     if (this.formStakeholderSearch.invalid)
       return false;
 
@@ -256,7 +253,6 @@ export class CreateStakeholderComponent implements OnInit {
       var clients = o;
       console.log("searched interveniente");
       console.log(clients);
-      var context2 = this;
 
       context.isShown = true;
       

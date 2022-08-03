@@ -28,26 +28,46 @@
                         </tr>
                      </thead>
                      <tbody>
-                     <tr *ngFor="let file of files">
-                        <input type="hidden" name="id" id="id" value={{client.clientId}}>
-                        <td class="text-primary text-center text-primary">{{compToShow.tipo}}</td>
-                        <td class="text-primary text-center">{{compToShow.interveniente}}</td>
-                        <td class="text-primary text-center">{{compToShow.dataValidade}}</td>
-                        <td class="text-primary text-center">{{compToShow.dataEntrada}}</td>
-                        <td class="text-primary text-center">{{compToShow.status}}</td>
-                        <td></td>
-                        <td class="text-center text-primary">
+                       <tr *ngFor="let comp of compsToShow">
+                         <!--<input type="hidden" name="id" id="id" value={{client.clientId}}>-->
+                         <td class="text-primary text-center text-primary">{{comp.type}}</td>
+                         <td class="text-primary text-center">{{comp.stakeholder}}</td>
+                         <td class="text-primary text-center">{{comp.expirationDate}}</td>
+                         <td class="text-primary text-center">{{comp.uploadDate}}</td>
+                         <td class="text-primary text-center">{{comp.status}}</td>
+                         <td></td>
+                         <td class="text-center text-primary">
                            <span>
-                              <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename, file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                             <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename, file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                            </span>
                            <span>
-                              <img src="assets/images/search_blue.svg" (click)="search(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                             <img src="assets/images/search_blue.svg" (click)="search(comp.file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                            </span>
                            <span>
-                              <img src="assets/images/file_download.svg" (click)="download(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                             <img src="assets/images/file_download.svg" (click)="download(comp.file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                            </span>
-                        <td></td>
-                     </tr>
+                         <td></td>
+                       </tr>
+                       <!--<tr *ngFor="let file of files">
+     <input type="hidden" name="id" id="id" value={{client.clientId}}>
+     <td class="text-primary text-center text-primary">{{compToShow.tipo}}</td>
+     <td class="text-primary text-center">{{compToShow.interveniente}}</td>
+     <td class="text-primary text-center">{{compToShow.dataValidade}}</td>
+     <td class="text-primary text-center">{{compToShow.dataEntrada}}</td>
+     <td class="text-primary text-center">{{compToShow.status}}</td>
+     <td></td>
+     <td class="text-center text-primary">
+        <span>
+           <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename, file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+        </span>
+        <span>
+           <img src="assets/images/search_blue.svg" (click)="search(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+        </span>
+        <span>
+           <img src="assets/images/file_download.svg" (click)="download(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+        </span>
+     <td></td>
+  </tr>-->
                      </tbody>
                   </table>
                </form>

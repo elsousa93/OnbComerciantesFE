@@ -9,6 +9,7 @@ import { ajax } from 'rxjs/ajax';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { Configuration, configurationToken } from '../configuration';
+import { CRCService } from '../CRC/crcservice.service';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { PostDocument } from '../submission/document/ISubmission-document';
@@ -133,6 +134,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public clientNr: number = 0;
   submissionId: string = '83199e44-f089-471c-9588-f2a68e24b9ab';
 
+  crcCode: string = "";
+
   public subscription: Subscription;
   public currentPage: number;
   public map: Map<number, boolean>;
@@ -196,19 +199,78 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   // TESTE //////////////
 
   constructor(public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
+    private modalService: BsModalService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
-    this.ngOnInit();
-
+    //this.submissionId = localStorage.getItem("submissionId");
+    console.log("id:!!!!");
+    console.log(this.submissionId);
     this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
       this.submission = result;
       console.log('Submission ', result);
 
-      this.documentService.GetDocumentImage(this.submissionId, "22214900004081").subscribe(result => {
-        console.log("entrou na imagem!!!");
-        console.log(result);
+      //this.crcService.getCRC('001', '001').subscribe(result => {
+
+      //  console.log("--------- CRC SERVICE ---------");
+      //  var crcResult = result;
+      //  var crcFile = this.b64toBlob(crcResult.pdf, "application/pdf", 512);
+
+      //  crcFile["lastModifiedDate"] = new Date();
+      //  crcFile["name"] = "crc pdf";
+
+      //  console.log("!!! crc file !!!");
+      //  console.log(crcFile);
+
+      //  this.compsToShow.push({
+      //    type: "pdf",
+      //    expirationDate: "2024-10-10",
+      //    stakeholder: "Manuel",
+      //    status: "não definido",
+      //    uploadDate: "2020-10-10",
+      //    file: <File>crcFile
+      //  });
+
+      //  console.log(this.compsToShow);
+      //});
+
+      this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
+        var documents = res;
+
+        documents.forEach(function (value, index) {
+          var document = value;
+          console.log("Documento do for");
+          console.log(document);
+
+          if (document.type === 'crcPDF') {
+            console.log("encontrou!!!!");
+            this.documentService.GetDocumentImage(this.submissionId, document.id).then(async (res) => {
+              console.log("entrou no document get image!!!");
+              console.log(res)
+              var teste = await res.blob();
+              console.log(teste);
+
+              teste.lastModifiedDate = new Date();
+              teste.name = "nome";
+
+              this.file = <File>teste;
+
+              console.log("ficheiro tratado");
+              console.log(this.file);
+
+              this.compsToShow.push({
+                type: "pdf",
+                expirationDate: "2024-10-10",
+                stakeholder: "Manuel",
+                status: "não definido",
+                uploadDate: "2020-10-10",
+                file: this.file
+              })
+            });
+          }
+        });
       });
+
+      
 
       this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
         this.submissionClient = c;
@@ -277,6 +339,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     console.log('Client ', this.client);
     console.log('stakeholders list ', this.stakeholdersList);
     console.log('Submission id ', localStorage.getItem("submissionId"));
+    this.ngOnInit();
+
   }
 
   ngOnInit(): void {
@@ -311,6 +375,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
+            this.compsToShow.push({
+              expirationDate: 'desconhecido',
+              stakeholder: 'desconhecido',
+              status: 'desconhecido',
+              type: 'pdf',
+              uploadDate: 'desconhecido',
+              file: file
+            });
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
