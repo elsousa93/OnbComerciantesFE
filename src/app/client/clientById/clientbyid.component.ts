@@ -322,7 +322,8 @@ export class ClientByIdComponent implements OnInit {
     console.log("--------");
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
-      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required), //sim,
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
   }
 
@@ -333,7 +334,7 @@ export class ClientByIdComponent implements OnInit {
     console.log("-------------------------");
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
-      //commercialSociety: new FormControl('true', [Validators.required]), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
@@ -364,7 +365,8 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
-      socialDenomination: new FormControl((this.returned != null ) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -424,7 +426,8 @@ export class ClientByIdComponent implements OnInit {
       country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
       location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
-      address: new FormControl(this.processClient.headquartersAddress.address, Validators.required) //sim
+      address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
       
 
@@ -715,6 +718,7 @@ export class ClientByIdComponent implements OnInit {
     if (id == true) {
       this.initializeBasicFormControl();
       this.isCommercialSociety = true;
+      this.form.get("commercialSociety").setValue(true);
       console.log("entrou no true");
     } else {
       if (this.tipologia === 'Company')
@@ -722,6 +726,7 @@ export class ClientByIdComponent implements OnInit {
       else
         this.initializeENI();
       this.isCommercialSociety = false;
+      this.form.get("commercialSociety").setValue(false);
       console.log("entrou no false");
     }
   }

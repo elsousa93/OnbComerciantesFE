@@ -29,15 +29,15 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <span class="navbar-text">
               <div class="form-check">
-                <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=true
-                       #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(true)" [disabled]="returned == 'consult'"/>
+                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio" [value]=true
+                        id="clientTypology" (click)="activateButtons(true)" [disabled]="returned == 'consult'"/>
                 <label class="form-check-label radio pe-5" for="radio3">EMPRESA</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
-                <input class="form-check-input" required ngModel name="clientTypology" type="radio" value=false
-                       #clientTypology="ngModel" id="clientTypology" (click)="activateButtons(false)" [disabled]="returned == 'consult'"/>
+                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio" [value]=false
+                        id="clientTypology" (click)="activateButtons(false)" [disabled]="returned == 'consult'"/>
                 <label class="form-check-label radio" for="radio3">ENI</label>
               </div>
             </span>

@@ -711,13 +711,13 @@
           </div>
           <p class="titulo-form-simples">a empresa é uma sociedade comercial?*</p>
           <div class="form-check">
-            <input class="form-check-input" name="commercialSociety"
-                   type="radio" [value]="true" id="commercialSociety" (click)="setCommercialSociety(true)">
+            <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
+                   type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)">
             <label class="form-check-label radio">Sim</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" name="commercialSociety"
-                   type="radio" [value]="false" id="commercialSociety" (click)="setCommercialSociety(false)">
+            <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
+                   type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)">
             <label class="form-check-label radio">Não</label>
           </div>
 
