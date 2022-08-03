@@ -350,6 +350,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.returned = localStorage.getItem("returned");
+
+    this.data.updateData(false,4,1);
   }
 
 
@@ -567,7 +569,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       })      
     });
 
-    if (localStorage.getItem("returned") != null) {
+    if (this.returned !== null) {
       console.log("Entrei no if dos comprovativos quando faço o submit ");
       this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
       console.log("Objeto com os valores atualizados ", this.submissionPutTeste);

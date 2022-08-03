@@ -74,7 +74,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="flagRecolhaEletronica"
-                         name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC"
+                         name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC" [attr.disabled]="returned === 'consult'"
                          (click)="validateCC(true)" />
                   <label class="form-check-label radio pe-5" for="radio2">SIM</label>
                 </div>
@@ -82,7 +82,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input input class="form-check-input" formControlName="flagRecolhaEletronica"
-                         name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica"
+                         name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica || returned === 'consult'"
                          (click)="validateCC(false)" />
                   <label class="form-check-label radio" for="radio2">NÃO</label>
                 </div>
@@ -97,14 +97,14 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value='true' id="proxy" />
+                         value='true' id="proxy" [attr.disabled]="returned === 'consult'"/>
                   <label class="form-check-label radio pe-5" for="radio1">SIM</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value='false' id="proxy" />
+                         value='false' id="proxy" [attr.disabled]="returned === 'consult'"/>
                   <label class="form-check-label radio" for="radio1">NÃO</label>
                 </div>
               </span>
@@ -174,7 +174,7 @@
       </div>-->
 
               <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
-              <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="GetCountryByZipCode()" maxlength="8">
+              <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
         O parâmetro "Código postal" é obrigatório.
       </div>-->
@@ -184,20 +184,20 @@
           <div class="col-6 ms-0 me-0 ps-5 pe-0">
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">CARGO</p>
-              <input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role">
+              <input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
       O parâmetro "Cargo" é obrigatório.
       </div>-->
 
               <p class="titulo-form-simples ">LOCALIDADE</p>
-              <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality">
+              <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger"
         *ngIf="postalArea.touched && !postalArea.valid">
         O parâmetro "Código postal" é obrigatório.
       </div>-->
 
               <p class="titulo-form-simples ">MORADA FISCAL</p>
-              <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address">
+              <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger"
         *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
         O parâmetro "Código postal" é obrigatório.

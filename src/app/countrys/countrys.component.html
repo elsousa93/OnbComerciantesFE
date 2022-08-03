@@ -59,7 +59,7 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
-                  <input class="form-check-input" name="preferenceDocuments" type="radio" value="Portal"
+                  <input class="form-check-input" name="preferenceDocuments" type="radio" value="viaDigital"
                          formControlName="preferenceDocuments" id="preferenceDocuments" [readonly]="returned == 'consult'">
                   <label class="form-check-label radio pe-5" for="preferenceDocuments">100% DIGITAL</label>
                 </div>
@@ -191,7 +191,7 @@
 
 
             <input class="form-control campo_form" formControlName="NIPCGroup"
-                   name="NIPCGroup" type="number" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || returned == 'consult'">
+                   name="NIPCGroup" type="text" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || returned == 'consult'">
             <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
               <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
                 O parâmetro acima é obrigatório.

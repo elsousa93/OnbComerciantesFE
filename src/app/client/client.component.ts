@@ -32,6 +32,12 @@ export class ClientComponent implements OnInit {
   private baseUrl: string;
   private neyondBackUrl: string;
 
+  modalRef: BsModalRef;
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
@@ -64,11 +70,12 @@ export class ClientComponent implements OnInit {
   //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
     readCC(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
-
   closeModal() {
     this.newModal.hide();
   }
@@ -125,7 +132,7 @@ export class ClientComponent implements OnInit {
   CCReaderCCID: number;
   CCID: ICCInfo;
 
-  //--------- fim do CC ----------------------------
+  //--------- fim do CC ----------------------
 
   clientIdNew;
   ccInfo;
@@ -156,7 +163,7 @@ export class ClientComponent implements OnInit {
   documentType: boolean = false;
   toSearch: boolean = false;
   resultError: string = "";
-  clientTypology: string = "";
+  clientTypology: boolean;
 
   clientsToShow: Client[] = [];
 
@@ -264,7 +271,6 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
-
     if (this.returned !== null && this.returned !== undefined) {
       console.log("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
@@ -277,9 +283,11 @@ export class ClientComponent implements OnInit {
             if (this.merchantInfo.merchantType == 'Corporate') {
               console.log("O tipo é empresa");
               this.activateButtons(true); // se for Empresa
+              this.clientTypology = true;
             } else {
               console.log("O tipo é ENI");
               this.activateButtons(false); // se for ENI
+              this.clientTypology = false;
             }
           });
         });
@@ -579,6 +587,7 @@ export class ClientComponent implements OnInit {
   }
 
   activateButtons(id: boolean) {
+    console.log("CLient typology ", this.clientTypology);
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;
