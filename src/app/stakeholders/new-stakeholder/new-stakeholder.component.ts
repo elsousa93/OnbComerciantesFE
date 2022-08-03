@@ -104,38 +104,44 @@ export class NewStakeholderComponent implements OnInit {
     
 
     var context = this;
-    if (this.returned !== null) {
-      console.log("Entrei no IF do returned diferente de NULL nos stakes");
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        console.log("Ir buscar submissão através do processNumber", result);
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
-          this.stakeService.getStakeholdersById(result[0].submissionId, resul.stakeholders.id).subscribe(res => {
-            console.log('Lista de stakeholders da submissão ', res);
-            res.forEach(function (value, index) {
-              console.log("Stake ", value);
-              context.submissionStakeholders.push(value);
+    this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+      console.log("Ir buscar submissão através do processNumber", result);
+      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+        console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
+        this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+          console.log('Lista de stakeholders da submissão ', res);
+          res.forEach(function (value, index) {
+            console.log("Stake ", value);
+            context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+              console.log("Info stakeholder ", r);
+              context.submissionStakeholders.push(r);
             }, error => {
               console.log(error);
             });
-          });
-        });
-      });
-    } else {
-      stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-        result.forEach(function (value, index) {
-          console.log(value);
-          context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            console.log(result);
-            context.submissionStakeholders.push(result);
           }, error => {
             console.log(error);
           });
         });
-      }, error => {
-        console.log(error);
       });
-    }
+    });
+
+    console.log("Lista que fomos buscar à submissão antiga ", this.submissionStakeholders);
+
+    stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+      result.forEach(function (value, index) {
+        console.log("Value ", value);
+        context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+          console.log("Info stake ", result);
+          context.submissionStakeholders.push(result);
+        }, error => {
+          console.log(error);
+        });
+      });
+    }, error => {
+      console.log(error);
+    });
+
+    console.log("Lista depois de irmos buscar stakeholders à submissao atual (CRC) ", this.submissionStakeholders);
     
 
     //this.currentStakeholder = {
@@ -192,7 +198,15 @@ export class NewStakeholderComponent implements OnInit {
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
     console.log(this.selectedStakeholderIsFromCRC);
-    this.initializeFormWithoutCC();
+    //this.initializeFormWithoutCC();
+    if (this.returned !== null) {
+      if (this.currentStakeholder.identificationDocument !== null || this.currentStakeholder.identificationDocument !== undefined) {
+        this.validateCC(true);
+        this.createFormCC();
+      }
+    } else {
+      this.initializeFormWithoutCC();
+    }
   }
 
   initializeFormWithoutCC() {
@@ -231,51 +245,64 @@ export class NewStakeholderComponent implements OnInit {
   //@Output()  newStakeholderAdded = new EventEmitter<any>();
   stringJson: any;
 
-  createForm() {
+  createFormCC() {
     this.formNewStakeholder = this.fb.group({
-      flagAssociado: [''],
-      flagProcurador: [''],
+      //flagAssociado: [''],
+      //flagProcurador: [''],
       flagRecolhaEletronica: new FormControl(this.showYesCC),
-      fullName: [''],
-      documentType: [''],
-      identificationDocumentCountry: [''],
-      identificationDocumentValidUntil: [''],
-      fiscalId: [''],
-      address: [''],
-      postalCode: [''],
-      postalArea: [''],
-      country: [''],
-
+/*      fullName: [''],*/
+      documentType: new FormControl((this.returned !== null) ? this.currentStakeholder.identificationDocument.type : ''),
+      identificationDocumentCountry: new FormControl((this.returned !== null) ? this.currentStakeholder.identificationDocument.country : ''),
+      identificationDocumentValidUntil: new FormControl((this.returned !== null) ? this.currentStakeholder.identificationDocument.expirationDate : ''),
+      //fiscalId: [''],
+      //address: [''],
+      //postalCode: [''],
+      //postalArea: [''],
+      //country: [''],
+      identificationDocumentId: new FormControl((this.returned !== null) ? this.currentStakeholder.identificationDocument.number : ''),
+      contractAssociation: new FormControl('false', Validators.required),
+      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
     });
   }
 
   submit() {
     console.log(this.formNewStakeholder);
+    if (this.returned !== 'consult') {
+      console.log('Entrei no if do submit dos stakeholders');
+      if (this.formNewStakeholder.valid) {
+        this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
+        this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
+        this.currentStakeholder.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
+        this.currentStakeholder.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
+        this.currentStakeholder.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
 
-    if (this.formNewStakeholder.valid) {
-      this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
-      this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
-      this.currentStakeholder.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
-      this.currentStakeholder.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
-      this.currentStakeholder.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
+        console.log(this.formNewStakeholder.get('proxy').value);
+        console.log((this.formNewStakeholder.get("proxy").value === 'true'));
+        this.currentStakeholder.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
 
-      console.log(this.formNewStakeholder.get('proxy').value);
-      console.log((this.formNewStakeholder.get("proxy").value === 'true'));
-      this.currentStakeholder.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
-
-      console.log("current stakeholder");
-      console.log(this.currentStakeholder);
-      this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.id, this.currentStakeholder).subscribe(result => {
-        console.log("Resultado de criar um stakeholder a uma submissão existente");
-        if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
-          this.currentIdx = this.currentIdx + 1;
-          this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
-          console.log(this.currentStakeholder);
+        if (this.showYesCC && !this.showNoCC) {
+          this.currentStakeholder.identificationDocument.type = this.formNewStakeholder.get("documentType").value;
+          this.currentStakeholder.identificationDocument.number = this.formNewStakeholder.get("identificationDocumentId").value;
+          this.currentStakeholder.identificationDocument.country = this.formNewStakeholder.get("identificationDocumentCountry").value;
+          this.currentStakeholder.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
         }
-        
-      }, error => {
-        console.log(error);
-      });
+
+        console.log("current stakeholder");
+        console.log(this.currentStakeholder);
+        this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.id, this.currentStakeholder).subscribe(result => {
+          console.log("Resultado de criar um stakeholder a uma submissão existente");
+          if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
+            this.currentIdx = this.currentIdx + 1;
+            this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
+            console.log(this.currentStakeholder);
+          }
+
+        }, error => {
+          console.log(error);
+        });
+      }
+    } else {
+      console.log("Não entrei no if do Submit dos stakeholders");
     }
   }
 

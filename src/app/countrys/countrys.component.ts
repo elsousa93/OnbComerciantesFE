@@ -348,49 +348,51 @@ export class CountrysComponent implements OnInit {
   }
 
   submit() {
-    console.log('Cliente recebido ', this.client);
+    if (this.returned !== 'consult') {
+      console.log('Entrei no if do edit e processo normal ');
+      console.log('Cliente recebido ', this.client);
 
-    console.log("lista de paises preenchidos");
-    console.log(this.lstPaisPreenchido);
-    this.data.updateData(true, 1);
-    this.newSubmission.startedAt = new Date().toISOString();
-    this.newSubmission.merchant.commercialName = "string";
-    this.newSubmission.merchant.billingEmail = this.client.billingEmail;
-    //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
-    this.newSubmission.merchant.bankInformation = this.client.bankInformation;
-    this.newSubmission.merchant.byLaws = this.client.byLaws;
-    //this.newSubmission.merchant.clientId = this.client.clientId;
-    this.newSubmission.merchant.companyName = this.client.companyName;
-    this.newSubmission.merchant.contacts = this.client.contacts;
-    this.newSubmission.merchant.crc = this.client.crc;
-    this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
-    this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
-    this.newSubmission.merchant.fiscalId = this.client.fiscalId;
-    this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-    this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
-    this.newSubmission.merchant.id = this.client.id;
-    this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-    this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-    this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
-    this.newSubmission.merchant.legalName = this.client.legalName;
-    this.newSubmission.merchant.legalNature = this.client.legalNature;
-    this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
-    this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
-    this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
-    this.newSubmission.merchant.merchantType = "Corporate";
-    this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
-    this.newSubmission.merchant.shareCapital = this.client.shareCapital;
-    this.newSubmission.merchant.shortName = this.client.shortName;
-    //this.newSubmission.stakeholders = this.stakeholdersToInsert;
-    var context = this;
+      console.log("lista de paises preenchidos");
+      console.log(this.lstPaisPreenchido);
+      this.data.updateData(true, 1);
+      this.newSubmission.startedAt = new Date().toISOString();
+      this.newSubmission.merchant.commercialName = "string";
+      this.newSubmission.merchant.billingEmail = this.client.billingEmail;
+      //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+      this.newSubmission.merchant.bankInformation = this.client.bankInformation;
+      this.newSubmission.merchant.byLaws = this.client.byLaws;
+      //this.newSubmission.merchant.clientId = this.client.clientId;
+      this.newSubmission.merchant.companyName = this.client.companyName;
+      this.newSubmission.merchant.contacts = this.client.contacts;
+      this.newSubmission.merchant.crc = this.client.crc;
+      this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+      this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
+      this.newSubmission.merchant.fiscalId = this.client.fiscalId;
+      this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
+      this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+      this.newSubmission.merchant.id = this.client.id;
+      this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+      this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+      this.newSubmission.merchant.legalName = this.client.legalName;
+      this.newSubmission.merchant.legalNature = this.client.legalNature;
+      this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
+      this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
+      this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
+      this.newSubmission.merchant.merchantType = "Corporate";
+      this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
+      this.newSubmission.merchant.shareCapital = this.client.shareCapital;
+      this.newSubmission.merchant.shortName = this.client.shortName;
+      //this.newSubmission.stakeholders = this.stakeholdersToInsert;
+      var context = this;
 
-    if (this.returned != null) {
-      this.newSubmission.processNumber = localStorage.getItem("processNumber");
-    }
+      if (this.returned !== null) {
+        this.newSubmission.processNumber = localStorage.getItem("processNumber");
+      }
 
-    console.log(this.newSubmission.merchant);
-    
+      console.log(this.newSubmission.merchant);
+
       //this.newSubmission.merchant.commercialName = this.merchantInfo.companyName;
       //this.newSubmission.merchant.billingEmail = this.merchantInfo.billingEmail;
       ////this.newSubmission.merchant.businessGroup = this.client.businessGroup;
@@ -423,60 +425,64 @@ export class CountrysComponent implements OnInit {
 
 
 
-    
-    //var clientToAdd = {} as ClientForProcess;
-    //var a = this.stakeholdersToInsert; 
-    //for (var i = 0, len = a.length; i < len; i++) {
-    //  this.newSubmission.stakeholders.push({
-    //    fiscalId: a[i].fiscalId,
-        
-    //  });
-    //}
 
-    var context = this;
-    console.log("Submissao tratada! uysidghsiudghisudh");
-    console.log(this.newSubmission);
-    console.log("----------------------");
-    console.log(this.stakeholdersToInsert);
-    localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
-    //console.log(this.newSubmission.merchant);
+      //var clientToAdd = {} as ClientForProcess;
+      //var a = this.stakeholdersToInsert; 
+      //for (var i = 0, len = a.length; i < len; i++) {
+      //  this.newSubmission.stakeholders.push({
+      //    fiscalId: a[i].fiscalId,
 
-    this.stakeholdersToInsert.forEach(function (value, idx) {
-      context.newSubmission.stakeholders.push({
-        "fiscalId": value.fiscalId,
-        "shortName": value.name
+      //  });
+      //}
+
+      var context = this;
+      console.log("Submissao tratada! uysidghsiudghisudh");
+      console.log(this.newSubmission);
+      console.log("----------------------");
+      console.log(this.stakeholdersToInsert);
+      localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
+      //console.log(this.newSubmission.merchant);
+
+      this.stakeholdersToInsert.forEach(function (value, idx) {
+        context.newSubmission.stakeholders.push({
+          "fiscalId": value.fiscalId,
+          "shortName": value.name
+        })
+      });
+
+      console.log("CRC !!!");
+      console.log(this.crc);
+      this.newSubmission.documents.push({
+        documentType: '',
+        documentPurpose: '',
+        file: {
+          fileType: 'PDF',
+          binary: this.crc.pdf
+        },
+        validUntil: this.crc.expirationDate,
+        data: ''
       })
-    });
 
-    console.log("CRC !!!");
-    console.log(this.crc);
-    this.newSubmission.documents.push({
-      documentType: '',
-      documentPurpose: '',
-      file: {
-        fileType: 'PDF',
-        binary: this.crc.pdf
-      },
-      validUntil: this.crc.expirationDate,
-      data: ''
-    })
+      if (this.tipologia == 'Company')
+        this.newSubmission.merchant.merchantType = 'Corporate';
+      else
+        this.newSubmission.merchant.merchantType = 'Entrepreneur';
 
-    if (this.tipologia == 'Company')
-      this.newSubmission.merchant.merchantType = 'Corporate';
-    else
-      this.newSubmission.merchant.merchantType = 'Entrepreneur';
+      this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
+        console.log("dentro do submission service");
+        console.log(result);
+        localStorage.setItem("submissionId", result.id);
+        this.processNrService.changeProcessNumber(result.processNumber);
 
-    this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-      console.log("dentro do submission service");
-      console.log(result);
-      localStorage.setItem("submissionId", result.id);
-      this.processNrService.changeProcessNumber(result.processNumber);
+        //localStorage.setItem("crcStakeholders", JSON.stringify());
 
-      //localStorage.setItem("crcStakeholders", JSON.stringify());
+        this.route.navigate(['stakeholders/']);
 
+      });
+    } else {
+      console.log('Estou numa consulta logo não submeti nenhuma informação');
       this.route.navigate(['stakeholders/']);
-      
-    });
+    }
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
