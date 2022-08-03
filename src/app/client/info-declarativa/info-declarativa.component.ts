@@ -106,31 +106,30 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
   //Custom Validators
-  //  Testa se o country code e o phone number passam o required check
-  //  Se não, testa se ambos falham
-  pairRequired(control: AbstractControl) : ValidationErrors | null {
-    let xor = (a,b)=>{return (a && b) || (!a && !b);};
+
+  validPhoneNumber(control: AbstractControl) : ValidationErrors | null {  
     let countryCodeExists = Validators.required(control.get("countryCode")) == null
     let phoneNumberExists = Validators.required(control.get("phoneNumber")) == null
-    let validityCheck = xor(countryCodeExists,phoneNumberExists);
-    return validityCheck ? null : {"missingValue" : countryCodeExists ? "phoneNumber" : "countryCode"};
-  }
 
-  validPhoneNumber(control: AbstractControl) : ValidationErrors | null {
+    //Se nenhum existir, é valido
+    if (!countryCodeExists && !phoneNumberExists){
+      return null;
+    }
+    //Se só um existir, retorna erro
+    if (!countryCodeExists || !phoneNumberExists){
+      return {"missingValue" : countryCodeExists ? "phoneNumber" : "countryCode"};
+    }
+    //Se ambos existirem, proceder à validação do indicativo/numero
     let phoneNumber = control.get("phoneNumber").value;
     let countryCode = control.get("countryCode").value;
     if (countryCode == "+351") { //Indicativo de Portugal
-      console.log("Portugal");
       if (phoneNumber && phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
-        console.log("Válido");
         return null;
       } else {
         return {invalidNumber : true}
       }
     } else { // Indicativo não é de Portugal
-      console.log("Fora de Portugal");
       if (phoneNumber && phoneNumber.length <= 16) {
-        console.log("Válido");
         return null;
       } else {
         return {invalidNumber : true}
@@ -162,11 +161,11 @@ export class InfoDeclarativaComponent implements OnInit {
       phone1: this.formBuilder.group({
         countryCode: new FormControl(null),
         phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone1.phoneNumber : null),
-      },{validators: [this.pairRequired, this.validPhoneNumber]}),
+      },{validators: [this.validPhoneNumber]}),
       phone2: this.formBuilder.group({
         countryCode: new FormControl(''),
         phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone2.phoneNumber : null),
-      },{validators: [this.pairRequired, this.validPhoneNumber]}),
+      },{validators: [this.validPhoneNumber]}),
       faxCountryCode: new FormControl(''),
       faxPhoneNumber: new FormControl(''),
       email: new FormControl((this.returned != null) ? this.merchantInfo.contacts.email : '', Validators.required),
