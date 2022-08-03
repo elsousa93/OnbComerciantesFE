@@ -195,19 +195,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
   // TESTE //////////////
 
-  constructor(public http: HttpClient, @Inject('BASE_URL') baseUrl: string, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
+  constructor(public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
     private modalService: BsModalService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
-    http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + this.clientNr).subscribe(result => {
-      this.client = result;
-    }, error => console.error(error));
-    http.get<IComprovativos[]>(this.baseUrl + `BEComprovativos/` + this.clientNr).subscribe(result => {
-      this.comprovativos = result;
-      console.log(result);
-    }, error => console.error(error));
-    this.data.updateData(false, 4);
 
     this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
       this.submission = result;
@@ -235,6 +227,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           var currentDocument = success;
           var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
 
+          console.log(this.submissionId);
+          console.log(currentDocument.id);
+          console.log("----------------");
           this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
             console.log("entrou aqui3!!!!!!!");
           });
