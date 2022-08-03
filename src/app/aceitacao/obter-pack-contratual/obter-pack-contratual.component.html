@@ -70,16 +70,16 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
+                  <tr *ngFor="let file of files">
                     <td class="text-primary text-center align-middle">{{docToShow.tipo}}</td>
                     <td class="text-primary text-center align-middle">{{docToShow.interveniente}}</td>
                     <td class="text-primary text-center align-middle">{{docToShow.dataEntrada}}</td>
                     <td>
                     <span>
-                      <img src="assets/images/delete_blue.svg" (click)="onDelete(docToShow.tipo, docToShow.interveniente, docToShow.dataEntrada)" style="height: 25px !important; margin-right: 10px !important; vertical-align: sub; cursor: pointer;">
+                      <img src="assets/images/delete_blue.svg" (click)="onDelete(docToShow.tipo, docToShow.interveniente, docToShow.dataEntrada, file)" style="height: 25px !important; margin-right: 10px !important; vertical-align: sub; cursor: pointer;">
                    </span>
                    <span>
-                      <img src="assets/images/search_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                      <img src="assets/images/search_blue.svg" (click)="search(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                    </span></td>
                   </tr>
                   </tbody>

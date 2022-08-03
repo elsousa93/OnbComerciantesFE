@@ -67,7 +67,7 @@
                           Phone number is invalid.
                         </div>
                       </div>
-                      <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid">
+                      <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('missingValue')">
                         Both fields are required.
                       </div>
                     </div>
@@ -89,7 +89,7 @@
                           Phone number is invalid.
                         </div>
                       </div>
-                      <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid">
+                      <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('missingValue')">
                         Both fields are required.
                       </div>
                     </div>

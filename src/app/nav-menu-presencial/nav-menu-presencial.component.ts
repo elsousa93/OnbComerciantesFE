@@ -79,6 +79,24 @@ export class NavMenuPresencialComponent implements OnInit {
     
   }
 
+  openProcess(process) {
+    console.log(process);
+    localStorage.setItem("processNumber", process.processNumber);
+    localStorage.setItem("returned", 'consult');
+
+    this.route.navigate(['/client']);
+    //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+    //  console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+    //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+    //    console.log('Submissão com detalhes mais especificos ', resul);
+    //    this.clientService.GetClientById(resul.id).subscribe(res => {
+    //      this.route.navigate(['/client']);
+    //    });
+    //  });
+    //});
+
+  }
+
   updateProgress(){
     if (this.currentPage == 0 || this.currentSubPage == 0){
       this.progressImage = undefined;

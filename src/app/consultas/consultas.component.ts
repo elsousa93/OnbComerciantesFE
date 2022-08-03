@@ -23,33 +23,8 @@ interface Process {
   nipc: number;
   nome: string;
   estado: string;
-  estadoDeConclusao: string;
 }
 
-const testValues : Process[] = [
-  {processNumber: "240370", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240380", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240390", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"},
-  {processNumber: "240400", nipc:529463466,nome: "EMPRESA UNIPESSOAL TESTES", estado: "PENDENTE DE ARQUIVO FÍSICO", estadoDeConclusao: "EM CURSO"}
-]
 @Component({
   selector: 'app-consultas',
   templateUrl: './consultas.component.html',
@@ -59,7 +34,7 @@ const testValues : Process[] = [
 export class ConsultasComponent implements OnInit{
   processes: MatTableDataSource<Process>;
 
-  displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'estadoDeConclusao', 'abrirProcesso'];
+  displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'abrirProcesso'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -135,15 +110,13 @@ export class ConsultasComponent implements OnInit{
           this.processService.searchProcessByNumber(encodedCode, 0, result.pagination.total).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
-                processNumber: process.processId,
+                processNumber: process.processNumber,
                 nipc: 529463466,
                 nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state,
-                estadoDeConclusao: "EM CURSO"
+                estado: process.state
               };
             })
             this.loadProcesses(processesArray);
-
           }, error => {
             console.log("deu erro");
             console.log(error);
@@ -156,11 +129,10 @@ export class ConsultasComponent implements OnInit{
           this.processService.searchProcessByState(processStateToSearch, 0, result.pagination.total).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
-                processNumber: process.processId,
+                processNumber: process.processNumber,
                 nipc: 529463466,
                 nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state,
-                estadoDeConclusao: "EM CURSO"
+                estado: process.state
               };
             })
             this.loadProcesses(processesArray);
@@ -193,16 +165,16 @@ export class ConsultasComponent implements OnInit{
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     var context = this;
-
-    this.loadProcesses();
   }
-  ngAfterViewInit(){
+  // ngAfterViewInit(){
+  //   this.processes.paginator = this.paginator;
+  //   this.processes.sort = this.sort;
+  // }
+
+  loadProcesses(processValues: Process[]){
+    this.processes = new MatTableDataSource(processValues);
     this.processes.paginator = this.paginator;
     this.processes.sort = this.sort;
-  }
-
-  loadProcesses(processValues: Process[] = testValues){
-    this.processes = new MatTableDataSource(processValues);
   }
 
 }
