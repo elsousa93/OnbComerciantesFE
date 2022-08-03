@@ -156,7 +156,7 @@ export class ClientComponent implements OnInit {
   documentType: boolean = false;
   toSearch: boolean = false;
   resultError: string = "";
-  clientTypology: string = "";
+  clientTypology: boolean;
 
   clientsToShow: Client[] = [];
 
@@ -264,7 +264,6 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
-
     if (this.returned !== null && this.returned !== undefined) {
       console.log("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
@@ -277,9 +276,11 @@ export class ClientComponent implements OnInit {
             if (this.merchantInfo.merchantType == 'Corporate') {
               console.log("O tipo é empresa");
               this.activateButtons(true); // se for Empresa
+              this.clientTypology = true;
             } else {
               console.log("O tipo é ENI");
               this.activateButtons(false); // se for ENI
+              this.clientTypology = false;
             }
           });
         });
@@ -579,6 +580,7 @@ export class ClientComponent implements OnInit {
   }
 
   activateButtons(id: boolean) {
+    console.log("CLient typology ", this.clientTypology);
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;
