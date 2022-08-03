@@ -318,20 +318,18 @@ export class ClientByIdComponent implements OnInit {
   //}
 
   initializeENI() {
+    this.NIFNIPC = this.form.get('natJuridicaNIFNIPC').value;
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required),
-      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
+      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required), //sim,
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
   }
 
   initializeBasicFormControl() {
-    console.log(this.consult);
-    console.log(this.returned);
-    console.log("Erro1");
-    console.log(this.merchantInfo);
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required), //sim
-      //commercialSociety: new FormControl('true', [Validators.required]), //sim
+      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
@@ -355,12 +353,14 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeFormControlOther() {
+    this.NIFNIPC = this.form.get('natJuridicaNIFNIPC').value;
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
-      natJuridicaNIFNIPC: new FormControl(this.processClient.fiscalId, Validators.required),
+      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       natJuridicaN1: new FormControl('', [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
-      socialDenomination: new FormControl((this.returned != null ) ? this.merchantInfo.companyName : '', Validators.required) //sim
+      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -401,6 +401,8 @@ export class ClientByIdComponent implements OnInit {
         });
     }
 
+    this.NIFNIPC = this.form.get('natJuridicaNIFNIPC').value;
+
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
@@ -420,7 +422,8 @@ export class ClientByIdComponent implements OnInit {
       country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
       location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
-      address: new FormControl(this.processClient.headquartersAddress.address, Validators.required) //sim
+      address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
       
 
@@ -648,43 +651,41 @@ export class ClientByIdComponent implements OnInit {
 
     console.log(this.clientExists);
 
-    if (this.returned === 'edit') {
+    if (this.returned !== null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         console.log('Submissão retornada quando pesquisada pelo número de processo', result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           console.log('Submissão com detalhes mais especificos ', resul);
           this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
+            console.log(this.merchantInfo);
+            if (this.NIFNIPC === undefined)
+              this.NIFNIPC = this.merchantInfo.fiscalId;
+            console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
+              if (this.merchantInfo.incorporationStatement !== null) {
+                console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
+                this.initializeBasicFormControl();
+                this.isCommercialSociety = true;
+                this.searchByCRC(); 
+              } else {
+                if (this.merchantInfo.legalNature !== "") {
+                  console.log("O merchant tem uma legal nature ", this.merchantInfo.legalNature);
+                  this.isCommercialSociety = false;
+                  this.tipologia === 'Company';
+                  this.initializeFormControlOther();
+                } else {
+                  console.log("O merchant não tem uma legal nature");
+                  this.tipologia === 'ENI';
+                  this.initializeENI();
+                }
+              }
           });
         });
       });
     }
 
 
-      if (this.returned === 'consult') {
-        console.log("Entrei no if do consult");
-        this.NIFNIPC = this.merchantInfo.fiscalId;
-        console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
-        console.log("Erro2");
-        console.log(this.merchantInfo);
-        if (this.merchantInfo.incorporationStatement.code !== "") {
-          console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
-          this.initializeBasicFormControl();
-          this.isCommercialSociety = true;
-          this.searchByCRC();
-        } else {
-          if (this.merchantInfo.legalNature !== "") {
-            console.log("O merchant tem uma legal nature ", this.merchantInfo.legalNature);
-            this.isCommercialSociety = false;
-            this.tipologia === 'Company';
-            this.initializeFormControlOther();
-          } else {
-            console.log("O merchant não tem uma legal nature");
-            this.tipologia === 'ENI';
-            this.initializeENI();
-          }
-        }
-      }
+      
     }
 
    //fim do construtor
@@ -714,6 +715,7 @@ export class ClientByIdComponent implements OnInit {
     if (id == true) {
       this.initializeBasicFormControl();
       this.isCommercialSociety = true;
+      this.form.get("commercialSociety").setValue(true);
       console.log("entrou no true");
     } else {
       if (this.tipologia === 'Company')
@@ -721,6 +723,7 @@ export class ClientByIdComponent implements OnInit {
       else
         this.initializeENI();
       this.isCommercialSociety = false;
+      this.form.get("commercialSociety").setValue(false);
       console.log("entrou no false");
     }
   }
@@ -930,7 +933,8 @@ export class ClientByIdComponent implements OnInit {
         clientId: this.idClient,
         processId: this.processId,
         stakeholders: this.processClient.stakeholders,
-        merchantInfo: this.merchantInfo
+        merchantInfo: this.merchantInfo,
+        crc: this.processClient
       }
     };
 
@@ -942,9 +946,6 @@ export class ClientByIdComponent implements OnInit {
     //});
 
 
-    console.log("por mandar: huasusa");
-    console.log(this.client);
-    console.log(this.form);
     if(this.form.valid)
       this.route.navigate(["/client-additional-info/", this.router.snapshot.paramMap.get('id')], navigationExtras);
   }

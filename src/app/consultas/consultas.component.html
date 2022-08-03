@@ -11,8 +11,9 @@
       <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg" style="height: 30px; vertical-align: bottom;">&nbsp;PESQUISA</h4>
       <div class="row ms-0 me-0">
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mt-0">Nº DE PEDIDO</p><input id="text8" name="text5" type="text" class="form-control campo_form" formControlName="processNumber">
+          <p class="titulo-form-simples mt-0">Nº DE PROCESSO</p><input id="text8" name="text5" type="text" class="form-control campo_form" formControlName="processNumber">
           <p class="titulo-form-simples">ESTADO</p><select id="select1" class="form-select  campo_form" formControlName="state">
+            <option value=""></option>
             <option value="Incomplete">Incompleto</option>
             <option value="Ongoing">A decorrer</option>
             <option value="Completed">Completado</option>
@@ -41,7 +42,7 @@
           <mat-table *ngIf="processes" [dataSource]="processes" matSort>
             <!-- Nº Pedido Column -->
             <ng-container matColumnDef="processNumber">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Nº PEDIDO </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Nº PROCESSO </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
             </ng-container>
             <!-- NIPC Column -->

@@ -9,7 +9,18 @@ import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/form
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
+import { SubmissionService } from '../submission/service/submission-service.service';
+import { TemplateRef, ViewChild } from '@angular/core';
+import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs';
+import { Configuration, configurationToken } from '../configuration';
 
+import { readCC } from '../citizencard/CitizenCardController.js';
+import { readCCAddress } from '../citizencard/CitizenCardController.js';
+import { ICCInfo } from '../citizencard/ICCInfo.interface';
+
+import { BrowserModule } from '@angular/platform-browser';
 
 
 /** Listagem Intervenientes / Intervenientes
@@ -23,7 +34,7 @@ import { StakeholderService } from './stakeholder.service';
 export class StakeholdersComponent implements OnInit {
 
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
- 
+
 
   newStake: IStakeholders = {
     "fiscalId": "",
@@ -34,6 +45,7 @@ export class StakeholdersComponent implements OnInit {
       "expirationDate": "",
     }
   }
+  @ViewChild('newModal') newModal;
 
   //newStake: IStakeholders = {
 
@@ -130,27 +142,60 @@ export class StakeholdersComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
-  constructor(private router: ActivatedRoute,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService) {
+  public returned: string;
+
+
+  constructor(private router: ActivatedRoute, public modalService: BsModalService,
+      private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
     this.submissionId = localStorage.getItem('submissionId');
+    this.returned = localStorage.getItem('returned');
+    console.log("foi buscar bem ao localstorage?");
+    console.log(this.submissionId);
+    console.log("returned ", this.returned);
+
     this.ngOnInit();
 
     var context = this;
-    stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-      result.forEach(function (value, index) {
-        console.log(value);
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          console.log(result);
-          context.submissionStakeholders.push(result);
-        }, error => {
-          console.log(error);
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log("Ir buscar submissão através do processNumber", result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
+          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+            console.log('Lista de stakeholders da submissão ', res);
+            res.forEach(function (value, index) {
+              console.log("Stake ", value);
+              context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                console.log("Info stakeholder ", r);
+                context.submissionStakeholders.push(r);
+              }, error => {
+                console.log(error);
+              });
+            }, error => {
+              console.log(error);
+            });
+          });
         });
       });
-    }, error => {
-      console.log(error);
-    });
 
+    console.log("Lista que fomos buscar à submissão antiga ", this.submissionStakeholders);
+    if (this.submissionId !== null) {
+      console.log("O id da submissão existe", this.submissionId);
+      stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+        result.forEach(function (value, index) {
+          console.log("Value ", value);
+          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+            console.log("Info stake ", result);
+            context.submissionStakeholders.push(result);
+          }, error => {
+            console.log(error);
+          });
+        });
+      }, error => {
+        console.log(error);
+      });
+    }
+      console.log("Lista depois de irmos buscar stakeholders à submissao atual (CRC) ", this.submissionStakeholders);
   }
 
   redirectAddStakeholder() {
@@ -179,6 +224,21 @@ export class StakeholdersComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false,2,1);
+  }
+
+  //Modal que pergunta se tem o PIN da Morada
+  launchNewModal() {
+    this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
+    this.newModal.result.then(function (result: boolean): void {
+      if (result) {
+        this.Window.readCCAddress();
+      } else {
+        console.log("fechar");
+        this.Window.readCC();
+
+        this.closeModal();
+      }
+    }.bind(this));
   }
 
   createForm() {
@@ -321,22 +381,27 @@ export class StakeholdersComponent implements OnInit {
   deleteStakeholder(stakeholder) {
     console.log("delete");
     console.log(stakeholder);
-    this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
-      console.log("stakeholder deleted");
-      this.route.navigateByUrl('stakeholders/');
-      //this.ngOnInit();
-      //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
-      //console.log(index);
-      //if (index > -1) { // 
-      //  this.stakeholdersToShow.splice(index, 1);
-      //}
-      //console.log("depois de apagar");
-      //console.log(this.stakeholdersToShow);
-      //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
-      //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
-      //    this.stakeholdersToShow.splice(i, 1);
-      //}
-    });
+    if (this.returned !== 'consult') {
+      console.log("Como não é uma consulta, consegui apagar o stakeholder");
+      this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
+        console.log("stakeholder deleted");
+        this.route.navigateByUrl('stakeholders/');
+        //this.ngOnInit();
+        //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
+        //console.log(index);
+        //if (index > -1) { // 
+        //  this.stakeholdersToShow.splice(index, 1);
+        //}
+        //console.log("depois de apagar");
+        //console.log(this.stakeholdersToShow);
+        //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
+        //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
+        //    this.stakeholdersToShow.splice(i, 1);
+        //}
+      });
+    } else {
+      console.log("Estamos numa consulta logo nao é possivel eliminar um stakeholder");
+    }
   }
 
   }

@@ -6,6 +6,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { AceitacaoService } from '../services/aceitacao.services';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 
 export class ObterPackContratualComponent implements OnInit{
   form: FormGroup;
-
+  public id: number = 0;
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
@@ -39,7 +40,7 @@ export class ObterPackContratualComponent implements OnInit{
   
   constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
   private route: Router,
-  private router: ActivatedRoute, private modalService: BsModalService) {
+  private router: ActivatedRoute, private modalService: BsModalService, public aceitacao: AceitacaoService) {
 
     this.ngOnInit();
   
@@ -82,12 +83,12 @@ downloadFormAll(){
 }
 
 // por terminar
-onDelete(tipo:string, interveniente: string, dataEntrada: string) {
+onDelete(tipo:string, interveniente: string, dataEntrada: string, file: File) {
   this.docToShow.tipo = tipo;
   this.docToShow.interveniente = interveniente;
   this.docToShow.dataEntrada = dataEntrada;
   this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
-  // this.fileToDelete = file;
+  this.fileToDelete = file;
 }
 
 submission(){
@@ -95,7 +96,7 @@ submission(){
 }
 
 selectFile(event: any) {
-  this.docToShow = { tipo: "pdf", interveniente: "Manuel", dataEntrada: new Date() + ""}
+  this.docToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataEntrada: "desconhecido"}
 
   const files = <File[]>event.target.files;
   for (var i = 0; i < files.length; i++) {
@@ -124,8 +125,39 @@ selectFile(event: any) {
   console.log(this.files);
 }
 
-confirmDelete() {
+search(/*url: any, imgName: any*/ file: File) {
+  //console.log('url ', url);
+  //console.log('image name ', imgName);
+  let blob = new Blob([file], { type: file.type });
+  let url = window.URL.createObjectURL(blob);
 
+  window.open(url, '_blank',
+    `margin: auto;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+    border: 3px solid green;
+    `);
+
+}
+
+confirmDelete() {
+  this.deleteModalRef?.hide();
+  const index = this.files.indexOf(this.fileToDelete);
+    if (index > -1) {
+      this.files.splice(index, 1);
+    }
+    this.aceitacao.delFile(this.id).subscribe(data => {
+      console.log("DATA: ", data);
+      if (data != null) {
+        alert("Ficheiro apagado com sucesso!!");
+        this.load();
+      }
+    },
+      err => {
+        console.error(err);
+      }
+    )
 }
 
 declineDelete() {
@@ -143,5 +175,7 @@ declineSubmission() {
 confirmSubmission() {
 
 }
-
+load() {
+  location.reload()
+}
 }

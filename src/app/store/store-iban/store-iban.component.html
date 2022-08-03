@@ -47,8 +47,8 @@
         </thead>
         <tbody>
           <tr>
-          <td class="text-primary text-center">Comprovativo de IBAN</td>
-          <td class="text-primary text-center">11/02/2022</td>
+          <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
+          <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
           </tr>
           <tr></tr>
           <tr></tr>
@@ -66,18 +66,26 @@
       <div class="offset-1 col-10 pt-3 ps-0">
       <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">TIPO DE SOLUÇÃO</h5>
       <p class=" mt-0 mb-3 ms-0 ps-0 S" wappler-command="editContent">Selecione tipo de solução UNICRE&nbsp;</p>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text text-primary">
-        <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent"><b>CARD PRESENT</b></label></div>
-        <div class="form-check"><label class="form-check-label" for="radio5">Transações presenciais</label></div>
-        </span><span class="navbar-text ms-3"><span class="navbar-text text-primary">
-          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2"><b>CARD NOT PRESENT</b></label></div>
-          <div class="form-check"><label class="form-check-label" for="radio5" wappler-command="editContent">Transações não presenciais</label></div>
-        </span></span><span class="navbar-text ms-3"><span class="navbar-text text-primary">
-          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent"><b>CARD PRESENT</b></label></div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
+        <span class="navbar-text text-primary">
+          <div class="form-check"><input (click)="chooseSolution(true, false, false)" class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent"><b>CARD PRESENT</b></label></div>
+          <div class="form-check"><label class="form-check-label" for="radio5">Transações presenciais</label></div>
+        </span>
+        <span class="navbar-text ms-3">
+          <span class="navbar-text text-primary">
+            <div class="form-check"><input (click)="chooseSolution(false, true, false)" class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2"><b>CARD NOT PRESENT</b></label></div>
+            <div class="form-check"><label class="form-check-label" for="radio5" wappler-command="editContent">Transações não presenciais</label></div>
+        </span>
+      </span>
+      <span class="navbar-text ms-3">
+        <span class="navbar-text text-primary">
+          <div class="form-check"><input (click)="chooseSolution(false, false, true)" class="form-check-input" type="radio" value="" id="radio2" name="radio2"><label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent"><b>OFERTA COMBINADA</b></label></div>
           <div class="form-check"><label class="form-check-label" for="radio5"></label></div>
-        </span></span></nav>
+        </span>
+      </span>
+    </nav>
       </div>
-      <div class="offset-1 col-10 pt-0 ps-0">
+      <div *ngIf="isCardPresent" class="offset-1 col-10 pt-0 ps-0">
       <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">SUB PRODUTO</h5>
       <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text text-primary">
         <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio3" name="radio3"><label class="form-check-label radio pe-5" for="radio3" wappler-command="editContent"><b>EASY</b></label></div>
@@ -85,9 +93,19 @@
           <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio3" name="radio3"><label class="form-check-label radio pe-5" for="radio3"><b>NORMAL</b></label></div>
         </span></span><span class="navbar-text ms-3"></span></nav>
       </div>
+      <div *ngIf="isCardNotPresent" class="offset-1 col-10 pt-0 ps-0">
+        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">SUB PRODUTO</h5>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text text-primary">
+          <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio3" name="radio3"><label class="form-check-label radio pe-5" for="radio3" wappler-command="editContent"><b>CHAVE NA MÃO</b></label></div>
+          </span><span class="navbar-text ms-3"><span class="navbar-text text-primary">
+            <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio3" name="radio3"><label class="form-check-label radio pe-5" for="radio3"><b>E-COMMERCE</b></label></div>
+          </span></span><span class="navbar-text ms-3"></span></nav>
+        </div>
       <div class="offset-1 col-5 pt-0 ps-0">
-      <p class="titulo-form-simples" wappler-command="editContent">URL</p><input id="text2" name="text2" type="text" class="form-control campo_form">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4"><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0"><button id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">ADICIONAR&nbsp;<img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;"></button></span></nav>
+      <p class="titulo-form-simples" wappler-command="editContent">URL</p><input (change)="URLFilled(true)" id="text2" name="text2" type="text" class="form-control campo_form">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4"><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
+        <button [disabled]="isCardNotPresent && !isURLFilled" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">ADICIONAR&nbsp;
+        <img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;"></button></span></nav>
       </div>
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
       <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>

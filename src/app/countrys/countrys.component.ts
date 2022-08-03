@@ -9,7 +9,7 @@ import { CountryInformation } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
-import { Client } from '../client/Client.interface';
+import { Client, Crc } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
@@ -46,7 +46,7 @@ export class CountrysComponent implements OnInit {
   statusValue: boolean = false;
 
   clientExists: boolean;
-  associatedWithGroupOrFranchise: boolean = false;
+  associatedWithGroupOrFranchise: string = "false";
   isAssociatedWithFranchise: boolean;
   form: FormGroup;
 
@@ -65,6 +65,7 @@ export class CountrysComponent implements OnInit {
   processId: string;
 
   currentClient: any = {};
+  crc;
   documentsList = []; //lista de documentos do utilizador
 
   processNumber: string;
@@ -126,28 +127,32 @@ export class CountrysComponent implements OnInit {
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
+      if (this.route.getCurrentNavigation().extras.state["crc"])
+        this.crc = this.route.getCurrentNavigation().extras.state["crc"];
       console.log("client exists ", this.clientExists);
       console.log(this.route.getCurrentNavigation().extras);
     }
 
-    if (this.returned == 'consult') {
-      if (this.merchantInfo.documentationDeliveryMethod == 'Portal') {
-        this.form.get("preferenceDocuments").setValue("Portal");
+    if (this.returned !== null) {
+      if (this.merchantInfo.documentationDeliveryMethod == 'ViaDigital') {
+        console.log("A preferencia de documentos é viaDigital");
+        this.form.get("preferenceDocuments").setValue("ViaDigital");
       } else {
+        console.log("A preferencia de documentos é Mail");
         this.form.get("preferenceDocuments").setValue("Mail");
       }
 
-      //por default fica a false
-      this.setAssociatedWith(false);
-    }
-
-    console.log('Fora do if do edit countries');
-    console.log('MerchantInfo ', this.merchantInfo);
-    if (this.merchantInfo != null) {
-      console.log('Entrei no if do edit countries');
+      if (this.merchantInfo.legalName !== null || this.merchantInfo.businessGroup !== null) {
+        console.log('Escolheu sim na parte do franchise');
+        this.form.get("associatedWithGroupOrFranchise").setValue('true');
+        this.setAssociatedWith('true');
+      } else {
+        console.log('Escolheu não na parte do franchise');
+        this.form.get("associatedWithGroupOrFranchise").setValue('false');
+        this.setAssociatedWith('false');
+      }
       this.editCountries();
     }
-    console.log('Depois do if do edit countries');
 
     console.log(this.clientId);
     //Chamada à API para receber todos os Paises
@@ -176,11 +181,11 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null) ? this.merchantInfo.sales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
-        associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : 'Portal'/*this.client.documentationDeliveryMethod*/, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''/*this.client.documentationDeliveryMethod*/, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -191,11 +196,11 @@ export class CountrysComponent implements OnInit {
       });
     } else {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl((this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : '', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : '', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
         services: new FormControl('aaa', Validators.required),
-        transactionsAverage: new FormControl((this.returned != null) ? this.merchantInfo.sales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
-        associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : 'Portal', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : '', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -248,7 +253,7 @@ export class CountrysComponent implements OnInit {
         "postalArea": "Aldeia Vegetariana",
         "country": "PT"
       },
-      "merchantType": "Corporate",
+      "merchantType": "Corporate", //ou Entrepreneur -> ENI
       "commercialName": "BATATAS FRITAS",
       "legalNature": "35",
       "crc": {
@@ -325,61 +330,71 @@ export class CountrysComponent implements OnInit {
       }
     ],
     "documents": [
-      {
-        "archiveSource": "undefined",
-        "purpose": "undefined",
-        "validUntil": "2022-07-20",
-        "receivedAt": "2022-07-20",
-        "documentType": "",
-        "uniqueReference": "",
+      { //tive de mudar
+        //"archiveSource": "undefined",
+        //"purpose": "undefined",
+        //"validUntil": "2022-07-20",
+        //"receivedAt": "2022-07-20",
+        //"documentType": "",
+        //"uniqueReference": "",
+        documentType: '',
+        documentPurpose: '',
+        file: {
+          fileType: '',
+          binary: ''
+        },
+        validUntil: '',
+        data: ''
       }
     ]
   }
 
   submit() {
-    console.log('Cliente recebido ', this.client);
+    if (this.returned !== 'consult') {
+      console.log('Entrei no if do edit e processo normal ');
+      console.log('Cliente recebido ', this.client);
 
-    console.log("lista de paises preenchidos");
-    console.log(this.lstPaisPreenchido);
-    this.data.updateData(true, 1);
-    
-    this.newSubmission.merchant.commercialName = "string";
-    this.newSubmission.merchant.billingEmail = this.client.billingEmail;
-    //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
-    this.newSubmission.merchant.bankInformation = this.client.bankInformation;
-    this.newSubmission.merchant.byLaws = this.client.byLaws;
-    //this.newSubmission.merchant.clientId = this.client.clientId;
-    this.newSubmission.merchant.companyName = this.client.companyName;
-    this.newSubmission.merchant.contacts = this.client.contacts;
-    this.newSubmission.merchant.crc = this.client.crc;
-    this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
-    this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
-    this.newSubmission.merchant.fiscalId = this.client.fiscalId;
-    this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-    this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
-    this.newSubmission.merchant.id = this.client.id;
-    this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-    this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-    this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-    this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
-    this.newSubmission.merchant.legalName = this.client.legalName;
-    this.newSubmission.merchant.legalNature = this.client.legalNature;
-    this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
-    this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
-    this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
-    this.newSubmission.merchant.merchantType = "Corporate";
-    this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
-    this.newSubmission.merchant.shareCapital = this.client.shareCapital;
-    this.newSubmission.merchant.shortName = this.client.shortName;
-    //this.newSubmission.stakeholders = this.stakeholdersToInsert;
-    var context = this;
+      console.log("lista de paises preenchidos");
+      console.log(this.lstPaisPreenchido);
+      this.data.updateData(true, 1);
+      this.newSubmission.startedAt = new Date().toISOString();
+      this.newSubmission.merchant.commercialName = "string";
+      this.newSubmission.merchant.billingEmail = this.client.billingEmail;
+      //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+      this.newSubmission.merchant.bankInformation = this.client.bankInformation;
+      this.newSubmission.merchant.byLaws = this.client.byLaws;
+      //this.newSubmission.merchant.clientId = this.client.clientId;
+      this.newSubmission.merchant.companyName = this.client.companyName;
+      this.newSubmission.merchant.contacts = this.client.contacts;
+      this.newSubmission.merchant.crc = this.client.crc;
+      this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+      this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
+      this.newSubmission.merchant.fiscalId = this.client.fiscalId;
+      this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
+      this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+      this.newSubmission.merchant.id = this.client.id;
+      this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+      this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
+      this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+      this.newSubmission.merchant.legalName = this.client.legalName;
+      this.newSubmission.merchant.legalNature = this.client.legalNature;
+      this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
+      this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
+      this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
+      this.newSubmission.merchant.merchantType = "Corporate";
+      this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
+      this.newSubmission.merchant.shareCapital = this.client.shareCapital;
+      this.newSubmission.merchant.shortName = this.client.shortName;
+      //this.newSubmission.stakeholders = this.stakeholdersToInsert;
+      var context = this;
 
-    if (this.returned != null) {
-      this.newSubmission.processNumber = localStorage.getItem("processNumber");
-    }
+      if (this.returned !== null) {
+        this.newSubmission.processNumber = localStorage.getItem("processNumber");
+      }
 
-    console.log(this.newSubmission.merchant);
-    
+      console.log(this.newSubmission.merchant);
+
       //this.newSubmission.merchant.commercialName = this.merchantInfo.companyName;
       //this.newSubmission.merchant.billingEmail = this.merchantInfo.billingEmail;
       ////this.newSubmission.merchant.businessGroup = this.client.businessGroup;
@@ -412,42 +427,64 @@ export class CountrysComponent implements OnInit {
 
 
 
-    
-    //var clientToAdd = {} as ClientForProcess;
-    //var a = this.stakeholdersToInsert; 
-    //for (var i = 0, len = a.length; i < len; i++) {
-    //  this.newSubmission.stakeholders.push({
-    //    fiscalId: a[i].fiscalId,
-        
-    //  });
-    //}
 
-    var context = this;
-    console.log("Submissao tratada! uysidghsiudghisudh");
-    console.log(this.newSubmission);
-    console.log("----------------------");
-    console.log(this.stakeholdersToInsert);
-    localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
-    //console.log(this.newSubmission.merchant);
+      //var clientToAdd = {} as ClientForProcess;
+      //var a = this.stakeholdersToInsert; 
+      //for (var i = 0, len = a.length; i < len; i++) {
+      //  this.newSubmission.stakeholders.push({
+      //    fiscalId: a[i].fiscalId,
 
-    this.stakeholdersToInsert.forEach(function (value, idx) {
-      context.newSubmission.stakeholders.push({
-        "fiscalId": value.fiscalId,
-        "shortName": value.name
+      //  });
+      //}
+
+      var context = this;
+      console.log("Submissao tratada! uysidghsiudghisudh");
+      console.log(this.newSubmission);
+      console.log("----------------------");
+      console.log(this.stakeholdersToInsert);
+      localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
+      //console.log(this.newSubmission.merchant);
+
+      this.stakeholdersToInsert.forEach(function (value, idx) {
+        context.newSubmission.stakeholders.push({
+          "fiscalId": value.fiscalId,
+          "shortName": value.name
+        })
+      });
+
+      console.log("CRC !!!");
+      console.log(this.crc);
+      this.newSubmission.documents.push({
+        documentType: '',
+        documentPurpose: '',
+        file: {
+          fileType: 'PDF',
+          binary: this.crc.pdf
+        },
+        validUntil: this.crc.expirationDate,
+        data: ''
       })
-    });
 
-    this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-      console.log("dentro do submission service");
-      console.log(result);
-      localStorage.setItem("submissionId", result.id);
-      this.processNrService.changeProcessNumber(result.processNumber);
+      if (this.tipologia == 'Company')
+        this.newSubmission.merchant.merchantType = 'Corporate';
+      else
+        this.newSubmission.merchant.merchantType = 'Entrepreneur';
 
-      //localStorage.setItem("crcStakeholders", JSON.stringify());
+      this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
+        console.log("dentro do submission service");
+        console.log(result);
+        localStorage.setItem("submissionId", result.id);
+        this.processNrService.changeProcessNumber(result.processNumber);
 
+        //localStorage.setItem("crcStakeholders", JSON.stringify());
+
+        this.route.navigate(['stakeholders/']);
+
+      });
+    } else {
+      console.log('Estou numa consulta logo não submeti nenhuma informação');
       this.route.navigate(['stakeholders/']);
-      
-    });
+    }
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
@@ -476,7 +513,7 @@ export class CountrysComponent implements OnInit {
       border: 3px solid green;` );
   }
 
-  setAssociatedWith(value: boolean) {
+  setAssociatedWith(value: string) {
     this.associatedWithGroupOrFranchise = value;
   }
 
@@ -791,14 +828,16 @@ export class CountrysComponent implements OnInit {
   }
 
   editCountries() {
-    this.merchantInfo.sales.servicesOrProductsDestinations.forEach(countryID => {
+    this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
+      console.log(countryID);
       this.tableInfo.GetCountryById(countryID).subscribe(result => {
         this.contPais.push(result);
+        console.log(result);
+        this.inserirText(null);
+        console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
+        console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
       });
     });
-    console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
-    this.inserirText(null);
-    console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
   }
 
 

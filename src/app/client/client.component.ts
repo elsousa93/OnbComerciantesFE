@@ -17,56 +17,10 @@ import { Configuration, configurationToken } from '../configuration';
 
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
-
+import { ICCInfo } from '../citizencard/ICCInfo.interface';
 
 import { BrowserModule } from '@angular/platform-browser';
-
-//Funcao da SIBS 
-declare function OpenCCDialog(): any;
-
-//CC
-interface ICCInfo {
-  BI: string;
-  BirthDate: Date;
-  CardNumber: string;
-  //CardNumberPAN: string;
-  CardVersion: string;
-  DeliveryEntity: string;
-  DeliveryDate: Date;
-  DocumentType: string;
-  CountryCC: string;
-  ExpiryDate: Date;
-  Height: string;
-  Localemission: string;
-  Name: string;
-  NameFather: string;
-  NameMother: string;
-  Nationality: string;
-  NIF: string;
-  NSS: string;
-  Sex: string;
-  SNS: string;
-
-  Address1: string;
-  Address2: string;
-  Address3: string;
-  ZipCode: string;
-  Locality: string;
-
-  FullAddress: string;
-  Photo: string;
-  CanSign: string;
-  Notes: string;
-}
-interface addresstranformed {
-  address1: string;
-  address2: string;
-  address3: string;
-  Zipcode: string;
-  Locality: string;
-
-}
-//Fim do CC
+import { SubmissionService } from '../submission/service/submission-service.service';
 
 @Component({
   selector: 'app-client',
@@ -78,6 +32,11 @@ export class ClientComponent implements OnInit {
   private baseUrl: string;
   private neyondBackUrl: string;
 
+  modalRef: BsModalRef;
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
 
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
@@ -105,18 +64,18 @@ export class ClientComponent implements OnInit {
   public postalCodeCC = null;
   public countryCC = null;
 
-
   public okCC = null;
   public dadosCC: Array<string> = [];
 
   //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
     readCC(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
-
   closeModal() {
     this.newModal.hide();
   }
@@ -133,15 +92,13 @@ export class ClientComponent implements OnInit {
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-
     console.log("Name: ", name, "type: ", typeof (name));
 
     console.log("nationality: ", nationality);
     console.log("birthDate: ", birthDate);
     console.log("cardNumber: ", cardNumber);
     console.log("nif: ", nif);
-   
-
+  
     this.nameCC = name;
     this.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
@@ -175,8 +132,7 @@ export class ClientComponent implements OnInit {
   CCReaderCCID: number;
   CCID: ICCInfo;
 
-  //--------- fim do CC ----------------------------
-
+  //--------- fim do CC ----------------------
 
   clientIdNew;
   ccInfo;
@@ -207,7 +163,7 @@ export class ClientComponent implements OnInit {
   documentType: boolean = false;
   toSearch: boolean = false;
   resultError: string = "";
-  clientTypology: string = "";
+  clientTypology: string= "";
 
   clientsToShow: Client[] = [];
 
@@ -297,8 +253,11 @@ export class ClientComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
+  public returned: string;
+  public merchantInfo: any;
+
   constructor(private router: ActivatedRoute, private http: HttpClient,
-    @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService) {
+      @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService, private submissionService: SubmissionService) {
       this.baseUrl = configuration.baseUrl;
       this.neyondBackUrl = configuration.neyondBackUrl;
 
@@ -312,9 +271,31 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
+    if (this.returned !== null ) {
+      console.log("ENTREI NO IF DO RETURNED");
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log('Submissão com detalhes mais especificos ', resul);
+          this.clientService.GetClientById(resul.id).subscribe(res => {
+            this.merchantInfo = res;
+            console.log("MERCHANT QUE FOMOS BUSCAR ", this.merchantInfo);
+            if (this.merchantInfo.merchantType == 'Corporate') {
+              console.log("O tipo é empresa");
+              this.activateButtons(true); // se for Empresa
+              this.clientTypology = "true";
+            } else {
+              console.log("O tipo é ENI");
+              this.activateButtons(false); // se for ENI
+              this.clientTypology = "false";
+            }
+          });
+        });
+      });
+    }
   }
 
-  //TEMPORARIO!!!!
+  //TEMPORARIO
   initializeDefaultClient() {
     this.tempClient = {
       "id": "",
@@ -440,22 +421,28 @@ export class ClientComponent implements OnInit {
       console.log(context.clientsToShow);
       context.clientsToShow = [];
       console.log(context.clientsToShow);
-      clients.forEach(function (value, index) {
-        console.log(value);
-        context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
-          console.log(c);
-          var client = {
-            "clientId": c.merchantId,
-            "commercialName": c.commercialName,
-            "address": "Rua Gomes Artur",
-            "ZIPCode": "1000-001",
-            "locality": "Lisboa",
-            "country": "Portugal",
-          }
-          context.clientsToShow.push(client);
-          console.log(context.clientsToShow);
-        });
-      })
+      if (clients.length > 0) {
+        clients.forEach(function (value, index) {
+          console.log(value);
+          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
+            console.log(c);
+            var client = {
+              "clientId": c.merchantId,
+              "commercialName": c.commercialName,
+              "address": "Rua Gomes Artur",
+              "ZIPCode": "1000-001",
+              "locality": "Lisboa",
+              "country": "Portugal",
+            }
+            context.clientsToShow.push(client);
+            console.log(context.clientsToShow);
+          });
+        })
+      } else {
+        this.showFoundClient = false;
+        context.resultError = "Não existe Comerciante com esse número.";
+        this.searchDone = true;
+      }
     }, error => {
       context.showFoundClient = false;
       context.resultError = "Não existe Comerciante com esse número.";
@@ -511,6 +498,7 @@ export class ClientComponent implements OnInit {
     this.modalService.onHide.subscribe((e) => {
       console.log('close', this.modalService);
     });
+    this.returned = localStorage.getItem("returned");
 
     var context = this;
 
@@ -539,9 +527,10 @@ export class ClientComponent implements OnInit {
 
   changeListElementDocType(docType, e: any) {
     // this.activateButtons(true);
+    console.log("changeListElementDocType: ", docType);
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
-    if (this.docType === 'Cartão do Cidadão') {
+    if (this.docType === '004') { //cartão de Cidadão code
       this.isCC = true;
     } else {
       this.isCC = false;
@@ -556,10 +545,17 @@ export class ClientComponent implements OnInit {
   obterSelecionado() {
     console.log(this.clientId);
 
+    var NIFNIPC = '';
+    console.log("DOCUMENTAIONDELIVERYMETHOD -->");
+    console.log(this.newClient.documentationDeliveryMethod);
+    if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
+      console.log("entrou aqui no if complexo");
+      NIFNIPC = this.newClient.clientId;
+    }
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
-          NIFNIPC: this.newClient.clientId,
+          NIFNIPC: NIFNIPC,
           clientExists: true,
           clientId: this.clientId,
         }
@@ -569,8 +565,12 @@ export class ClientComponent implements OnInit {
 
     //isto nao esta a aparecer na versao mais nova.
   }
-
-  changeDataReadable(readable: boolean){
+  /**
+   * 
+   * @param readable: true: quero ler o CC; false: não quer ler o CC
+   */
+  changeDataReadable(readable: boolean) {
+    console.log("readable: ", readable);
     this.isNoDataReadable=readable;
     this.toSearch = false;
     this.toShowReadCC = readable;
@@ -590,10 +590,15 @@ export class ClientComponent implements OnInit {
       }
     }.bind(this));
   }
-
-
-
+  /**
+ * /
+ * @param id: verdadeiro se Empresa; falso se ENI
+ */
   activateButtons(id: boolean) {
+    console.log("Client typology ", this.clientTypology, this.clientTypology.valueOf);
+    console.log("isCC:  ", this.isCC, this.isCC);
+    console.log("showENI  ", this.showENI);
+
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;
@@ -644,85 +649,4 @@ export class ClientComponent implements OnInit {
    // location.reload();
   this.route.navigate(['/client'])
   }
-  // Cartão de Cidadão
-  private GetCCData(): any {
-    var elName = (<HTMLInputElement>document.getElementById("CCDivNome"));
-    var elCCNumber = (<HTMLInputElement>document.getElementById("CCDivID"));
-    var elNif = (<HTMLInputElement>document.getElementById("CCDivNIF"));
-    var elBirthDate = (<HTMLInputElement>document.getElementById("CCDivDN"));
-    var elAddress = (<HTMLInputElement>document.getElementById("CCDivMr"));
-    var elPostalCode = (<HTMLInputElement>document.getElementById("CCDivPostalCode"));
-    var elCanSign = (<HTMLInputElement>document.getElementById("CCCanSign"));
-
-    // ******* Hidden Fields *********
-
-    var elNotes = (<HTMLInputElement>document.getElementById("CCDivNotes"));
-    var elNationality = (<HTMLInputElement>document.getElementById("CCDivNationality"));
-    var elGender = (<HTMLInputElement>document.getElementById("CCDivGender"));
-    var elHeight = (<HTMLInputElement>document.getElementById("CCDivHeight"));
-    var elEmissoneDate = (<HTMLInputElement>document.getElementById("CCDivEmissonDate"));
-    var elExpireDate = (<HTMLInputElement>document.getElementById("CCDivExpireDate"));
-    var elFatherName = (<HTMLInputElement>document.getElementById("CCDivFatherName"));
-    var elMotherName = (<HTMLInputElement>document.getElementById("CCDivMotherName"));
-    var elSSNumber = (<HTMLInputElement>document.getElementById("CCDivSSNumber"));
-    var elSNS = (<HTMLInputElement>document.getElementById("CCDivSNSNumber"));
-    var elEmissionLocal = (<HTMLInputElement>document.getElementById("CCDivEmissonLocal"));
-    var photo = (<HTMLInputElement>document.getElementById("CCDivPhoto"));
-    var country = (<HTMLInputElement>document.getElementById("CCDivCountry"));
-
-
-    if ((elName != null && elName.innerText != "") &&
-      (elCCNumber != null && elCCNumber.innerText != "") &&
-      (elNif != null && elNif.innerText != "") &&
-      (elBirthDate != null && elBirthDate.innerText != "")) {
-      var ccID = "";
-      ccID = elCCNumber.innerText;
-      this.CCID.Name = elName.innerText;
-      this.CCID.CardNumber = ccID; //elCCNumber.innerText;
-      //this.CCID.CardNumberPAN = ccID.substring(9);
-      this.CCID.NIF = elNif.innerText;
-      this.CCID.Nationality = null; // this.RefDataService.CountriesCCCodes.filter(x => x.ThreeLetterCode == elNationality.innerText)[0].TwoLetterCode;
-      this.CCID.Sex = elGender.innerText;
-      this.CCID.Height = elHeight.innerText;
-
-      this.CCID.NameFather = elFatherName.innerText;
-      this.CCID.NameMother = elMotherName.innerText;
-      this.CCID.NSS = elSSNumber.innerText;
-      this.CCID.SNS = elSNS.innerText;
-      this.CCID.CanSign = elCanSign.innerText;
-      this.CCID.Notes = elNotes.innerText;
-
-      var deliverydate = elEmissoneDate.innerText.split(' ');
-      var BirthDate = elBirthDate.innerText.split(' ');
-      var Expired = elExpireDate.innerText.split(' ');
-
-      this.CCID.BirthDate = new Date(BirthDate[2] + "/" + BirthDate[1] + "/" + BirthDate[0]);
-      this.CCID.ExpiryDate = new Date(Expired[2] + "/" + Expired[1] + "/" + Expired[0]);
-      this.CCID.DeliveryDate = new Date(deliverydate[2] + "/" + deliverydate[1] + "/" + deliverydate[0]);
-
-      if (elAddress != null && elAddress.innerText != "" && elAddress.innerText != "X" && elAddress.innerText.length > 2 && elAddress.innerText.substring(0, 2) != "X ") {
-        this.CCID.FullAddress = elAddress.innerText + " " + elPostalCode.innerText;
-        const ccmorada: addresstranformed = {
-
-          address1: "",
-          address2: "",
-          address3: "",
-          Zipcode: "",
-          Locality: "",
-        };
-
-        this.CCID.Address1 = ccmorada.address1;
-        this.CCID.Address2 = ccmorada.address2;
-        this.CCID.Address3 = ccmorada.address3;
-        this.CCID.ZipCode = ccmorada.Zipcode;
-        this.CCID.Locality = ccmorada.Locality;
-        this.CCID.CountryCC = country.innerText;
-      }
-      this.CCID.Localemission = elEmissionLocal.innerText;
-      this.CCID.Photo = photo.innerText;
-      this.CCID.DocumentType = "1001";
-    }
-  }
-
-
 }

@@ -27,6 +27,8 @@ export class AddStoreComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
+  public isComercialCentreStore: boolean = null;
+
   private baseUrl;
 
   public chooseAddressV: boolean = false;
@@ -234,7 +236,7 @@ export class AddStoreComponent implements OnInit {
 
   initializeForm() {
     this.formStores = new FormGroup({
-      storeName: new FormControl('false', Validators.required),
+      storeName: new FormControl('', Validators.required),
       activityStores: new FormControl('', Validators.required),
       countryStore: new FormControl('', Validators.required),
       zipCodeStore: new FormControl('', Validators.required),
@@ -244,5 +246,9 @@ export class AddStoreComponent implements OnInit {
       localeStore: new FormControl('', Validators.required),
       addressStore: new FormControl('', Validators.required)
     })
+}
+
+comercialCentre(isCentre: boolean) {
+ this.isComercialCentreStore = isCentre;
 }
 }
