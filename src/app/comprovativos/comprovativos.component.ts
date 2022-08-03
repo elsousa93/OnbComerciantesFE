@@ -497,7 +497,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       })      
     });
 
-    if (localStorage.getItem("returned") != null) {
+    if (this.returned !== null) {
       console.log("Entrei no if dos comprovativos quando faço o submit ");
       this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
       console.log("Objeto com os valores atualizados ", this.submissionPutTeste);

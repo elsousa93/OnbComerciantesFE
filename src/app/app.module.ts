@@ -68,7 +68,7 @@ import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-s
 import { CreateStakeholderComponent } from './stakeholders/create-stakeholder/create-stakeholder.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient);
+  return new TranslateHttpLoader(httpClient, './assets/i18n/');
 }
 
 @NgModule({
