@@ -17,57 +17,10 @@ import { Configuration, configurationToken } from '../configuration';
 
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
-
+import { ICCInfo } from '../citizencard/ICCInfo.interface';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { SubmissionService } from '../submission/service/submission-service.service';
-
-//Funcao da SIBS 
-declare function OpenCCDialog(): any;
-
-//CC
-interface ICCInfo {
-  BI: string;
-  BirthDate: Date;
-  CardNumber: string;
-  //CardNumberPAN: string;
-  CardVersion: string;
-  DeliveryEntity: string;
-  DeliveryDate: Date;
-  DocumentType: string;
-  CountryCC: string;
-  ExpiryDate: Date;
-  Height: string;
-  Localemission: string;
-  Name: string;
-  NameFather: string;
-  NameMother: string;
-  Nationality: string;
-  NIF: string;
-  NSS: string;
-  Sex: string;
-  SNS: string;
-
-  Address1: string;
-  Address2: string;
-  Address3: string;
-  ZipCode: string;
-  Locality: string;
-
-  FullAddress: string;
-  Photo: string;
-  CanSign: string;
-  Notes: string;
-}
-interface addresstranformed {
-  address1: string;
-  address2: string;
-  address3: string;
-  Zipcode: string;
-  Locality: string;
-
-}
-//Fim do CC
 
 @Component({
   selector: 'app-client',
@@ -78,7 +31,6 @@ interface addresstranformed {
 export class ClientComponent implements OnInit {
   private baseUrl: string;
   private neyondBackUrl: string;
-
 
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
@@ -105,7 +57,6 @@ export class ClientComponent implements OnInit {
   public addressCC = null;
   public postalCodeCC = null;
   public countryCC = null;
-
 
   public okCC = null;
   public dadosCC: Array<string> = [];
@@ -134,15 +85,13 @@ export class ClientComponent implements OnInit {
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-
     console.log("Name: ", name, "type: ", typeof (name));
 
     console.log("nationality: ", nationality);
     console.log("birthDate: ", birthDate);
     console.log("cardNumber: ", cardNumber);
     console.log("nif: ", nif);
-   
-
+  
     this.nameCC = name;
     this.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
@@ -177,7 +126,6 @@ export class ClientComponent implements OnInit {
   CCID: ICCInfo;
 
   //--------- fim do CC ----------------------------
-
 
   clientIdNew;
   ccInfo;
@@ -339,7 +287,7 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  //TEMPORARIO!!!!
+  //TEMPORARIO
   initializeDefaultClient() {
     this.tempClient = {
       "id": "",
@@ -630,8 +578,6 @@ export class ClientComponent implements OnInit {
     }.bind(this));
   }
 
-
-
   activateButtons(id: boolean) {
     this.showFoundClient = false;
     this.ccInfo = null;
@@ -683,85 +629,4 @@ export class ClientComponent implements OnInit {
    // location.reload();
   this.route.navigate(['/client'])
   }
-  // Cartão de Cidadão
-  private GetCCData(): any {
-    var elName = (<HTMLInputElement>document.getElementById("CCDivNome"));
-    var elCCNumber = (<HTMLInputElement>document.getElementById("CCDivID"));
-    var elNif = (<HTMLInputElement>document.getElementById("CCDivNIF"));
-    var elBirthDate = (<HTMLInputElement>document.getElementById("CCDivDN"));
-    var elAddress = (<HTMLInputElement>document.getElementById("CCDivMr"));
-    var elPostalCode = (<HTMLInputElement>document.getElementById("CCDivPostalCode"));
-    var elCanSign = (<HTMLInputElement>document.getElementById("CCCanSign"));
-
-    // ******* Hidden Fields *********
-
-    var elNotes = (<HTMLInputElement>document.getElementById("CCDivNotes"));
-    var elNationality = (<HTMLInputElement>document.getElementById("CCDivNationality"));
-    var elGender = (<HTMLInputElement>document.getElementById("CCDivGender"));
-    var elHeight = (<HTMLInputElement>document.getElementById("CCDivHeight"));
-    var elEmissoneDate = (<HTMLInputElement>document.getElementById("CCDivEmissonDate"));
-    var elExpireDate = (<HTMLInputElement>document.getElementById("CCDivExpireDate"));
-    var elFatherName = (<HTMLInputElement>document.getElementById("CCDivFatherName"));
-    var elMotherName = (<HTMLInputElement>document.getElementById("CCDivMotherName"));
-    var elSSNumber = (<HTMLInputElement>document.getElementById("CCDivSSNumber"));
-    var elSNS = (<HTMLInputElement>document.getElementById("CCDivSNSNumber"));
-    var elEmissionLocal = (<HTMLInputElement>document.getElementById("CCDivEmissonLocal"));
-    var photo = (<HTMLInputElement>document.getElementById("CCDivPhoto"));
-    var country = (<HTMLInputElement>document.getElementById("CCDivCountry"));
-
-
-    if ((elName != null && elName.innerText != "") &&
-      (elCCNumber != null && elCCNumber.innerText != "") &&
-      (elNif != null && elNif.innerText != "") &&
-      (elBirthDate != null && elBirthDate.innerText != "")) {
-      var ccID = "";
-      ccID = elCCNumber.innerText;
-      this.CCID.Name = elName.innerText;
-      this.CCID.CardNumber = ccID; //elCCNumber.innerText;
-      //this.CCID.CardNumberPAN = ccID.substring(9);
-      this.CCID.NIF = elNif.innerText;
-      this.CCID.Nationality = null; // this.RefDataService.CountriesCCCodes.filter(x => x.ThreeLetterCode == elNationality.innerText)[0].TwoLetterCode;
-      this.CCID.Sex = elGender.innerText;
-      this.CCID.Height = elHeight.innerText;
-
-      this.CCID.NameFather = elFatherName.innerText;
-      this.CCID.NameMother = elMotherName.innerText;
-      this.CCID.NSS = elSSNumber.innerText;
-      this.CCID.SNS = elSNS.innerText;
-      this.CCID.CanSign = elCanSign.innerText;
-      this.CCID.Notes = elNotes.innerText;
-
-      var deliverydate = elEmissoneDate.innerText.split(' ');
-      var BirthDate = elBirthDate.innerText.split(' ');
-      var Expired = elExpireDate.innerText.split(' ');
-
-      this.CCID.BirthDate = new Date(BirthDate[2] + "/" + BirthDate[1] + "/" + BirthDate[0]);
-      this.CCID.ExpiryDate = new Date(Expired[2] + "/" + Expired[1] + "/" + Expired[0]);
-      this.CCID.DeliveryDate = new Date(deliverydate[2] + "/" + deliverydate[1] + "/" + deliverydate[0]);
-
-      if (elAddress != null && elAddress.innerText != "" && elAddress.innerText != "X" && elAddress.innerText.length > 2 && elAddress.innerText.substring(0, 2) != "X ") {
-        this.CCID.FullAddress = elAddress.innerText + " " + elPostalCode.innerText;
-        const ccmorada: addresstranformed = {
-
-          address1: "",
-          address2: "",
-          address3: "",
-          Zipcode: "",
-          Locality: "",
-        };
-
-        this.CCID.Address1 = ccmorada.address1;
-        this.CCID.Address2 = ccmorada.address2;
-        this.CCID.Address3 = ccmorada.address3;
-        this.CCID.ZipCode = ccmorada.Zipcode;
-        this.CCID.Locality = ccmorada.Locality;
-        this.CCID.CountryCC = country.innerText;
-      }
-      this.CCID.Localemission = elEmissionLocal.innerText;
-      this.CCID.Photo = photo.innerText;
-      this.CCID.DocumentType = "1001";
-    }
-  }
-
-
 }
