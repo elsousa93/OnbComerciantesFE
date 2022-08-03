@@ -215,10 +215,10 @@ export class NewStakeholderComponent implements OnInit {
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
       NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
       Role: new FormControl({ value: '', disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
-      Country: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
-      ZIPCode: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
-      Locality: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
-      Address: new FormControl((this.returned !== null) ? this.currentStakeholder.fiscalAddress.address : '', Validators.required)
+      Country: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
+      ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
+      Locality: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
+      Address: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.address : '', Validators.required)
     })
   }
 

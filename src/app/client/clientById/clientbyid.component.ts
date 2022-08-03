@@ -659,7 +659,8 @@ export class ClientByIdComponent implements OnInit {
           this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
             console.log(this.merchantInfo);
-            this.NIFNIPC = this.merchantInfo.fiscalId;
+            if (this.NIFNIPC === undefined)
+              this.NIFNIPC = this.merchantInfo.fiscalId;
             console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
               if (this.merchantInfo.incorporationStatement !== null) {
                 console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);

@@ -144,9 +144,11 @@ export class CountrysComponent implements OnInit {
 
       if (this.merchantInfo.legalName !== null || this.merchantInfo.businessGroup !== null) {
         console.log('Escolheu sim na parte do franchise');
+        this.form.get("associatedWithGroupOrFranchise").setValue('true');
         this.setAssociatedWith('true');
       } else {
         console.log('Escolheu não na parte do franchise');
+        this.form.get("associatedWithGroupOrFranchise").setValue('false');
         this.setAssociatedWith('false');
       }
       this.editCountries();
@@ -179,9 +181,9 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: (this.returned != null) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''/*this.client.documentationDeliveryMethod*/, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
@@ -194,10 +196,10 @@ export class CountrysComponent implements OnInit {
       });
     } else {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl((this.returned != null) ? this.merchantInfo.sales.annualEstimatedRevenue : '', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : '', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
         services: new FormControl('aaa', Validators.required),
-        transactionsAverage: new FormControl((this.returned != null) ? this.merchantInfo.sales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
-        associatedWithGroupOrFranchise: new FormControl('false', Validators.required),//this.associatedWithGroupOrFranchise),
+        transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : '', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
@@ -831,12 +833,11 @@ export class CountrysComponent implements OnInit {
       this.tableInfo.GetCountryById(countryID).subscribe(result => {
         this.contPais.push(result);
         console.log(result);
+        this.inserirText(null);
+        console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
+        console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
       });
-      this.inserirText(null);
-      console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
-      console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
     });
-    
   }
 
 

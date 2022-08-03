@@ -68,7 +68,7 @@
 
                      </label>
                        <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
-                              accept=".pdf" multiple>
+                              accept=".pdf" multiple [disabled]="returned === 'consult'">
 
                   </span>
                </nav>
