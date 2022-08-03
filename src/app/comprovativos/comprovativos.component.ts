@@ -205,6 +205,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       this.submission = result;
       console.log('Submission ', result);
 
+      this.documentService.GetDocumentImage(this.submissionId, "22214900004081").subscribe(result => {
+        console.log("entrou na imagem!!!");
+        console.log(result);
+      });
+
       this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
         this.submissionClient = c;
         console.log('Cliente ', c);
@@ -217,55 +222,55 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         });
       });
 
-      this.submission.documents.forEach(document => {
-        console.log("entrou aqui1!!!");
-        var document = document;
-        var promise = documentService.GetSubmissionDocumentById(this.submissionId, document.id).toPromise();
+      //this.submission.documents.forEach(document => {
+      //  console.log("entrou aqui1!!!");
+      //  var document = document;
+      //  var promise = documentService.GetSubmissionDocumentById(this.submissionId, document.id).toPromise();
 
-        promise.then((success) => {
-          console.log("entrou aqui2!!!!")
-          var currentDocument = success;
-          var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
+      //  promise.then((success) => {
+      //    console.log("entrou aqui2!!!!")
+      //    var currentDocument = success;
+      //    var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
 
-          console.log(this.submissionId);
-          console.log(currentDocument.id);
-          console.log("----------------");
-          this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
-            console.log("entrou aqui3!!!!!!!");
-          });
+      //    console.log(this.submissionId);
+      //    console.log(currentDocument.id);
+      //    console.log("----------------");
+      //    this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
+      //      console.log("entrou aqui3!!!!!!!");
+      //    });
 
-          //fileImage.then((success) => {
-          //  console.log("entrou aqui3!!!!");
-          //  var teste = success.arraybuffer();
-          //  console.log(teste);
-          //  //var file = success;
-          //  //console.log("FICHEIRO PDF");
-          //  //console.log(file);
-          //  //this.files.push(file);
-          //  //this.compsToShow.push({
-          //  //  type: currentDocument.documentType,
-          //  //  stakeholder: '',
-          //  //  expirationDate: currentDocument.validUntil,
-          //  //  uploadDate: '',
-          //  //  status: '',
-          //  //  file: file
-          //  //});
-          //  //console.log("comps a mostrar");
-          //  //console.log(this.compsToShow);
+      //    //fileImage.then((success) => {
+      //    //  console.log("entrou aqui3!!!!");
+      //    //  var teste = success.arraybuffer();
+      //    //  console.log(teste);
+      //    //  //var file = success;
+      //    //  //console.log("FICHEIRO PDF");
+      //    //  //console.log(file);
+      //    //  //this.files.push(file);
+      //    //  //this.compsToShow.push({
+      //    //  //  type: currentDocument.documentType,
+      //    //  //  stakeholder: '',
+      //    //  //  expirationDate: currentDocument.validUntil,
+      //    //  //  uploadDate: '',
+      //    //  //  status: '',
+      //    //  //  file: file
+      //    //  //});
+      //    //  //console.log("comps a mostrar");
+      //    //  //console.log(this.compsToShow);
             
-          //}, error => {
-          //  console.log("deu erro!!!");
-          //  console.log(error);
-          //});
-        });
+      //    //}, error => {
+      //    //  console.log("deu erro!!!");
+      //    //  console.log(error);
+      //    //});
+      //  });
 
-        var blob = this.b64toBlob(document, 'application/pdf', 512);
+      //  var blob = this.b64toBlob(document, 'application/pdf', 512);
 
-        var file = new File([blob], "crcTeste");
-        console.log("blob para ficheiro");
-        console.log(file);
-        this.files.push(file);
-      });
+      //  var file = new File([blob], "crcTeste");
+      //  console.log("blob para ficheiro");
+      //  console.log(file);
+      //  this.files.push(file);
+      //});
     });
 
     console.log('Submission ', this.submission);
