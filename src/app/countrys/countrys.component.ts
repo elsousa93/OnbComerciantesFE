@@ -135,7 +135,7 @@ export class CountrysComponent implements OnInit {
 
     if (this.returned !== null) {
       if (this.merchantInfo.documentationDeliveryMethod == 'ViaDigital') {
-        console.log("A preferencia de documentos é Portal");
+        console.log("A preferencia de documentos é viaDigital");
         this.form.get("preferenceDocuments").setValue("ViaDigital");
       } else {
         console.log("A preferencia de documentos é Mail");
@@ -826,12 +826,11 @@ export class CountrysComponent implements OnInit {
         this.contPais.push(result);
         console.log(result);
       });
-
+      this.inserirText(null);
+      console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
+      console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
     });
     
-    console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
-    this.inserirText(null);
-    console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
   }
 
 

@@ -87,6 +87,7 @@ export class ConsultasComponent implements OnInit{
     //Initialize Form
     
     this.ngOnInit();
+    this.data.updateData(false, 0, 0);
   }
 
   initializeForm() {
