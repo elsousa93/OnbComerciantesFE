@@ -324,7 +324,7 @@ export class ClientByIdComponent implements OnInit {
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
-      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim,
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
   }
@@ -373,9 +373,9 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
-      natJuridicaN1: new FormControl('', [Validators.required]), //sim
-      natJuridicaN2: new FormControl(''), //sim
-      socialDenomination: new FormControl((this.returned != null) ? this.merchantInfo.companyName : '', Validators.required), //sim
+      natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
+      natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
+      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     });
 
@@ -689,8 +689,8 @@ export class ClientByIdComponent implements OnInit {
             console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
               if (this.merchantInfo.incorporationStatement !== null) {
                 console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
-                this.initializeBasicFormControl();
                 this.isCommercialSociety = true;
+                this.initializeBasicFormControl();
                 this.searchByCRC(); 
               } else {
                 if (this.merchantInfo.legalNature !== "") {
@@ -700,6 +700,7 @@ export class ClientByIdComponent implements OnInit {
                   this.initializeFormControlOther();
                 } else {
                   console.log("O merchant não tem uma legal nature");
+                  this.isCommercialSociety = false;
                   this.tipologia === 'ENI';
                   this.initializeENI();
                 }
