@@ -321,6 +321,7 @@ export class ClientByIdComponent implements OnInit {
     console.log("-------- NIFNIPC --------");
     console.log(this.NIFNIPC);
     console.log(this.form.get("natJuridicaNIFNIPC").value);
+    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim,
@@ -328,11 +329,20 @@ export class ClientByIdComponent implements OnInit {
     });
   }
 
-  initializeBasicFormControl() {
+  initializeBasicCRCFormControl() {
+    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+    });
+  }
+
+  initializeBasicFormControl() {
+    this.form = new FormGroup({
+      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+      //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
     
@@ -358,6 +368,8 @@ export class ClientByIdComponent implements OnInit {
     console.log("-------- NIFNIPC --------");
     console.log(this.NIFNIPC);
     console.log(this.form.get("natJuridicaNIFNIPC").value);
+    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
+
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
@@ -408,6 +420,8 @@ export class ClientByIdComponent implements OnInit {
     console.log("-------- NIFNIPC --------");
     console.log(this.NIFNIPC);
     console.log(this.form.get("natJuridicaNIFNIPC").value);
+    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
+
 
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
@@ -665,13 +679,18 @@ export class ClientByIdComponent implements OnInit {
           this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
             console.log(this.merchantInfo);
-            if (this.NIFNIPC === undefined)
+            console.log("antes do log dno nifnipc undefined");
+            console.log(this.NIFNIPC);
+            if (this.NIFNIPC === undefined) {
               this.NIFNIPC = this.merchantInfo.fiscalId;
+              console.log("NIFNIPC estava undefined");
+              console.log(this.NIFNIPC);
+            }
             console.log("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
               if (this.merchantInfo.incorporationStatement !== null) {
                 console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
                 this.isCommercialSociety = true;
-                this.initializeBasicFormControl();
+                this.initializeBasicCRCFormControl();
                 this.searchByCRC(); 
               } else {
                 if (this.merchantInfo.legalNature !== "") {
@@ -720,7 +739,7 @@ export class ClientByIdComponent implements OnInit {
   setCommercialSociety(id: boolean) {
     this.crcFound = false;
     if (id == true) {
-      this.initializeBasicFormControl();
+      this.initializeBasicCRCFormControl();
       this.isCommercialSociety = true;
       this.form.get("commercialSociety").setValue(true);
       console.log("entrou no true");

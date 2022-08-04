@@ -142,12 +142,21 @@ export class CountrysComponent implements OnInit {
         this.form.get("preferenceDocuments").setValue("Mail");
       }
 
-      if (this.merchantInfo.legalName !== null || this.merchantInfo.businessGroup !== null) {
-        console.log('Escolheu sim na parte do franchise');
-        this.setAssociatedWith(true);
-      } else {
-        console.log('Escolheu não na parte do franchise');
-        this.setAssociatedWith(false);
+      if (this.merchantInfo.businessGroup !== null) {
+        if (this.merchantInfo.businessGroup.type === 'Franchise') {
+          console.log('Escolheu sim na parte do franchise');
+          this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
+          this.setAssociatedWith(true);
+        }
+        if (this.merchantInfo.businessGroup.type === 'Group') {
+          console.log("Group");
+          this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
+          this.setAssociatedWith(true);
+        }
+        if (this.merchantInfo.businessGroup.type === 'Isolated') {
+          console.log('Escolheu não na parte do franchise');
+          this.setAssociatedWith(false);
+        }
       }
       this.editCountries();
     }
@@ -189,8 +198,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl(/*this.client.companyName*/''),
-        NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/)
+        franchiseName: new FormControl(''),
+        NIPCGroup: new FormControl('')
       });
     } else {
       this.form = new FormGroup({
@@ -204,8 +213,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl(/*this.client.companyName*/''),
-        NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/)
+        franchiseName: new FormControl(''),
+        NIPCGroup: new FormControl('')
       });
     }
 
@@ -373,7 +382,7 @@ export class CountrysComponent implements OnInit {
       var context = this;
 
       if (this.returned !== null) {
-        this.newSubmission.processNumber = localStorage.getItem("processNumber");
+        //this.newSubmission.processNumber = localStorage.getItem("processNumber");
       }
 
       console.log(this.newSubmission.merchant);
@@ -445,7 +454,7 @@ export class CountrysComponent implements OnInit {
         binary: this.crc.pdf
       },
       validUntil: this.crc.expirationDate,
-      data: 'string'
+      data: null
     })
 
       if (this.tipologia == 'Company')

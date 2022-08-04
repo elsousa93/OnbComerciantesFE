@@ -101,7 +101,7 @@ export class ConsultasComponent implements OnInit{
 
   searchProcess() {
     console.log(this.form);
-
+    this.loadProcesses([]);
       var processNumber = this.form.get('processNumber').value;
       if (processNumber !== '') {
         console.log(processNumber);
@@ -120,6 +120,7 @@ export class ConsultasComponent implements OnInit{
           }, error => {
             console.log("deu erro");
             console.log(error);
+            this.loadProcesses([]);
           });
           });
           
@@ -138,6 +139,7 @@ export class ConsultasComponent implements OnInit{
             this.loadProcesses(processesArray);
           }, error => {
             console.log(error);
+            this.loadProcesses([]);
           });
           });
       }

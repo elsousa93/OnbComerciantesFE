@@ -74,7 +74,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="flagRecolhaEletronica"
-                         name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC" [attr.disabled]="returned === 'consult'"
+                         name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC" [attr.disabled]="returned === 'consult' ? true : null"
                          (click)="validateCC(true)" />
                   <label class="form-check-label radio pe-5" for="radio2">SIM</label>
                 </div>
@@ -82,7 +82,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input input class="form-check-input" formControlName="flagRecolhaEletronica"
-                         name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica || returned === 'consult'"
+                         name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica || returned === 'consult' ? true : null"
                          (click)="validateCC(false)" />
                   <label class="form-check-label radio" for="radio2">NÃO</label>
                 </div>
@@ -131,12 +131,16 @@
         </div>
       </div>-->
               <p class="titulo-form-simples mt-0">Tipo de Documento de Identificação (1ª Nacionalidade):*</p>
-              <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
+              <select readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
+                <option *ngFor="let doc of ListaDocTypeENI" value={{doc.docTypeCode}} [attr.selected]="(currentStakeholder.identificationDocument.type == doc.docTypeCode) ? true : null">{{doc.docTypeOption}}</option>
+              </select>
               <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
         documentType is required.
       </div>-->
               <p class="titulo-form-simples">País de Documento de Identificação (1ª Nacionalidade):*</p>
-              <input readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
+              <select readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
+                <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
+              </select>
               <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
       documentCountry is required.
       </div>-->

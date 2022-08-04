@@ -12,11 +12,14 @@ import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { error } from '@angular/compiler/src/util';
+import { DatePipe } from '@angular/common';
+import { docTypeENI } from '../../client/docType';
 
 @Component({
   selector: 'app-new-stakeholder',
   templateUrl: './new-stakeholder.component.html',
-  styleUrls: ['./new-stakeholder.component.css']
+  styleUrls: ['./new-stakeholder.component.css'],
+  providers: [DatePipe]
 })
 
 /**
@@ -80,6 +83,8 @@ export class NewStakeholderComponent implements OnInit {
 
   returned: string;
 
+  ListaDocTypeENI = docTypeENI;
+
   loadCountries() {
     this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
@@ -91,7 +96,7 @@ export class NewStakeholderComponent implements OnInit {
   constructor(private router: ActivatedRoute,
     private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration,
-      private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService) {
+    private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService, private datePipe: DatePipe) {
     this.loadCountries();
     this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem('submissionId');
@@ -200,7 +205,7 @@ export class NewStakeholderComponent implements OnInit {
     console.log(this.selectedStakeholderIsFromCRC);
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
-      if (this.currentStakeholder.identificationDocument !== undefined || this.currentStakeholder.identificationDocument !== null) {
+      if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {
         this.createFormCC();// mudei a ordem
         this.validateCC(true);
       } else {
@@ -255,7 +260,7 @@ export class NewStakeholderComponent implements OnInit {
       /*      fullName: [''],*/
       documentType: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.type : ''),
       identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.country : ''),
-      identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.expirationDate : ''),
+      identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder.identificationDocument.expirationDate, 'dd-MM-yyyy') : ''),
       //fiscalId: [''],
       //address: [''],
       //postalCode: [''],
@@ -436,5 +441,7 @@ export class NewStakeholderComponent implements OnInit {
       }
     }
   }
+
+
 }
 
