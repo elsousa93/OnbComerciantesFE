@@ -9,6 +9,8 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SubmissionService } from '../../submission/service/submission-service.service';
+import { SubmissionGetTemplate } from '../../submission/ISubmission.interface';
 
 @Component({
   selector: 'app-add-store',
@@ -20,6 +22,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   //If the storeId value is -1 it means that it is a new store to be added - otherwise the storeId corresponds to the id of the store to edit
 
 export class AddStoreComponent implements OnInit {
+
+  //Submissao
+  submissionId: string;
+  submission: SubmissionGetTemplate;
 
   //Informação de campos/tabelas
   Countries: CountryInformation[] = [];
@@ -87,7 +93,13 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService) {
+    this.submissionId = localStorage.getItem("submissionId");
+
+    this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
+      this.submission = result;
+    });
+
     this.ngOnInit();
 
     this.loadTableInfo();

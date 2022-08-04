@@ -157,6 +157,8 @@ export class CountrysComponent implements OnInit {
           console.log('Escolheu não na parte do franchise');
           this.setAssociatedWith(false);
         }
+      } else {
+        this.setAssociatedWith(false);
       }
       this.editCountries();
     }
