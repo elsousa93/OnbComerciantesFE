@@ -330,22 +330,7 @@ export class CountrysComponent implements OnInit {
       }
     ],
     "documents": [
-      { //tive de mudar
-        //"archiveSource": "undefined",
-        //"purpose": "undefined",
-        //"validUntil": "2022-07-20",
-        //"receivedAt": "2022-07-20",
-        //"documentType": "",
-        //"uniqueReference": "",
-        documentType: '',
-        documentPurpose: '',
-        file: {
-          fileType: '',
-          binary: ''
-        },
-        validUntil: '',
-        data: ''
-      }
+      
     ]
   }
 
@@ -452,18 +437,18 @@ export class CountrysComponent implements OnInit {
         })
       });
 
-      console.log("CRC !!!");
-      console.log(this.crc);
-      this.newSubmission.documents.push({
-        documentType: '',
-        documentPurpose: '',
-        file: {
-          fileType: 'PDF',
-          binary: this.crc.pdf
-        },
-        validUntil: this.crc.expirationDate,
-        data: ''
-      })
+    console.log("CRC !!!");
+    console.log(this.crc);
+    this.newSubmission.documents.push({
+      documentType: 'crcPDF',
+      documentPurpose: 'CompanyIdentification',
+      file: {
+        fileType: 'PDF',
+        binary: this.crc.pdf
+      },
+      validUntil: this.crc.expirationDate,
+      data: 'string'
+    })
 
       if (this.tipologia == 'Company')
         this.newSubmission.merchant.merchantType = 'Corporate';
@@ -476,7 +461,13 @@ export class CountrysComponent implements OnInit {
         localStorage.setItem("submissionId", result.id);
         this.processNrService.changeProcessNumber(result.processNumber);
 
-        //localStorage.setItem("crcStakeholders", JSON.stringify());
+      let navigationExtras: NavigationExtras = {
+        state: {
+          crcCode: this.client.crc
+        }
+      };
+
+      //localStorage.setItem("crcStakeholders", JSON.stringify());
 
         this.route.navigate(['stakeholders/']);
 

@@ -23,12 +23,20 @@ export class SubmissionDocumentService {
   }
 
   GetDocumentImage(submissionID: string, documentID: string): any {
-    return this.http.get<any>(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
+
+    return fetch(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
+      method: "GET",
       headers: {
         "Accept": "application/pdf",
         "Content-type": "application/pdf"
       }
-    }); //n sei qual o tipo
+    });
+    //return this.http.get<any>(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
+    //  headers: {
+    //    "Accept": "application/pdf",
+    //    "Content-type": "application/pdf"
+    //  }
+    //}); //n sei qual o tipo
   }
 
   SubmissionPostDocument(submissionID: string, document: PostDocument): any {

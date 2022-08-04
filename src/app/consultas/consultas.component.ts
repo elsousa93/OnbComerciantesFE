@@ -32,10 +32,10 @@ interface Process {
 })
 
 export class ConsultasComponent implements OnInit{
-  processes: MatTableDataSource<Process>;
+  processes: MatTableDataSource<Process> = new MatTableDataSource();
 
   displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'abrirProcesso'];
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
 
@@ -166,15 +166,14 @@ export class ConsultasComponent implements OnInit{
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     var context = this;
   }
-  // ngAfterViewInit(){
-  //   this.processes.paginator = this.paginator;
-  //   this.processes.sort = this.sort;
-  // }
+  ngAfterViewInit(){
+    this.processes = new MatTableDataSource();
+    this.processes.paginator = this.paginator;
+  }
 
   loadProcesses(processValues: Process[]){
     this.processes = new MatTableDataSource(processValues);
     this.processes.paginator = this.paginator;
-    this.processes.sort = this.sort;
   }
 
 }

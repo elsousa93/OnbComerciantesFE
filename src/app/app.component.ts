@@ -4,6 +4,7 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
+import { CRCService } from './CRC/crcservice.service';
 
 @Component({
   selector: 'app-root',
@@ -22,12 +23,16 @@ export class AppComponent {
   isAutoHide: boolean = false;
 
   constructor(public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher  ) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService) {
     translate.addLangs(['pt', 'en']);
     translate.setDefaultLang('pt');
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    crcService.getAccessToken().then(result => {
+      console.log("gerou!!");
+      localStorage.setItem("accessToken", result.access_token);
+    });
   }
 
   @Input() url: string;

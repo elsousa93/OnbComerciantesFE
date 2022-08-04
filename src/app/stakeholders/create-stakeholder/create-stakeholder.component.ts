@@ -29,6 +29,12 @@ import { BrowserModule } from '@angular/platform-browser';
 export class CreateStakeholderComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
+  modalRef: BsModalRef;
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
   //---- Cartão de Cidadao - vars ------------
 
   public nameCC = null;
@@ -46,11 +52,12 @@ export class CreateStakeholderComponent implements OnInit {
   //---- Cartão de Cidadao - funcoes ---------
   callreadCC() {
     readCC(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData.bind(this));
+    this.setOkCC();
   }
-
   closeModal() {
     this.newModal.hide();
   }
@@ -58,6 +65,7 @@ export class CreateStakeholderComponent implements OnInit {
     this.okCC = true;
     console.log("okCC valor: ", this.okCC);
   }
+
   /**
    * Information from the Citizen Card will be associated to the client structure
    * cardNumber não é guardado
@@ -245,7 +253,7 @@ export class CreateStakeholderComponent implements OnInit {
       } else {
         console.log("fechar");
         this.Window.readCC();
-        this.closeModal();
+        this.newModal.hide();
       }
     }); // }.bind(this));
   }
@@ -347,9 +355,6 @@ export class CreateStakeholderComponent implements OnInit {
     //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
     //  console.log(o);
     //});
-
-    
-
     if (this.formStakeholderSearch.invalid)
       return false;
 
@@ -362,7 +367,6 @@ export class CreateStakeholderComponent implements OnInit {
       var clients = o;
       console.log("searched interveniente");
       console.log(clients);
-      var context2 = this;
 
       context.isShown = true;
       

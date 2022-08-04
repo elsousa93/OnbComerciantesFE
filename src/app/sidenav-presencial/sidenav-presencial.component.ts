@@ -350,6 +350,7 @@ export class SidenavPresencialComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.userPermissions = getMenuPermissions(UserPermissions.DO);
     console.log("teste api");
 
