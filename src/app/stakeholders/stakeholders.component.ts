@@ -200,12 +200,12 @@ export class StakeholdersComponent implements OnInit {
 
   redirectAddStakeholder() {
     console.log("errada");
-    this.route.navigate(['/create-stakeholder/'], this.route.getCurrentNavigation().extras.state);
+    this.route.navigate(['/create-stakeholder/']);
   }
 
   redirectInfoStakeholder() {
     console.log("certa");
-    this.route.navigate(['/add-stakeholder/'], this.route.getCurrentNavigation().extras.state);
+    this.route.navigate(['/add-stakeholder/']);
   }
 
   changeDataReadable(readable: boolean) {

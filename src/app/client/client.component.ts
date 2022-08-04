@@ -618,10 +618,16 @@ export class ClientComponent implements OnInit {
   }
 
   createNewClient(clientId: string) {
+    var NIFNIPC = ''
+    if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
+      console.log("entrou aqui no if complexo");
+      NIFNIPC = this.newClient.clientId;
+    }
+
     let navigationExtras: NavigationExtras = {
       state: {
       tipologia: this.tipologia,
-        NIFNIPC: this.newClient.clientId,
+        NIFNIPC: NIFNIPC,
         exists: false,
     }
   };
