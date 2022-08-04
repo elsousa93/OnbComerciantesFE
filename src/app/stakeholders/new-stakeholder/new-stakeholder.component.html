@@ -96,14 +96,14 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value='true' id="proxy" [attr.disabled]="returned === 'consult'"/>
+                         value='true' id="proxy" [attr.disabled]="returned === 'consult' ? true : null"/>
                   <label class="form-check-label radio pe-5" for="radio1">SIM</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value='false' id="proxy" [attr.disabled]="returned === 'consult'"/>
+                         value='false' id="proxy" [attr.disabled]="returned === 'consult' ? true : null"/>
                   <label class="form-check-label radio" for="radio1">NÃO</label>
                 </div>
               </span>
@@ -156,7 +156,7 @@
 
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">NIF</p>
-              <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF">
+              <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="returned === 'consult'">
 
 
               <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
@@ -165,7 +165,7 @@
 
               <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
               <!--<input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">-->
-              <select id="streetAddressStakeholder" class="form-select" formControlName="Country">
+              <select id="streetAddressStakeholder" class="form-select" formControlName="Country" [attr.disabled]="returned === 'consult' ? true : null">
                 <option *ngFor="let country of countries" value="{{country.code}}">{{country.description}}</option>
               </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
