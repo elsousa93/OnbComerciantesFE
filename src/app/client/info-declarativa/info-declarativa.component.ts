@@ -163,7 +163,7 @@ export class InfoDeclarativaComponent implements OnInit {
         phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone1.phoneNumber : null),
       },{validators: [this.validPhoneNumber]}),
       phone2: this.formBuilder.group({
-        countryCode: new FormControl(''),
+        countryCode: new FormControl(null),
         phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone2.phoneNumber : null),
       },{validators: [this.validPhoneNumber]}),
       faxCountryCode: new FormControl(''),

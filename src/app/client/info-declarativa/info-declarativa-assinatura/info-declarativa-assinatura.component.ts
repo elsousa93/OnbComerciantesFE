@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from '../../../nav-menu-interna/data.service';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
@@ -21,11 +22,15 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   stakeholders: IStakeholders[] = [];
   representativesSelected: String[] = [];
 
+  closeSubmissionModalRef: BsModalRef | undefined;
+
+  @ViewChild('closeSubmissionModal') closeSubmissionModal;
+
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription; 
 
-  constructor(private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private data: DataService) {
+  constructor(private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService) {
     this.baseUrl = configuration.baseUrl;
     http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
@@ -50,9 +55,17 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     console.log(this.representativesSelected);
   }
 
-  redirectHomePage() {
+  openCloseSubmissionModal() {
+    this.closeSubmissionModalRef = this.modalService.show(this.closeSubmissionModal, { class: 'modal-lg' });
+  }
 
+  closeSubmission() {
+    this.closeSubmissionModalRef?.hide();
     this.router.navigate(["/"]);
+  }
+
+  declineCloseSubmission(){
+    this.closeSubmissionModalRef?.hide();
   }
 
 

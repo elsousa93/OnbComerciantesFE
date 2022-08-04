@@ -53,6 +53,7 @@ ngOnInit(): void {
 
 paperSignature(paper: boolean) {
   this.showObservations = true;
+  this.showAnotherButtons = paper;
   if (paper){
     this.isPaper = true;
   } else {
