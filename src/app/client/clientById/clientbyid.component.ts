@@ -690,7 +690,7 @@ export class ClientByIdComponent implements OnInit {
               if (this.merchantInfo.incorporationStatement !== null) {
                 console.log("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
                 this.isCommercialSociety = true;
-                this.initializeBasicFormControl();
+                this.initializeBasicCRCFormControl();
                 this.searchByCRC(); 
               } else {
                 if (this.merchantInfo.legalNature !== "") {
