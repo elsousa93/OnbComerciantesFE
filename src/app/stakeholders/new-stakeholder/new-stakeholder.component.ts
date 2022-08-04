@@ -106,8 +106,6 @@ export class NewStakeholderComponent implements OnInit {
     console.log(this.crcStakeholders);
     this.ngOnInit();
 
-    
-
     var context = this;
     this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
       console.log("Ir buscar submissão através do processNumber", result);
@@ -215,8 +213,8 @@ export class NewStakeholderComponent implements OnInit {
         //  this.validateCC(false);
         //}
         console.log('ENtrou cartão de cidadão');
-        //  this.createFormCC();// mudei a ordem
-        //  this.validateCC(true);
+          this.createFormCC();// mudei a ordem
+          this.validateCC(true);
       } else {
         this.initializeFormWithoutCC();
         this.validateCC(false);
@@ -227,6 +225,7 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   initializeFormWithoutCC() {
+    console.log("stakeholder a ir a informação: ", this.currentStakeholder);
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
@@ -418,6 +417,7 @@ export class NewStakeholderComponent implements OnInit {
   chooseStakeholder(stake: any) {
     this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
       this.currentStakeholder = result;
+      console.log("Stakeholder atual: ", this.currentStakeholder);
     });
   }
 
