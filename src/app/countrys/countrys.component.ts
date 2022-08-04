@@ -143,8 +143,14 @@ export class CountrysComponent implements OnInit {
       }
 
       if (this.merchantInfo.businessGroup !== null) {
-        if (this.merchantInfo.businessGroup.type === 'Franchise' || this.merchantInfo.businessGroup.type === 'Group') {
+        if (this.merchantInfo.businessGroup.type === 'Franchise') {
           console.log('Escolheu sim na parte do franchise');
+          this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
+          this.setAssociatedWith(true);
+        }
+        if (this.merchantInfo.businessGroup.type === 'Group') {
+          console.log("Group");
+          this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
           this.setAssociatedWith(true);
         }
         if (this.merchantInfo.businessGroup.type === 'Isolated') {
@@ -192,8 +198,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Franchise') ? this.merchantInfo.businessGroup.branch : ''),
-        NIPCGroup: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Group') ? this.merchantInfo.businessGroup.branch : '')
+        franchiseName: new FormControl(''),
+        NIPCGroup: new FormControl('')
       });
     } else {
       this.form = new FormGroup({
@@ -207,8 +213,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Franchise') ? this.merchantInfo.businessGroup.branch : ''),
-        NIPCGroup: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Group') ? this.merchantInfo.businessGroup.branch : '')
+        franchiseName: new FormControl(''),
+        NIPCGroup: new FormControl('')
       });
     }
 
