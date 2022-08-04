@@ -56,7 +56,7 @@
           </span>-->
           <span class="navbar-text me-2">
             <button id="btn5a2" (click)="redirectAddStakeholder()"
-                    class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+                    class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" [disabled]="returned === 'consult'">
               ADICIONAR INTERVENIENTE&nbsp;
               <img src="assets/images/person_add_blue.svg" class="img_btn">
             </button>

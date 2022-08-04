@@ -131,9 +131,8 @@
         </div>
       </div>-->
               <p class="titulo-form-simples mt-0">Tipo de Documento de Identificação (1ª Nacionalidade):*</p>
-              <select readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
-                <option *ngFor="let doc of ListaDocTypeENI" value={{doc.docTypeCode}} [attr.selected]="(currentStakeholder.identificationDocument.type == doc.docTypeCode) ? true : null">{{doc.docTypeOption}}</option>
-              </select>
+              <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
+              
               <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
         documentType is required.
       </div>-->

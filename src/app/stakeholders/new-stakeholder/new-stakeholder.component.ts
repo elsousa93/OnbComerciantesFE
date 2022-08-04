@@ -206,13 +206,23 @@ export class NewStakeholderComponent implements OnInit {
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {
-        this.createFormCC();// mudei a ordem
-        this.validateCC(true);
+        //if (this.currentStakeholder.identificationDocument.number == '004') {
+        //  console.log('ENtrou cartão de cidadão');
+        //  this.createFormCC();// mudei a ordem
+        //  this.validateCC(true);
+        //} else {
+        //  this.initializeFormWithoutCC();
+        //  this.validateCC(false);
+        //}
+        console.log('ENtrou cartão de cidadão');
+        //  this.createFormCC();// mudei a ordem
+        //  this.validateCC(true);
       } else {
         this.initializeFormWithoutCC();
+        this.validateCC(false);
       }
     } else {
-      this.initializeFormWithoutCC();
+        this.initializeFormWithoutCC();
     }
   }
 
@@ -254,18 +264,10 @@ export class NewStakeholderComponent implements OnInit {
 
   createFormCC() {
     this.formNewStakeholder = this.fb.group({
-      //flagAssociado: [''],
-      //flagProcurador: [''],
       flagRecolhaEletronica: new FormControl(this.showYesCC),
-      /*      fullName: [''],*/
       documentType: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.type : ''),
       identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.country : ''),
       identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder.identificationDocument.expirationDate, 'dd-MM-yyyy') : ''),
-      //fiscalId: [''],
-      //address: [''],
-      //postalCode: [''],
-      //postalArea: [''],
-      //country: [''],
       identificationDocumentId: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.number : ''),
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),

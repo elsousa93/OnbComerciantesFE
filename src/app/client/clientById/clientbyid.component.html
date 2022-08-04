@@ -712,12 +712,12 @@
           <p class="titulo-form-simples">a empresa é uma sociedade comercial?*</p>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
-                   type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)">
+                   type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)" [disabled]="returned === 'consult'">
             <label class="form-check-label radio">Sim</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
-                   type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)">
+                   type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)" [disabled]="returned === 'consult'">
             <label class="form-check-label radio">Não</label>
           </div>
 
@@ -725,7 +725,7 @@
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
             <input maxlength="14" formControlName="crcCode" name="crcCode" type="text"
-                   id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()"/>
+                   id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" [disabled]="returned === 'consult'"/>
 
             <!--crc fim-->
 
