@@ -375,7 +375,7 @@ export class CountrysComponent implements OnInit {
       var context = this;
 
       if (this.returned !== null) {
-        this.newSubmission.processNumber = localStorage.getItem("processNumber");
+        //this.newSubmission.processNumber = localStorage.getItem("processNumber");
       }
 
       console.log(this.newSubmission.merchant);
@@ -447,7 +447,7 @@ export class CountrysComponent implements OnInit {
         binary: this.crc.pdf
       },
       validUntil: this.crc.expirationDate,
-      data: 'string'
+      data: null
     })
 
       if (this.tipologia == 'Company')
