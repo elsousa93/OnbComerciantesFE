@@ -142,12 +142,15 @@ export class CountrysComponent implements OnInit {
         this.form.get("preferenceDocuments").setValue("Mail");
       }
 
-      if (this.merchantInfo.legalName !== null || this.merchantInfo.businessGroup !== null) {
-        console.log('Escolheu sim na parte do franchise');
-        this.setAssociatedWith(true);
-      } else {
-        console.log('Escolheu não na parte do franchise');
-        this.setAssociatedWith(false);
+      if (this.merchantInfo.businessGroup !== null) {
+        if (this.merchantInfo.businessGroup.type === 'Franchise' || this.merchantInfo.businessGroup.type === 'Group') {
+          console.log('Escolheu sim na parte do franchise');
+          this.setAssociatedWith(true);
+        }
+        if (this.merchantInfo.businessGroup.type === 'Isolated') {
+          console.log('Escolheu não na parte do franchise');
+          this.setAssociatedWith(false);
+        }
       }
       this.editCountries();
     }
@@ -189,8 +192,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl(/*this.client.companyName*/''),
-        NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/)
+        franchiseName: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Franchise') ? this.merchantInfo.businessGroup.branch : ''),
+        NIPCGroup: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Group') ? this.merchantInfo.businessGroup.branch : '')
       });
     } else {
       this.form = new FormGroup({
@@ -204,8 +207,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl(/*this.client.companyName*/''),
-        NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/)
+        franchiseName: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Franchise') ? this.merchantInfo.businessGroup.branch : ''),
+        NIPCGroup: new FormControl((this.returned !== null && this.merchantInfo.businessGroup.type === 'Group') ? this.merchantInfo.businessGroup.branch : '')
       });
     }
 
