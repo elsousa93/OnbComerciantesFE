@@ -77,14 +77,14 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
-                  <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]="true"
-                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith('true')" [readonly]="returned == 'consult'">
+                  <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=true
+                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)" [readonly]="returned == 'consult'">
                   <label class="form-check-label radio pe-5" for="associatedWithGroupOrFranchise">SIM</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
-                  <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]="false"
-                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith('false')" [readonly]="returned == 'consult'">
+                  <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=false
+                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)" [readonly]="returned == 'consult'">
                   <label class="form-check-label radio" for="associatedWithGroupOrFranchise">NÃO</label>
                 </div>
               </span>
@@ -166,7 +166,7 @@
 
           </div>
 
-          <div class="col-6 ms-0 me-0 ps-0 pe-5" *ngIf="associatedWithGroupOrFranchise == 'true'">
+          <div class="col-6 ms-0 me-0 ps-0 pe-5" *ngIf="associatedWithGroupOrFranchise == true">
             <p class="titulo-form-simples mt-0">NOME FRANCHISE</p>
             <select class="form-select  campo_form" formControlName="franchiseName" name="franchiseName"
                     id="franchiseName"
@@ -184,7 +184,7 @@
             <p class="titulo-form-simples"></p>
           </div>
 
-          <div class="col-6 ms-0 me-0 ps-5 pe-0" *ngIf="associatedWithGroupOrFranchise == 'true'">
+          <div class="col-6 ms-0 me-0 ps-5 pe-0" *ngIf="associatedWithGroupOrFranchise == true">
 
 
             <p class="titulo-form-simples mt-0">NIPC GRUPO</p>
