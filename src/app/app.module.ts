@@ -135,7 +135,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
-      { path: 'client', component: ClientComponent },
+      { path: 'client', redirectTo:'client', component: ClientComponent },
       { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'clientbyid', component: ClientByIdComponent },
       { path: 'client/:id', component: ClientComponent },
@@ -203,7 +203,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         deps: [HttpClient]
       }
     })
-  ],
+  ], exports: [RouterModule],
   providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe],
   bootstrap: [AppComponent]
 })
