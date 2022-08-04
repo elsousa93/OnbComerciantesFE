@@ -46,7 +46,7 @@ export class CountrysComponent implements OnInit {
   statusValue: boolean = false;
 
   clientExists: boolean;
-  associatedWithGroupOrFranchise: string = "false";
+  associatedWithGroupOrFranchise: boolean;
   isAssociatedWithFranchise: boolean;
   form: FormGroup;
 
@@ -134,9 +134,9 @@ export class CountrysComponent implements OnInit {
     }
 
     if (this.returned !== null) {
-      if (this.merchantInfo.documentationDeliveryMethod == 'ViaDigital') {
+      if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
         console.log("A preferencia de documentos é viaDigital");
-        this.form.get("preferenceDocuments").setValue("ViaDigital");
+        this.form.get("preferenceDocuments").setValue("viaDigital");
       } else {
         console.log("A preferencia de documentos é Mail");
         this.form.get("preferenceDocuments").setValue("Mail");
@@ -144,12 +144,10 @@ export class CountrysComponent implements OnInit {
 
       if (this.merchantInfo.legalName !== null || this.merchantInfo.businessGroup !== null) {
         console.log('Escolheu sim na parte do franchise');
-        this.form.get("associatedWithGroupOrFranchise").setValue('true');
-        this.setAssociatedWith('true');
+        this.setAssociatedWith(true);
       } else {
         console.log('Escolheu não na parte do franchise');
-        this.form.get("associatedWithGroupOrFranchise").setValue('false');
-        this.setAssociatedWith('false');
+        this.setAssociatedWith(false);
       }
       this.editCountries();
     }
@@ -504,7 +502,7 @@ export class CountrysComponent implements OnInit {
       border: 3px solid green;` );
   }
 
-  setAssociatedWith(value: string) {
+  setAssociatedWith(value: boolean) {
     this.associatedWithGroupOrFranchise = value;
   }
 
