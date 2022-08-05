@@ -628,12 +628,11 @@ export class ClientComponent implements OnInit {
       state: {
       tipologia: this.tipologia,
         NIFNIPC: NIFNIPC,
-        exists: false,
-        clientId: clientId
+        exists: false
     }
   };
 
-    this.route.navigate(['/clientbyid'], navigationExtras);
+  this.route.navigate(['/clientbyid', clientId], navigationExtras);
   //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 

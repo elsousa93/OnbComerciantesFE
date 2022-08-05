@@ -817,11 +817,10 @@ export class CountrysComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         NIFNIPC: this.NIFNIPC,
-        tipologia: this.tipologia,
-        clientId: this.clientId
+        tipologia: this.tipologia
       }
     };
-    this.route.navigate(["/clientbyid"], navigationExtras);
+    this.route.navigate(["/clientbyid", this.router.snapshot.paramMap.get('id')], navigationExtras);
   }
 
   goBackToHomePage() {
