@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { IStakeholders } from '../IStakeholders.interface'
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -15,6 +15,7 @@ import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholder.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { infoDeclarativaForm } from 'src/app/client/info-declarativa/info-declarativa.model';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -47,7 +48,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
 
 
-  } as unknown as IStakeholders;
+  } as IStakeholders;
 
   @Output() nameEmitter = new EventEmitter<string>();
 
@@ -63,6 +64,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   selectedStakeholder = {
     
   } as IStakeholders;
+  phone: AbstractControl;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -103,7 +105,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     
     this.callingCodeStakeholder = tableInfo.GetAllCountries();
 
-    this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
+    /* this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
       if (data !== '') {
         this.formContactos.controls["phoneNumber"].setValidators([Validators.required]);
       } else {
@@ -119,17 +121,53 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.formContactos.controls["countryCode"].clearValidators();
       }
       this.formContactos.controls["countryCode"].updateValueAndValidity();
-    });
+    }); */
+  }
+
+  validPhoneNumber(control: AbstractControl) : ValidationErrors | null {  
+    let countryCodeExists = Validators.required(control.get("countryCode")) == null
+    let phoneNumberExists = Validators.required(control.get("phoneNumber")) == null
+
+    //Se nenhum existir, é valido
+    if (!countryCodeExists && !phoneNumberExists){
+      return null;
+    }
+    //Se só um existir, retorna erro
+    if (!countryCodeExists || !phoneNumberExists){
+      return {"missingValue" : countryCodeExists ? "phoneNumber" : "countryCode"};
+    }
+    //Se ambos existirem, proceder à validação do indicativo/numero
+    let phoneNumber = control.get("phoneNumber").value;
+    let countryCode = control.get("countryCode").value;
+    if (countryCode == "+351") { //Indicativo de Portugal
+      if (phoneNumber && phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
+        return null;
+      } else {
+        return {invalidNumber : true}
+      }
+    } else { // Indicativo não é de Portugal
+      if (phoneNumber && phoneNumber.length <= 16) {
+        return null;
+      } else {
+        return {invalidNumber : true}
+      }
+    }
   }
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 2);
+    this.newStakeholder = JSON.parse(localStorage.getItem("info-declarativa"))?.stakeholder ?? this.newStakeholder
+
     this.formContactos = this.formBuilder.group({
       listF: [''],
-      countryCode: new FormControl(''),
-      phoneNumber: new FormControl(''),
-      email: new FormControl(''),
+      phone: this.formBuilder.group({
+        countryCode: new FormControl(this.newStakeholder.phone1?.countryCode),
+        phoneNumber: new FormControl(this.newStakeholder.phone1?.phoneNumber)
+      },{validators: [this.validPhoneNumber]}),
+      email: new FormControl(this.newStakeholder.email, Validators.required),
     })
+    this.phone = this.formContactos.get("phone");
+
   }
 
   getValueSearch(val: string) {
@@ -137,9 +175,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.displayValueSearch = val;
   }
 
-  changeListElement(variavel: string, e: any) {
+  changeListElement(varkjkiavel: string, e: any) {
     console.log(e.target.value)
-    this.callingCodeStakeholder = e.target.value;
+    this.formContactos.get("phone").get("countryCode").setValue(e.target.value);
     console.log(this.formContactos.value.countryCode);
     console.log(this.formContactos.value.phoneNumber);
     console.log(this.formContactos.value.email);
@@ -147,11 +185,18 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     // this.newStakeholder.callingCodeStakeholder =  this.callingCodeStakeholder;
   }
 
-  submit(e) {
-    console.log(e);
-    this.newStakeholder.email = this.formContactos.value.email;
-    this.newStakeholder.phone1.countryCode = this.formContactos.value.countryCode;
-    this.newStakeholder.phone1.phoneNumber = this.formContactos.value.phoneNumber;
+  submit() {
+    this.newStakeholder = this.currentStakeholder;
+    this.newStakeholder = {
+      email : this.formContactos.value.email,
+      phone1: {
+        countryCode : this.formContactos.value.countryCode,
+        phoneNumber : this.formContactos.value.phoneNumber
+      }
+    };
+    let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
+    storedForm.stakeholder = this.newStakeholder
+    localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
     this.route.navigate(['/info-declarativa-lojas']);
   }
 
