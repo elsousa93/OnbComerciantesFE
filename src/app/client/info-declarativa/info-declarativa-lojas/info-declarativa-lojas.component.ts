@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Istore } from '../../../store/IStore.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
+import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -57,7 +58,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService) {
+  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
     /*Get from the backend the full list of stores existing for the client*/
@@ -72,7 +73,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
     //this.internationalCallingCodes = tableInfo.GetAllCountries();
 
-    //se o telemovel estiver vazio, o numero de telefone é obrigatorio
+ /*    //se o telemovel estiver vazio, o numero de telefone é obrigatorio
     this.listValue.controls["cellphoneNumber"].valueChanges.subscribe(data => {
       if (data === '') {
         this.listValue.controls["telephoneNumber"].setValidators([Validators.required]);
@@ -90,17 +91,23 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         this.listValue.controls["cellphoneNumber"].clearValidators();
       }
       this.listValue.controls["cellphoneNumber"].updateValueAndValidity();
-    });
-  }
+    });*/
+  } 
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 3);
-    this.listValue = new FormGroup({
-      cellphoneCountryCode: new FormControl(''), //telemovel
-      cellphoneNumber: new FormControl(''),
-      telephoneCountryCode: new FormControl('', Validators.required), //telefone
-      telephoneNumber: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required),
+    this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
+
+    this.listValue = this.formBuilder.group({
+      cellphone : this.formBuilder.group({
+        countryCode: new FormControl(this.selectedStore.cellphoneIndic), //telemovel
+        phoneNumber: new FormControl(this.selectedStore.cellphoneNumber)
+      }, {validators : validPhoneNumber}),
+      telephone : this.formBuilder.group({
+        countryCode: new FormControl(''), //telefone
+        phoneNumber: new FormControl('')
+      }, {validators : validPhoneNumber}),
+      email: new FormControl(this.selectedStore.emailContact, Validators.required),
     });
   }
 
@@ -124,9 +131,13 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   submit() {
+
     this.selectedStore.cellphoneIndic = this.listValue.value.cellphoneCountryCode;
     this.selectedStore.cellphoneNumber = this.listValue.value.cellphoneNumber;
     this.selectedStore.emailContact = this.listValue.value.email;
+    let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
+    storedForm.store = this.selectedStore
+    localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
     this.route.navigate(['/info-declarativa-assinatura']);
   }
 }

@@ -15,7 +15,7 @@ import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholder.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
-import { infoDeclarativaForm } from 'src/app/client/info-declarativa/info-declarativa.model';
+import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { ConstantPool } from '@angular/compiler';
 
 @Component({
@@ -128,35 +128,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }); */
   }
 
-  validPhoneNumber(control: AbstractControl) : ValidationErrors | null {  
-    let countryCodeExists = Validators.required(control.get("countryCode")) == null
-    let phoneNumberExists = Validators.required(control.get("phoneNumber")) == null
 
-    //Se nenhum existir, é valido
-    if (!countryCodeExists && !phoneNumberExists){
-      return null;
-    }
-    //Se só um existir, retorna erro
-    if (!countryCodeExists || !phoneNumberExists){
-      return {"missingValue" : countryCodeExists ? "phoneNumber" : "countryCode"};
-    }
-    //Se ambos existirem, proceder à validação do indicativo/numero
-    let phoneNumber = control.get("phoneNumber").value;
-    let countryCode = control.get("countryCode").value;
-    if (countryCode == "+351") { //Indicativo de Portugal
-      if (phoneNumber && phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
-        return null;
-      } else {
-        return {invalidNumber : true}
-      }
-    } else { // Indicativo não é de Portugal
-      if (phoneNumber && phoneNumber.length <= 16) {
-        return null;
-      } else {
-        return {invalidNumber : true}
-      }
-    }
-  }
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 2);
@@ -167,7 +139,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       phone: this.formBuilder.group({
         countryCode: new FormControl(this.newStakeholder.phone1?.countryCode),
         phoneNumber: new FormControl(this.newStakeholder.phone1?.phoneNumber)
-      },{validators: [this.validPhoneNumber]}),
+      },{validators: [validPhoneNumber]}),
       email: new FormControl(this.newStakeholder.email, Validators.required),
     })
     this.phone = this.formContactos.get("phone");
@@ -180,7 +152,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       phone: this.formBuilder.group({
         countryCode: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.phone1?.countryCode : this.newStakeholder.phone1?.countryCode),
         phoneNumber: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.phone1?.phoneNumber : this.newStakeholder.phone1?.phoneNumber)
-      }, { validators: [this.validPhoneNumber] }),
+      }, { validators: [validPhoneNumber] }),
       email: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.email : this.newStakeholder.email, Validators.required),
     })
   }
