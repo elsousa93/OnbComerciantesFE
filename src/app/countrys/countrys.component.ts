@@ -123,6 +123,7 @@ export class CountrysComponent implements OnInit {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.client = this.route.getCurrentNavigation().extras.state["client"];
+      console.log("cliente que foi buscado: ", this.client);
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
@@ -190,7 +191,7 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.knowYourSales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
@@ -205,7 +206,7 @@ export class CountrysComponent implements OnInit {
       });
     } else {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.estimatedAnualRevenue : '', Validators.required),/*this.client.knowYourSales.estimatedAnualRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.knowYourSales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl('aaa', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.knowYourSales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
@@ -404,7 +405,7 @@ export class CountrysComponent implements OnInit {
       //this.newSubmission.merchant.foreignFiscalInformation = this.merchantInfo.foreignFiscalInformation;
       //this.newSubmission.merchant.headquartersAddress = this.merchantInfo.headquartersAddress;
       //this.newSubmission.merchant.id = this.merchantInfo.merchantId;
-      //this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+      //this.newSubmission.merchant.knowYourSales.annualEstimatedRevenue = this.form.get("expectableAnualInvoicing").value;
       //this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
       //this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
       //this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE

@@ -7,6 +7,8 @@ import { Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { AceitacaoService } from '../services/aceitacao.services';
+import { PostDocument } from '../../submission/document/ISubmission-document';
+import { ProcessService } from '../../process/process.service';
 
 
 @Component({
@@ -39,7 +41,7 @@ export class ObterPackContratualComponent implements OnInit{
   @ViewChild('submissionModal') submissionModal;
   
   constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-  private router: Router, private modalService: BsModalService, public aceitacao: AceitacaoService) {
+    private router: Router, private modalService: BsModalService, private processService: ProcessService, public aceitacao: AceitacaoService) {
 
     this.ngOnInit();
   
@@ -92,6 +94,25 @@ onDelete(tipo:string, interveniente: string, dataEntrada: string, file: File) {
 
 submission(){
   this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-lg' });
+
+  console.log("ficheiros a inserir: ", this.files);
+  var context = this;
+  this.files.forEach(function (file, idx) {
+    context.readBase64(file).then((data) => {
+      var docToSend: PostDocument = {
+        "documentType": "string",
+        "documentPurpose": "Identification",
+        "validUntil": "2022-07-20T11:03:13.001Z",
+        "data": data.split(',')[1]
+      }
+      var processId = 'a5b04add-2179-4d0e-99ba-18c5622536cb';
+
+      context.processService.submitDocumentOnProcess(processId, 'ContractAcceptance', docToSend).subscribe(result => {
+        console.log('Ficheiro foi submetido ', result);
+      });
+    })
+  });
+  
 }
 
 selectFile(event: any) {
@@ -122,7 +143,9 @@ selectFile(event: any) {
 
   }
   console.log(this.files);
-}
+  }
+
+
 
 search(/*url: any, imgName: any*/ file: File) {
   //console.log('url ', url);
@@ -176,5 +199,20 @@ confirmSubmission() {
 }
 load() {
   location.reload()
-}
+  }
+
+  private readBase64(file): Promise<any> {
+    const reader = new FileReader();
+    const future = new Promise((resolve, reject) => {
+      reader.addEventListener('load', function () {
+        resolve(reader.result);
+      }, false);
+      reader.addEventListener('error', function (event) {
+        reject(event);
+      }, false);
+
+      reader.readAsDataURL(file);
+    });
+    return future;
+  }
 }

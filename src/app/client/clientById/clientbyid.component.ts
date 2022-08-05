@@ -864,6 +864,7 @@ export class ClientByIdComponent implements OnInit {
       }
       this.client.companyName = this.form.value["socialDenomination"];
     }
+
     ////Social Denomination
 
     //this.client.merchantType = this.tipologia;

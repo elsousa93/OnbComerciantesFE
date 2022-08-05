@@ -13,11 +13,11 @@ export interface SimplifiedDocument{
 }
 
 export interface PostDocument{
-  documentType: string
-  documentPurpose: string
-  file: FileDocument
-  validUntil: string
-  data: any
+  documentType?: string
+  documentPurpose?: string
+  file?: FileDocument
+  validUntil?: string
+  data?: any
 }
 
 interface FileDocument {
