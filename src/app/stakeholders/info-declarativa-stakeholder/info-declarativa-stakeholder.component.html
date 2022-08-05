@@ -52,7 +52,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let stakeholder of submissionStakeholders" (click)="selectStakeholder(stakeholder)" [ngClass]="{'row-selected': currentStakeholder.id == stakeholder.id}">
+                      <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="selectStakeholder(stakeholder, idx)" [ngClass]="{'row-selected': currentStakeholder.id === stakeholder.id}">
                         <th scope="row" class="text-primary text-center">{{stakeholder.stakeholderNumber}}</th>
                         <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                         <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
@@ -73,14 +73,14 @@
                       <div class="row" formGroupName = "phone">
                         <div class="col-4">
                           <p class="titulo-form-simples mt-0">INDICATIVO:</p>
-                          <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="countryCode">
-                            <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} ({{country.internationalCallingCode}}) </option>
+                          <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="countryCode"  [attr.disabled]="returned === 'consult' ? true : null">
+                            <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}} [attr.selected]="(currentStakeholder != null && currentStakeholder.phone1.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
                         </div>
                         <div class="col">
                           <p class="titulo-form-simples mt-0">TELEFONE:*</p>
                           <input #phoneNumber name="phoneNumber" type="text" id="phoneNumber"
-                            class="form-control" formControlName="phoneNumber">
+                            class="form-control" formControlName="phoneNumber" [disabled]="returned === 'consult'">
                           <div class="alert alert-danger" *ngIf="(phone.touched || phone.dirty) && !phone.valid && phone.errors.hasOwnProperty('invalidNumber')">
                             Phone number is invalid.
                           </div>
@@ -94,7 +94,7 @@
                       <div class="col-12">
                         <p class="titulo-form-simples mt-0">EMAIL*</p>
                         <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
-                          formControlName="email">
+                          formControlName="email" [disabled]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid">
                           is required.
                         </div>

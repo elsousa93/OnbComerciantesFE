@@ -174,14 +174,31 @@ export class InfoDeclarativaComponent implements OnInit {
 
     this.submissionService.GetSubmissionByID(localStorage.getItem("submissionId")).subscribe(result => {
       this.clientService.GetClientById(result.id).subscribe(result => {
-        this.listValue.get("comercialName").setValue(result.commercialName);
-        this.listValue.get("phone1").get("phoneNumber").setValue(result.contacts.phone1.phoneNumber);
-        this.listValue.get("phone2").get("phoneNumber").setValue(result.contacts.phone2.phoneNumber);
-        this.listValue.get("email").setValue(result.contacts.email);
-        this.listValue.get("billingEmail").setValue(result.billingEmail);
+        if (this.newClient.clientId == '0') {
+          console.log("Fui buscar o merchant da submission ", result);
+          this.newClient = result;
+        } else {
+          console.log("Fui buscar o merchant da localStorage ", this.newClient);
+        }
+        //this.listValue.get("comercialName").setValue(result.commercialName);
+        //this.listValue.get("phone1").get("phoneNumber").setValue(result.contacts.phone1.phoneNumber);
+        //this.listValue.get("phone2").get("phoneNumber").setValue(result.contacts.phone2.phoneNumber);
+        //this.listValue.get("email").setValue(result.contacts.email);
+        //this.listValue.get("billingEmail").setValue(result.billingEmail);
       });
     });
 
+    if (this.returned !== null) {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          console.log('Submissão com detalhes mais especificos ', resul);
+          this.clientService.GetClientById(resul.id).subscribe(res => {
+            this.merchantInfo = res;
+          });
+        });
+      });
+    }
 
     /* this.listValue.get("phone1CountryCode").valueChanges.subscribe(data => {
       if (data !== '') {
@@ -270,19 +287,24 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
   submit() {
-    this.newClient.commercialName = this.listValue.get('comercialName').value;
-    this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('countryCode').value;
-    this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('phoneNumber').value;
-    this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2').get('countryCode').value;
-    this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2').get('phoneNumber').value;
-    this.newClient.contacts.email = this.listValue.get('email').value;
-    this.newClient.contacts.fax.countryCode = this.listValue.get('faxCountryCode').value;
-    this.newClient.contacts.fax.phoneNumber = this.listValue.get('faxPhoneNumber').value;
-    this.newClient.billingEmail = this.listValue.get('billingEmail').value;
-    let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
-    storedForm.client = this.newClient;
-    localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
+    if (this.returned !== 'consult') { 
+      this.newClient.commercialName = this.listValue.get('comercialName').value;
+      this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('countryCode').value;
+      this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('phoneNumber').value;
+      this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2').get('countryCode').value;
+      this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2').get('phoneNumber').value;
+      this.newClient.contacts.email = this.listValue.get('email').value;
+      this.newClient.contacts.fax.countryCode = this.listValue.get('faxCountryCode').value;
+      this.newClient.contacts.fax.phoneNumber = this.listValue.get('faxPhoneNumber').value;
+      this.newClient.billingEmail = this.listValue.get('billingEmail').value;
+      let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
+      storedForm.client = this.newClient;
+      localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
+      this.clientService.EditClient(localStorage.getItem("submissionId"), this.newClient).subscribe(result => {
+        console.log("Resultado da chamada do edit do cliente ", result);
+      });
+    }
     this.router.navigate(['/info-declarativa-stakeholder']);
   }
 
