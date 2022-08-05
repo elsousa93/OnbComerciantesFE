@@ -90,14 +90,14 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     });
 
     var context = this;
-    this.submissionId = localStorage.getItem("submissionId");
 
-    stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+
+    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
         console.log(value);
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          console.log(result);
-          context.submissionStakeholders.push(result);
+        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
+          console.log(res);
+          context.submissionStakeholders.push(res);
         }, error => {
           console.log(error);
         });
@@ -144,6 +144,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     })
     this.phone = this.formContactos.get("phone");
     this.returned = localStorage.getItem("returned");
+    this.submissionId = localStorage.getItem("submissionId");
   }
 
   initializeForm() {
@@ -178,8 +179,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.newStakeholder = {
         email: this.formContactos.value.email,
         phone1: {
-          countryCode: this.formContactos.value.countryCode,
-          phoneNumber: this.formContactos.value.phoneNumber
+          countryCode: this.formContactos.get('phone').get('countryCode').value,
+          phoneNumber: this.formContactos.get('phone').get('phoneNumber').value
         }
       };
       let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
