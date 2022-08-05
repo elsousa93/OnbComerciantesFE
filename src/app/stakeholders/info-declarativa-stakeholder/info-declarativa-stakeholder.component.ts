@@ -92,7 +92,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     var context = this;
     this.submissionId = localStorage.getItem("submissionId");
 
-    stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
         console.log(value);
         context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {

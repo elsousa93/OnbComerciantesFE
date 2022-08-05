@@ -200,7 +200,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   // TESTE //////////////
 
   constructor(public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService, private processService: ProcessService ,private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
+    private modalService: BsModalService,private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
     //this.submissionId = localStorage.getItem("submissionId");
@@ -564,10 +564,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           "validUntil": "2022-07-20T11:03:13.001Z",
           "data": {}
         }
-
-        var processId = 'a7ZPDwmAtUaAd4mLkkjvkA==';
-        this.processService.submitDocumentOnProcess(processId, 'ContractAcceptance', docToSend).subscribe(result => {
-          console.log('Ficheiro foi submetido com sucesso: ', result);
+        this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
+          console.log('Ficheiro foi submetido ', result);
         });
       })      
     });
