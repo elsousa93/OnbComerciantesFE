@@ -10,7 +10,7 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 //Para dev SIBS: 'http://localhost:12000/BackendPortal/';
 
 
-let path = environment.production ? '/onbComerciantesFE/assets/config/config.prod.json' : '/assets/config/config.json';
+let path = environment.production ? './assets/config/config.prod.json' : './assets/config/config.json';
 
 
 fetch(path)
