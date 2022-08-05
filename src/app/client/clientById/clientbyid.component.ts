@@ -401,7 +401,7 @@ export class ClientByIdComponent implements OnInit {
     var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
     console.log(formatedDate);
     //var date = formatDate(this.processClient.capitalStock.date, 'MM-dd-yyyy', 'en-US');
-    var teste = '';
+    var branch1 = '';
 
     this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
       .then((data) => {
@@ -426,12 +426,12 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
-      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }, [Validators.required]), //sim
+      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */}, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
+      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: true/*, disabled: this.clientExists*/ }), //sim
       socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
-      CAE1Branch: new FormControl(teste), //talvez
+      CAE1Branch: new FormControl(branch1), //talvez
       CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
       CAESecondary1Branch: new FormControl(''), //talvez
       CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
@@ -954,7 +954,7 @@ export class ClientByIdComponent implements OnInit {
         processId: this.processId,
         stakeholders: this.processClient.stakeholders,
         merchantInfo: this.merchantInfo,
-        crc: this.processClient,
+        crc: (this.crcFound) ? this.processClient : null,
         crcCode: this.processClient.code
       }
     };

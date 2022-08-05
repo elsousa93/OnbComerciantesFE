@@ -169,8 +169,8 @@
 
               <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
               <!--<input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">-->
-              <select id="streetAddressStakeholder" class="form-select" formControlName="Country" [attr.disabled]="returned === 'consult' ? true : null">
-                <option *ngFor="let country of countries" value="{{country.code}}">{{country.description}}</option>
+              <select id="streetAddressStakeholder" class="form-select" formControlName="Country" (click)="GetCountryByZipCode()" [attr.disabled]="returned === 'consult' ? true : null">
+                <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">{{country.description}}</option>
               </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
         O parâmetro "Morada Fiscal" é obrigatório.
@@ -193,7 +193,7 @@
       </div>-->
 
               <p class="titulo-form-simples ">LOCALIDADE</p>
-              <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="returned === 'consult'">
+              <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="canEditLocality() === false">
               <!--<div class="alert alert-danger"
         *ngIf="postalArea.touched && !postalArea.valid">
         O parâmetro "Código postal" é obrigatório.

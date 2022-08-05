@@ -447,18 +447,19 @@ export class CountrysComponent implements OnInit {
       });
 
     console.log("CRC !!!");
-    console.log(this.crc);
-    this.newSubmission.documents.push({
-      documentType: 'crcPDF',
-      documentPurpose: 'CompanyIdentification',
-      file: {
-        fileType: 'PDF',
-        binary: this.crc.pdf
-      },
-      validUntil: this.crc.expirationDate,
-      data: null
-    })
-
+      console.log(this.crc);
+      if (this.crc !== null && this.crc !== undefined) {
+        this.newSubmission.documents.push({
+          documentType: 'crcPDF',
+          documentPurpose: 'CompanyIdentification',
+          file: {
+            fileType: 'PDF',
+            binary: this.crc.pdf
+          },
+          validUntil: this.crc.expirationDate,
+          data: null
+        })
+      }
       if (this.tipologia == 'Company')
         this.newSubmission.merchant.merchantType = 'Corporate';
       else

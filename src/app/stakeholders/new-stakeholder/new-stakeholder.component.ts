@@ -44,6 +44,7 @@ export class NewStakeholderComponent implements OnInit {
 
   @Input() isCC: boolean;
 
+  lockLocality: boolean = false;
   showBtnCC: boolean;
   readcard: IReadCard[] = [];
   showNoCC: boolean = false;
@@ -212,9 +213,14 @@ export class NewStakeholderComponent implements OnInit {
         //  this.initializeFormWithoutCC();
         //  this.validateCC(false);
         //}
-        console.log('ENtrou cartão de cidadão');
-          this.createFormCC();// mudei a ordem
-          this.validateCC(true);
+
+
+        //console.log('ENtrou cartão de cidadão');
+        //  this.createFormCC();// mudei a ordem
+        //  this.validateCC(true);
+
+        this.initializeFormWithoutCC();
+        this.validateCC(false);
       } else {
         this.initializeFormWithoutCC();
         this.validateCC(false);
@@ -235,7 +241,8 @@ export class NewStakeholderComponent implements OnInit {
       ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
       Locality: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
       Address: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.address : '', Validators.required)
-    })
+    });
+    this.GetCountryByZipCode();
   }
 
 
@@ -426,6 +433,7 @@ export class NewStakeholderComponent implements OnInit {
     console.log("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
+      this.lockLocality = true;
       var zipcode = this.formNewStakeholder.value['ZIPCode'];
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
@@ -438,12 +446,22 @@ export class NewStakeholderComponent implements OnInit {
           this.formNewStakeholder.get('Country').setValue(addressToShow.country);
           this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
 
+
           this.formNewStakeholder.updateValueAndValidity();
         });
       }
+    } else {
+      this.lockLocality = false;
+      this.formNewStakeholder.updateValueAndValidity();
     }
   }
 
-
+  canEditLocality() {
+    if (this.returned === 'consult')
+      return false;
+    if (this.lockLocality)
+      return false;
+    return true;
+  }
 }
 
