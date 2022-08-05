@@ -23,8 +23,8 @@ export class ClientService {
     return this.http.get<Client>(this.baseUrl + 'submission/' + submissionID + "/merchant");
   }
 
-  EditClient(clientID: string, newClient: Client) {
-    return this.http.put<Client>(this.baseUrl + 'submission/' + clientID + "/merchant", newClient);
+  EditClient(submissionID: string, newClient: Client) {
+    return this.http.put<Client>(this.baseUrl + 'submission/' + submissionID + "/merchant", newClient);
   }
 
   ///////////////////
