@@ -11,6 +11,7 @@ import { ClientService } from '../client/client.service';
 import { Configuration, configurationToken } from '../configuration';
 import { CRCService } from '../CRC/crcservice.service';
 import { DataService } from '../nav-menu-interna/data.service';
+import { ProcessService } from '../process/process.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
@@ -199,7 +200,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   // TESTE //////////////
 
   constructor(public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
+    private modalService: BsModalService, private processService: ProcessService ,private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
     //this.submissionId = localStorage.getItem("submissionId");
@@ -563,8 +564,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           "validUntil": "2022-07-20T11:03:13.001Z",
           "data": {}
         }
-        this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
-          console.log('Ficheiro foi submetido ', result);
+
+        var processId = 'a7ZPDwmAtUaAd4mLkkjvkA==';
+        this.processService.submitDocumentOnProcess(processId, 'ContractAcceptance', docToSend).subscribe(result => {
+          console.log('Ficheiro foi submetido com sucesso: ', result);
         });
       })      
     });

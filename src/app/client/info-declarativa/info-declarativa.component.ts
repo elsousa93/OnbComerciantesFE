@@ -165,7 +165,7 @@ export class InfoDeclarativaComponent implements OnInit {
     this.phone2 = this.listValue.get("phone2");
 
     this.submissionService.GetSubmissionByID(localStorage.getItem("submissionId")).subscribe(result => {
-      this.clientService.GetClientById(result.id).subscribe(resul => {
+      this.clientService.GetClientById(result.merchant.id).subscribe(resul => {
         if (this.newClient.clientId == '0') {
           console.log("Fui buscar o merchant da submission ", resul);
           this.newClient = resul;

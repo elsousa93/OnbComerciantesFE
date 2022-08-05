@@ -1,4 +1,7 @@
+import { addresstranformed } from "../citizencard/addresstranformed.interface"
+import { Contacts } from "../client/Client.interface"
 import { Address, IPep } from "../pep/IPep.interface"
+import { Document } from "../submission/ISubmission.interface"
 
 export interface StakeholdersProcess {
   fiscalId?: string,
@@ -27,6 +30,18 @@ export interface IStakeholders {
   stakeholderId?: string
 }
 
+export interface StakeholderOutbound {
+  stakeholderId?: string,
+  fullName?: string,
+  shortName?: string,
+  fiscalIdentification?: ForeignFiscalInformation,
+  address?: FiscalAddress,
+  contacts?: Contacts,
+  identificationDocument?: IdentificationDocument,
+  birthDate?: string,
+  document?: Document[]
+}
+
 export interface IdentificationDocument {
   type?: string
   number?: string
@@ -35,10 +50,10 @@ export interface IdentificationDocument {
 }
 
 export interface FiscalAddress {
-  address: string
-  postalCode: string
-  postalArea: string
-  country: string
+  address?: string
+  postalCode?: string
+  postalArea?: string
+  country?: string
 }
 
 export interface ForeignFiscalInformation {

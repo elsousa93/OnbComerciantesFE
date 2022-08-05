@@ -7,6 +7,7 @@ import { Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { AceitacaoService } from '../services/aceitacao.services';
+import { PostDocument } from '../../submission/document/ISubmission-document';
 
 
 @Component({
@@ -92,6 +93,27 @@ onDelete(tipo:string, interveniente: string, dataEntrada: string, file: File) {
 
 submission(){
   this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-lg' });
+
+  console.log("ficheiros a inserir: ", this.files);
+
+  this.files.forEach(function (file, idx) {
+    this.readBase64(file).then((data) => {
+      var docToSend: PostDocument = {
+        "documentType": "string",
+        "documentPurpose": "Identification",
+        "file": {
+          "fileType": "PDF",
+          "binary": data.split(',')[1] //para retirar a parte inicial "data:application/pdf;base64"
+        },
+        "validUntil": "2022-07-20T11:03:13.001Z",
+        "data": {}
+      }
+      this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
+        console.log('Ficheiro foi submetido ', result);
+      });
+    })
+  });
+  
 }
 
 selectFile(event: any) {
@@ -176,5 +198,20 @@ confirmSubmission() {
 }
 load() {
   location.reload()
-}
+  }
+
+  private readBase64(file): Promise<any> {
+    const reader = new FileReader();
+    const future = new Promise((resolve, reject) => {
+      reader.addEventListener('load', function () {
+        resolve(reader.result);
+      }, false);
+      reader.addEventListener('error', function (event) {
+        reject(event);
+      }, false);
+
+      reader.readAsDataURL(file);
+    });
+    return future;
+  }
 }

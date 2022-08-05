@@ -256,18 +256,18 @@
                 </tr>
               </thead>
               <tbody>
-                <!--<tr *ngFor="let elem of currentStakeholder.documents">
-                  <td class="text-primary text-center">Certidão</td>
-                  <td class="text-primary text-center">02-11-2021</td>
-                  <td class="text-primary text-center">02-11-2022</td>
+                <!--<tr *ngFor="let doc of currentStakeholder.documents">
+                  <td class="text-primary text-center">{{doc.documentType}}</td>
+                  <td class="text-primary text-center">{{doc.receivedAt}}</td>
+                  <td class="text-primary text-center">{{doc.validUntil}}</td>
                   <td>
                     <span>
-                      <img src="assets/images/search_blue.svg" (click)="b64toBlob(elem.uniqueReference, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;" />
+                      <img src="assets/images/search_blue.svg" (click)="b64toBlob(doc.uniqueReference, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;" />
                     </span>
                   </td>
-                </tr>-->
-                <tr>
                 </tr>
+                <tr>
+                </tr>-->
               </tbody>
             </table>
           </div>

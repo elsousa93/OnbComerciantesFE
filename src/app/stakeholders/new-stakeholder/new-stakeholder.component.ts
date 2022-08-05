@@ -134,7 +134,7 @@ export class NewStakeholderComponent implements OnInit {
     stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
         console.log("Value ", value);
-        context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+        context.stakeService.getStakeholderByID(value.id, 'por mudar', 'por mudar').subscribe(result => {
           console.log("Info stake ", result);
           context.submissionStakeholders.push(result);
         }, error => {
