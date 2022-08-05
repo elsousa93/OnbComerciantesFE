@@ -109,20 +109,11 @@ export class ClientByIdComponent implements OnInit {
       "accountOpenedAt": "2019-06-11"
     },
     "contacts": {
-      "preferredMethod": "",
-      "preferredPeriod": {
-        "startsAt": "22:40:00.450Z",
-        "endsAt": "15:42:54.722Z"
-      },
       "phone1": {
         "countryCode": "",
         "phoneNumber": ""
       },
       "phone2": {
-        "countryCode": "",
-        "phoneNumber": ""
-      },
-      "fax": {
         "countryCode": "",
         "phoneNumber": ""
       },
