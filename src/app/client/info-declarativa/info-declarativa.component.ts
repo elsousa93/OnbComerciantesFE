@@ -156,16 +156,11 @@ export class InfoDeclarativaComponent implements OnInit {
           });
         });
       } else {
-        this.submissionService.GetSubmissionByID(localStorage.getItem("submissionId")).subscribe(result => {
-          this.clientService.GetClientById(result.id).subscribe(res => {
-            if (this.newClient.clientId == '0') {
+          this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(res => {
               console.log("Fui buscar o merchant da submission ", res);
               this.setForm(res);
-
-            } 
           });
-        })
-      ;}
+        }
     } else {
       console.log("Fui buscar o merchant da localStorage ", this.newClient);
     }
