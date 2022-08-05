@@ -65,21 +65,12 @@ export class InfoDeclarativaComponent implements OnInit {
     contactName: "EMPRESA PARTICIPANTE UNIP LDA",
     billingEmail: "empresa@participante.com",
     contacts: {
-      preferredMethod: "",
       email: "empresa@participante.com",
-      preferredPeriod: {
-        startsAt: "",
-        endsAt: ""
-      },
       phone1: {
         countryCode: "",
         phoneNumber: ""
       },
       phone2: {
-        countryCode: "",
-        phoneNumber: ""
-      },
-      fax: {
         countryCode: "",
         phoneNumber: ""
       },
@@ -154,29 +145,43 @@ export class InfoDeclarativaComponent implements OnInit {
     //this.internationalCallingCodes = [{code:'POR', continent:"Europe", description:"thing", internationalCallingCode:"+351"}];
 
     this.listValue = this.formBuilder.group({
-      comercialName: new FormControl(this.newClient.commercialName, Validators.required),
+      comercialName: new FormControl((this.merchantInfo !== null) ? this.merchantInfo.commercialName : this.newClient.commercialName, Validators.required),
       phone1: this.formBuilder.group({
-        countryCode: new FormControl(this.newClient.contacts?.phone1?.countryCode),
-        phoneNumber: new FormControl(this.newClient.contacts?.phone1?.phoneNumber),
+        countryCode: new FormControl((this.merchantInfo !== null) ? this.merchantInfo.contacts?.phone1?.countryCode : this.newClient.contacts?.phone1?.countryCode),
+        phoneNumber: new FormControl((this.merchantInfo !== null) ? this.merchantInfo.contacts?.phone1?.phoneNumber : this.newClient.contacts?.phone1?.phoneNumber),
       },{validators: [this.validPhoneNumber]}),
       phone2: this.formBuilder.group({
-        countryCode: new FormControl(this.newClient.contacts?.phone2?.countryCode),
-        phoneNumber: new FormControl(this.newClient.contacts?.phone2?.phoneNumber),
+        countryCode: new FormControl((this.merchantInfo !== null) ? this.merchantInfo.contacts?.phone2?.countryCode : this.newClient.contacts?.phone2?.countryCode),
+        phoneNumber: new FormControl((this.merchantInfo !== null) ? this.merchantInfo.contacts?.phone2?.phoneNumber : this.newClient.contacts?.phone2?.phoneNumber),
       },{validators: [this.validPhoneNumber]}),
       faxCountryCode: new FormControl(this.newClient.contacts?.fax?.countryCode),
       faxPhoneNumber: new FormControl(this.newClient.contacts?.fax?.phoneNumber),
-      email: new FormControl(this.newClient.contacts?.email, Validators.required),
-      billingEmail: new FormControl(this.newClient.billingEmail)
+      email: new FormControl((this.merchantInfo !== null) ? this.merchantInfo.contacts?.email : this.newClient.contacts?.email, Validators.required),
+      billingEmail: new FormControl((this.merchantInfo !== null) ? this.merchantInfo.billingEmail : this.newClient.billingEmail)
     });
     
     this.phone1 = this.listValue.get("phone1");
     this.phone2 = this.listValue.get("phone2");
 
     this.submissionService.GetSubmissionByID(localStorage.getItem("submissionId")).subscribe(result => {
-      this.clientService.GetClientById(result.id).subscribe(result => {
+      this.clientService.GetClientById(result.id).subscribe(resul => {
         if (this.newClient.clientId == '0') {
-          console.log("Fui buscar o merchant da submission ", result);
-          this.newClient = result;
+          console.log("Fui buscar o merchant da submission ", resul);
+          this.newClient = resul;
+          if (this.newClient.contacts == null) {
+            this.newClient.contacts = {
+              phone1: {
+                countryCode: "",
+                phoneNumber: ""
+              },
+              phone2: {
+                countryCode: "",
+                phoneNumber: ""
+              },
+              email: ""
+            }
+
+          }
         } else {
           console.log("Fui buscar o merchant da localStorage ", this.newClient);
         }
@@ -279,7 +284,7 @@ export class InfoDeclarativaComponent implements OnInit {
     }
     if (e.target.id == 'phone2CountryCode') {
       this.listValue.get("phone2").get("countryCode").setValue(e.target.value);
-      this.phone2CountryCode = e.target.value;
+      //this.phone2CountryCode = e.target.value;
     }
     if (e.target.id == 'faxCountryCode') {
       this.listValue.get("faxCountryCode").setValue(e.target.value);
@@ -294,8 +299,6 @@ export class InfoDeclarativaComponent implements OnInit {
       this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2').get('countryCode').value;
       this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2').get('phoneNumber').value;
       this.newClient.contacts.email = this.listValue.get('email').value;
-      this.newClient.contacts.fax.countryCode = this.listValue.get('faxCountryCode').value;
-      this.newClient.contacts.fax.phoneNumber = this.listValue.get('faxPhoneNumber').value;
       this.newClient.billingEmail = this.listValue.get('billingEmail').value;
       let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
       storedForm.client = this.newClient;
