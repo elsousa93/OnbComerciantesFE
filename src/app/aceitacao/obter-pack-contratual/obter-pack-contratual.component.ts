@@ -39,8 +39,7 @@ export class ObterPackContratualComponent implements OnInit{
   @ViewChild('submissionModal') submissionModal;
   
   constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-  private route: Router,
-  private router: ActivatedRoute, private modalService: BsModalService, public aceitacao: AceitacaoService) {
+  private router: Router, private modalService: BsModalService, public aceitacao: AceitacaoService) {
 
     this.ngOnInit();
   
@@ -173,7 +172,7 @@ declineSubmission() {
 }
 
 confirmSubmission() {
-
+  this.router.navigate(["/"]);
 }
 load() {
   location.reload()

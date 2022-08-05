@@ -13,6 +13,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { ClientService } from '../client.service';
 import { XhrFactory } from '@angular/common';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { infoDeclarativaForm } from './info-declarativa.model';
 
 
 @Component({
@@ -71,15 +72,15 @@ export class InfoDeclarativaComponent implements OnInit {
         endsAt: ""
       },
       phone1: {
-        countryCode: "315",
+        countryCode: "",
         phoneNumber: ""
       },
       phone2: {
-        countryCode: "315",
+        countryCode: "",
         phoneNumber: ""
       },
       fax: {
-        countryCode: "376",
+        countryCode: "",
         phoneNumber: ""
       },
     },
@@ -148,31 +149,43 @@ export class InfoDeclarativaComponent implements OnInit {
       this.internationalCallingCodes = result;
     });
 
-    this.submissionService.GetSubmissionByID(localStorage.getItem("submissionId")).subscribe(result => {
-      this.clientService.GetClientById(result.id).subscribe(resul => {
-        this.merchantInfo = resul;
-      });
-    });
+    
 
     //this.internationalCallingCodes = [{code:'POR', continent:"Europe", description:"thing", internationalCallingCode:"+351"}];
 
     this.listValue = this.formBuilder.group({
-      comercialName: new FormControl((this.returned != null) ? this.merchantInfo.commercialName : '', Validators.required),
+      comercialName: new FormControl(this.newClient.commercialName, Validators.required),
       phone1: this.formBuilder.group({
-        countryCode: new FormControl(null),
-        phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone1.phoneNumber : null),
+        countryCode: new FormControl(this.newClient.contacts?.phone1?.countryCode),
+        phoneNumber: new FormControl(this.newClient.contacts?.phone1?.phoneNumber),
       },{validators: [this.validPhoneNumber]}),
       phone2: this.formBuilder.group({
-        countryCode: new FormControl(''),
+<<<<<<< HEAD
+        countryCode: new FormControl(null),
         phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone2.phoneNumber : null),
+=======
+        countryCode: new FormControl(this.newClient.contacts?.phone2?.countryCode),
+        phoneNumber: new FormControl(this.newClient.contacts?.phone2?.phoneNumber),
+>>>>>>> 61b2574 (refatorização e persistencia de form adicionada às primeiras duas tabs de info declarativa)
       },{validators: [this.validPhoneNumber]}),
-      faxCountryCode: new FormControl(''),
-      faxPhoneNumber: new FormControl(''),
-      email: new FormControl((this.returned != null) ? this.merchantInfo.contacts.email : '', Validators.required),
-      billingEmail: new FormControl((this.returned != null) ? this.merchantInfo.billingEmail : '')
+      faxCountryCode: new FormControl(this.newClient.contacts?.fax?.countryCode),
+      faxPhoneNumber: new FormControl(this.newClient.contacts?.fax?.phoneNumber),
+      email: new FormControl(this.newClient.contacts?.email, Validators.required),
+      billingEmail: new FormControl(this.newClient.billingEmail)
     });
+    
     this.phone1 = this.listValue.get("phone1");
     this.phone2 = this.listValue.get("phone2");
+
+    this.submissionService.GetSubmissionByID(localStorage.getItem("submissionId")).subscribe(result => {
+      this.clientService.GetClientById(result.id).subscribe(result => {
+        this.listValue.get("comercialName").setValue(result.commercialName);
+        this.listValue.get("phone1").get("phoneNumber").setValue(result.contacts.phone1.phoneNumber);
+        this.listValue.get("phone2").get("phoneNumber").setValue(result.contacts.phone2.phoneNumber);
+        this.listValue.get("email").setValue(result.contacts.email);
+        this.listValue.get("billingEmail").setValue(result.billingEmail);
+      });
+    });
 
 
     /* this.listValue.get("phone1CountryCode").valueChanges.subscribe(data => {
@@ -242,32 +255,38 @@ export class InfoDeclarativaComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 6, 1);
     this.returned = localStorage.getItem("returned");
+    this.newClient = JSON.parse(localStorage.getItem("info-declarativa"))?.client ?? this.newClient;
+
   }
 
 
   changeListElement(variavel:string, e: any) {
     if (e.target.id == 'phone1CountryCode') {
-      this.phone1CountryCode = e.target.value;
+      this.listValue.get("phone1").get("countryCode").setValue(e.target.value);
+      //this.phone1CountryCode = e.target.value;
     }
     if (e.target.id == 'phone2CountryCode') {
+      this.listValue.get("phone2").get("countryCode").setValue(e.target.value);
       this.phone2CountryCode = e.target.value;
     }
     if (e.target.id == 'faxCountryCode') {
-      this.faxPhoneNumber = e.target.value;
+      this.listValue.get("faxCountryCode").setValue(e.target.value);
     }
-    console.log(e.target.id);
   }
 
   submit() {
-    this.newClient.companyName = this.listValue.get('comercialName').value;
-    this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('CountryCode').value;
-    this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('PhoneNumber').value;
-    this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2').get('CountryCode').value;
-    this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2').get('PhoneNumber').value;
+    this.newClient.commercialName = this.listValue.get('comercialName').value;
+    this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('countryCode').value;
+    this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('phoneNumber').value;
+    this.newClient.contacts.phone2.countryCode = this.listValue.get('phone2').get('countryCode').value;
+    this.newClient.contacts.phone2.phoneNumber = this.listValue.get('phone2').get('phoneNumber').value;
     this.newClient.contacts.email = this.listValue.get('email').value;
     this.newClient.contacts.fax.countryCode = this.listValue.get('faxCountryCode').value;
     this.newClient.contacts.fax.phoneNumber = this.listValue.get('faxPhoneNumber').value;
     this.newClient.billingEmail = this.listValue.get('billingEmail').value;
+    let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
+    storedForm.client = this.newClient;
+    localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
     this.router.navigate(['/info-declarativa-stakeholder']);
   }

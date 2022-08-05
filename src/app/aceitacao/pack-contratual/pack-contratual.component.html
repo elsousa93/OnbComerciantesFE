@@ -123,7 +123,7 @@
                           style="height: 30px !important; vertical-align: bottom;"></button> -->
                         </span>
                   </nav>
-                  <div class="row-buttons" style="padding-left: 0px">
+                  <div *ngIf="isPaper == false" class="row-buttons" style="padding-left: 0px">
                     <div *ngIf="showAnotherButtons" class="col-xs-4" style="padding-left: 0px">
                       <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
                         wappler-command="editContent">CARREGAR DOCUMENTOS DA PAD
