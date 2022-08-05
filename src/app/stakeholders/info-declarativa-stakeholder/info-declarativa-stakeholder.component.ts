@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { IStakeholders } from '../IStakeholders.interface'
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -15,6 +15,8 @@ import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholder.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { infoDeclarativaForm } from 'src/app/client/info-declarativa/info-declarativa.model';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -47,7 +49,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
 
 
-  } as unknown as IStakeholders;
+  } as IStakeholders;
 
   @Output() nameEmitter = new EventEmitter<string>();
 
@@ -63,6 +65,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   selectedStakeholder = {
     
   } as IStakeholders;
+  phone: AbstractControl;
+
+  returned: string;
+  currentIdx: number = 0;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -103,7 +109,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     
     this.callingCodeStakeholder = tableInfo.GetAllCountries();
 
-    this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
+    /* this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
       if (data !== '') {
         this.formContactos.controls["phoneNumber"].setValidators([Validators.required]);
       } else {
@@ -119,16 +125,63 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.formContactos.controls["countryCode"].clearValidators();
       }
       this.formContactos.controls["countryCode"].updateValueAndValidity();
-    });
+    }); */
+  }
+
+  validPhoneNumber(control: AbstractControl) : ValidationErrors | null {  
+    let countryCodeExists = Validators.required(control.get("countryCode")) == null
+    let phoneNumberExists = Validators.required(control.get("phoneNumber")) == null
+
+    //Se nenhum existir, é valido
+    if (!countryCodeExists && !phoneNumberExists){
+      return null;
+    }
+    //Se só um existir, retorna erro
+    if (!countryCodeExists || !phoneNumberExists){
+      return {"missingValue" : countryCodeExists ? "phoneNumber" : "countryCode"};
+    }
+    //Se ambos existirem, proceder à validação do indicativo/numero
+    let phoneNumber = control.get("phoneNumber").value;
+    let countryCode = control.get("countryCode").value;
+    if (countryCode == "+351") { //Indicativo de Portugal
+      if (phoneNumber && phoneNumber.length == 9 && phoneNumber.startsWith('9')) {
+        return null;
+      } else {
+        return {invalidNumber : true}
+      }
+    } else { // Indicativo não é de Portugal
+      if (phoneNumber && phoneNumber.length <= 16) {
+        return null;
+      } else {
+        return {invalidNumber : true}
+      }
+    }
   }
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 2);
+    this.newStakeholder = JSON.parse(localStorage.getItem("info-declarativa"))?.stakeholder ?? this.newStakeholder
+
     this.formContactos = this.formBuilder.group({
       listF: [''],
-      countryCode: new FormControl(''),
-      phoneNumber: new FormControl(''),
-      email: new FormControl(''),
+      phone: this.formBuilder.group({
+        countryCode: new FormControl(this.newStakeholder.phone1?.countryCode),
+        phoneNumber: new FormControl(this.newStakeholder.phone1?.phoneNumber)
+      },{validators: [this.validPhoneNumber]}),
+      email: new FormControl(this.newStakeholder.email, Validators.required),
+    })
+    this.phone = this.formContactos.get("phone");
+    this.returned = localStorage.getItem("returned");
+  }
+
+  initializeForm() {
+    this.formContactos = this.formBuilder.group({
+      listF: [''],
+      phone: this.formBuilder.group({
+        countryCode: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.phone1?.countryCode : this.newStakeholder.phone1?.countryCode),
+        phoneNumber: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.phone1?.phoneNumber : this.newStakeholder.phone1?.phoneNumber)
+      }, { validators: [this.validPhoneNumber] }),
+      email: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.email : this.newStakeholder.email, Validators.required),
     })
   }
 
@@ -137,9 +190,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.displayValueSearch = val;
   }
 
-  changeListElement(variavel: string, e: any) {
+  changeListElement(varkjkiavel: string, e: any) {
     console.log(e.target.value)
-    this.callingCodeStakeholder = e.target.value;
+    this.formContactos.get("phone").get("countryCode").setValue(e.target.value);
     console.log(this.formContactos.value.countryCode);
     console.log(this.formContactos.value.phoneNumber);
     console.log(this.formContactos.value.email);
@@ -147,25 +200,57 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     // this.newStakeholder.callingCodeStakeholder =  this.callingCodeStakeholder;
   }
 
-  submit(e) {
-    console.log(e);
-    this.newStakeholder.email = this.formContactos.value.email;
-    this.newStakeholder.phone1.countryCode = this.formContactos.value.countryCode;
-    this.newStakeholder.phone1.phoneNumber = this.formContactos.value.phoneNumber;
-    this.route.navigate(['/info-declarativa-lojas']);
+  submit() {
+    if (this.returned !== 'consult') {
+      this.newStakeholder = this.currentStakeholder;
+      this.newStakeholder = {
+        email: this.formContactos.value.email,
+        phone1: {
+          countryCode: this.formContactos.value.countryCode,
+          phoneNumber: this.formContactos.value.phoneNumber
+        }
+      };
+      let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
+      storedForm.stakeholder = this.newStakeholder
+      localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
+
+      console.log("Stakeholder id", this.newStakeholder.id);
+      console.log("Dados updated do stakeholder ", this.newStakeholder);
+      this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder.id, this.newStakeholder).subscribe(result => {
+        console.log("Resultado de criar um stakeholder a uma submissão existente", result);
+        if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
+          console.log("CUrrent index ", this.currentIdx);
+          console.log("Submission stakeholders length ", this.submissionStakeholders);
+          this.currentIdx = this.currentIdx + 1;
+          this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
+          console.log(this.currentStakeholder);
+        } else {
+          console.log("Current index é maior do que lenght");
+          console.log("CUrrent index ", this.currentIdx);
+          console.log("Submission stakeholders length ", this.submissionStakeholders);
+          this.route.navigate(['/info-declarativa-lojas']);
+        }
+
+      }, error => {
+        console.log(error);
+      });
+    } else {
+      this.route.navigate(['/info-declarativa-lojas']);
+    }
   }
 
   clickRow(stake: any) {
     this.selectedStakeholder = stake;
   }
 
-  selectStakeholder(stakeholder) {
+  selectStakeholder(stakeholder, idx) {
     console.log(this.currentStakeholder);
     console.log(stakeholder);
     this.currentStakeholder = stakeholder;
+    this.currentIdx = idx;
     console.log(this.currentStakeholder);
     console.log(this.currentStakeholder === stakeholder);
-    
+    this.initializeForm();
   }
 
 }
