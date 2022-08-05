@@ -62,6 +62,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public newClient: Client = {
     clientId: '0',
+    commercialName: "",
     contactName: "EMPRESA PARTICIPANTE UNIP LDA",
     billingEmail: "empresa@participante.com",
     contacts: {
