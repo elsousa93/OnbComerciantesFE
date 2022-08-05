@@ -137,9 +137,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
-      { path: 'clientbyid/:id', component: ClientByIdComponent },
+       { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'clientbyid', component: ClientByIdComponent },
-      { path: 'client/:id', component: ClientComponent },
+       { path: 'client/:id', component: ClientComponent },
       { path: 'client-extended', component: ClientExtendedComponent },
       { path: 'client-extended/:id', component: ClientExtendedComponent },
       { path: 'stakeholders', component: StakeholdersComponent },

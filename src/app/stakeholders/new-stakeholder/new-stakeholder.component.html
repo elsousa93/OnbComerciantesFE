@@ -169,8 +169,8 @@
 
               <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
               <!--<input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">-->
-              <select id="streetAddressStakeholder" class="form-select" formControlName="Country" [attr.disabled]="returned === 'consult' ? true : null">
-                <option *ngFor="let country of countries" value="{{country.code}}">{{country.description}}</option>
+              <select id="streetAddressStakeholder" class="form-select" formControlName="Country" (click)="GetCountryByZipCode()" [attr.disabled]="returned === 'consult' ? true : null">
+                <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">{{country.description}}</option>
               </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
         O parâmetro "Morada Fiscal" é obrigatório.
@@ -193,7 +193,7 @@
       </div>-->
 
               <p class="titulo-form-simples ">LOCALIDADE</p>
-              <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="returned === 'consult'">
+              <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="canEditLocality() === false">
               <!--<div class="alert alert-danger"
         *ngIf="postalArea.touched && !postalArea.valid">
         O parâmetro "Código postal" é obrigatório.
@@ -245,12 +245,12 @@
                 </div>
               </div>
             </div>-->
-        <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
-          <div class="table-responsive mt-5 mb-5 pb-5">
-            <table class="table">
+              <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+          <div class="table-responsive me-2 ps-3 pe-3">
+            <table class="table table-success">
               <thead class="text-primary table-primary">
-                <tr class="table-white text-primary">
-                  <th scope="col" class="text-center text-primary bg-light table-white">Tipo de Comprovativo</th>
+                <tr class="table-light text-center text-primary">
+                  <th scope="col" class="align-baseline text-primary table-white">Tipo de Comprovativo</th>
                   <th scope="col" class="text-center bg-light">Data de Receção</th>
                   <th scope="col" class="text-center bg-white">Data de Validade</th>
                 </tr>
@@ -272,6 +272,7 @@
             </table>
           </div>
         </div>
+        
         <div class="col ms-0 ps-0">
           <hr>
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">

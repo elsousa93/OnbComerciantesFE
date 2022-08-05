@@ -182,66 +182,6 @@ export class ClientByIdComponent implements OnInit {
   merchantInfo: any;
   consult: string; //variavel para saber se estamos a consultar um processo
 
-  //TEMPORARIO!!!!
-  initializeDefaultClient() {
-    this.tempClient = {
-      "fiscalId": "585597928",
-      "companyName": "SILVESTRE LIMITADA",
-      "commercialName": "CAFE CENTRAL",
-      "shortName": "SILVESTRE LDA",
-      "headquartersAddress": {
-        "address": "Rua da Azoia 4",
-        "postalCode": "2625-236",
-        "postalArea": "Povoa de Santa Iria",
-        "locality": "string",
-        "country": "PT"
-      },
-      "merchantType": "COMPANY",
-      "legalNature": "35",
-      "crc": {
-        "code": "0000-0000-0001",
-        "validUntil": "2023-06-29T17:52:08.336Z"
-      },
-      "shareCapital": {
-        "capital": 50000.20,
-        "date": "2028-06-29T17:52:08.336Z"
-      },
-      "byLaws": "O Joao pode assinar tudo, like a boss",
-      "mainEconomicActivity": "90010",
-      "otherEconomicActivities": ["055111"],
-      "mainOfficeAddress": {
-        "address": "Rua da Azoia 4",
-        "postalCode": "2625-236",
-        "postalArea": "Povoa de Santa Iria",
-        "locality": "string",
-        "country": "PT"
-      },
-      "establishmentDate": "2020-03-01T17:52:08.336Z",
-      "knowYourSales": {
-        "estimatedAnualRevenue": 1000000,
-        "averageTransactions": 30000,
-        "servicesOrProductsSold": ["Cafe"],
-        "servicesOrProductsDestinations": ["PT"]
-      },
-      "bankInformation": {
-        "bank": "0033",
-        "branch": "0000",
-        "iban": "PT00333506518874499677629",
-        "accountOpenedAt": "2020-06-29T17:52:08.336Z"
-      },
-      "contacts": {
-        "email": "joao@silvestre.pt",
-        "phone1": {
-          "countryCode": "+351",
-          "phoneNumber": "919654422"
-        }
-      },
-      "documentationDeliveryMethod": "MAIL",
-      "billingEmail": "joao@silvestre.pt"
-    }
-
-  }
-
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
   NIFNIPC: any;
@@ -401,7 +341,7 @@ export class ClientByIdComponent implements OnInit {
     var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
     console.log(formatedDate);
     //var date = formatDate(this.processClient.capitalStock.date, 'MM-dd-yyyy', 'en-US');
-    var teste = '';
+    var branch1 = '';
 
     this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
       .then((data) => {
@@ -426,12 +366,12 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
-      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }, [Validators.required]), //sim
+      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */}, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
+      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: true/*, disabled: this.clientExists*/ }), //sim
       socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
-      CAE1Branch: new FormControl(teste), //talvez
+      CAE1Branch: new FormControl(branch1), //talvez
       CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
       CAESecondary1Branch: new FormControl(''), //talvez
       CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
@@ -664,7 +604,6 @@ export class ClientByIdComponent implements OnInit {
       })
     }
 
-    //this.initializeDefaultClient();
     
     this.initializeTableInfo();
     //this.createContinentsList();
@@ -717,7 +656,7 @@ export class ClientByIdComponent implements OnInit {
    //fim do construtor
 
   ngOnInit(): void {
-    this.clientId = String(this.router.snapshot.params['id']);
+    // this.clientId = String(this.router.snapshot.params['id']);
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -954,7 +893,7 @@ export class ClientByIdComponent implements OnInit {
         processId: this.processId,
         stakeholders: this.processClient.stakeholders,
         merchantInfo: this.merchantInfo,
-        crc: this.processClient,
+        crc: (this.crcFound) ? this.processClient : null,
         crcCode: this.processClient.code
       }
     };

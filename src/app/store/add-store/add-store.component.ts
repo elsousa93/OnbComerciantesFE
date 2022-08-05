@@ -10,7 +10,9 @@ import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { SubmissionGetTemplate } from '../../submission/ISubmission.interface';
+import { Merchant, SubmissionGetTemplate } from '../../submission/ISubmission.interface';
+import { Client } from '../../client/Client.interface';
+import { ClientService } from '../../client/client.service';
 
 @Component({
   selector: 'app-add-store',
@@ -26,6 +28,7 @@ export class AddStoreComponent implements OnInit {
   //Submissao
   submissionId: string;
   submission: SubmissionGetTemplate;
+  submissionClient: Client;
 
   //Informação de campos/tabelas
   Countries: CountryInformation[] = [];
@@ -93,12 +96,23 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService) {
-    this.submissionId = localStorage.getItem("submissionId");
-
+  fetchStartingInfo() {
     this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
       this.submission = result;
+
+      this.clientService.GetClientById(this.submissionId).subscribe(client => {
+        this.submissionClient = client;
+
+        console.log("submissao correta? ", this.submission);
+        console.log("cliente da submissao: ", this.submissionClient);
+      })
     });
+  }
+
+  constructor(private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService) {
+    this.submissionId = localStorage.getItem("submissionId");
+
+    this.fetchStartingInfo();
 
     this.ngOnInit();
 
@@ -247,6 +261,9 @@ export class AddStoreComponent implements OnInit {
   }
 
   initializeForm() {
+    var storename = '';
+    if (this.submission.merchant)
+
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
       activityStores: new FormControl('', Validators.required),

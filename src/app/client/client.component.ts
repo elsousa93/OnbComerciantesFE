@@ -299,60 +299,60 @@ export class ClientComponent implements OnInit {
   initializeDefaultClient() {
     this.tempClient = {
       "id": "",
-      "merchantId": "22181900000021",
-      "fiscalId": "585597928",
-      "companyName": "SILVESTRE LIMITADA",
-      "commercialName": "CAFE CENTRAL",
-      "shortName": "SILVESTRE LDA",
+      "merchantId": "",
+      "fiscalId": "",
+      "companyName": "",
+      "commercialName": "",
+      "shortName": "",
       "headquartersAddress": {
-        "address": "Rua da Azoia 4",
-        "postalCode": "2625-236",
-        "postalArea": "Povoa de Santa Iria",
-        "locality": "string",
-        "country": "PT"
+        "address": "",
+        "postalCode": "",
+        "postalArea": "",
+        "locality": "",
+        "country": ""
       },
-      "merchantType": "Company",
-      "legalNature": "35",
+      "merchantType": "",
+      "legalNature": "",
       "crc": {
-        "code": "0000-0000-0001",
-        "validUntil": "2023-06-29T17:52:08.336Z"
+        "code": "",
+        "validUntil": ""
       },
       "shareCapital": {
-        "capital": 50000.20,
-        "date": "2028-06-29T17:52:08.336Z"
+        "capital": 0,
+        "date": ""
       },
-      "byLaws": "O Joao pode assinar tudo, like a boss",
-      "mainEconomicActivity": "90010",
-      "otherEconomicActivities": ["055111"],
+      "byLaws": "",
+      "mainEconomicActivity": "",
+      "otherEconomicActivities": [""],
       "mainOfficeAddress": {
-        "address": "Rua da Azoia 4",
-        "postalCode": "2625-236",
-        "postalArea": "Povoa de Santa Iria",
-        "locality": "string",
-        "country": "PT"
+        "address": "",
+        "postalCode": "",
+        "postalArea": "",
+        "locality": "",
+        "country": ""
       },
-      "establishmentDate": "2020-03-01T17:52:08.336Z",
+      "establishmentDate": "",
       "knowYourSales": {
         "estimatedAnualRevenue": 1000000,
         "averageTransactions": 30000,
-        "servicesOrProductsSold": ["Cafe"],
-        "servicesOrProductsDestinations": ["PT"]
+        "servicesOrProductsSold": [""],
+        "servicesOrProductsDestinations": [""]
       },
       "bankInformation": {
-        "bank": "0033",
-        "branch": "0000",
-        "iban": "PT00333506518874499677629",
-        "accountOpenedAt": "2020-06-29T17:52:08.336Z"
+        "bank": "",
+        "branch": "",
+        "iban": "",
+        "accountOpenedAt": ""
       },
       "contacts": {
-        "email": "joao@silvestre.pt",
+        "email": "",
         "phone1": {
-          "countryCode": "+351",
-          "phoneNumber": "919654422"
+          "countryCode": "",
+          "phoneNumber": ""
         }
       },
-      "documentationDeliveryMethod": "MAIL",
-      "billingEmail": "joao@silvestre.pt"
+      "documentationDeliveryMethod": "",
+      "billingEmail": ""
     }
     
   }
@@ -628,11 +628,11 @@ export class ClientComponent implements OnInit {
       state: {
       tipologia: this.tipologia,
         NIFNIPC: NIFNIPC,
-        exists: false,
+        exists: false
     }
   };
 
-    this.route.navigate(['/clientbyid', clientId], navigationExtras);
+  this.route.navigate(['/clientbyid', clientId], navigationExtras);
   //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 
