@@ -160,13 +160,8 @@ export class InfoDeclarativaComponent implements OnInit {
         phoneNumber: new FormControl(this.newClient.contacts?.phone1?.phoneNumber),
       },{validators: [this.validPhoneNumber]}),
       phone2: this.formBuilder.group({
-<<<<<<< HEAD
-        countryCode: new FormControl(null),
-        phoneNumber: new FormControl((this.returned != null) ? this.merchantInfo.contacts.phone2.phoneNumber : null),
-=======
         countryCode: new FormControl(this.newClient.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient.contacts?.phone2?.phoneNumber),
->>>>>>> 61b2574 (refatorização e persistencia de form adicionada às primeiras duas tabs de info declarativa)
       },{validators: [this.validPhoneNumber]}),
       faxCountryCode: new FormControl(this.newClient.contacts?.fax?.countryCode),
       faxPhoneNumber: new FormControl(this.newClient.contacts?.fax?.phoneNumber),
