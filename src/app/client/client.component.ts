@@ -551,6 +551,7 @@ export class ClientComponent implements OnInit {
       console.log("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
     }
+    console.log("antes de passar");
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
@@ -559,7 +560,7 @@ export class ClientComponent implements OnInit {
           clientId: this.clientId,
         }
       };
-
+    console.log("a passar para a proxima pagina");
       this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.

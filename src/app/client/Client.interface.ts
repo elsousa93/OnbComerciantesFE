@@ -1,3 +1,34 @@
+import { PostDocument } from "../submission/document/ISubmission-document"
+
+export interface OutboundClient {
+  bankingInformation?: BankInformation,
+  billingEmail?: string,
+  bylaws?: string,
+  commercialName?: string,
+  contacts?: Contacts,
+  context?: string,
+  contextId?: string,
+  documentationDeliveryMethod?: string,
+  documents?: PostDocument[],
+  fiscalIdentification?: ForeignFiscalInformation,
+  headquartersAddress?: HeadquartersAddress,
+  incorporationDate?: string,
+  incorporationStatement?: Crc,
+  legalName?: string,
+  legalNature?: string,
+  legalNature2?: string,
+  merchantId?: string,
+  merchantRegistrationId?: string,
+  merchantType?: string, //mudar para ENUM
+  otherEconomicActivities?: string[],
+  otherTaxCodes?: string[],
+  principalEconomicActivity?: string,
+  principalTaxCode?: string,
+  sales?: SalesOutbound,
+  shareCapital?: ShareCapital,
+  shortName?: string
+}
+
 export interface Client {
   id?: string,
   fiscalId?: string,
@@ -67,6 +98,13 @@ export interface MainOfficeAddress {
 export interface BusinessGroup {
   type?: string,
   branch?: string,
+}
+
+export interface SalesOutbound {
+  annualEstimatedRevenue?: Number,
+  transactionsAverage?: Number,
+  productsOrServicesSold?: string[],
+  productsOrServicesCountries?: string[],
 }
 
 export interface Sales {
