@@ -81,7 +81,8 @@ export class NavMenuPresencialComponent implements OnInit {
 
   openProcess(process) {
     console.log(process);
-    localStorage.setItem("processNumber", process.processNumber);
+    localStorage.setItem("processNumber", process);
+    this.processNrService.changeProcessNumber(process);
     localStorage.setItem("returned", 'consult');
 
     this.route.navigate(['/client']);

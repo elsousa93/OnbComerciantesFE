@@ -7,10 +7,10 @@
           [@AutoHideLogo]="isAutohide ? 'show' : 'hide'">
       </a>
       <div class="navbar-nav ms-auto">
-        <h5 *ngIf="processNumber" class="widget img"><img src="assets/images/pin.svg" style="width: 19px; padding-top: 6px !important;"></h5>
-        <a *ngIf="processNumber" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{processNumber}}</a>
+        <h5 *ngIf="processNumber && progressImage" class="widget img"><img src="assets/images/pin.svg" style="width: 19px; padding-top: 6px !important;"></h5>
+        <a *ngIf="processNumber && progressImage" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{processNumber}}</a>
 
-        <a *ngIf="processNumber" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
+        <a *ngIf="processNumber && progressImage" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
         <h5 class="widget img"><img src="assets/images/user-solid.svg"></h5>
         <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;João Costa Teles</a>
 
@@ -58,9 +58,9 @@
           </a>
           <span class="navbar-text text-light ms-auto">
             <form class="d-flex" style="margin-bottom: 0px;">
-              <input class="form-control me-2 form-control-sm" type="search" placeholder="Nº processo" [(ngModel)]="processNumberToSearch"
+              <input class="form-control me-2 form-control-sm" type="search" placeholder="Nº processo" #processNumberToSearch
                 aria-label="Search">
-              <button class="btn btn-procurar btn-sm ms-1 me-4 pt-2 pb-2" type="submit" (click)="openProcess(processNumberToSearch)">Procurar</button>
+              <button class="btn btn-procurar btn-sm ms-1 me-4 pt-2 pb-2" type="submit" (click)="openProcess(processNumberToSearch.value)">Procurar</button>
             </form>
           </span>
           <div id="navbar1_collapse">

@@ -62,6 +62,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   closeSubmission() {
     this.closeSubmissionModalRef?.hide();
     this.router.navigate(["/"]);
+    this.data.reset();
   }
 
   declineCloseSubmission(){
