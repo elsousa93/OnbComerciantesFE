@@ -52,6 +52,16 @@ export class DataService {
     console.log("SubPage change "+value);
     this.dataSubPage.next(value);
   }
+  reset() {
+    this.dataSource = new BehaviorSubject(new Map().set(1, undefined)
+    .set(2, undefined)
+    .set(3, undefined)
+    .set(4, undefined)
+    .set(5, undefined)
+    .set(6, undefined));
+    this.currentData = this.dataSource.asObservable();
+
+  }
 
   ngOnDestroy(){
     this.historyStream$?.complete();
