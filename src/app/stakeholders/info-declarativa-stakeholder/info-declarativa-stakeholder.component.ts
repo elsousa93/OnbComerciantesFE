@@ -176,9 +176,11 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   submit() {
     if (this.returned !== 'consult') {
       this.newStakeholder = this.currentStakeholder;
-      this.newStakeholder.email = this.formContactos.value.email
-      this.newStakeholder.phone1.countryCode = this.formContactos.get('phone').get('countryCode').value;
-      this.newStakeholder.phone1.phoneNumber = this.formContactos.get('phone').get('phoneNumber').value
+      this.newStakeholder.email = this.formContactos.value.email;
+      this.newStakeholder.phone1 = {
+        countryCode: this.formContactos.get('phone').get('countryCode').value,
+        phoneNumber: this.formContactos.get('phone').get('phoneNumber').value
+      };
        
       let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
       storedForm.stakeholder = this.newStakeholder
