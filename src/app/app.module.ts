@@ -6,7 +6,7 @@ import { ComprovativosService } from './comprovativos/services/comprovativos.ser
 import { HttpUtilService } from './comprovativos/services/http.services';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -204,8 +204,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         deps: [HttpClient]
       }
     })
-  ], 
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  ],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

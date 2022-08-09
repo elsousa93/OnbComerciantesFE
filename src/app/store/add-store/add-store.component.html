@@ -1,6 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <form>
+  <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()">
   <div class="row">
      <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
@@ -17,7 +17,7 @@
       <p class="titul campo_obrigatrio">* campo obrigatório</p>
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mb-3 ps-0">
-        <form [formGroup]="formStores" (ngSubmit)="submit()">
+        <!--<form [formGroup]="formStores" (ngSubmit)="submit()">-->
           <div class="row ms-0 me-0">
             <div class="col-5 ms-0 me-0 ps-0 pe-5">
               <p class="titulo-form-simples"  wappler-command="editContent">{{'NameStore'|translate}}</p>
@@ -71,7 +71,7 @@
                     <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span></nav>
                   </div>
                 </div>
-                </form>
+                <!--</form>-->
                 </div>
                 <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
                 <div class="col ms-0 ps-0">
@@ -87,7 +87,7 @@
                       <button id="btn5a5" [routerLink]="['/store-comp']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
                         <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;
                       </button>
-                      <button id="btn5a5" [routerLink]="['/add-store-iban']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;
+                      <button id="btn5a5" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;
                         <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
                       </button>
                     </span>
@@ -95,3 +95,5 @@
                 </div>
                 </div>
               </div>
+    </form>
+</div>
