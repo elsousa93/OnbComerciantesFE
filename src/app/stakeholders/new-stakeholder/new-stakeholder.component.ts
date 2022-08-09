@@ -28,10 +28,11 @@ import { docTypeENI } from '../../client/docType';
 
 export class NewStakeholderComponent implements OnInit {
   private baseUrl: string;
-
   public foo = 0;
   public displayValueSearch = "";
   isSelected = false;
+
+  stakeholdersComprovativos = [];
 
   stakeholderNumber: string;
 
@@ -134,9 +135,13 @@ export class NewStakeholderComponent implements OnInit {
     stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
         console.log("Value ", value);
-        context.stakeService.getStakeholderByID(value.id, 'por mudar', 'por mudar').subscribe(result => {
+        context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
           console.log("Info stake ", result);
           context.submissionStakeholders.push(result);
+          context.stakeService.getStakeholderByID(result.stakeholderId, 'por mudar', 'por mudar').subscribe(result => {
+            console.log("stake do outbound: ", result);
+            context.stakeholdersComprovativos.push(result);
+          });
         }, error => {
           console.log(error);
         });

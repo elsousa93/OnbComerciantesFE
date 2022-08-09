@@ -163,7 +163,7 @@ export class ClientComponent implements OnInit {
   documentType: boolean = false;
   toSearch: boolean = false;
   resultError: string = "";
-  clientTypology: boolean;
+  clientTypology: string = "";
 
   clientsToShow: Client[] = [];
 
@@ -271,7 +271,7 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     this.initializeDefaultClient();
-    if (this.returned !== null && this.returned !== undefined) {
+    if (this.returned !== null) { // && this.returned !== undefined
       console.log("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         console.log('Submissão retornada quando pesquisada pelo número de processo', result);
@@ -283,11 +283,11 @@ export class ClientComponent implements OnInit {
             if (this.merchantInfo.merchantType == 'Corporate') {
               console.log("O tipo é empresa");
               this.activateButtons(true); // se for Empresa
-              this.clientTypology = true;
+              this.clientTypology = "true";
             } else {
               console.log("O tipo é ENI");
               this.activateButtons(false); // se for ENI
-              this.clientTypology = false;
+              this.clientTypology = "false";
             }
           });
         });
@@ -356,7 +356,6 @@ export class ClientComponent implements OnInit {
     }
     
   }
-
 
   receiveSearchValue(box: string) {
     console.warn("VALOR RECEBIDO no Client", box);
@@ -529,7 +528,7 @@ export class ClientComponent implements OnInit {
     // this.activateButtons(true);
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
-    if (this.docType === 'Cartão do Cidadão') {
+    if (this.docType === '004') { //código do Cartão do Cidadão
       this.isCC = true;
     } else {
       this.isCC = false;
@@ -551,6 +550,7 @@ export class ClientComponent implements OnInit {
       console.log("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
     }
+    console.log("antes de passar");
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
@@ -559,12 +559,15 @@ export class ClientComponent implements OnInit {
           clientId: this.clientId,
         }
       };
-
+    console.log("a passar para a proxima pagina");
       this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }
-
+  /**
+   *
+   * @param readable: true: quero ler o CC; false: não quer ler o CC
+   */
   changeDataReadable(readable: boolean){
     this.isNoDataReadable=readable;
     this.toSearch = false;
@@ -587,7 +590,9 @@ export class ClientComponent implements OnInit {
   }
 
   activateButtons(id: boolean) {
-    console.log("CLient typology ", this.clientTypology);
+    console.log("Client typology: ", this.clientTypology);
+    console.log("isCC:  ", this.isCC, this.isCC);
+    console.log("showENI:  ", this.showENI);
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;
@@ -626,13 +631,12 @@ export class ClientComponent implements OnInit {
 
     let navigationExtras: NavigationExtras = {
       state: {
-      tipologia: this.tipologia,
+        tipologia: this.tipologia,
         NIFNIPC: NIFNIPC,
         exists: false
-    }
-  };
-
-  this.route.navigate(['/clientbyid', clientId], navigationExtras);
+      }
+    };
+    this.route.navigate(['/clientbyid', clientId], navigationExtras);
   //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 

@@ -31,7 +31,7 @@ export class AceitacaoComponent implements OnInit{
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
     });
-    this.data.updateData(false, 0, 0);
+    //this.data.updateData(false, 0, 0);
 
 }
 

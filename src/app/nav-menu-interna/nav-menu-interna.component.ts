@@ -165,6 +165,7 @@ export class NavMenuInternaComponent implements OnInit {
 
   ngOnDestroy(){
     this.historySubscription?.unsubscribe();
+    this.data.updateData(false,0,0);
   }
 }
 
