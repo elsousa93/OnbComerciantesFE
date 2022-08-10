@@ -10,6 +10,7 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Client } from '../../client/Client.interface';
 
 
 interface Stores {
@@ -127,6 +128,8 @@ export class StoreComponent implements AfterViewInit{
   formStores: FormGroup;
   editStores: FormGroup;
 
+  submissionClient: Client;
+
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesMat.paginator = this.paginator;
@@ -157,7 +160,7 @@ export class StoreComponent implements AfterViewInit{
     //  console.log('Lista após ter ido buscar todas as lojas recebidas ', this.storeList);
     //});
     this.editStores = this.formBuilder.group({});
-    this.formStores = this.formBuilder.group({});
+    //this.formStores = this.formBuilder.group({});
 
     this.data.updateData(false, 3, 1);
   }
@@ -178,6 +181,28 @@ export class StoreComponent implements AfterViewInit{
     console.log("Store selected ", this.currentStore);
     console.log("Current index ", this.currentIdx);
     console.log(this.currentStore === store);
+    setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
+  }
+
+  setFormData() {
+    var infoStores = this.editStores.controls["infoStores"];
+    infoStores.get("storeName").setValue(this.currentStore.name);
+    infoStores.get("activityStores").setValue(this.currentStore.activity);
+    infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
+    infoStores.get("contactPoint").setValue(this.currentStore.manager);
+    infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
+    infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
+    infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
+    infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
+    infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+
+    var bankStores = this.editStores.controls["bankStores"];
+    bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
+    bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
+    bankStores.get("solutionType").setValue(this.currentStore.productCode);
+    bankStores.get("subProduct").setValue(this.currentStore.subproductCode);
+    bankStores.get("url").setValue(this.currentStore.website);
+
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
@@ -191,5 +216,61 @@ export class StoreComponent implements AfterViewInit{
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
       });
     }
+  }
+
+  submit() {
+    console.log('Store list form ', this.editStores);
+
+    if (this.editStores.valid) {
+      var infoStores = this.editStores.controls["infoStores"];
+
+      if (infoStores.get("zipCodeStore").hasValidator(Validators.required)) {
+        this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
+        this.currentStore.address.address.address = infoStores.get("addressStore").value;
+        this.currentStore.address.address.country = infoStores.get("countryStore").value;
+        this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+      } else {
+        this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
+        this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
+        this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+        this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+        this.currentStore.address.sameAsMerchantAddress = true;
+      }
+
+      if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {
+        this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
+      } else {
+        this.currentStore.address.shoppingCenter = "";
+      }
+
+      this.currentStore.name = infoStores.get("storeName").value;
+      this.currentStore.activity = infoStores.get("activityStores").value;
+      this.currentStore.subActivity = infoStores.get("subactivityStore").value;
+      this.currentStore.manager = infoStores.get("contactPoint").value;
+
+      var bankStores = this.editStores.controls["bankStores"];
+
+      this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
+      this.currentStore.bank.userMerchantBank = bankStores.get("bankInformation").value;
+      this.currentStore.productCode = bankStores.get("solutionType").value;
+      this.currentStore.subproductCode = bankStores.get("subProduct").value;
+      this.currentStore.website = bankStores.get("url").value;
+
+      this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+        if (this.currentIdx < (this.storeList.length - 1)) {
+          this.currentIdx = this.currentIdx + 1;
+          this.selectStore(this.storeList[this.currentIdx], this.currentIdx);
+        } else {
+          this.route.navigate(['comprovativos']);
+        }
+      });
+    }
+  }
+
+  fetchStartingInfo() {
+    this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(client => {
+      this.submissionClient = client;
+      console.log("cliente da submissao: ", this.submissionClient);
+    });
   }
 }

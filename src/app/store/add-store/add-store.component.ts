@@ -25,8 +25,6 @@ import { ClientService } from '../../client/client.service';
 
 export class AddStoreComponent implements OnInit {
 
-  @Input() edit: string;
-
   //Submissao
   submissionId: string;
   submission: SubmissionGetTemplate;
@@ -44,20 +42,49 @@ export class AddStoreComponent implements OnInit {
 
   public chooseAddressV: boolean = false;
   formStores!: FormGroup;
-  editForm!: FormGroup;
+  edit: boolean = false;
+
 
   /*Variable declaration*/
   public stroreId: number = 0;
   store: ShopDetailsAcquiring = {
-    address: {
-      address: {
+    activity: "",
+    address:
+    {
+      isInsideShoppingCenter: false,
+      sameAsMerchantAddress: false,
+      shoppingCenter: "",
+      address:
+      {
         address: "",
         country: "",
         postalArea: "",
         postalCode: ""
       }
-    }
+    },
+    bank: {
+      bank:
+      {
+        bank: "",
+        iban: ""
+      },
+      userMerchantBank: false
+    },
+    documents:
+    {
+      href: "",
+      type: "",
+      id: ""
+    },
+    id: "",
+    manager: "",
+    name: "",
+    productCode: "",
+    subActivity: "",
+    subproductCode: "",
+    website: ""
   } as ShopDetailsAcquiring
+
   public clientID: number = 12345678;
   public totalUrl: string = "";
 
@@ -108,19 +135,8 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    //this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
-    //  this.submission = result;
-
-    //  this.clientService.GetClientById(this.submissionId).subscribe(client => {
-    //    this.submissionClient = client;
-
-    //    console.log("submissao correta? ", this.submission);
-    //    console.log("cliente da submissao: ", this.submissionClient);
-    //  });
-    //});
     this.clientService.GetClientById(this.submissionId).subscribe(client => {
       this.submissionClient = client;
-      //console.log("submissao correta? ", this.submission);
       console.log("cliente da submissao: ", this.submissionClient);
     });
   }
@@ -128,44 +144,36 @@ export class AddStoreComponent implements OnInit {
   constructor(private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective) {
     this.submissionId = localStorage.getItem("submissionId");
 
-    //this.fetchStartingInfo();
+    this.fetchStartingInfo();
 
-    //this.loadTableInfo();
+    this.loadTableInfo();
 
     this.data.updateData(false, 3, 2);
     console.log("Valor do editar ", this.edit);
   }
 
   ngOnInit(): void {
-    this.appComp.updateNavBar("Adicionar Loja")
-    //Get Id from the store
-    this.stroreId = Number(this.router.snapshot.params['stroreid']);
-    this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    //this.appComp.updateNavBar("Adicionar Loja")
+    ////Get Id from the store
+    //this.stroreId = Number(this.router.snapshot.params['stroreid']);
+    //this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
 
     this.initializeForm();
 
     if (this.rootFormGroup.form != null) {
-      console.log('Edit form ', this.rootFormGroup);
-      this.rootFormGroup.form.addControl('formStores', this.formStores);
-      console.log('ROOT ', this.rootFormGroup);
+      this.rootFormGroup.form.addControl('infoStores', this.formStores);
+      this.edit = true;
     } else {
-      console.log('O Form é null, nesse caso continuamos com a lógica normal');
+      this.appComp.updateNavBar("Adicionar Loja")
+      this.stroreId = Number(this.router.snapshot.params['stroreid']);
+      this.subscription = this.data.currentData.subscribe(map => this.map = map);
+      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
-    console.log('AAAAAAAAAAAAAAAAAA ', this.rootFormGroup);
   }
 
   //When canceling the create new store feature the user must navigate back to store list
   onCickCancel() {
-    this.route.navigate(['store-comp']);
-  }
-
-  //Call instruction to delete from the back-end
-  onCickDelete() {
-    if (this.stroreId != -1) {
-      this.http.delete<Istore>(this.baseUrl + 'bestores/DeleteStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
-      }, error => console.error(error));
-    }
     this.route.navigate(['store-comp']);
   }
 
@@ -194,10 +202,6 @@ export class AddStoreComponent implements OnInit {
       /*Disable the fields from the address*/
       this.idisabledAdd = true;
 
-      this.formStores.addControl('localeStore', new FormControl(this.store.address.address.postalArea, Validators.required));
-      this.formStores.addControl('addressStore', new FormControl(this.store.address.address.address, Validators.required));
-      this.formStores.addControl('countryStore', new FormControl(this.store.address.address.country, Validators.required));
-      this.formStores.addControl('zipCodeStore', new FormControl(this.store.address.address.postalCode, Validators.required));
     } else {
       /*Update Country according to the previous value selected*/
       this.store.address.address.country = this.auxCountry;
@@ -214,12 +218,6 @@ export class AddStoreComponent implements OnInit {
 
       /*Enable the fields from the address*/
       this.idisabledAdd = false;
-
-      //remover formControls
-      this.formStores.removeControl('localeStore');
-      this.formStores.removeControl('addressStore');
-      this.formStores.removeControl('countryStore');
-      this.formStores.removeControl('zipCodeStore');
     }
 
   }
@@ -252,45 +250,38 @@ export class AddStoreComponent implements OnInit {
     }
   }
 
-  //Submit form to Back-end
   submit() {
-    //if (this.stroreId == -1) {
-    //  this.http.post<number>(this.baseUrl + 'bestores/PostStore/' + this.clientID, this.store).subscribe(result => {
-    //    this.stroreId = result;
-    //    this.route.navigate(['add-store-iban/' + this.stroreId]);
-    //  }, error => console.error(error));
-    //} else {
-    //  this.http.put<Istore>(this.baseUrl + 'bestores/PutStoreById/' + this.clientID + '/' + this.stroreId, this.store).subscribe(result => {
-    //    this.route.navigate(['add-store-iban/' + this.stroreId]);
-    //  }, error => console.error(error));
-    //}
+    this.store.name = this.formStores.get("storeName").value;
+    if (this.submissionClient.merchantType == 'Entrepreneur')
+      this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
+    else
+      this.store.manager = this.formStores.get("contactPoint").value;
 
-    //this.store.name = this.formStores.get("storeName").value;
-    //if (this.submissionClient.merchantType == 'Entrepreneur')
-    //  this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
-    //else
-    //  this.store.manager = this.formStores.get("contactPoint").value;
+    this.store.activity = this.formStores.get("activityStores").value;
+    this.store.subActivity = this.formStores.get("subactivityStores").value;
+    if (this.chooseAddressV) {
+      this.store.address.address.address = this.formStores.get("addressStore").value;
+      this.store.address.address.country = this.formStores.get("countryStore").value;
+      this.store.address.address.postalArea = this.formStores.get("localeStore").value;
+      this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
+    } else {
+      this.store.address.address.address = this.submissionClient.headquartersAddress.address;
+      this.store.address.address.country = this.submissionClient.headquartersAddress.country;
+      this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+      this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+      this.store.address.sameAsMerchantAddress = true;
+    }
 
-    //this.store.activity = this.formStores.get("activityStores").value;
-    //this.store.subActivity = this.formStores.get("subactivityStores").value;
-    //if (this.selectedAddOption == "Sim") {
-    //  this.store.address.address.address = this.formStores.get("addressStore").value;
-    //  this.store.address.address.country = this.formStores.get("countryStore").value;
-    //  this.store.address.address.postalArea = this.formStores.get("localeStore").value;
-    //  this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
-    //} else {
-    //  //this.store.address.address = this.submissionClient.address; replicar a morada do cliente para a loja
-    //  this.store.address.sameAsMerchantAddress = true;
-    //}
+    if (this.isComercialCentreStore){
+      this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value; // n sei qual é o valor que corresponde na Loja
+    
+    }
 
-    //if (this.isComercialCentreStore){
-    //  this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value; // n sei qual é o valor que corresponde na Loja
-    //  
-    //}
-
-    //this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
+    this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
 
     //console.log(this.formStores);
+    console.log('valores do form ', this.formStores);
+    console.log('valores do form ROOT apos submit ', this.rootFormGroup.form.controls["infoStores"]);
     let navigationExtras: NavigationExtras = {
       state: {
         store: this.store
@@ -302,14 +293,33 @@ export class AddStoreComponent implements OnInit {
 
   chooseAddress(toChoose: boolean) {
     this.chooseAddressV = toChoose;
+    if (toChoose) {
+      this.formStores.get('localeStore').setValidators([Validators.required]);
+      this.formStores.get('addressStore').setValidators([Validators.required]);
+      this.formStores.get('countryStore').setValidators([Validators.required]);
+      this.formStores.get('zipCodeStore').setValidators([Validators.required]);
+
+
+      console.log('Adicionamos os controls dos paises ao formStores ', this.formStores);
+      console.log('O root tem ', this.rootFormGroup.form.controls["infoStores"]);
+    } else {
+      console.log('Antes de removermos os campos ', this.formStores);
+      console.log('ROOT antes de removermos os campos ', this.rootFormGroup.form.controls["infoStores"]);
+      this.formStores.get('localeStore').setValidators(null);
+      this.formStores.get('addressStore').setValidators(null);
+      this.formStores.get('countryStore').setValidators(null);
+      this.formStores.get('zipCodeStore').setValidators(null);
+      console.log('Depois de removermos os campos ', this.formStores);
+      console.log('ROOT depois de removermos os campos ', this.rootFormGroup.form.controls["infoStores"]);
+    }
   }
 
   GetCountryByZipCode() {
-    var currentCountry = this.formStores.get('Country').value;
+    var currentCountry = this.formStores.get('countryStore').value;
     console.log("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
-      var zipcode = this.formStores.value['ZIPCode'];
+      var zipcode = this.formStores.value['zipCodeStore'];
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
 
@@ -317,9 +327,9 @@ export class AddStoreComponent implements OnInit {
 
           var addressToShow = address[0];
 
-          this.formStores.get('Address').setValue(addressToShow.address);
-          this.formStores.get('Country').setValue(addressToShow.country);
-          this.formStores.get('Locality').setValue(addressToShow.postalArea);
+          this.formStores.get('addressStore').setValue(addressToShow.address);
+          this.formStores.get('countryStore').setValue(addressToShow.country);
+          this.formStores.get('localeStore').setValue(addressToShow.postalArea);
 
           this.formStores.updateValueAndValidity();
         });
@@ -337,7 +347,7 @@ export class AddStoreComponent implements OnInit {
       countryStore: new FormControl(''),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
-      contactPoint: new FormControl(/*(this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : */'', Validators.required),
+      contactPoint: new FormControl((this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required),
       subactivityStore: new FormControl('', Validators.required),
       localeStore: new FormControl(''),
       addressStore: new FormControl('')
@@ -347,8 +357,8 @@ export class AddStoreComponent implements OnInit {
 comercialCentre(isCentre: boolean) {
   this.isComercialCentreStore = isCentre;
   if (isCentre)
-    this.formStores.addControl('subZoneStore', new FormControl('', Validators.required));
+    this.formStores.get('subZoneStore').setValidators([Validators.required]);
   else
-    this.formStores.removeControl('subZoneStore');
+    this.formStores.get('subZoneStore').setValidators(null);
 }
 }

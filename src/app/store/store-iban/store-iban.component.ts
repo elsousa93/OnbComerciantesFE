@@ -21,8 +21,6 @@ export class StoreIbanComponent implements OnInit {
 
   private baseUrl;
 
-  @Input() edit: string; 
-
   /*variable declarations*/
   public stroreId: number = 0;
   //store: Istore = { id: -1 } as Istore
@@ -75,50 +73,51 @@ export class StoreIbanComponent implements OnInit {
   files?: File[] = [];
 
   public store: ShopDetailsAcquiring = {
-    activity: "Activity1",
+  activity: "",
     address:
+  {
+    isInsideShoppingCenter: false,
+      sameAsMerchantAddress: false,
+        shoppingCenter: "",
+          address:
     {
-      isInsideShoppingCenter: true, sameAsMerchantAddress: true, shoppingCenter: "Colombo",
-      address:
-      {
-        address: "A",
-        country: "B",
-        postalArea: "C",
-        postalCode: "123"
-      }
-    },
-    bank: {
-      bank:
-      {
-        bank: "Banco",
-        iban: "893018920"
-      },
-      userMerchantBank: true
-    },
-    documents:
+      address: "",
+        country: "",
+          postalArea: "",
+            postalCode: ""
+    }
+  },
+  bank: {
+    bank:
     {
-      href: "",
+      bank: "",
+        iban: ""
+    },
+    userMerchantBank: false
+  },
+  documents:
+  {
+    href: "",
       type: "",
-      id: ""
-    },
-    id: "1",
-    manager: "Manager1",
-    name: "ShopName",
-    productCode: "cardNotPresent",
-    subActivity: "99",
-    subproductCode: "easy",
-    website: "google.com"
-  } as ShopDetailsAcquiring;
+        id: ""
+  },
+  id: "",
+    manager: "",
+      name: "",
+        productCode: "",
+          subActivity: "",
+            subproductCode: "",
+              website: ""
+} as ShopDetailsAcquiring
 
   formStores!: FormGroup;
   returned: string
+  edit: boolean = false;
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
     this.ngOnInit();
 
-    //if (this.route.getCurrentNavigation().extras.state) {
-    //  //this.store = this.route.getCurrentNavigation().extras.state["store"];
-    //}
+
 
     //if (this.returned !== null) {
     //  if (this.store.productCode == '') { 
@@ -134,7 +133,7 @@ export class StoreIbanComponent implements OnInit {
     //  }
 
     //}
-    this.initializeForm();
+
 
     this.data.updateData(false, 3, 3);
   }
@@ -146,10 +145,15 @@ export class StoreIbanComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.returned = localStorage.getItem("returned");
 
+    this.initializeForm();
+
     if (this.rootFormGroup.form != null) {
-      console.log('O root form é diferente de null');
+      this.rootFormGroup.form.addControl('bankStores', this.formStores);
+      this.edit = true;
     } else {
-      console.log('O root form não tem valor');
+      if (this.route.getCurrentNavigation().extras.state) {
+        this.store = this.route.getCurrentNavigation().extras.state["store"];
+      }
     }
   }
 
