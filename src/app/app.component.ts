@@ -5,6 +5,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CRCService } from './CRC/crcservice.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,7 @@ export class AppComponent {
   isToggle: boolean = false;
   isAutoHide: boolean = false;
 
-  constructor(public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
+  constructor(private logger : NGXLogger ,public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService) {
     translate.addLangs(['pt', 'en']);
     translate.setDefaultLang('pt');
@@ -30,7 +31,7 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     crcService.getAccessToken().then(result => {
-      console.log("gerou!!");
+      this.logger.debug("gerou!!");
       localStorage.setItem("accessToken", result.access_token);
     });
   }

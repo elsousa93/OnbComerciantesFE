@@ -17,6 +17,7 @@ import { StakeholderService } from '../stakeholder.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { ConstantPool } from '@angular/compiler';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -74,7 +75,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
+  constructor(private logger : NGXLogger, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     this.baseUrl = configuration.baseUrl;
 
     
@@ -94,16 +95,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
     this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
-        console.log(value);
+        this.logger.debug(value);
         context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
-          console.log(res);
+          this.logger.debug(res);
           context.submissionStakeholders.push(res);
         }, error => {
-          console.log(error);
+          this.logger.debug(error);
         });
       });
     }, error => {
-      console.log(error);
+      this.logger.debug(error);
     });
 
     
@@ -164,11 +165,11 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   changeListElement(varkjkiavel: string, e: any) {
-    console.log(e.target.value)
+    this.logger.debug(e.target.value)
     this.formContactos.get("phone").get("countryCode").setValue(e.target.value);
-    console.log(this.formContactos.value.countryCode);
-    console.log(this.formContactos.value.phoneNumber);
-    console.log(this.formContactos.value.email);
+    this.logger.debug(this.formContactos.value.countryCode);
+    this.logger.debug(this.formContactos.value.phoneNumber);
+    this.logger.debug(this.formContactos.value.email);
     //update ao newStakeholder aqui?
     // this.newStakeholder.callingCodeStakeholder =  this.callingCodeStakeholder;
   }
@@ -186,25 +187,25 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       storedForm.stakeholder = this.newStakeholder
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
-      console.log("Stakeholder id", this.newStakeholder.id);
-      console.log("Dados updated do stakeholder ", this.newStakeholder);
+      this.logger.debug("Stakeholder id", this.newStakeholder.id);
+      this.logger.debug("Dados updated do stakeholder ", this.newStakeholder);
       this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder.id, this.newStakeholder).subscribe(result => {
-        console.log("Resultado de criar um stakeholder a uma submissão existente", result);
+        this.logger.debug("Resultado de criar um stakeholder a uma submissão existente", result);
         if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
-          console.log("CUrrent index ", this.currentIdx);
-          console.log("Submission stakeholders length ", this.submissionStakeholders);
+          this.logger.debug("CUrrent index ", this.currentIdx);
+          this.logger.debug("Submission stakeholders length ", this.submissionStakeholders);
           this.currentIdx = this.currentIdx + 1;
           this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
-          console.log(this.currentStakeholder);
+          this.logger.debug(this.currentStakeholder);
         } else {
-          console.log("Current index é maior do que lenght");
-          console.log("CUrrent index ", this.currentIdx);
-          console.log("Submission stakeholders length ", this.submissionStakeholders);
+          this.logger.debug("Current index é maior do que lenght");
+          this.logger.debug("CUrrent index ", this.currentIdx);
+          this.logger.debug("Submission stakeholders length ", this.submissionStakeholders);
           this.route.navigate(['/info-declarativa-lojas']);
         }
 
       }, error => {
-        console.log(error);
+        this.logger.debug(error);
       });
     } else {
       this.route.navigate(['/info-declarativa-lojas']);
@@ -216,12 +217,12 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   selectStakeholder(stakeholder, idx) {
-    console.log(this.currentStakeholder);
-    console.log(stakeholder);
+    this.logger.debug(this.currentStakeholder);
+    this.logger.debug(stakeholder);
     this.currentStakeholder = stakeholder;
     this.currentIdx = idx;
-    console.log(this.currentStakeholder);
-    console.log(this.currentStakeholder === stakeholder);
+    this.logger.debug(this.currentStakeholder);
+    this.logger.debug(this.currentStakeholder === stakeholder);
     this.initializeForm();
   }
 

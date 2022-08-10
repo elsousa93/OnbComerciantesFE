@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
 import { IStakeholders } from './IStakeholders.interface';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class StakeholderService {
   private urlOutbound: string;
 
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
     this.baseUrl = configuration.acquiringAPIUrl;      
     this.urlOutbound = configuration.outboundUrl;
 
@@ -32,8 +33,8 @@ export class StakeholderService {
   }
 
   UpdateStakeholder(submissionId: string, stakeholderId: string, newStake: IStakeholders) {
-    console.log("stakeholder recebido");
-    console.log(newStake);
+    this.logger.debug("stakeholder recebido");
+    this.logger.debug(newStake);
     return this.http.put<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId, newStake);
   }
 
@@ -68,8 +69,8 @@ export class StakeholderService {
       HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-    console.log("LINK URI SEARCHSTAKEHOLDERBYQUERY");
-    console.log(URI);
+    this.logger.debug("LINK URI SEARCHSTAKEHOLDERBYQUERY");
+    this.logger.debug(URI);
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
@@ -93,8 +94,8 @@ export class StakeholderService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    console.log("ID STAKEHOLDER");
-    console.log(StakeholderID);
+    this.logger.debug("ID STAKEHOLDER");
+    this.logger.debug(StakeholderID);
 
 
     return this.http.get<any>(URI, HTTP_OPTIONS);

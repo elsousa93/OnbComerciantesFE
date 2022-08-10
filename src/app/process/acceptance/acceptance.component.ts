@@ -9,6 +9,7 @@ import { ComprovativosService } from '../../comprovativos/services/comprovativos
 import { ProcessService } from '../process.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-acceptance',
@@ -41,7 +42,7 @@ export class AcceptanceComponent implements OnInit {
   startedDigitalSignature: boolean = false;
   acceptancePage: boolean = false;
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router,
     private ProcessService: ProcessService,
     private compService: ComprovativosService, private modalService: BsModalService) {
@@ -50,8 +51,8 @@ export class AcceptanceComponent implements OnInit {
     this.oAuth();
     //this.ngOnInit();
     this.ProcessService.getSubmissionByID(this.processId).subscribe(result => {
-      console.log(this.processId);
-      console.log(result);
+      this.logger.debug(this.processId);
+      this.logger.debug(result);
       this.process = result;
 
     });
@@ -59,13 +60,13 @@ export class AcceptanceComponent implements OnInit {
 
     /*http.get<Process>(baseUrl + 'BEProcess/GetAllProcesses').subscribe(result => {
       this.process = result;
-      console.log(this.process);
+      this.logger.debug(this.process);
     }, error => console.error(error));*/
 
   }
 
   ngOnInit(): void {
-    console.log(this.isSelected);
+    this.logger.debug(this.isSelected);
   }
 
   //loadXMLData() {
@@ -103,11 +104,11 @@ export class AcceptanceComponent implements OnInit {
   //            if (object[i][k].length >= 2) {
   //              for (var j = 0; j < object[i][k].length; j++) {
   //                for (var a in object[i][k][j]) {
-  //                  console.log('O valor de ', a, 'é: ', object[i][k][j][a][0]);
+  //                  this.logger.debug('O valor de ', a, 'é: ', object[i][k][j][a][0]);
   //                }
   //              }
   //            } else {
-  //              console.log('O valor de ',k, 'é:', object[i][k][0]);
+  //              this.logger.debug('O valor de ',k, 'é:', object[i][k][0]);
   //            }
   //          }
   //        }
@@ -121,7 +122,7 @@ export class AcceptanceComponent implements OnInit {
   //    .pipe(
   //      map((xmlString: string) => {
   //        const asJson = this.xmlStringToJson(xmlString);
-  //        console.log(asJson);
+  //        this.logger.debug(asJson);
   //        return asJson;
   //      }),
   //      catchError((err) => {
@@ -181,7 +182,7 @@ export class AcceptanceComponent implements OnInit {
 
   //teste2() {
   //  this.teste().subscribe((data) => {
-  //    console.log('Json data received:', data);
+  //    this.logger.debug('Json data received:', data);
   //},
   //  (err) => {
   //    console.warn('Erroneous! Err:', err);
@@ -212,7 +213,7 @@ export class AcceptanceComponent implements OnInit {
         if (xmlhttp.status == 200) {
           const xml = xmlhttp.responseXML;
           const value = xml.getElementsByTagName('return')[0].childNodes[0].nodeValue;
-          console.log('Value ', value);
+          this.logger.debug('Value ', value);
         }
       }
     }
@@ -251,7 +252,7 @@ export class AcceptanceComponent implements OnInit {
 
     this.http.post("mtrust/oauth/token", body, HTTP_OPTIONS)
       .subscribe(tap(res => {
-        console.log(res);
+        this.logger.debug(res);
       }))
   }
 
@@ -259,23 +260,23 @@ export class AcceptanceComponent implements OnInit {
 
   removeFile(file: any) {
     //return this.files.filter(function (ele) {
-    //  console.log(ele);
-    //  console.log(file);
+    //  this.logger.debug(ele);
+    //  this.logger.debug(file);
     //  if (ele.name === file.name) {
-    //    console.log("sim");
+    //    this.logger.debug("sim");
     //  }
     //  return ele.name !== file.name;
     //});
 
     const index = this.files.indexOf(file);
-    console.log(index);
+    this.logger.debug(index);
     if (index > -1) {
       this.files.splice(index, 1);
     }
   }
 
   selectFile(event: any, comp: any) {
-    console.log(event);
+    this.logger.debug(event);
     //this.file = <File>event.target.files[0];
     //const sizeFile = this.file.size / (1024 * 1024);
     //var file = <File>event.target.files[0];
@@ -297,7 +298,7 @@ export class AcceptanceComponent implements OnInit {
     //}
 
     const files = <File[]>event.target.files;
-    console.log(files);
+    this.logger.debug(files);
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
       const sizeFile = file.size / (1024 * 1024);
@@ -323,7 +324,7 @@ export class AcceptanceComponent implements OnInit {
     for (var i = 0; i < this.files.length; i++) {
       this.compService.uploadFile(this.files[i], 999).subscribe(data => {
         if (data != null) {
-          console.log("upload feito com sucesso");
+          this.logger.debug("upload feito com sucesso");
         }
       },
         err => {
@@ -353,7 +354,7 @@ export class AcceptanceComponent implements OnInit {
   }
 
   downloadFile(element) {
-    console.log(element);
+    this.logger.debug(element);
   }
 
   changeRepresentativeSelected(event) {

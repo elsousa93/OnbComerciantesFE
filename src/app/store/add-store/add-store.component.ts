@@ -13,6 +13,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { Merchant, SubmissionGetTemplate } from '../../submission/ISubmission.interface';
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-add-store',
@@ -137,11 +138,11 @@ export class AddStoreComponent implements OnInit {
   fetchStartingInfo() {
     this.clientService.GetClientById(this.submissionId).subscribe(client => {
       this.submissionClient = client;
-      console.log("cliente da submissao: ", this.submissionClient);
+      this.logger.debug("cliente da submissao: ", this.submissionClient);
     });
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective) {
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective) {
     this.submissionId = localStorage.getItem("submissionId");
 
     this.fetchStartingInfo();
@@ -316,7 +317,7 @@ export class AddStoreComponent implements OnInit {
 
   GetCountryByZipCode() {
     var currentCountry = this.formStores.get('countryStore').value;
-    console.log("Pais escolhido atual");
+    this.logger.debug("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
       var zipcode = this.formStores.value['zipCodeStore'];

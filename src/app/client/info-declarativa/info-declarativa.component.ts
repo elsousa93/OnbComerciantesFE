@@ -14,6 +14,7 @@ import { ClientService } from '../client.service';
 import { XhrFactory } from '@angular/common';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
+import { NGXLogger } from 'ngx-logger';
 
 
 
@@ -114,7 +115,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
 
 
-  constructor(private formBuilder: FormBuilder, 
+  constructor(private logger : NGXLogger, private formBuilder: FormBuilder, 
     @Inject(configurationToken) private configuration: Configuration, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.ngOnInit();
 
@@ -149,9 +150,9 @@ export class InfoDeclarativaComponent implements OnInit {
     if (!this.newClient){
       if (this.returned !== null) {
         this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-          console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+          this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            console.log('Submissão com detalhes mais especificos ', resul);
+            this.logger.debug('Submissão com detalhes mais especificos ', resul);
             this.clientService.GetClientById(resul.id).subscribe(res => {
               this.setForm(res);
             });
@@ -159,12 +160,12 @@ export class InfoDeclarativaComponent implements OnInit {
         });
       } else {
           this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(res => {
-              console.log("Fui buscar o merchant da submission ", res);
+              this.logger.debug("Fui buscar o merchant da submission ", res);
               this.setForm(res);
           });
         }
     } else {
-      console.log("Fui buscar o merchant da localStorage ", this.newClient);
+      this.logger.debug("Fui buscar o merchant da localStorage ", this.newClient);
     }
 
     
@@ -224,7 +225,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
    /** if (this.newClient.id != 0) {
       http.get<Client>(baseUrl + 'beclient/GetClientById/' + this.newClient.id).subscribe(result => {
-        console.log(result);
+        this.logger.debug(result);
         this.newClient = result;
       }, error => console.error(error));
 
@@ -268,7 +269,7 @@ export class InfoDeclarativaComponent implements OnInit {
     //  localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
     //  this.clientService.EditClient(localStorage.getItem("submissionId"), this.newClient).subscribe(result => {
-    //    console.log("Resultado da chamada do edit do cliente ", result);
+    //    this.logger.debug("Resultado da chamada do edit do cliente ", result);
     //  });
     //}
     this.router.navigate(['/info-declarativa-stakeholder']);

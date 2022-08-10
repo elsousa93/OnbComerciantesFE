@@ -4,6 +4,7 @@ import { Client } from '../Client.interface';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-client-extended',
@@ -114,21 +115,21 @@ export class ClientExtendedComponent implements OnInit {
   json;
 
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
       this.baseUrl = configuration.baseUrl;
 
 
     //Resquest
   //  this.http.post(baseUrl + 'BEClients/PostClientTest/', this.postData).toPromise().then(data => {
-  //    console.log(data);});
+  //    this.logger.debug(data);});
 
   
 
   /*  http.post(baseUrl + 'BEClients/', this.newClient)
       .toPromise().then((data: any) => {
-        console.log("construtor, a ser enviado pelo BECLients " ,data);
-        //console.log(data.json.test);
+        this.logger.debug("construtor, a ser enviado pelo BECLients " ,data);
+        //this.logger.debug(data.json.test);
         this.json = JSON.stringify(data.json);
       });
   */
@@ -142,8 +143,8 @@ export class ClientExtendedComponent implements OnInit {
 
     this.http.post(this.baseUrl + 'BEClients/PostClientTest', this.newClient)
       .toPromise().then((data: any) => {
-        console.log(data);
-        //console.log(data.json.test);
+        this.logger.debug(data);
+        //this.logger.debug(data.json.test);
         this.json = JSON.stringify(data.json);
       });
 
@@ -153,7 +154,7 @@ export class ClientExtendedComponent implements OnInit {
 
     this.http.post<Client>(this.baseUrl + 'BEClients/PostClientTest', this.newClient).subscribe(result => {
       this.newClient = result;
-       console.log("RESULT CHAMADA:  " , result);
+       this.logger.debug("RESULT CHAMADA:  " , result);
     }, error => console.error(error));
    
   }

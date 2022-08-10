@@ -8,6 +8,7 @@ import { DataService } from '../../../nav-menu-interna/data.service';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -30,7 +31,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
-  constructor(private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService) {
+  constructor(private logger : NGXLogger, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService) {
     this.baseUrl = configuration.baseUrl;
     http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
@@ -51,8 +52,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     } else {
       this.representativesSelected.push(event.target.id);
     }
-    console.log(this.stakeholders);
-    console.log(this.representativesSelected);
+    this.logger.debug(this.stakeholders);
+    this.logger.debug(this.representativesSelected);
   }
 
   openCloseSubmissionModal() {
