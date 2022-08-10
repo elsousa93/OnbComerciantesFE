@@ -700,15 +700,15 @@
       <p class="titul campo_obrigatrio ps-3">* campo obrigatório</p>
       <div class="col-10">
         <div class="col-10 ms-3 me-3 ps-3 pe-3">
-          <p class="titulo-form-simples">NIF/NIPC*</p>
-          <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC"
+          <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC*</p>
+          <input formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC"
                  type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" />
-          <div class="alert alert-danger"
+          <!--<div class="alert alert-danger"
                *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
             <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
               O parâmetro acima é obrigatório.
             </div>
-          </div>
+          </div>-->
           <p class="titulo-form-simples">a empresa é uma sociedade comercial?*</p>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
@@ -824,7 +824,7 @@
                   </div>
 
                   <div class="col-xxl col-7">
-                    <div>
+                    <!--<div>
                       <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:*</p>
                       <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
                              name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
@@ -833,7 +833,7 @@
                           O parâmetro acima é obrigatório.
                         </div>
                       </div>
-                    </div>
+                    </div>-->
                     <div>
                       <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
                       <input minlength="2" maxlength="100" formControlName="socialDenomination"

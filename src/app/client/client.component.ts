@@ -569,7 +569,6 @@ export class ClientComponent implements OnInit {
     console.log(this.clientId);
 
     var NIFNIPC = '';
-
     console.log("DOCUMENTAIONDELIVERYMETHOD -->");
     console.log(this.newClient.documentationDeliveryMethod);
     if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
@@ -586,6 +585,7 @@ export class ClientComponent implements OnInit {
         postalCodeCC: this.postalCodeCC
       }
     }
+    console.log("antes de passar");
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
@@ -595,7 +595,7 @@ export class ClientComponent implements OnInit {
           dataCC: this.dataCC
         }
       };
-
+    console.log("a passar para a proxima pagina");
       this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
