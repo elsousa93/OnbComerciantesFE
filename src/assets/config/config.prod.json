@@ -6,5 +6,6 @@
   "postmanUrl": "https://7929bf0d-1abd-4943-878b-1859269bc442.mock.pstmn.io/",
   "acquiringAPIUrl": "http://localhost:12000/AcquiringAPI/api/",
   "authTokenUrl": "http://localhost:10000/connect/token",
-  "outboundUrl": "http://localhost:12000/OutboundAPI/"
+  "outboundUrl": "http://localhost:12000/OutboundAPI/",
+  "mockacoUrl": "http://localhost/Mockaco/"
 }

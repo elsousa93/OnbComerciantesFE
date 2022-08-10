@@ -40,26 +40,53 @@
           <div class="container-fluid mt-0 ps-3 pe-3">
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <div class="table-responsive mb-5">
-                  <table class="table">
-                    <thead class="text-primary table-primary">
-                      <tr class="table-white text-primary">
-                        <th scope="col" class="text-center text-primary bg-light table-white">Nome do Estabelecimento</th>
-                        <th scope="col" class="text-center bg-light">Atividade</th>
-                        <th scope="col" class="text-center bg-white">Subatividade</th>
-                        <th scope="col" class="text-center bg-white">Sub Zona</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row" class="text-primary text-center"></th>
-                        <td class="text-primary text-center"></td>
-                        <td class="text-primary text-center"></td>
-                        <td class="text-primary text-center"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <!--<div class="table-responsive mb-5">
+    <table class="table">
+      <thead class="text-primary table-primary">
+        <tr class="table-white text-primary">
+          <th scope="col" class="text-center text-primary bg-light table-white">Nome do Estabelecimento</th>
+          <th scope="col" class="text-center bg-light">Atividade</th>
+          <th scope="col" class="text-center bg-white">Subatividade</th>
+          <th scope="col" class="text-center bg-white">Sub Zona</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" class="text-primary text-center"></th>
+          <td class="text-primary text-center"></td>
+          <td class="text-primary text-center"></td>
+          <td class="text-primary text-center"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>-->
+                <mat-table [dataSource]="dataSource" class="table" matSort>
+                  <ng-container matColumnDef="nameEstab">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="activityEstab">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ActivityStores'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="subActivityEstab">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubActivityStores'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="zoneEstab">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'ZoneStores'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let store"> {{(store.address !== null && store.address.address !== null) ? store.address.address.postalArea : ''}} </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; let idx = index; columns: displayedColumns;"
+                           (click)="selectRow(row, idx)"
+                           [ngClass]="{'row-selected': row === selectedStore}">
+                  </mat-row>
+
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[3, 10, 20]"
+                               showFirstLastButtons>
+                </mat-paginator>
               </div>
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
                 <h2 class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;INFORMAÇÃO CARACTERÍSTICA DA LOJA

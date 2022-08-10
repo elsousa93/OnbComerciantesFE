@@ -12,6 +12,14 @@
   color:white !important;
 }
 
+.row-selected.mat-row{
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity)) !important;  
+}
+
+.row-selected.mat-row .mat-cell {
+  color: white !important;
+}
 
 @font-face {
   font-family: 'roboto';
