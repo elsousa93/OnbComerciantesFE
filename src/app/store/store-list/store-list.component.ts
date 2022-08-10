@@ -11,6 +11,7 @@ import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from '../../client/Client.interface';
+import { SubmissionService } from '../../submission/service/submission-service.service';
 
 
 interface Stores {
@@ -129,38 +130,56 @@ export class StoreComponent implements AfterViewInit{
   editStores: FormGroup;
 
   submissionClient: Client;
+  returned: string;
 
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesMat.paginator = this.paginator;
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder)
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService)
   {
     this.baseUrl = configuration.baseUrl;
      
     this.ngOnInit();
 
     //Ir buscar a lista de lojas associadas ao merchant, caso existam
-    //this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
-    //  this.storeService.getShopsListOutbound(result.clientId, "por mudar", "por mudar").subscribe(res => {
-    //    this.loadStores(res);
-    //  });
-    //});
+    this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
+      this.storeService.getShopsListOutbound(result.clientId, "por mudar", "por mudar").subscribe(res => {
+        this.storeList.push.apply(this.storeList, res);
+        this.loadStores(this.storeList);
+      });
+    });
 
-    //this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
-    //  result.forEach(value => {
-    //    this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-    //      this.storeList.push(res);
-    //      console.log('Lista obtida ', result);
-    //      console.log('Info detalhada de cada loja ', res);
-    //    });
-    //  });
-    //  this.loadStores(this.storeList);
-    //  console.log('Lista após ter ido buscar todas as lojas recebidas ', this.storeList);
-    //});
+    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos
+    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
+      result.forEach(value => {
+        this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+          var index = this.storeList.findIndex(store => store.id == res.id);
+          if (index == -1)
+            this.storeList.push(res);
+        });
+      });
+      this.loadStores(this.storeList);
+    });
+
+    //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
+    if (this.returned !== null) {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
+          resul.forEach(val => {
+            this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
+              var index = this.storeList.findIndex(store => store.id == res.id);
+              if(index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
+                this.storeList.push(res);
+            });
+          });
+          this.loadStores(this.storeList);
+        })
+      });
+    }
+
     this.editStores = this.formBuilder.group({});
-    //this.formStores = this.formBuilder.group({});
 
     this.data.updateData(false, 3, 1);
   }
@@ -169,6 +188,7 @@ export class StoreComponent implements AfterViewInit{
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.loadStores();
+    this.returned = localStorage.getItem("returned");
   }
 
   navigateTo(id: number) {

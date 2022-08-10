@@ -116,44 +116,26 @@ export class StoreIbanComponent implements OnInit {
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
     this.ngOnInit();
-
-
-
-    //if (this.returned !== null) {
-    //  if (this.store.productCode == '') { 
-    //    this.chooseSolution(true, false, false);
-    //  }
-
-    //  if (this.store.productCode == '') { 
-    //    this.chooseSolution(false, true, false);
-    //  }
-
-    //  if (this.store.productCode == '') { 
-    //    this.chooseSolution(false, false, true);
-    //  }
-
-    //}
-
-
     this.data.updateData(false, 3, 3);
   }
 
   ngOnInit(): void {
-    //Get Id from the store
-    this.stroreId = Number(this.router.snapshot.params['stroreid']);
-    this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.returned = localStorage.getItem("returned");
-
     this.initializeForm();
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.addControl('bankStores', this.formStores);
       this.edit = true;
-    } else {
-      if (this.route.getCurrentNavigation().extras.state) {
-        this.store = this.route.getCurrentNavigation().extras.state["store"];
+      if (this.returned == 'consult') {
+        this.formStores.disable();
       }
+    } else {
+      this.stroreId = Number(this.router.snapshot.params['stroreid']);
+      this.subscription = this.data.currentData.subscribe(map => this.map = map);
+      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+      this.returned = 'consult';//localStorage.getItem("returned");
+      //if (this.route.getCurrentNavigation().extras.state) {
+      //  this.store = this.route.getCurrentNavigation().extras.state["store"];
+      //}
     }
   }
 
@@ -175,6 +157,7 @@ export class StoreIbanComponent implements OnInit {
     //CAMPOS QUE FALTAM
     //banco de apoio
     //informação bancária
+    console.log('JSAKHSJKAHSJKSAHJK');
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
     this.store.productCode = this.formStores.get("solutionType").value;
     this.store.subproductCode = this.formStores.get("subProduct").value;
@@ -260,5 +243,10 @@ export class StoreIbanComponent implements OnInit {
         this.formStores.get('url').setValidators(null);
       this.formStores.get('url').updateValueAndValidity();
     });
+  }
+
+  disableForm() {
+    console.log('Chamei a funcao');
+    this.formStores.disable();
   }
 }

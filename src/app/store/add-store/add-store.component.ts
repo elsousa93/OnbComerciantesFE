@@ -127,6 +127,8 @@ export class AddStoreComponent implements OnInit {
   public idisabledAdd: boolean = false;
   public idisabledContact: boolean = false;
 
+  returned: string;
+
 
   loadTableInfo() {
     this.tableInfo.GetAllCountries().subscribe(res => {
@@ -160,10 +162,14 @@ export class AddStoreComponent implements OnInit {
     //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
 
     this.initializeForm();
+    this.returned = "consult";//localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.addControl('infoStores', this.formStores);
       this.edit = true;
+      if (this.returned == 'consult') {
+        this.formStores.disable();
+      }
     } else {
       this.appComp.updateNavBar("Adicionar Loja")
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
@@ -347,7 +353,7 @@ export class AddStoreComponent implements OnInit {
       countryStore: new FormControl(''),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
-      contactPoint: new FormControl((this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required),
+      contactPoint: new FormControl(/*(this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required*/),
       subactivityStore: new FormControl('', Validators.required),
       localeStore: new FormControl(''),
       addressStore: new FormControl('')
