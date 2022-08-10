@@ -860,7 +860,7 @@ export class ClientByIdComponent implements OnInit {
 
         this.client.shortName = this.dataCC.value["nameCC"];
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
-        this.client.fiscalId = this.dataCC.value["nifCC"];
+        this.client.fiscalIdentification.fiscalId = this.dataCC.value["nifCC"];
       //  this.client.addressCC = this.dataCC.value["addressCC"];
        // this.client.postalCodeCC = this.dataCC.value["postalCodeCC"];
 
