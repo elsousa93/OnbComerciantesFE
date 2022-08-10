@@ -1,3 +1,5 @@
+import { addresstranformed } from './addresstranformed.interface';
+
 // Cartão de Cidadão
   export function GetCCData(): any {
   var elName = (<HTMLInputElement>document.getElementById("CCDivNome"));

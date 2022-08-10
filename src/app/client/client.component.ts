@@ -18,6 +18,8 @@ import { Configuration, configurationToken } from '../configuration';
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../citizencard/ICCInfo.interface';
+import { dataCC } from './dataCC.interface';
+import { ReadcardService } from '../readcard/readcard.service';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { SubmissionService } from '../submission/service/submission-service.service';
@@ -54,7 +56,8 @@ export class ClientComponent implements OnInit {
   process: any;
 
   //---- Cartão de Cidadao - vars ------
-
+  public dataCCcontents: dataCC;
+  public prettyPDF = null;
   public nameCC = null;
   public nationalityCC = null;
   public birthDateCC = null;
@@ -65,7 +68,7 @@ export class ClientComponent implements OnInit {
   public countryCC = null;
 
   public okCC = null;
-  public dadosCC: Array<string> = [];
+  public dadosCC: Array<string> = []; //apagar
 
   //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
@@ -85,7 +88,7 @@ export class ClientComponent implements OnInit {
   }
   /**
    * Information from the Citizen Card will be associated to the client structure
-   * cardNumber não é guardado
+   * cardNumber não é guardado?
    * 
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
@@ -99,18 +102,33 @@ export class ClientComponent implements OnInit {
     console.log("cardNumber: ", cardNumber);
     console.log("nif: ", nif);
   
-    this.nameCC = name;
-    this.nationalityCC = nationality;
+    this.dataCCcontents.nomeCC = name;
+    this.dataCCcontents.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
     this.cardNumberCC = cardNumber; // Nº do CC
-    this.nifCC = nif;
+    this.dataCCcontents.nifCC = nif;
    
-    this.countryCC = countryIssuer;
+    this.dataCCcontents.countryCC = countryIssuer;
 
     if (!(address == null)) {
-      this.addressCC = address;
-      this.postalCodeCC = postalCode;
+      this.dataCCcontents.addressCC = address;
+      this.dataCCcontents.postalCodeCC = postalCode;
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        nameFather, nameMother, nif, nss, sns, notes];
+
+      //Send to PDF
+      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
     }
+    else {
+      
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        nameFather, nameMother, nif, nss, sns, notes, address, postalCode, country];
+
+      //Send to PDF without address
+      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
+    }
+
   }
 
 
@@ -245,6 +263,7 @@ export class ClientComponent implements OnInit {
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('newModal') newModal;
 
+
   emit(url: string) {
     this.urlEmitter.emit(url);
   }
@@ -257,7 +276,11 @@ export class ClientComponent implements OnInit {
   public merchantInfo: any;
 
   constructor(private router: ActivatedRoute, private http: HttpClient,
-      @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService, private submissionService: SubmissionService) {
+    @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, private data: DataService, private clientService: ClientService,
+    private processService: ProcessService, public modalService: BsModalService,
+    private submissionService: SubmissionService, private readCardService: ReadcardService) {
+
       this.baseUrl = configuration.baseUrl;
       this.neyondBackUrl = configuration.neyondBackUrl;
 
@@ -540,15 +563,28 @@ export class ClientComponent implements OnInit {
     this.documentType = true;
   }
 
+  dataCC? =  null;
+
   obterSelecionado() {
     console.log(this.clientId);
 
     var NIFNIPC = '';
+
     console.log("DOCUMENTAIONDELIVERYMETHOD -->");
     console.log(this.newClient.documentationDeliveryMethod);
     if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
       console.log("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
+    }
+
+    if (this.newClient.documentationDeliveryMethod === '004') {
+      this.dataCC = {
+        nomeCC: this.nameCC,
+        cardNumberCC: this.cardNumberCC,
+        nifCC: this.nifCC,
+        addresssCC: this.addressCC,
+        postalCodeCC: this.postalCodeCC
+      }
     }
       let navigationExtras: NavigationExtras = {
         state: {
@@ -556,6 +592,7 @@ export class ClientComponent implements OnInit {
           NIFNIPC: NIFNIPC,
           clientExists: true,
           clientId: this.clientId,
+          dataCC: this.dataCC
         }
       };
 

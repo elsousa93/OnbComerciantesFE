@@ -4,10 +4,10 @@
     <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up':'down'">
       <div class="accordion" id="accordion">
         <div class="nav-item" *ngIf="userPermissions.HomePage">
-          <a role="button"  [routerLink]="['/']" id="anchor">
+          <a role="button" [routerLink]="['/']" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/home.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Início &nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Início &nbsp;
             </p>
           </a>
         </div>
@@ -15,27 +15,27 @@
           <a role="button" [routerLink]="['/client']" (click)="hideHistoryTab()" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/folder_open.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Abertura de Processo &nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Abertura de Processo &nbsp;
             </p>
           </a>
         </div>
         <div *ngIf="userPermissions.ProcessHandling">
           <a id="headingOne3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3"
-            aria-expanded="true" aria-controls="collapseOne3">
+             aria-expanded="true" aria-controls="collapseOne3">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle">
               <img src="assets/images/edit_note.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Tratamento de Processos &nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Tratamento de Processos &nbsp;
             </p>
           </a>
           <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3"
-            data-bs-parent="#accordion">
+               data-bs-parent="#accordion">
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EligibilityOpinions">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Pareceres
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Pareceres
                       de Elegibilidade &nbsp;
                     </p>
                   </a>
@@ -48,7 +48,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Múltiplos
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Múltiplos
                       clientes &nbsp;
                     </p>
                   </a>
@@ -61,7 +61,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
                       DO &nbsp;
                     </p>
                   </a>
@@ -75,7 +75,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Aprovação
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Aprovação
                       de &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;negociação de precário &nbsp;
                     </p>
                   </a>
@@ -89,7 +89,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
                       matricula SIBS &nbsp;
                     </p>
                   </a>
@@ -103,7 +103,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Parecer
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Parecer
                       de Risco &nbsp;
                     </p>
                   </a>
@@ -116,7 +116,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Dúvidas
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Dúvidas
                       Compliance &nbsp;
                     </p>
                   </a>
@@ -129,7 +129,7 @@
           <a [routerLink]="['/app-consultas']" role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/search.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav ">&nbsp;Consultas&nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav ">&nbsp;Consultas&nbsp;
             </p>
           </a>
         </div>
@@ -137,6 +137,13 @@
           <a [routerLink]="['/app-aceitacao']" role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;FAQS &nbsp;
+            </p>
+          </a>
+        </div>
+        <div class="nav-item">
+          <a [routerLink]="['/readcardcc']" role="button">
+            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
+              <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Read Card &nbsp;
             </p>
           </a>
         </div>

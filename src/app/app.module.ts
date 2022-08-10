@@ -68,6 +68,12 @@ import { ObterPackContratualComponent } from './aceitacao/obter-pack-contratual/
 import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-stakeholder.component';
 import { CreateStakeholderComponent } from './stakeholders/create-stakeholder/create-stakeholder.component';
 
+//import da linguages e configurações de hora
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
+registerLocaleData(localePT);
+
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/');
 }
@@ -104,7 +110,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ConsultasComponent,
     PackContratualComponent,
     ObterPackContratualComponent,
-    ReadcardComponent,
     NavMenuInternaComponent,
     FooterComponent,
     CircularProgressComponent,
