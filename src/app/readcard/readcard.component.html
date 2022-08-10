@@ -1,5 +1,10 @@
-<button (click)="obterSelecionado()">Ler cartão</button>
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="readcard">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+</head>
+<body>
+  <table class='table table-striped' aria-labelledby="tableLabel" id="readCCTableContent" #readCCTableContent>
     <thead>
       <tr>
         <th>Name</th>
@@ -12,14 +17,11 @@
       </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>{{ readcard[0] }}</td>
-            <td>{{ readcard[1] }}</td>
-            <td>{{ readcard[2] }}</td>
-            <td>{{ readcard[3] }}</td>
-            <td>{{ readcard[6] }}</td>
-            <td>{{ readcard[7] }}</td>
-            <td>{{ readcard[4] }}</td>
-        </tr>
+      <tr *ngFor="let row of ccArrayData">
+        <td>{{ row }}</td>
+      </tr>
     </tbody>
   </table>
+  <button (click)="transfPDF()"> generate pdf </button>
+</body>
+</html>

@@ -116,7 +116,7 @@ export class ClientByIdComponent implements OnInit {
   };
 
   tempClient: any;
-
+  dataCC = null;
   crcCode: string;
 
   clientExists: boolean;
@@ -853,6 +853,21 @@ export class ClientByIdComponent implements OnInit {
       }
       this.client.commercialName = this.form.value["socialDenomination"];
     }
+    if (this.tipologia === 'ENI') {
+      this.client.shortName = this.form.value["socialDenomination"];
+      if (this.route.getCurrentNavigation().extras.state["name"] !== '') {
+        this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
+
+        this.client.shortName = this.dataCC.value["nameCC"];
+        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
+        this.client.fiscalIdentification.fiscalId = this.dataCC.value["nifCC"];
+      //  this.client.addressCC = this.dataCC.value["addressCC"];
+       // this.client.postalCodeCC = this.dataCC.value["postalCodeCC"];
+
+
+      }
+
+    }
 
     ////Social Denomination
 
@@ -875,7 +890,8 @@ export class ClientByIdComponent implements OnInit {
         stakeholders: this.processClient.stakeholders,
         merchantInfo: this.merchantInfo,
         crc: (this.crcFound) ? this.processClient : null,
-        crcCode: this.processClient.code
+        crcCode: this.processClient.code,
+       
       }
     };
 
