@@ -17,6 +17,8 @@ import { ProcessNumberService } from '../nav-menu-presencial/process-number.serv
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
 import { Configuration, configurationToken } from '../configuration';
+import { StoreService } from '../store/store.service';
+import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { NGXLogger } from 'ngx-logger';
 @Component({
   selector: 'app-countrys',
@@ -117,7 +119,7 @@ export class CountrysComponent implements OnInit {
 
   constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService) {
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService, private storeService: StoreService) {
     this.ngOnInit();
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
@@ -345,6 +347,7 @@ export class CountrysComponent implements OnInit {
   }
 
   submit() {
+    var context = this;
     if (this.returned !== 'consult') {
       this.logger.debug('Entrei no if do edit e processo normal ');
       this.logger.debug('Cliente recebido ', this.client);
@@ -471,6 +474,34 @@ export class CountrysComponent implements OnInit {
         this.logger.debug(result);
         localStorage.setItem("submissionId", result.id);
         this.processNrService.changeProcessNumber(result.processNumber);
+
+        //this.storeService.getShopsListOutbound(this.newSubmission.merchant.id, "por mudar", "por mudar").subscribe(res => {
+        //  res.forEach(value => {
+        //    this.storeService.getShopInfoOutbound(context.newSubmission.merchant.id, value.shopId, "por mudar", "por mudar").subscribe(r => {
+        //      var storeToAdd: ShopDetailsAcquiring = {
+        //        activity: r.activity,
+        //        subActivity: r.secondaryActivity,
+        //        address: {
+        //          address: r.address.address,
+        //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+        //          shoppingCenter: r.address.shoppingCenter,
+        //          useMerchantAddress: r.address.sameAsMerchantAddress
+        //        },
+        //        bank: {
+        //          bank: r.bankingInformation
+        //        },
+        //        name: r.name,
+        //        productCode: r.product,
+        //        subproductCode: r.subproduct,
+        //        website: r.url,
+        //      }
+
+        //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+
+        //      });
+        //    });
+        //  });
+        //});
 
       let navigationExtras: NavigationExtras = {
         state: {

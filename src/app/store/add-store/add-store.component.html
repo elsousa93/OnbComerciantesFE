@@ -40,9 +40,9 @@
               <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
               <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ReplicateAddStore'|translate}}</p>
               <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
-                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1" (click)="chooseAddress(false)" checked><label class="form-check-label radio pe-5" for="radio1" wappler-command="editContent">SIM</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1" (click)="chooseAddress(false)" [attr.disabled]="(returned == 'consult' && edit) ? true : null"><label class="form-check-label radio pe-5" for="radio1" wappler-command="editContent" >SIM</label></div>
                 </span><span class="navbar-text">
-                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1" (click)="chooseAddress(true)"><label class="form-check-label radio" for="radio1" wappler-command="editContent">NÃO</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" value="" id="radio1" name="radio1" (click)="chooseAddress(true)" [attr.disabled]="(returned == 'consult' && edit) ? true : null"><label class="form-check-label radio" for="radio1" wappler-command="editContent">NÃO</label></div>
                 </span></nav>
                 <p *ngIf="chooseAddressV" class="titulo-form-simples" wappler-command="editContent">{{'ContryStore'|translate}}</p>
                 <input formControlName="countryStore" *ngIf="chooseAddressV" id="text1" name="text1" type="text" class="form-control campo_form">
@@ -50,11 +50,11 @@
                 <input formControlName="zipCodeStore" *ngIf="chooseAddressV" id="text4" name="text3" type="text" class="form-control campo_form" (keypress)="GetCountryByZipCode()">
                 <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ComercialCentreStore'|translate}}</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
-                  <div class="form-check"><input (click)="comercialCentre(true)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                  <div class="form-check"><input (click)="comercialCentre(true)" class="form-check-input" type="radio" value="" id="radio2" name="radio2" [attr.disabled]="(returned == 'consult' && edit) ? true : null">
                     <label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent">SIM</label>
                   </div>
                   </span><span class="navbar-text">
-                  <div class="form-check"><input (click)="comercialCentre(false)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                  <div class="form-check"><input (click)="comercialCentre(false)" class="form-check-input" type="radio" value="" id="radio2" name="radio2" [attr.disabled]="(returned == 'consult' && edit) ? true : null">
                     <label class="form-check-label radio" for="radio2" wappler-command="editContent">NÃO</label>
                   </div>
                   </span></nav>
