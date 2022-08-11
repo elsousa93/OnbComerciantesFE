@@ -26,7 +26,7 @@ const testValues: ShopDetailsAcquiring[] = [
     activity: "Activity1",
     address:
     {
-      isInsideShoppingCenter: true, sameAsMerchantAddress: true, shoppingCenter: "Colombo",
+      isInsideShoppingCenter: true, useMerchantAddress: true, shoppingCenter: "Colombo",
       address:
       {
         address: "A",
@@ -62,7 +62,7 @@ const testValues: ShopDetailsAcquiring[] = [
     address:
     {
       isInsideShoppingCenter: true,
-      sameAsMerchantAddress: true,
+      useMerchantAddress: true,
       shoppingCenter: "Colombo2",
       address:
       {
@@ -143,21 +143,11 @@ export class StoreComponent implements AfterViewInit{
      
     this.ngOnInit();
 
-    //Ir buscar a lista de lojas associadas ao merchant, caso existam
-    this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
-      this.storeService.getShopsListOutbound(result.clientId, "por mudar", "por mudar").subscribe(res => {
-        this.storeList.push.apply(this.storeList, res);
-        this.loadStores(this.storeList);
-      });
-    });
-
-    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos
+    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
     this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
       result.forEach(value => {
         this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-          var index = this.storeList.findIndex(store => store.id == res.id);
-          if (index == -1)
-            this.storeList.push(res);
+          this.storeList.push(res);
         });
       });
       this.loadStores(this.storeList);
@@ -254,7 +244,7 @@ export class StoreComponent implements AfterViewInit{
         this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
         this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
         this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-        this.currentStore.address.sameAsMerchantAddress = true;
+        this.currentStore.address.useMerchantAddress = true;
       }
 
       if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {

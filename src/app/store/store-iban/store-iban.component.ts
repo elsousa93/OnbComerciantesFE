@@ -115,11 +115,11 @@ export class StoreIbanComponent implements OnInit {
   edit: boolean = false;
 
   constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
-    this.ngOnInit();
     this.data.updateData(false, 3, 3);
   }
 
   ngOnInit(): void {
+    console.log('INIT');
     this.initializeForm();
 
     if (this.rootFormGroup.form != null) {
@@ -132,10 +132,10 @@ export class StoreIbanComponent implements OnInit {
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-      this.returned = 'consult';//localStorage.getItem("returned");
-      //if (this.route.getCurrentNavigation().extras.state) {
-      //  this.store = this.route.getCurrentNavigation().extras.state["store"];
-      //}
+      this.returned = localStorage.getItem("returned");
+      if (this.route.getCurrentNavigation() != null) {
+        this.store = this.route.getCurrentNavigation().extras.state["store"];
+      }
     }
   }
 

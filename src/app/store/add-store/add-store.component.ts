@@ -275,7 +275,7 @@ export class AddStoreComponent implements OnInit {
       this.store.address.address.country = this.submissionClient.headquartersAddress.country;
       this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
       this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-      this.store.address.sameAsMerchantAddress = true;
+      this.store.address.useMerchantAddress = true;
     }
 
     if (this.isComercialCentreStore){
