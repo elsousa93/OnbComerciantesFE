@@ -52,9 +52,9 @@ const testValues: ShopDetailsAcquiring[] = [
     id: "1",
     manager: "Manager1",
     name: "ShopName",
-    productCode: "432",
+    productCode: "cardPresent",
     subActivity: "99",
-    subproductCode: "0",
+    subproductCode: "easy",
     website: "google.com"
   },
   {
@@ -62,7 +62,7 @@ const testValues: ShopDetailsAcquiring[] = [
     address:
     {
       isInsideShoppingCenter: true,
-      useMerchantAddress: true,
+      useMerchantAddress: false,
       shoppingCenter: "Colombo2",
       address:
       {
@@ -205,6 +205,8 @@ export class StoreComponent implements AfterViewInit{
     infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
     infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
     infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+    infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+    infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
 
     var bankStores = this.editStores.controls["bankStores"];
     bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);

@@ -62,6 +62,10 @@
           </nav>
         </div>
       </div>
+      <ng-container *ngIf="currentStore !== null" [formGroup]="editStores">
+        <app-add-store></app-add-store>
+        <app-store-iban></app-store-iban>
+      </ng-container>
       <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
         <div class="col ms-0 ps-0">
           <hr>
@@ -82,7 +86,4 @@
     </div>
 </form>
 </div>
-<ng-container *ngIf="currentStore !== null" [formGroup]="editStores">
-  <app-add-store></app-add-store>
-  <app-store-iban></app-store-iban>
-</ng-container>
+

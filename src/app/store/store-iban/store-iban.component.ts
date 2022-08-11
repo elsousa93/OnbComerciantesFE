@@ -246,8 +246,4 @@ export class StoreIbanComponent implements OnInit {
     });
   }
 
-  disableForm() {
-    console.log('Chamei a funcao');
-    this.formStores.disable();
-  }
 }

@@ -41,7 +41,7 @@ export class AddStoreComponent implements OnInit {
 
   private baseUrl;
 
-  public chooseAddressV: boolean = false;
+  public chooseAddressV: boolean;
   formStores!: FormGroup;
   edit: boolean = false;
 
@@ -152,7 +152,6 @@ export class AddStoreComponent implements OnInit {
     this.loadTableInfo();
 
     this.data.updateData(false, 3, 2);
-    console.log("Valor do editar ", this.edit);
   }
 
   ngOnInit(): void {
@@ -163,11 +162,12 @@ export class AddStoreComponent implements OnInit {
     //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
 
     this.initializeForm();
-    this.returned = "consult";//localStorage.getItem("returned");
+    this.returned = localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.addControl('infoStores', this.formStores);
       this.edit = true;
+      
       if (this.returned == 'consult') {
         this.formStores.disable();
       }
@@ -258,37 +258,39 @@ export class AddStoreComponent implements OnInit {
   }
 
   submit() {
-    this.store.name = this.formStores.get("storeName").value;
-    if (this.submissionClient.merchantType == 'Entrepreneur')
-      this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
-    else
-      this.store.manager = this.formStores.get("contactPoint").value;
+    //this.store.name = this.formStores.get("storeName").value;
+    //if (this.submissionClient.merchantType == 'Entrepreneur')
+    //  this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
+    //else
+    //  this.store.manager = this.formStores.get("contactPoint").value;
 
-    this.store.activity = this.formStores.get("activityStores").value;
-    this.store.subActivity = this.formStores.get("subactivityStores").value;
+    //this.store.activity = this.formStores.get("activityStores").value;
+    //this.store.subActivity = this.formStores.get("subactivityStores").value;
     if (this.chooseAddressV) {
-      this.store.address.address.address = this.formStores.get("addressStore").value;
-      this.store.address.address.country = this.formStores.get("countryStore").value;
-      this.store.address.address.postalArea = this.formStores.get("localeStore").value;
-      this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
+      //this.store.address.address.address = this.formStores.get("addressStore").value;
+      //this.store.address.address.country = this.formStores.get("countryStore").value;
+      //this.store.address.address.postalArea = this.formStores.get("localeStore").value;
+      //this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
+      //this.store.address.useMerchantAddress = false;
+      console.log('Valor do replicateAddress ' , this.formStores.get("replicateAddress").value);
     } else {
-      this.store.address.address.address = this.submissionClient.headquartersAddress.address;
-      this.store.address.address.country = this.submissionClient.headquartersAddress.country;
-      this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-      this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-      this.store.address.useMerchantAddress = true;
+      //this.store.address.address.address = this.submissionClient.headquartersAddress.address;
+      //this.store.address.address.country = this.submissionClient.headquartersAddress.country;
+      //this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+      //this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+      /*      this.store.address.useMerchantAddress = true;*/
+      console.log('Valor do replicateAddress ', this.formStores.get("replicateAddress").value);
     }
 
-    if (this.isComercialCentreStore){
-      this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value; // n sei qual é o valor que corresponde na Loja
-    
+    if (this.isComercialCentreStore) {
+      //this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value;
+      console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
+    } else {
+      console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
     }
 
-    this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
+    //this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
 
-    //console.log(this.formStores);
-    console.log('valores do form ', this.formStores);
-    console.log('valores do form ROOT apos submit ', this.rootFormGroup.form.controls["infoStores"]);
     let navigationExtras: NavigationExtras = {
       state: {
         store: this.store
@@ -305,19 +307,11 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValidators([Validators.required]);
       this.formStores.get('countryStore').setValidators([Validators.required]);
       this.formStores.get('zipCodeStore').setValidators([Validators.required]);
-
-
-      console.log('Adicionamos os controls dos paises ao formStores ', this.formStores);
-      console.log('O root tem ', this.rootFormGroup.form.controls["infoStores"]);
     } else {
-      console.log('Antes de removermos os campos ', this.formStores);
-      console.log('ROOT antes de removermos os campos ', this.rootFormGroup.form.controls["infoStores"]);
       this.formStores.get('localeStore').setValidators(null);
       this.formStores.get('addressStore').setValidators(null);
       this.formStores.get('countryStore').setValidators(null);
       this.formStores.get('zipCodeStore').setValidators(null);
-      console.log('Depois de removermos os campos ', this.formStores);
-      console.log('ROOT depois de removermos os campos ', this.rootFormGroup.form.controls["infoStores"]);
     }
   }
 
@@ -357,7 +351,9 @@ export class AddStoreComponent implements OnInit {
       contactPoint: new FormControl(/*(this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required*/),
       subactivityStore: new FormControl('', Validators.required),
       localeStore: new FormControl(''),
-      addressStore: new FormControl('')
+      addressStore: new FormControl(''),
+      replicateAddress: new FormControl(this.chooseAddressV, Validators.required),
+      commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
     })
 }
 
