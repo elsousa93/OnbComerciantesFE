@@ -8,6 +8,7 @@ export interface Configuration {
     postmanUrl: string,
     acquiringAPIUrl: string,
     outboundUrl: string,
-    authTokenUrl: string
+    authTokenUrl: string,
+    mockacoUrl: string
 }
 export const configurationToken = new InjectionToken('Configuration');

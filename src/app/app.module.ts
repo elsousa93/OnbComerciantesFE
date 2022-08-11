@@ -6,7 +6,7 @@ import { ComprovativosService } from './comprovativos/services/comprovativos.ser
 import { HttpUtilService } from './comprovativos/services/http.services';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -67,6 +67,15 @@ import { PackContratualComponent } from './aceitacao/pack-contratual/pack-contra
 import { ObterPackContratualComponent } from './aceitacao/obter-pack-contratual/obter-pack-contratual.component';
 import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-stakeholder.component';
 import { CreateStakeholderComponent } from './stakeholders/create-stakeholder/create-stakeholder.component';
+import { LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_WRITER_SERVICE } from 'ngx-logger';
+import { WriterCustomService } from 'src/logger/writer-custom.service';
+
+//import da linguages e configurações de hora
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
+import { environment } from 'src/environments/environment';
+registerLocaleData(localePT);
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/');
@@ -104,7 +113,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ConsultasComponent,
     PackContratualComponent,
     ObterPackContratualComponent,
-    ReadcardComponent,
     NavMenuInternaComponent,
     FooterComponent,
     CircularProgressComponent,
@@ -203,9 +211,17 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
+    }),
+    LoggerModule.forRoot({
+      level : environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
+      enableSourceMaps: true
+    },{
+      writerProvider : {
+          provide: TOKEN_LOGGER_WRITER_SERVICE, useClass: WriterCustomService
+        }
     })
-  ], 
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  ],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

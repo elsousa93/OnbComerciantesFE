@@ -15,6 +15,7 @@ import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../process/process.service';
 import { Process } from '../process/process.interface';
 import { DatePipe } from '@angular/common';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-dashboard',
@@ -215,7 +216,7 @@ export class DashboardComponent implements OnInit {
 
   date: string;
 
-  constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
+  constructor(private logger : NGXLogger, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
     private datePipe: DatePipe) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
@@ -232,7 +233,7 @@ export class DashboardComponent implements OnInit {
 
     //Pendentes de envio
     this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
-      console.log('Pendentes de envio ', result.items);
+      this.logger.debug('Pendentes de envio ', result.items);
       this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
         this.incompleteProcessess = resul;
         this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
@@ -241,10 +242,10 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendentes.sort = this.sort;
         this.incompleteCount = result.pagination.total;
 
-        console.log("--------------------------------------");
-        console.log(result.pagination);
-        console.log(this.incompleteCount);
-        console.log("--------------------------------------");
+        this.logger.debug("--------------------------------------");
+        this.logger.debug(result.pagination);
+        this.logger.debug(this.incompleteCount);
+        this.logger.debug("--------------------------------------");
       });
 
 
@@ -252,7 +253,7 @@ export class DashboardComponent implements OnInit {
 
     //Tratamento BackOffice
     this.processService.searchProcessByState('Ongoing', 0, 1).subscribe(result => {
-      console.log('Tratamento BackOffice ', result);
+      this.logger.debug('Tratamento BackOffice ', result);
       this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
         this.ongoingProcessess = resul;
         this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess.items);
@@ -267,7 +268,7 @@ export class DashboardComponent implements OnInit {
 
     //Devolvido BackOffice
     this.processService.searchProcessByState('Returned', 0, 1).subscribe(result => {
-      console.log('Devolvidos BackOffice ', result);
+      this.logger.debug('Devolvidos BackOffice ', result);
       this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
         this.returnedProcessess = resul;
         this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess.items);
@@ -281,7 +282,7 @@ export class DashboardComponent implements OnInit {
 
     //Fase de aceitação
     //this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
-    //  console.log('Fase de aceitação ', result);
+    //  this.logger.debug('Fase de aceitação ', result);
     //  this.contractAcceptanceProcessess = result;
     //  this.dataSourceAceitacao = new MatTableDataSource(this.contractAcceptanceProcessess);
 
@@ -292,7 +293,7 @@ export class DashboardComponent implements OnInit {
 
     //Arquivo Fisico
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-      console.log('Completos ', result);
+      this.logger.debug('Completos ', result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.completeProcessess = resul;
         this.dataSourceArquivoFisico = new MatTableDataSource(this.completeProcessess.items);
@@ -312,7 +313,7 @@ export class DashboardComponent implements OnInit {
 
     this.processService.UpdateProcess(processId, updateProcess, "fQkRbjO+7kGqtbjwnDMAag==", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").
     subscribe(result => {
-      console.log("Processo cancelado ", result);
+      this.logger.debug("Processo cancelado ", result);
     });
   }
 

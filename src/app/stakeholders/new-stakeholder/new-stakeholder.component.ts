@@ -14,6 +14,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { error } from '@angular/compiler/src/util';
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -91,11 +92,11 @@ export class NewStakeholderComponent implements OnInit {
     this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
     }, error => {
-      console.log(error);
+      this.logger.debug(error);
     })
   }
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService, private datePipe: DatePipe) {
@@ -104,53 +105,53 @@ export class NewStakeholderComponent implements OnInit {
     this.submissionId = localStorage.getItem('submissionId');
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
-    console.log("CRC STAKEHOLDERS");
-    console.log(this.crcStakeholders);
+    this.logger.debug("CRC STAKEHOLDERS");
+    this.logger.debug(this.crcStakeholders);
     this.ngOnInit();
 
     var context = this;
     this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-      console.log("Ir buscar submissão através do processNumber", result);
+      this.logger.debug("Ir buscar submissão através do processNumber", result);
       this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-        console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
+        this.logger.debug("Ir buscar os detalhes da submissão com o seu ID ", resul);
         this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-          console.log('Lista de stakeholders da submissão ', res);
+          this.logger.debug('Lista de stakeholders da submissão ', res);
           res.forEach(function (value, index) {
-            console.log("Stake ", value);
+            this.logger.debug("Stake ", value);
             context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-              console.log("Info stakeholder ", r);
+              this.logger.debug("Info stakeholder ", r);
               context.submissionStakeholders.push(r);
             }, error => {
-              console.log(error);
+              this.logger.debug(error);
             });
           }, error => {
-            console.log(error);
+            this.logger.debug(error);
           });
         });
       });
     });
 
-    console.log("Lista que fomos buscar à submissão antiga ", this.submissionStakeholders);
+    this.logger.debug("Lista que fomos buscar à submissão antiga ", this.submissionStakeholders);
 
     stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
-        console.log("Value ", value);
+        this.logger.debug("Value ", value);
         context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          console.log("Info stake ", result);
+          this.logger.debug("Info stake ", result);
           context.submissionStakeholders.push(result);
           context.stakeService.getStakeholderByID(result.stakeholderId, 'por mudar', 'por mudar').subscribe(result => {
-            console.log("stake do outbound: ", result);
+            this.logger.debug("stake do outbound: ", result);
             context.stakeholdersComprovativos.push(result);
           });
         }, error => {
-          console.log(error);
+          this.logger.debug(error);
         });
       });
     }, error => {
-      console.log(error);
+      this.logger.debug(error);
     });
 
-    console.log("Lista depois de irmos buscar stakeholders à submissao atual (CRC) ", this.submissionStakeholders);
+    this.logger.debug("Lista depois de irmos buscar stakeholders à submissao atual (CRC) ", this.submissionStakeholders);
     
 
     //this.currentStakeholder = {
@@ -169,10 +170,10 @@ export class NewStakeholderComponent implements OnInit {
     //this.stakeholderNumber = "999";
 
     //stakeService.getStakeholderByID(this.stakeholderNumber, "", "").subscribe(success => {
-    //  console.log(success);
+    //  this.logger.debug(success);
     //  this.newStake = success;
     //}, error => {
-    //  console.log(error);
+    //  this.logger.debug(error);
     //});
 
     //Tirar o comentário depois de confirmar a página anterior (por enquanto usar um valor predefinido)
@@ -183,35 +184,35 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   isStakeholderFromCRC(stakeholder) {
-    console.log("PERTENCE AO CRC??");
-    console.log(stakeholder);
+    this.logger.debug("PERTENCE AO CRC??");
+    this.logger.debug(stakeholder);
     this.selectedStakeholderIsFromCRC = false;
     var context = this;
     this.crcStakeholders.forEach(function (value, idx) {
       var stakeholderFromCRC = value;
-      console.log(stakeholderFromCRC);
-      console.log("----------------");
+      this.logger.debug(stakeholderFromCRC);
+      this.logger.debug("----------------");
       if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
-        console.log("sim");
+        this.logger.debug("sim");
         context.selectedStakeholderIsFromCRC = true;
       }
     });
-    console.log("------ NÃO ENCONTROU --------");
+    this.logger.debug("------ NÃO ENCONTROU --------");
   }
 
   updateForm(stakeholder, idx) {
-    console.log("chegou aqui");
-    console.log(stakeholder);
+    this.logger.debug("chegou aqui");
+    this.logger.debug(stakeholder);
     this.currentStakeholder = stakeholder;
     this.currentIdx = idx;
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
-    console.log(this.selectedStakeholderIsFromCRC);
+    this.logger.debug(this.selectedStakeholderIsFromCRC);
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {
         //if (this.currentStakeholder.identificationDocument.number == '004') {
-        //  console.log('ENtrou cartão de cidadão');
+        //  this.logger.debug('ENtrou cartão de cidadão');
         //  this.createFormCC();// mudei a ordem
         //  this.validateCC(true);
         //} else {
@@ -220,7 +221,7 @@ export class NewStakeholderComponent implements OnInit {
         //}
 
 
-        //console.log('ENtrou cartão de cidadão');
+        //this.logger.debug('ENtrou cartão de cidadão');
         //  this.createFormCC();// mudei a ordem
         //  this.validateCC(true);
 
@@ -236,7 +237,7 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   initializeFormWithoutCC() {
-    console.log("stakeholder a ir a informação: ", this.currentStakeholder);
+    this.logger.debug("stakeholder a ir a informação: ", this.currentStakeholder);
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
@@ -254,11 +255,11 @@ export class NewStakeholderComponent implements OnInit {
   ngOnInit(): void {
     this.data.updateData(false,2,2);
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
-    console.log(this.newStake.fiscalId);
-    // console.log(this.route.getCurrentNavigation().extras.state["isCC"]);
+    this.logger.debug(this.newStake.fiscalId);
+    // this.logger.debug(this.route.getCurrentNavigation().extras.state["isCC"]);
     this.initializeFormWithoutCC();
     //this.createForm();
-    //console.log('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
+    //this.logger.debug('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
 
     //Tirar o comentario
     //this.showYesCC = this.route.getCurrentNavigation().extras.state["isCC"];
@@ -286,9 +287,9 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.formNewStakeholder);
+    this.logger.debug(this.formNewStakeholder);
     if (this.returned !== 'consult') {
-      console.log('Entrei no if do submit dos stakeholders');
+      this.logger.debug('Entrei no if do submit dos stakeholders');
       if (this.formNewStakeholder.valid) {
         this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
         this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
@@ -296,8 +297,8 @@ export class NewStakeholderComponent implements OnInit {
         this.currentStakeholder.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
         this.currentStakeholder.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
 
-        console.log(this.formNewStakeholder.get('proxy').value);
-        console.log((this.formNewStakeholder.get("proxy").value === 'true'));
+        this.logger.debug(this.formNewStakeholder.get('proxy').value);
+        this.logger.debug((this.formNewStakeholder.get("proxy").value === 'true'));
         this.currentStakeholder.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
 
         if (this.showYesCC && !this.showNoCC) {
@@ -307,22 +308,22 @@ export class NewStakeholderComponent implements OnInit {
           this.currentStakeholder.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
         }
 
-        console.log("current stakeholder");
-        console.log(this.currentStakeholder);
+        this.logger.debug("current stakeholder");
+        this.logger.debug(this.currentStakeholder);
         this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.id, this.currentStakeholder).subscribe(result => {
-          console.log("Resultado de criar um stakeholder a uma submissão existente");
+          this.logger.debug("Resultado de criar um stakeholder a uma submissão existente");
           if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
             this.currentIdx = this.currentIdx + 1;
             this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
-            console.log(this.currentStakeholder);
+            this.logger.debug(this.currentStakeholder);
           }
 
         }, error => {
-          console.log(error);
+          this.logger.debug(error);
         });
       }
     } else {
-      console.log("Não entrei no if do Submit dos stakeholders");
+      this.logger.debug("Não entrei no if do Submit dos stakeholders");
     }
   }
 
@@ -332,13 +333,13 @@ export class NewStakeholderComponent implements OnInit {
   //  this.newStake.fullName = formNewStakeholder.fullName;
 
 
-  //  console.log(formNewStakeholder);
-  //  console.log(typeof this.newStake);
+  //  this.logger.debug(formNewStakeholder);
+  //  this.logger.debug(typeof this.newStake);
 
   //  //Nao esta a ser usado
   //  this.stringJson = JSON.stringify(this.newStake);
-  //  console.log("String json object :", this.stringJson);
-  //  console.log("Type :", typeof this.stringJson);
+  //  this.logger.debug("String json object :", this.stringJson);
+  //  this.logger.debug("Type :", typeof this.stringJson);
 
   //  const httpOptions = {
   //    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -346,14 +347,14 @@ export class NewStakeholderComponent implements OnInit {
 
   //  this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/PostNewStakeholder/'
   //    + this.newStake.fiscalId, this.newStake).subscribe(result => {
-  //      console.log(result);
+  //      this.logger.debug(result);
   //    }, error => console.error(error));
 
   //  //Edit EditStakeholderById
   //  this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/EditStakeholderById/'
   //    + this.newStake.fiscalId + '/edit', this.newStake).subscribe(result => {
-  //      console.log("EditStakeholderById");
-  //      console.log(result);
+  //      this.logger.debug("EditStakeholderById");
+  //      this.logger.debug(result);
   //    }, error => console.error(error));
 
 
@@ -387,7 +388,7 @@ export class NewStakeholderComponent implements OnInit {
         this.readcard = Object.keys(result).map(function (key) { return result[key]; });
         this.showNoCC = false;
         this.showYesCC = true;
-        console.log(this.readcard);
+        this.logger.debug(this.readcard);
       } else {
         alert("Insira o cartão cidadão")
       }
@@ -396,7 +397,7 @@ export class NewStakeholderComponent implements OnInit {
 
 
   getAll() {
-    console.log(this.tableData.GetAllCountries());
+    this.logger.debug(this.tableData.GetAllCountries());
     return this.tableData.GetAllCountries();
   }
 
@@ -429,13 +430,13 @@ export class NewStakeholderComponent implements OnInit {
   chooseStakeholder(stake: any) {
     this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
       this.currentStakeholder = result;
-      console.log("Stakeholder atual: ", this.currentStakeholder);
+      this.logger.debug("Stakeholder atual: ", this.currentStakeholder);
     });
   }
 
   GetCountryByZipCode() {
     var currentCountry = this.formNewStakeholder.get('Country').value;
-    console.log("Pais escolhido atual");
+    this.logger.debug("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
       this.lockLocality = true;

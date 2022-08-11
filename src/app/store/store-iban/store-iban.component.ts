@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
-import { Istore } from '../IStore.interface';
+import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { StoreService } from '../store.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-store-iban',
@@ -19,10 +22,9 @@ export class StoreIbanComponent implements OnInit {
 
   private baseUrl;
 
-
   /*variable declarations*/
   public stroreId: number = 0;
-  store: Istore = { id: -1 } as Istore
+  //store: Istore = { id: -1 } as Istore
   public clientID: number = 12345678;
 
   public isIBANConsidered: boolean = null;
@@ -71,15 +73,69 @@ export class StoreIbanComponent implements OnInit {
 
   files?: File[] = [];
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
+  public store: ShopDetailsAcquiring = {
+  activity: "",
+    address:
+  {
+    isInsideShoppingCenter: false,
+      sameAsMerchantAddress: false,
+        shoppingCenter: "",
+          address:
+    {
+      address: "",
+        country: "",
+          postalArea: "",
+            postalCode: ""
+    }
+  },
+  bank: {
+    bank:
+    {
+      bank: "",
+        iban: ""
+    },
+    userMerchantBank: false
+  },
+  documents:
+  {
+    href: "",
+      type: "",
+        id: ""
+  },
+  id: "",
+    manager: "",
+      name: "",
+        productCode: "",
+          subActivity: "",
+            subproductCode: "",
+              website: ""
+} as ShopDetailsAcquiring
+
+  formStores!: FormGroup;
+  returned: string
+  edit: boolean = false;
+
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
     this.ngOnInit();
-    // this.baseUrl = baseUrl;
 
 
-    /*Get the information from the store we are editing*/
-    http.get<Istore>(this.baseUrl + 'bestores/GetStoreById/' + this.clientID + '/' + this.stroreId).subscribe(result => {
-      this.store = result;
-    }, error => console.error(error));
+
+    //if (this.returned !== null) {
+    //  if (this.store.productCode == '') { 
+    //    this.chooseSolution(true, false, false);
+    //  }
+
+    //  if (this.store.productCode == '') { 
+    //    this.chooseSolution(false, true, false);
+    //  }
+
+    //  if (this.store.productCode == '') { 
+    //    this.chooseSolution(false, false, true);
+    //  }
+
+    //}
+
+
     this.data.updateData(false, 3, 3);
   }
 
@@ -88,26 +144,47 @@ export class StoreIbanComponent implements OnInit {
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.returned = localStorage.getItem("returned");
+
+    this.initializeForm();
+
+    if (this.rootFormGroup.form != null) {
+      this.rootFormGroup.form.addControl('bankStores', this.formStores);
+      this.edit = true;
+    } else {
+      if (this.route.getCurrentNavigation().extras.state) {
+        this.store = this.route.getCurrentNavigation().extras.state["store"];
+      }
+    }
   }
 
   /*Controles the radio button changes*/
   radoChangehandler(event: any) {
     this.selectedOption = event.target.value;
     if (this.selectedOption == "Sim") {
-      this.auxIban = this.store.iban;
-      this.store.iban = this.commIban;
+      this.auxIban = this.store.bank.bank.iban;
+      this.store.bank.bank.iban = this.commIban;
       this.idisabled = true;
     } else {
-      this.store.iban = this.auxIban;
+      this.store.bank.bank.iban = this.auxIban;
       this.idisabled = false;
     }
     
   }
 
-  //Submit form to Back-end
-  submit(FormStores: any) {
-    this.http.put<Istore>(this.baseUrl + 'bestores/PutStoreById/' + this.clientID + '/' + this.stroreId, this.store).subscribe(result => {
-    }, error => console.error(error));
+  submit() {
+    //CAMPOS QUE FALTAM
+    //banco de apoio
+    //informação bancária
+    this.store.bank.bank.bank = this.formStores.get("supportBank").value;
+    this.store.productCode = this.formStores.get("solutionType").value;
+    this.store.subproductCode = this.formStores.get("subProduct").value;
+    this.store.website = this.formStores.get("url").value;
+
+    this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.store).subscribe(result => {
+      console.log("Uma nova loja foi adicionada à submissão", result);
+    });
+
     this.route.navigate(['store-comp']);
   }
 
@@ -137,7 +214,7 @@ export class StoreIbanComponent implements OnInit {
         }
       }
     }
-    console.log(this.files);
+    this.logger.debug(this.files);
   }
 
   isIBAN(isIBANConsidered: boolean) {
@@ -145,9 +222,9 @@ export class StoreIbanComponent implements OnInit {
   }
 
   chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean){
-    console.log("cardPresent: " + cardPresent);
-    console.log("cardNotPresent: " + cardNotPresent);
-    console.log("combinedOffer: " + combinedOffer);
+    this.logger.debug("cardPresent: " + cardPresent);
+    this.logger.debug("cardNotPresent: " + cardNotPresent);
+    this.logger.debug("combinedOffer: " + combinedOffer);
     if (cardPresent){
       this.isCardPresent = cardPresent;
       this.isCardNotPresent = false;
@@ -165,5 +242,24 @@ export class StoreIbanComponent implements OnInit {
 
   URLFilled(filled: boolean){
     this.isURLFilled = filled;
+  }
+
+  initializeForm() {
+    this.formStores = new FormGroup({
+      supportBank: new FormControl((this.store.bank !== null && this.store.bank.bank) ? this.store.bank.bank.bank : '', Validators.required),
+      bankInformation: new FormControl((this.store.bank.userMerchantBank !== null) ? this.store.bank.userMerchantBank : '', Validators.required),
+      solutionType: new FormControl((this.store.productCode !== null) ? this.store.productCode : '', Validators.required),
+      subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : ''),
+      url: new FormControl((this.store.website !== null) ? this.store.website : '')
+    });
+
+    //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
+    this.formStores.get("solutionType").valueChanges.subscribe(val => {
+      if (val == 'cardNotPresent')
+        this.formStores.get('url').setValidators([Validators.required]);
+      else
+        this.formStores.get('url').setValidators(null);
+      this.formStores.get('url').updateValueAndValidity();
+    });
   }
 }

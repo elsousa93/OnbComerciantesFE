@@ -20,6 +20,7 @@ import { readCCAddress } from '../../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../../citizencard/ICCInfo.interface';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -63,7 +64,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    console.log("okCC valor: ", this.okCC);
+    this.logger.debug("okCC valor: ", this.okCC);
   }
 
   /**
@@ -75,12 +76,12 @@ export class CreateStakeholderComponent implements OnInit {
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-    console.log("Name: ", name, "type: ", typeof (name));
+    this.logger.debug("Name: ", name, "type: ", typeof (name));
 
-    console.log("nationality: ", nationality);
-    console.log("birthDate: ", birthDate);
-    console.log("cardNumber: ", cardNumber);
-    console.log("nif: ", nif);
+    this.logger.debug("nationality: ", nationality);
+    this.logger.debug("birthDate: ", birthDate);
+    this.logger.debug("cardNumber: ", cardNumber);
+    this.logger.debug("nif: ", nif);
 
     this.nameCC = name;
     this.nationalityCC = nationality;
@@ -179,30 +180,30 @@ export class CreateStakeholderComponent implements OnInit {
 
   foundStakeholders: boolean;
 
-  constructor(private router: ActivatedRoute, public modalService: BsModalService,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
 
     this.submissionId = localStorage.getItem('submissionId');
 
-    //console.log("foi buscar bem ao localstorage?");
-    //console.log(this.submissionId);
+    //this.logger.debug("foi buscar bem ao localstorage?");
+    //this.logger.debug(this.submissionId);
     this.ngOnInit();
 
     var context = this;
     this.initializeForm();
     //stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
     //  result.forEach(function (value, index) {
-    //    console.log(value);
+    //    this.logger.debug(value);
     //    context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-    //      console.log(result);
+    //      this.logger.debug(result);
     //      context.submissionStakeholders.push(result);
     //    }, error => {
-    //      console.log(error);
+    //      this.logger.debug(error);
     //    });
     //  });
     //}, error => {
-    //  console.log(error);
+    //  this.logger.debug(error);
     //});
 
   }
@@ -251,7 +252,7 @@ export class CreateStakeholderComponent implements OnInit {
       if (result) {
         this.Window.readCCAddress();
       } else {
-        console.log("fechar");
+        this.logger.debug("fechar");
         this.Window.readCC();
         this.newModal.hide();
       }
@@ -283,7 +284,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   onClickSearch() {
-    console.log("pesq");
+    this.logger.debug("pesq");
 
   }
 
@@ -342,18 +343,18 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   //searchStakeholder(formStakeholderSearch) {
-  //  console.log(formStakeholderSearch);
+  //  this.logger.debug(formStakeholderSearch);
   //  this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
-  //    console.log(result);
+  //    this.logger.debug(result);
   //    this.toggleShow(result);
   //  }, error => console.error(error));
   //}
 
   searchStakeholder() {
     //this.formStakeholderSearch
-    //console.log("ola");
+    //this.logger.debug("ola");
     //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  console.log(o);
+    //  this.logger.debug(o);
     //});
     if (this.formStakeholderSearch.invalid)
       return false;
@@ -365,8 +366,8 @@ export class CreateStakeholderComponent implements OnInit {
     /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
-      console.log("searched interveniente");
-      console.log(clients);
+      this.logger.debug("searched interveniente");
+      this.logger.debug(clients);
 
       context.isShown = true;
       
@@ -375,10 +376,10 @@ export class CreateStakeholderComponent implements OnInit {
         context.foundStakeholders = true;
         context.stakeholdersToShow = [];
         clients.forEach(function (value, index) {
-          console.log(value);
+          this.logger.debug(value);
           context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-            console.log("ja a ir buscar");
-            console.log(c);
+            this.logger.debug("ja a ir buscar");
+            this.logger.debug(c);
             var stakeholder = {
               "stakeholderNumber": c.stakeholderId,
               "stakeholderName": c.shortName,
@@ -386,8 +387,8 @@ export class CreateStakeholderComponent implements OnInit {
               "elegible": "elegivel",
               "associated": "SIM"
             }
-            console.log("stakeholder adicionado:");
-            console.log(stakeholder);
+            this.logger.debug("stakeholder adicionado:");
+            this.logger.debug(stakeholder);
             context.stakeholdersToShow.push(stakeholder);
           });
         })
@@ -398,7 +399,7 @@ export class CreateStakeholderComponent implements OnInit {
       }
     }, error => {
       //context.showFoundClient = false;
-      //console.log("entrou aqui no erro huajshudsj");
+      //this.logger.debug("entrou aqui no erro huajshudsj");
       //context.resultError = "Não existe Comerciante com esse número.";
       //this.searchDone = true;
     });
@@ -410,7 +411,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   selectStakeholder(stakeholder) {
-    console.log(stakeholder);
+    this.logger.debug(stakeholder);
     
     this.newStake = {
       "fiscalId": stakeholder.stakeholderNIF,
@@ -419,7 +420,7 @@ export class CreateStakeholderComponent implements OnInit {
       "contactName": '',
       "shortName": ''
     };
-    console.log(this.newStake);
+    this.logger.debug(this.newStake);
     this.stakeholderNumber = stakeholder.stakeholderNumber;
   }
 
@@ -428,20 +429,20 @@ export class CreateStakeholderComponent implements OnInit {
       this.stakeholderService.getStakeholderByID(this.stakeholderNumber, 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
 
-        console.log("stakeholder procurado");
-        console.log(stakeholderToInsert);
+        this.logger.debug("stakeholder procurado");
+        this.logger.debug(stakeholderToInsert);
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          console.log("add stakeholder existente");
-          console.log(this.newStake);
+          this.logger.debug("add stakeholder existente");
+          this.logger.debug(this.newStake);
 
           this.route.navigate(['/stakeholders/']);
         }, error => {
-          console.log(error);
+          this.logger.debug(error);
         });
       });
     } else {
-      console.log("form");
-      console.log(this.formStakeholderSearch);
+      this.logger.debug("form");
+      this.logger.debug(this.formStakeholderSearch);
 
       var stakeholderToInsert: IStakeholders = {
         "fiscalId": this.formStakeholderSearch.get("documentNumber").value,
@@ -453,10 +454,10 @@ export class CreateStakeholderComponent implements OnInit {
         "phone2": {},
         "shortName": this.formStakeholderSearch.get("socialDenomination").value
       }
-      console.log("Stakeholder a adicionar");
-      console.log(stakeholderToInsert);
+      this.logger.debug("Stakeholder a adicionar");
+      this.logger.debug(stakeholderToInsert);
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-        console.log("Stakeholder criado com sucesso");
+        this.logger.debug("Stakeholder criado com sucesso");
         this.route.navigate(['/stakeholders/']);
       });
     }

@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { ICommercialOffer } from '../ICommercialOffer';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-commercial-offer-terminal-config',
@@ -42,7 +43,7 @@ export class CommercialOfferTerminalConfigComponent implements OnInit {
   /*What terminal Types can the client choose?*/
   selectionsCommunicationType = ['GPRS', 'Linha Comutada'];
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
     this.baseUrl = configuration.baseUrl;
 
 
@@ -65,7 +66,7 @@ export class CommercialOfferTerminalConfigComponent implements OnInit {
   /*Controles the radio button changes*/
   radoChangehandler(event: any) {
     this.selectedOption = event.target.value;
-    console.log(this.selectedOption)
+    this.logger.debug(this.selectedOption)
   }
 
   /*Controls the cancel button */
@@ -77,9 +78,9 @@ export class CommercialOfferTerminalConfigComponent implements OnInit {
   onCickDelete() {
 
     if (this.stroreId != -1) {
-      console.log("delete:" + this.stroreId);
+      this.logger.debug("delete:" + this.stroreId);
       this.http.delete<ICommercialOffer>(this.baseUrl + 'becommercialoffer/DeleteOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid).subscribe(result => {
-        console.log(result);
+        this.logger.debug(result);
       }, error => console.error(error));
     }
 
@@ -88,11 +89,11 @@ export class CommercialOfferTerminalConfigComponent implements OnInit {
 
   /*Submits the form to the backend*/
   submit(FormCommercialOffer: any) {
-    console.log('parabens', FormCommercialOffer)
+    this.logger.debug('parabens', FormCommercialOffer)
 
     /*edit existing commercial offer*/
     this.http.put<ICommercialOffer>(this.baseUrl + 'becommercialoffer/PutOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid, this.commOffer).subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
     }, error => console.error(error));
 
     this.route.navigate(['commercial-offert-store-list/' + this.stroreId]);

@@ -18,9 +18,12 @@ import { Configuration, configurationToken } from '../configuration';
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../citizencard/ICCInfo.interface';
+import { dataCC } from './dataCC.interface';
+import { ReadcardService } from '../readcard/readcard.service';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { SubmissionService } from '../submission/service/submission-service.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-client',
@@ -54,7 +57,8 @@ export class ClientComponent implements OnInit {
   process: any;
 
   //---- Cartão de Cidadao - vars ------
-
+  public dataCCcontents: dataCC;
+  public prettyPDF = null;
   public nameCC = null;
   public nationalityCC = null;
   public birthDateCC = null;
@@ -65,7 +69,7 @@ export class ClientComponent implements OnInit {
   public countryCC = null;
 
   public okCC = null;
-  public dadosCC: Array<string> = [];
+  public dadosCC: Array<string> = []; //apagar
 
   //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
@@ -81,36 +85,51 @@ export class ClientComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    console.log("okCC valor: ", this.okCC);
+    this.logger.debug("okCC valor: ", this.okCC);
   }
   /**
    * Information from the Citizen Card will be associated to the client structure
-   * cardNumber não é guardado
+   * cardNumber não é guardado?
    * 
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-    console.log("Name: ", name, "type: ", typeof (name));
+    this.logger.debug("Name: ", name, "type: ", typeof (name));
 
-    console.log("nationality: ", nationality);
-    console.log("birthDate: ", birthDate);
-    console.log("cardNumber: ", cardNumber);
-    console.log("nif: ", nif);
+    this.logger.debug("nationality: ", nationality);
+    this.logger.debug("birthDate: ", birthDate);
+    this.logger.debug("cardNumber: ", cardNumber);
+    this.logger.debug("nif: ", nif);
   
-    this.nameCC = name;
-    this.nationalityCC = nationality;
+    this.dataCCcontents.nomeCC = name;
+    this.dataCCcontents.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
     this.cardNumberCC = cardNumber; // Nº do CC
-    this.nifCC = nif;
+    this.dataCCcontents.nifCC = nif;
    
-    this.countryCC = countryIssuer;
+    this.dataCCcontents.countryCC = countryIssuer;
 
     if (!(address == null)) {
-      this.addressCC = address;
-      this.postalCodeCC = postalCode;
+      this.dataCCcontents.addressCC = address;
+      this.dataCCcontents.postalCodeCC = postalCode;
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        nameFather, nameMother, nif, nss, sns, notes];
+
+      //Send to PDF
+      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
     }
+    else {
+      
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        nameFather, nameMother, nif, nss, sns, notes, address, postalCode, country];
+
+      //Send to PDF without address
+      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
+    }
+
   }
 
 
@@ -245,6 +264,7 @@ export class ClientComponent implements OnInit {
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('newModal') newModal;
 
+
   emit(url: string) {
     this.urlEmitter.emit(url);
   }
@@ -256,13 +276,17 @@ export class ClientComponent implements OnInit {
   public returned: string;
   public merchantInfo: any;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient,
-      @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private clientService: ClientService, private processService: ProcessService, public modalService: BsModalService, private submissionService: SubmissionService) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
+    @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, private data: DataService, private clientService: ClientService,
+    private processService: ProcessService, public modalService: BsModalService,
+    private submissionService: SubmissionService, private readCardService: ReadcardService) {
+
       this.baseUrl = configuration.baseUrl;
       this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.ngOnInit();
-    console.log(this.baseUrl);
+    this.logger.debug(this.baseUrl);
     http.get<Client[]>(this.baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
       this.clients = result;
     }, error => console.error(error));
@@ -272,20 +296,20 @@ export class ClientComponent implements OnInit {
 
     this.initializeDefaultClient();
     if (this.returned !== null) { // && this.returned !== undefined
-      console.log("ENTREI NO IF DO RETURNED");
+      this.logger.debug("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+        this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          console.log('Submissão com detalhes mais especificos ', resul);
+          this.logger.debug('Submissão com detalhes mais especificos ', resul);
           this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
-            console.log("MERCHANT QUE FOMOS BUSCAR ", this.merchantInfo);
+            this.logger.debug("MERCHANT QUE FOMOS BUSCAR ", this.merchantInfo);
             if (this.merchantInfo.merchantType == 'Corporate') {
-              console.log("O tipo é empresa");
+              this.logger.debug("O tipo é empresa");
               this.activateButtons(true); // se for Empresa
               this.clientTypology = "true";
             } else {
-              console.log("O tipo é ENI");
+              this.logger.debug("O tipo é ENI");
               this.activateButtons(false); // se for ENI
               this.clientTypology = "false";
             }
@@ -365,13 +389,13 @@ export class ClientComponent implements OnInit {
 
   getValueENI() {
    // this.activateButtons(true);
-    console.log("chamar a funcao de leitura do cartao: ");
+    this.logger.debug("chamar a funcao de leitura do cartao: ");
     this.http.get(this.neyondBackUrl + 'CitizenCard/searchCC').subscribe(result => {
       if (result == null) {
         alert("Erro ao ler cartão cidadão!");
       } else {
         this.ccInfo = result;
-        console.log(this.ccInfo);
+        this.logger.debug(this.ccInfo);
       }
     }, error => console.error(error));
   }
@@ -405,7 +429,7 @@ export class ClientComponent implements OnInit {
 
 
   searchClient() {
-    console.log(this.newClient.clientId);
+    this.logger.debug(this.newClient.clientId);
 
     var context = this;
 
@@ -416,15 +440,15 @@ export class ClientComponent implements OnInit {
 
       var context2 = this;
 
-      console.log("a");
-      console.log(context.clientsToShow);
+      this.logger.debug("a");
+      this.logger.debug(context.clientsToShow);
       context.clientsToShow = [];
-      console.log(context.clientsToShow);
+      this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
         clients.forEach(function (value, index) {
-          console.log(value);
+          this.logger.debug(value);
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
-            console.log(c);
+            this.logger.debug(c);
             var client = {
               "clientId": c.merchantId,
               "commercialName": c.commercialName,
@@ -434,7 +458,7 @@ export class ClientComponent implements OnInit {
               "country": "Portugal",
             }
             context.clientsToShow.push(client);
-            console.log(context.clientsToShow);
+            this.logger.debug(context.clientsToShow);
           });
         })
       } else {
@@ -459,7 +483,7 @@ export class ClientComponent implements OnInit {
     //No New SubmissionResponse, este é o valor do merchant.id
     if (idToSeacrh == 22181900000011) {
      //Cliente Encontrado
-      console.log("Cliente Encontrado");
+      this.logger.debug("Cliente Encontrado");
       this.showFoundClient = true;
 
     }
@@ -495,7 +519,7 @@ export class ClientComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.modalService.onHide.subscribe((e) => {
-      console.log('close', this.modalService);
+      this.logger.debug('close', this.modalService);
     });
     this.returned = localStorage.getItem("returned");
 
@@ -511,12 +535,12 @@ export class ClientComponent implements OnInit {
     } as Process;
 
     this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
-      console.log("começou um processo");
-      console.log(o);
+      this.logger.debug("começou um processo");
+      this.logger.debug(o);
 
       context.process = o;
 
-      console.log(context.process);
+      this.logger.debug(context.process);
     });
   }
 
@@ -540,26 +564,39 @@ export class ClientComponent implements OnInit {
     this.documentType = true;
   }
 
+  dataCC? =  null;
+
   obterSelecionado() {
-    console.log(this.clientId);
+    this.logger.debug(this.clientId);
 
     var NIFNIPC = '';
-    console.log("DOCUMENTAIONDELIVERYMETHOD -->");
-    console.log(this.newClient.documentationDeliveryMethod);
+    this.logger.debug("DOCUMENTAIONDELIVERYMETHOD -->");
+    this.logger.debug(this.newClient.documentationDeliveryMethod);
     if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
-      console.log("entrou aqui no if complexo");
+      this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
     }
-    console.log("antes de passar");
+
+    if (this.newClient.documentationDeliveryMethod === '004') {
+      this.dataCC = {
+        nomeCC: this.nameCC,
+        cardNumberCC: this.cardNumberCC,
+        nifCC: this.nifCC,
+        addresssCC: this.addressCC,
+        postalCodeCC: this.postalCodeCC
+      }
+    }
+    this.logger.debug("antes de passar");
       let navigationExtras: NavigationExtras = {
         state: {
           tipologia: this.tipologia,
           NIFNIPC: NIFNIPC,
           clientExists: true,
           clientId: this.clientId,
+          dataCC: this.dataCC
         }
       };
-    console.log("a passar para a proxima pagina");
+    this.logger.debug("a passar para a proxima pagina");
       this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
@@ -581,7 +618,7 @@ export class ClientComponent implements OnInit {
       if (result) {
         this.Window.readCCAddress();
       } else {
-        console.log("fechar");
+        this.logger.debug("fechar");
         this.Window.readCC();
 
         this.closeModal();
@@ -590,9 +627,9 @@ export class ClientComponent implements OnInit {
   }
 
   activateButtons(id: boolean) {
-    console.log("Client typology: ", this.clientTypology);
-    console.log("isCC:  ", this.isCC, this.isCC);
-    console.log("showENI:  ", this.showENI);
+    this.logger.debug("Client typology: ", this.clientTypology);
+    this.logger.debug("isCC:  ", this.isCC, this.isCC);
+    this.logger.debug("showENI:  ", this.showENI);
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;
@@ -625,7 +662,7 @@ export class ClientComponent implements OnInit {
   createNewClient(clientId: string) {
     var NIFNIPC = ''
     if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
-      console.log("entrou aqui no if complexo");
+      this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
     }
 

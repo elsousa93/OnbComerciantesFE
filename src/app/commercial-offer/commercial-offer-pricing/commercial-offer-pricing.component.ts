@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { IPricing } from '../IPricing.interface';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-commercial-offer-pricing',
@@ -24,12 +25,12 @@ export class CommercialOfferPricingComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
     /*Get pricing information*/
     this.ngOnInit();
     http.get<IPricing[]>(this.baseUrl + 'becommercialoffer/GetPricing/' + this.clientID).subscribe(result => {
       this.prices = result;
-      console.log(this.prices)
+      this.logger.debug(this.prices)
 
     }, error => console.error(error));
   }
@@ -42,8 +43,8 @@ export class CommercialOfferPricingComponent implements OnInit {
 
   /*Edit pricing button*/
   editPricing(index: number) {
-    console.log(index)
-    console.log(this.prices)
+    this.logger.debug(index)
+    this.logger.debug(this.prices)
     //code for editing
 
   }
@@ -53,7 +54,7 @@ export class CommercialOfferPricingComponent implements OnInit {
     this.data.updateData(true, 5);
     /*Submit Pricing*/
     this.http.post<number>(this.baseUrl + 'becommercialoffer/PostPricing/' + this.clientID, this.prices).subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
       this.route.navigate(['info-declarativa'], { state: { isFinished: true } });
     }, error => console.error(error));
   }

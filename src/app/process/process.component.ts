@@ -5,6 +5,7 @@ import { Process } from './process.interface';
 import { FormGroup, FormControl, NgForm } from '@angular/forms';
 import { ProcessService } from './process.service';
 import { Configuration, configurationToken } from '../configuration';
+import { NGXLogger } from 'ngx-logger';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class ProcessComponent implements OnInit {
   public allSuccessProcesses: Process[] = [];
   public allIncompletedProcesses: Process[] = [];
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router,
     private ProcessService: ProcessService) {
@@ -42,7 +43,7 @@ export class ProcessComponent implements OnInit {
 
     //http.get<Process[]>(baseUrl + 'BEProcess/GetAllProcesses/ghjkl').subscribe(result => {
     //  this.allProcesses = result;
-    //  console.log(this.allProcesses);
+    //  this.logger.debug(this.allProcesses);
     //  }, error => console.error(error));
     
   }

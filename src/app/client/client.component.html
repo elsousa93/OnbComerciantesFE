@@ -29,14 +29,14 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <span class="navbar-text">
               <div class="form-check">
-                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio" [value]=true
+                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio" [value]="true"
                         id="clientTypology" (click)="activateButtons(true)" [disabled]="returned == 'consult'"/>
                 <label class="form-check-label radio pe-5" for="radio3">EMPRESA</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
-                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio" [value]=false
+                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio" [value]="false"
                         id="clientTypology" (click)="activateButtons(false)" [disabled]="returned == 'consult'"/>
                 <label class="form-check-label radio" for="radio3">ENI</label>
               </div>
@@ -79,15 +79,15 @@
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                       <span class="navbar-text">
                         <div class="form-check">
-                          <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=true
-                                 id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true" />
+                          <input class="form-check-input" required formControlName="flagAutCol" type="radio" [value]=true
+                                 id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" />
                           <label class="form-check-label radio pe-5" for="radio3">SIM</label>
                         </div>
                       </span>
                       <span class="navbar-text">
                         <div class="form-check">
-                          <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=false
-                                 id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false" />
+                          <input class="form-check-input" required formControlName="flagAutCol" type="radio" [value]=false
+                                 id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" />
                           <label class="form-check-label radio" for="radio3">NÃO</label>
                         </div>
                       </span>
@@ -123,7 +123,7 @@
         </p>
   <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
          #clientId="ngModel" [class]="errorInput"></div></div>-->
-              <div *ngIf="isNoDataReadable && isCC && toShowReadCC">
+              <div *ngIf="isNoDataReadable && isCC"> <!--  && toShowReadCC  -->
                 <div>
                   Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
                 </div>

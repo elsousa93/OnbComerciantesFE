@@ -88,7 +88,7 @@ export interface SubmissionGetTemplate {
   isComplete?: boolean
 }
 
-interface SimplifiedReference {
+export interface SimplifiedReference {
   id?: string
   href?: string
 }

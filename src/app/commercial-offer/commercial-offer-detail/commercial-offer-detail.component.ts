@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ICommercialOffer } from '../ICommercialOffer';
 import { Istore } from '../../store/IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-commercial-offer-detail',
@@ -66,7 +67,7 @@ export class CommercialOfferDetailComponent implements OnInit {
     communicationType: ''
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
     this.baseUrl = configuration.baseUrl;
     
     this.ngOnInit();
@@ -84,7 +85,7 @@ export class CommercialOfferDetailComponent implements OnInit {
 
     /*Get all the stores*/
     http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
       this.stores = result;
     }, error => console.error(error));
 
@@ -111,7 +112,7 @@ export class CommercialOfferDetailComponent implements OnInit {
   onChangeBrand($event: any) {
     const fieldName = $event.target.value;
     const isChecked = $event.target.checked;
-    console.log(fieldName, isChecked);
+    this.logger.debug(fieldName, isChecked);
 
     this.selectedBrands.map((d) => {
       if (d.fieldName === fieldName) {
@@ -120,14 +121,14 @@ export class CommercialOfferDetailComponent implements OnInit {
       return d;
 
     });
-    console.log(this.selectedBrands);
+    this.logger.debug(this.selectedBrands);
   }
 
   /*Controles the checkbox of the Packages*/
   onChangePackage($event: any) {
     const fieldName = $event.target.value;
     const isChecked = $event.target.checked;
-    console.log(fieldName, isChecked);
+    this.logger.debug(fieldName, isChecked);
 
     this.selectedPackages.map((d) => {
       if (d.fieldName === fieldName) {
@@ -136,14 +137,14 @@ export class CommercialOfferDetailComponent implements OnInit {
       return d;
 
     });
-    console.log(this.selectedPackages);
+    this.logger.debug(this.selectedPackages);
   }
 
   /*Controles the checkbox of the Additional information*/
   onChangeAdditionalInfo($event: any) {
     const fieldName = $event.target.value;
     const isChecked = $event.target.checked;
-    console.log(fieldName, isChecked);
+    this.logger.debug(fieldName, isChecked);
 
     this.selectedAdditionalInfos.map((d) => {
       if (d.fieldName === fieldName) {
@@ -152,7 +153,7 @@ export class CommercialOfferDetailComponent implements OnInit {
       return d;
 
     });
-    console.log(this.selectedAdditionalInfos);
+    this.logger.debug(this.selectedAdditionalInfos);
   }
 
 
@@ -165,9 +166,9 @@ export class CommercialOfferDetailComponent implements OnInit {
   onCickDelete() {
 
     if (this.stroreId != -1) {
-      console.log("delete:" + this.stroreId);
+      this.logger.debug("delete:" + this.stroreId);
       this.http.delete<ICommercialOffer>(this.baseUrl + 'becommercialoffer/DeleteOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid).subscribe(result => {
-        console.log(result);
+        this.logger.debug(result);
       }, error => console.error(error));
     }
 
@@ -177,7 +178,7 @@ export class CommercialOfferDetailComponent implements OnInit {
   /*Submits the form to the backend*/
   submit(FormCommercialOffer: any) {
   /*Case when the offer is NOT replicated from another store*/
-    console.log('parabens', FormCommercialOffer)
+    this.logger.debug('parabens', FormCommercialOffer)
 
     this.commOffer.brands = this.selectedBrands;
     this.commOffer.packages = this.selectedPackages;
@@ -188,14 +189,14 @@ export class CommercialOfferDetailComponent implements OnInit {
     if (this.commofid == -1) {
       /*create new commercial offer*/
       this.http.post<number>(this.baseUrl + 'becommercialoffer/PostConfig/' + this.clientID + '/' + this.stroreId, this.commOffer).subscribe(result => {
-        console.log(result);
+        this.logger.debug(result);
         this.commofid = result;
         this.route.navigate(['commercial-offert-terminal-config/' + this.stroreId + '/' + this.commofid]);
       }, error => console.error(error));
     } else {
       /*edit existing commercial offer*/
       this.http.put<ICommercialOffer>(this.baseUrl + 'becommercialoffer/PutOfferById/' + this.clientID + '/' + this.stroreId + '/' + this.commofid, this.commOffer).subscribe(result => {
-        console.log(result);
+        this.logger.debug(result);
       }, error => console.error(error));
       this.route.navigate(['commercial-offert-terminal-config/' + this.stroreId + '/' + this.commofid]);
     }
