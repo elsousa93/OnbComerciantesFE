@@ -74,6 +74,7 @@ import { WriterCustomService } from 'src/logger/writer-custom.service';
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 import { environment } from 'src/environments/environment';
+import { NGXLogger } from 'ngx-logger';
 registerLocaleData(localePT);
 
 
@@ -126,7 +127,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FooterPresencialComponent,
     SidenavPresencialComponent,
     InfoDeclarativaAssinaturaComponent,
-
     NumberCounterComponent,
     InfoDeclarativaLojasComponent,
     CountrysComponent,

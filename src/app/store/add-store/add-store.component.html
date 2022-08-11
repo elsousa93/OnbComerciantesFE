@@ -29,7 +29,14 @@
             </div>
           </div>
               <p class="titulo-form-simples" wappler-command="editContent">{{'ActivityStores'|translate}}</p>
-                <input id="text2" formControlName="activityStores" select="" name="text2" type="text" class="form-select campo_form">
+                <!--<input id="text2" formControlName="activityStores" select="" name="text2" type="text" class="form-select campo_form">-->
+                <select class="form-select campo-form-select"
+                        id="activityStores" formControlName="activityStores">
+                  <option *ngFor="let activity of activities" value={{activity.code}}>
+                    {{activity.description}}
+                  </option>
+                </select>
+
               <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
               <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ReplicateAddStore'|translate}}</p>
               <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
@@ -52,13 +59,26 @@
                   </div>
                   </span></nav>
                 <p *ngIf="isComercialCentreStore" class="titulo-form-simples" wappler-command="editContent">{{'SubZoneStores'|translate}}</p>
-                <input *ngIf="isComercialCentreStore" formControlName="subZoneStore" select="" id="select1" class="form-select  campo_form">
+                <!--<input *ngIf="isComercialCentreStore" formControlName="subZoneStore" select="" id="select1" class="form-select  campo_form">-->
+              <select class="form-select campo-form-select"
+                        id="subZoneStore" formControlName="subZoneStore">
+                    <option *ngFor="let subzone of subzones" value={{subzone.code}}>
+                      {{subzone.name}}
+                    </option>
+                </select>
                 </div>
                 <div class="col-5 ms-0 me-0 ps-5 pe-0">
                   <p class="titulo-form-simples" wappler-command="editContent">{{'ContactPointName'|translate}}</p>
                   <input formControlName="contactPoint" id="text5" name="text4" type="text" class="form-control campo_form">
                   <p class="titulo-form-simples" wappler-command="editContent">{{'SubActivityStores'|translate}}</p>
-                  <input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">
+                  <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
+                  <select class="form-select campo-form-select"
+                        id="subactivityStore" formControlName="subactivityStore">
+                    <option *ngFor="let subActivity of subActivities" value={{subActivity.code}}>
+                      {{subActivity.description}}
+                    </option>
+                </select>
+
                   <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                   <p *ngIf="chooseAddressV" class="titulo-form-simples" wappler-command="editContent">{{'LocaleStore'|translate}}</p>
                   <input formControlName="localeStore" *ngIf="chooseAddressV" id="text5" name="text4" type="text" class="form-control campo_form">

@@ -33,7 +33,9 @@ export class NewStakeholderComponent implements OnInit {
   public displayValueSearch = "";
   isSelected = false;
 
-  stakeholdersComprovativos = [];
+  allStakeholdersComprovativos = {};
+
+  selectedStakeholderComprovativos = [];
 
   stakeholderNumber: string;
 
@@ -141,7 +143,13 @@ export class NewStakeholderComponent implements OnInit {
           context.submissionStakeholders.push(result);
           context.stakeService.getStakeholderByID(result.stakeholderId, 'por mudar', 'por mudar').subscribe(result => {
             this.logger.debug("stake do outbound: ", result);
-            context.stakeholdersComprovativos.push(result);
+            this.logger.debug("comprovativos ", result.documents);
+
+            var documents = result.documents;
+            context.allStakeholdersComprovativos[result.stakeholderId] = documents;
+            this.logger.debug(context.allStakeholdersComprovativos[result.stakeholderId]);
+            //context.stakeholdersComprovativos.push(result);
+            
           });
         }, error => {
           this.logger.debug(error);
@@ -208,6 +216,7 @@ export class NewStakeholderComponent implements OnInit {
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
     this.logger.debug(this.selectedStakeholderIsFromCRC);
+    this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderId];
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {

@@ -14,6 +14,7 @@ import { Merchant, SubmissionGetTemplate } from '../../submission/ISubmission.in
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
 import { NGXLogger } from 'ngx-logger';
+import { StoreService } from '../store.service';
 
 @Component({
   selector: 'app-add-store',
@@ -40,6 +41,8 @@ export class AddStoreComponent implements OnInit {
   public isComercialCentreStore: boolean = null;
 
   private baseUrl;
+
+  cae: string = "5212";
 
   public chooseAddressV: boolean = false;
   formStores!: FormGroup;
@@ -128,6 +131,25 @@ export class AddStoreComponent implements OnInit {
   public idisabledAdd: boolean = false;
   public idisabledContact: boolean = false;
 
+  activities: {
+    code: string,
+    description: string,
+    subActivities: {
+      code: string,
+      description: string
+    }[]
+  }[] = [];
+
+  subActivities: {
+    code: string,
+    description: string
+  }[] = [];
+
+  subzones: {
+    code: string,
+    locality: string,
+    name: string
+  }[] = [];
 
   loadTableInfo() {
     this.tableInfo.GetAllCountries().subscribe(res => {
@@ -140,9 +162,17 @@ export class AddStoreComponent implements OnInit {
       this.submissionClient = client;
       this.logger.debug("cliente da submissao: ", this.submissionClient);
     });
+
+    this.storeService.activitiesbycode(this.cae).subscribe(result => {
+      this.logger.debug(result);
+
+      this.activities.push(result);
+    }, error => {
+      this.logger.debug("Deu erro");
+    })
   }
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective) {
+  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
     this.submissionId = localStorage.getItem("submissionId");
 
     this.fetchStartingInfo();
@@ -332,6 +362,10 @@ export class AddStoreComponent implements OnInit {
           this.formStores.get('countryStore').setValue(addressToShow.country);
           this.formStores.get('localeStore').setValue(addressToShow.postalArea);
 
+          this.storeService.subzonesNearby(zipCode[0], zipCode[1]).subscribe(result => {
+            this.subzones = result;
+          })
+
           this.formStores.updateValueAndValidity();
         });
       }
@@ -348,11 +382,20 @@ export class AddStoreComponent implements OnInit {
       countryStore: new FormControl(''),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
-      contactPoint: new FormControl((this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required),
+      contactPoint: new FormControl('', Validators.required)/*(this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required)*/,
       subactivityStore: new FormControl('', Validators.required),
       localeStore: new FormControl(''),
       addressStore: new FormControl('')
-    })
+    });
+
+    this.formStores.get("activityStores").valueChanges.subscribe(v => {
+      this.logger.debug("alterou");
+      this.subActivities = this.activities.find(element => element.code === v.code).subActivities;
+    });
+
+    //this.storeService.activitiesbycode(this.cae).subscribe(result => {
+    //  this.formStores.get()
+    //});
 }
 
 comercialCentre(isCentre: boolean) {

@@ -27,7 +27,7 @@ export class ClientService {
 
   EditClient(submissionID: string, newClient: Client) {
     this.logger.info(`Editing client for submission ${submissionID}`)
-    this.logger.debug(JSON.stringify(newClient));
+    this.logger.debug(JSON.stringify(newClient)); //Usar em vez de console log
     return this.http.put<Client>(this.baseUrl + 'submission/' + submissionID + "/merchant", newClient);
   }
 
