@@ -159,10 +159,22 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
+  updateForm() {
+      this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required);
+  }
+
   fetchStartingInfo() {
+    console.log("b");
     this.clientService.GetClientById(this.submissionId).subscribe(client => {
+      console.log("c");
+      console.log("recebido: ", client);
+
       this.submissionClient = client;
+
+      console.log("submissionclient chamado dentro da api: ", this.submissionClient);
       this.logger.debug("cliente da submissao: ", this.submissionClient);
+      console.log("d");
+      this.updateForm();
     });
 
     this.storeService.activitiesbycode(this.cae).subscribe(result => {
@@ -176,9 +188,9 @@ export class AddStoreComponent implements OnInit {
 
   constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
     this.submissionId = localStorage.getItem("submissionId");
-
+    console.log("a");
     this.fetchStartingInfo();
-
+    console.log("e");
     this.loadTableInfo();
 
     this.data.updateData(false, 3, 2);
@@ -186,13 +198,15 @@ export class AddStoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     //this.appComp.updateNavBar("Adicionar Loja")
     ////Get Id from the store
     //this.stroreId = Number(this.router.snapshot.params['stroreid']);
     //this.subscription = this.data.currentData.subscribe(map => this.map = map);
     //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-
+    console.log("f");
     this.initializeForm();
+    console.log("h");
     this.returned = "consult";//localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
@@ -381,14 +395,18 @@ export class AddStoreComponent implements OnInit {
   initializeForm() {
     var storename = '';
     //if (this.submission.merchant)
-
+    //this.logger.debug("SUBMISSAO CLIENTE");
+    //this.logger.debug(this.submissionClient);
+    console.log("g");
+    console.log("submissao cliente");
+    console.log(this.submissionClient);
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
       activityStores: new FormControl('', Validators.required),
       countryStore: new FormControl(''),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
-      contactPoint: new FormControl(/*(this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required*/),
+      contactPoint: new FormControl(''),
       subactivityStore: new FormControl('', Validators.required),
       localeStore: new FormControl(''),
       addressStore: new FormControl('')

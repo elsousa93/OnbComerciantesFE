@@ -107,59 +107,41 @@ export class NewStakeholderComponent implements OnInit {
     this.submissionId = localStorage.getItem('submissionId');
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
-    this.logger.debug("CRC STAKEHOLDERS");
-    this.logger.debug(this.crcStakeholders);
     this.ngOnInit();
 
     var context = this;
     this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-      this.logger.debug("Ir buscar submissão através do processNumber", result);
       this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-        this.logger.debug("Ir buscar os detalhes da submissão com o seu ID ", resul);
         this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-          this.logger.debug('Lista de stakeholders da submissão ', res);
           res.forEach(function (value, index) {
-            this.logger.debug("Stake ", value);
             context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-              this.logger.debug("Info stakeholder ", r);
               context.submissionStakeholders.push(r);
             }, error => {
-              this.logger.debug(error);
             });
           }, error => {
-            this.logger.debug(error);
           });
         });
       });
     });
 
-    this.logger.debug("Lista que fomos buscar à submissão antiga ", this.submissionStakeholders);
 
     stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
-        this.logger.debug("Value ", value);
         context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          this.logger.debug("Info stake ", result);
           context.submissionStakeholders.push(result);
           context.stakeService.getStakeholderByID(result.stakeholderId, 'por mudar', 'por mudar').subscribe(result => {
-            this.logger.debug("stake do outbound: ", result);
-            this.logger.debug("comprovativos ", result.documents);
 
             var documents = result.documents;
             context.allStakeholdersComprovativos[result.stakeholderId] = documents;
-            this.logger.debug(context.allStakeholdersComprovativos[result.stakeholderId]);
             //context.stakeholdersComprovativos.push(result);
             
           });
         }, error => {
-          this.logger.debug(error);
         });
       });
     }, error => {
-      this.logger.debug(error);
     });
 
-    this.logger.debug("Lista depois de irmos buscar stakeholders à submissao atual (CRC) ", this.submissionStakeholders);
     
 
     //this.currentStakeholder = {
@@ -192,30 +174,21 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   isStakeholderFromCRC(stakeholder) {
-    this.logger.debug("PERTENCE AO CRC??");
-    this.logger.debug(stakeholder);
     this.selectedStakeholderIsFromCRC = false;
     var context = this;
     this.crcStakeholders.forEach(function (value, idx) {
       var stakeholderFromCRC = value;
-      this.logger.debug(stakeholderFromCRC);
-      this.logger.debug("----------------");
       if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
-        this.logger.debug("sim");
         context.selectedStakeholderIsFromCRC = true;
       }
     });
-    this.logger.debug("------ NÃO ENCONTROU --------");
   }
 
   updateForm(stakeholder, idx) {
-    this.logger.debug("chegou aqui");
-    this.logger.debug(stakeholder);
     this.currentStakeholder = stakeholder;
     this.currentIdx = idx;
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
-    this.logger.debug(this.selectedStakeholderIsFromCRC);
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderId];
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
@@ -246,7 +219,6 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   initializeFormWithoutCC() {
-    this.logger.debug("stakeholder a ir a informação: ", this.currentStakeholder);
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
@@ -264,7 +236,6 @@ export class NewStakeholderComponent implements OnInit {
   ngOnInit(): void {
     this.data.updateData(false,2,2);
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
-    this.logger.debug(this.newStake.fiscalId);
     // this.logger.debug(this.route.getCurrentNavigation().extras.state["isCC"]);
     this.initializeFormWithoutCC();
     //this.createForm();
@@ -296,9 +267,7 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   submit() {
-    this.logger.debug(this.formNewStakeholder);
     if (this.returned !== 'consult') {
-      this.logger.debug('Entrei no if do submit dos stakeholders');
       if (this.formNewStakeholder.valid) {
         this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
         this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
@@ -306,8 +275,6 @@ export class NewStakeholderComponent implements OnInit {
         this.currentStakeholder.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
         this.currentStakeholder.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
 
-        this.logger.debug(this.formNewStakeholder.get('proxy').value);
-        this.logger.debug((this.formNewStakeholder.get("proxy").value === 'true'));
         this.currentStakeholder.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
 
         if (this.showYesCC && !this.showNoCC) {
@@ -317,22 +284,15 @@ export class NewStakeholderComponent implements OnInit {
           this.currentStakeholder.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
         }
 
-        this.logger.debug("current stakeholder");
-        this.logger.debug(this.currentStakeholder);
         this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.id, this.currentStakeholder).subscribe(result => {
-          this.logger.debug("Resultado de criar um stakeholder a uma submissão existente");
           if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
             this.currentIdx = this.currentIdx + 1;
             this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
-            this.logger.debug(this.currentStakeholder);
           }
 
         }, error => {
-          this.logger.debug(error);
         });
       }
-    } else {
-      this.logger.debug("Não entrei no if do Submit dos stakeholders");
     }
   }
 
@@ -406,7 +366,6 @@ export class NewStakeholderComponent implements OnInit {
 
 
   getAll() {
-    this.logger.debug(this.tableData.GetAllCountries());
     return this.tableData.GetAllCountries();
   }
 
@@ -439,13 +398,11 @@ export class NewStakeholderComponent implements OnInit {
   chooseStakeholder(stake: any) {
     this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
       this.currentStakeholder = result;
-      this.logger.debug("Stakeholder atual: ", this.currentStakeholder);
     });
   }
 
   GetCountryByZipCode() {
     var currentCountry = this.formNewStakeholder.get('Country').value;
-    this.logger.debug("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
       this.lockLocality = true;

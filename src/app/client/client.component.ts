@@ -446,9 +446,9 @@ export class ClientComponent implements OnInit {
       this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
         clients.forEach(function (value, index) {
-          this.logger.debug(value);
+          context.logger.debug(value);
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
-            this.logger.debug(c);
+            context.logger.debug(c);
             var client = {
               "clientId": c.merchantId,
               "commercialName": c.commercialName,
@@ -458,7 +458,7 @@ export class ClientComponent implements OnInit {
               "country": "Portugal",
             }
             context.clientsToShow.push(client);
-            this.logger.debug(context.clientsToShow);
+            context.logger.debug(context.clientsToShow);
           });
         })
       } else {
