@@ -9,6 +9,7 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 import { AceitacaoService } from '../services/aceitacao.services';
 import { PostDocument } from '../../submission/document/ISubmission-document';
 import { ProcessService } from '../../process/process.service';
+import { NGXLogger } from 'ngx-logger';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class ObterPackContratualComponent implements OnInit{
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('submissionModal') submissionModal;
   
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private router: Router, private modalService: BsModalService, private processService: ProcessService, public aceitacao: AceitacaoService) {
 
     this.ngOnInit();
@@ -95,7 +96,7 @@ onDelete(tipo:string, interveniente: string, dataEntrada: string, file: File) {
 submission(){
   this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-lg' });
 
-  console.log("ficheiros a inserir: ", this.files);
+  this.logger.debug("ficheiros a inserir: ", this.files);
   var context = this;
   this.files.forEach(function (file, idx) {
     context.readBase64(file).then((data) => {
@@ -108,7 +109,7 @@ submission(){
       var processId = 'a5b04add-2179-4d0e-99ba-18c5622536cb';
 
       context.processService.submitDocumentOnProcess(processId, 'ContractAcceptance', docToSend).subscribe(result => {
-        console.log('Ficheiro foi submetido ', result);
+        this.logger.debug('Ficheiro foi submetido ', result);
       });
     })
   });
@@ -142,14 +143,14 @@ selectFile(event: any) {
    // }
 
   }
-  console.log(this.files);
+  this.logger.debug(this.files);
   }
 
 
 
 search(/*url: any, imgName: any*/ file: File) {
-  //console.log('url ', url);
-  //console.log('image name ', imgName);
+  //this.logger.debug('url ', url);
+  //this.logger.debug('image name ', imgName);
   let blob = new Blob([file], { type: file.type });
   let url = window.URL.createObjectURL(blob);
 
@@ -170,7 +171,7 @@ confirmDelete() {
       this.files.splice(index, 1);
     }
     this.aceitacao.delFile(this.id).subscribe(data => {
-      console.log("DATA: ", data);
+      this.logger.debug("DATA: ", data);
       if (data != null) {
         alert("Ficheiro apagado com sucesso!!");
         this.load();

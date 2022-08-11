@@ -6,6 +6,7 @@ import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/form
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 //import { DataService } from '../nav-menu-interna/data.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-update-stakeholder',
@@ -95,7 +96,7 @@ export class UpdateStakeholderComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient, 
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router,  private fb: FormBuilder) {
@@ -110,8 +111,8 @@ export class UpdateStakeholderComponent implements OnInit {
     this.fiscalId = Number(this.router.snapshot.params['nif']);
     this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/GetStakeholderByID/'
       + this.fiscalId).subscribe(result => {
-        console.log("GetStakeholderById");
-        console.log(result);
+        this.logger.debug("GetStakeholderById");
+        this.logger.debug(result);
         this.createForm();
         this.resultToStake(result);
    
@@ -157,11 +158,11 @@ export class UpdateStakeholderComponent implements OnInit {
       postalArea: this.newStake.fiscalAddress.postalArea,
       country: this.newStake.fiscalAddress.country,
     });
-    console.log("New Stake uploaded: ", this.newStake);
+    this.logger.debug("New Stake uploaded: ", this.newStake);
   }
 
   submit(formUpdateStakeholder) {
-    console.log("Form result: ", formUpdateStakeholder);
+    this.logger.debug("Form result: ", formUpdateStakeholder);
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     }
@@ -178,7 +179,7 @@ export class UpdateStakeholderComponent implements OnInit {
     this.newStake.fiscalAddress.postalArea = formUpdateStakeholder.areaBillingAdressStakeholder;
     this.newStake.fiscalAddress.country = formUpdateStakeholder.countryBillingAdressStakeholder;
 
-     console.log("TESTE");
+     this.logger.debug("TESTE");
     // https:/ / localhost: 7269 / BEStakeholders / EditStakeholderByID / 1000
     this.http.post<IStakeholders>(this.baseUrl + 'BEStakeholders/EditStakeholderByID/' +
     this.newStake.fiscalId, this.newStake).subscribe(result => {
@@ -186,6 +187,6 @@ export class UpdateStakeholderComponent implements OnInit {
       this.route.navigate(['stakeholders']);
     }, error => console.error(error));
 
-    console.log("executed edit stake by ID");
+    this.logger.debug("executed edit stake by ID");
   }
 }

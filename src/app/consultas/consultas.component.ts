@@ -17,6 +17,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { ClientService } from '../client/client.service';
 import { Configuration, configurationToken } from '../configuration';
+import { NGXLogger } from 'ngx-logger';
 
 interface Process {
   processNumber: string;
@@ -50,7 +51,7 @@ export class ConsultasComponent implements OnInit{
   public subscription: Subscription;
 
   
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
     private router: ActivatedRoute, private submissionService: SubmissionService, private clientService: ClientService) {
 
@@ -100,11 +101,11 @@ export class ConsultasComponent implements OnInit{
   }
 
   searchProcess() {
-    console.log(this.form);
+    this.logger.debug(this.form);
     this.loadProcesses([]);
       var processNumber = this.form.get('processNumber').value;
       if (processNumber !== '') {
-        console.log(processNumber);
+        this.logger.debug(processNumber);
         var encodedCode = encodeURIComponent(processNumber);
         this.processService.searchProcessByNumber(encodedCode, 0, 1).subscribe(result => {
           this.processService.searchProcessByNumber(encodedCode, 0, result.pagination.total).subscribe(resul => {
@@ -118,8 +119,8 @@ export class ConsultasComponent implements OnInit{
             })
             this.loadProcesses(processesArray);
           }, error => {
-            console.log("deu erro");
-            console.log(error);
+            this.logger.debug("deu erro");
+            this.logger.debug(error);
             this.loadProcesses([]);
           });
           });
@@ -138,7 +139,7 @@ export class ConsultasComponent implements OnInit{
             })
             this.loadProcesses(processesArray);
           }, error => {
-            console.log(error);
+            this.logger.debug(error);
             this.loadProcesses([]);
           });
           });
@@ -146,15 +147,15 @@ export class ConsultasComponent implements OnInit{
   }
 
   openProcess(process) {
-    console.log(process);
+    this.logger.debug(process);
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("returned", 'consult');
 
     this.route.navigate(['/client']);
     //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-    //  console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+    //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
     //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-    //    console.log('Submissão com detalhes mais especificos ', resul);
+    //    this.logger.debug('Submissão com detalhes mais especificos ', resul);
     //    this.clientService.GetClientById(resul.id).subscribe(res => {
     //      this.route.navigate(['/client']);
     //    });

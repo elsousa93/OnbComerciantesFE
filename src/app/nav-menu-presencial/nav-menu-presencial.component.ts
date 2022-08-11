@@ -2,6 +2,7 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -50,7 +51,7 @@ export class NavMenuPresencialComponent implements OnInit {
   currentSubPage:number = 0;
   progressImage: string;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService) {
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private logger: NGXLogger) {
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
   }
 
@@ -80,16 +81,16 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   openProcess(process) {
-    console.log(process);
+    this.logger.debug(process);
     localStorage.setItem("processNumber", process);
     this.processNrService.changeProcessNumber(process);
     localStorage.setItem("returned", 'consult');
 
     this.route.navigate(['/client']);
     //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-    //  console.log('Submissão retornada quando pesquisada pelo número de processo', result);
+    //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
     //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-    //    console.log('Submissão com detalhes mais especificos ', resul);
+    //    this.logger.debug('Submissão com detalhes mais especificos ', resul);
     //    this.clientService.GetClientById(resul.id).subscribe(res => {
     //      this.route.navigate(['/client']);
     //    });
@@ -105,6 +106,7 @@ export class NavMenuPresencialComponent implements OnInit {
     }
     let progress = progressSteps[this.currentPage-1][this.currentSubPage-1];
     this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
+    this.logger.debug("New process image" + this.progressImage);
   }
 
   toggleEvent() {
@@ -125,7 +127,7 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   searchProcess() {
-    console.log(this.processNumberToSearch);
+    this.logger.debug(this.processNumberToSearch);
     this.route.navigate(['/app-consultas/', this.processNumberToSearch]);
   }
 }

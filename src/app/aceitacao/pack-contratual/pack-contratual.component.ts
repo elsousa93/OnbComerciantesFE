@@ -6,6 +6,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { NGXLogger } from 'ngx-logger';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class PackContratualComponent implements OnInit{
   @ViewChild('submeterPedidoModal') submeterPedidoModal;
 
   
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
   private route: Router,
   private router: ActivatedRoute, private modalService: BsModalService,) {
 
@@ -100,7 +101,7 @@ selectFile(event: any) {
     }
 
   }
-  console.log(this.files);
+  this.logger.debug(this.files);
 
   }
 

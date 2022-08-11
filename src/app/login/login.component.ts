@@ -4,6 +4,7 @@ import { ILogin } from 'src/app/login/ILogin.interface';
 import { AuthService } from '../services/auth.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service'
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
     userid: ['', Validators.required],
     password: ['', Validators.required]
   })
-  constructor(
+  constructor(private logger : NGXLogger, 
     private formBuilder: FormBuilder,
     private route: Router,
     private authService: AuthService,
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
   }
 
   validateRecievedCookie() {
-    console.log("ngOnInit")
+    this.logger.debug("ngOnInit")
     if (this.cookie.get("jwToken") === "" || this.cookie.get("jwToken") === "undefined" || this.cookie.get("jwToken") === null) {
       this.cookie.delete("jwToken")
       //setting the cookie when we recieve from the URL
@@ -78,7 +79,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log("inicio do login")
+    this.logger.debug("inicio do login")
     if (this.f['userid'].value == this.model.userid && this.f['password'].value == this.model.password) {
       this.cookie.delete("jwToken")
       //set cookie when log-in credentials are inserted

@@ -4,6 +4,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { IComprovativos } from '../IComprovativos.interface';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-check-documents',
@@ -15,7 +16,7 @@ export class CheckDocumentsComponent implements OnInit {
   public compCheckDocs: IComprovativos[] = [];
   private _compId: number = 0;
 
-  constructor(public bsModalRef: BsModalRef, @Inject(configurationToken) private configuration: Configuration, private router: ActivatedRoute, private http: HttpClient ) {
+  constructor(private logger : NGXLogger, public bsModalRef: BsModalRef, @Inject(configurationToken) private configuration: Configuration, private router: ActivatedRoute, private http: HttpClient ) {
     this.baseUrl = configuration.baseUrl;
 
     http.get<IComprovativos[]>(this.baseUrl + `BEComprovativos`).subscribe(result => {
@@ -25,7 +26,7 @@ export class CheckDocumentsComponent implements OnInit {
 
   ngOnInit(): void {
     this._compId = Number(this.router.snapshot.params['id']);
-    console.log(this._compId);
+    this.logger.debug(this._compId);
   }
 
   onClose(){

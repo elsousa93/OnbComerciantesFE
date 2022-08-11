@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class DataService {
   currentPage = this.dataPage.asObservable();
   currentSubPage = this.dataSubPage.asObservable();
 
-  constructor() { }
+  constructor(private logger : NGXLogger, ) { }
 
   //mudar valores do map
   changeData(values: Map<number, boolean>) {
@@ -44,12 +45,12 @@ export class DataService {
 
   //mudar o valor da página atual
   changeCurrentPage(value: number) {
-    console.log("Page change "+value);
+    this.logger.debug("Page change "+value);
     this.dataPage.next(value);
     this.dataSubPage.next(1);
   }
   changeCurrentSubPage(value: number) {
-    console.log("SubPage change "+value);
+    this.logger.debug("SubPage change "+value);
     this.dataSubPage.next(value);
   }
   reset() {

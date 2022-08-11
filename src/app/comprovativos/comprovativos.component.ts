@@ -20,6 +20,7 @@ import { SubmissionService } from '../submission/service/submission-service.serv
 import { CheckDocumentsComponent } from './check-documents/check-documents.component';
 import { ComprovativosTemplate, IComprovativos } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
+import { NGXLogger } from 'ngx-logger';
 
 
 @Component({
@@ -199,28 +200,28 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
   // TESTE //////////////
 
-  constructor(public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : NGXLogger, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
     private modalService: BsModalService,private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
     //this.submissionId = localStorage.getItem("submissionId");
-    console.log("id:!!!!");
-    console.log(this.submissionId);
+    this.logger.debug("id:!!!!");
+    this.logger.debug(this.submissionId);
     this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
       this.submission = result;
-      console.log('Submission ', result);
+      this.logger.debug('Submission ', result);
 
       //this.crcService.getCRC('001', '001').subscribe(result => {
 
-      //  console.log("--------- CRC SERVICE ---------");
+      //  this.logger.debug("--------- CRC SERVICE ---------");
       //  var crcResult = result;
       //  var crcFile = this.b64toBlob(crcResult.pdf, "application/pdf", 512);
 
       //  crcFile["lastModifiedDate"] = new Date();
       //  crcFile["name"] = "crc pdf";
 
-      //  console.log("!!! crc file !!!");
-      //  console.log(crcFile);
+      //  this.logger.debug("!!! crc file !!!");
+      //  this.logger.debug(crcFile);
 
       //  this.compsToShow.push({
       //    type: "pdf",
@@ -231,7 +232,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       //    file: <File>crcFile
       //  });
 
-      //  console.log(this.compsToShow);
+      //  this.logger.debug(this.compsToShow);
       //});
 
       this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
@@ -239,24 +240,24 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
         documents.forEach(function (value, index) {
           var document = value;
-          console.log("Documento do for");
-          console.log(document);
+          this.logger.debug("Documento do for");
+          this.logger.debug(document);
 
           if (document.type === 'crcPDF') {
-            console.log("encontrou!!!!");
+            this.logger.debug("encontrou!!!!");
             this.documentService.GetDocumentImage(this.submissionId, document.id).then(async (res) => {
-              console.log("entrou no document get image!!!");
-              console.log(res)
+              this.logger.debug("entrou no document get image!!!");
+              this.logger.debug(res)
               var teste = await res.blob();
-              console.log(teste);
+              this.logger.debug(teste);
 
               teste.lastModifiedDate = new Date();
               teste.name = "nome";
 
               this.file = <File>teste;
 
-              console.log("ficheiro tratado");
-              console.log(this.file);
+              this.logger.debug("ficheiro tratado");
+              this.logger.debug(this.file);
 
               this.compsToShow.push({
                 type: "pdf",
@@ -275,40 +276,40 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
       this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
         this.submissionClient = c;
-        console.log('Cliente ', c);
+        this.logger.debug('Cliente ', c);
       });
 
       this.submission.stakeholders.forEach(stake => {
         this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-          console.log('Stakeholder ', result);
+          this.logger.debug('Stakeholder ', result);
           this.stakeholdersList.push(result);
         });
       });
 
       //this.submission.documents.forEach(document => {
-      //  console.log("entrou aqui1!!!");
+      //  this.logger.debug("entrou aqui1!!!");
       //  var document = document;
       //  var promise = documentService.GetSubmissionDocumentById(this.submissionId, document.id).toPromise();
 
       //  promise.then((success) => {
-      //    console.log("entrou aqui2!!!!")
+      //    this.logger.debug("entrou aqui2!!!!")
       //    var currentDocument = success;
       //    var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
 
-      //    console.log(this.submissionId);
-      //    console.log(currentDocument.id);
-      //    console.log("----------------");
+      //    this.logger.debug(this.submissionId);
+      //    this.logger.debug(currentDocument.id);
+      //    this.logger.debug("----------------");
       //    this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
-      //      console.log("entrou aqui3!!!!!!!");
+      //      this.logger.debug("entrou aqui3!!!!!!!");
       //    });
 
       //    //fileImage.then((success) => {
-      //    //  console.log("entrou aqui3!!!!");
+      //    //  this.logger.debug("entrou aqui3!!!!");
       //    //  var teste = success.arraybuffer();
-      //    //  console.log(teste);
+      //    //  this.logger.debug(teste);
       //    //  //var file = success;
-      //    //  //console.log("FICHEIRO PDF");
-      //    //  //console.log(file);
+      //    //  //this.logger.debug("FICHEIRO PDF");
+      //    //  //this.logger.debug(file);
       //    //  //this.files.push(file);
       //    //  //this.compsToShow.push({
       //    //  //  type: currentDocument.documentType,
@@ -318,35 +319,35 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       //    //  //  status: '',
       //    //  //  file: file
       //    //  //});
-      //    //  //console.log("comps a mostrar");
-      //    //  //console.log(this.compsToShow);
+      //    //  //this.logger.debug("comps a mostrar");
+      //    //  //this.logger.debug(this.compsToShow);
             
       //    //}, error => {
-      //    //  console.log("deu erro!!!");
-      //    //  console.log(error);
+      //    //  this.logger.debug("deu erro!!!");
+      //    //  this.logger.debug(error);
       //    //});
       //  });
 
       //  var blob = this.b64toBlob(document, 'application/pdf', 512);
 
       //  var file = new File([blob], "crcTeste");
-      //  console.log("blob para ficheiro");
-      //  console.log(file);
+      //  this.logger.debug("blob para ficheiro");
+      //  this.logger.debug(file);
       //  this.files.push(file);
       //});
     });
 
-    console.log('Submission ', this.submission);
-    console.log('Client ', this.client);
-    console.log('stakeholders list ', this.stakeholdersList);
-    console.log('Submission id ', localStorage.getItem("submissionId"));
+    this.logger.debug('Submission ', this.submission);
+    this.logger.debug('Client ', this.client);
+    this.logger.debug('stakeholders list ', this.stakeholdersList);
+    this.logger.debug('Submission id ', localStorage.getItem("submissionId"));
     this.ngOnInit();
 
   }
 
   ngOnInit(): void {
     this.clientNr = Number(this.router.snapshot.params['id']);
-    //console.log(String(this.router.snapshot.params['pagename']));
+    //this.logger.debug(String(this.router.snapshot.params['pagename']));
     this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -392,7 +393,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    console.log(this.files);
+    this.logger.debug(this.files);
 
     //this.file = <File>event.target.files[0];
     //const sizeFile = this.file.size / (1024 * 1024);
@@ -406,21 +407,21 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     // this.newComp.clientId = String(this.clientNr);
     //this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
     //// .subscribe(result => {
-    //  // console.log(this.result);
+    //  // this.logger.debug(this.result);
     //  if (this.result != null) {
     //    // this.compClientId = this.result;
     //    if ((sizeFile <= limSize) && (extensoesPermitidas.exec(this.file.name))) {
     //      if (event.target.files && event.target.files[0]) {
     //        var reader = new FileReader();
     //        reader.onload = (eve: any) => {
-    //          //console.log('Local URL ', event);
+    //          //this.logger.debug('Local URL ', event);
     //          //this.localUrl = event.target.result;
               
     //          let blob = new Blob(event.target.files, { type: event.target.files[0].type });
     //          let url = window.URL.createObjectURL(blob);
-    //          console.log(event.target.files);
+    //          this.logger.debug(event.target.files);
     //          this.localUrl = url;
-    //          console.log('URKLSDLSDSDMSLK ',url);
+    //          this.logger.debug('URKLSDLSDSDMSLK ',url);
     //        }
     //        reader.readAsDataURL(event.target.files[0]);
     //        this.uploadFile(this.newComp.clientId);
@@ -436,7 +437,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   uploadFile(id: any) {
     if (this.file != undefined) {
       this.compService.uploadFile(this.file, id).subscribe(data => {
-        console.log(data);
+        this.logger.debug(data);
         if (data != null) {
           alert("Upload efetuado!");
           this.load();
@@ -458,8 +459,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   //mandamos uma lista dos ficheiros (for)  recebemos um ficheiro e transformamos esse ficheiro em blob e depois redirecionamos para essa página
   search(/*url: any, imgName: any*/ file: File) {
-    //console.log('url ', url);
-    //console.log('image name ', imgName);
+    //this.logger.debug('url ', url);
+    //this.logger.debug('image name ', imgName);
     let blob = new Blob([file], { type: file.type });
     let url = window.URL.createObjectURL(blob);
 
@@ -511,7 +512,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       this.files.splice(index, 1);
     }
     this.compService.delFile(this.id).subscribe(data => {
-      console.log("DATA: ", data);
+      this.logger.debug("DATA: ", data);
       if (data != null) {
         alert("Ficheiro apagado com sucesso!!");
         this.load();
@@ -565,19 +566,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           "data": {}
         }
         this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
-          console.log('Ficheiro foi submetido ', result);
+          this.logger.debug('Ficheiro foi submetido ', result);
         });
       })      
     });
 
     if (this.returned !== null) {
-      console.log("Entrei no if dos comprovativos quando faço o submit ");
+      this.logger.debug("Entrei no if dos comprovativos quando faço o submit ");
       this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
-      console.log("Objeto com os valores atualizados ", this.submissionPutTeste);
+      this.logger.debug("Objeto com os valores atualizados ", this.submissionPutTeste);
     }
 
     this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
-      console.log('Editar sub ', result);
+      this.logger.debug('Editar sub ', result);
     });
 
 

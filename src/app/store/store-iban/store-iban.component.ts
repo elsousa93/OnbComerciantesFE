@@ -7,6 +7,7 @@ import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { StoreService } from '../store.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-store-iban',
@@ -114,7 +115,7 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
+    constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
     this.data.updateData(false, 3, 3);
   }
 
@@ -196,7 +197,7 @@ export class StoreIbanComponent implements OnInit {
         }
       }
     }
-    console.log(this.files);
+    this.logger.debug(this.files);
   }
 
   isIBAN(isIBANConsidered: boolean) {
@@ -204,9 +205,9 @@ export class StoreIbanComponent implements OnInit {
   }
 
   chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean){
-    console.log("cardPresent: " + cardPresent);
-    console.log("cardNotPresent: " + cardNotPresent);
-    console.log("combinedOffer: " + combinedOffer);
+    this.logger.debug("cardPresent: " + cardPresent);
+    this.logger.debug("cardNotPresent: " + cardNotPresent);
+    this.logger.debug("combinedOffer: " + combinedOffer);
     if (cardPresent){
       this.isCardPresent = cardPresent;
       this.isCardNotPresent = false;

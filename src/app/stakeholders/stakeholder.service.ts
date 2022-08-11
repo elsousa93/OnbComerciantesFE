@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
 import { IStakeholders } from './IStakeholders.interface';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class StakeholderService {
   private urlOutbound: string;
 
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
     this.baseUrl = configuration.acquiringAPIUrl;      
     this.urlOutbound = configuration.outboundUrl;
 
@@ -19,25 +20,30 @@ export class StakeholderService {
    }
 
   GetAllStakeholdersFromSubmission(submissionId: string): any {
+    this.logger.info(`Getting all stakeholders for submission ${submissionId}`)
     return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');
   }
 
   GetStakeholderFromSubmission(submissionId: string, stakeholderId: string): any {
+    this.logger.info(`Getting stakeholder ${stakeholderId} for submission ${submissionId}`)
     return this.http.get<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
   }
 
   //api / submisison/{id}/stakeholder/{sid}
   CreateNewStakeholder(submissionId: string, newStake: IStakeholders) {
+    this.logger.info(`Creating new stakeholder for submission ${submissionId}`)
+    this.logger.info(JSON.stringify(newStake));
     return this.http.post<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder', newStake);
   }
 
   UpdateStakeholder(submissionId: string, stakeholderId: string, newStake: IStakeholders) {
-    console.log("stakeholder recebido");
-    console.log(newStake);
+    this.logger.info(`Updating stakeholder ${stakeholderId} for submission ${submissionId}`)
+    this.logger.info(JSON.stringify(newStake));
     return this.http.put<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId, newStake);
   }
 
   DeleteStakeholder(submissionId: string, stakeholderId: string) {
+    this.logger.info(`Deleting stakeholder ${stakeholderId} for submission ${submissionId}`)
     return this.http.delete(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
   }
 
@@ -68,8 +74,15 @@ export class StakeholderService {
       HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-    console.log("LINK URI SEARCHSTAKEHOLDERBYQUERY");
-    console.log(URI);
+    this.logger.info(`[Outbound] Searching stakeholder with id ${searchID}`);
+    this.logger.debug(`[Outbound] URI used is ${URI}`);
+    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
+      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
+      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
+      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
+      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
+      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
+    }, null, 2)}`);
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
@@ -93,8 +106,15 @@ export class StakeholderService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    console.log("ID STAKEHOLDER");
-    console.log(StakeholderID);
+    this.logger.info(`[Outbound] Searching stakeholder with id ${StakeholderID}`);
+    this.logger.debug(`[Outbound] URI used is ${URI}`);
+    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
+      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
+      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
+      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
+      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
+      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
+    }, null, 2)}`);
 
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
@@ -119,6 +139,16 @@ export class StakeholderService {
       HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+
+    this.logger.info(`[Outbound] Creating stakeholder with id ${Stakeholder}`);
+    this.logger.debug(`[Outbound] URI used is ${URI}`);
+    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
+      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
+      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
+      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
+      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
+      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
+    }, null, 2)}`);
 
     return this.http.post<any>(URI, Stakeholder, HTTP_OPTIONS);
   }
@@ -145,11 +175,17 @@ export class StakeholderService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    return this.http.put<any>(URI, stakeholder, HTTP_OPTIONS);
-  }
+    this.logger.info(`[Outbound] Updating stakeholder with id ${stakeholder}`);
+    this.logger.debug(`[Outbound] URI used is ${URI}`);
+    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
+      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
+      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
+      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
+      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
+      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
+    }, null, 2)}`);
 
-  getStakeholdersById(submissionId: string, stakeholderId: string) {
-    return this.http.get<any[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
+    return this.http.put<any>(URI, stakeholder, HTTP_OPTIONS);
   }
 }
 

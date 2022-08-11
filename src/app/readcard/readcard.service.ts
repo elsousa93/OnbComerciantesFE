@@ -257,5 +257,10 @@ formatPDF(ccArrayData: Array<string>) {
       });
 
   doc.save("digitalCC_NIF" + ccArrayData[10] + ".pdf");
+
+  //Associar à submission /api/submission/{id}/document  POST  Upload a new document (?)
+  //Codficar 
+
+
   }
 }

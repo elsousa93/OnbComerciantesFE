@@ -6,6 +6,7 @@ import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angula
 import { TableInfoService } from '../table-info/table-info.service';
 import { CountryInformation, PEPTypes } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-pep',
@@ -21,7 +22,7 @@ export class PepComponent implements OnInit {
   PEPTypes: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient,
     private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private route: Router,
@@ -171,13 +172,13 @@ export class PepComponent implements OnInit {
 
    
 
-    console.log(this.newPep);
+    this.logger.debug(this.newPep);
     //Post a Pep
     // por enquanto deixei o id com o valor de 1, porque o newPep.id já n existe
     this.http.post<IPep>(this.baseUrl + 'BEPep/AddPep/'
       + 1, this.newPep).subscribe(result => {
-        console.log("Enviado Pep");
-        console.log(result);
+        this.logger.debug("Enviado Pep");
+        this.logger.debug(result);
       }, error => console.error(error));
 
     this.route.navigate(['/info-declarativa-lojas']);
@@ -284,7 +285,7 @@ export class PepComponent implements OnInit {
         this.form.removeControl('pepPoliticalPublicJobDesignation');
       }
     }
-    console.log(this.form);
+    this.logger.debug(this.form);
   }
 
   addRelatedPepFormControl() {
