@@ -311,14 +311,12 @@ export class ClientByIdComponent implements OnInit {
 
     this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
       .then((data) => {
-        this.logger.debug(data);
         this.form.get("CAE1Branch").setValue(data.description);
       });
 
     if (this.processClient.secondaryEconomicActivity !== null) {
       this.searchBranch(this.processClient.secondaryEconomicActivity[0].split("-")[0])
         .then((data) => {
-          this.logger.debug(data);
           this.form.get("CAESecondary1Branch").setValue(data.description);
         });
     }
@@ -549,11 +547,9 @@ export class ClientByIdComponent implements OnInit {
   constructor(private logger : NGXLogger, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
     
-    this.logger.debug("a");
     
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
-      this.logger.debug("b");
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
@@ -592,34 +588,23 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.returned !== null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
         if (result[0] !== undefined) {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.logger.debug('Submissão com detalhes mais especificos ', resul);
             this.clientService.GetClientById(resul.id).subscribe(res => {
               this.merchantInfo = res;
-              this.logger.debug(this.merchantInfo);
-              this.logger.debug("antes do log dno nifnipc undefined");
-              this.logger.debug(this.NIFNIPC);
               if (this.NIFNIPC === undefined) {
                 this.NIFNIPC = this.merchantInfo.fiscalId;
-                this.logger.debug("NIFNIPC estava undefined");
-                this.logger.debug(this.NIFNIPC);
               }
-              this.logger.debug("O valor do NIFNIPC quando estamos no consult ", this.NIFNIPC);
               if (this.merchantInfo.incorporationStatement !== null) {
-                this.logger.debug("O merchantInfo tem uma crc com valor ", this.merchantInfo.incorporationStatement.code);
                 this.isCommercialSociety = true;
                 this.initializeBasicCRCFormControl();
                 this.searchByCRC();
               } else {
                 if (this.merchantInfo.legalNature !== "") {
-                  this.logger.debug("O merchant tem uma legal nature ", this.merchantInfo.legalNature);
                   this.isCommercialSociety = false;
                   this.tipologia === 'Company';
                   this.initializeFormControlOther();
                 } else {
-                  this.logger.debug("O merchant não tem uma legal nature");
                   this.isCommercialSociety = false;
                   this.tipologia === 'ENI';
                   this.initializeENI();
@@ -658,11 +643,8 @@ export class ClientByIdComponent implements OnInit {
     if (id == true) {
       this.initializeBasicCRCFormControl();
       this.isCommercialSociety = true;
-      this.logger.debug("SET COMMERCIAL SOCIETY TRUE");
       this.form.get("commercialSociety").setValue(true);
-      this.logger.debug("entrou no true");
     } else {
-      this.logger.debug("SET COMMERCIAL SOCIETY FALSE");
       if (this.tipologia === 'Company')
         this.initializeFormControlOther();
       else
@@ -724,9 +706,7 @@ export class ClientByIdComponent implements OnInit {
     this.logger.debug(this.legalNatureList);
     this.legalNatureList.forEach(legalNat => {
       var legalNatureToSearch = this.form.get('natJuridicaN1').value;
-      this.logger.debug(legalNatureToSearch);
       if (legalNatureToSearch == legalNat.code) {
-        this.logger.debug("chegou aqui");
         exists = true;
         this.legalNatureList2 = legalNat.secondaryNatures;
       }
@@ -757,14 +737,8 @@ export class ClientByIdComponent implements OnInit {
     //this.logger.debug("codigo CRC:" , this.form.get('crcCode').value);
     //this.logger.debug(crcInserted);
     //this.crcFound = true;
-    this.logger.debug("crc search inserido");
     var crcInserted = this.form.get('crcCode').value;
-    this.logger.debug(crcInserted);
-     this.logger.debug("---- teste ----");
      this.crcService.getCRC(crcInserted, '001').subscribe(o => {
-        this.logger.debug("get crc!!!!");
-        this.logger.debug(o);
-        this.logger.debug("obtido");
         var clientByCRC = o;
 
         this.crcFound = true;
@@ -820,7 +794,6 @@ export class ClientByIdComponent implements OnInit {
 
 
   submit() {
-    this.logger.debug("entrou no submit????");
     var formValues = this.form.value;
     if (this.isCommercialSociety) {
       this.client.headquartersAddress = {
@@ -856,7 +829,9 @@ export class ClientByIdComponent implements OnInit {
     }
     if (this.tipologia === 'ENI') {
       this.client.shortName = this.form.value["socialDenomination"];
-      if (this.route.getCurrentNavigation().extras.state["name"] !== '') {
+      console.log("extras: ", this.route.getCurrentNavigation().extras);
+      var name = this.route.getCurrentNavigation().extras.state["nomeCC"];
+      if (name !== undefined && name !== null) {
         this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
 
         this.client.shortName = this.dataCC.value["nameCC"];
@@ -878,8 +853,6 @@ export class ClientByIdComponent implements OnInit {
     //  this.client.companyName = this.form.value["franchiseName"];
     //  //this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
     //}
-    this.logger.debug("Stakeholders a passar!! ");
-    this.logger.debug(this.processClient.stakeholders);
     let navigationExtras: NavigationExtras = {
       state: {
         clientExists: this.clientExists,
@@ -963,7 +936,6 @@ export class ClientByIdComponent implements OnInit {
   }
 
   checkForm() {
-    this.logger.debug(this.form);
     this.form.get("natJuridicaNIFNIPC").setValue("TESTING UHJSAIUDSHSUD");
 
     this.form.updateValueAndValidity();

@@ -64,7 +64,6 @@ export class CreateStakeholderComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    this.logger.debug("okCC valor: ", this.okCC);
   }
 
   /**
@@ -252,7 +251,6 @@ export class CreateStakeholderComponent implements OnInit {
       if (result) {
         this.Window.readCCAddress();
       } else {
-        this.logger.debug("fechar");
         this.Window.readCC();
         this.newModal.hide();
       }
@@ -366,8 +364,6 @@ export class CreateStakeholderComponent implements OnInit {
     /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
-      this.logger.debug("searched interveniente");
-      this.logger.debug(clients);
 
       context.isShown = true;
       
@@ -376,10 +372,7 @@ export class CreateStakeholderComponent implements OnInit {
         context.foundStakeholders = true;
         context.stakeholdersToShow = [];
         clients.forEach(function (value, index) {
-          this.logger.debug(value);
           context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-            this.logger.debug("ja a ir buscar");
-            this.logger.debug(c);
             var stakeholder = {
               "stakeholderNumber": c.stakeholderId,
               "stakeholderName": c.shortName,
@@ -387,8 +380,6 @@ export class CreateStakeholderComponent implements OnInit {
               "elegible": "elegivel",
               "associated": "SIM"
             }
-            this.logger.debug("stakeholder adicionado:");
-            this.logger.debug(stakeholder);
             context.stakeholdersToShow.push(stakeholder);
           });
         })
@@ -411,7 +402,6 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   selectStakeholder(stakeholder) {
-    this.logger.debug(stakeholder);
     
     this.newStake = {
       "fiscalId": stakeholder.stakeholderNIF,
@@ -420,7 +410,6 @@ export class CreateStakeholderComponent implements OnInit {
       "contactName": '',
       "shortName": ''
     };
-    this.logger.debug(this.newStake);
     this.stakeholderNumber = stakeholder.stakeholderNumber;
   }
 
@@ -428,21 +417,13 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.foundStakeholders) {
       this.stakeholderService.getStakeholderByID(this.stakeholderNumber, 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
-
-        this.logger.debug("stakeholder procurado");
-        this.logger.debug(stakeholderToInsert);
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.logger.debug("add stakeholder existente");
-          this.logger.debug(this.newStake);
 
           this.route.navigate(['/stakeholders/']);
         }, error => {
-          this.logger.debug(error);
         });
       });
     } else {
-      this.logger.debug("form");
-      this.logger.debug(this.formStakeholderSearch);
 
       var stakeholderToInsert: IStakeholders = {
         "fiscalId": this.formStakeholderSearch.get("documentNumber").value,
@@ -454,10 +435,7 @@ export class CreateStakeholderComponent implements OnInit {
         "phone2": {},
         "shortName": this.formStakeholderSearch.get("socialDenomination").value
       }
-      this.logger.debug("Stakeholder a adicionar");
-      this.logger.debug(stakeholderToInsert);
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-        this.logger.debug("Stakeholder criado com sucesso");
         this.route.navigate(['/stakeholders/']);
       });
     }

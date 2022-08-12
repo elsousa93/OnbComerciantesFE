@@ -126,39 +126,31 @@ export class CountrysComponent implements OnInit {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.client = this.route.getCurrentNavigation().extras.state["client"];
-      this.logger.debug("cliente que foi buscado: ", this.client);
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
       if (this.route.getCurrentNavigation().extras.state["crc"])
         this.crc = this.route.getCurrentNavigation().extras.state["crc"];
-      this.logger.debug("client exists ", this.clientExists);
-      this.logger.debug(this.route.getCurrentNavigation().extras);
     }
 
     if (this.returned !== null) {
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
-        this.logger.debug("A preferencia de documentos é viaDigital");
         this.form.get("preferenceDocuments").setValue("viaDigital");
       } else {
-        this.logger.debug("A preferencia de documentos é Mail");
         this.form.get("preferenceDocuments").setValue("Mail");
       }
 
       if (this.merchantInfo.businessGroup !== null) {
         if (this.merchantInfo.businessGroup.type === 'Franchise') {
-          this.logger.debug('Escolheu sim na parte do franchise');
           this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
           this.setAssociatedWith(true);
         }
         if (this.merchantInfo.businessGroup.type === 'Group') {
-          this.logger.debug("Group");
           this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
           this.setAssociatedWith(true);
         }
         if (this.merchantInfo.businessGroup.type === 'Isolated') {
-          this.logger.debug('Escolheu não na parte do franchise');
           this.setAssociatedWith(false);
         }
       } else {
@@ -167,7 +159,6 @@ export class CountrysComponent implements OnInit {
       this.editCountries();
     }
 
-    this.logger.debug(this.clientId);
     //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
@@ -349,11 +340,6 @@ export class CountrysComponent implements OnInit {
   submit() {
     var context = this;
     if (this.returned !== 'consult') {
-      this.logger.debug('Entrei no if do edit e processo normal ');
-      this.logger.debug('Cliente recebido ', this.client);
-
-      this.logger.debug("lista de paises preenchidos");
-      this.logger.debug(this.lstPaisPreenchido);
       this.data.updateData(true, 1);
       this.newSubmission.startedAt = new Date().toISOString();
       this.newSubmission.merchant.commercialName = "string";
@@ -391,7 +377,6 @@ export class CountrysComponent implements OnInit {
         //this.newSubmission.processNumber = localStorage.getItem("processNumber");
       }
 
-      this.logger.debug(this.newSubmission.merchant);
 
       //this.newSubmission.merchant.commercialName = this.merchantInfo.companyName;
       //this.newSubmission.merchant.billingEmail = this.merchantInfo.billingEmail;
@@ -436,10 +421,6 @@ export class CountrysComponent implements OnInit {
       //}
 
       var context = this;
-      this.logger.debug("Submissao tratada! uysidghsiudghisudh");
-      this.logger.debug(this.newSubmission);
-      this.logger.debug("----------------------");
-      this.logger.debug(this.stakeholdersToInsert);
       localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
       //this.logger.debug(this.newSubmission.merchant);
 
@@ -449,9 +430,6 @@ export class CountrysComponent implements OnInit {
           "shortName": value.name
         })
       });
-
-    this.logger.debug("CRC !!!");
-      this.logger.debug(this.crc);
       if (this.crc !== null && this.crc !== undefined) {
         this.newSubmission.documents.push({
           documentType: 'crcPDF',
@@ -470,8 +448,6 @@ export class CountrysComponent implements OnInit {
         this.newSubmission.merchant.merchantType = 'Entrepreneur';
 
       this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-        this.logger.debug("dentro do submission service");
-        this.logger.debug(result);
         localStorage.setItem("submissionId", result.id);
         this.processNrService.changeProcessNumber(result.processNumber);
 
@@ -515,7 +491,6 @@ export class CountrysComponent implements OnInit {
 
       });
     } else {
-      this.logger.debug('Estou numa consulta logo não submeti nenhuma informação');
       this.route.navigate(['stakeholders/']);
     }
   }
@@ -551,15 +526,11 @@ export class CountrysComponent implements OnInit {
   }
 
   onCountryChange(country) {
-    this.logger.debug('País selecionado ', country);
     var index = this.contPais.findIndex(elem => elem.description == country.description);
     if (index > -1) {
-      this.logger.debug('País existe no contPais');
       this.contPais.splice(index, 1);
     } else {
-      this.logger.debug('País adicionado ');
       this.contPais.push(country);
-      this.logger.debug("ContPais depois do pais ser add ", this.contPais);
     }
 
     //var index1 = this.lstCountry.findIndex(elem => {
@@ -608,7 +579,6 @@ export class CountrysComponent implements OnInit {
   }
 
   countrys(item) {
-    this.logger.debug("item que passamos como parametro ", item);
     this.countriesCheckBox.forEach(val => {
       if (val.value == item.value) {
         val.isSelected = !val.isSelected;
@@ -617,17 +587,9 @@ export class CountrysComponent implements OnInit {
       }
     });
 
-    this.logger.debug("lstCountry quando carregamos na checkbox ", this.lstCountry);
-    this.logger.debug("lstCountry1 quando carregamos na checkbox ", this.lstCountry1);
-    this.logger.debug("lstCountry2 quando carregamos na checkbox ", this.lstCountry2);
-
     this.lstCountry.splice(0, this.lstCountry.length);
     this.lstCountry1.splice(0, this.lstCountry1.length);
     this.lstCountry2.splice(0, this.lstCountry2.length);
-
-    this.logger.debug("lstCountry quando carregamos na checkbox depois de esvaziar ", this.lstCountry);
-    this.logger.debug("lstCountry1 quando carregamos na checkbox depois de esvaziar ", this.lstCountry1);
-    this.logger.debug("lstCountry2 quando carregamos na checkbox deopis de esvaziar", this.lstCountry2);
 
     this.valueInput();
     var count = 0;
@@ -829,15 +791,12 @@ export class CountrysComponent implements OnInit {
     $('#text5').val('');
 
     if (this.contPais.length > 0) {
-
-      this.logger.debug("Lista contPais ", this.contPais);
       this.lstPaisPreenchido = [];
 
       this.contPais.forEach(elem => {
         this.lstPaisPreenchido.push(elem);
       });
 
-      this.logger.debug("Lista lstPaisPreechidos ", this.lstPaisPreenchido);
 
       this.lstPaisPreenchido.forEach(country => {
         $('#text5').val($('#text5').val() + country.description + ', ');
@@ -862,13 +821,9 @@ export class CountrysComponent implements OnInit {
 
   editCountries() {
     this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
-      this.logger.debug(countryID);
       this.tableInfo.GetCountryById(countryID).subscribe(result => {
         this.contPais.push(result);
-        this.logger.debug(result);
         this.inserirText(null);
-        this.logger.debug("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
-        this.logger.debug("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
       });
     });
   }
