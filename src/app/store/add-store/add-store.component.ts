@@ -192,7 +192,6 @@ export class AddStoreComponent implements OnInit {
     console.log("e");
     this.loadTableInfo();
 
-    this.data.updateData(false, 3, 2);
   }
 
   ngOnInit(): void {
@@ -218,6 +217,7 @@ export class AddStoreComponent implements OnInit {
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+      this.data.updateData(false, 3, 2);
     }
   }
 
