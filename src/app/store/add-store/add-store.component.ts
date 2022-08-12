@@ -164,23 +164,19 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    console.log("b");
     this.clientService.GetClientById(this.submissionId).subscribe(client => {
-      console.log("c");
-      console.log("recebido: ", client);
 
       this.submissionClient = client;
 
-      console.log("submissionclient chamado dentro da api: ", this.submissionClient);
       this.logger.debug("cliente da submissao: ", this.submissionClient);
-      console.log("d");
       this.updateForm();
     });
 
     this.storeService.activitiesbycode(this.cae).subscribe(result => {
       this.logger.debug(result);
+      console.log("resultado: ", result);
 
-      this.activities.push(result);
+      this.activities = result;
     }, error => {
       this.logger.debug("Deu erro");
     })
@@ -188,13 +184,10 @@ export class AddStoreComponent implements OnInit {
 
   constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
     this.submissionId = localStorage.getItem("submissionId");
-    console.log("a");
     this.fetchStartingInfo();
-    console.log("e");
     this.loadTableInfo();
 
     this.data.updateData(false, 3, 2);
-    console.log("Valor do editar ", this.edit);
   }
 
   ngOnInit(): void {
@@ -204,9 +197,7 @@ export class AddStoreComponent implements OnInit {
     //this.stroreId = Number(this.router.snapshot.params['stroreid']);
     //this.subscription = this.data.currentData.subscribe(map => this.map = map);
     //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    console.log("f");
     this.initializeForm();
-    console.log("h");
     this.returned = "consult";//localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
@@ -330,9 +321,6 @@ export class AddStoreComponent implements OnInit {
 
     this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
 
-    //console.log(this.formStores);
-    console.log('valores do form ', this.formStores);
-    console.log('valores do form ROOT apos submit ', this.rootFormGroup.form.controls["infoStores"]);
     let navigationExtras: NavigationExtras = {
       state: {
         store: this.store
@@ -350,18 +338,11 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('countryStore').setValidators([Validators.required]);
       this.formStores.get('zipCodeStore').setValidators([Validators.required]);
 
-
-      console.log('Adicionamos os controls dos paises ao formStores ', this.formStores);
-      console.log('O root tem ', this.rootFormGroup.form.controls["infoStores"]);
     } else {
-      console.log('Antes de removermos os campos ', this.formStores);
-      console.log('ROOT antes de removermos os campos ', this.rootFormGroup.form.controls["infoStores"]);
       this.formStores.get('localeStore').setValidators(null);
       this.formStores.get('addressStore').setValidators(null);
       this.formStores.get('countryStore').setValidators(null);
       this.formStores.get('zipCodeStore').setValidators(null);
-      console.log('Depois de removermos os campos ', this.formStores);
-      console.log('ROOT depois de removermos os campos ', this.rootFormGroup.form.controls["infoStores"]);
     }
   }
 
@@ -394,12 +375,6 @@ export class AddStoreComponent implements OnInit {
 
   initializeForm() {
     var storename = '';
-    //if (this.submission.merchant)
-    //this.logger.debug("SUBMISSAO CLIENTE");
-    //this.logger.debug(this.submissionClient);
-    console.log("g");
-    console.log("submissao cliente");
-    console.log(this.submissionClient);
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
       activityStores: new FormControl('', Validators.required),
@@ -414,7 +389,10 @@ export class AddStoreComponent implements OnInit {
 
     this.formStores.get("activityStores").valueChanges.subscribe(v => {
       this.logger.debug("alterou");
+      console.log("alterou!!");
+      console.log(this.activities.find(element => element.code === v.code));
       this.subActivities = this.activities.find(element => element.code === v.code).subActivities;
+      console.log("v: ", v);
     });
 
     //this.storeService.activitiesbycode(this.cae).subscribe(result => {

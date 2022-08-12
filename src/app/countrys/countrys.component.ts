@@ -445,7 +445,7 @@ export class CountrysComponent implements OnInit {
       if (this.tipologia == 'Company')
         this.newSubmission.merchant.merchantType = 'Corporate';
       else
-        this.newSubmission.merchant.merchantType = 'Entrepreneur';
+        this.newSubmission.merchant.merchantType = 'Entrepeneur';
 
       this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
         localStorage.setItem("submissionId", result.id);

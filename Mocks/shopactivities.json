@@ -1,0 +1,42 @@
+ {
+    "request": {
+        "method": "GET",
+      "route": "v1/config/activities/{code}"
+    },
+    "response": {
+      "status": "OK",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      },
+        "body": [
+           {
+            "code": "3322",
+            "description": "Restauração",
+            "subactivities": [
+                {
+                    "code": "55212",
+                    "description": "Restauração 2"
+                },
+                {
+                    "code": "55232",
+                    "description": "Restauração 3"
+                }
+           ]           
+           },
+            {
+            "code": "3342",
+            "description": "Gestão",
+            "subactivities": [
+                {
+                    "code": "55245",
+                    "description": "Gestao 2"
+                },
+                {
+                    "code": "55292",
+                    "description": "Gestao 3"
+                }
+           ]            
+           }
+        ]
+    }
+}

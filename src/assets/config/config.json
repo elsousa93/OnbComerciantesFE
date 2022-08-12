@@ -7,5 +7,6 @@
   "acquiringAPIUrl": "http://localhost:12000/AcquiringAPI/api/",
   "authTokenUrl": "http://localhost:10000/connect/token",
   "outboundUrl": "http://localhost:12000/OutboundAPI/",
-  "mockacoUrl": "http://localhost/Mockaco/"
+  "mockacoUrl": "http://localhost:13000/"
+  //"mockacoUrl": "http://localhost/Mockaco/"
 }

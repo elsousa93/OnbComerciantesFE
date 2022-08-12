@@ -1,0 +1,420 @@
+[10:45:53 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[10:45:54 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[10:45:54 INF]  Now listening on: http://localhost:80
+[10:45:54 INF]  Application started. Press Ctrl+C to shut down.
+[10:45:54 INF]  Hosting environment: Production
+[10:45:54 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[10:46:46 INF]  Application is shutting down...
+[10:47:04 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[10:47:04 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[10:47:05 INF]  Now listening on: http://localhost:12000
+[10:47:05 INF]  Application started. Press Ctrl+C to shut down.
+[10:47:05 INF]  Hosting environment: Production
+[10:47:05 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[11:22:17 INF]  Application is shutting down...
+[12:25:57 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[12:25:57 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:25:57 INF]  Now listening on: http://localhost:13000
+[12:25:57 INF]  Application started. Press Ctrl+C to shut down.
+[12:25:57 INF]  Hosting environment: Production
+[12:25:57 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:26:24 INF]  Application is shutting down...
+[12:26:26 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[12:26:26 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:26:26 INF]  Now listening on: http://localhost:13000
+[12:26:26 INF]  Application started. Press Ctrl+C to shut down.
+[12:26:26 INF]  Hosting environment: Production
+[12:26:26 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:26:49 INF]  Application is shutting down...
+[12:26:51 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:26:51 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:26:51 INF]  Now listening on: http://localhost:13000
+[12:26:51 DBG]  Loading shopactivities.json (0D5DDD324F621CF0C478CB16B440C34B)
+[12:26:51 INF]  GET v1/config/activities/{code} mapped from shopactivities.json
+[12:26:51 DBG]  Loading subzones.json (130AD77D88FC217759338C7209A55B55)
+[12:26:51 INF]  GET v1/config/subzone/{zipCode1}/{zipCode2} mapped from subzones.json
+[12:26:51 INF]  Application started. Press Ctrl+C to shut down.
+[12:26:51 INF]  Hosting environment: Production
+[12:26:51 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[12:27:05 INF] 0HMJSAMASESKE:00000002 No CORS policy found for the specified request.
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Incoming request from ::1
+[12:27:05 DBG] 0HMJSAMASESKE:00000002 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[12:27:05 DBG] 0HMJSAMASESKE:00000002 Body is not present
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 107.0328ms
+[12:29:56 INF]  Application is shutting down...
+[12:42:25 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:42:25 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:42:48 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:42:48 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:42:59 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:42:59 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:42:59 INF]  Now listening on: http://localhost:13000
+[12:42:59 DBG]  Loading shopactivities.json (0D5DDD324F621CF0C478CB16B440C34B)
+[12:42:59 INF]  GET v1/config/activities/{code} mapped from shopactivities.json
+[12:42:59 DBG]  Loading subzones.json (130AD77D88FC217759338C7209A55B55)
+[12:42:59 INF]  GET v1/config/subzone/{zipCode1}/{zipCode2} mapped from subzones.json
+[12:42:59 INF]  Application started. Press Ctrl+C to shut down.
+[12:42:59 INF]  Hosting environment: Production
+[12:42:59 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:43:03 INF]  Application is shutting down...

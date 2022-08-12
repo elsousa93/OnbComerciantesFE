@@ -550,11 +550,15 @@ export class ClientByIdComponent implements OnInit {
     
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
+      console.log("sim");
+      console.log(this.route.getCurrentNavigation());
+      console.log(this.route.getCurrentNavigation().extras.state["dataCC"]);
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
+      this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
       this.logger.debug("------------");
       this.logger.debug(this.processId);
       this.logger.debug("------------");
@@ -829,14 +833,11 @@ export class ClientByIdComponent implements OnInit {
     }
     if (this.tipologia === 'ENI') {
       this.client.shortName = this.form.value["socialDenomination"];
-      console.log("extras: ", this.route.getCurrentNavigation().extras);
-      var name = this.route.getCurrentNavigation().extras.state["nomeCC"];
-      if (name !== undefined && name !== null) {
-        this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
-
-        this.client.shortName = this.dataCC.value["nameCC"];
+      if (this.dataCC !== {}) {
+        console.log("dataCC: ", this.dataCC);
+        this.client.shortName = this.dataCC.nomeCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
-        this.client.fiscalIdentification.fiscalId = this.dataCC.value["nifCC"];
+        this.client.fiscalIdentification.fiscalId = this.dataCC.nifCC;
       //  this.client.addressCC = this.dataCC.value["addressCC"];
        // this.client.postalCodeCC = this.dataCC.value["postalCodeCC"];
 

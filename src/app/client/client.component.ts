@@ -35,6 +35,8 @@ export class ClientComponent implements OnInit {
   private baseUrl: string;
   private neyondBackUrl: string;
 
+  dataCC = {};
+
   modalRef: BsModalRef;
 
   openModal(template: TemplateRef<any>) {
@@ -564,7 +566,6 @@ export class ClientComponent implements OnInit {
     this.documentType = true;
   }
 
-  dataCC? =  null;
 
   obterSelecionado() {
     this.logger.debug(this.clientId);
