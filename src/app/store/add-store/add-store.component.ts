@@ -3,7 +3,7 @@ import { Component, Host, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { Activity, CountryInformation, SubActivity } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
@@ -15,6 +15,7 @@ import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
 import { NGXLogger } from 'ngx-logger';
 import { StoreService } from '../store.service';
+import { Country } from '../../stakeholders/IStakeholders.interface';
 
 @Component({
   selector: 'app-add-store',
@@ -31,6 +32,8 @@ export class AddStoreComponent implements OnInit {
   submissionId: string;
   submission: SubmissionGetTemplate;
   submissionClient: Client;
+
+  subActivities: SubActivity[] = [];
 
   //Informação de campos/tabelas
   Countries: CountryInformation[] = [];
@@ -130,21 +133,11 @@ export class AddStoreComponent implements OnInit {
   public idisabledAdd: boolean = false;
   public idisabledContact: boolean = false;
 
-  activities: {
-    code: string,
-    description: string,
-    subActivities: {
-      code: string,
-      description: string
-    }[]
-    }[] = [];
+  activities: Activity[] = [];
 
   returned: string;
 
-  subActivities: {
-    code: string,
-    description: string
-  }[] = [];
+  countries: CountryInformation[] = [];
 
   subzones: {
     code: string,
@@ -178,6 +171,10 @@ export class AddStoreComponent implements OnInit {
       this.activities = result;
     }, error => {
       this.logger.debug("Deu erro");
+    });
+
+    this.tableData.GetAllCountries().subscribe(result => {
+      this.countries = result;
     })
   }
 
@@ -393,8 +390,13 @@ export class AddStoreComponent implements OnInit {
       commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
     })
       this.formStores.get("activityStores").valueChanges.subscribe(v => {
-          this.logger.debug("alterou");
-          this.subActivities = this.activities.find(element => element.code === v.code).subActivities;
+        this.logger.debug("alterou");
+        console.log("Alterou activity stores");
+        console.log(v);
+        var subactivities = this.activities.find(element => element.code === v)["subactivities"];
+
+        this.subActivities = subactivities;
+        //console.log(this.subActivities);
       });
 
     //this.storeService.activitiesbycode(this.cae).subscribe(result => {
