@@ -51,9 +51,11 @@ ngOnInit(): void {
 
 
   nextPage() {
-    localStorage.setItem('returned', 'edit');
-    this.logger.debug('Valor do returned', localStorage.getItem("returned"));
-
+    console.log('Valor do returned ', localStorage.getItem("returned"));
+    if (localStorage.getItem("returned") != 'consult') {
+      localStorage.setItem('returned', 'edit');
+      this.logger.debug('Valor do returned', localStorage.getItem("returned"));
+    }
     localStorage.setItem('processNumber', this.process.processNumber);
     this.logger.debug('Valor do processNumber ', localStorage.getItem("processNumber"));
 

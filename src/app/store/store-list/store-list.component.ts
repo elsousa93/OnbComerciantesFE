@@ -78,7 +78,7 @@ const testValues: ShopDetailsAcquiring[] = [
         bank: "Banco2",
         iban: "893018920"
       },
-      userMerchantBank: true
+      userMerchantBank: false
     },
     documents:
     {
@@ -89,9 +89,9 @@ const testValues: ShopDetailsAcquiring[] = [
     id: "2",
     manager: "Manager2",
     name: "ShopName2",
-    productCode: "432",
+    productCode: "cardNotPresent",
     subActivity: "99",
-    subproductCode: "01",
+    subproductCode: "keyOnHand",
     website: "google.com"
   },
 ]

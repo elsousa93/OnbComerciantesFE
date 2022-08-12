@@ -94,7 +94,7 @@ export class StoreIbanComponent implements OnInit {
       bank: "",
         iban: ""
     },
-    userMerchantBank: false
+    userMerchantBank: null
   },
   documents:
   {
@@ -121,6 +121,7 @@ export class StoreIbanComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('INIT');
+    this.returned = localStorage.getItem("returned");
     this.initializeForm();
 
     if (this.rootFormGroup.form != null) {
@@ -133,7 +134,7 @@ export class StoreIbanComponent implements OnInit {
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-      this.returned = localStorage.getItem("returned");
+
       if (this.route.getCurrentNavigation() != null) {
         this.store = this.route.getCurrentNavigation().extras.state["store"];
       }
@@ -159,6 +160,7 @@ export class StoreIbanComponent implements OnInit {
     //banco de apoio
     //informação bancária
     console.log('JSAKHSJKAHSJKSAHJK');
+    this.store.bank.userMerchantBank = this.formStores.get("bankInformation").value;
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
     this.store.productCode = this.formStores.get("solutionType").value;
     this.store.subproductCode = this.formStores.get("subProduct").value;

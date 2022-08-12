@@ -1,4 +1,4 @@
-<app-nav-menu-interna></app-nav-menu-interna>
+<app-nav-menu-interna *ngIf="!edit"></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()">
   <div class="row">
