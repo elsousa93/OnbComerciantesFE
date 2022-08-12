@@ -172,7 +172,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.data.updateData(false, 6, 3);
     this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
-    this.returned = 'consult';//localStorage.getItem("returned");
+    this.returned = localStorage.getItem("returned");
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
@@ -240,11 +240,11 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    //this.listValue.get("cellphone").get("countryCode").setValue(this.client.contacts.phone1.countryCode);
-    //this.listValue.get("cellphone").get("phoneNumber").setValue(this.client.contacts.phone1.phoneNumber);
-    //this.listValue.get("telephone").get("countryCode").setValue(this.client.contacts.phone2.phoneNumber);
-    //this.listValue.get("telephone").get("phoneNumber").setValue(this.client.contacts.phone2.phoneNumber);
-    //this.listValue.get("email").setValue(this.client.contacts.email);
+    this.listValue.get("cellphone").get("countryCode").setValue(this.client.contacts.phone1.countryCode);
+    this.listValue.get("cellphone").get("phoneNumber").setValue(this.client.contacts.phone1.phoneNumber);
+    this.listValue.get("telephone").get("countryCode").setValue(this.client.contacts.phone2.phoneNumber);
+    this.listValue.get("telephone").get("phoneNumber").setValue(this.client.contacts.phone2.phoneNumber);
+    this.listValue.get("email").setValue(this.client.contacts.email);
     if (this.returned == 'consult')
       this.listValue.disable();
   }

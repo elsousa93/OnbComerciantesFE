@@ -163,16 +163,9 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    console.log("b");
     this.clientService.GetClientById(this.submissionId).subscribe(client => {
-      console.log("c");
-      console.log("recebido: ", client);
-
       this.submissionClient = client;
-
-      console.log("submissionclient chamado dentro da api: ", this.submissionClient);
       this.logger.debug("cliente da submissao: ", this.submissionClient);
-      console.log("d");
       this.updateForm();
     });
 
@@ -187,21 +180,12 @@ export class AddStoreComponent implements OnInit {
 
   constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
     this.submissionId = localStorage.getItem("submissionId");
-    console.log("a");
     this.fetchStartingInfo();
-    console.log("e");
     this.loadTableInfo();
-
+    setTimeout(() => this.data.updateData(false, 3, 2), 0);
   }
 
   ngOnInit(): void {
-
-    //this.appComp.updateNavBar("Adicionar Loja")
-    ////Get Id from the store
-    //this.stroreId = Number(this.router.snapshot.params['stroreid']);
-    //this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    console.log("f");
     this.initializeForm();
     this.returned = localStorage.getItem("returned");
 
@@ -217,7 +201,6 @@ export class AddStoreComponent implements OnInit {
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-      this.data.updateData(false, 3, 2);
     }
   }
 
