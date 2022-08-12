@@ -1,4 +1,4 @@
-<app-nav-menu-interna></app-nav-menu-interna>
+<app-nav-menu-interna *ngIf="!edit"></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()" >
   <div class="row">
@@ -23,19 +23,19 @@
         <p class="titulo-form-simples mb-3" wappler-command="editContent">PRETENDE considerar A informação bancária do cliente empresa?</p>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text">
           <div class="form-check">
-            <input class="form-check-input" formControlName="bankInformation" (click)="isIBAN(true)" type="radio" value=true id="bankInformation1" name="bankInformation">
+            <input class="form-check-input" formControlName="bankInformation" (click)="isIBAN(true)" type="radio" [value]=true id="bankInformation1" name="bankInformation">
             <label class="form-check-label radio pe-5" for="bankInformation" wappler-command="editContent">SIM</label>
           </div>
           </span><span class="navbar-text">
           <div class="form-check">
-            <input class="form-check-input" formControlName="bankInformation" (click)="isIBAN(false)" type="radio" value=false id="bankInformation2" name="bankInformation">
+            <input class="form-check-input" formControlName="bankInformation" (click)="isIBAN(false)" type="radio" [value]=false id="bankInformation2" name="bankInformation">
             <label class="form-check-label radio" for="bankInformation" wappler-command="editContent">NÃO</label>
           </div>
           </span></nav>
         </div>
       </div>
       </div>
-      <div *ngIf="isIBANConsidered == false" class="offset-1 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 col-5">
+      <div *ngIf="formStores.get('bankInformation').value === false" class="offset-1 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 col-5">
       <p class="titulo-form-simples mb-3" wappler-command="editContent">por favor anexe o comprovativo de IBAN:</p>
       <div class="table-responsive mb-2">
         <table class="table">
@@ -45,7 +45,7 @@
           <th scope="col" class="text-center bg-light">DATA DO DOCUMENTO</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="IBANToShow !== undefined">
           <tr>
           <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
           <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
@@ -85,7 +85,7 @@
       </span>
     </nav>
       </div>
-      <div *ngIf="isCardPresent" class="offset-1 col-10 pt-0 ps-0">
+      <div *ngIf="formStores.get('solutionType').value == 'cardPresent'" class="offset-1 col-10 pt-0 ps-0">
       <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">SUB PRODUTO</h5>
       <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text text-primary">
         <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="easy" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct" wappler-command="editContent"><b>EASY</b></label></div>
@@ -93,7 +93,7 @@
           <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="normal" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct"><b>NORMAL</b></label></div>
         </span></span><span class="navbar-text ms-3"></span></nav>
       </div>
-      <div *ngIf="isCardNotPresent" class="offset-1 col-10 pt-0 ps-0">
+      <div *ngIf="formStores.get('solutionType').value == 'cardNotPresent'" class="offset-1 col-10 pt-0 ps-0">
         <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">SUB PRODUTO</h5>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text text-primary">
           <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="keyOnHand" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct" wappler-command="editContent"><b>CHAVE NA MÃO</b></label></div>
@@ -103,7 +103,7 @@
         </div>
       <div class="offset-1 col-5 pt-0 ps-0">
       <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url" (change)="URLFilled(true)" id="text2" name="text2" type="text" class="form-control campo_form">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4"><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
+      <nav *ngIf="!edit" class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4"><span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
         <button type="submit" [disabled]="isCardNotPresent && !isURLFilled" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">ADICIONAR&nbsp;
         <img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;"></button></span></nav>
       </div>

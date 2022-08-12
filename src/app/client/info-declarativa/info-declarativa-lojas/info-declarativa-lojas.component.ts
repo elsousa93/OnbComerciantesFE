@@ -103,25 +103,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   public stores: ShopDetailsAcquiring[] = [];
   public clientID: number = 12345678;
 
-  public selectedStore = {
-    //activityEstab: "",
-    //address: "",
-    //cellphoneIndic: "",
-    //cellphoneNumber: "",
-    //country: "",
-    //emailContact: "",
-    //fixedIP: "",
-    //iban: "",
-    //id: 0,
-    //nameEstab: "",
-    //postalCode: "",
-    //postalLocality: "",
-    //subActivityEstab: "",
-    //subZoneEstab: "",
-    //turisticZone: false,
-    //zoneEstab: ""
-  } as ShopDetailsAcquiring;
-
+  public selectedStore = null;
   //listValue!: FormGroup;
 
   displayedColumns: string[] = ['nameEstab', 'activityEstab', 'subActivityEstab', 'zoneEstab'];
@@ -164,8 +146,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       this.loadStores(this.stores);
     });
 
-
-
     //this.internationalCallingCodes = tableInfo.GetAllCountries();
 
  /*    //se o telemovel estiver vazio, o numero de telefone é obrigatorio
@@ -192,7 +172,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.data.updateData(false, 6, 3);
     this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
-    this.returned = localStorage.getItem("returned");
+    this.returned = 'consult';//localStorage.getItem("returned");
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
@@ -260,11 +240,11 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    this.listValue.get("cellphone").get("countryCode").setValue(this.client.contacts.phone1.countryCode);
-    this.listValue.get("cellphone").get("phoneNumber").setValue(this.client.contacts.phone1.phoneNumber);
-    this.listValue.get("telephone").get("countryCode").setValue(this.client.contacts.phone2.phoneNumber);
-    this.listValue.get("telephone").get("phoneNumber").setValue(this.client.contacts.phone2.phoneNumber);
-    this.listValue.get("email").setValue(this.client.contacts.email);
+    //this.listValue.get("cellphone").get("countryCode").setValue(this.client.contacts.phone1.countryCode);
+    //this.listValue.get("cellphone").get("phoneNumber").setValue(this.client.contacts.phone1.phoneNumber);
+    //this.listValue.get("telephone").get("countryCode").setValue(this.client.contacts.phone2.phoneNumber);
+    //this.listValue.get("telephone").get("phoneNumber").setValue(this.client.contacts.phone2.phoneNumber);
+    //this.listValue.get("email").setValue(this.client.contacts.email);
     if (this.returned == 'consult')
       this.listValue.disable();
   }

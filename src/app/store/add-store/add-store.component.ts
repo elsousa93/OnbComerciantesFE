@@ -43,8 +43,7 @@ export class AddStoreComponent implements OnInit {
   private baseUrl;
 
   cae: string = "5212";
-
-  public chooseAddressV: boolean = false;
+  public chooseAddressV: boolean;
   formStores!: FormGroup;
   edit: boolean = false;
 
@@ -198,11 +197,12 @@ export class AddStoreComponent implements OnInit {
     //this.subscription = this.data.currentData.subscribe(map => this.map = map);
     //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.initializeForm();
-    this.returned = "consult";//localStorage.getItem("returned");
+    this.returned = localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.addControl('infoStores', this.formStores);
       this.edit = true;
+      
       if (this.returned == 'consult') {
         this.formStores.disable();
       }
@@ -293,33 +293,38 @@ export class AddStoreComponent implements OnInit {
   }
 
   submit() {
-    this.store.name = this.formStores.get("storeName").value;
-    if (this.submissionClient.merchantType == 'Entrepreneur')
-      this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
-    else
-      this.store.manager = this.formStores.get("contactPoint").value;
+    //this.store.name = this.formStores.get("storeName").value;
+    //if (this.submissionClient.merchantType == 'Entrepreneur')
+    //  this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
+    //else
+    //  this.store.manager = this.formStores.get("contactPoint").value;
 
-    this.store.activity = this.formStores.get("activityStores").value;
-    this.store.subActivity = this.formStores.get("subactivityStores").value;
+    //this.store.activity = this.formStores.get("activityStores").value;
+    //this.store.subActivity = this.formStores.get("subactivityStores").value;
     if (this.chooseAddressV) {
-      this.store.address.address.address = this.formStores.get("addressStore").value;
-      this.store.address.address.country = this.formStores.get("countryStore").value;
-      this.store.address.address.postalArea = this.formStores.get("localeStore").value;
-      this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
+      //this.store.address.address.address = this.formStores.get("addressStore").value;
+      //this.store.address.address.country = this.formStores.get("countryStore").value;
+      //this.store.address.address.postalArea = this.formStores.get("localeStore").value;
+      //this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
+      //this.store.address.useMerchantAddress = false;
+      console.log('Valor do replicateAddress ' , this.formStores.get("replicateAddress").value);
     } else {
-      this.store.address.address.address = this.submissionClient.headquartersAddress.address;
-      this.store.address.address.country = this.submissionClient.headquartersAddress.country;
-      this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-      this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-      this.store.address.useMerchantAddress = true;
+      //this.store.address.address.address = this.submissionClient.headquartersAddress.address;
+      //this.store.address.address.country = this.submissionClient.headquartersAddress.country;
+      //this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+      //this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+      /*      this.store.address.useMerchantAddress = true;*/
+      console.log('Valor do replicateAddress ', this.formStores.get("replicateAddress").value);
     }
 
-    if (this.isComercialCentreStore){
-      this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value; // n sei qual é o valor que corresponde na Loja
-    
+    if (this.isComercialCentreStore) {
+      //this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value;
+      console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
+    } else {
+      console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
     }
 
-    this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
+    //this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
 
     let navigationExtras: NavigationExtras = {
       state: {
@@ -337,7 +342,6 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValidators([Validators.required]);
       this.formStores.get('countryStore').setValidators([Validators.required]);
       this.formStores.get('zipCodeStore').setValidators([Validators.required]);
-
     } else {
       this.formStores.get('localeStore').setValidators(null);
       this.formStores.get('addressStore').setValidators(null);
@@ -384,16 +388,14 @@ export class AddStoreComponent implements OnInit {
       contactPoint: new FormControl(''),
       subactivityStore: new FormControl('', Validators.required),
       localeStore: new FormControl(''),
-      addressStore: new FormControl('')
-    });
-
-    this.formStores.get("activityStores").valueChanges.subscribe(v => {
-      this.logger.debug("alterou");
-      console.log("alterou!!");
-      console.log(this.activities.find(element => element.code === v.code));
-      this.subActivities = this.activities.find(element => element.code === v.code).subActivities;
-      console.log("v: ", v);
-    });
+      addressStore: new FormControl(''),
+      replicateAddress: new FormControl(this.chooseAddressV, Validators.required),
+      commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
+    })
+      this.formStores.get("activityStores").valueChanges.subscribe(v => {
+          this.logger.debug("alterou");
+          this.subActivities = this.activities.find(element => element.code === v.code).subActivities;
+      });
 
     //this.storeService.activitiesbycode(this.cae).subscribe(result => {
     //  this.formStores.get()

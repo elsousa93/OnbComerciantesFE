@@ -88,11 +88,11 @@
                                showFirstLastButtons>
                 </mat-paginator>
               </div>
-              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;INFORMAÇÃO CARACTERÍSTICA DA LOJA
+              <div  class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
+                <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;INFORMAÇÃO CARACTERÍSTICA DA LOJA
                 </h2>
-                <p class="titul campo_obrigatrio">* campo obrigatório</p>
-                <form [formGroup]="listValue">
+                <p *ngIf="selectedStore != null" class="titul campo_obrigatrio">* campo obrigatório</p>
+                <form *ngIf="selectedStore != null" [formGroup]="listValue">
 
                   <div class="row ms-0 me-0" style="margin-bottom: 50px;">
                     <div class="ms-0 me-0 ps-0 pe-0 col-7">
