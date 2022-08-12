@@ -268,14 +268,20 @@ export class StoreComponent implements AfterViewInit{
       this.currentStore.subproductCode = bankStores.get("subProduct").value;
       this.currentStore.website = bankStores.get("url").value;
 
-      this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-        if (this.currentIdx < (this.storeList.length - 1)) {
-          this.currentIdx = this.currentIdx + 1;
-          this.selectStore(this.storeList[this.currentIdx], this.currentIdx);
-        } else {
-          this.route.navigate(['comprovativos']);
-        }
-      });
+      //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+      //  if (this.currentIdx < (this.storeList.length - 1)) {
+      //    this.currentIdx = this.currentIdx + 1;
+      //    this.selectStore(this.storeList[this.currentIdx], this.currentIdx);
+      //  } else {
+      //    this.route.navigate(['comprovativos']);
+      //  }
+      //});
+      if (this.currentIdx < (testValues.length - 1)) {
+        this.currentIdx = this.currentIdx + 1;
+        this.selectStore(testValues[this.currentIdx], this.currentIdx);
+      } else {
+        this.route.navigate(['comprovativos']);
+      }
     }
   }
 

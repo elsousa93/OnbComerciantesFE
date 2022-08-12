@@ -75,18 +75,17 @@
                   <input formControlName="contactPoint" id="text5" name="text4" type="text" class="form-control campo_form">
                   <p class="titulo-form-simples" wappler-command="editContent">{{'SubActivityStores'|translate}}</p>
                   <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
-                  <select class="form-select campo-form-select"
+                  <select style="margin-bottom: 132px;" class="form-select campo-form-select"
                         id="subactivityStore" formControlName="subactivityStore">
                     <option *ngFor="let subActivity of subActivities" value={{subActivity.code}}>
                       {{subActivity.description}}
                     </option>
-                </select>
+                  </select>
 
-                  <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-                  <p *ngIf="formStores.get('replicateAddress').value" class="titulo-form-simples" wappler-command="editContent">{{'LocaleStore'|translate}}</p>
-                  <input formControlName="localeStore" *ngIf="formStores.get('replicateAddress').value" id="text5" name="text4" type="text" class="form-control campo_form">
-                  <p *ngIf="formStores.get('replicateAddress').value" class="titulo-form-simples" wappler-command="editContent">{{'AddressStore'|translate}}</p>
-                  <input formControlName="addressStore" *ngIf="formStores.get('replicateAddress').value" id="text5" name="text4" type="text" class="form-control campo_form">
+                    <p *ngIf="formStores.get('replicateAddress').value" class="titulo-form-simples" wappler-command="editContent">{{'LocaleStore'|translate}}</p>
+                    <input formControlName="localeStore" *ngIf="formStores.get('replicateAddress').value" id="text5" name="text4" type="text" class="form-control campo_form">
+                    <p *ngIf="formStores.get('replicateAddress').value" class="titulo-form-simples" wappler-command="editContent">{{'AddressStore'|translate}}</p>
+                    <input formControlName="addressStore" *ngIf="formStores.get('replicateAddress').value" id="text5" name="text4" type="text" class="form-control campo_form">
                 </div>
                 <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
                   <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">

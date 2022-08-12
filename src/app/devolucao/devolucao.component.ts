@@ -36,6 +36,8 @@ export class DevolucaoComponent implements OnInit{
     this.ngOnInit();
     this.logger.debug('Process Id ', this.processId);
 
+    this.data.updateData(true, 0);
+
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
     });
@@ -51,7 +53,7 @@ ngOnInit(): void {
 
 
   nextPage() {
-    console.log('Valor do returned ', localStorage.getItem("returned"));
+    this.logger.debug('Valor do returned ', localStorage.getItem("returned"));
     if (localStorage.getItem("returned") != 'consult') {
       localStorage.setItem('returned', 'edit');
       this.logger.debug('Valor do returned', localStorage.getItem("returned"));

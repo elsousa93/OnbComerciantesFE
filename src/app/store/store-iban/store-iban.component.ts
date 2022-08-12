@@ -115,14 +115,17 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
-    constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
-    this.data.updateData(false, 3, 3);
+  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
+    console.log('construtor');
+   
+
   }
 
   ngOnInit(): void {
     console.log('INIT');
     this.returned = localStorage.getItem("returned");
     this.initializeForm();
+
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.addControl('bankStores', this.formStores);
@@ -134,7 +137,7 @@ export class StoreIbanComponent implements OnInit {
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-
+      this.data.updateData(false, 3, 3);
       if (this.route.getCurrentNavigation() != null) {
         this.store = this.route.getCurrentNavigation().extras.state["store"];
       }
