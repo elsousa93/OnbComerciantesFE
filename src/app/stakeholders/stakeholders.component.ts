@@ -23,6 +23,7 @@ import { ReadcardService } from '../readcard/readcard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import jsPDF from 'jspdf';
 import { dataCC } from '../client/dataCC.interface';
+import { NGXLogger } from 'ngx-logger';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -229,65 +230,46 @@ export class StakeholdersComponent implements OnInit {
 
 
   constructor(private router: ActivatedRoute, public modalService: BsModalService,
-    private http: HttpClient, private route: Router, private readCardService: ReadcardService, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+      private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
-    console.log("foi buscar bem ao localstorage?");
-    console.log(this.submissionId);
-    console.log("returned ", this.returned);
 
     this.ngOnInit();
 
     var context = this;
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        console.log("Ir buscar submissão através do processNumber", result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          console.log("Ir buscar os detalhes da submissão com o seu ID ", resul);
           this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-            console.log('Lista de stakeholders da submissão ', res);
             res.forEach(function (value, index) {
-              console.log("Stake ", value);
               context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-                console.log("Info stakeholder ", r);
                 context.submissionStakeholders.push(r);
               }, error => {
-                console.log(error);
               });
             }, error => {
-              console.log(error);
             });
           });
         });
       });
 
-    console.log("Lista que fomos buscar à submissão antiga ", this.submissionStakeholders);
     if (this.submissionId !== null) {
-      console.log("O id da submissão existe", this.submissionId);
       stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
         result.forEach(function (value, index) {
-          console.log("Value ", value);
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            console.log("Info stake ", result);
             context.submissionStakeholders.push(result);
           }, error => {
-            console.log(error);
           });
         });
       }, error => {
-        console.log(error);
       });
     }
-      console.log("Lista depois de irmos buscar stakeholders à submissao atual (CRC) ", this.submissionStakeholders);
   }
 
   redirectAddStakeholder() {
-    console.log("errada");
     this.route.navigate(['/create-stakeholder/']);
   }
 
   redirectInfoStakeholder() {
-    console.log("certa");
     this.route.navigate(['/add-stakeholder/']);
   }
 
@@ -316,7 +298,6 @@ export class StakeholdersComponent implements OnInit {
       if (result) {
         this.Window.readCCAddress();
       } else {
-        console.log("fechar");
         this.Window.readCC();
 
         this.closeModal();
@@ -336,7 +317,6 @@ export class StakeholdersComponent implements OnInit {
   }
 
   onClickSearch() {
-    console.log("pesq");
 
   }
 
@@ -355,12 +335,10 @@ export class StakeholdersComponent implements OnInit {
   }
 
   onClickEdit(fiscalId) {
-    console.log("edit");
     this.route.navigate(['/update-stakeholder/', fiscalId]);
   }
 
   onClickDelete(fiscalId, clientNr) {
-    console.log("delete");
     this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
   }
 
@@ -392,33 +370,28 @@ export class StakeholdersComponent implements OnInit {
     this.isShown = !this.isShown;
 
     this.stakeShow.push(stake);
-    console.log("stakeShow array: " + this.stakeShow[0]);
    // GetByid(StakeholderNif, 0)
        
   }
 
   selectStakeholder(stakeholder) {
-    console.log(this.currentStakeholder);
-    console.log(stakeholder);
     this.currentStakeholder = stakeholder;
-    console.log(this.currentStakeholder);
-    console.log(this.currentStakeholder === stakeholder);
     
   }
 
   //searchStakeholder(formStakeholderSearch) {
-  //  console.log(formStakeholderSearch);
+  //  this.logger.debug(formStakeholderSearch);
   //  this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
-  //    console.log(result);
+  //    this.logger.debug(result);
   //    this.toggleShow(result);
   //  }, error => console.error(error));
   //}
 
   searchStakeholder() {
     //this.formStakeholderSearch
-    //console.log("ola");
+    //this.logger.debug("ola");
     //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  console.log(o);
+    //  this.logger.debug(o);
     //});
 
     var context = this;
@@ -430,10 +403,7 @@ export class StakeholdersComponent implements OnInit {
       var context2 = this;
 
       clients.forEach(function (value, index) {
-        console.log(value);
         context2.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-          console.log("stakeholders a popular");
-          console.log(c);
           var stakeholder = {
             "stakeholderNumber": c.stakeholderId,
             "stakeholderName": c.shortName,
@@ -443,13 +413,11 @@ export class StakeholdersComponent implements OnInit {
           }
 
           context.stakeholdersToShow.push(stakeholder);
-          console.log(context.stakeholdersToShow);
         });
       })
     }, error => {
-      console.log("deu erro no stakeholders search request");
       //context.showFoundClient = false;
-      //console.log("entrou aqui no erro huajshudsj");
+      //this.logger.debug("entrou aqui no erro huajshudsj");
       //context.resultError = "Não existe Comerciante com esse número.";
       //this.searchDone = true;
 
@@ -462,28 +430,23 @@ export class StakeholdersComponent implements OnInit {
   }
 
   deleteStakeholder(stakeholder) {
-    console.log("delete");
-    console.log(stakeholder);
     if (this.returned !== 'consult') {
-      console.log("Como não é uma consulta, consegui apagar o stakeholder");
       this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
-        console.log("stakeholder deleted");
         this.route.navigateByUrl('stakeholders/');
         //this.ngOnInit();
         //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
-        //console.log(index);
+        //this.logger.debug(index);
         //if (index > -1) { // 
         //  this.stakeholdersToShow.splice(index, 1);
         //}
-        //console.log("depois de apagar");
-        //console.log(this.stakeholdersToShow);
+        //this.logger.debug("depois de apagar");
+        //this.logger.debug(this.stakeholdersToShow);
         //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
         //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
         //    this.stakeholdersToShow.splice(i, 1);
         //}
       });
     } else {
-      console.log("Estamos numa consulta logo nao é possivel eliminar um stakeholder");
     }
   }
 

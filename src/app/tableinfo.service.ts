@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from './configuration';
 import { ITableInformation } from './ITableInformation.interface';
 import { DataService } from './nav-menu-interna/data.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class TableinfoService {
   }
   private baseUrl;
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient, 
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router,
@@ -26,18 +27,18 @@ export class TableinfoService {
 
 // To get: /api/country
   getAllCountriesList() {
-    console.log("get all countries service");
+    this.logger.debug("get all countries service");
     this.http.get<ITableInformation>(this.baseUrl + 'betable/GetAllCountries/').subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
     }, error => console.error(error));
   }
 
 
 // To get: /api/country/{code} 
   getCountry(countryCode) {
-    console.log("get a specific country service");
+    this.logger.debug("get a specific country service");
     this.http.get<ITableInformation>(this.baseUrl + 'betable/GetCountry/' + countryCode).subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
     }, error => console.error(error));
   }
 

@@ -88,15 +88,15 @@
                                showFirstLastButtons>
                 </mat-paginator>
               </div>
-              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;INFORMAÇÃO CARACTERÍSTICA DA LOJA
+              <div  class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
+                <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;INFORMAÇÃO CARACTERÍSTICA DA LOJA
                 </h2>
-                <p class="titul campo_obrigatrio">* campo obrigatório</p>
-                <form [formGroup]="listValue">
+                <p *ngIf="selectedStore != null" class="titul campo_obrigatrio">* campo obrigatório</p>
+                <form *ngIf="selectedStore != null" [formGroup]="listValue">
 
                   <div class="row ms-0 me-0" style="margin-bottom: 50px;">
                     <div class="ms-0 me-0 ps-0 pe-0 col-7">
-                      <div class="row" formGroupName = "cellphone">
+                      <div class="row" formGroupName="cellphone">
                         <div class="col-4">
                           <p class="titulo-form-simples mt-0">INDICATIVO:</p>
                           <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
@@ -107,31 +107,54 @@
                           </div>
                         </div>
                         <div class="col">
-                            <p class="titulo-form-simples mt-0">TELEFONE:*</p>
-                            <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber"
-                              class="form-control" formControlName="countryCode">
-                            <div class="alert alert-danger"
-                              *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
-                              is required.
-                            </div>
+                          <p class="titulo-form-simples mt-0">TELEMÓVEL:*</p>
+                          <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber"
+                                 class="form-control" formControlName="countryCode">
+                          <div class="alert alert-danger"
+                               *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
+                            is required.
+                          </div>
                         </div>
                       </div>
+
                       <div class="row">
                         <div class="col-12">
                           <p class="titulo-form-simples mt-0">EMAIL*</p>
                           <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
-                            formControlName="email">
+                              formControlName="email">
                           <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
                             is required.
                           </div>
                         </div>
                       </div>
 
+                      <div class="row" formGroupName="telephone">
+                        <div class="col-4">
+                          <p class="titulo-form-simples mt-0">INDICATIVO:</p>
+                          <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode, $event)" id="phone2CountryCode">
+                            <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}}>{{country.description}} ({{country.internationalCallingCode}}) </option>
+                          </select>
+                          <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
+                            is required.
+                          </div>
+                        </div>
+                        <div class="col">
+                          <p class="titulo-form-simples mt-0">TELEFONE:*</p>
+                          <input #phone2PhoneNumber name="phone2PhoneNumber" type="text" id="phone2PhoneNumber"
+                                 class="form-control" formControlName="countryCode">
+                          <div class="alert alert-danger"
+                               *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
+                            is required.
+                          </div>
+                        </div>
+                      </div>
 
                       <p class="titulo-form-simples"></p>
                     </div>
-                    
+
                   </div>
+
+                  
                 </form>
 
                 <div class="col ms-0 ps-0">
@@ -151,7 +174,7 @@
                       class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                       wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
                         style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
-                    <button [disabled]="!listValue.valid" id="btn5a2" (click) = "submit()"
+                    <button [disabled]="!listValue.valid && !(returned == 'consult')" id="btn5a2" (click) = "submit()"
                       class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                       wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg"
                         style="height: 25px !important; vertical-align: sub;"></button>

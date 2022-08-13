@@ -49,7 +49,7 @@ export interface ShopDetailsAcquiring {
   manager?: string
   activity?: string
   subActivity?: string
-  address?: ShopAddress
+  address?: ShopAddressAcquiring
   bank?: ShopBank
   website?: string
   documents?: ShopDocuments
@@ -60,6 +60,13 @@ export interface ShopDetailsAcquiring {
 
 interface ShopAddress {
   sameAsMerchantAddress?: boolean
+  address?: FiscalAddress
+  isInsideShoppingCenter?: boolean
+  shoppingCenter?: string
+}
+
+interface ShopAddressAcquiring {
+  useMerchantAddress?: boolean
   address?: FiscalAddress
   isInsideShoppingCenter?: boolean
   shoppingCenter?: string
@@ -84,12 +91,12 @@ interface ShopBankingInformation {
 }
 
 interface ShopBank {
-  userMerchantBank: boolean
-  bank: ShopBankingInformation
+  userMerchantBank?: boolean
+  bank?: ShopBankingInformation
 }
 
 interface ShopDocuments {
-  id: string
-  type: string
-  href: string
+  id?: string
+  type?: string
+  href?: string
 }

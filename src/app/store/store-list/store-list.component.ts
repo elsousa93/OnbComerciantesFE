@@ -11,6 +11,7 @@ import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from '../../client/Client.interface';
+import { SubmissionService } from '../../submission/service/submission-service.service';
 
 
 interface Stores {
@@ -25,7 +26,7 @@ const testValues: ShopDetailsAcquiring[] = [
     activity: "Activity1",
     address:
     {
-      isInsideShoppingCenter: true, sameAsMerchantAddress: true, shoppingCenter: "Colombo",
+      isInsideShoppingCenter: true, useMerchantAddress: true, shoppingCenter: "Colombo",
       address:
       {
         address: "A",
@@ -51,9 +52,9 @@ const testValues: ShopDetailsAcquiring[] = [
     id: "1",
     manager: "Manager1",
     name: "ShopName",
-    productCode: "432",
+    productCode: "cardPresent",
     subActivity: "99",
-    subproductCode: "0",
+    subproductCode: "easy",
     website: "google.com"
   },
   {
@@ -61,7 +62,7 @@ const testValues: ShopDetailsAcquiring[] = [
     address:
     {
       isInsideShoppingCenter: true,
-      sameAsMerchantAddress: true,
+      useMerchantAddress: false,
       shoppingCenter: "Colombo2",
       address:
       {
@@ -77,7 +78,7 @@ const testValues: ShopDetailsAcquiring[] = [
         bank: "Banco2",
         iban: "893018920"
       },
-      userMerchantBank: true
+      userMerchantBank: false
     },
     documents:
     {
@@ -88,9 +89,9 @@ const testValues: ShopDetailsAcquiring[] = [
     id: "2",
     manager: "Manager2",
     name: "ShopName2",
-    productCode: "432",
+    productCode: "cardNotPresent",
     subActivity: "99",
-    subproductCode: "01",
+    subproductCode: "keyOnHand",
     website: "google.com"
   },
 ]
@@ -129,38 +130,46 @@ export class StoreComponent implements AfterViewInit{
   editStores: FormGroup;
 
   submissionClient: Client;
+  returned: string;
 
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesMat.paginator = this.paginator;
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder)
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService)
   {
     this.baseUrl = configuration.baseUrl;
      
     this.ngOnInit();
 
-    //Ir buscar a lista de lojas associadas ao merchant, caso existam
-    //this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
-    //  this.storeService.getShopsListOutbound(result.clientId, "por mudar", "por mudar").subscribe(res => {
-    //    this.loadStores(res);
-    //  });
-    //});
+    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
+    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
+      result.forEach(value => {
+        this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+          this.storeList.push(res);
+        });
+      });
+      this.loadStores(this.storeList);
+    });
 
-    //this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
-    //  result.forEach(value => {
-    //    this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-    //      this.storeList.push(res);
-    //      console.log('Lista obtida ', result);
-    //      console.log('Info detalhada de cada loja ', res);
-    //    });
-    //  });
-    //  this.loadStores(this.storeList);
-    //  console.log('Lista após ter ido buscar todas as lojas recebidas ', this.storeList);
-    //});
+    //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
+    if (this.returned !== null) {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
+          resul.forEach(val => {
+            this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
+              var index = this.storeList.findIndex(store => store.id == res.id);
+              if(index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
+                this.storeList.push(res);
+            });
+          });
+          this.loadStores(this.storeList);
+        })
+      });
+    }
+
     this.editStores = this.formBuilder.group({});
-    //this.formStores = this.formBuilder.group({});
 
     this.data.updateData(false, 3, 1);
   }
@@ -169,6 +178,7 @@ export class StoreComponent implements AfterViewInit{
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.loadStores();
+    this.returned = localStorage.getItem("returned");
   }
 
   navigateTo(id: number) {
@@ -195,6 +205,8 @@ export class StoreComponent implements AfterViewInit{
     infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
     infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
     infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+    infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+    infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
 
     var bankStores = this.editStores.controls["bankStores"];
     bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
@@ -234,7 +246,7 @@ export class StoreComponent implements AfterViewInit{
         this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
         this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
         this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-        this.currentStore.address.sameAsMerchantAddress = true;
+        this.currentStore.address.useMerchantAddress = true;
       }
 
       if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {
@@ -256,14 +268,20 @@ export class StoreComponent implements AfterViewInit{
       this.currentStore.subproductCode = bankStores.get("subProduct").value;
       this.currentStore.website = bankStores.get("url").value;
 
-      this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-        if (this.currentIdx < (this.storeList.length - 1)) {
-          this.currentIdx = this.currentIdx + 1;
-          this.selectStore(this.storeList[this.currentIdx], this.currentIdx);
-        } else {
-          this.route.navigate(['comprovativos']);
-        }
-      });
+      //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+      //  if (this.currentIdx < (this.storeList.length - 1)) {
+      //    this.currentIdx = this.currentIdx + 1;
+      //    this.selectStore(this.storeList[this.currentIdx], this.currentIdx);
+      //  } else {
+      //    this.route.navigate(['comprovativos']);
+      //  }
+      //});
+      if (this.currentIdx < (testValues.length - 1)) {
+        this.currentIdx = this.currentIdx + 1;
+        this.selectStore(testValues[this.currentIdx], this.currentIdx);
+      } else {
+        this.route.navigate(['comprovativos']);
+      }
     }
   }
 

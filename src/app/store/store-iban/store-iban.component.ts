@@ -7,6 +7,7 @@ import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { StoreService } from '../store.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-store-iban',
@@ -93,7 +94,7 @@ export class StoreIbanComponent implements OnInit {
       bank: "",
         iban: ""
     },
-    userMerchantBank: false
+    userMerchantBank: null
   },
   documents:
   {
@@ -114,44 +115,28 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
-    this.ngOnInit();
-
-
-
-    //if (this.returned !== null) {
-    //  if (this.store.productCode == '') { 
-    //    this.chooseSolution(true, false, false);
-    //  }
-
-    //  if (this.store.productCode == '') { 
-    //    this.chooseSolution(false, true, false);
-    //  }
-
-    //  if (this.store.productCode == '') { 
-    //    this.chooseSolution(false, false, true);
-    //  }
-
-    //}
-
-
-    this.data.updateData(false, 3, 3);
+  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
+    setTimeout(() => this.data.updateData(false, 3, 3), 0);
   }
 
   ngOnInit(): void {
-    //Get Id from the store
-    this.stroreId = Number(this.router.snapshot.params['stroreid']);
-    this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    console.log('INIT');
     this.returned = localStorage.getItem("returned");
-
     this.initializeForm();
+
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.addControl('bankStores', this.formStores);
       this.edit = true;
+      if (this.returned == 'consult') {
+        this.formStores.disable();
+      }
     } else {
-      if (this.route.getCurrentNavigation().extras.state) {
+      this.stroreId = Number(this.router.snapshot.params['stroreid']);
+      this.subscription = this.data.currentData.subscribe(map => this.map = map);
+      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+
+      if (this.route.getCurrentNavigation() != null) {
         this.store = this.route.getCurrentNavigation().extras.state["store"];
       }
     }
@@ -175,6 +160,8 @@ export class StoreIbanComponent implements OnInit {
     //CAMPOS QUE FALTAM
     //banco de apoio
     //informação bancária
+    console.log('JSAKHSJKAHSJKSAHJK');
+    this.store.bank.userMerchantBank = this.formStores.get("bankInformation").value;
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
     this.store.productCode = this.formStores.get("solutionType").value;
     this.store.subproductCode = this.formStores.get("subProduct").value;
@@ -213,7 +200,7 @@ export class StoreIbanComponent implements OnInit {
         }
       }
     }
-    console.log(this.files);
+    this.logger.debug(this.files);
   }
 
   isIBAN(isIBANConsidered: boolean) {
@@ -221,9 +208,9 @@ export class StoreIbanComponent implements OnInit {
   }
 
   chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean){
-    console.log("cardPresent: " + cardPresent);
-    console.log("cardNotPresent: " + cardNotPresent);
-    console.log("combinedOffer: " + combinedOffer);
+    this.logger.debug("cardPresent: " + cardPresent);
+    this.logger.debug("cardNotPresent: " + cardNotPresent);
+    this.logger.debug("combinedOffer: " + combinedOffer);
     if (cardPresent){
       this.isCardPresent = cardPresent;
       this.isCardNotPresent = false;
@@ -261,4 +248,5 @@ export class StoreIbanComponent implements OnInit {
       this.formStores.get('url').updateValueAndValidity();
     });
   }
+
 }

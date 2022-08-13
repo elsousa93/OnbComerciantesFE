@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { merge, Observable, switchMap } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class CRCService {
   private authTokenUrl: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
     this.DOCASUrl = configuration.DOCASUrl;
     this.authTokenUrl = configuration.authTokenUrl
 
@@ -29,12 +30,12 @@ export class CRCService {
       })
     };
 
-    console.log("a tentar obter o token");
+    this.logger.debug("a tentar obter o token");
     //var token;
 
     return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
     //this.http.post(URI, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).subscribe(result => {
-    //  console.log("Post feito");
+    //  this.logger.debug("Post feito");
     //  token = result;
     //  localStorage.setItem('accessToken', token.access_token);
     //}, error => {
@@ -48,8 +49,8 @@ export class CRCService {
 
     //await this.getAccessToken().then(
     //  result => {
-    //    console.log("resultado");
-    //    console.log(result);
+    //    this.logger.debug("resultado");
+    //    this.logger.debug(result);
     //    const HTTP_OPTIONS = {
     //      headers: new HttpHeaders({
     //        'Authorization': 'Bearer ' + result.access_token
@@ -59,23 +60,23 @@ export class CRCService {
     //    var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
 
 
-    //    console.log("chegou aqui resultado !!!");
+    //    this.logger.debug("chegou aqui resultado !!!");
     //    return this.http.get<any>(URI, HTTP_OPTIONS);
     //    //return new Promise(function (resolve, reject) {
     //    //  var URI = context.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
 
     //    //  context.http.get<any>(URI, HTTP_OPTIONS).subscribe(res => {
-    //    //    console.log("entrou no resolve");
+    //    //    this.logger.debug("entrou no resolve");
     //    //    resolve(res);
     //    //  }, error => {
-    //    //    console.log("entrou no reject");
+    //    //    this.logger.debug("entrou no reject");
     //    //    reject(error);
     //    //  })
     //    //});
         
     //  }, error => {
-    //    console.log("erro");
-    //    console.log(error);
+    //    this.logger.debug("erro");
+    //    this.logger.debug(error);
     //  }
     //);
       const HTTP_OPTIONS = {

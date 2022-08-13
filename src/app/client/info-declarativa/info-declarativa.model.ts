@@ -1,12 +1,12 @@
 import { AbstractControl, ValidationErrors, Validators } from "@angular/forms";
 import { IStakeholders } from "src/app/stakeholders/IStakeholders.interface";
-import { Istore } from "src/app/store/IStore.interface";
+import { Istore, ShopDetailsAcquiring } from "src/app/store/IStore.interface";
 import { Client } from "../Client.interface";
 
 export class infoDeclarativaForm {
   client: Client
   stakeholder: IStakeholders
-  store: Istore
+  store: ShopDetailsAcquiring
 }
 
  //Custom Validators

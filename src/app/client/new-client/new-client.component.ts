@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { Client } from '../Client.interface';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-new-client',
@@ -107,14 +108,14 @@ export class NewClientComponent implements OnInit {
   form: FormGroup;
 
   //Comerciante cadastrado com sucesso!!
-  constructor(public bsModalRef: BsModalRef, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
-    console.log(this.addNewClient.clientId);
+  constructor(private logger : NGXLogger, public bsModalRef: BsModalRef, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    this.logger.debug(this.addNewClient.clientId);
   }
 
   ngOnInit(): void {
     this.lastIdClient = Number(this.router.snapshot.params['id']);
     this.addNewClient.clientId = this.lastIdClient;
-    console.log(this.lastIdClient);
+    this.logger.debug(this.lastIdClient);
   }
 
   submit(form: any) {
@@ -151,10 +152,10 @@ export class NewClientComponent implements OnInit {
     this.addNewClient.mainEconomicActivity = form.ramoPrincipal;
     this.addNewClient.shareCapital.date = form.dataConst;
 
-    console.log(this.addNewClient);
+    this.logger.debug(this.addNewClient);
 
     //this.http.post<Client>(this.baseUrl + 'BEClients/', this.addNewClient).subscribe(result => {
-    //  console.log(result);
+    //  this.logger.debug(result);
     //  alert("Comerciante cadastrado com sucesso!!!");
     //  this.route.navigate(['/comprovativos/', this.addNewClient.clientId ]);
     //}, error => console.error(error));

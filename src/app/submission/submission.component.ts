@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISubmission } from './ISubmission.interface';
 import { Configuration, configurationToken } from '../configuration';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-submission',
@@ -19,7 +20,7 @@ export class SubmissionComponent implements OnInit {
   public submissionsList: ISubmission[] = [];
 
 
-  constructor(private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute,
     @Inject(configurationToken) private configuration: Configuration,
     private http: HttpClient, private route: Router) {
     this.baseUrl = configuration.baseUrl;
@@ -36,7 +37,7 @@ export class SubmissionComponent implements OnInit {
   }
   
   get listContents(): Array<ISubmission> {
-    console.log((Object as any).values(this.submissionsList));
+    this.logger.debug((Object as any).values(this.submissionsList));
     return (Object as any).values(this.submissionsList);
   }
 
@@ -47,10 +48,10 @@ export class SubmissionComponent implements OnInit {
   //Converter de Objecto para List - com leitura
 
   ngOnInit(): void {
-    console.log("Submissions List : " + this.submissionsList[0]);
+    this.logger.debug("Submissions List : " + this.submissionsList[0]);
      // Funciona na consola, mas dá erros 
      // this.submissionsList.forEach(function (value) {
-     //   console.log(value); })
+     //   this.logger.debug(value); })
   }
 
 }

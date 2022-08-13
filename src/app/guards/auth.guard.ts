@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service'
+import { NGXLogger } from 'ngx-logger';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private cookie: CookieService) { }
+  constructor(private logger : NGXLogger, private router: Router, private cookie: CookieService) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.isLoggedIn()) {
       return true;
@@ -16,14 +17,14 @@ export class AuthGuard implements CanActivate {
   }
   public isLoggedIn(): boolean {
     let status = false;
-    console.log(this.cookie.get("jwToken"));
-    console.log(this.cookie.get("jwToken") === "undefined");
+    this.logger.debug(this.cookie.get("jwToken"));
+    this.logger.debug(this.cookie.get("jwToken") === "undefined");
     if (this.cookie.get("jwToken") != "" && this.cookie.get("jwToken") !== "undefined" && this.cookie.get("jwToken") !== null) {
-      console.log("Sessão validada")
+      this.logger.debug("Sessão validada")
       status = true;
     }
     else {
-      console.log("Sessão Não validada")
+      this.logger.debug("Sessão Não validada")
       status = false;
     }
     return status;

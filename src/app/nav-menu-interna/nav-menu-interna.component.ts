@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from './data.service';
 import { Router } from '@angular/router';
 import { AutoHideSidenavAdjustBarraTopo } from '../animation';
+import { NGXLogger } from 'ngx-logger';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class NavMenuInternaComponent implements OnInit {
 
   public isHistory: boolean = false;
 
-  constructor(private data: DataService, private route: Router) {
+  constructor(private logger : NGXLogger, private data: DataService, private route: Router) {
   }
 
   ngOnInit(): void {
@@ -57,7 +58,7 @@ export class NavMenuInternaComponent implements OnInit {
 
     window.addEventListener("scroll", this.autohide.bind(this), false);
 
-    console.log(this.map);
+    this.logger.debug(this.map);
 
     this.historySubscription = this.data.historyStream$.subscribe((result) => {
       this.isHistory = result;

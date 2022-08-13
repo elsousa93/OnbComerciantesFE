@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore } from '../../store/IStore.interface';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -27,13 +28,13 @@ export class CommercialOfferListComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage : number;
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
+  constructor(private logger : NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
     this.baseUrl = configuration.baseUrl;
 
     /*Get stores list*/
     this.ngOnInit();
     http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
       this.stores = result;
     }, error => console.error(error));
     this.data.updateData(false, 5);

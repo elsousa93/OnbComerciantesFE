@@ -36,7 +36,7 @@
                     <p class="mb-0 text-primary text-start">-</p>
                     <p *ngIf="process.state == 'Returned'" class="mb-0 text-primary text-start">Devolvido do backoffice</p>
                     <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
-                    <p class="mb-0 text-primary text-start"></p>
+                    <p class="mb-0 text-primary text-start"> - </p>
                     <p class="mb-0 text-primary text-start">Queiram enviar CRC devidamente actualizada, visto que na inscrição nº3 verifica-se que a nomeação do gerente Bual de Canela é provisória.</p>
                   </div>
                  </div>
@@ -151,7 +151,7 @@
                 <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
             
-            <button id="btn5a2" [routerLink]="['/client']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" 
+            <button id="btn5a2" (click)="nextPage()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" 
             wappler-command="editContent">SEGUINTE&nbsp;
             <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
           </button></span></nav>

@@ -17,6 +17,9 @@ import { ProcessNumberService } from '../nav-menu-presencial/process-number.serv
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
 import { Configuration, configurationToken } from '../configuration';
+import { StoreService } from '../store/store.service';
+import { ShopDetailsAcquiring } from '../store/IStore.interface';
+import { NGXLogger } from 'ngx-logger';
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -114,48 +117,40 @@ export class CountrysComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService) {
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService, private storeService: StoreService) {
     this.ngOnInit();
     if (this.route.getCurrentNavigation().extras.state) {
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.client = this.route.getCurrentNavigation().extras.state["client"];
-      console.log("cliente que foi buscado: ", this.client);
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
       if (this.route.getCurrentNavigation().extras.state["crc"])
         this.crc = this.route.getCurrentNavigation().extras.state["crc"];
-      console.log("client exists ", this.clientExists);
-      console.log(this.route.getCurrentNavigation().extras);
     }
 
     if (this.returned !== null) {
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
-        console.log("A preferencia de documentos é viaDigital");
         this.form.get("preferenceDocuments").setValue("viaDigital");
       } else {
-        console.log("A preferencia de documentos é Mail");
         this.form.get("preferenceDocuments").setValue("Mail");
       }
 
       if (this.merchantInfo.businessGroup !== null) {
         if (this.merchantInfo.businessGroup.type === 'Franchise') {
-          console.log('Escolheu sim na parte do franchise');
           this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
           this.setAssociatedWith(true);
         }
         if (this.merchantInfo.businessGroup.type === 'Group') {
-          console.log("Group");
           this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
           this.setAssociatedWith(true);
         }
         if (this.merchantInfo.businessGroup.type === 'Isolated') {
-          console.log('Escolheu não na parte do franchise');
           this.setAssociatedWith(false);
         }
       } else {
@@ -164,24 +159,23 @@ export class CountrysComponent implements OnInit {
       this.editCountries();
     }
 
-    console.log(this.clientId);
     //Chamada à API para receber todos os Paises
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
-    }, error => console.log(error));
+    }, error => this.logger.debug(error));
 
-    //console.log("por entrar no clientbyid");
+    //this.logger.debug("por entrar no clientbyid");
     //this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-    //  console.log("entrou no getclientbyid");
+    //  this.logger.debug("entrou no getclientbyid");
     //  this.currentClient = result;
-    //  console.log(result);
-    //  console.log(this.currentClient);
+    //  this.logger.debug(result);
+    //  this.logger.debug(this.currentClient);
     //});
 
     //this.documentService.GetSubmissionDocuments("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949").subscribe(result => {
-    //  console.log('Lista de documentos de uma submissao ', result);
+    //  this.logger.debug('Lista de documentos de uma submissao ', result);
     //  this.documentService.GetSubmissionDocumentById("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id).subscribe(resul => {
-    //    console.log("Info de um documento ", resul);
+    //    this.logger.debug("Info de um documento ", resul);
     //    this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
     //  });
     //});
@@ -344,12 +338,8 @@ export class CountrysComponent implements OnInit {
   }
 
   submit() {
+    var context = this;
     if (this.returned !== 'consult') {
-      console.log('Entrei no if do edit e processo normal ');
-      console.log('Cliente recebido ', this.client);
-
-      console.log("lista de paises preenchidos");
-      console.log(this.lstPaisPreenchido);
       this.data.updateData(true, 1);
       this.newSubmission.startedAt = new Date().toISOString();
       this.newSubmission.merchant.commercialName = "string";
@@ -387,7 +377,6 @@ export class CountrysComponent implements OnInit {
         //this.newSubmission.processNumber = localStorage.getItem("processNumber");
       }
 
-      console.log(this.newSubmission.merchant);
 
       //this.newSubmission.merchant.commercialName = this.merchantInfo.companyName;
       //this.newSubmission.merchant.billingEmail = this.merchantInfo.billingEmail;
@@ -432,12 +421,8 @@ export class CountrysComponent implements OnInit {
       //}
 
       var context = this;
-      console.log("Submissao tratada! uysidghsiudghisudh");
-      console.log(this.newSubmission);
-      console.log("----------------------");
-      console.log(this.stakeholdersToInsert);
       localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
-      //console.log(this.newSubmission.merchant);
+      //this.logger.debug(this.newSubmission.merchant);
 
       this.stakeholdersToInsert.forEach(function (value, idx) {
         context.newSubmission.stakeholders.push({
@@ -445,9 +430,6 @@ export class CountrysComponent implements OnInit {
           "shortName": value.name
         })
       });
-
-    console.log("CRC !!!");
-      console.log(this.crc);
       if (this.crc !== null && this.crc !== undefined) {
         this.newSubmission.documents.push({
           documentType: 'crcPDF',
@@ -466,10 +448,36 @@ export class CountrysComponent implements OnInit {
         this.newSubmission.merchant.merchantType = 'Entrepreneur';
 
       this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-        console.log("dentro do submission service");
-        console.log(result);
         localStorage.setItem("submissionId", result.id);
         this.processNrService.changeProcessNumber(result.processNumber);
+
+        //this.storeService.getShopsListOutbound(this.newSubmission.merchant.id, "por mudar", "por mudar").subscribe(res => {
+        //  res.forEach(value => {
+        //    this.storeService.getShopInfoOutbound(context.newSubmission.merchant.id, value.shopId, "por mudar", "por mudar").subscribe(r => {
+        //      var storeToAdd: ShopDetailsAcquiring = {
+        //        activity: r.activity,
+        //        subActivity: r.secondaryActivity,
+        //        address: {
+        //          address: r.address.address,
+        //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+        //          shoppingCenter: r.address.shoppingCenter,
+        //          useMerchantAddress: r.address.sameAsMerchantAddress
+        //        },
+        //        bank: {
+        //          bank: r.bankingInformation
+        //        },
+        //        name: r.name,
+        //        productCode: r.product,
+        //        subproductCode: r.subproduct,
+        //        website: r.url,
+        //      }
+
+        //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+
+        //      });
+        //    });
+        //  });
+        //});
 
       let navigationExtras: NavigationExtras = {
         state: {
@@ -483,7 +491,6 @@ export class CountrysComponent implements OnInit {
 
       });
     } else {
-      console.log('Estou numa consulta logo não submeti nenhuma informação');
       this.route.navigate(['stakeholders/']);
     }
   }
@@ -519,15 +526,11 @@ export class CountrysComponent implements OnInit {
   }
 
   onCountryChange(country) {
-    console.log('País selecionado ', country);
     var index = this.contPais.findIndex(elem => elem.description == country.description);
     if (index > -1) {
-      console.log('País existe no contPais');
       this.contPais.splice(index, 1);
     } else {
-      console.log('País adicionado ');
       this.contPais.push(country);
-      console.log("ContPais depois do pais ser add ", this.contPais);
     }
 
     //var index1 = this.lstCountry.findIndex(elem => {
@@ -576,7 +579,6 @@ export class CountrysComponent implements OnInit {
   }
 
   countrys(item) {
-    console.log("item que passamos como parametro ", item);
     this.countriesCheckBox.forEach(val => {
       if (val.value == item.value) {
         val.isSelected = !val.isSelected;
@@ -585,17 +587,9 @@ export class CountrysComponent implements OnInit {
       }
     });
 
-    console.log("lstCountry quando carregamos na checkbox ", this.lstCountry);
-    console.log("lstCountry1 quando carregamos na checkbox ", this.lstCountry1);
-    console.log("lstCountry2 quando carregamos na checkbox ", this.lstCountry2);
-
     this.lstCountry.splice(0, this.lstCountry.length);
     this.lstCountry1.splice(0, this.lstCountry1.length);
     this.lstCountry2.splice(0, this.lstCountry2.length);
-
-    console.log("lstCountry quando carregamos na checkbox depois de esvaziar ", this.lstCountry);
-    console.log("lstCountry1 quando carregamos na checkbox depois de esvaziar ", this.lstCountry1);
-    console.log("lstCountry2 quando carregamos na checkbox deopis de esvaziar", this.lstCountry2);
 
     this.valueInput();
     var count = 0;
@@ -797,15 +791,12 @@ export class CountrysComponent implements OnInit {
     $('#text5').val('');
 
     if (this.contPais.length > 0) {
-
-      console.log("Lista contPais ", this.contPais);
       this.lstPaisPreenchido = [];
 
       this.contPais.forEach(elem => {
         this.lstPaisPreenchido.push(elem);
       });
 
-      console.log("Lista lstPaisPreechidos ", this.lstPaisPreenchido);
 
       this.lstPaisPreenchido.forEach(country => {
         $('#text5').val($('#text5').val() + country.description + ', ');
@@ -830,13 +821,9 @@ export class CountrysComponent implements OnInit {
 
   editCountries() {
     this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
-      console.log(countryID);
       this.tableInfo.GetCountryById(countryID).subscribe(result => {
         this.contPais.push(result);
-        console.log(result);
         this.inserirText(null);
-        console.log("Cont pais depois de ir buscar todos os paises do merchant ", this.contPais);
-        console.log("LstPaisPreenchidos depois de ir inserir os valores na textarea ", this.lstPaisPreenchido);
       });
     });
   }

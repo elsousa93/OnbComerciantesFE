@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { Istore } from '../../store/IStore.interface';
 import { ICommercialOffer } from '../ICommercialOffer';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-commercial-offer-store-list',
@@ -36,7 +37,7 @@ export class CommercialOfferStoreListComponent implements OnInit {
     this.stroreId = Number(this.router.snapshot.params['stroreid']);
   }
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
 
     this.baseUrl = configuration.baseUrl;
 
@@ -44,13 +45,13 @@ export class CommercialOfferStoreListComponent implements OnInit {
     this.ngOnInit();
     /*Get all offers for that specific store*/
     http.get<ICommercialOffer[]>(this.baseUrl + 'becommercialoffer/GetAllOffersByStores/' + this.clientID + '/' + this.stroreId).subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
       this.comercialOffers = result;
     }, error => console.error(error));
 
     /*Get the list of all stores*/
     http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
-      console.log(result);
+      this.logger.debug(result);
       this.stores = result;
     }, error => console.error(error));
 
@@ -69,32 +70,32 @@ export class CommercialOfferStoreListComponent implements OnInit {
   /*Controles the radio button changes*/
   radoChangehandler(event: any) {
     this.selectedOption = event.target.value;
-    console.log(this.selectedOption)
+    this.logger.debug(this.selectedOption)
   }
 
   /*Submits the form*/
   submit(FormCommercialOffer: any) {
     /*Case when the offer is NOT replicated from another store*/
     if (this.selectedOption == 'Não') {
-      console.log('parabens', FormCommercialOffer)
+      this.logger.debug('parabens', FormCommercialOffer)
 
     } else {
 
       /*Case when the offer IS replicated from another store*/
-      console.log(this.storeToReplicate)
+      this.logger.debug(this.storeToReplicate)
       this.http.get<ICommercialOffer[]>(this.baseUrl + 'becommercialoffer/GetAllOffersByStores/' + this.clientID + '/' + this.stroreId).subscribe(result => {
         this.comercialOffersToReplicate = result;
-        console.log(this.comercialOffersToReplicate);
+        this.logger.debug(this.comercialOffersToReplicate);
         if (this.comercialOffers.length == 0) {
           /*Post a new Config replicated by a store*/
           this.http.post<number>(this.baseUrl + 'becommercialoffer/PostListConfig/' + this.clientID + '/' + this.stroreId, this.comercialOffersToReplicate).subscribe(result => {
-            console.log(result);
+            this.logger.debug(result);
           }, error => console.error(error));
 
         } else {
           /*Alter a Config replicated by a store*/
           this.http.put<number>(this.baseUrl + 'becommercialoffer/PutOfferListById/' + this.clientID + '/' + this.stroreId, this.comercialOffersToReplicate).subscribe(result => {
-            console.log(result);
+            this.logger.debug(result);
           }, error => console.error(error));
         }
       }, error => console.error(error));

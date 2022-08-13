@@ -11,6 +11,7 @@ import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
 import { Process } from '../process/process.interface';
 import { ProcessGet, ProcessList, ProcessService } from '../process/process.service';
+import { NGXLogger } from 'ngx-logger';
 
 
 @Component({
@@ -28,12 +29,14 @@ export class DevolucaoComponent implements OnInit{
   public processId: string;
   public process: ProcessList;
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService) {
 
     this.ngOnInit();
-    console.log('Process Id ', this.processId);
+    this.logger.debug('Process Id ', this.processId);
+
+    this.data.updateData(true, 0);
 
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
@@ -50,11 +53,13 @@ ngOnInit(): void {
 
 
   nextPage() {
-    localStorage.setItem('returned', 'edit');
-    console.log('Valor do returned', localStorage.getItem("returned"));
-
+    this.logger.debug('Valor do returned ', localStorage.getItem("returned"));
+    if (localStorage.getItem("returned") != 'consult') {
+      localStorage.setItem('returned', 'edit');
+      this.logger.debug('Valor do returned', localStorage.getItem("returned"));
+    }
     localStorage.setItem('processNumber', this.process.processNumber);
-    console.log('Valor do processNumber ', localStorage.getItem("processNumber"));
+    this.logger.debug('Valor do processNumber ', localStorage.getItem("processNumber"));
 
     this.route.navigate(['/client']);
   }
