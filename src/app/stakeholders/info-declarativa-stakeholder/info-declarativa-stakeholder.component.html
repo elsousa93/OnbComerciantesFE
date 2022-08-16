@@ -52,7 +52,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="selectStakeholder(stakeholder, idx)" [ngClass]="{'row-selected': currentStakeholder.id === stakeholder.id}">
+                      <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="selectStakeholder(stakeholder, idx)" [ngClass]="{'row-selected': currentStakeholder.fiscalId === stakeholder.fiscalId}">
                         <th scope="row" class="text-primary text-center">{{stakeholder.stakeholderNumber}}</th>
                         <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                         <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
