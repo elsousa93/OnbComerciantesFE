@@ -1,0 +1,1468 @@
+[10:45:53 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[10:45:54 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[10:45:54 INF]  Now listening on: http://localhost:80
+[10:45:54 INF]  Application started. Press Ctrl+C to shut down.
+[10:45:54 INF]  Hosting environment: Production
+[10:45:54 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[10:46:46 INF]  Application is shutting down...
+[10:47:04 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[10:47:04 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[10:47:05 INF]  Now listening on: http://localhost:12000
+[10:47:05 INF]  Application started. Press Ctrl+C to shut down.
+[10:47:05 INF]  Hosting environment: Production
+[10:47:05 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[11:22:17 INF]  Application is shutting down...
+[12:25:57 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[12:25:57 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:25:57 INF]  Now listening on: http://localhost:13000
+[12:25:57 INF]  Application started. Press Ctrl+C to shut down.
+[12:25:57 INF]  Hosting environment: Production
+[12:25:57 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:26:24 INF]  Application is shutting down...
+[12:26:26 ERR]  Error setting mock root path
+System.IO.DirectoryNotFoundException: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Mockaco.TemplateFileProvider.SetMockRootPath(String path) in /home/runner/work/Mockaco/Mockaco/src/Mockaco.AspNetCore/Templating/Providers/TemplateFileProvider.cs:line 58
+[12:26:26 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:26:26 INF]  Now listening on: http://localhost:13000
+[12:26:26 INF]  Application started. Press Ctrl+C to shut down.
+[12:26:26 INF]  Hosting environment: Production
+[12:26:26 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:26:49 INF]  Application is shutting down...
+[12:26:51 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:26:51 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:26:51 INF]  Now listening on: http://localhost:13000
+[12:26:51 DBG]  Loading shopactivities.json (0D5DDD324F621CF0C478CB16B440C34B)
+[12:26:51 INF]  GET v1/config/activities/{code} mapped from shopactivities.json
+[12:26:51 DBG]  Loading subzones.json (130AD77D88FC217759338C7209A55B55)
+[12:26:51 INF]  GET v1/config/subzone/{zipCode1}/{zipCode2} mapped from subzones.json
+[12:26:51 INF]  Application started. Press Ctrl+C to shut down.
+[12:26:51 INF]  Hosting environment: Production
+[12:26:51 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[12:27:05 INF] 0HMJSAMASESKE:00000002 No CORS policy found for the specified request.
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Incoming request from ::1
+[12:27:05 DBG] 0HMJSAMASESKE:00000002 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[12:27:05 DBG] 0HMJSAMASESKE:00000002 Body is not present
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[12:27:05 INF] 0HMJSAMASESKE:00000002 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 107.0328ms
+[12:29:56 INF]  Application is shutting down...
+[12:42:25 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:42:25 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:42:48 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:42:48 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:42:59 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[12:42:59 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[12:42:59 INF]  Now listening on: http://localhost:13000
+[12:42:59 DBG]  Loading shopactivities.json (0D5DDD324F621CF0C478CB16B440C34B)
+[12:42:59 INF]  GET v1/config/activities/{code} mapped from shopactivities.json
+[12:42:59 DBG]  Loading subzones.json (130AD77D88FC217759338C7209A55B55)
+[12:42:59 INF]  GET v1/config/subzone/{zipCode1}/{zipCode2} mapped from subzones.json
+[12:42:59 INF]  Application started. Press Ctrl+C to shut down.
+[12:42:59 INF]  Hosting environment: Production
+[12:42:59 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[12:43:03 INF]  Application is shutting down...
+[14:31:56 INF]  Mock path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE\Mocks
+[14:31:56 INF]  Mockaco v1.7.4+2.Branch.master.Sha.c3dcc72acb2d82155c8125721925693573a53af6 [github.com/natenho/Mockaco]
+
+                                            .x000000000000000000000d.          
+                                          .kMW0OkdooooooooooooooookNWd.        
+                          ...           .kMNOdoc;;;;;;;;;;;;;;;;;;;:xNWx.      
+                        lNMWM0'        kMNOdoc;;;;;;;;;;;;;;;;;;;;;;;:xNWl     
+                       .MMo;OMx    :xxkWM0ddlcOKKKKKKKKKKKKKKKKKKKOc;;;kMNxxx: 
+                       .MMc;kMx   XMOloWM0ddKWNdllcccccccccccccccdNWx;;kMXoo0MO
+                       .MMc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+                       oMWc;kMx  .WMc..XM0ddNMd......   .   ......dM0;;kMO..lMK
+      cOOOOOOOOOOOOOOONWOc;oXMo  .WMl..XM0ddXMK:,,'..............:KMO;;kMO..oMK
+    lNMKOOxddddddddddddc;dXMO'    lXWNNMM0ddodXWWWMMx.......0MMWWWXo;;;kMWNNWX;
+  lNWKxdkOkkkkkkkkkkkkkOXWk'        ..'NM0ddl;;:::0Mk.......0MO:::;;;;;kM0...  
+ NMXxdkXM0ddddddddddddddo.             XM0ddl;;;;;OMk.......0MO;;;;;;;;kMO     
+ WMOdOMN,        .,,,,,,,,,,,,,,,,,,   OMNkdo:;;;;dWWkoolllkWNd;;;;;;:dXMd     
+ WMOdOMK       ;0MNXXXXXXXXXXXXXXXXX:'''oXMXkdo:;;;:kKKKKKKKx:;;;;;:dXMO,      
+ WMOdOMK    .lXW0l;;;;;;;;;;;;;;;;;;;;;;;;oXMNOkxllllllllllllllllldXMk.        
+ WMOdOMK  .dWNOc;;;;;;;;;;;;;;;;;;;;;;;;;;;;oK000000000000000000000k.          
+ WMOdOMK .WMk:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;.                
+ WMOdkWWdoMN:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lOl               
+ kWW0xdONMM0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+  .dWWKxdkXx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+    .dNWKxdl:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;xM0               
+       oNWKdol:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;lKMk               
+        oMXddd:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cOMWl                
+        OMKddo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:kWW0xc                
+        NMOddl;;;;;loooooooooooooooooooooooo:;;;;;;;;loxNMKxdloXK              
+       'MMkddc;;;;oWWKNNNNXXXXXXK000000000WMd;;;;;;;;KMWXxo::;;0MO             
+       cMWddd:;;;lWMc.odddc;;;;;.         kMk;;;;;;;cWMkddo:;;;:KMx            
+       dMXddo;;;:KMx  :dddl;;;;x0c        lMK;;;;;;;dMX:dddo:;;;cNMl           
+       0M0ddo;;;OMO  cNXddd:;;;OMk        ;MN:;;;;;;OMk ;dddo:;;;oWW,          
+       NMOddl;;xMX.  'MWxddl;;;OMk        .MMl;;;;;;XMl .xOddo:;;;oWN.         
+      ,MWxddc;lWW'    OM0ddo;;;OMk         NMd;;;;;lMM, .XMKddo;;;;kM0         
+      lMNkkkooNMl     cMNkkkollKMO         0MOlllllkMW.  .KM0kkxllloXMk.       
+      kMWNNNNNNWNl    .NMWNNNNNNNWNo.      xMWNNNNNNNWNo. .KMMNNNNNNNNNMK;     
+      XMl......'dNNc   kMx.......'dNNc     oMK........dNNc .NMd........;OMX'   
+     'MM0OOkkkkkkXM0   :MNOOOkkkkkkKM0     :MWOOOkkkkkkKMO  .XWOOOkkkkkkkWMl   
+     :WWWWWWWWWWWWWO   .WWWWWWWWWWWWWO     ,WWWWWWWWWWWWWk   ;WWWWWWWWWWWWWc   
+
+[14:31:56 INF]  Now listening on: http://localhost:13000
+[14:31:56 DBG]  Loading shopactivities.json (0D5DDD324F621CF0C478CB16B440C34B)
+[14:31:56 INF]  GET v1/config/activities/{code} mapped from shopactivities.json
+[14:31:56 DBG]  Loading subzones.json (130AD77D88FC217759338C7209A55B55)
+[14:31:56 INF]  GET v1/config/subzone/{zipCode1}/{zipCode2} mapped from subzones.json
+[14:31:56 INF]  Application started. Press Ctrl+C to shut down.
+[14:31:56 INF]  Hosting environment: Production
+[14:31:56 INF]  Content root path: C:\Users\dfelix\source\repos\elsousa93\OnbComerciantesFE
+[14:32:08 INF] 0HMJSCS744C5N:00000002 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:32:08 INF] 0HMJSCS744C5N:00000002 No CORS policy found for the specified request.
+[14:32:08 INF] 0HMJSCS744C5N:00000002 Incoming request from ::1
+[14:32:09 DBG] 0HMJSCS744C5N:00000002 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:32:09 DBG] 0HMJSCS744C5N:00000002 Body is not present
+[14:32:09 INF] 0HMJSCS744C5N:00000002 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:32:09 INF] 0HMJSCS744C5N:00000002 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 143.4732ms
+[14:32:55 INF] 0HMJSCS744C5N:00000003 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:32:55 INF] 0HMJSCS744C5N:00000003 No CORS policy found for the specified request.
+[14:32:55 INF] 0HMJSCS744C5N:00000003 Incoming request from ::1
+[14:32:55 DBG] 0HMJSCS744C5N:00000003 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:32:55 DBG] 0HMJSCS744C5N:00000003 Body is not present
+[14:32:55 INF] 0HMJSCS744C5N:00000003 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:32:55 INF] 0HMJSCS744C5N:00000003 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 39.1964ms
+[14:44:21 INF] 0HMJSCS744C5O:00000002 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:44:21 INF] 0HMJSCS744C5O:00000002 No CORS policy found for the specified request.
+[14:44:21 INF] 0HMJSCS744C5O:00000002 Incoming request from ::1
+[14:44:21 DBG] 0HMJSCS744C5O:00000002 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:44:21 DBG] 0HMJSCS744C5O:00000002 Body is not present
+[14:44:21 INF] 0HMJSCS744C5O:00000002 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:44:21 INF] 0HMJSCS744C5O:00000002 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 16.9605ms
+[14:44:42 INF] 0HMJSCS744C5O:00000003 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:44:42 INF] 0HMJSCS744C5O:00000003 No CORS policy found for the specified request.
+[14:44:42 INF] 0HMJSCS744C5O:00000003 Incoming request from ::1
+[14:44:42 DBG] 0HMJSCS744C5O:00000003 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:44:42 DBG] 0HMJSCS744C5O:00000003 Body is not present
+[14:44:42 INF] 0HMJSCS744C5O:00000003 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:44:42 INF] 0HMJSCS744C5O:00000003 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 21.0062ms
+[14:45:23 INF] 0HMJSCS744C5O:00000004 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:45:23 INF] 0HMJSCS744C5O:00000004 No CORS policy found for the specified request.
+[14:45:23 INF] 0HMJSCS744C5O:00000004 Incoming request from ::1
+[14:45:23 DBG] 0HMJSCS744C5O:00000004 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:45:23 DBG] 0HMJSCS744C5O:00000004 Body is not present
+[14:45:23 INF] 0HMJSCS744C5O:00000004 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:45:23 INF] 0HMJSCS744C5O:00000004 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 18.4498ms
+[14:45:56 INF] 0HMJSCS744C5O:00000005 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:45:56 INF] 0HMJSCS744C5O:00000005 No CORS policy found for the specified request.
+[14:45:56 INF] 0HMJSCS744C5O:00000005 Incoming request from ::1
+[14:45:56 DBG] 0HMJSCS744C5O:00000005 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:45:56 DBG] 0HMJSCS744C5O:00000005 Body is not present
+[14:45:56 INF] 0HMJSCS744C5O:00000005 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:45:56 INF] 0HMJSCS744C5O:00000005 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 48.7722ms
+[14:54:23 INF] 0HMJSCS744C5P:00000002 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:54:23 INF] 0HMJSCS744C5P:00000002 No CORS policy found for the specified request.
+[14:54:23 INF] 0HMJSCS744C5P:00000002 Incoming request from ::1
+[14:54:23 DBG] 0HMJSCS744C5P:00000002 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:54:23 DBG] 0HMJSCS744C5P:00000002 Body is not present
+[14:54:23 INF] 0HMJSCS744C5P:00000002 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:54:23 INF] 0HMJSCS744C5P:00000002 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 36.5596ms
+[14:54:53 INF] 0HMJSCS744C5P:00000003 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:54:53 INF] 0HMJSCS744C5P:00000003 No CORS policy found for the specified request.
+[14:54:53 INF] 0HMJSCS744C5P:00000003 Incoming request from ::1
+[14:54:53 DBG] 0HMJSCS744C5P:00000003 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:54:53 DBG] 0HMJSCS744C5P:00000003 Body is not present
+[14:54:53 INF] 0HMJSCS744C5P:00000003 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:54:53 INF] 0HMJSCS744C5P:00000003 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 18.3944ms
+[14:55:33 INF] 0HMJSCS744C5P:00000004 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:55:33 INF] 0HMJSCS744C5P:00000004 No CORS policy found for the specified request.
+[14:55:33 INF] 0HMJSCS744C5P:00000004 Incoming request from ::1
+[14:55:33 DBG] 0HMJSCS744C5P:00000004 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:55:33 DBG] 0HMJSCS744C5P:00000004 Body is not present
+[14:55:33 INF] 0HMJSCS744C5P:00000004 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:55:33 INF] 0HMJSCS744C5P:00000004 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 23.0743ms
+[14:55:51 INF] 0HMJSCS744C5P:00000005 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:55:51 INF] 0HMJSCS744C5P:00000005 No CORS policy found for the specified request.
+[14:55:51 INF] 0HMJSCS744C5P:00000005 Incoming request from ::1
+[14:55:51 DBG] 0HMJSCS744C5P:00000005 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:55:51 DBG] 0HMJSCS744C5P:00000005 Body is not present
+[14:55:51 INF] 0HMJSCS744C5P:00000005 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:55:51 INF] 0HMJSCS744C5P:00000005 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 27.0029ms
+[14:57:37 INF] 0HMJSCS744C5P:00000006 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:57:37 INF] 0HMJSCS744C5P:00000006 No CORS policy found for the specified request.
+[14:57:37 INF] 0HMJSCS744C5P:00000006 Incoming request from ::1
+[14:57:37 DBG] 0HMJSCS744C5P:00000006 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:57:37 DBG] 0HMJSCS744C5P:00000006 Body is not present
+[14:57:37 INF] 0HMJSCS744C5P:00000006 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:57:37 INF] 0HMJSCS744C5P:00000006 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 29.0831ms
+[14:58:15 INF] 0HMJSCS744C5P:00000007 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:58:15 INF] 0HMJSCS744C5P:00000007 No CORS policy found for the specified request.
+[14:58:15 INF] 0HMJSCS744C5P:00000007 Incoming request from ::1
+[14:58:15 DBG] 0HMJSCS744C5P:00000007 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:58:15 DBG] 0HMJSCS744C5P:00000007 Body is not present
+[14:58:15 INF] 0HMJSCS744C5P:00000007 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:58:15 INF] 0HMJSCS744C5P:00000007 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 18.3195ms
+[14:59:43 INF] 0HMJSCS744C5P:00000008 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[14:59:43 INF] 0HMJSCS744C5P:00000008 No CORS policy found for the specified request.
+[14:59:43 INF] 0HMJSCS744C5P:00000008 Incoming request from ::1
+[14:59:43 DBG] 0HMJSCS744C5P:00000008 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[14:59:43 DBG] 0HMJSCS744C5P:00000008 Body is not present
+[14:59:43 INF] 0HMJSCS744C5P:00000008 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[14:59:43 INF] 0HMJSCS744C5P:00000008 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 45.2486ms
+[15:00:23 INF] 0HMJSCS744C5P:00000009 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[15:00:23 INF] 0HMJSCS744C5P:00000009 No CORS policy found for the specified request.
+[15:00:23 INF] 0HMJSCS744C5P:00000009 Incoming request from ::1
+[15:00:23 DBG] 0HMJSCS744C5P:00000009 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[15:00:23 DBG] 0HMJSCS744C5P:00000009 Body is not present
+[15:00:23 INF] 0HMJSCS744C5P:00000009 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[15:00:23 INF] 0HMJSCS744C5P:00000009 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 68.8652ms
+[15:00:50 INF] 0HMJSCS744C5P:0000000A Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[15:00:50 INF] 0HMJSCS744C5P:0000000A No CORS policy found for the specified request.
+[15:00:50 INF] 0HMJSCS744C5P:0000000A Incoming request from ::1
+[15:00:50 DBG] 0HMJSCS744C5P:0000000A Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[15:00:50 DBG] 0HMJSCS744C5P:0000000A Body is not present
+[15:00:50 INF] 0HMJSCS744C5P:0000000A Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[15:00:50 INF] 0HMJSCS744C5P:0000000A Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 22.3509ms
+[15:05:11 INF] 0HMJSCS744C5Q:00000002 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[15:05:11 INF] 0HMJSCS744C5Q:00000002 No CORS policy found for the specified request.
+[15:05:11 INF] 0HMJSCS744C5Q:00000002 Incoming request from ::1
+[15:05:11 DBG] 0HMJSCS744C5Q:00000002 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[15:05:11 DBG] 0HMJSCS744C5Q:00000002 Body is not present
+[15:05:11 INF] 0HMJSCS744C5Q:00000002 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[15:05:11 INF] 0HMJSCS744C5Q:00000002 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 28.6506ms
+[15:06:16 INF] 0HMJSCS744C5Q:00000003 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[15:06:16 INF] 0HMJSCS744C5Q:00000003 No CORS policy found for the specified request.
+[15:06:16 INF] 0HMJSCS744C5Q:00000003 Incoming request from ::1
+[15:06:16 DBG] 0HMJSCS744C5Q:00000003 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[15:06:16 DBG] 0HMJSCS744C5Q:00000003 Body is not present
+[15:06:16 INF] 0HMJSCS744C5Q:00000003 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[15:06:16 INF] 0HMJSCS744C5Q:00000003 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 18.5517ms
+[15:06:57 INF] 0HMJSCS744C5Q:00000004 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[15:06:57 INF] 0HMJSCS744C5Q:00000004 No CORS policy found for the specified request.
+[15:06:57 INF] 0HMJSCS744C5Q:00000004 Incoming request from ::1
+[15:06:57 DBG] 0HMJSCS744C5Q:00000004 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[15:06:57 DBG] 0HMJSCS744C5Q:00000004 Body is not present
+[15:06:57 INF] 0HMJSCS744C5Q:00000004 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[15:06:57 INF] 0HMJSCS744C5Q:00000004 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 14.6552ms
+[15:09:54 INF] 0HMJSCS744C5R:00000002 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[15:09:54 INF] 0HMJSCS744C5R:00000002 No CORS policy found for the specified request.
+[15:09:54 INF] 0HMJSCS744C5R:00000002 Incoming request from ::1
+[15:09:54 DBG] 0HMJSCS744C5R:00000002 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[15:09:54 DBG] 0HMJSCS744C5R:00000002 Body is not present
+[15:09:54 INF] 0HMJSCS744C5R:00000002 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[15:09:54 INF] 0HMJSCS744C5R:00000002 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 33.2449ms
+[15:10:17 INF] 0HMJSCS744C5R:00000003 Request starting HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - -
+[15:10:17 INF] 0HMJSCS744C5R:00000003 No CORS policy found for the specified request.
+[15:10:17 INF] 0HMJSCS744C5R:00000003 Incoming request from ::1
+[15:10:17 DBG] 0HMJSCS744C5R:00000003 Headers: {
+  "Accept": [
+    "application/json, text/plain, */*"
+  ],
+  "Connection": [
+    "keep-alive"
+  ],
+  "Host": [
+    "localhost:13000"
+  ],
+  "User-Agent": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+  ],
+  "Accept-Encoding": [
+    "gzip, deflate, br"
+  ],
+  "Accept-Language": [
+    "en-US,en;q=0.9"
+  ],
+  "Origin": [
+    "http://localhost:7270"
+  ],
+  "Referer": [
+    "http://localhost:7270/"
+  ],
+  "sec-ch-ua": [
+    "\".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\""
+  ],
+  "sec-ch-ua-mobile": [
+    "?0"
+  ],
+  "sec-ch-ua-platform": [
+    "\"Windows\""
+  ],
+  "Sec-Fetch-Site": [
+    "same-site"
+  ],
+  "Sec-Fetch-Mode": [
+    "cors"
+  ],
+  "Sec-Fetch-Dest": [
+    "empty"
+  ]
+}
+[15:10:17 DBG] 0HMJSCS744C5R:00000003 Body is not present
+[15:10:17 INF] 0HMJSCS744C5R:00000003 Incoming request matched GET v1/config/activities/{code} (shopactivities.json)
+[15:10:17 INF] 0HMJSCS744C5R:00000003 Request finished HTTP/1.1 GET http://localhost:13000/v1/config/activities/5212 - - - 200 - application/json 9.5547ms

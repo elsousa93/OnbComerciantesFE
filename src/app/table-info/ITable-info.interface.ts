@@ -1,16 +1,27 @@
 export interface ITableInfo {
 }
 
+export interface Activity {
+  code?: string
+  description?: string
+  subActivities?: SubActivity[]
+}
+
+export interface SubActivity {
+  code?: string
+  description?: string
+}
+
 export interface EconomicActivityInformation{
   code: string
   description: string
 }
 
 export interface CountryInformation {
-  code: string
-  description: string
-  internationalCallingCode: string
-  continent: string
+  code?: string
+  description?: string
+  internationalCallingCode?: string
+  continent?: string
 }
 
 export interface LegalNature {

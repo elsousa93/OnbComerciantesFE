@@ -8,7 +8,7 @@ import { IReadCard } from './IReadCard.interface';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
-import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { CountryInformation, StakeholderRole } from '../../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { error } from '@angular/compiler/src/util';
@@ -86,6 +86,8 @@ export class NewStakeholderComponent implements OnInit {
 
   submissionStakeholders: IStakeholders[] = [];
 
+  stakeholdersRoles: StakeholderRole[] = [];
+
   returned: string;
 
   ListaDocTypeENI = docTypeENI;
@@ -98,11 +100,24 @@ export class NewStakeholderComponent implements OnInit {
     })
   }
 
+  loadStakeholdersRoles() {
+    this.tableData.GetAllStakeholderRoles().subscribe(result => {
+      this.stakeholdersRoles = result;
+    }, error => {
+      this.logger.debug(error);
+    });
+  }
+
+  loadTableInfoData() {
+    this.loadCountries();
+    this.loadStakeholdersRoles();
+  }
+
   constructor(private logger : NGXLogger, private router: ActivatedRoute,
     private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService, private datePipe: DatePipe) {
-    this.loadCountries();
+    this.loadTableInfoData();
     this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem('submissionId');
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
@@ -190,6 +205,7 @@ export class NewStakeholderComponent implements OnInit {
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderId];
+    console.log("Selecionou outro stakeholder");
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {
@@ -219,15 +235,16 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   initializeFormWithoutCC() {
+    console.log("STAKEHOLDER NIF:", this.currentStakeholder);
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
-      NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
+      NIF: new FormControl(this.currentStakeholder.fiscalId, Validators.required),
       Role: new FormControl({ value: '', disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
-      Country: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
-      ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
-      Locality: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
-      Address: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.address : '', Validators.required)
+      Country: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
+      ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
+      Locality: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
+      Address: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.address : '', Validators.required)
     });
     this.GetCountryByZipCode();
   }

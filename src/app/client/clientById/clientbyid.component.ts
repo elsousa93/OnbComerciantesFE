@@ -56,7 +56,7 @@ export class ClientByIdComponent implements OnInit {
     "context": "isolated",
     "contextId": null,
     "fiscalIdentification": {
-      "fiscalId": "232012610",
+      "fiscalId": "",
       "issuerCountry": "PT"
     },
     "merchantType": "corporation",
@@ -155,6 +155,8 @@ export class ClientByIdComponent implements OnInit {
   NIFNIPC: any;
   idClient: string;
 
+  DisableNIFNIPC: boolean = false;
+
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
     this.tableInfo.GetAllLegalNatures().subscribe(result => {
@@ -180,6 +182,11 @@ export class ClientByIdComponent implements OnInit {
     //this.tableInfo.GetAllCAEs().subscribe(result => {
     //  this.CAEsList = result;
     //});
+  }
+
+  updateBasicForm() {
+    console.log("form: ", this.form);
+    this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
   }
 
   //updateFormControls() {
@@ -248,7 +255,7 @@ export class ClientByIdComponent implements OnInit {
 
   initializeBasicFormControl() {
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.client.fiscalIdentification.fiscalId, [Validators.required]), //sim
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]) //sim
       //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
@@ -550,41 +557,54 @@ export class ClientByIdComponent implements OnInit {
     
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
+      console.log("sim");
+      console.log(this.route.getCurrentNavigation());
+      console.log(this.route.getCurrentNavigation().extras.state["dataCC"]);
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+
+      console.log("nif recebido pelo state:", this.NIFNIPC);
+      console.log("tipo: ", typeof this.NIFNIPC);
+
+      if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
+        this.DisableNIFNIPC = true;
+        console.log("disable: ", this.DisableNIFNIPC);
+      }
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
+      this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
       this.logger.debug("------------");
       this.logger.debug(this.processId);
       this.logger.debug("------------");
       this.logger.debug("c");
     }
 
-    this.logger.debug("d");
     var context = this;
-    if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
+    console.log("cliente id recebido: ", this.clientId);
+    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
-      this.logger.debug("e");
       this.clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
-        this.logger.debug("f");
         this.clientExists = true;
         this.client = result;
-        this.logger.debug("Cliente que foi selecionado: ", this.client);
         context.NIFNIPC = this.client.fiscalIdentification.fiscalId;
-        this.logger.debug("m");
-      })
+        console.log(context.NIFNIPC);
+        console.log("cliente pesquisado: ", this.client);
+        this.updateBasicForm();
+
+
+      });
 
       context.initializeBasicFormControl();
     } else {
-      this.logger.debug("nao devia chegar aqui");
+      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      console.log("NIFNIPC inserido: ", this.NIFNIPC);
       this.initializeFormControls();
+      this.updateBasicForm();
     }
-    this.logger.debug("n");
     this.initializeTableInfo();
     //this.createContinentsList();
 
-    this.logger.debug(this.clientExists);
 
     if (this.returned !== null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
@@ -829,14 +849,11 @@ export class ClientByIdComponent implements OnInit {
     }
     if (this.tipologia === 'ENI') {
       this.client.shortName = this.form.value["socialDenomination"];
-      console.log("extras: ", this.route.getCurrentNavigation().extras);
-      var name = this.route.getCurrentNavigation().extras.state["nomeCC"];
-      if (name !== undefined && name !== null) {
-        this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
-
-        this.client.shortName = this.dataCC.value["nameCC"];
+      if (this.dataCC !== {}) {
+        console.log("dataCC: ", this.dataCC);
+        this.client.shortName = this.dataCC.nomeCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
-        this.client.fiscalIdentification.fiscalId = this.dataCC.value["nifCC"];
+        this.client.fiscalIdentification.fiscalId = this.dataCC.nifCC;
       //  this.client.addressCC = this.dataCC.value["addressCC"];
        // this.client.postalCodeCC = this.dataCC.value["postalCodeCC"];
 

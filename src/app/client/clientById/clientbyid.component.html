@@ -702,7 +702,7 @@
         <div class="col-10 ms-3 me-3 ps-3 pe-3">
           <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC*</p>
           <input formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC"
-                 type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" />
+                 type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" [readonly]="DisableNIFNIPC" />
           <!--<div class="alert alert-danger"
                *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
             <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">

@@ -45,9 +45,14 @@
                 <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=true id="radio1" name="replicateAddress" (click)="chooseAddress(true)"><label class="form-check-label radio" for="replicateAddress" wappler-command="editContent">NÃO</label></div>
                 </span></nav>
                 <p *ngIf="formStores.get('replicateAddress').value" class="titulo-form-simples" wappler-command="editContent">{{'ContryStore'|translate}}</p>
-                <input formControlName="countryStore" *ngIf="formStores.get('replicateAddress').value" id="text1" name="text1" type="text" class="form-control campo_form">
+                <!--<input formControlName="countryStore" *ngIf="formStores.get('replicateAddress').value" id="text1" name="text1" type="text" class="form-control campo_form">-->
+                <select *ngIf="formStores.get('replicateAddress').value" class="form-select campo-form-select" id="countryStore" formControlName="countryStore">
+                  <option *ngFor="let country of countries" value={{country.code}}>
+                    {{country.description}}
+                  </option>
+                </select>
             		<p *ngIf="formStores.get('replicateAddress').value" class="titulo-form-simples" wappler-command="editContent">{{'PostalCodeStore'|translate}}</p>
-                <input formControlName="zipCodeStore" *ngIf="formStores.get('replicateAddress').value" id="text4" name="text3" type="text" class="form-control campo_form" (keypress)="GetCountryByZipCode()">
+                <input formControlName="zipCodeStore" *ngIf="formStores.get('replicateAddress').value" id="text4" name="text3" type="text" class="form-control campo_form" maxlength="8" (keypress)="GetCountryByZipCode()">
                 <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ComercialCentreStore'|translate}}</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
                   <div class="form-check"><input formControlName="commercialCenter" (click)="comercialCentre(true)" class="form-check-input" type="radio" [value]=true id="radio2" name="commercialCenter">

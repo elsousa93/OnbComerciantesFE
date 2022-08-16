@@ -1,0 +1,21 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "v1/config/subzone/{zipCode1}/{zipCode2}"
+    },
+    "response": {
+        "status": "OK",
+        "body": [
+           {
+            "code": "0212",
+            "locality": "Barreiro",
+            "name": "Forum do Barreiro"
+           },
+           {
+            "code": "0222",
+            "locality": "Alvaláxia",
+            "name": "Centro Comercial de Alvalade"
+           },
+        ]
+    }
+}
