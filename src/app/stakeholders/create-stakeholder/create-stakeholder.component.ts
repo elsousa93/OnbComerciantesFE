@@ -154,6 +154,7 @@ export class CreateStakeholderComponent implements OnInit {
   public stakeType: boolean = false;
   public showFoundStake: boolean = null;
   public stakeDocType: boolean = false;
+  public stakeDocNumber: boolean = false;
   public stakeholderId: number = 0;
   public fiscalId: number = 0;
   public clientNr: number = 8875;
@@ -328,6 +329,10 @@ export class CreateStakeholderComponent implements OnInit {
       this.isCC = false;
     }
     this.stakeDocType = true;
+  }
+
+  find() {
+    this.stakeDocNumber = true;
   }
 
   toggleShow(stake: IStakeholders) {

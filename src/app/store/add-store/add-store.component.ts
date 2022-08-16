@@ -46,7 +46,7 @@ export class AddStoreComponent implements OnInit {
   private baseUrl;
 
   cae: string = "5212";
-  public chooseAddressV: boolean;
+  public chooseAddressV: boolean = false;
   formStores!: FormGroup;
   edit: boolean = false;
 
@@ -197,6 +197,7 @@ export class AddStoreComponent implements OnInit {
         this.formStores.disable();
       }
     } else {
+      this.chooseAddressV=true;
       this.appComp.updateNavBar("Adicionar Loja")
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
