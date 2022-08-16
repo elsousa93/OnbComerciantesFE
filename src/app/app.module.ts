@@ -69,6 +69,7 @@ import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-s
 import { CreateStakeholderComponent } from './stakeholders/create-stakeholder/create-stakeholder.component';
 import { LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_WRITER_SERVICE } from 'ngx-logger';
 import { WriterCustomService } from 'src/logger/writer-custom.service';
+import { AuthComponent } from './auth/auth.component';
 
 //import da linguages e configurações de hora
 import { registerLocaleData } from '@angular/common';
@@ -127,10 +128,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FooterPresencialComponent,
     SidenavPresencialComponent,
     InfoDeclarativaAssinaturaComponent,
+
     NumberCounterComponent,
     InfoDeclarativaLojasComponent,
     CountrysComponent,
-    CreateStakeholderComponent
+    CreateStakeholderComponent,
+    AuthComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -202,7 +205,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'process', component: ProcessComponent },
       { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent },
       { path: 'info-declarativa-lojas', component: InfoDeclarativaLojasComponent },
-      { path: 'client-additional-info/:id', component: CountrysComponent }
+      { path: 'client-additional-info/:id', component: CountrysComponent },
+      { path: 'auth', component: AuthComponent }
       
     ]),
     TranslateModule.forRoot({

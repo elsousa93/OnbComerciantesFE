@@ -40,7 +40,7 @@
                   <div class="col">
                     <div class="ms-0 me-0 ps-0 pe-0 col-7">
                       <p class="titulo-form-simples mt-0">NOME COMERCIAL*</p>
-                      <input #contactName name="contactName" type="text" id="contactName" class="form-control" formControlName="comercialName" [disabled]="returned === 'consult'">
+                      <input #contactName name="contactName" type="text" id="contactName" class="form-control" formControlName="comercialName" [readonly]="returned === 'consult'">
                       <div class="alert alert-danger" *ngIf="contactName.touched && !contactName.valid">
                         is required.
                       </div>
@@ -62,7 +62,7 @@
                       </div>
                       <div class="col">
                         <p class="titulo-form-simples mt-0">TELEFONE 1:*</p>
-                        <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phoneNumber" [disabled]="returned === 'consult'">
+                        <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('invalidNumber')">
                           Phone number is invalid.
                         </div>
@@ -84,7 +84,7 @@
                       </div>
                       <div class="col">
                         <p class="titulo-form-simples mt-0">TELEFONE 2:*</p>
-                        <input #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber" [disabled]="returned === 'consult'">
+                        <input #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('invalidNumber')">
                           Phone number is invalid.
                         </div>
@@ -96,7 +96,7 @@
                     <div class="row">
                       <div class="col-12">
                         <p class="titulo-form-simples mt-0">EMAIL*</p>
-                        <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email" [disabled]="returned === 'consult'">
+                        <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
                           is required.
                         </div>
@@ -105,7 +105,7 @@
                     <div class="row">
                       <div class="col-12">
                         <p class="titulo-form-simples mt-0">EMAIL DE FATURAÇÃO</p>
-                        <input #billingEmail name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail" [disabled]="returned === 'consult'">
+                        <input #billingEmail name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail" [readonly]="returned === 'consult'">
                       </div>
                     </div>
                     <p class="titulo-form-simples"></p>

@@ -182,16 +182,10 @@ export class AddStoreComponent implements OnInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.fetchStartingInfo();
     this.loadTableInfo();
-
+    setTimeout(() => this.data.updateData(false, 3, 2), 0);
   }
 
   ngOnInit(): void {
-
-    //this.appComp.updateNavBar("Adicionar Loja")
-    ////Get Id from the store
-    //this.stroreId = Number(this.router.snapshot.params['stroreid']);
-    //this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    //this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.initializeForm();
     this.returned = localStorage.getItem("returned");
 
@@ -207,7 +201,6 @@ export class AddStoreComponent implements OnInit {
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-      this.data.updateData(false, 3, 2);
     }
   }
 

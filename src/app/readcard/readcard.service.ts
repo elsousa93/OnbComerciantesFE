@@ -257,7 +257,11 @@ formatPDF(ccArrayData: Array<string>) {
       });
 
   doc.save("digitalCC_NIF" + ccArrayData[10] + ".pdf");
-
+  var doc_base64 = doc.output('datauristring'); //retorna base64(?)
+  var splitres = doc_base64.split(',')[1];
+  console.log(splitres);
+  return doc;
+  
   //Associar à submission /api/submission/{id}/document  POST  Upload a new document (?)
   //Codficar 
 
