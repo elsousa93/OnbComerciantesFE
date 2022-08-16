@@ -2,7 +2,7 @@
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()">
   <div class="row">
-     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+     <div *ngIf="!edit" class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
        <span class="navbar-text text-light">
        <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
@@ -20,7 +20,7 @@
         <!--<form [formGroup]="formStores" (ngSubmit)="submit()">-->
           <div class="row ms-0 me-0">
             <div class="col-5 ms-0 me-0 ps-0 pe-5">
-              <p class="titulo-form-simples"  wappler-command="editContent">{{'NameStore'|translate}}</p>
+              <p class="titulo-form-simples"  wappler-command="editContent">{{'NameStores'|translate}}</p>
                 <input formControlName="storeName" id="text2" name="text2" type="text" class="form-control campo_form">
                 <div class="alert alert-danger"
                *ngIf="this.formStores.get('storeName').touched && !this.formStores.get('storeName').valid">
@@ -40,7 +40,7 @@
               <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
               <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'ReplicateAddStore'|translate}}</p>
               <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
-                <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=false id="radio1" name="replicateAddress" (click)="chooseAddress(false)"><label class="form-check-label radio pe-5" for="replicateAddress" wappler-command="editContent" >SIM</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=false id="radio1" name="replicateAddress" (click)="chooseAddress(false)"><label class="form-check-label radio pe-5" for="replicateAddress" wappler-command="editContent">SIM</label></div>
                 </span><span class="navbar-text">
                 <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=true id="radio1" name="replicateAddress" (click)="chooseAddress(true)"><label class="form-check-label radio" for="replicateAddress" wappler-command="editContent">NÃO</label></div>
                 </span></nav>

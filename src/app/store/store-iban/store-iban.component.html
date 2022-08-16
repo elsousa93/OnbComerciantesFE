@@ -2,7 +2,7 @@
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()" >
   <div class="row">
-     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+     <div *ngIf="!edit" class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
        <span class="navbar-text text-light">
        <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">

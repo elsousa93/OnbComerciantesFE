@@ -104,7 +104,7 @@
                           }}
                         </span>
                       </p>
-                      <input id="clientId" (click)="changeSearch()" type="text" [(ngModel)]="newClient.clientId" name="clientId" [disabled]="isCC && isNoDataReadable"
+                      <input id="clientId" (focusout)="changeSearch()" type="text" [(ngModel)]="newClient.clientId" name="clientId" [disabled]="isCC && isNoDataReadable"
                              #clientId="ngModel" [class]="errorInput">
                     </div>
                   </div>
