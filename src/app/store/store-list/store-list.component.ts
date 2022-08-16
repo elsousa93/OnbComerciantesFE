@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Istore, ShopDetailsAcquiring, ShopsListOutbound } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Subscription } from 'rxjs';
+import { fromEvent, map, Observable, Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configuration, configurationToken } from 'src/app/configuration';
@@ -12,7 +12,7 @@ import { ClientService } from '../../client/client.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from '../../client/Client.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-
+import { ViewportScroller } from '@angular/common';
 
 interface Stores {
   storeName: string;
@@ -104,6 +104,7 @@ const testValues: ShopDetailsAcquiring[] = [
   styleUrls: ['./store-list.component.css']
 })
 export class StoreComponent implements AfterViewInit{
+
   storesMat: MatTableDataSource<ShopDetailsAcquiring>;
 
   private baseUrl: string;
@@ -232,11 +233,11 @@ export class StoreComponent implements AfterViewInit{
 
   submit() {
     console.log('Store list form ', this.editStores);
-
+    console.log('Replicate address ', this.editStores.controls["infoStores"].get("replicateAddress").value);
     if (this.editStores.valid) {
       var infoStores = this.editStores.controls["infoStores"];
 
-      if (infoStores.get("zipCodeStore").hasValidator(Validators.required)) {
+      if (infoStores.get("replicateAddress").value) {
         this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
         this.currentStore.address.address.address = infoStores.get("addressStore").value;
         this.currentStore.address.address.country = infoStores.get("countryStore").value;
@@ -279,10 +280,12 @@ export class StoreComponent implements AfterViewInit{
       if (this.currentIdx < (testValues.length - 1)) {
         this.currentIdx = this.currentIdx + 1;
         this.selectStore(testValues[this.currentIdx], this.currentIdx);
+        this.onActivate();
       } else {
         this.route.navigate(['comprovativos']);
       }
     }
+
   }
 
   fetchStartingInfo() {
@@ -290,5 +293,16 @@ export class StoreComponent implements AfterViewInit{
       this.submissionClient = client;
       console.log("cliente da submissao: ", this.submissionClient);
     });
+  }
+
+  onActivate() {
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 100); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
   }
 }

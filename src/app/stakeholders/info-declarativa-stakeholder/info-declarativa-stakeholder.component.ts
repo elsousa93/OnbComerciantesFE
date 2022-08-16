@@ -60,7 +60,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   stakeholders: IStakeholders[] = [];
   displayedColumns: string[] = ['fiscalId', 'shortName', 'identificationDocumentId', 'elegible', 'valid'];
-  dataSource = new MatTableDataSource<IStakeholders>(this.stakeholders);
+  dataSource = new MatTableDataSource<IStakeholders>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   selectedStakeholder = {
@@ -78,13 +78,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   constructor(private logger : NGXLogger, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     this.baseUrl = configuration.baseUrl;
 
-    
     this.ngOnInit();
-    
-    http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
-      this.stakeholders = result;
-      this.dataSource.data = this.stakeholders;
-    }, error => console.error(error));
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
@@ -92,23 +86,19 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
     var context = this;
 
-
     this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
-        this.logger.debug(value);
+        context.logger.debug(value);
         context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
-          this.logger.debug(res);
+          context.logger.debug(res);
           context.submissionStakeholders.push(res);
         }, error => {
-          this.logger.debug(error);
+          context.logger.debug(error);
         });
       });
     }, error => {
       this.logger.debug(error);
     });
-
-    
-    this.callingCodeStakeholder = tableInfo.GetAllCountries();
 
     /* this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
       if (data !== '') {
@@ -128,8 +118,6 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.formContactos.controls["countryCode"].updateValueAndValidity();
     }); */
   }
-
-
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 2);

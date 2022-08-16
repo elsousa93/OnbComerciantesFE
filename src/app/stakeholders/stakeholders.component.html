@@ -19,22 +19,25 @@
           <table class="table table-success">
             <thead class="text-primary table-primary">
               <tr class="text-center text-primary table-light">
-                <th scope="col" class="align-baseline text-primary table-white">Associado ao Contrato</th>
-                <th scope="col" class="text-center bg-light">Nº Cliente</th>
-                <th scope="col" class="text-center bg-white">Nome Cliente</th>
-                <th scope="col" class="text-center bg-white">NIF</th>
+                <th scope="col" class="align-baseline text-primary table-white">Nome/Designação Social</th>
+                <th scope="col" class="text-center bg-white">NIF/NIPC</th>
+                <th scope="col" class="text-center bg-white">Tipo Entidade</th>
+                <th scope="col" class="text-center bg-white">Tipo Relação</th>
                 <th scope="col" class="text-center bg-white">Elegível</th>
+                <th scope="col" class="text-center bg-light">Nº Cliente</th>
+                <th scope="col" class="align-baseline text-primary table-white">Vai Assinar Contrato</th>
                 <th scope="col" class="bg-white"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let stakeholder of submissionStakeholders">
-                <th scope="row" class="text-primary text-center">Associado?</th>
-                <!--<td class="text-primary text-center">{{stakeholder.id}}</td>-->
-                <td class="text-primary text-center">{{stakeholder.id}}</td>
                 <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                 <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
+                <td class="text-primary text-center"> - </td>
+                <td class="text-primary text-center"> - </td>
                 <td class="text-primary text-center">Elegivel?</td>
+                <td class="text-primary text-center">{{stakeholder.id}}</td>
+                <th scope="row" class="text-primary text-center">Associado?</th>
                 <td>
                   <span>
                     <img src="assets/images/delete_blue.svg" (click)="deleteStakeholder(stakeholder)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
