@@ -573,7 +573,7 @@ export class ClientComponent implements OnInit {
   obterSelecionado() {
     this.logger.debug(this.clientId);
 
-    var NIFNIPC = '';
+    var NIFNIPC = null;
     this.logger.debug("DOCUMENTAIONDELIVERYMETHOD -->");
     this.logger.debug(this.newClient.documentationDeliveryMethod);
     if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
@@ -664,7 +664,7 @@ export class ClientComponent implements OnInit {
   }
 
   createNewClient(clientId: string) {
-    var NIFNIPC = ''
+    var NIFNIPC = null;
     if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
       this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;

@@ -190,6 +190,7 @@ export class NewStakeholderComponent implements OnInit {
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderId];
+    console.log("Selecionou outro stakeholder");
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {
@@ -219,10 +220,11 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   initializeFormWithoutCC() {
+    console.log("STAKEHOLDER NIF:", this.currentStakeholder);
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
-      NIF: new FormControl({ value: this.currentStakeholder.fiscalId, disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
+      NIF: new FormControl(this.currentStakeholder.fiscalId, Validators.required),
       Role: new FormControl({ value: '', disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
       Country: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
       ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),

@@ -160,12 +160,11 @@
 
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">NIF</p>
-              <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="returned === 'consult'">
-
-
+              <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="selectedStakeholderIsFromCRC">
+              <!--returned === 'consult'-->
               <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
-        O parâmetro "NIF" é obrigatório.
-      </div>-->
+    O parâmetro "NIF" é obrigatório.
+  </div>-->
 
               <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
               <!--<input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">-->
@@ -173,14 +172,14 @@
                 <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">{{country.description}}</option>
               </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-        O parâmetro "Morada Fiscal" é obrigatório.
-      </div>-->
+    O parâmetro "Morada Fiscal" é obrigatório.
+  </div>-->
 
               <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
               <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
-        O parâmetro "Código postal" é obrigatório.
-      </div>-->
+    O parâmetro "Código postal" é obrigatório.
+  </div>-->
               <p class="titulo-form-simples"></p>
             </div>
           </div>

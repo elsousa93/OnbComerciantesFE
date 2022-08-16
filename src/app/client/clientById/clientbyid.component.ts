@@ -56,7 +56,7 @@ export class ClientByIdComponent implements OnInit {
     "context": "isolated",
     "contextId": null,
     "fiscalIdentification": {
-      "fiscalId": "232012610",
+      "fiscalId": "",
       "issuerCountry": "PT"
     },
     "merchantType": "corporation",
@@ -155,6 +155,8 @@ export class ClientByIdComponent implements OnInit {
   NIFNIPC: any;
   idClient: string;
 
+  DisableNIFNIPC: boolean = false;
+
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
     this.tableInfo.GetAllLegalNatures().subscribe(result => {
@@ -180,6 +182,11 @@ export class ClientByIdComponent implements OnInit {
     //this.tableInfo.GetAllCAEs().subscribe(result => {
     //  this.CAEsList = result;
     //});
+  }
+
+  updateBasicForm() {
+    console.log("form: ", this.form);
+    this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
   }
 
   //updateFormControls() {
@@ -248,7 +255,7 @@ export class ClientByIdComponent implements OnInit {
 
   initializeBasicFormControl() {
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.client.fiscalIdentification.fiscalId, [Validators.required]), //sim
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]) //sim
       //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
@@ -557,6 +564,14 @@ export class ClientByIdComponent implements OnInit {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+
+      console.log("nif recebido pelo state:", this.NIFNIPC);
+      console.log("tipo: ", typeof this.NIFNIPC);
+
+      if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
+        this.DisableNIFNIPC = true;
+        console.log("disable: ", this.DisableNIFNIPC);
+      }
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
       this.logger.debug("------------");
@@ -567,19 +582,25 @@ export class ClientByIdComponent implements OnInit {
 
     var context = this;
     console.log("cliente id recebido: ", this.clientId);
-    if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
+    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
       this.clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
         this.clientExists = true;
         this.client = result;
         context.NIFNIPC = this.client.fiscalIdentification.fiscalId;
-
+        console.log(context.NIFNIPC);
         console.log("cliente pesquisado: ", this.client);
-      })
+        this.updateBasicForm();
+
+
+      });
 
       context.initializeBasicFormControl();
     } else {
+      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      console.log("NIFNIPC inserido: ", this.NIFNIPC);
       this.initializeFormControls();
+      this.updateBasicForm();
     }
     this.initializeTableInfo();
     //this.createContinentsList();
