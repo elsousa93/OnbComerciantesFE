@@ -18,11 +18,12 @@ import { Configuration, configurationToken } from '../configuration';
 
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
-import { ICCInfo } from '../citizencard/ICCInfo.interface';
 
+import { ReadcardService } from '../readcard/readcard.service';
 import { BrowserModule } from '@angular/platform-browser';
+import jsPDF from 'jspdf';
+import { dataCC } from '../client/dataCC.interface';
 import { NGXLogger } from 'ngx-logger';
-
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -35,6 +36,88 @@ import { NGXLogger } from 'ngx-logger';
 export class StakeholdersComponent implements OnInit {
 
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
+
+
+  //---- Cartão de Cidadao - vars ------
+  public dataCCcontents: dataCC;
+  public prettyPDF: jsPDF = null;
+  public nameCC = null;
+  public nationalityCC = null;
+  public birthDateCC = null;
+  public cardNumberCC = null;
+  public nifCC = null;
+  public addressCC = null;
+  public postalCodeCC = null;
+  public countryCC = null;
+
+  public okCC = null;
+  public dadosCC: Array<string> = []; //apagar
+
+  //---- Cartão de Cidadao - funcoes -----
+  callreadCC() {
+    readCC(this.SetNewCCData.bind(this));
+    this.setOkCC();
+  }
+  callreadCCAddress() {
+    readCCAddress(this.SetNewCCData.bind(this));
+    this.setOkCC();
+  }
+  closeModal() {
+    this.newModal.hide();
+  }
+  setOkCC() {
+    this.okCC = true;
+    console.log("okCC valor: ", this.okCC);
+  }
+  /**
+   * Information from the Citizen Card will be associated to the client structure
+   * cardNumber não é guardado?
+   * 
+   * */
+  SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+    gender, height, nationality, expiryDate, nameFather, nameMother,
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
+
+    console.log("Name: ", name, "type: ", typeof (name));
+
+    console.log("nationality: ", nationality);
+    console.log("birthDate: ", birthDate);
+    console.log("cardNumber: ", cardNumber);
+    console.log("nif: ", nif);
+
+    this.dataCCcontents.nomeCC = name;
+    this.dataCCcontents.nationalityCC = nationality;
+    // this.birthDateCC = birthDate;
+    this.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.nifCC = nif;
+
+    this.dataCCcontents.countryCC = countryIssuer;
+
+    if (!(address == null)) {
+      this.dataCCcontents.addressCC = address;
+      this.dataCCcontents.postalCodeCC = postalCode;
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        nameFather, nameMother, nif, nss, sns, notes];
+
+      //Send to PDF
+
+      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
+    }
+    else {
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        nameFather, nameMother, nif, nss, sns, notes, address, postalCode, country];
+
+      //Send to PDF without address
+      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
+
+    }
+
+  }
+
+
+
 
 
   newStake: IStakeholders = {
@@ -146,7 +229,7 @@ export class StakeholdersComponent implements OnInit {
   public returned: string;
 
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute, public modalService: BsModalService,
+  constructor(private router: ActivatedRoute, public modalService: BsModalService,
       private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
     this.submissionId = localStorage.getItem('submissionId');

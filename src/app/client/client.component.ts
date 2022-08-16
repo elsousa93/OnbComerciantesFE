@@ -24,6 +24,7 @@ import { ReadcardService } from '../readcard/readcard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { NGXLogger } from 'ngx-logger';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-client',
@@ -58,7 +59,7 @@ export class ClientComponent implements OnInit {
 
   //---- Cartão de Cidadao - vars ------
   public dataCCcontents: dataCC;
-  public prettyPDF = null;
+  public prettyPDF: jsPDF = null;
   public nameCC = null;
   public nationalityCC = null;
   public birthDateCC = null;
@@ -119,6 +120,7 @@ export class ClientComponent implements OnInit {
         nameFather, nameMother, nif, nss, sns, notes];
 
       //Send to PDF
+
       this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
     }
     else {
@@ -128,6 +130,7 @@ export class ClientComponent implements OnInit {
 
       //Send to PDF without address
       this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
+
     }
 
   }
