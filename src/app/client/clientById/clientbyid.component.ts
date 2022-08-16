@@ -156,6 +156,7 @@ export class ClientByIdComponent implements OnInit {
   idClient: string;
 
   DisableNIFNIPC: boolean = false;
+  collectCRC: boolean;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -240,6 +241,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim,
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+      collectCRC: new FormControl(this.collectCRC)
     });
   }
 
@@ -250,13 +252,15 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+      collectCRC: new FormControl(this.collectCRC, [Validators.required])
     });
   }
 
   initializeBasicFormControl() {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]) //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+      collectCRC: new FormControl(this.collectCRC, [Validators.required])
       //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
@@ -287,8 +291,9 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
       natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim
+      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : this.client?.legalName, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+      collectCRC: new FormControl(this.collectCRC, [Validators.required])
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -355,6 +360,7 @@ export class ClientByIdComponent implements OnInit {
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
       address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+      collectCRC: new FormControl(this.collectCRC, [Validators.required])
     });
       
 
@@ -617,15 +623,18 @@ export class ClientByIdComponent implements OnInit {
               }
               if (this.merchantInfo.incorporationStatement !== null) {
                 this.isCommercialSociety = true;
+                this.collectCRC = true;
                 this.initializeBasicCRCFormControl();
                 this.searchByCRC();
               } else {
                 if (this.merchantInfo.legalNature !== "") {
                   this.isCommercialSociety = false;
+                  this.collectCRC = false;
                   this.tipologia === 'Company';
                   this.initializeFormControlOther();
                 } else {
                   this.isCommercialSociety = false;
+                  this.collectCRC = false;
                   this.tipologia === 'ENI';
                   this.initializeENI();
                 }
@@ -660,6 +669,7 @@ export class ClientByIdComponent implements OnInit {
 
   setCommercialSociety(id: boolean) {
     this.crcFound = false;
+    this.collectCRC = undefined;
     if (id == true) {
       this.initializeBasicCRCFormControl();
       this.isCommercialSociety = true;
@@ -956,5 +966,13 @@ export class ClientByIdComponent implements OnInit {
     this.form.get("natJuridicaNIFNIPC").setValue("TESTING UHJSAIUDSHSUD");
 
     this.form.updateValueAndValidity();
+  }
+
+  setCollectCRC(value: boolean) {
+    this.collectCRC = value;
+    if (value == false)
+      this.initializeFormControlOther();
+    else
+      this.initializeBasicCRCFormControl();
   }
 }
