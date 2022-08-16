@@ -152,7 +152,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   updateForm() {
-      this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType == 'Entrepreneur') ? this.submissionClient.legalName : '', Validators.required);
+      this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType === 'Entrepeneur') ? this.submissionClient.legalName : '', Validators.required);
   }
 
   fetchStartingInfo() {

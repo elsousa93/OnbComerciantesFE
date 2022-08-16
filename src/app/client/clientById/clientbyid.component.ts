@@ -565,30 +565,25 @@ export class ClientByIdComponent implements OnInit {
       this.logger.debug("c");
     }
 
-    this.logger.debug("d");
     var context = this;
+    console.log("cliente id recebido: ", this.clientId);
     if (this.clientId != "-1" || this.clientId != null || this.clientId != undefined) {
 
-      this.logger.debug("e");
       this.clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
-        this.logger.debug("f");
         this.clientExists = true;
         this.client = result;
-        this.logger.debug("Cliente que foi selecionado: ", this.client);
         context.NIFNIPC = this.client.fiscalIdentification.fiscalId;
-        this.logger.debug("m");
+
+        console.log("cliente pesquisado: ", this.client);
       })
 
       context.initializeBasicFormControl();
     } else {
-      this.logger.debug("nao devia chegar aqui");
       this.initializeFormControls();
     }
-    this.logger.debug("n");
     this.initializeTableInfo();
     //this.createContinentsList();
 
-    this.logger.debug(this.clientExists);
 
     if (this.returned !== null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
