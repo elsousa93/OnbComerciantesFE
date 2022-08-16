@@ -20,7 +20,7 @@
         <!--<form [formGroup]="formStores" (ngSubmit)="submit()">-->
           <div class="row ms-0 me-0">
             <div class="col-5 ms-0 me-0 ps-0 pe-5">
-              <p class="titulo-form-simples"  wappler-command="editContent">{{'NameStore'|translate}}</p>
+              <p class="titulo-form-simples"  wappler-command="editContent">{{'NameStores'|translate}}</p>
                 <input formControlName="storeName" id="text2" name="text2" type="text" class="form-control campo_form">
                 <div class="alert alert-danger"
                *ngIf="this.formStores.get('storeName').touched && !this.formStores.get('storeName').valid">

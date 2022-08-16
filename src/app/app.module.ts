@@ -25,13 +25,9 @@ import { StoreIbanComponent } from './store/store-iban/store-iban.component';
 import { StoreComponent } from './store/store-list/store-list.component';
 import { AddStoreComponent } from './store/add-store/add-store.component';
 import { CommercialOfferListComponent } from './commercial-offer/commercial-offer-list/commercial-offer-list.component';
-import { CommercialOfferDetailComponent } from './commercial-offer/commercial-offer-detail/commercial-offer-detail.component';
-import { CommercialOfferStoreListComponent } from './commercial-offer/commercial-offer-store-list/commercial-offer-store-list.component';
-import { CommercialOfferTerminalConfigComponent } from './commercial-offer/commercial-offer-terminal-config/commercial-offer-terminal-config.component';
-import { CommercialOfferPricingComponent } from './commercial-offer/commercial-offer-pricing/commercial-offer-pricing.component';
+import { CommercialOfferNewConfigurationComponent } from './commercial-offer/commercial-offer-new-configuration/commercial-offer-new-configuration.component';
 import { InfoDeclarativaComponent } from './client/info-declarativa/info-declarativa.component';
 import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declarativa-stakeholder/info-declarativa-stakeholder.component';
-import { CommercialOfferTariffComponent } from './commercial-offer/commercial-offer-tariff/commercial-offer-tariff.component';
 import { ClientByIdComponent } from './client/clientById/clientbyid.component';
 import { ReadcardComponent } from './readcard/readcard.component';
 import { LoginComponent } from './login/login.component';
@@ -98,15 +94,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ComprovativosComponent,
     CheckDocumentsComponent,
     CommercialOfferListComponent,
-    CommercialOfferDetailComponent,
-    CommercialOfferStoreListComponent,
-    CommercialOfferTerminalConfigComponent,
-    CommercialOfferPricingComponent,
+    CommercialOfferNewConfigurationComponent,
     StoreIbanComponent,
     InfoDeclarativaComponent,
     InfoDeclarativaStakeholderComponent,
     PepComponent,
-    CommercialOfferTariffComponent,
     ClientByIdComponent,
     ClientExtendedComponent,
     ReadcardComponent,
@@ -181,11 +173,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'add-store-iban/:stroreid', component: StoreIbanComponent },
       { path: 'add-store-iban', component: StoreIbanComponent },
       { path: 'commercial-offert-list', component: CommercialOfferListComponent },
-      { path: 'commercial-offert-detail/:stroreid/:commofid', component: CommercialOfferDetailComponent },
-      { path: 'commercial-offert-store-list/:stroreid', component: CommercialOfferStoreListComponent },
-      { path: 'commercial-offert-terminal-config/:stroreid/:commofid', component: CommercialOfferTerminalConfigComponent },
-      { path: 'commercial-offert-pricing', component: CommercialOfferPricingComponent },
-      { path: 'commercial-offert-tariff', component: CommercialOfferTariffComponent },
+      { path: 'commercial-offert-new-configuration', component: CommercialOfferNewConfigurationComponent },
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'login', component: LoginComponent },
