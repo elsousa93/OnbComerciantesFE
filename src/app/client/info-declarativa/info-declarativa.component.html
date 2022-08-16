@@ -76,7 +76,7 @@
                       <div class="col-4">
                         <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
                         <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
-                          <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}} [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone2?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
+                          <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone2?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <!-- <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
                           is required.

@@ -44,20 +44,24 @@
                   <table class="table">
                     <thead class="text-primary table-primary">
                       <tr class="table-white text-primary">
-                        <th scope="col" class="text-center text-primary bg-light table-white">Nº Cliente</th>
-                        <th scope="col" class="text-center bg-light">Nome Cliente</th>
-                        <th scope="col" class="text-center bg-white">NIF</th>
+                        <th scope="col" class="text-center bg-white">Nome/Designação Social</th>
+                        <th scope="col" class="text-center bg-white">NIF/NIPC</th>
+                        <th scope="col" class="text-center bg-white">Tipo Entidade</th>
+                        <th scope="col" class="text-center bg-white">Tipo Relação</th>
                         <th scope="col" class="text-center bg-white">Elegível</th>
-                        <th scope="col" class="text-center bg-white">Válido?</th>
+                        <th scope="col" class="text-center bg-light">Nº Cliente</th>
+                        <th scope="col" class="text-center bg-white">Vai Assinar Contrato</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="selectStakeholder(stakeholder, idx)" [ngClass]="{'row-selected': currentStakeholder.fiscalId === stakeholder.fiscalId}">
-                        <th scope="row" class="text-primary text-center">{{stakeholder.stakeholderNumber}}</th>
+                      <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="selectStakeholder(stakeholder, idx)" [ngClass]="{'row-selected': currentStakeholder === stakeholder}">
                         <td class="text-primary text-center">{{stakeholder.shortName}}</td>
                         <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                         <td class="text-primary text-center"> - </td>
                         <td class="text-primary text-center"> - </td>
+                        <td class="text-primary text-center">Elegivel?</td>
+                        <td class="text-primary text-center">{{stakeholder.id}}</td>
+                        <th scope="row" class="text-primary text-center">Associado?</th>
                       </tr>
                     </tbody>
                   </table>
@@ -74,7 +78,7 @@
                         <div class="col-4">
                           <p class="titulo-form-simples mt-0">INDICATIVO:</p>
                           <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="countryCode"  [attr.disabled]="returned === 'consult' ? true : null">
-                            <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}} [attr.selected]="(currentStakeholder != null && currentStakeholder.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
+                            <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(currentStakeholder != null && currentStakeholder.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
                         </div>
                         <div class="col">
