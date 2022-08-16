@@ -164,12 +164,11 @@
 
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">NIF</p>
-              <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="returned === 'consult'">
-
-
+              <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="selectedStakeholderIsFromCRC">
+              <!--returned === 'consult'-->
               <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
-        O parâmetro "NIF" é obrigatório.
-      </div>-->
+    O parâmetro "NIF" é obrigatório.
+  </div>-->
 
               <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
               <!--<input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">-->
@@ -177,38 +176,41 @@
                 <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">{{country.description}}</option>
               </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-        O parâmetro "Morada Fiscal" é obrigatório.
-      </div>-->
+    O parâmetro "Morada Fiscal" é obrigatório.
+  </div>-->
 
               <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
               <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
-        O parâmetro "Código postal" é obrigatório.
-      </div>-->
+    O parâmetro "Código postal" é obrigatório.
+  </div>-->
               <p class="titulo-form-simples"></p>
             </div>
           </div>
           <div class="col-6 ms-0 me-0 ps-5 pe-0">
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">CARGO</p>
-              <input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">
+              <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
+              <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="returned === 'consult' ? true : null">
+                <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
+              </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-      O parâmetro "Cargo" é obrigatório.
-      </div>-->
+  O parâmetro "Cargo" é obrigatório.
+  </div>-->
 
               <p class="titulo-form-simples ">LOCALIDADE</p>
               <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="canEditLocality() === false">
               <!--<div class="alert alert-danger"
-        *ngIf="postalArea.touched && !postalArea.valid">
-        O parâmetro "Código postal" é obrigatório.
-      </div>-->
+    *ngIf="postalArea.touched && !postalArea.valid">
+    O parâmetro "Código postal" é obrigatório.
+  </div>-->
 
               <p class="titulo-form-simples ">MORADA FISCAL</p>
               <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger"
-        *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
-        O parâmetro "Código postal" é obrigatório.
-      </div>-->
+    *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
+    O parâmetro "Código postal" é obrigatório.
+  </div>-->
               <p class="titulo-form-simples"></p>
             </div>
           </div>

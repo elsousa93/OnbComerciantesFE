@@ -229,8 +229,8 @@ export class StakeholdersComponent implements OnInit {
   public returned: string;
 
 
-  constructor(private router: ActivatedRoute, public modalService: BsModalService,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService, private readCardService: ReadcardService) {
+  constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
+      private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
