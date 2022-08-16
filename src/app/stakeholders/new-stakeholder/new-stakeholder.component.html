@@ -21,22 +21,26 @@
           <div class="table-responsive me-2 ps-3 pe-3">
             <table class="table table-success">
               <thead class="text-primary table-primary">
-                <tr class="table-light text-center text-primary">
-                  <th scope="col" class="align-baseline text-primary table-white">Associado ao Contrato</th>
-                  <th scope="col" class="text-center bg-light">Nº Cliente</th>
-                  <th scope="col" class="text-center bg-white">Nome Cliente</th>
-                  <th scope="col" class="text-center bg-white">NIF</th>
+                <tr class="text-center text-primary table-light">
+                  <th scope="col" class="align-baseline text-primary table-white">Nome/Designação Social</th>
+                  <th scope="col" class="text-center bg-white">NIF/NIPC</th>
+                  <th scope="col" class="text-center bg-white">Tipo Entidade</th>
+                  <th scope="col" class="text-center bg-white">Tipo Relação</th>
                   <th scope="col" class="text-center bg-white">Elegível</th>
+                  <th scope="col" class="text-center bg-light">Nº Cliente</th>
+                  <th scope="col" class="align-baseline text-primary table-white">Vai Assinar Contrato</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
-                <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}" >
-                  <th scope="row" class="text-primary text-center">Associado?</th>
-                  <td class="text-primary text-center">{{stakeholder.id}}</td>
-                  <td class="text-primary text-center">{{stakeholder.shortName}}</td>
+                <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}">
+                  <td scope="row" class="text-primary text-center">{{stakeholder.shortName}}</td>
                   <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
+                  <td class="text-primary text-center"> - </td>
+                  <td class="text-primary text-center"> - </td>
                   <td class="text-primary text-center">Elegivel?</td>
+                  <td class="text-primary text-center">{{stakeholder.id}}</td>
+                  <th scope="row" class="text-primary text-center">Associado?</th>
                 </tr>
               </tbody>
             </table>

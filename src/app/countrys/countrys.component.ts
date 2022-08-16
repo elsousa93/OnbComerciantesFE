@@ -49,7 +49,7 @@ export class CountrysComponent implements OnInit {
   statusValue: boolean = false;
 
   clientExists: boolean;
-  associatedWithGroupOrFranchise: boolean;
+  associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
   form: FormGroup;
 
