@@ -32,6 +32,7 @@ export class PackContratualComponent implements OnInit{
 
   isPaper: boolean = null;
   showObservations: boolean = false;
+  showTable: boolean = false;
   validatedDocuments: boolean = false;
   showAnotherButtons: boolean = false;
 
@@ -53,6 +54,7 @@ ngOnInit(): void {
 }
 
 paperSignature(paper: boolean) {
+  this.showTable=true;
   this.showObservations = true;
   this.showAnotherButtons = paper;
   if (paper){
