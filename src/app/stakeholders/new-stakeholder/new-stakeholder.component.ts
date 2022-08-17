@@ -428,10 +428,14 @@ export class NewStakeholderComponent implements OnInit {
 
     var currentCountry = this.formNewStakeholder.get('Country').value;
 
+    var zipcode = this.formNewStakeholder.value['ZIPCode'];
+    console.log("tamanho do codigo postal: ", zipcode.length);
+    console.log("zipcode: ", zipcode);
+
     if (currentCountry === 'PT') {
       this.lockLocality = true;
-      var zipcode = this.formNewStakeholder.value['ZIPCode'];
-      if (zipcode.length === 8) {
+      
+      if (zipcode.length >= 8) {
         var zipCode = zipcode.split('-');
 
         this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {

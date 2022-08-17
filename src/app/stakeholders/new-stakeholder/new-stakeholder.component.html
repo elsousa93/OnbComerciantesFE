@@ -180,7 +180,7 @@
   </div>-->
 
               <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
-              <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keypress)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
+              <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keyup)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
     O parâmetro "Código postal" é obrigatório.
   </div>-->
