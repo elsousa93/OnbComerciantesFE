@@ -121,8 +121,8 @@
          [checked]="!isSelected" />
 
 
-  <p class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
-  <table class='table table-striped' aria-labelledby="tableLabel">
+  <p *ngIf="isVisible == 0 || isVisible == 1" class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
+  <table *ngIf="isVisible == 0 || isVisible == 1" class='table table-striped' aria-labelledby="tableLabel">
     <thead>
       <tr>
         <th>Nome do Cliente</th>

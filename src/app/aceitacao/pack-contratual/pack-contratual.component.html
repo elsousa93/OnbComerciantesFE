@@ -72,34 +72,27 @@
                       <p class="titulo-form-simples"></p>
                     </div>
                   </div>
-                  <h4 class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
+                  <h4 *ngIf="showTable" class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
                       style="height: 30px !important; vertical-align: bottom;">&nbsp;SELECIONE OS REPRESENTANTES QUE
                     OBRIGAM A EMPRESA</h4>
-                  <div class="table-responsive mb-5">
+                  <div *ngIf="showTable" class="table-responsive mb-5">
                     <table class="table">
                       <thead class="text-primary table-primary">
                         <tr class="table-white text-primary">
                           <th scope="col" class="text-center text-primary bg-light table-white">Nome Cliente</th>
                           <th scope="col" class="text-center bg-light">NIF</th>
-                          <th scope="col" class="text-center bg-white">PODER DE REPRESENTAÇÃO</th>
-                          <th scope="col" class="text-center bg-white">SELEÇÃO</th>
                           <th scope="col" class="text-center bg-white">TIPO DE ASSINATURA DIGITAL</th>
-                          <th scope="col" class="text-center bg-white">TIPO DE IDENTIFICAÇÃO</th>
+                          <th *ngIf="isPaper == false" scope="col" class="text-center bg-white">TIPO DE IDENTIFICAÇÃO</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td class="text-primary text-center align-middle">Bual de Canela</td>
                           <td class="text-primary text-center align-middle">162243889</td>
-                          <td class="text-primary text-center align-middle">ASSINA SOZINHO</td>
-                          <td class="text-primary text-center align-middle">
-                            <div class="form-check"><input class="form-check-input ms-0 me-0" type="checkbox" value=""
-                                id="input1" name="input1"></div>
-                          </td>
                           <td class="text-primary text-center align-middle"><select class="form-select">
                               <option value="-">-</option>
                             </select></td>
-                          <td class="text-primary text-center align-middle"><select class="form-select">
+                          <td *ngIf="isPaper == false" class="text-primary text-center align-middle"><select class="form-select">
                               <option value="-">-</option>
                             </select></td>
                         </tr>
