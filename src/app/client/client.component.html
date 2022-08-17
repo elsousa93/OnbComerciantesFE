@@ -81,14 +81,14 @@
                         <div class="form-check">
                           <input class="form-check-input" required formControlName="flagAutCol" type="radio" [value]=true
                                  id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" />
-                          <label class="form-check-label radio pe-5" for="radio3">SIM</label>
+                          <label class="form-check-label radio pe-5" for="radio3">{{'Yes'|translate}}</label>
                         </div>
                       </span>
                       <span class="navbar-text">
                         <div class="form-check">
                           <input class="form-check-input" required formControlName="flagAutCol" type="radio" [value]=false
                                  id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" />
-                          <label class="form-check-label radio" for="radio3">NÃO</label>
+                          <label class="form-check-label radio" for="radio3">{{'No'|translate}}</label>
                         </div>
                       </span>
                     </nav>
@@ -154,8 +154,8 @@
               <ng-template #newModal>
                 <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
                   <p>Tem o pin de acesso aos dados da morada?</p>
-                  <button type="button" class="btn btn-primary" value="true" (click)="callreadCCAddress(); closeModal()">Sim</button>
-                  <button type="button" class="btn btn-primary" value="false" (click)="callreadCC(); closeModal(); setOkCC()">Não</button>
+                  <button type="button" class="btn btn-primary" value="true" (click)="callreadCCAddress(); closeModal()">{{'Yes'|translate}}</button>
+                  <button type="button" class="btn btn-primary" value="false" (click)="callreadCC(); closeModal(); setOkCC()">{{'No'|translate}}</button>
                 </div>
               </ng-template>
               <!--Fim da Seccao do Modal PIN da Morada-->
@@ -268,7 +268,7 @@
 
             <button id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent"
                     (click)="close()">
-              SAIR&nbsp;<span class="material-symbols-rounded m-align">
+              {{'Exit'|translate}}&nbsp;<span class="material-symbols-rounded m-align">
 
                 <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
 
@@ -277,7 +277,7 @@
 
             <button id="btn5a3" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent"
                     (click)="obterSelecionado()">
-              SEGUINTE&nbsp;<span class="material-symbols-rounded m-align">
+              {{'Next'|translate}}&nbsp;<span class="material-symbols-rounded m-align">
 
                 <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">
 
