@@ -78,32 +78,24 @@
                        <p class="titulo-form-simples"></p>
                     </div>
                  </div>
-                 <h4 *ngIf="isVisible == 0 || isVisible == 1" class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
+                 <h4 *ngIf="isVisible == 0" class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
                   style="height: 25px !important; vertical-align: bottom;">&nbsp;SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA
                </h4>
                </div>
                <div class="bg-white align-self-center col-12 laterais_tabs4 mt-0 ms-0 me-0 pt-2 ps-5 pe-5">
                 <div class="table-responsive mb-5 pb-5" style="margin-bottom: 50px;">
-  <table *ngIf="isVisible == 0 || isVisible == 1" class='table table-striped' aria-labelledby="tableLabel" >
+  <table *ngIf="isVisible == 0" class='table table-striped' aria-labelledby="tableLabel" >
     <thead class="text-primary table-primary">
       <tr class="table-white text-primary">
         <th scope="col" class="text-center text-primary bg-light table-white">Nome do Cliente</th>
         <th scope="col" class="text-center bg-light">NIF</th>
-        <th scope="col" class="text-center bg-light" *ngIf="isVisible == 1">Letra</th>
-        <th scope="col" class="text-center bg-light" *ngIf="isVisible == 1">Tipo de assinatura</th>
-        <th scope="col" class="text-center bg-light">Seleção</th>
         <th scope="col" class="text-center bg-light">Tipo assinatura digital</th>
-        <th scope="col" class="text-center bg-light">Tipo de identificação </th>
-
       </tr>
     </thead>
     <tbody>
       <tr class="clickable" *ngFor="let stakeholder of stakeholders">
         <td class="text-primary text-center align-middle">{{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}}</td>
         <td class="text-primary text-center align-middle"> - </td>
-        <td class="text-primary text-center align-middle" *ngIf="isVisible == 1"> - </td>
-        <td class="text-primary text-center align-middle" *ngIf="isVisible == 1"> - </td>
-        <td class="text-primary text-center align-middle"><input #{{stakeholder.fiscalId}} id="{{stakeholder.fiscalId}}" type="checkbox" [checked]="representativesSelected.indexOf(stakeholder.fiscalId) > -1" (change)="changeRepresentativeSelected($event)" /></td>
         <td class="text-primary text-center align-middle">
           <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
           <select *ngIf="isVisible == 0">
@@ -111,10 +103,6 @@
             <option>Chave Móvel Digital</option>
             <option>CC</option>
           </select>
-        </td>
-        <td class="text-primary text-center align-middle">
-          <select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
-          <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
         </td>
 
       </tr>
