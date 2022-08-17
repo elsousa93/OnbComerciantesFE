@@ -1,5 +1,5 @@
 <app-nav-menu-interna *ngIf="!edit"></app-nav-menu-interna>
-<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+<div class="container-fluid  mt-0 ms-0 me-0 pt-0 ps-0 pe-0" [ngClass]="{'conteudo' : !edit}">
   <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()">
   <div class="row">
      <div *ngIf="!edit" class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
@@ -12,7 +12,7 @@
        </span>
       </nav>
      </div>
-     <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
+     <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0" *ngIf="!edit">
       <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/storefront.svg" class="img_add">&nbsp;INFORMAÇÃO CARACTERÍSTICA DA LOJA</h2>
       <p class="titul campo_obrigatrio">* campo obrigatório</p>
       </div>
