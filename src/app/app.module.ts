@@ -72,6 +72,7 @@ import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 import { environment } from 'src/environments/environment';
 import { NGXLogger } from 'ngx-logger';
+import { MainPageComponent } from './main-page/main-page.component';
 registerLocaleData(localePT);
 
 
@@ -125,7 +126,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaLojasComponent,
     CountrysComponent,
     CreateStakeholderComponent,
-    AuthComponent
+    AuthComponent,
+    MainPageComponent
   ],
   imports: [
     ReactiveFormsModule,
