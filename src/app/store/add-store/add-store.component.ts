@@ -284,38 +284,38 @@ export class AddStoreComponent implements OnInit {
   }
 
   submit() {
-    //this.store.name = this.formStores.get("storeName").value;
-    //if (this.submissionClient.merchantType == 'Entrepreneur')
-    //  this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
-    //else
-    //  this.store.manager = this.formStores.get("contactPoint").value;
+    this.store.name = this.formStores.get("storeName").value;
+    if (this.submissionClient?.merchantType == 'Entrepreneur')
+      this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
+    else
+      this.store.manager = this.formStores.get("contactPoint").value;
 
     //this.store.activity = this.formStores.get("activityStores").value;
     //this.store.subActivity = this.formStores.get("subactivityStores").value;
     if (this.chooseAddressV) {
-      //this.store.address.address.address = this.formStores.get("addressStore").value;
-      //this.store.address.address.country = this.formStores.get("countryStore").value;
-      //this.store.address.address.postalArea = this.formStores.get("localeStore").value;
-      //this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
-      //this.store.address.useMerchantAddress = false;
+      this.store.address.address.address = this.formStores.get("addressStore").value;
+      this.store.address.address.country = this.formStores.get("countryStore").value;
+      this.store.address.address.postalArea = this.formStores.get("localeStore").value;
+      this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
+      this.store.address.useMerchantAddress = false;
       console.log('Valor do replicateAddress ' , this.formStores.get("replicateAddress").value);
     } else {
-      //this.store.address.address.address = this.submissionClient.headquartersAddress.address;
-      //this.store.address.address.country = this.submissionClient.headquartersAddress.country;
-      //this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-      //this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-      /*      this.store.address.useMerchantAddress = true;*/
+      this.store.address.address.address = this.submissionClient.headquartersAddress.address;
+      this.store.address.address.country = this.submissionClient.headquartersAddress.country;
+      this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+      this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+      this.store.address.useMerchantAddress = true;
       console.log('Valor do replicateAddress ', this.formStores.get("replicateAddress").value);
     }
 
     if (this.isComercialCentreStore) {
-      //this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value;
+      this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value;
       console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
     } else {
       console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
     }
 
-    //this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
+    this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
 
     let navigationExtras: NavigationExtras = {
       state: {

@@ -212,9 +212,12 @@ export class StoreComponent implements AfterViewInit{
     var bankStores = this.editStores.controls["bankStores"];
     bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
     bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
-    bankStores.get("solutionType").setValue(this.currentStore.productCode);
-    bankStores.get("subProduct").setValue(this.currentStore.subproductCode);
-    bankStores.get("url").setValue(this.currentStore.website);
+
+
+    var productStores = this.editStores.controls["productStores"];
+    productStores.get("solutionType").setValue(this.currentStore.productCode);
+    productStores.get("subProduct").setValue(this.currentStore.subproductCode);
+    productStores.get("url").setValue(this.currentStore.website);
 
   }
 
@@ -234,7 +237,7 @@ export class StoreComponent implements AfterViewInit{
   submit() {
     console.log('Store list form ', this.editStores);
     console.log('Replicate address ', this.editStores.controls["infoStores"].get("replicateAddress").value);
-    if (this.editStores.valid) {
+    if (this.editStores.valid && testValues.length > 0) {
       var infoStores = this.editStores.controls["infoStores"];
 
       if (infoStores.get("replicateAddress").value) {
@@ -265,9 +268,12 @@ export class StoreComponent implements AfterViewInit{
 
       this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
       this.currentStore.bank.userMerchantBank = bankStores.get("bankInformation").value;
-      this.currentStore.productCode = bankStores.get("solutionType").value;
-      this.currentStore.subproductCode = bankStores.get("subProduct").value;
-      this.currentStore.website = bankStores.get("url").value;
+
+      var productStores = this.editStores.controls["productStores"];
+
+      this.currentStore.productCode = productStores.get("solutionType").value;
+      this.currentStore.subproductCode = productStores.get("subProduct").value;
+      this.currentStore.website = productStores.get("url").value;
 
       //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
       //  if (this.currentIdx < (this.storeList.length - 1)) {

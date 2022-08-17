@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
@@ -117,6 +117,11 @@ export class StoreIbanComponent implements OnInit {
 
   constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
     setTimeout(() => this.data.updateData(false, 3, 3), 0);
+
+    if (this.route.getCurrentNavigation()?.extras?.state) {
+      this.store = this.route.getCurrentNavigation().extras.state["store"];
+      console.log('Store recebddnjkn ', this.store);
+    }
   }
 
   ngOnInit(): void {
@@ -135,10 +140,6 @@ export class StoreIbanComponent implements OnInit {
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-
-      if (this.route.getCurrentNavigation() != null) {
-        this.store = this.route.getCurrentNavigation().extras.state["store"];
-      }
     }
   }
 
@@ -157,21 +158,16 @@ export class StoreIbanComponent implements OnInit {
   }
 
   submit() {
-    //CAMPOS QUE FALTAM
-    //banco de apoio
-    //informação bancária
-    console.log('JSAKHSJKAHSJKSAHJK');
     this.store.bank.userMerchantBank = this.formStores.get("bankInformation").value;
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
-    this.store.productCode = this.formStores.get("solutionType").value;
-    this.store.subproductCode = this.formStores.get("subProduct").value;
-    this.store.website = this.formStores.get("url").value;
 
-    this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.store).subscribe(result => {
-      console.log("Uma nova loja foi adicionada à submissão", result);
-    });
+    var navigationExtras: NavigationExtras = {
+      state: {
+        store: this.store
+      }
+    }
 
-    this.route.navigate(['store-comp']);
+    this.route.navigate(['add-store-product'], navigationExtras);
   }
 
   selectFile(event: any) {
@@ -207,45 +203,10 @@ export class StoreIbanComponent implements OnInit {
     this.isIBANConsidered = isIBANConsidered;
   }
 
-  chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean){
-    this.logger.debug("cardPresent: " + cardPresent);
-    this.logger.debug("cardNotPresent: " + cardNotPresent);
-    this.logger.debug("combinedOffer: " + combinedOffer);
-    if (cardPresent){
-      this.isCardPresent = cardPresent;
-      this.isCardNotPresent = false;
-      this.isCombinedOffer = false;
-    } else if (cardNotPresent){
-      this.isCardPresent = false;
-      this.isCardNotPresent = cardNotPresent;
-      this.isCombinedOffer = false;
-    } else if (combinedOffer) {
-      this.isCardPresent = false;
-      this.isCardNotPresent = false;
-      this.isCombinedOffer = combinedOffer;
-    }
-  }
-
-  URLFilled(filled: boolean){
-    this.isURLFilled = filled;
-  }
-
   initializeForm() {
     this.formStores = new FormGroup({
       supportBank: new FormControl((this.store.bank !== null && this.store.bank.bank) ? this.store.bank.bank.bank : '', Validators.required),
       bankInformation: new FormControl((this.store.bank.userMerchantBank !== null) ? this.store.bank.userMerchantBank : '', Validators.required),
-      solutionType: new FormControl((this.store.productCode !== null) ? this.store.productCode : '', Validators.required),
-      subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : ''),
-      url: new FormControl((this.store.website !== null) ? this.store.website : '')
-    });
-
-    //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
-    this.formStores.get("solutionType").valueChanges.subscribe(val => {
-      if (val == 'cardNotPresent')
-        this.formStores.get('url').setValidators([Validators.required]);
-      else
-        this.formStores.get('url').setValidators(null);
-      this.formStores.get('url').updateValueAndValidity();
     });
   }
 

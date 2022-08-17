@@ -66,12 +66,15 @@ import { CreateStakeholderComponent } from './stakeholders/create-stakeholder/cr
 import { LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_WRITER_SERVICE } from 'ngx-logger';
 import { WriterCustomService } from 'src/logger/writer-custom.service';
 import { AuthComponent } from './auth/auth.component';
+import { RepresentationPowerComponent } from './client/representation-power/representation-power.component';
 
 //import da linguages e configurações de hora
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 import { environment } from 'src/environments/environment';
 import { NGXLogger } from 'ngx-logger';
+import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
+
 registerLocaleData(localePT);
 
 
@@ -125,7 +128,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaLojasComponent,
     CountrysComponent,
     CreateStakeholderComponent,
-    AuthComponent
+    AuthComponent,
+    RepresentationPowerComponent,
+    ProductSelectionComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -194,7 +199,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent },
       { path: 'info-declarativa-lojas', component: InfoDeclarativaLojasComponent },
       { path: 'client-additional-info/:id', component: CountrysComponent },
-      { path: 'auth', component: AuthComponent }
+      { path: 'client-additional-info/', component: CountrysComponent },
+      { path: 'auth', component: AuthComponent },
+      { path: 'client-power-representation/:id', component: RepresentationPowerComponent },
+      { path: 'client-power-representation/', component: RepresentationPowerComponent },
+      { path: 'add-store-product', component: ProductSelectionComponent }
       
     ]),
     TranslateModule.forRoot({
