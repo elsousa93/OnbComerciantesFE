@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from '../configuration';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
-import { ShopDetailsAcquiring, ShopDetailsOutbound, ShopsListOutbound } from './IStore.interface';
+import { ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound } from './IStore.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -112,5 +112,21 @@ export class StoreService {
 
   subzonesNearby(zipCode1: string, zipCode2: string): any {
     return this.http.get(this.mockacoUrl + 'v1/config/subzones/' + zipCode1 + '/' + zipCode2);
+  }
+
+  getShopEquipmentConfigurationsFromProcess(processId: string, shopId: string) {
+    return this.http.get<ShopEquipment>(this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment');
+  }
+
+  getShopEquipmentConfigurationsFromSubmission(submissionId: string, shopId: string) {
+    return this.http.get<ShopEquipment>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment');
+  }
+
+  addShopEquipmentConfigurationsToSubmission(submissionId: string, shopId: string, newShopEquipment: ShopEquipment) {
+    return this.http.post<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment', newShopEquipment);
+  }
+
+  updateShopEquipmentConfigurationsInSubmission(submissionId: string, shopId: string, newShopEquipment: ShopEquipment) {
+    return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment', newShopEquipment);
   }
 }

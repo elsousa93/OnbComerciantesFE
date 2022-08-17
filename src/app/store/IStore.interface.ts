@@ -1,3 +1,4 @@
+import { ProductPackPricingAttribute } from "../commercial-offer/ICommercialOffer";
 import { FiscalAddress } from "../stakeholders/IStakeholders.interface";
 import { Document } from "../submission/ISubmission.interface";
 
@@ -54,6 +55,7 @@ export interface ShopDetailsAcquiring {
   website?: string
   documents?: ShopDocuments
   id?: string
+  supportEntity?: string
 }
 
 //Interfaces auxiliares
@@ -99,4 +101,30 @@ interface ShopDocuments {
   id?: string
   type?: string
   href?: string
+}
+
+export interface ShopEquipment {
+  communicationOwnership?: CommunicationOwnershipTypeEnum
+  equipmentOwnership?: EquipmentOwnershipTypeEnum
+  communicationType?: string
+  equipmentType?: string
+  quantity?: number
+  pricing?: ShopProductPackPricingViewModel
+}
+
+interface ShopProductPackPricingViewModel {
+  pricingId?: string
+  attributes?: ProductPackPricingAttribute
+}
+
+enum CommunicationOwnershipTypeEnum {
+  UNKNOWN = "unknown",
+  CLIENT = "client",
+  SELF = "self"
+}
+
+enum EquipmentOwnershipTypeEnum {
+  UNKNOWN = "unknown",
+  CLIENT = "client",
+  SELF = "self"
 }
