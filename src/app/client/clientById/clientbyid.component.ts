@@ -98,6 +98,8 @@ export class ClientByIdComponent implements OnInit {
     "documents": []
   };
 
+  crcError: boolean = false;
+
   //client: OutboundClient = {};
 
   processClient: CRCProcess = {
@@ -767,7 +769,16 @@ export class ClientByIdComponent implements OnInit {
     //this.logger.debug("codigo CRC:" , this.form.get('crcCode').value);
     //this.logger.debug(crcInserted);
     //this.crcFound = true;
-    var crcInserted = this.form.get('crcCode').value;
+    
+
+     var crcInserted = this.form.get('crcCode').value;
+     var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
+     if (!crcFormat.test(crcInserted)) {
+       this.crcError = true;
+       this.crcFound = false;
+       return;
+     }
+     this.crcError = false;
      this.crcService.getCRC(crcInserted, '001').subscribe(o => {
         var clientByCRC = o;
 

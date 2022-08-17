@@ -191,7 +191,7 @@
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">CARGO</p>
               <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
-              <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="returned === 'consult' ? true : null">
+              <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false" >
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">

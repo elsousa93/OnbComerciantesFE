@@ -6,6 +6,8 @@ import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
+import { AuthService } from '../services/auth.service';
+import { User } from '../userPermissions/user';
 import { ProcessNumberService } from './process-number.service';
 import { progressSteps } from './progressSteps';
 
@@ -51,7 +53,11 @@ export class NavMenuPresencialComponent implements OnInit {
   currentSubPage:number = 0;
   progressImage: string;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private logger: NGXLogger) {
+  currentUser: User = {};
+
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: NGXLogger) {
+    authService.currentUser.subscribe(user => this.currentUser = user);
+
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
   }
 

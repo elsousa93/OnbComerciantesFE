@@ -14,6 +14,8 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { DataService } from '../nav-menu-interna/data.service';
+import { AuthService } from '../services/auth.service';
+import { User } from '../userPermissions/user';
 
 @Component({
   selector: 'app-sidenav-presencial',
@@ -340,17 +342,28 @@ export class SidenavPresencialComponent implements OnInit {
   userType: string = "Banca";
   userPermissions: MenuPermissions;
 
+  currentUser: User = {};
+
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private submissionService: SubmissionService,
     private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
-    private dataService: DataService ) {
+    private dataService: DataService, private authService: AuthService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit(): void {
-    this.userPermissions = getMenuPermissions(UserPermissions.DO);
+    this.authService.currentUser.subscribe(user => {
+      this.currentUser = user;
+      var a = UserPermissions[this.currentUser.permissions];
+
+      console.log("permissões: ", this.currentUser.permissions);
+      console.log("userPermission tratada: ", a);
+
+      this.userPermissions = getMenuPermissions(a);
+
+    });
   }
 
   assignMenus() {
@@ -366,5 +379,10 @@ export class SidenavPresencialComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  testeAuth() {
+    console.log(this.currentUser);
+    console.log(this.userPermissions);
   }
 }

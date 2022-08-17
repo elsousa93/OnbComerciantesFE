@@ -1,4 +1,3 @@
-<app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
@@ -15,32 +14,49 @@
       </nav>
     </div>
     <div class="offset-1 bg-white center-align col-10 ps-3">
-      <h2 class="text-primary mt-5 ps-0 center-align">
-        <span class="material-symbols-rounded icon-titulos m-align">
-          <img src="assets/images/group_add_blue.svg" class="img_add">
-        </span>&nbsp;IDENTIFICAÇÃO<br>
-      </h2>
-      <p class="titul campo_obrigatrio">* campo obrigatório</p>
+      <form [formGroup]="authForm" name="authForm" (ngSubmit)="submit()">
+        <h2 class="text-primary mt-5 ps-0 center-align">
+          <span class="material-symbols-rounded icon-titulos m-align">
+            <img src="assets/images/group_add_blue.svg" class="img_add">
+          </span>&nbsp;IDENTIFICAÇÃO<br>
+        </h2>
+        <p class="titul campo_obrigatrio">* campo obrigatório</p>
 
 
-      <div class="row">
-        <div class="col-xxl col-6">
-          <div>
-            <p class="titulo-form-simples" for="clientid">Client ID: </p>
-            <input type="text" name="clientid" id="clientid"
-                   class="form-control campo_form" />
-          </div>
-
-          <div>
-            <p class="titulo-form-simples" for="clientSecret">Client Secret: </p>
-            <input type="text" name="clientSecret" id="clientSecret"
-                   class="form-control campo_form" />
+        <div class="row">
+          <div class="col-xxl col-6">
+            <div>
+              <p class="titulo-form-simples" for="userName">Username: </p>
+              <input type="text" formControlName="userName" name="userName" id="userName"
+                     class="form-control campo_form" />
+            </div>
+            <div>
+              <p class="titulo-form-simples" for="bankName">Nome do Banco: </p>
+              <input type="text" formControlName="bankName" name="bankName" id="bankName"
+                     class="form-control campo_form" />
+            </div>
+            <div>
+              <p class="titulo-form-simples" for="bankLocation">Localização do Banco: </p>
+              <input type="text" formControlName="bankLocation" name="bankLocation" id="bankLocation"
+                     class="form-control campo_form" />
+            </div>
+            <div>
+              <p class="titulo-form-simples" for="role">Cargo: </p>
+              <select formControlName="role" name="role" id="role"
+                      class="form-control campo_form">
+                <option value="">Selecione</option>
+                <option *ngFor="let role of roles" value={{role.code}} >{{role.name}}</option>
+              </select>
+              <!--<input type="text" formControlName="role" name="role" id="role"
+                     class="form-control campo_form" />-->
+            </div>
           </div>
         </div>
-      </div>
-      <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-              type="button" (click)="getAccessToken()"> &nbsp;Submeter
-      </button>
+        <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+                type="submit">
+          &nbsp;Submeter
+        </button>
+      </form>
     </div>
     <div *ngIf="openDiv">
       Token: 

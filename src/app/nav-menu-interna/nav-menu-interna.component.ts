@@ -9,6 +9,8 @@ import { DataService } from './data.service';
 import { Router } from '@angular/router';
 import { AutoHideSidenavAdjustBarraTopo } from '../animation';
 import { NGXLogger } from 'ngx-logger';
+import { AuthService } from '../services/auth.service';
+import { User } from '../userPermissions/user';
 
 
 @Component({
@@ -47,7 +49,8 @@ export class NavMenuInternaComponent implements OnInit {
 
   public isHistory: boolean = false;
 
-  constructor(private logger : NGXLogger, private data: DataService, private route: Router) {
+
+  constructor(private logger: NGXLogger, private data: DataService, private route: Router) {
   }
 
   ngOnInit(): void {
