@@ -704,11 +704,11 @@
           <input formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC"
                  type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" [readonly]="DisableNIFNIPC" />
           <!--<div class="alert alert-danger"
-               *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
-            <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
-              O parâmetro acima é obrigatório.
-            </div>
-          </div>-->
+       *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
+    <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
+      O parâmetro acima é obrigatório.
+    </div>
+  </div>-->
           <p class="titulo-form-simples">a empresa é uma sociedade comercial?*</p>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
@@ -722,6 +722,20 @@
           </div>
 
           <div *ngIf="isCommercialSociety == true">
+
+            <p class="titulo-form-simples">Pretende a recolha de informação do Código de Certidão de Registo Comercial?</p>
+            <div class="form-check">
+              <input class="form-check-input" name="collectCRC" formControlName="collectCRC"
+                     type="radio" [value]=true id="collectCRC" (click)="setCollectCRC(true)" [disabled]="returned === 'consult'">
+              <label class="form-check-label radio">Sim</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" name="collectCRC" formControlName="collectCRC"
+                     type="radio" [value]=false id="collectCRC" (click)="setCollectCRC(false)" [disabled]="returned === 'consult'">
+              <label class="form-check-label radio">Não</label>
+            </div>
+
+
             <!--empresa é sociedade comercial -- big div-->
             <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
             <input maxlength="14" formControlName="crcCode" name="crcCode" type="text"
@@ -740,12 +754,12 @@
                       <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
 
                       <!--<select *ngIf="!clientExists" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
-                              class="form-control campo_form"
-                              (change)="onLegalNatureSelected()" readonly>
-                        <option value="">Selecione</option>
-                        <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
+                    class="form-control campo_form"
+                    (change)="onLegalNatureSelected()" readonly>
+              <option value="">Selecione</option>
+              <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
 
-                      </select>-->
+            </select>-->
                       <input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                              class="form-control campo_form" />
 
@@ -758,10 +772,10 @@
                     <div>
                       <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
                       <!--<select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
-          class="form-control campo_form" readonly>
-    <option value="" selected disabled hidden>Selecione</option>
-    <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
-  </select>-->
+                    class="form-control campo_form" readonly>
+              <option value="" selected disabled hidden>Selecione</option>
+              <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
+            </select>-->
                       <input type="text" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                              class="form-control campo_form" />
 
@@ -827,15 +841,15 @@
 
                   <div class="col-xxl col-7">
                     <!--<div>
-                      <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:*</p>
-                      <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
-                             name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
-                      <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
-                        <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
-                          O parâmetro acima é obrigatório.
-                        </div>
-                      </div>
-                    </div>-->
+            <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:*</p>
+            <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
+                   name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
+            <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
+              <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
+                O parâmetro acima é obrigatório.
+              </div>
+            </div>
+          </div>-->
                     <div>
                       <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
                       <input minlength="2" maxlength="100" formControlName="socialDenomination"
@@ -854,9 +868,9 @@
                              type="text" id="CAE1Branch" class="form-control campo_form" readonly>
 
                       <!--<div *ngIf="!this.form.get('CAE1').errors">
-                        <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                               type="text" id="CAE1Branch" class="form-control campo_form" readonly>
-                      </div>-->
+              <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                     type="text" id="CAE1Branch" class="form-control campo_form" readonly>
+            </div>-->
                       <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
                         <div *ngIf="this.form.get('CAE1').errors">
                           Interagiram com o CAE. CAE não é valido.
@@ -945,7 +959,7 @@
                       <p class="titulo-form-simples" for="ZIPCode">Código-Postal da Sede Social: </p>
                       <input minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode"
                              type="text" id="ZIPCode" class="form-control campo_form" (keypress)="GetCountryByZipCode()"
-                             readonly >
+                             readonly>
                       <div class="alert alert-danger" *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
                         <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
                           O parâmetro acima é obrigatório.
@@ -984,7 +998,59 @@
           </div>
         </div> <!--Fecha primeiros 3 campos-->
         <!--Se NÃO for sociedade comercial e for Company-->
-        <div *ngIf="isCommercialSociety == false && tipologia === 'Company'">
+
+        <!--<div *ngIf="">
+          <div class="bg-white col-12 col-xxl-12">
+            <div class="row">
+              <div class="col-xxl col-6" style="padding-left: 30px;">
+                <div>
+                  <p class="titulo-form-simples" for="natJuridicaN1">Natureza Jurídica N1:*</p>
+                  <select formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                          class="form-control campo_form"
+                          (change)="onLegalNatureSelected()" [attr.disabled]="returned === 'consult' ? true : null">
+                    <option value="">Selecione</option>
+                    <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}} [attr.selected]="(merchantInfo != null && merchantInfo.legalNature == legalNature.code) ? true : null">{{legalNature.description}}</option>
+                  </select>
+
+                  <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
+                    <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
+                      O parâmetro acima é obrigatório.
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p class="titulo-form-simples" for="natJuridicaN2">Natureza Jurídica N2:*</p>
+                  <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+                          class="form-control campo_form" [attr.disabled]="returned === 'consult' ? true : null">
+                    <option value="" selected disabled>Selecione</option>
+                    <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}} [attr.selected]="(merchantInfo != null && merchantInfo.legalNature2 == legalNature2.code) ? true : null">{{legalNature2.description}}</option>
+                  </select>-->
+                  <!--<div class="alert alert-danger" *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
+            <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
+              O parâmetro acima é obrigatório.
+            </div>
+          </div>-->
+                <!--</div>
+              </div>
+
+              <div class="col-xxl col-7">
+                <div>
+                  <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
+                  <input minlength="2" maxlength="100" formControlName="socialDenomination"
+                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form" [readonly]="returned === 'consult'">
+                  <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
+                    <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                      O parâmetro acima é obrigatório.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>-->
+
+        <div *ngIf="(isCommercialSociety == true && tipologia === 'Company' && collectCRC == false) || (isCommercialSociety == false && tipologia === 'Company')">
           <div class="bg-white col-12 col-xxl-12">
             <div class="row">
               <div class="col-xxl col-6" style="padding-left: 30px;">
@@ -1022,7 +1088,7 @@
                 <div>
                   <p class="titulo-form-simples" for="socialDenomination">Denominação Social:* </p>
                   <input minlength="2" maxlength="100" formControlName="socialDenomination"
-                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form" [readonly]="returned === 'consult'">
+                         name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form" readonly>
                   <div class="alert alert-danger" *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
                     <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
                       O parâmetro acima é obrigatório.

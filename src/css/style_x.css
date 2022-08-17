@@ -1540,3 +1540,24 @@ mat-paginator {
       padding-left: calc(var(--bs-gutter-x) * .5);
       margin-top: var(--bs-gutter-y);
     }    
+
+    .texto_check_box {
+      font-family: sans-serif;
+      color: #495057;
+      font-size: 17px;
+      }
+      
+  .style54 {
+      margin-right: -53px;
+      padding-left: 0px;
+      padding-right: 0px;
+  }
+      
+  .micro_campo_tabela {
+      width: 90px;
+      border: 1px solid #adb5bd;
+      }
+      
+  .texto_centrado {
+    text-align: center;
+  }

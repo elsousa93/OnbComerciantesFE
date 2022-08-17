@@ -339,6 +339,21 @@ export class CountrysComponent implements OnInit {
 
   submit() {
     var context = this;
+
+    var navigationExtras: NavigationExtras = {
+      state: {
+        clientExists: this.clientExists,
+        tipologia: this.tipologia,
+        NIFNIPC: this.NIFNIPC,
+        client: this.client,
+        clientId: this.clientId,
+        processId: this.processId,
+        stakeholdersToInsert: this.stakeholdersToInsert,
+        merchantInfo: this.merchantInfo,
+        crc: this.crc
+      }
+    }
+
     if (this.returned !== 'consult') {
       this.data.updateData(true, 1);
       this.newSubmission.startedAt = new Date().toISOString();
@@ -479,19 +494,15 @@ export class CountrysComponent implements OnInit {
         //  });
         //});
 
-      let navigationExtras: NavigationExtras = {
-        state: {
-          crcCode: this.client.crc
-        }
-      };
+
 
       //localStorage.setItem("crcStakeholders", JSON.stringify());
 
-        this.route.navigate(['stakeholders/']);
+        this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
 
       });
     } else {
-      this.route.navigate(['stakeholders/']);
+      this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
     }
   }
 

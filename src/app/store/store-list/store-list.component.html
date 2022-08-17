@@ -63,8 +63,58 @@
         </div>
       </div>
       <ng-container *ngIf="currentStore !== null" [formGroup]="editStores">
-        <app-add-store></app-add-store>
-        <app-store-iban></app-store-iban>
+        <div class="offset-1 col-10 mb-3 mt-4 ps-0 pe-0">
+          <div class="accordion1 accordion-flush" id="accordionFlushExample">
+            <div class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingOne">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  <span class="material-symbols-outlined icon-accordion">
+                    <img src="assets/images/storefront.svg"/>
+                  </span>
+                  &nbsp;&nbsp;INFORMAÇÃO CARATERÍSTICA DA LOJA
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                   data-bs-parent="#accordionFlushExample">
+                <app-add-store></app-add-store>
+              </div>
+            </div>
+
+            <div class="accordion1-item">
+              <h2 class="accordion-header" id="flush-headingTwo">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  <span class="material-symbols-outlined icon-accordion">
+                    <img src="assets/images/account_balance.svg" />
+                  </span>
+                  &nbsp;&nbsp;IDENTIFICAÇÃO DA CONTA BANCÁRIA ASSOCIADA À LOJA
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                   data-bs-parent="#accordionFlushExample">
+                <app-store-iban></app-store-iban>
+              </div>
+            </div>
+
+            <div class="accordion1-item">
+              <h2 class="accordion-header" id="flush-headingThree">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  <span class="material-symbols-outlined icon-accordion">
+                    <img src="assets/images/add_card.svg" />
+                  </span>
+                  &nbsp;&nbsp;SELECÇÃO DE PRODUTOS
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                   data-bs-parent="#accordionFlushExample">
+                <app-product-selection></app-product-selection>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </ng-container>
       <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
         <div class="col ms-0 ps-0">

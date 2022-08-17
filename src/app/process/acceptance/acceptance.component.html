@@ -121,17 +121,14 @@
          [checked]="!isSelected" />
 
 
-  <p class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
-  <table class='table table-striped' aria-labelledby="tableLabel">
+  <p *ngIf="isVisible == 0 || isVisible == 1" class="text-primary">SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA</p>
+  <table *ngIf="isVisible == 0 || isVisible == 1" class='table table-striped' aria-labelledby="tableLabel">
     <thead>
       <tr>
         <th>Nome do Cliente</th>
         <th>NIF</th>
-        <th>Letra</th>
-        <th>Tipo de assinatura</th>
-        <th>Seleção</th>
         <th>Tipo assinatura digital</th>
-        <th>Tipo de identificação </th>
+        <th *ngIf="isVisible == 0">Tipo de identificação </th>
 
       </tr>
     </thead>
@@ -139,15 +136,11 @@
       <tr class="clickable" *ngFor="let stakeholder of process.stakeHolders">
         <td>{{stakeholder.id == undefined ? "-" : stakeholder.id}}</td>
         <td> - </td>
-        <td> - </td>
-        <td> - </td>
-        <td><input #{{stakeholder.id}} id="{{stakeholder.id}}" type="checkbox" [checked]="representativesSelected.indexOf(stakeholder.id) > -1" (change)="changeRepresentativeSelected($event)" /></td>
         <td>
           <select *ngIf="isVisible == 1" disabled><option>N/A</option></select>
           <select *ngIf="isVisible == 0"><option>OTP</option></select>
         </td>
         <td>
-          <select *ngIf="isVisible == 1" disabled><option>Presencial</option></select>
           <select *ngIf="isVisible == 0"><option>Prova-Vida</option></select>
         </td>
 

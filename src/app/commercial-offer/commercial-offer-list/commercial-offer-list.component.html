@@ -1,391 +1,532 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row">
-     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
-           <span class="navbar-text text-light">
-           <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
-           </span>
-           <span class="navbar-text">
-              <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">OFERTA COMERCIAL</h5>
-           </span>
-        </nav>
-     </div>
-     <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
-        <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/store_blue.svg" class="img_add">&nbsp;LOJAS<span class="material-symbols-rounded">
-           </span>
-        </h2>
-     </div>
-     <div class="offset-1 mt-0 mb-0 pt-0 pb-0 ps-0 pe-0 col-10">
-        <div class="table-responsive mb-2">
-           <table class="table">
-              <thead class="text-primary table-primary">
-                 <tr class="table-white text-primary">
-                    <th scope="col" class="text-center text-primary bg-light table-white">{{'NameStores'|translate}}</th>
-                    <th scope="col" class="text-center bg-light">{{'ActivityStores'|translate}}</th>
-                    <th scope="col" class="text-center bg-light">{{'SubActivityStores'|translate}}</th>
-                    <th scope="col" class="text-center bg-light">BANCO DE APOIO DO IBAN</th>
-                    <th scope="col" class="text-center bg-light">NÚMERO DE TERMINAL</th>
-                    <th scope="col" class="text-center bg-light">PRODUTO</th>
-                 </tr>
-              </thead>
-              <tbody>
-                <tr class="clickable" *ngFor="let store of stores" [routerLink]="['/commercial-offert-store-list/', store.id]">
-                  <td>{{ store.nameEstab}}</td>
-                  <td>{{ store.activityEstab }}</td>
-                  <td>{{ store.subActivityEstab }}</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-           </table>
-        </div>
-     </div>
-     <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
-        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-     </div>
-   <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
-      <h3 class="text-primary mt-5 ps-2 pe-2"><img src="assets/images/shopping_cart.svg" class="img_add">&nbsp;RELAÇÃO LOJA PRODUTOS<span class="material-symbols-rounded">
-         </span>
-      </h3>
-      <div class="row ps-2">
-         <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
-            <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-            <p class="titulo-form-simples mb-3" wappler-command="editContent">Prentende replicar produtos de outras lojas para todos os terminais escolhidos?</p>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
-               <span class="navbar-text">
-                  <div class="form-check">
-                     <input class="form-check-input" type="radio" value="" id="radio1" name="radio1">
-                     <label class="form-check-label radio pe-5" for="radio1" wappler-command="editContent">SIM</label>
+   <div class="row">
+      <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+            <span class="navbar-text text-light">
+               <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+            </span>
+            <span class="navbar-text">
+               <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">OFERTA
+                  COMERCIAL</h5>
+            </span>
+         </nav>
+      </div>
+
+      <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
+         <h2 class="text-primary mt-5 ps-0 ">
+           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'Stores'|translate}}
+         </h2>
+         <mat-table [dataSource]="storesOfferMat" class="table" matSort>
+           <ng-container matColumnDef="nameEstab">
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
+             <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
+           </ng-container>
+           <ng-container matColumnDef="activityEstab">
+             <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ActivityStores'|translate}} </mat-header-cell>
+             <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
+           </ng-container>
+           <ng-container matColumnDef="subActivityEstab">
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubActivityStores'|translate}} </mat-header-cell>
+             <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
+           </ng-container>
+           <ng-container matColumnDef="bank">
+             <mat-header-cell *matHeaderCellDef mat-sort-header> BANCO DE APOIO DO IBAN </mat-header-cell>
+             <mat-cell *matCellDef="let store"></mat-cell>
+           </ng-container>
+           <ng-container matColumnDef="terminalNumber">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> NÚMERO DE TERMINAL </mat-header-cell>
+            <mat-cell *matCellDef="let store"></mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="product">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> PRODUTO </mat-header-cell>
+            <mat-cell *matCellDef="let store"></mat-cell>
+          </ng-container>
+           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+           <mat-row *matRowDef="let row; let idx = index; columns: displayedColumns;"
+                    (click)="selectStore(row, idx)"
+                    [ngClass]="{'row-selected': row === currentStore}">
+           </mat-row>
+ 
+         </mat-table>
+         <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
+                        showFirstLastButtons>
+         </mat-paginator>
+       </div>
+
+      <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
+         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+      </div>
+
+      <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
+
+         <!-- accordion -->
+         <div class="accordion1 accordion-flush" id="accordionFlushExample">
+            <div class="accordion1-item">
+               <h2 class="accordion1-header" id="flush-headingOne">
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                     data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                     <span class="material-symbols-outlined icon-accordion">
+                        <img src="assets/images/shopping_cart.svg" />
+                     </span>
+                     &nbsp;&nbsp;RELAÇÃO LOJA PRODUTOS
+                  </button>
+               </h2>
+               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlushExample">
+                  <div class="row ps-2">
+                     <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
+                        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+                        <p class="titulo-form-simples mb-3" wappler-command="editContent">Prentende replicar produtos de
+                           outras lojas para todos os terminais escolhidos?</p>
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
+                           <span class="navbar-text">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="radio" value="" id="radio1" name="radio1">
+                                 <label class="form-check-label radio pe-5" for="radio1"
+                                    wappler-command="editContent">SIM</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="radio" value="" id="radio1" name="radio1">
+                                 <label class="form-check-label radio" for="radio1"
+                                    wappler-command="editContent">NÃO</label>
+                              </div>
+                           </span>
+                        </nav>
+                     </div>
+                     <div class="col-7 ms-0 me-0 ps-3 pe-0">
+                        <p class="titulo-form-simples pb-4" wappler-command="editContent">Selecione a loja que pretende
+                           considerar a mesma informação dos produtos (Loja de Representação):
+                        </p>
+                        <input select="" id="select1" class="form-select  campo_form">
+                        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+                     </div>
+
+                     <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
+                        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+                        <p class="titulo-form-simples mb-3" wappler-command="editContent">A Entidade de Apoio Terminal
+                           (EAT) é da Unicre?</p>
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
+                           <span class="navbar-text">
+                              <div class="form-check">
+                                 <input (click)="changeUnicre(false)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                                 <label class="form-check-label radio pe-5" for="radio2"
+                                    wappler-command="editContent">SIM</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text">
+                              <div class="form-check">
+                                 <input (click)="changeUnicre(true)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                                 <label class="form-check-label radio" for="radio2"
+                                    wappler-command="editContent">NÃO</label>
+                              </div>
+                           </span>
+                        </nav>
+                     </div>
+                     <div *ngIf="isUnicre" class="col-7 ms-0 me-0 ps-3 pe-0">
+                        <p class="titulo-form-simples pb-4" wappler-command="editContent">Número Matrícula Terminal
+                           SIBS:</p>
+                        <input id="text1" name="text1" type="text" class="form-control campo_form">
+                        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+                     </div>
                   </div>
-               </span>
-               <span class="navbar-text">
-                  <div class="form-check">
-                     <input class="form-check-input" type="radio" value="" id="radio1" name="radio1">
-                     <label class="form-check-label radio" for="radio1" wappler-command="editContent">NÃO</label>
+               </div>
+            </div>
+
+            <div class="accordion1-item">
+               <h2 class="accordion-header" id="flush-headingTwo">
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                     data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                     <span class="material-symbols-outlined icon-accordion">
+                        <img src="assets/images/category.svg" />
+                     </span>
+                     &nbsp;&nbsp;PACOTE COMERCIAL
+                  </button>
+               </h2>
+               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                  data-bs-parent="#accordionFlushExample">
+                  <div class="row ps-2">
+                     <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
+                        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
+                           <span class="navbar-text">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="radio" value="" id="radio3" name="radio3">
+                                 <label class="form-check-label radio pe-5" for="radio3"
+                                    wappler-command="editContent">TRADICIONAL</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="radio" value="" id="radio3" name="radio3">
+                                 <label class="form-check-label radio" for="radio3"
+                                    wappler-command="editContent">SMART</label>
+                              </div>
+                           </span>
+                        </nav>
+                     </div>
+                     <hr>
+                     <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0">
+                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">BRANDS</p>
+                        <nav
+                           class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input1" name="input1">
+                                 <label class="form-check-label texto_check_box" for="input1">VISA</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input2" name="input2">
+                                 <label class="form-check-label texto_check_box" for="input2">MASTERCARD</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input3" name="input3">
+                                 <label class="form-check-label texto_check_box" for="input3">DINERS</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input4" name="input4">
+                                 <label class="form-check-label texto_check_box" for="input4">JCB</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input5" name="input5">
+                                 <label class="form-check-label texto_check_box" for="input5">UPI</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input6" name="input6">
+                                 <label class="form-check-label texto_check_box" for="input6">MB</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input7" name="input7">
+                                 <label class="form-check-label texto_check_box" for="input7">MBWAY</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input8" name="input8">
+                                 <label class="form-check-label texto_check_box" for="input8">WALLETS</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input9" name="input9">
+                                 <label class="form-check-label texto_check_box" for="input9">GLOBAL WHALESALE</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input10" name="input10">
+                                 <label class="form-check-label texto_check_box" for="input10">MEAL VOUCHER</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input11" name="input11">
+                                 <label class="form-check-label texto_check_box" for="input11">TICKET
+                                    RESTAURANTE</label>
+                              </div>
+                           </span>
+                        </nav>
+                     </div>
+                     <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
+                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">Bundle/
+                           Unbundle</p>
+                        <nav
+                           class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
+                                 <label class="form-check-label texto_check_box" for="input12">GEOGRAFIA</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
+                                 <label class="form-check-label texto_check_box" for="input12">TIPO DE CARTÃO</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
+                                 <label class="form-check-label texto_check_box" for="input12">TIPO DE CLIENTE</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
+                                 <label class="form-check-label texto_check_box" for="input12">MARCA</label>
+                              </div>
+                           </span>
+                        </nav>
+                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">Informações
+                           Adicionais</p>
+                        <nav
+                           class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
+                                 <label class="form-check-label texto_check_box" for="input14">GEOGRAFIA</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
+                                 <label class="form-check-label texto_check_box" for="input14">TIPO DE CARTÃO</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
+                                 <label class="form-check-label texto_check_box" for="input14">TIPO DE CLIENTE</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
+                                 <label class="form-check-label texto_check_box" for="input14">MARCA</label>
+                              </div>
+                           </span>
+                        </nav>
+                     </div>
+                     <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
+                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">geografia</p>
+                        <nav
+                           class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
+                                 <label class="form-check-label texto_check_box" for="input15">DOMÉSTICO&nbsp;</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
+                                 <label class="form-check-label texto_check_box" for="input15">ESTRANGEIRO</label>
+                              </div>
+                           </span>
+                        </nav>
+                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">tipo de
+                           cartão</p>
+                        <nav
+                           class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
+                                 <label class="form-check-label texto_check_box" for="input15">DÉBITO</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
+                                 <label class="form-check-label texto_check_box" for="input15">CRÉDITO</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
+                                 <label class="form-check-label texto_check_box" for="input15">PRÉ-PAGO</label>
+                              </div>
+                           </span>
+                        </nav>
+                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">TIPO DE
+                           CLIENTE</p>
+                        <nav
+                           class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input16" name="input16">
+                                 <label class="form-check-label texto_check_box" for="input16">CONSUMER</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input16" name="input16">
+                                 <label class="form-check-label texto_check_box" for="input16">COMMERCIAL</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input16" name="input16">
+                                 <label class="form-check-label texto_check_box" for="input16">PREMIUM</label>
+                              </div>
+                           </span>
+                        </nav>
+                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">MARCA</p>
+                        <nav
+                           class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input13" name="input13">
+                                 <label class="form-check-label texto_check_box" for="input13">ELECTRON</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input13" name="input13">
+                                 <label class="form-check-label texto_check_box" for="input13">MAESTRO</label>
+                              </div>
+                           </span>
+                           <span class="navbar-text text-start align-self-start">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="input13" name="input13">
+                                 <label class="form-check-label texto_check_box" for="input13">VPAY</label>
+                              </div>
+                           </span>
+                        </nav>
+                     </div>
                   </div>
+               </div>
+            </div>
+
+
+            <div class="accordion1-item">
+               <h2 class="accordion-header" id="flush-headingThree">
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                     data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                     <span class="material-symbols-outlined icon-accordion">
+                        <img src="assets/images/point_of_sale.svg" />
+                     </span>
+                     &nbsp;&nbsp;CONFIGURAÇÕES DE TERMINAIS
+                  </button>
+               </h2>
+               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                  data-bs-parent="#accordionFlushExample">
+                  <div class="table-responsive mb-2 ps-2 pe-3">
+                     <table class="table table-success">
+                        <thead class="text-primary table-primary">
+                           <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary table-light">
+                                 IDENTIFICAÇÃO DE CONFIGURAÇÃO</th>
+                              <th scope="col" class="text-center bg-white">TIPO TERMINAL</th>
+                              <th scope="col" class="text-center bg-white">TIPO COMUNICAÇÕES</th>
+                              <th scope="col" class="text-center bg-white">NÚMERO DE TERMINAIS</th>
+                              <th scope="col" class="text-center bg-white">MENSALIDADE
+                                 <br>(valor associado por TPA)
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td class="text-primary text-center">--</td>
+                              <td class="text-primary text-center">--</td>
+                              <td class="text-primary text-center">--</td>
+                              <td class="text-primary text-center">--</td>
+                              <td class="text-primary text-center">...</td>
+                              <td class="text-primary text-center">
+                                   <span>
+                                    <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                                   </span>
+                              </td>
+                           </tr>
+                           <tr>
+                           </tr>
+                           <tr>
+                           </tr>
+                           <tr>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <div class="col mt-0 mb-0 pt-2 pb-4 ps-2">
+                        <button [routerLink]="['/commercial-offert-new-configuration']" id="btn5a2"
+                           class="btn botao_azul btn-lg mt-2 ms-1 me-1" wappler-command="editContent">NOVA
+                           CONFIGURAÇÃO&nbsp;&nbsp;<img src="assets/images/dashboard_customize.svg"
+                              style="height: 25px !important; vertical-align: sub;"></button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="accordion1-item">
+               <h2 class="accordion-header" id="flush-headingFour">
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                     data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                     <span class="material-symbols-outlined icon-accordion">
+                        <img src="assets/images/sell.svg" />
+                     </span>
+                     &nbsp;&nbsp;PREÇÁRIO LOJA
+                  </button>
+               </h2>
+               <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+                  data-bs-parent="#accordionFlushExample">
+
+                  <div class="table-responsive mb-2 ps-2 pe-3">
+                     <table class="table table-success">
+                        <thead class="text-primary table-primary">
+                           <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary table-light">NOME</th>
+                              <th scope="col" class="text-center bg-white">TIPOLOGIA</th>
+                              <th scope="col" class="text-center bg-white">SELEÇÃO</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td class="text-primary text-center">Pacote Comercial 1</td>
+                              <td class="text-primary text-center">Standard</td>
+                              <td class="text-primary text-center">
+                                 <input class="form-check-input" type="checkbox" value="" id="input1" name="input1">
+                              </td>
+
+                           </tr>
+                           <tr>
+                              <td class="text-primary text-center">Pacote Comercial 2</td>
+                              <td class="text-primary text-center">Campanha em vigor</td>
+                              <td class="text-primary text-center">
+                                 <input class="form-check-input" type="checkbox" value="" id="input2" name="input2">
+                              </td>
+
+                           </tr>
+                           <tr>
+                           </tr>
+                           <tr>
+                           </tr>
+                           <tr>
+                           </tr>
+                        </tbody>
+                     </table>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
+         <div class="col ms-0 ps-0">
+            <hr>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+               <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                  <button [routerLink]="['/']" id="btn5a1"
+                     class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                     wappler-command="editContent">SAIR&nbsp;
+                     <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                  </button><button id="btn5a1" [routerLink]="['/']"
+                     class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                     wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/exit_to_app.svg"
+                        style="height: 25px !important; vertical-align: sub;"></button><button
+                     [routerLink]="['/comprovativos']" id="btn5a1"
+                     class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                     wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+                        style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+                  <button [routerLink]="['/info-declarativa']" id="btn5a1"
+                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                     wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg"
+                        style="height: 25px !important; vertical-align: sub;"></button>
                </span>
             </nav>
          </div>
-         <div class="col-7 ms-0 me-0 ps-3 pe-0">
-            <p class="titulo-form-simples pb-4" wappler-command="editContent">Selecione a loja que pretende considerar a mesma informação dos produtos (Loja de Representação):
-            </p>
-            <input select="" id="select1" class="form-select  campo_form">
-            <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-         </div>
-      
-      <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
-        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-        <p class="titulo-form-simples mb-3" wappler-command="editContent">A Entidade de Apoio Terminal (EAT) é da Unicre?</p>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
-           <span class="navbar-text">
-              <div class="form-check">
-                 <input class="form-check-input" type="radio" value="" id="radio2" name="radio2">
-                 <label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent">SIM</label>
-              </div>
-           </span>
-           <span class="navbar-text">
-              <div class="form-check">
-                 <input class="form-check-input" type="radio" value="" id="radio2" name="radio2">
-                 <label class="form-check-label radio" for="radio2" wappler-command="editContent">NÃO</label>
-              </div>
-           </span>
-        </nav>
-     </div>
-     <div class="col-7 ms-0 me-0 ps-3 pe-0">
-        <p class="titulo-form-simples pb-4" wappler-command="editContent">Número Matrícula Terminal SIBS:</p>
-        <input id="text1" name="text1" type="text" class="form-control campo_form">
-        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-     </div>
+      </div>
+
    </div>
-  </div>
-
-  <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
-    <h3 class="text-primary mt-5 ps-2 pe-2"><img src="assets/images/category.svg" class="img_add">&nbsp;PACOTE COMERCIAL<span class="material-symbols-rounded">
-    </span>
-    </h3>
-    <div class="row ps-2">
-       <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
-          <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
-             <span class="navbar-text">
-                <div class="form-check">
-                   <input class="form-check-input" type="radio" value="" id="radio3" name="radio3">
-                   <label class="form-check-label radio pe-5" for="radio3" wappler-command="editContent">TRADICIONAL</label>
-                </div>
-             </span>
-             <span class="navbar-text">
-                <div class="form-check">
-                   <input class="form-check-input" type="radio" value="" id="radio3" name="radio3">
-                   <label class="form-check-label radio" for="radio3" wappler-command="editContent">SMART</label>
-                </div>
-             </span>
-          </nav>
-       </div>
-       <hr>
-       <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0">
-          <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">BRANDS</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input1" name="input1">
-                   <label class="form-check-label texto_check_box" for="input1">VISA</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input2" name="input2">
-                   <label class="form-check-label texto_check_box" for="input2">MASTERCARD</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input3" name="input3">
-                   <label class="form-check-label texto_check_box" for="input3">DINERS</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input4" name="input4">
-                   <label class="form-check-label texto_check_box" for="input4">JCB</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input5" name="input5">
-                   <label class="form-check-label texto_check_box" for="input5">UPI</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input6" name="input6">
-                   <label class="form-check-label texto_check_box" for="input6">MB</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input7" name="input7">
-                   <label class="form-check-label texto_check_box" for="input7">MBWAY</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input8" name="input8">
-                   <label class="form-check-label texto_check_box" for="input8">WALLETS</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input9" name="input9">
-                   <label class="form-check-label texto_check_box" for="input9">GLOBAL WHALESALE</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input10" name="input10">
-                   <label class="form-check-label texto_check_box" for="input10">MEAL VOUCHER</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input11" name="input11">
-                   <label class="form-check-label texto_check_box" for="input11">TICKET RESTAURANTE</label>
-                </div>
-             </span>
-          </nav>
-       </div>
-       <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
-          <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">Bundle/ Unbundle</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                   <label class="form-check-label texto_check_box" for="input12">GEOGRAFIA</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                   <label class="form-check-label texto_check_box" for="input12">TIPO DE CARTÃO</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                   <label class="form-check-label texto_check_box" for="input12">TIPO DE CLIENTE</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                   <label class="form-check-label texto_check_box" for="input12">MARCA</label>
-                </div>
-             </span>
-          </nav>
-          <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">Informações Adicionais</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                   <label class="form-check-label texto_check_box" for="input14">GEOGRAFIA</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                   <label class="form-check-label texto_check_box" for="input14">TIPO DE CARTÃO</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                   <label class="form-check-label texto_check_box" for="input14">TIPO DE CLIENTE</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                   <label class="form-check-label texto_check_box" for="input14">MARCA</label>
-                </div>
-             </span>
-          </nav>
-       </div>
-       <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
-          <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">geografia</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
-                   <label class="form-check-label texto_check_box" for="input15">DOMÉSTICO&nbsp;</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
-                   <label class="form-check-label texto_check_box" for="input15">ESTRANGEIRO</label>
-                </div>
-             </span>
-          </nav>
-          <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">tipo de cartão</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
-                   <label class="form-check-label texto_check_box" for="input15">DÉBITO</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
-                   <label class="form-check-label texto_check_box" for="input15">CRÉDITO</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input15" name="input15">
-                   <label class="form-check-label texto_check_box" for="input15">PRÉ-PAGO</label>
-                </div>
-             </span>
-          </nav>
-          <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">MARCA</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input13" name="input13">
-                   <label class="form-check-label texto_check_box" for="input13">ELECTRON</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input13" name="input13">
-                   <label class="form-check-label texto_check_box" for="input13">MAESTRO</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input13" name="input13">
-                   <label class="form-check-label texto_check_box" for="input13">VPAY</label>
-                </div>
-             </span>
-          </nav>
-          <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">TIPO DE CLIENTE</p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input16" name="input16">
-                   <label class="form-check-label texto_check_box" for="input16">CONSUMER</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input16" name="input16">
-                   <label class="form-check-label texto_check_box" for="input16">COMMERCIAL</label>
-                </div>
-             </span>
-             <span class="navbar-text text-start align-self-start">
-                <div class="form-check">
-                   <input class="form-check-input" type="checkbox" value="" id="input16" name="input16">
-                   <label class="form-check-label texto_check_box" for="input16">PREMIUM</label>
-                </div>
-             </span>
-          </nav>
-       </div>
-    </div>
- </div>
- <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
-  <h3 class="text-primary mt-5 ps-2 pe-2"><img src="assets/images/point_of_sale.svg" class="img_add">&nbsp;CONFIGURAÇÕES DE TERMINAIS<span class="material-symbols-rounded">
-  </span>
-  </h3>
-  <div class="table-responsive mb-2 ps-2 pe-2">
-     <table class="table">
-        <thead class="text-primary table-primary">
-           <tr class="table-white text-primary">
-              <th scope="col" class="text-center text-primary bg-light table-white align-middle">IDENTIFICAÇÃO DE CONFIGURAÇÃO</th>
-              <th scope="col" class="text-center bg-light align-middle">TIPO TERMINAL</th>
-              <th scope="col" class="text-center bg-light align-middle">TIPO COMUNICAÇÕES</th>
-              <th scope="col" class="text-center bg-light align-middle">NÚMERO DE TERMINAIS</th>
-              <th scope="col" class="text-center bg-light">MENSALIDADE
-                 <br>(valor associado por TPA)
-              </th>
-           </tr>
-        </thead>
-        <tbody>
-           <tr>
-              <td class="text-primary text-center">--</td>
-              <td class="text-primary text-center">--</td>
-              <td class="text-primary text-center">--</td>
-              <td class="text-primary text-center">--</td>
-              <td class="text-primary text-center">...</td>
-           </tr>
-           <tr>
-           </tr>
-           <tr>
-           </tr>
-           <tr>
-           </tr>
-        </tbody>
-     </table>
-     <div class="col mt-0 mb-0 pt-2 pb-4 ps-2">
-        <button id="btn5a6" class="btn botao_azul btn-lg mt-2 ms-0 me-1" wappler-command="editContent">REMOVER CONFIGURAÇÃO&nbsp;&nbsp;<img src="assets/images/widgets.svg" style="height: 25px !important; vertical-align: sub;"></button>
-        <button [routerLink]="['/commercial-offert-new-configuration']" id="btn5a2" class="btn botao_azul btn-lg mt-2 ms-1 me-1" wappler-command="editContent">NOVA CONFIGURAÇÃO&nbsp;&nbsp;<img src="assets/images/dashboard_customize.svg" style="height: 25px !important; vertical-align: sub;"></button>
-     </div>
-  </div>
-</div>
-
-     <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
-        <div class="col ms-0 ps-0">
-           <hr>
-           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-              <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                <button [routerLink]="['/']" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">SAIR&nbsp;
-                  <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-              </button><button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button><button id="btn5a1" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
-              <button id="btn5a1" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
-              </span>
-           </nav>
-        </div>
-     </div>
-  </div>
 </div>
