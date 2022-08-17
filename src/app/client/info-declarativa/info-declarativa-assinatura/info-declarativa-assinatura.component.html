@@ -112,7 +112,7 @@
   <ng-template #closeSubmissionModal>
     <!-- <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
        <p>Após efetuar a primeira submissão, o BackOffice irá reiniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.</p>
-       <button type="button" class="btn btn-primary" (click)="back()">Voltar</button>
+       <button type="button" class="btn btn-primary" (click)="back()">{{'Back'|translate}}</button>
        <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="continue()">Continuar</button>
     </div> -->
     <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
@@ -138,7 +138,7 @@
                        </nav>
                        <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                            <span class="navbar-text"></span>
-                           <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineCloseSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">VOLTAR</button></span>
+                           <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineCloseSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">{{'Back'|translate}}</button></span>
                            <span class="navbar-text pt-0 pb-0"><button (click)="closeSubmission()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">ENVIAR</button></span>
                        </nav>
                       </div>
@@ -153,16 +153,16 @@
       <span class="navbar-text me-2 align-self-center ms-0 me-0">
         <button id="btn5a1" [routerLink]="['/']"
           class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-          wappler-command="editContent">SAIR&nbsp;<img src="assets/images/exit_to_app.svg"
+          wappler-command="editContent">{{'Exit'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg"
             style="height: 25px !important; vertical-align: sub;"></button>
       <button id="btn5a3" [routerLink]="['/']"
         class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-        wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/cancel.svg"
+        wappler-command="editContent">{{'Cancel'|translate}}&nbsp;<img src="assets/images/cancel.svg"
           style="height: 25px !important; vertical-align: sub;"></button>
       <button id="btn5a4" [routerLink]="['/info-declarativa-lojas']"
         class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
         wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-          style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;</button>
+          style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;</button>
       <button id="btn5a2" (click)="openCloseSubmissionModal()"
         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
         wappler-command="editContent">SUBMETER PEDIDO&nbsp;</button>

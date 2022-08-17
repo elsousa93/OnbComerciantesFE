@@ -8,7 +8,7 @@
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
           </span>
           <span class="navbar-text">
-            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">LOJAS</h5>
+            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'Stores'|translate}}</h5>
           </span>
         </nav>
       </div>
@@ -16,7 +16,7 @@
         <h2 class="text-primary mt-5 ps-0 ">
           <img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'TitleStores'|translate}}
         </h2>
-        <p>Valide a(s) Loja(s) relacionadas com a Empresa. Caso pretenda, adicione ou remova Loja(s)</p>
+        <p>{{'ValidateStores'|translate}}</p>
         <mat-table [dataSource]="storesMat" class="table" matSort>
           <ng-container matColumnDef="nameEstab">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
@@ -72,7 +72,7 @@
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/storefront.svg"/>
                   </span>
-                  &nbsp;&nbsp;INFORMAÇÃO CARATERÍSTICA DA LOJA
+                  &nbsp;&nbsp;{{'StoreInformation'|translate}}
                 </button>
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
@@ -88,7 +88,7 @@
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/account_balance.svg" />
                   </span>
-                  &nbsp;&nbsp;IDENTIFICAÇÃO DA CONTA BANCÁRIA ASSOCIADA À LOJA
+                  &nbsp;&nbsp;{{'BankAccountStoreInformation'|translate}}
                 </button>
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
@@ -104,7 +104,7 @@
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/add_card.svg" />
                   </span>
-                  &nbsp;&nbsp;SELECÇÃO DE PRODUTOS
+                  &nbsp;&nbsp;{{'ProductsSelection'|translate}}
                 </button>
               </h2>
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
@@ -122,13 +122,13 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
               <button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                SAIR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-              </button><button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">CANCELAR&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                {{'Exit'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              </button><button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'Cancel'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
               <button [routerLink]="['/stakeholders']" id="btn5a5" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
                 <img src="assets/images/arrow_back_ios_white.svg"
-                     style="height: 25px !important; vertical-align: sub;">VOLTAR&nbsp;
+                     style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;
               </button>
-              <button (click)="submit()" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">SEGUINTE&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              <button (click)="submit()" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'Next'|translate}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </span>
           </nav>
         </div>

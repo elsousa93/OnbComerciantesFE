@@ -15,21 +15,24 @@ export interface MenuPermissions {
 }
 
 export enum UserPermissions {
-  BANCA,
-  UNICRE,
-  CALLCENTER,
-  DO,
-  COMPLIANCEOFFICE,
-  COMERCIAL
+  BANCA = "BANCA",
+  UNICRE = "UNICRE",
+  CALLCENTER = "CALLCENTER",
+  DO = "DO",
+  COMPLIANCEOFFICE = "COMPLIANCEOFFICE",
+  COMERCIAL = "COMERCIAL"
 }
 
-export function getMenuPermissions(user: UserPermissions) {
+export function getMenuPermissions(user: any) {
   var permissions: MenuPermissions;
   switch (user) {
     case UserPermissions.BANCA:
       permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: null };
       return permissions;
-    case UserPermissions.UNICRE || UserPermissions.CALLCENTER:
+    case UserPermissions.UNICRE:
+      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } }
+      return permissions;
+    case UserPermissions.CALLCENTER:
       permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } }
       return permissions;
     case UserPermissions.DO:
@@ -45,3 +48,35 @@ export function getMenuPermissions(user: UserPermissions) {
       return permissions;
   }
 }
+
+export interface role {
+  name?: string,
+  code?: UserPermissions
+}
+
+export const roles = [
+  {
+    "name": "Banca",
+    "code": UserPermissions.BANCA
+  },
+  {
+    "name": "Unicre",
+    "code": UserPermissions.UNICRE
+  },
+  {
+    "name": "CallCenter",
+    "code": UserPermissions.CALLCENTER
+  },
+  {
+    "name": "DO",
+    "code": UserPermissions.DO
+  },
+  {
+    "name": "Compliance Office",
+    "code": UserPermissions.COMPLIANCEOFFICE
+  },
+  {
+    "name": "Comercial",
+    "code": UserPermissions.COMERCIAL
+  },
+]

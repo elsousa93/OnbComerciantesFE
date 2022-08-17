@@ -205,7 +205,8 @@ export class NewStakeholderComponent implements OnInit {
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderId];
-    console.log("Selecionou outro stakeholder");
+    console.log("Selecionou outro stakeholder", this.currentStakeholder);
+    console.log("é do crc? ", this.selectedStakeholderIsFromCRC);
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {
@@ -240,7 +241,7 @@ export class NewStakeholderComponent implements OnInit {
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
       NIF: new FormControl(this.currentStakeholder.fiscalId, Validators.required),
-      Role: new FormControl({ value: '', disabled: this.selectedStakeholderIsFromCRC }, Validators.required),
+      Role: new FormControl('', Validators.required),
       Country: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
       ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
       Locality: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
@@ -419,6 +420,12 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   GetCountryByZipCode() {
+    var teste = 'consult'
+    var teste1 = true;
+    
+    if ((teste === 'consult' ? true : null) || teste1)
+      console.log("entrou aqui no if do ou");
+
     var currentCountry = this.formNewStakeholder.get('Country').value;
 
     if (currentCountry === 'PT') {
@@ -449,6 +456,14 @@ export class NewStakeholderComponent implements OnInit {
     if (this.returned === 'consult')
       return false;
     if (this.lockLocality)
+      return false;
+    return true;
+  }
+
+  canEditRole() {
+    if (this.returned === 'consult')
+      return false;
+    if (this.selectedStakeholderIsFromCRC)
       return false;
     return true;
   }

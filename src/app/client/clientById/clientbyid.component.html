@@ -30,12 +30,12 @@
                   <div class="form-check">
                     <input class="form-check-input" required formControlName="commercialSociety" name="commercialSociety" type="radio" [value]=true
                            id="commercialSociety" (click)="setCommercialSociety(true)">
-                    <label class="radio">Sim</label>
+                    <label class="radio">{{'Yes'|translate}}</label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" required formControlName="commercialSociety" name="commercialSociety" type="radio" [value]=false
                            id="commercialSociety" (click)="setCommercialSociety(false)">
-                    <label class="radio" for="radio2">Não</label>
+                    <label class="radio" for="radio2">{{'No'|translate}}</label>
                   </div>
                   <div class="alert alert-danger" *ngIf="this.form.get('commercialSociety').touched && !this.form.get('commercialSociety').valid">
                     <div *ngIf="this.form.get('commercialSociety').errors && this.form.get('commercialSociety').errors?.['required']">
@@ -166,7 +166,7 @@
           </div>
           <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
             <div *ngIf="this.form.get('CAE1').errors">
-              Interagiram com o CAE. CAE não é valido.
+              Interagiram com o CAE. CAE não é válido.
             </div>
             <div *ngIf="this.form.get('CAE1').valid">
               Interagiram com o CAE. CAE é valido (tem mais de 2 caracteres).
@@ -332,7 +332,7 @@
                     </div>
                     <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
                       <div *ngIf="this.form.get('CAE1').errors">
-                        Interagiram com o CAE. CAE não é valido.
+                        Interagiram com o CAE. CAE não é válido.
                       </div>
                       <div *ngIf="this.form.get('CAE1').valid">
                         Interagiram com o CAE. CAE é valido (tem mais de 2 caracteres).
@@ -549,11 +549,11 @@
 
                 <input name="associatedWithGroupOrFranchise" type="radio" [value]="true"
                        formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)">
-                <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">Sim</label> &nbsp;&nbsp;
+                <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">{{'Yes'|translate}}</label> &nbsp;&nbsp;
 
                 <input name="associatedWithGroupOrFranchise" type="radio" [value]="false"
                        formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)">
-                <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">Não</label><br><br>
+                <label class="titulo-form-simples" for="associatedWithGroupOrFranchise">{{'No'|translate}}</label><br><br>
 
               </div>
 
@@ -633,7 +633,7 @@
                          [formControl]="myControl"
                          [matAutocomplete]="auto"
                          [(ngModel)]="countryVal">
-                  Não tenho a certeza se é necessário ter aqui o ngModel e o formControl-->
+                  {{'No'|translate}} tenho a certeza se é necessário ter aqui o ngModel e o formControl-->
 <!--<input type="text" id="countryName" name="countryName" #countryName [(ngModel)]="countryVal">
                   <button (click)="addCountryToList(countryName.value)">Adicionar</button>
 
@@ -651,11 +651,11 @@
                       type="button"
                       (click)="redirectHomePage()"
                       class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg">
-                SAIR&nbsp;<i class="fas fa-angle-down"></i>
+                {{'Exit'|translate}}&nbsp;<i class="fas fa-angle-down"></i>
               </button>
 
               <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" type="button" (click)="redirectBeginningClient()">
-                <i class="fas fa-angle-left"></i>&nbsp;VOLTAR
+                <i class="fas fa-angle-left"></i>&nbsp;{{'Back'|translate}}
               </button>
 
               <button type="submit" id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
@@ -713,12 +713,12 @@
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
                    type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)" [disabled]="returned === 'consult'">
-            <label class="form-check-label radio">Sim</label>
+            <label class="form-check-label radio">{{'Yes'|translate}}</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
                    type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)" [disabled]="returned === 'consult'">
-            <label class="form-check-label radio">Não</label>
+            <label class="form-check-label radio">{{'No'|translate}}</label>
           </div>
 
           <div *ngIf="isCommercialSociety == true">
@@ -727,20 +727,22 @@
             <div class="form-check">
               <input class="form-check-input" name="collectCRC" formControlName="collectCRC"
                      type="radio" [value]=true id="collectCRC" (click)="setCollectCRC(true)" [disabled]="returned === 'consult'">
-              <label class="form-check-label radio">Sim</label>
+              <label class="form-check-label radio">{{'Yes'|translate}}</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" name="collectCRC" formControlName="collectCRC"
                      type="radio" [value]=false id="collectCRC" (click)="setCollectCRC(false)" [disabled]="returned === 'consult'">
-              <label class="form-check-label radio">Não</label>
+              <label class="form-check-label radio">{{'No'|translate}}</label>
             </div>
 
 
             <!--empresa é sociedade comercial -- big div-->
-            <p *ngIf="collectCRC == true" class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
-            <input *ngIf="collectCRC == true" maxlength="14" formControlName="crcCode" name="crcCode" type="text"
-                   id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" [disabled]="returned === 'consult'" />
-
+            <p class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
+            <input maxlength="14" formControlName="crcCode" name="crcCode" type="text"
+                   id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" [disabled]="returned === 'consult'"/>
+            <div *ngIf="crcError">
+              <p>CRC inserido não está com o formato correto</p>
+            </div>
             <!--crc fim-->
 
             <div *ngIf="crcFound">
@@ -871,7 +873,7 @@
             </div>-->
                       <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
                         <div *ngIf="this.form.get('CAE1').errors">
-                          Interagiram com o CAE. CAE não é valido.
+                          Interagiram com o CAE. CAE não é válido.
                         </div>
                         <div *ngIf="this.form.get('CAE1').valid">
                           Interagiram com o CAE. CAE é valido (tem mais de 2 caracteres).
@@ -995,7 +997,7 @@
             </div> <!-- Fecha comercial society -->
           </div>
         </div> <!--Fecha primeiros 3 campos-->
-        <!--Se NÃO for sociedade comercial e for Company-->
+        <!--se NÃO for sociedade comercial e for Company-->
 
         <!--<div *ngIf="">
           <div class="bg-white col-12 col-xxl-12">
@@ -1098,7 +1100,7 @@
             </div>
           </div>
         </div><!--fecha div "se NÃO for sociedade comercial"-->
-        <!-- Se Não for Sociedade Comercial e for ENI -->
+        <!-- se NÃO for Sociedade Comercial e for ENI -->
         <div *ngIf="isCommercialSociety == false && tipologia==='ENI'">
               <div class="col-10 ms-3 me-3 ps-3 pe-3">
                 <p class="titulo-form-simples" for="socialDenomination">Denominação Social/Nome ENI:* </p>
@@ -1122,7 +1124,7 @@
                   <button id="btn5a1"
                           class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-3 pt-3 pb-3 ps-3 pe-3"
                           wappler-command="editContent">
-                    SAIR&nbsp;<span class="material-symbols-rounded m-align">
+                    {{'Exit'|translate}}&nbsp;<span class="material-symbols-rounded m-align">
                       <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
                     </span>
                   </button>
@@ -1132,7 +1134,7 @@
                         wappler-command="editContent" (click)="redirectBeginningClient()">
                   <span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
-                  </span>VOLTAR&nbsp;
+                  </span>{{'Back'|translate}}&nbsp;
                 </button>
                 <button id="btn5a2"
                         class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"

@@ -168,10 +168,10 @@
                           <span class="navbar-text"></span>
                           <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
                               class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
-                              wappler-command="editContent" (click)="confirmDelete()" data-bs-dismiss="modal">SIM</button></span>
+                              wappler-command="editContent" (click)="confirmDelete()" data-bs-dismiss="modal">{{'Yes'|translate}}</button></span>
                           <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
                               class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
-                              wappler-command="editContent" (click)="declineDelete()">NÃO</button></span>
+                              wappler-command="editContent" (click)="declineDelete()">{{'No'|translate}}</button></span>
                         </nav>
                      </div>
                     </div>
@@ -183,8 +183,8 @@
         
       <!-- <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
          <p>Tem a certeza que deseja excluir o ficheiro?</p>
-         <button type="button" class="btn btn-primary" (click)="confirmDelete()">Sim</button>
-         <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="declineDelete()">Não</button>
+         <button type="button" class="btn btn-primary" (click)="confirmDelete()">{{'Yes'|translate}}</button>
+         <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="declineDelete()">{{'No'|translate}}</button>
       </div> -->
    </ng-template>
    <ng-template #checkListDocs>
@@ -282,7 +282,7 @@
             <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-9">
                <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/circle-info-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;LEGENDAS:<br /></p>
                <p class="mt-0 pb-1 ps-3" style="margin-bottom: 40px; font-size: 16px;">
-                  <img src="assets/images/check-solid.svg" style="height: 20px !important;">&nbsp;&nbsp;Já existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;X</b>&nbsp;&nbsp;Não existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;N/A</b>&nbsp;&nbsp;Não aplicável
+                  <img src="assets/images/check-solid.svg" style="height: 20px !important;">&nbsp;&nbsp;Já existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;X</b>&nbsp;&nbsp;Não existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;N/A</b>&nbsp;&nbsp;{{'No'|translate}} aplicável
                </p>
             </div>
          </div>
@@ -291,7 +291,7 @@
    <ng-template #firstSubmissionModal>
       <!-- <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
          <p>Após efetuar a primeira submissão, o BackOffice irá reiniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.</p>
-         <button type="button" class="btn btn-primary" (click)="back()">Voltar</button>
+         <button type="button" class="btn btn-primary" (click)="back()">{{'Back'|translate}}</button>
          <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="continue()">Continuar</button>
       </div> -->
       <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
@@ -317,7 +317,7 @@
                          </nav>
                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                              <span class="navbar-text"></span>
-                             <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineFirstSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">VOLTAR</button></span>
+                             <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineFirstSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">{{'Back'|translate}}</button></span>
                              <span class="navbar-text pt-0 pb-0"><button (click)="continue()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">CONTINUAR</button></span>
                          </nav>
                         </div>
@@ -333,17 +333,17 @@
                <span class="navbar-text me-2 align-self-center ms-0 me-0">
                   <button id="btn5a" style="margin-left: 0px;" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
                      [routerLink]="['/']" wappler-command="editContent">
-                     SAIR&nbsp;
+                     {{'Exit'|translate}}&nbsp;
                      <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
                   </button>
                <button id="btn5a" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                  CANCELAR&nbsp;
+                  {{'Cancel'|translate}}&nbsp;
                   <img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">
                </button>
                <button id="btn5a" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"
                   [routerLink]="['/store-comp']">
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">
-                  VOLTAR&nbsp;
+                  {{'Back'|translate}}&nbsp;
                </button>
                <button *ngIf="validatedDocuments" id="btn5a" (click)="firstSubmission()"
                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">

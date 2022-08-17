@@ -66,12 +66,12 @@
               <!--<div class="form-check">
                 <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=true
                   #flagAutCol="ngModel" [value]="true" id="flagAutCol" [(ngModel)]="addNewClient.flagAutCol">
-                <label class="form-check-label" for="radio3">SIM</label>
+                <label class="form-check-label" for="radio3">{{'Yes'|translate}}</label>
               </div>-->
               <!--<div class="form-check">
                 <input class="form-check-input" required ngModel name="flagAutCol" type="radio" value=false
                   #flagAutCol="ngModel" [value]="false" id="flagAutCol" [(ngModel)]="addNewClient.flagAutCol">
-                <label class="form-check-label" for="radio3">NÃO</label>
+                <label class="form-check-label" for="radio3">{{'No'|translate}}</label>
               </div>-->
             </div>
           </div>
@@ -292,14 +292,14 @@
                   <input required ngModel name="preferenceDocuments" type="radio" value="100digital"
                          #preferenceDocuments="ngModel" id="preferenceDocuments"
                          [(ngModel)]="addNewClient.documentationDeliveryMethod">
-                  <label class="titulo-form-simples" for="100digital">Sim</label>
+                  <label class="titulo-form-simples" for="100digital">{{'Yes'|translate}}</label>
                 </div>
                 <div>
                   <input required ngModel name="preferenceDocuments" type="radio" value="docuemntacaoPorCarta"
                          #preferenceDocuments="ngModel" id="preferenceDocuments"
                          [(ngModel)]="addNewClient.documentationDeliveryMethod">
                   <label class="titulo-form-simples" for="documetacaoPorCarta">
-                   Não
+                   {{'No'|translate}}
                   </label><br><br>
                 </div>
               </div>
@@ -317,11 +317,11 @@
     <div class="container">
       <div class="row mb-xxl-5">
         <div class="col-xxl offset-xxl-1 col-xxl-5 offset-1 col-10 mb-5"><button id="btn4a"
-            class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg">SAIR&nbsp;<i
+            class="btn text-start mt-3 btn-primary style10 text-primary bg-light btn-lg">{{'Exit'|translate}}&nbsp;<i
               class="fas fa-angle-down"></i></button>
 
           <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg">
-            <i class="fas fa-angle-left"></i>&nbsp;VOLTAR
+            <i class="fas fa-angle-left"></i>&nbsp;{{'Back'|translate}}
           </button>
 
           <button id="btn5a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"

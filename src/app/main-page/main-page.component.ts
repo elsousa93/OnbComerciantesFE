@@ -1,19 +1,18 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
-import { CRCService } from './CRC/crcservice.service';
 import { NGXLogger } from 'ngx-logger';
-import { AuthService } from './services/auth.service';
+import { CRCService } from '../CRC/crcservice.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html'
+  selector: 'app-main-page',
+  templateUrl: './main-page.component.html',
+  styleUrls: ['./main-page.component.css']
 })
-
-export class AppComponent {
+export class MainPageComponent implements OnInit {
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -24,10 +23,8 @@ export class AppComponent {
   isToggle: boolean = false;
   isAutoHide: boolean = false;
 
-  hasAuthenticated: boolean = false;
-
   constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, authService: AuthService) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService) {
     translate.addLangs(['pt', 'en']);
     translate.setDefaultLang('pt');
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
@@ -37,10 +34,6 @@ export class AppComponent {
       this.logger.debug("gerou!!");
       localStorage.setItem("accessToken", result.access_token);
     });
-
-    authService.hasAuthenticated.subscribe(auth => {
-      this.hasAuthenticated = auth;
-    })
   }
 
   @Input() url: string;
@@ -62,7 +55,7 @@ export class AppComponent {
     this.cookie.set("jwToken", "TokenExemplo")
   }
 
-  updateNavBar(pageNameInput: string){
+  updateNavBar(pageNameInput: string) {
     this.pageName = pageNameInput;
   }
 
@@ -77,6 +70,5 @@ export class AppComponent {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-
 
 }
