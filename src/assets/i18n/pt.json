@@ -31,7 +31,6 @@
   "StoreInformation": "INFORMAÇÃO CARATERÍSTICA DA LOJA",
   "BankAccountStoreInformation": "IDENTIFICAÇÃO DA CONTA BANCÁRIA ASSOCIADA À LOJA",
   "ProductsSelection": "SELECÇÃO DE PRODUTOS",
-  "StoresInformation": "INFORMAÇÃO CARATERÍSTICA DA LOJA",
   "SolutionType": "Tipo de Solução",
   "SelectSolutionType":"Selecione tipo de solução UNICRE",
   "PresencialTransaction": "Transações Presenciais",
@@ -42,12 +41,10 @@
   "//Buttons": "ButtonComponents",
   "Continue": "Continuar",
   "Cancel": "CANCELAR",
-  "Eliminate": "Eliminar",
+  "Delete": "Eliminar",
   "Save": "Guardar",
   "Edit": "Editar",
   "Confirm": "Confirmar",
-  "EndStoresConf": "Concluir Configuração da loja",
-  "AddConf": "Adicionar Configuração",
 
   "//CommercialOffer": "CommercialOfferElement",
   "CODetails": "Detalhes da Oferta Comercial",
@@ -77,11 +74,6 @@
   "COReplicateProduts": "Pretende replicar produtos de outros establecimentos?",
   "COSelectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos( Loja de Representação)",
 
-  "//Warnings": "WarningsComponents",
-  "WarningInvalid": "Campo inválido",
-  "WarningMandatory": "Obrigatório",
-  "Warning5to100char": "O campo deve ter entre 5 e 100 caracteres",
-
   "//Default": "default",
   "Yes": "SIM",
   "No": "NÃO",
@@ -91,5 +83,6 @@
   "Exit": "SAIR",
   "DocumentDate": "DATA DO DOCUMENTO",
   "Attach": "ANEXAR",
-  "ObligatoryField": "* campo obrigatório"
+  "ObligatoryField": "* campo obrigatório",
+  "Add": "ADICIONAR"
 }
