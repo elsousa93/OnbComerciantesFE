@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
@@ -8,8 +8,12 @@ import { Istore, ShopDetailsAcquiring } from '../../store/IStore.interface';
 import { NGXLogger } from 'ngx-logger';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../userPermissions/user';
+import { UserPermissions } from '../../userPermissions/user-permissions';
+import { ProductPackAttribute, TerminalSupportEntityEnum } from '../ICommercialOffer';
 
 
 const testValues: ShopDetailsAcquiring[] = [
@@ -46,7 +50,8 @@ const testValues: ShopDetailsAcquiring[] = [
     productCode: "cardPresent",
     subActivity: "99",
     subproductCode: "easy",
-    website: "google.com"
+    website: "google.com",
+    supportEntity: TerminalSupportEntityEnum.ACQUIRER
   },
   {
     activity: "Activity2",
@@ -83,7 +88,8 @@ const testValues: ShopDetailsAcquiring[] = [
     productCode: "cardNotPresent",
     subActivity: "99",
     subproductCode: "keyOnHand",
-    website: "google.com"
+    website: "google.com",
+    supportEntity: TerminalSupportEntityEnum.ACQUIRER
   },
 ]
 
@@ -96,7 +102,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   storesOfferMat: MatTableDataSource<ShopDetailsAcquiring>;
 
-  editStores: FormGroup;
+  form: FormGroup;
   private baseUrl: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -116,18 +122,31 @@ export class CommercialOfferListComponent implements OnInit {
   public currentStore: ShopDetailsAcquiring = null;
   public currentIdx: number = 0;
 
-  public isUnicre: boolean = false;
+  public isUnicre: boolean;
   public geographyChecked: boolean = false;
 
   displayedColumns: string[] = ['nameEstab', 'activityEstab', 'subActivityEstab', 'bank', 'terminalNumber', 'product'];
+
+
+  currentUser: User = {};
+  replicateProducts: boolean;
+  disableNewConfiguration: boolean;
 
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesOfferMat.paginator = this.paginator;
   }
 
-  constructor(private logger : NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
+  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService) {
     this.baseUrl = configuration.baseUrl;
+    authService.currentUser.subscribe(user => this.currentUser = user);
+
+    this.initializeForm();
+
+    if (this.currentUser.permissions == UserPermissions.BANCA) {
+      this.form.get("isUnicre").setValue(false);
+      this.form.get("isUnicre").disable();
+    }
 
     /*Get stores list*/
     this.ngOnInit();
@@ -152,32 +171,53 @@ export class CommercialOfferListComponent implements OnInit {
   selectStore(store: ShopDetailsAcquiring, idx: number) {
     this.currentStore = store;
     this.currentIdx = idx;
-    console.log("Store selected ", this.currentStore);
-    console.log("Current index ", this.currentIdx);
-    console.log(this.currentStore === store);
-    setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
+
+    if (store.supportEntity == 'other')
+      this.disableNewConfiguration = true;
+    else
+      this.disableNewConfiguration = false;
+
+    setTimeout(() => this.setFormData(), 500);
+  }
+
+  initializeForm() {
+    this.form = new FormGroup({
+      replicateProducts: new FormControl(this.replicateProducts, [Validators.required]),
+      isUnicre: new FormControl(this.isUnicre, [Validators.required]),
+      terminalRegistrationNumber: new FormControl(''),
+      productPackKind: new FormControl('', [Validators.required]),
+      productPackAttributes: new FormGroup({
+        productPackAttributesBrands: new FormArray([]),
+        productPackAttributesBundles: new FormArray([]),
+        productPackAttributesAddInfo: new FormArray([])
+      }),
+
+    });
+  }
+
+  get productPackAttributesBrands() {
+    return this.form.get("productPackAttributesBrands") as FormArray;
+  }
+
+  get productPackAttributesBundles() {
+    return this.form.get("productPackAttributesBundles") as FormArray;
+  }
+
+  get productPackAttributesAddInfo() {
+    return this.form.get("productPackAttributesBundles") as FormArray;
+  }
+
+  //chamar este metodo no html quando estivermos a fazer o ngFor aos atributos do productPack
+  addAttributeToFormArray(attribute: ProductPackAttribute, formArray: FormArray) {
+    if (attribute.isVisible) {
+      formArray.push(new FormControl({
+        value: attribute.value,
+        disabled: attribute.isReadOnly,
+      }));
+    }
   }
 
   setFormData() {
-    var infoStores = this.editStores.controls["infoStores"];
-    infoStores.get("storeName").setValue(this.currentStore.name);
-    infoStores.get("activityStores").setValue(this.currentStore.activity);
-    infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
-    infoStores.get("contactPoint").setValue(this.currentStore.manager);
-    infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
-    infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
-    infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
-    infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
-    infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
-    infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
-    infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
-
-    var bankStores = this.editStores.controls["bankStores"];
-    bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
-    bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
-    bankStores.get("solutionType").setValue(this.currentStore.productCode);
-    bankStores.get("subProduct").setValue(this.currentStore.subproductCode);
-    bankStores.get("url").setValue(this.currentStore.website);
 
   }
 
@@ -187,5 +227,24 @@ export class CommercialOfferListComponent implements OnInit {
 
   changeUnicre(bool: boolean){
     this.isUnicre = bool;
+  }
+
+  changeReplicateProducts(bool: boolean) {
+    this.replicateProducts = bool;
+  }
+
+  createNewConfiguration() {
+    if (this.currentStore != null) {
+      let navigationExtras: NavigationExtras = {
+        state: {
+          store: this.currentStore
+        }
+      }
+      this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
+    }
+  }
+
+  submit() {
+
   }
 }

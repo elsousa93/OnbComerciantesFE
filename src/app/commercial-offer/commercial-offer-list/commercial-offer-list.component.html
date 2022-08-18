@@ -1,5 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <form [formGroup]="form" name="form" id="form" (ngSubmit)="submit()">
    <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
@@ -58,7 +59,7 @@
          <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
       </div>
 
-      <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
+      <div *ngIf="currentStore != null" class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
 
          <!-- accordion -->
          <div class="accordion1 accordion-flush" id="accordionFlushExample">
@@ -82,21 +83,21 @@
                         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
                            <span class="navbar-text">
                               <div class="form-check">
-                                 <input class="form-check-input" type="radio" value="" id="radio1" name="radio1">
+                                 <input class="form-check-input" type="radio" [value]=true id="radio1" formControlName="replicateProducts" name="replicateProducts" (click)="changeReplicateProducts(true)">
                                  <label class="form-check-label radio pe-5" for="radio1"
                                     wappler-command="editContent">{{'Yes'|translate}}</label>
                               </div>
                            </span>
                            <span class="navbar-text">
                               <div class="form-check">
-                                 <input class="form-check-input" type="radio" value="" id="radio1" name="radio1">
+                                 <input class="form-check-input" type="radio" [value]=false id="radio1" formControlName="replicateProducts" name="replicateProducts" (click)="changeReplicateProducts(false)">
                                  <label class="form-check-label radio" for="radio1"
                                     wappler-command="editContent">{{'No'|translate}}</label>
                               </div>
                            </span>
                         </nav>
                      </div>
-                     <div class="col-7 ms-0 me-0 ps-3 pe-0">
+                     <div class="col-7 ms-0 me-0 ps-3 pe-0" *ngIf="replicateProducts">
                         <p class="titulo-form-simples pb-4" wappler-command="editContent">Selecione a loja que pretende
                            considerar a mesma informação dos produtos (Loja de Representação):
                         </p>
@@ -111,21 +112,21 @@
                         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
                            <span class="navbar-text">
                               <div class="form-check">
-                                 <input (click)="changeUnicre(false)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                                 <input (click)="changeUnicre(true)" class="form-check-input" type="radio" [value]=true id="radio2" formControlName="isUnicre" name="isUnicre">
                                  <label class="form-check-label radio pe-5" for="radio2"
                                     wappler-command="editContent">{{'Yes'|translate}}</label>
                               </div>
                            </span>
                            <span class="navbar-text">
                               <div class="form-check">
-                                 <input (click)="changeUnicre(true)" class="form-check-input" type="radio" value="" id="radio2" name="radio2">
+                                 <input (click)="changeUnicre(false)" class="form-check-input" type="radio" [value]=false id="radio2" formControlName="isUnicre" name="isUnicre">
                                  <label class="form-check-label radio" for="radio2"
                                     wappler-command="editContent">{{'No'|translate}}</label>
                               </div>
                            </span>
                         </nav>
                      </div>
-                     <div *ngIf="isUnicre" class="col-7 ms-0 me-0 ps-3 pe-0">
+                     <div *ngIf="isUnicre == false" class="col-7 ms-0 me-0 ps-3 pe-0">
                         <p class="titulo-form-simples pb-4" wappler-command="editContent">Número Matrícula Terminal
                            SIBS:</p>
                         <input id="text1" name="text1" type="text" class="form-control campo_form">
@@ -153,14 +154,14 @@
                         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
                            <span class="navbar-text">
                               <div class="form-check">
-                                 <input class="form-check-input" type="radio" value="" id="radio3" name="radio3">
+                                 <input class="form-check-input" type="radio" value="simple" id="radio3" formControlName="productPackKind" name="productPackKind">
                                  <label class="form-check-label radio pe-5" for="radio3"
                                     wappler-command="editContent">TRADICIONAL</label>
                               </div>
                            </span>
                            <span class="navbar-text">
                               <div class="form-check">
-                                 <input class="form-check-input" type="radio" value="" id="radio3" name="radio3">
+                                 <input class="form-check-input" type="radio" value="advanced" id="radio3" formControlName="productPackKind" name="productPackKind">
                                  <label class="form-check-label radio" for="radio3"
                                     wappler-command="editContent">SMART</label>
                               </div>
@@ -440,8 +441,8 @@
                         </tbody>
                      </table>
                      <div class="col mt-0 mb-0 pt-2 pb-4 ps-2">
-                        <button [routerLink]="['/commercial-offert-new-configuration']" id="btn5a2"
-                           class="btn botao_azul btn-lg mt-2 ms-1 me-1" wappler-command="editContent">NOVA
+                        <button  id="btn5a2"
+                           class="btn botao_azul btn-lg mt-2 ms-1 me-1" (click)="createNewConfiguration()" [disabled]="disableNewConfiguration" wappler-command="editContent">NOVA
                            CONFIGURAÇÃO&nbsp;&nbsp;<img src="assets/images/dashboard_customize.svg"
                               style="height: 25px !important; vertical-align: sub;"></button>
                      </div>
@@ -529,4 +530,5 @@
       </div>
 
    </div>
+  </form>
 </div>

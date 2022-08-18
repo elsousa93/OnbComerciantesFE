@@ -50,6 +50,7 @@ export class CommercialOfferService {
     return this.http.get<Product[]>(URI, HTTP_OPTIONS);
   }
 
+  //Obter os Tipos de Pacotes comerciais
   ListProductCommercialPacks(productPackFilter: ProductPackFilter ,requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
     var URI = this.urlOutbound + "api/v1/product/pack";
 
@@ -83,6 +84,7 @@ export class CommercialOfferService {
     return this.http.post<ProductPackEntry[]>(URI, productPackFilter, HTTP_OPTIONS);
   }
 
+  //Retorna os atributos de um pacote comercial
   GetProductCommercialPack(packId: string, productPackFilter: ProductPackFilter, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
     var URI = this.urlOutbound + "api/v1/product/pack/" + packId;
 
@@ -116,6 +118,7 @@ export class CommercialOfferService {
     return this.http.post<ProductPack>(URI, productPackFilter, HTTP_OPTIONS);
   }
 
+  //Obter os Pacotes Pricing 
   ListProductCommercialPackPricing(packId: string, productPackPricingFilter: ProductPackPricingFilter, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
     var URI = this.urlOutbound + "api/v1/product/pack/" + packId + "/pricing";
 
@@ -149,6 +152,7 @@ export class CommercialOfferService {
     return this.http.post<ProductPackPricingEntry[]>(URI, productPackPricingFilter, HTTP_OPTIONS);
   }
 
+  //Retorna os detalhes de um Pacote Pricing
   GetProductCommercialPackPricing(packId: string, pricingId: string, productPackPricingFilter: ProductPackPricingFilter, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
     var URI = this.urlOutbound + "api/v1/product/pack/" + packId + "/pricing/" + pricingId;
 
