@@ -1,0 +1,32 @@
+<div class="table-responsive me-2 ps-3 pe-3">
+  <table class="table table-success">
+    <thead class="text-primary table-primary">
+      <tr class="text-center text-primary table-light">
+        <th scope="col" class="align-baseline text-primary table-white">Nome/Designação Social</th>
+        <th scope="col" class="text-center bg-white">NIF/NIPC</th>
+        <th scope="col" class="text-center bg-white">Tipo Entidade</th>
+        <th scope="col" class="text-center bg-white">Tipo Relação</th>
+        <th scope="col" class="text-center bg-white">Elegível</th>
+        <th scope="col" class="text-center bg-light">Nº Cliente</th>
+        <th scope="col" class="align-baseline text-primary table-white">Vai Assinar Contrato</th>
+        <th scope="col" class="bg-white" *ngIf="canDelete"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" [ngClass]="{'row-selected': canSelect && (stakeholder === selectedStakeholder)}" (click)="emitSelectedStakeholder(stakeholder, idx)">
+        <td class="text-primary text-center">{{stakeholder.shortName}}</td>
+        <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
+        <td class="text-primary text-center"> - </td>
+        <td class="text-primary text-center"> - </td>
+        <td class="text-primary text-center">Elegivel?</td>
+        <td class="text-primary text-center">{{stakeholder.id}}</td>
+        <th scope="row" class="text-primary text-center">Associado?</th>
+        <td *ngIf="canDelete">
+          <span>
+            <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

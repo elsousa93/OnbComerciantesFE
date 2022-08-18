@@ -40,17 +40,14 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   submissionStakeholders: IStakeholders[] = [];
   submissionId: string;
+  processNumber: string;
   currentStakeholder: IStakeholders = null;
 
 
   //Informação de campos/tabelas
   internationalCallingCodes: CountryInformation[];
 
-  public newStakeholder: IStakeholders = {
-
-
-
-  } as IStakeholders;
+  public newStakeholder: IStakeholders = {} as IStakeholders;
 
   @Output() nameEmitter = new EventEmitter<string>();
 
@@ -130,6 +127,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.phone = this.formContactos.get("phone");
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
+    this.processNumber = localStorage.getItem("processNumber");
   }
 
   initializeForm() {
@@ -187,9 +185,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.selectedStakeholder = stake;
   }
 
-  selectStakeholder(stakeholder, idx) {
-    this.currentStakeholder = stakeholder;
-    this.currentIdx = idx;
+  selectStakeholder(info /*stakeholder, idx*/) {
+
+    this.currentStakeholder = info.stakeholder;
+    this.currentIdx = info.idx;
     this.initializeForm();
   }
 

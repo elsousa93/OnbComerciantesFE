@@ -42,6 +42,7 @@ export class NewStakeholderComponent implements OnInit {
   crcStakeholders: IStakeholders[] = [];
 
   submissionId: string;
+  processNumber: string;
   //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   countries: CountryInformation[] = [];
@@ -120,6 +121,7 @@ export class NewStakeholderComponent implements OnInit {
     this.loadTableInfoData();
     this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem('submissionId');
+    this.processNumber = localStorage.getItem("processNumber");
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
     this.ngOnInit();
@@ -199,9 +201,10 @@ export class NewStakeholderComponent implements OnInit {
     });
   }
 
-  updateForm(stakeholder, idx) {
-    this.currentStakeholder = stakeholder;
-    this.currentIdx = idx;
+  updateForm(info/*, idx*/) {
+    console.log(info);
+    this.currentStakeholder = info.stakeholder;
+    this.currentIdx = info.idx;
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderId];

@@ -18,7 +18,8 @@
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
         <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
-          <div class="table-responsive me-2 ps-3 pe-3">
+          <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="updateForm($event)"></app-stakeholders-list>
+          <!--<div class="table-responsive me-2 ps-3 pe-3">
             <table class="table table-success">
               <thead class="text-primary table-primary">
                 <tr class="text-center text-primary table-light">
@@ -31,9 +32,9 @@
                   <th scope="col" class="align-baseline text-primary table-white">Vai Assinar Contrato</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody>-->
                 <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
-                <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}">
+                <!--<tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}">
                   <td scope="row" class="text-primary text-center">{{stakeholder.shortName}}</td>
                   <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                   <td class="text-primary text-center"> - </td>
@@ -44,7 +45,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div>-->
         </div>
         
         <div class="row ms-0 me-0" *ngIf="isSelected">

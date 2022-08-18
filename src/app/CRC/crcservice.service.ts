@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { merge, Observable, switchMap } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { NGXLogger } from 'ngx-logger';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CRCService {
   private authTokenUrl: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private authService: AuthService) {
     this.DOCASUrl = configuration.DOCASUrl;
     this.authTokenUrl = configuration.authTokenUrl
 
@@ -73,15 +74,17 @@ export class CRCService {
     //    //    reject(error);
     //    //  })
     //    //});
-        
+
     //  }, error => {
     //    this.logger.debug("erro");
     //    this.logger.debug(error);
     //  }
     //);
+
+
       const HTTP_OPTIONS = {
         headers: new HttpHeaders({
-          'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+          'Authorization': 'Bearer ' + this.authService.GetToken()
         }),
       }
 

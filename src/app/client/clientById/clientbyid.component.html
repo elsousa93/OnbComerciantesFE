@@ -61,12 +61,11 @@
 
 
             <!--empresa é sociedade comercial -- big div-->
-            <p *ngIf="collectCRC == true" class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL:</p>
+            <p *ngIf="collectCRC == true" class="titulo-form-simples">CÓDIGO DE CERTIDÃO DO REGISTO COMERCIAL: <span class="titulo-form-error" *ngIf="collectCRC == true && crcError" class="titulo-form-simples-erro">
+{{errorMsg}}
+</span></p>
             <input *ngIf="collectCRC == true" maxlength="14" formControlName="crcCode" name="crcCode" type="text"
                    id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()" [disabled]="returned === 'consult'"/>
-            <div *ngIf="collectCRC == true && crcError">
-              <p>CRC inserido não está com o formato correto</p>
-            </div>
             <!--crc fim-->
 
             <div *ngIf="crcFound">

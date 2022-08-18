@@ -74,6 +74,7 @@ import localePT from '@angular/common/locales/pt';
 import { environment } from 'src/environments/environment';
 import { NGXLogger } from 'ngx-logger';
 import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
+import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
 
 registerLocaleData(localePT);
 
@@ -130,7 +131,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CreateStakeholderComponent,
     AuthComponent,
     RepresentationPowerComponent,
-    ProductSelectionComponent
+    ProductSelectionComponent,
+    StakeholdersListComponent
   ],
   imports: [
     ReactiveFormsModule,
