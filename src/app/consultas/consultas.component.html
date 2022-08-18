@@ -3,38 +3,38 @@
   <div class="row">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span class="navbar-text text-light"><img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70"></span><span class="navbar-text">
-          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">CONSULTAS</h5>
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'Searches'|translate}}</h5>
         </span></nav>
     </div>
     <form [formGroup]="form" (ngSubmit)="submitSearch()">
     <div class="offset-1 bg-white align-self-center col-10 ps-3">
-      <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg" style="height: 30px; vertical-align: bottom;">&nbsp;PESQUISA</h4>
+      <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg" style="height: 30px; vertical-align: bottom;">&nbsp;{{'Search'|translate}}</h4>
       <div class="row ms-0 me-0">
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mt-0">Nº DE PROCESSO</p><input id="text8" name="text5" type="text" class="form-control campo_form" formControlName="processNumber">
-          <p class="titulo-form-simples">ESTADO</p><select id="select1" class="form-select  campo_form" formControlName="state">
+          <p class="titulo-form-simples mt-0">{{'ProcessNumber'|translate}}</p><input id="text8" name="text5" type="text" class="form-control campo_form" formControlName="processNumber">
+          <p class="titulo-form-simples">{{'State'|translate}}</p><select id="select1" class="form-select  campo_form" formControlName="state">
             <option value=""></option>
-            <option value="Incomplete">Incompleto</option>
-            <option value="Ongoing">A decorrer</option>
-            <option value="Completed">Completado</option>
-            <option value="Returned">Retornado</option>
-            <option value="Cancelled">Cancelado</option>
+            <option value="Incomplete">{{'Incompleted'|translate}}</option>
+            <option value="Ongoing">{{'Running'|translate}}</option>
+            <option value="Completed">{{'Completed'|translate}}</option>
+            <option value="Returned">{{'Returned'|translate}}</option>
+            <option value="Cancelled">{{'Cancelled'|translate}}</option>
             <option value="ContractAcceptance">ContractAcceptance</option>
           </select>
-          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - DE:</p><input id="text1" name="text1" type="date" class="form-control campo_form" formControlName="processDateStart">
+          <p class="titulo-form-simples mb-1">{{'OrderDateFrom'|translate}}</p><input id="text1" name="text1" type="date" class="form-control campo_form" formControlName="processDateStart">
           <p class="titulo-form-simples"></p>
         </div>
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <p class="titulo-form-simples mt-0">TIPO DE DOCUMENTO</p><select id="select3" class="form-select  campo_form" formControlName="documentType">
+          <p class="titulo-form-simples mt-0">{{'DocumentType'|translate}}</p><select id="select3" class="form-select  campo_form" formControlName="documentType">
             <option value="1"></option>
             <option value="2">Outro1</option>
             <option value="3">Outro2</option>
           </select>
-          <p class="titulo-form-simples">Nº DE DOCUMENTO</p><input id="text3" name="text3" type="text" class="form-control campo_form" formControlName="documentNumber">
-          <p class="titulo-form-simples mb-1">DATA DO PEDIDO - ATÉ:</p><input id="text2" name="text2" type="date" class="form-control campo_form" formControlName="processDateEnd">
+          <p class="titulo-form-simples">{{'DocumentNumber'|translate}}</p><input id="text3" name="text3" type="text" class="form-control campo_form" formControlName="documentNumber">
+          <p class="titulo-form-simples mb-1">{{'OrderDateUntil'|translate}}</p><input id="text2" name="text2" type="date" class="form-control campo_form" formControlName="processDateEnd">
           <p class="titulo-form-simples"></p>
         </div>
-        <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">PESQUISA
+        <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">{{'Search'|translate}}
           &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;"></button>
 
           <!-- adicionar um if para aparecer a tabela caso sejam encontrados clientes -->
@@ -42,7 +42,7 @@
           <mat-table [dataSource]="processes" matSort>
             <!-- Nº Pedido Column -->
             <ng-container matColumnDef="processNumber">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Nº PROCESSO </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'ProcessNumber'|translate}} </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
             </ng-container>
             <!-- NIPC Column -->
@@ -55,20 +55,20 @@
             <!-- Nome da Empresa Column -->
             <ng-container matColumnDef="nome">
               <mat-header-cell *matHeaderCellDef mat-sort-header>
-                NOME DA EMPRESA
+                {{'CompanyName'|translate}}
               </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
             </ng-container>
             <!-- Estado Column -->
             <ng-container matColumnDef="estado">
               <mat-header-cell *matHeaderCellDef mat-sort-header>
-                ESTADO
+                {{'State'|translate}}
               </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="abrirProcesso">
               <mat-header-cell *matHeaderCellDef >
-                ABRIR PROCESSO
+                {{'OpenProcess'|translate}}
               </mat-header-cell>
               <mat-cell *matCellDef="let row"> <img src="assets/images/description.svg" (click)="openProcess(row)" style="height: 25px !important; vertical-align: sub; cursor: pointer;"> </mat-cell>
             </ng-container>
