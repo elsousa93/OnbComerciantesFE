@@ -254,7 +254,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC, [Validators.required])
+      collectCRC: new FormControl(this.collectCRC)
     });
   }
 
@@ -295,7 +295,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
       socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : this.client?.legalName, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC, [Validators.required])
+      collectCRC: new FormControl(this.collectCRC)
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {

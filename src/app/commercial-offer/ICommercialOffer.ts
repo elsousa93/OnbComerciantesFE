@@ -94,7 +94,7 @@ interface ProductPackAttributeProductPackKind{
   attributes?: ProductPackAttribute[]
 }
 
-interface ProductPackAttribute {
+export interface ProductPackAttribute {
   id?: string
   description?: string
   value?: boolean
@@ -120,13 +120,6 @@ interface EquipmentCatalog {
   equipmentType?: string
   communicationType?: string
   quantity?: number
-}
-
-interface ProductPackRootAttributeProductPackKind {
-  id?: string
-  description?: string
-  kind?: ProductPackKindEnum
-  attributes?: ProductPackRootAttribute[]
 }
 
 export interface ProductPackPricingEntry {
@@ -184,7 +177,7 @@ enum MerchantContextEnum {
   FRANCHISE = "franchise"
 }
 
-enum TerminalSupportEntityEnum {
+export enum TerminalSupportEntityEnum {
   OTHER = "other",
   ACQUIRER = "acquirer"
 }
