@@ -58,4 +58,5 @@ export class TableInfoService {
   GetAddressByZipCode(cp4: number, cp3: number) {
     return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
   }
+
 }

@@ -668,7 +668,6 @@ export class ClientByIdComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
-
   setCommercialSociety(id: boolean) {
     this.crcFound = false;
     this.collectCRC = undefined;
