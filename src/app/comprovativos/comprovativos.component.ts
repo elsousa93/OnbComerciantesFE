@@ -17,7 +17,6 @@ import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { SubmissionGetTemplate, SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
-import { CheckDocumentsComponent } from './check-documents/check-documents.component';
 import { ComprovativosTemplate, IComprovativos } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
 import { NGXLogger } from 'ngx-logger';

@@ -8,7 +8,7 @@
             </span>
             <span class="navbar-text">
                <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
-                  COMPROVATIVOS</h5>
+                  {{'supportingDocuments.title'|translate|uppercase}}</h5>
             </span>
          </nav>
       </div>
@@ -19,10 +19,10 @@
                   <table class="table table-success" *ngIf="client" style="overflow-x: hidden !important;">
                      <thead class="table-primary text-primary">
                         <tr class="text-center text-primary table-light">
-                           <th scope="col" class="align-baseline text-primary table-white">Tipo</th>
-                           <th scope="col" class="text-center bg-light">Interveniente</th>
-                           <th scope="col" class="text-center bg-white">Data de Validade</th>
-                           <th scope="col" class="text-center bg-white">Data de Entrada</th>
+                           <th scope="col" class="align-baseline text-primary table-white">{{'Type'|translate}}</th>
+                           <th scope="col" class="text-center bg-light">{{'Stakeholder'|translate}}</th>
+                           <th scope="col" class="text-center bg-white">{{'ExpirationDate'|translate}}</th>
+                           <th scope="col" class="text-center bg-white">{{'EntryDate'|translate}}</th>
                            <th scope="col" class="text-center bg-white">Status</th>
                            <th scope="col" class="text-center bg-white"></th>
                         </tr>
@@ -79,11 +79,11 @@
                   <span class="navbar-text me-2 align-self-center ms-0 me-0">
                      <button id="btn5a5" (click)="onCheckList()"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
-                        wappler-command="editContent">CONSULTAR CHECKLIST&nbsp;<img src="assets/images/checklist.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                        wappler-command="editContent">{{'supportingDocuments.consultChecklist'|translate|uppercase}}&nbsp;<img src="assets/images/checklist.svg" style="height: 25px !important; vertical-align: sub;"></button>
    
 
                      <label for="arquivo" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3">
-                       ANEXAR DOCUMENTOS&nbsp;
+                        {{'supportingDocuments.attachDocuments'|translate|uppercase}}&nbsp;
                        <img src="assets/images/file_upload.svg" style="height: 25px !important; vertical-align: sub;" />
 
                      </label>
@@ -92,7 +92,7 @@
 
                   </span>
                </nav>
-               <p class="titulo-form-simples ms-2" for="observacoes">Observações:</p>
+               <p class="titulo-form-simples ms-2" for="observacoes">{{'supportingDocuments.observations'|translate|uppercase}}:</p>
                <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
                id="observacoes" class="form-control campo_form ms-2" rows="3"></textarea>
          <!-- [(ngModel)]="client.observations"  -->
@@ -116,7 +116,7 @@
                <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="validate" name="validate" [checked]="validatedDocuments"
                      (change)="validatedDocumentsChange($event.target.checked)">
-                  <label class="form-check-label" for="validate">Validou que os documentos necessários foram efetivamente os carregados?
+                  <label class="form-check-label" for="validate">{{'supportingDocuments.checkUploadDocuments'|translate}}
                   </label>
                </div>
             </div>
@@ -126,7 +126,7 @@
             <div class="ms-3 me-3 ps-3 pe-3 col-7">
                <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="clientPresence" name="clientPresence" value="clientPresence">
-                  <label class="form-check-label" for="clientPresence">Na presença do cliente?</label>
+                  <label class="form-check-label" for="clientPresence">{{'supportingDocuments.customerPresence'|translate}}</label>
                </div>
             </div>
          </div>
@@ -161,7 +161,7 @@
                         <nav
                           class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
                           <span class="navbar-text">
-                            <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">Tem a certeza que deseja excluir o ficheiro?</h5>
+                            <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">{{'deleteFile'|translate}}</h5>
                           </span>
                         </nav>
                         <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
@@ -192,26 +192,26 @@
          <div class="row">
             <div class="offset-1 bg-white align-self-center col-10 ps-3">
                <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top: 30px;">
-               <h4 class="text-primary mt-4 ps-0">QUE DOCUMENTOS DEVE ASSOCIAR AO PROCESSO?</h4>
+               <h4 class="text-primary mt-4 ps-0">{{'supportingDocuments.checklistModal.processRelatedFiles'|translate|uppercase}}</h4>
 
                   <span class="navbar-text ms-auto align-self-start" style="cursor: pointer !important;" (click)="declineCheckList()">
                      <h2 class="mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 text-success">&times;</h2>
                   </span></nav>
-               <p class="ps-0">Deverão ser associados ao processo de Onboarding os seguintes documentos:</p>
+               <p class="ps-0">{{'supportingDocuments.checklistModal.documentsOnboarding'|translate}}</p>
             </div>
             <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-               <p *ngIf="client" class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;Para o cliente empresa {{ client.companyName }}</p>
+               <p *ngIf="client" class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toMerchant'|translate}} {{ client.companyName }}</p>
                <form #contactForm="ngForm">
                   <div class="table-responsive me-2 ps-3">
                      <table class="table table-success align-middle" *ngIf="client">
                         <thead class="table-primary align-middle text-primary">
                            <tr class="text-center text-primary align-middle table-primary">
-                              <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                              <th scope="col">Comprovativo de Sociedade</th>
-                              <th scope="col">Comprovativo BEF</th>
-                              <th scope="col">Comprovativo Fiscal Pessoa coletiva</th>
-                              <th scope="col">Comprovativo de IBAN</th>
-                              <th scope="col">Comprovativo de RCBE</th>
+                              <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.checklistModal.name'|translate}}</th>
+                              <th scope="col">{{'supportingDocuments.checklistModal.society'|translate}}</th>
+                              <th scope="col">{{'supportingDocuments.checklistModal.BEF'|translate}}</th>
+                              <th scope="col">{{'supportingDocuments.checklistModal.NIPC'|translate}}</th>
+                              <th scope="col">{{'supportingDocuments.checklistModal.IBAN'|translate}}</th>
+                              <th scope="col">{{'supportingDocuments.checklistModal.RCBE'|translate}}</th>
                            </tr>
                         </thead>
                         <tbody class="table-light text-primary">
@@ -229,19 +229,19 @@
                </form>
             </div>
             <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
-               <p class="titulo-form-simples mt-0 pb-1 ps-3">Para A NATUREZA JURÍDICA SELECIONADA SOCIEDADE UNIPESSOAL POR QUOTAS OS DOCUMENTOS OBRIGATÓRIOS:&nbsp;</p>
-               <p class="mt-0 pb-1 ps-3 caixa_azul" style="font-size: 16px;">Certidão de conservatória do Registo Comercial Permanente ou Retirada a certidão se Cliente fornecer o código de Acesso à Certidão (www.portaldaempresa.pt)</p>
+               <p class="titulo-form-simples mt-0 pb-1 ps-3">{{'supportingDocuments.checklistModal.juridicNature'|translate}}:&nbsp;</p>
+               <p class="mt-0 pb-1 ps-3 caixa_azul" style="font-size: 16px;">{{'supportingDocuments.checklistModal.CRC'|translate}}</p>
             </div>
             <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
-               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;Para o/os interveniente(s):</p>
+               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStakes'|translate}}</p>
                <div class="table-responsive me-2 ps-3">
                   <table class="table table-success align-middle" *ngFor="let stake of stakeholdersList">
                      <thead class="table-primary align-middle text-primary">
                         <tr class="text-center text-primary align-middle table-primary">
-                           <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                           <th scope="col">Comprovativo de Documento de Identificação</th>
-                           <th scope="col">Comprovativo Fiscal Particular</th>
-                           <th scope="col">Procuração Cliente</th>
+                           <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.checklistModal.name'|translate}}</th>
+                           <th scope="col">{{'supportingDocuments.checklistModal.identificationDocument'|translate}}</th>
+                           <th scope="col">{{'supportingDocuments.checklistModal.NIF'|translate}}</th>
+                           <th scope="col">{{'supportingDocuments.checklistModal.proxy'|translate}}</th>
                         </tr>
                      </thead>
                      <tbody class="table-light text-primary">
@@ -256,13 +256,13 @@
                </div>
             </div>   
             <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-5">
-               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;Para A/AS LOJA(S):</p>
+               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStores'|translate}}</p>
                <div class="table-responsive me-2 ps-3">
                   <table class="table table-success align-middle" *ngIf="client">
                      <thead class="table-primary align-middle text-primary">
                         <tr class="text-center text-primary align-middle table-primary">
-                           <th scope="col" class="align-baseline text-primary table-white">Nome</th>
-                           <th scope="col">Comprovativo de IBAN</th>
+                           <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.checklistModal.name'|translate}}</th>
+                           <th scope="col">{{'supportingDocuments.checklistModal.IBAN'|translate}}</th>
                         </tr>
                      </thead>
                      <tbody class="table-light text-primary">
@@ -280,9 +280,9 @@
       <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
          <div class="row">
             <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-9">
-               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/circle-info-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;LEGENDAS:<br /></p>
+               <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/circle-info-solid.svg" style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.subtitles.title'|translate|uppercase}}:<br /></p>
                <p class="mt-0 pb-1 ps-3" style="margin-bottom: 40px; font-size: 16px;">
-                  <img src="assets/images/check-solid.svg" style="height: 20px !important;">&nbsp;&nbsp;Já existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;X</b>&nbsp;&nbsp;Não existe em arquivo<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;N/A</b>&nbsp;&nbsp;{{'No'|translate}} aplicável
+                  <img src="assets/images/check-solid.svg" style="height: 20px !important;">&nbsp;&nbsp;{{'supportingDocuments.checklistModal.subtitles.archive'|translate}}<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;X</b>&nbsp;&nbsp;{{'supportingDocuments.checklistModal.subtitles.noArchive'|translate}}<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;N/A</b>&nbsp;&nbsp;{{'supportingDocuments.checklistModal.subtitles.unapplicable'|translate}}
                </p>
             </div>
          </div>
@@ -312,13 +312,13 @@
                          </nav>
                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
                              <span class="navbar-text">
-                                 <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">Após efetuar a primeira submissão, o BackOffice irá iniciar a recolha de informação existente nos documentos&nbsp; comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.&nbsp;</h5>
+                                 <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">{{'supportingDocuments.submissionMessage'|translate}}&nbsp;</h5>
                              </span>
                          </nav>
                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                              <span class="navbar-text"></span>
                              <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineFirstSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">{{'Back'|translate}}</button></span>
-                             <span class="navbar-text pt-0 pb-0"><button (click)="continue()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">CONTINUAR</button></span>
+                             <span class="navbar-text pt-0 pb-0"><button (click)="continue()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">{{'Continue'|translate|uppercase}}</button></span>
                          </nav>
                         </div>
                  </div>
@@ -347,7 +347,7 @@
                </button>
                <button *ngIf="validatedDocuments" id="btn5a" (click)="firstSubmission()"
                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-                  SUBMETER PEDIDO&nbsp;
+                  {{'submit'|translate|uppercase}}&nbsp;
                   <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
                </button>
             </span>

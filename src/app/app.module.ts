@@ -20,7 +20,6 @@ import { ClientComponent } from './client/client.component';
 import { ClientExtendedComponent } from './client/client-extended/client-extended.component';
 import { StakeholdersComponent } from './stakeholders/stakeholders.component';
 import { NewStakeholderComponent } from './stakeholders/new-stakeholder/new-stakeholder.component';
-import { CheckDocumentsComponent } from './comprovativos/check-documents/check-documents.component';
 import { StoreIbanComponent } from './store/store-iban/store-iban.component';
 import { StoreComponent } from './store/store-list/store-list.component';
 import { AddStoreComponent } from './store/add-store/add-store.component';
@@ -96,7 +95,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NewStakeholderComponent,
     UpdateStakeholderComponent,
     ComprovativosComponent,
-    CheckDocumentsComponent,
     CommercialOfferListComponent,
     CommercialOfferNewConfigurationComponent,
     StoreIbanComponent,

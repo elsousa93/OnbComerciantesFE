@@ -45,6 +45,45 @@
   "Save": "Guardar",
   "Edit": "Editar",
   "Confirm": "Confirmar",
+  "submit": "Submeter Pedido",
+
+  "supportingDocuments": {
+    "title": "Comprovativos",
+    "consultChecklist": "Consultar Checklist",
+    "attachDocuments": "Anexar Documentos",
+    "observations": "Observações",
+    "checkUploadDocuments": "Validou que os documentos necessários foram efetivamente os carregados?",
+    "customerPresence": "Na presença do cliente?",
+    "submissionMessage": "Após efetuar a primeira submissão, o BackOffice irá iniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.",
+    "checklistModal": {
+      "processRelatedFiles": "Que documentos deve associar ao processo?",
+      "documentsOnboarding": "Deverão ser associados ao processo de Onboarding os seguintes documentos:",
+      "society": "Comprovativo de Sociedade",
+      "BEF": "Comprovativo BEF",
+      "NIPC": "Comprovativo Fiscal Pessoa coletiva",
+      "IBAN": "Comprovativo de IBAN",
+      "RCBE": "Comprovativo de RCBE",
+      "identificationDocument": "Comprovativo de Documento de Identificação",
+      "NIF": "Comprovativo Fiscal Particular",
+      "proxy": "Procuração Cliente",
+      "name": "Nome",
+      "CRC": "Certidão de conservatória do Registo Comercial Permanente ou Retirada a certidão se Cliente fornecer o código de Acesso à Certidão (www.portaldaempresa.pt)",
+      "juridicNature": "Para a natureza jurídica selecionada sociedade unipessoal por quotas os documentos obrigatórios",
+      "toMerchant": "Para o cliente empresa",
+      "toStakes": "Para o(s) interveniente(s):",
+      "toStores": "Para a(s) loja(s)",
+      "subtitles": {
+        "title": "Legendas",
+        "unapplicable": "Não aplicável",
+        "noArchive": "Não existe em arquivo",
+        "archive": "Já existe em arquivo"
+      }
+    }
+  
+  },
+
+  
+  
 
   "//CommercialOffer": "CommercialOfferElement",
   "CODetails": "Detalhes da Oferta Comercial",
@@ -101,5 +140,10 @@
   "DocumentDate": "DATA DO DOCUMENTO",
   "Attach": "ANEXAR",
   "ObligatoryField": "* campo obrigatório",
-  "Add": "ADICIONAR"
+  "Add": "ADICIONAR",
+  "Stakeholder": "Interveniente",
+  "ExpirationDate": "Data de Validade",
+  "EntryDate": "Data de Entrada",
+  "deleteFile": "Tem a certeza que deseja excluir o ficheiro?"
+  
 }

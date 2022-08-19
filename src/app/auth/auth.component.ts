@@ -46,12 +46,17 @@ export class AuthComponent implements OnInit {
     this.token.getAccessToken().then(result => {
       user.token = result.access_token;
 
-      this.authService.changeUser(user);
+      // this.authService.changeUser(user);
+
+      // console.log(this.authService);
+
+      // this.router.navigate(['/']);
+    });
+    this.authService.changeUser(user);
 
       console.log(this.authService);
 
       this.router.navigate(['/']);
-    });
   }
 
   openDiv: boolean = false;
