@@ -75,6 +75,7 @@ import { environment } from 'src/environments/environment';
 import { NGXLogger } from 'ngx-logger';
 import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
 import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
+import { AuthService } from './services/auth.service';
 
 registerLocaleData(localePT);
 
@@ -224,7 +225,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         }
     })
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
+  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

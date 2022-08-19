@@ -27,12 +27,13 @@ export class AppComponent {
   hasAuthenticated: boolean = false;
 
   constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, authService: AuthService) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService) {
     translate.addLangs(['pt', 'en']);
     translate.setDefaultLang('pt');
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    
     crcService.getAccessToken().then(result => {
       this.logger.debug("gerou!!");
       localStorage.setItem("accessToken", result.access_token);
@@ -78,5 +79,11 @@ export class AppComponent {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
+  refresh(): void {
+    console.log("deu refresh!!");
+    console.log("a guardar: ", this.authService.GetCurrentUser());
+    localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
+      window.location.reload();
+  }
 
 }

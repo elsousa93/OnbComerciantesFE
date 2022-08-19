@@ -36,12 +36,12 @@
           <p class="titulo-form-simples">a empresa é uma sociedade comercial?*</p>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
-                   type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)" [disabled]="returned === 'consult'">
+                   type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)" [attr.disabled]="canChangeCommercialSociety() ? null : true">
             <label class="form-check-label radio">{{'Yes'|translate}}</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
-                   type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)" [disabled]="returned === 'consult'">
+                   type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)" [disabled]="canChangeCommercialSociety() ? null : true">
             <label class="form-check-label radio">{{'No'|translate}}</label>
           </div>
 
