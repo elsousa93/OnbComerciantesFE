@@ -1,4 +1,4 @@
-import { ProductPackPricingAttribute } from "../commercial-offer/ICommercialOffer";
+import { ProductPackCommissionAttribute, ProductPackPricingAttribute, ProductPackRootAttributeProductPackKind } from "../commercial-offer/ICommercialOffer";
 import { FiscalAddress } from "../stakeholders/IStakeholders.interface";
 import { Document } from "../submission/ISubmission.interface";
 
@@ -56,9 +56,22 @@ export interface ShopDetailsAcquiring {
   documents?: ShopDocuments
   id?: string
   supportEntity?: string
+  registrationId?: string
+  pack?: ShopProductPack
 }
 
 //Interfaces auxiliares
+
+interface ShopProductPack {
+  packId?: string
+  packDetails?: ProductPackRootAttributeProductPackKind[]
+  commission?: ShopProductPackCommission
+}
+
+interface ShopProductPackCommission {
+  comissionId?: string
+  attributes?: ProductPackCommissionAttribute[]
+}
 
 interface ShopAddress {
   sameAsMerchantAddress?: boolean
@@ -116,6 +129,8 @@ interface ShopProductPackPricingViewModel {
   pricingId?: string
   attributes?: ProductPackPricingAttribute
 }
+
+
 
 enum CommunicationOwnershipTypeEnum {
   UNKNOWN = "unknown",
