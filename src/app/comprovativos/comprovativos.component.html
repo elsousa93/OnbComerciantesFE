@@ -29,7 +29,6 @@
                      </thead>
                      <tbody>
                        <tr *ngFor="let comp of compsToShow">
-                         <!--<input type="hidden" name="id" id="id" value={{client.clientId}}>-->
                          <td class="text-primary text-center text-primary">{{comp.type}}</td>
                          <td class="text-primary text-center">{{comp.stakeholder}}</td>
                          <td class="text-primary text-center">{{comp.expirationDate}}</td>
@@ -48,26 +47,6 @@
                            </span>
                          <td></td>
                        </tr>
-                       <!--<tr *ngFor="let file of files">
-     <input type="hidden" name="id" id="id" value={{client.clientId}}>
-     <td class="text-primary text-center text-primary">{{compToShow.tipo}}</td>
-     <td class="text-primary text-center">{{compToShow.interveniente}}</td>
-     <td class="text-primary text-center">{{compToShow.dataValidade}}</td>
-     <td class="text-primary text-center">{{compToShow.dataEntrada}}</td>
-     <td class="text-primary text-center">{{compToShow.status}}</td>
-     <td></td>
-     <td class="text-center text-primary">
-        <span>
-           <img src="assets/images/delete_blue.svg" (click)="onDelete(newComp.id, client.clientId, newComp.filename, file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-        </span>
-        <span>
-           <img src="assets/images/search_blue.svg" (click)="search(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-        </span>
-        <span>
-           <img src="assets/images/file_download.svg" (click)="download(file)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-        </span>
-     <td></td>
-  </tr>-->
                      </tbody>
                   </table>
                </form>
@@ -95,22 +74,8 @@
                <p class="titulo-form-simples ms-2" for="observacoes">{{'supportingDocuments.observations'|translate|uppercase}}:</p>
                <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
                id="observacoes" class="form-control campo_form ms-2" rows="3"></textarea>
-         <!-- [(ngModel)]="client.observations"  -->
             </div>
          </div>
-   <!-- <div style="text-align: left;">
-         <button type="button" class="btn titulo-form-simples" (click)="onCheckList()">Checklist de Documentos >>></button>
-         </div>
-         <p class="titulo-form-simples" for="observacoes">Observações:</p>
-         <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes" type="text"
-         id="observacoes" class="form-control campo_form" [(ngModel)]="client.observations" rows="3"></textarea>
-         <div style="text-align: right;">
-         <label for="arquivo" class="btn btn-lg btn-outline-primary">Anexar</label>
-         <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)" style="display: none"
-           accept=".pdf">
-         </div>
-         </div>
-         </div> -->
          <div class="row">
             <div class="ms-3 me-3 ps-3 pe-3 col-7">
                <div class="form-check">
@@ -138,8 +103,6 @@
       </div>
    <br>
    <ng-template #deleteModal>
-         <!-- <div class="modal-dialog">
-            <div class="modal-content"> -->
               <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
                 <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
                   <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
@@ -178,14 +141,6 @@
                   </div>
                 </div>
               </main>
-            <!-- </div>
-          </div> -->
-        
-      <!-- <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
-         <p>Tem a certeza que deseja excluir o ficheiro?</p>
-         <button type="button" class="btn btn-primary" (click)="confirmDelete()">{{'Yes'|translate}}</button>
-         <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="declineDelete()">{{'No'|translate}}</button>
-      </div> -->
    </ng-template>
    <ng-template #checkListDocs>
       <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
@@ -289,11 +244,6 @@
       </div>
    </ng-template>
    <ng-template #firstSubmissionModal>
-      <!-- <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
-         <p>Após efetuar a primeira submissão, o BackOffice irá reiniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.</p>
-         <button type="button" class="btn btn-primary" (click)="back()">{{'Back'|translate}}</button>
-         <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="continue()">Continuar</button>
-      </div> -->
       <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
          <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
              <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">

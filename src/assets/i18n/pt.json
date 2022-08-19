@@ -46,6 +46,19 @@
   "Edit": "Editar",
   "Confirm": "Confirmar",
   "submit": "Submeter Pedido",
+  "send": "Enviar",
+
+  "client": {
+    "title": "Cliente Empresa",
+    "data": "Dados do Cliente"
+    
+  },
+  "stakeholder": {
+    "title": "Interveniente"
+  },
+  "stores": {
+    "title": "Lojas"
+  },
 
   "supportingDocuments": {
     "title": "Comprovativos",
@@ -79,7 +92,32 @@
         "archive": "Já existe em arquivo"
       }
     }
-  
+  },
+
+  "declarativeInformation": {
+    "title": "Informação Declarativa",
+    "packSignature": "Assinatura Pack",
+    "indicative": "Indicativo",
+    "phone": "Telefone",
+    "cellPhone": "Telemóvel",
+    "invoicingEmail": "Email de Faturação",
+    "client": {
+      "name": "Nome Comercial"
+    },
+    "stakeholder":{
+      "contacts": "contactos"
+    },
+    "signature": {
+      "type": "Selecione a forma de assinatura do contrato",
+      "language": "Idioma",
+      "chooseOption": "Selecione uma das opções",
+      "paperSignature": "Assinatura em Papel",
+      "eletronicSignature": "Assinatura Eletrónica",
+      "representatives": "Selecione os representantes que obrigam a empresa",
+      "clientName": "Nome do Cliente",
+      "digitalSignatureType": "Tipo de Assinatura Digital",
+      "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?"
+    }
   },
 
   
@@ -139,7 +177,7 @@
   "Exit": "SAIR",
   "DocumentDate": "DATA DO DOCUMENTO",
   "Attach": "ANEXAR",
-  "ObligatoryField": "* campo obrigatório",
+  "mandatoryField": "* campo obrigatório",
   "Add": "ADICIONAR",
   "Stakeholder": "Interveniente",
   "ExpirationDate": "Data de Validade",

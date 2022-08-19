@@ -72,7 +72,7 @@
   "Exit": "EXIT",
   "DocumentDate": "DOCUMENT DATE",
   "Attach": "ATTACH",
-  "ObligatoryField": "* mandatory field",
+  "mandatoryField": "* mandatory field",
   "Add": "ADD"
 }
 

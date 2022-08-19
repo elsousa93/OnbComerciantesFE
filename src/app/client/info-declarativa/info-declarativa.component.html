@@ -7,7 +7,7 @@
 			 <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
 			 </span>
 			 <span class="navbar-text">
-				<h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INFORMAÇÃO DECLARATIVA</h5>
+				<h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'declarativeInformation.title'|translate|uppercase}}</h5>
 			 </span>
 		  </nav>
 	   </div>
@@ -15,16 +15,16 @@
 
       <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
         <li class="nav-item">
-         <a class="nav-link disabled active btn-primary activo_tabs activo-tabd" id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">Cliente Empresa</a>
+         <a class="nav-link disabled active btn-primary activo_tabs activo-tabd" id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">{{'client.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-         <a class="nav-link disabled btn-outline-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">Interveniente</a>
+         <a class="nav-link disabled btn-outline-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">{{'stakeholder.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-         <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">Lojas</a>
+         <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">{{'stores.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-         <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">Assinatura Pack</a>
+         <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
         </li>
        </ul>
        <div class="tab-content" id="navTabs1_content">
@@ -32,14 +32,14 @@
          <div class="container-fluid mt-0 ps-3 pe-3" style="padding-left: 0.75rem !important;">
             <div class="row">
              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-              <h2 class="text-primary mt-3 ps-0"><img src="assets/images/manage_accounts.svg" class="img_add">&nbsp;DADOS DO CLIENTE
+              <h2 class="text-primary mt-3 ps-0"><img src="assets/images/manage_accounts.svg" class="img_add">&nbsp;{{'client.data'|translate|uppercase}}
               </h2>
-              <p class="titul campo_obrigatrio">* campo obrigatório</p>
+              <p class="titul campo_obrigatrio">{{'mandatoryField'|translate}}</p>
               <div class="row ms-0 me-0" style="margin-bottom: 50px;">
                 <form [formGroup]="listValue" (ngSubmit)="submit()" name="listValue">
                   <div class="col">
                     <div class="ms-0 me-0 ps-0 pe-0 col-7">
-                      <p class="titulo-form-simples mt-0">NOME COMERCIAL*</p>
+                      <p class="titulo-form-simples mt-0">{{'declarativeInformation.client.name'|translate|uppercase}}*</p>
                       <input #contactName name="contactName" type="text" id="contactName" class="form-control" formControlName="comercialName" [readonly]="returned === 'consult'">
                       <div class="alert alert-danger" *ngIf="contactName.touched && !contactName.valid">
                         is required.
@@ -52,7 +52,7 @@
                   <div class="ms-0 me-0 ps-0 pe-0 col-7">
                     <div class="row" formGroupName = "phone1">
                       <div class="col-4">
-                        <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
+                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate|uppercase}}:*</p>
                         <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
                           <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
@@ -61,7 +61,7 @@
                         </div> -->
                       </div>
                       <div class="col">
-                        <p class="titulo-form-simples mt-0">TELEFONE 1:*</p>
+                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}} 1:*</p>
                         <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('invalidNumber')">
                           Phone number is invalid.
@@ -74,7 +74,7 @@
 
                     <div class="row" formGroupName = "phone2">
                       <div class="col-4">
-                        <p class="titulo-form-simples mt-0">INDICATIVO:*</p>
+                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate|uppercase}}:*</p>
                         <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
                           <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone2?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
@@ -83,7 +83,7 @@
                         </div> -->
                       </div>
                       <div class="col">
-                        <p class="titulo-form-simples mt-0">TELEFONE 2:*</p>
+                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}} 2:*</p>
                         <input #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('invalidNumber')">
                           Phone number is invalid.
@@ -104,7 +104,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12">
-                        <p class="titulo-form-simples mt-0">EMAIL DE FATURAÇÃO</p>
+                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.invoicingEmail'|translate|uppercase}}</p>
                         <input #billingEmail name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail" [readonly]="returned === 'consult'">
                       </div>
                     </div>

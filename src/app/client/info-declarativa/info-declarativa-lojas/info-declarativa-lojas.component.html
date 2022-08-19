@@ -7,8 +7,7 @@
           <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
         </span>
         <span class="navbar-text">
-          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INFORMAÇÃO
-            DECLARATIVA</h5>
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'declarativeInformation.title'|translate|uppercase}}</h5>
         </span>
       </nav>
     </div>
@@ -17,22 +16,22 @@
         <li class="nav-item">
           <a class="nav-link disabled btn-outline-primary activo_tabs activo-tabd" 
             id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab"
-            aria-controls="navTabs1_1" aria-selected="true">Cliente Empresa</a>
+            aria-controls="navTabs1_1" aria-selected="true">{{'client.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
           <a class="nav-link disabled btn-outline-primary" id="navTabs1_2_tab"
             data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
-            aria-selected="false">Interveniente</a>
+            aria-selected="false">{{'stakeholder.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
           <a class="nav-link disabled active btn-primary" id="navTabs1_3_tab"
             data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
-            aria-selected="false">Lojas</a>
+            aria-selected="false">{{'stores.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
           <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1"
             data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
-            aria-selected="false">Assinatura Pack</a>
+            aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
         </li>
       </ul>
       <div class="tab-content" id="navTabs1_content">
@@ -40,26 +39,6 @@
           <div class="container-fluid mt-0 ps-3 pe-3">
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <!--<div class="table-responsive mb-5">
-    <table class="table">
-      <thead class="text-primary table-primary">
-        <tr class="table-white text-primary">
-          <th scope="col" class="text-center text-primary bg-light table-white">Nome do Estabelecimento</th>
-          <th scope="col" class="text-center bg-light">Atividade</th>
-          <th scope="col" class="text-center bg-white">Subatividade</th>
-          <th scope="col" class="text-center bg-white">Sub Zona</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" class="text-primary text-center"></th>
-          <td class="text-primary text-center"></td>
-          <td class="text-primary text-center"></td>
-          <td class="text-primary text-center"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>-->
                 <mat-table [dataSource]="dataSource" class="table" matSort>
                   <ng-container matColumnDef="nameEstab">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
@@ -89,16 +68,16 @@
                 </mat-paginator>
               </div>
               <div  class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-                <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;INFORMAÇÃO CARACTERÍSTICA DA LOJA
+                <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;{{'StoreInformation'|translate|uppercase}}
                 </h2>
-                <p *ngIf="selectedStore != null" class="titul campo_obrigatrio">* campo obrigatório</p>
+                <p *ngIf="selectedStore != null" class="titul campo_obrigatrio">{{'mandatoryField'|translate}}</p>
                 <form *ngIf="selectedStore != null" [formGroup]="listValue">
 
                   <div class="row ms-0 me-0" style="margin-bottom: 50px;">
                     <div class="ms-0 me-0 ps-0 pe-0 col-7">
                       <div class="row" formGroupName="cellphone">
                         <div class="col-4">
-                          <p class="titulo-form-simples mt-0">INDICATIVO:</p>
+                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate}}:</p>
                           <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode">
                             <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode'>{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
@@ -107,7 +86,7 @@
                           </div>
                         </div>
                         <div class="col">
-                          <p class="titulo-form-simples mt-0">TELEMÓVEL:*</p>
+                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.cellPhone'|translate}}:*</p>
                           <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber"
                                  class="form-control" formControlName="countryCode">
                           <div class="alert alert-danger"
@@ -130,7 +109,7 @@
 
                       <div class="row" formGroupName="telephone">
                         <div class="col-4">
-                          <p class="titulo-form-simples mt-0">INDICATIVO:</p>
+                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate}}:</p>
                           <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode, $event)" id="phone2CountryCode">
                             <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' >{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
@@ -139,7 +118,7 @@
                           </div>
                         </div>
                         <div class="col">
-                          <p class="titulo-form-simples mt-0">TELEFONE:*</p>
+                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate}}:*</p>
                           <input #phone2PhoneNumber name="phone2PhoneNumber" type="text" id="phone2PhoneNumber"
                                  class="form-control" formControlName="countryCode">
                           <div class="alert alert-danger"
