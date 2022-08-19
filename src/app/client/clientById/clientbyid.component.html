@@ -37,12 +37,12 @@
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
                    type="radio" [value]=true id="commercialSociety" (click)="setCommercialSociety(true)" [disabled]="returned === 'consult'">
-            <label class="form-check-label radio">{{'Yes'|translate}}</label>
+            <label class="form-check-label radio">{{'generalKeywords.yes'|translate|uppercase}}</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety"
                    type="radio" [value]=false id="commercialSociety" (click)="setCommercialSociety(false)" [disabled]="returned === 'consult'">
-            <label class="form-check-label radio">{{'No'|translate}}</label>
+            <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
           </div>
 
           <div *ngIf="isCommercialSociety == true">
@@ -51,12 +51,12 @@
             <div class="form-check">
               <input class="form-check-input" name="collectCRC" formControlName="collectCRC"
                      type="radio" [value]=true id="collectCRC" (click)="setCollectCRC(true)" [disabled]="returned === 'consult'">
-              <label class="form-check-label radio">{{'Yes'|translate}}</label>
+              <label class="form-check-label radio">{{'generalKeywords.yes'|translate}}</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" name="collectCRC" formControlName="collectCRC"
                      type="radio" [value]=false id="collectCRC" (click)="setCollectCRC(false)" [disabled]="returned === 'consult'">
-              <label class="form-check-label radio">{{'No'|translate}}</label>
+              <label class="form-check-label radio">{{'generalKeywords.no'|translate}}</label>
             </div>
 
 
@@ -447,7 +447,7 @@
                   <button id="btn5a1"
                           class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-3 pt-3 pb-3 ps-3 pe-3"
                           wappler-command="editContent">
-                    {{'Exit'|translate}}&nbsp;<span class="material-symbols-rounded m-align">
+                    {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                       <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
                     </span>
                   </button>
@@ -457,7 +457,7 @@
                         wappler-command="editContent" (click)="redirectBeginningClient()">
                   <span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
-                  </span>{{'Back'|translate}}&nbsp;
+                  </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
                 </button>
                 <button id="btn5a2"
                         class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"

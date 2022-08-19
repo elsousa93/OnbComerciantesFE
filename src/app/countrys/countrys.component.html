@@ -79,13 +79,13 @@
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=true
                          formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)" [readonly]="returned == 'consult'">
-                  <label class="form-check-label radio pe-5" for="associatedWithGroupOrFranchise">{{'Yes'|translate}}</label>
+                  <label class="form-check-label radio pe-5" for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=false
                          formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)" [readonly]="returned == 'consult'">
-                  <label class="form-check-label radio" for="associatedWithGroupOrFranchise">{{'No'|translate}}</label>
+                  <label class="form-check-label radio" for="associatedWithGroupOrFranchise">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
 
@@ -245,7 +245,7 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
               <span class="navbar-text align-self-center ms-0 me-0">
                 <button id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" type="button" (click)="goBackToHomePage()">
-                  {{'Exit'|translate}}&nbsp;<span class="material-symbols-rounded m-align">
+                  {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
                   </span>
                 </button>
@@ -255,17 +255,17 @@
 
 
               <!--<button id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" type="button" (click)="goBackToHomePage()">
-                {{'Cancel'|translate}}&nbsp;<span class="material-symbols-rounded center-align">
+                {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded center-align">
                   exit_to_app
                 </span>
               </button>-->
               <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" type="button" (click)="redirectToClientById()">
                 <span class="material-symbols-rounded m-align">
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
-                </span>{{'Back'|translate}}&nbsp;
+                </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
               <button id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" type="submit">
-                {{'Next'|translate}}&nbsp;<span class="material-symbols-rounded m-align">
+                {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                   <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                 </span>
               </button>

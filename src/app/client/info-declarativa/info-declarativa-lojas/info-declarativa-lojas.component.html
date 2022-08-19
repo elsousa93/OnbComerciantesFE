@@ -70,7 +70,7 @@
               <div  class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
                 <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;{{'stores.information'|translate|uppercase}}
                 </h2>
-                <p *ngIf="selectedStore != null" class="titul campo_obrigatrio">{{'mandatoryField'|translate}}</p>
+                <p *ngIf="selectedStore != null" class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
                 <form *ngIf="selectedStore != null" [formGroup]="listValue">
 
                   <div class="row ms-0 me-0" style="margin-bottom: 50px;">
@@ -143,19 +143,19 @@
                     <span class="navbar-text me-2 align-self-center ms-0 me-0">
                       <button id="btn5a1" [routerLink]="['/']"
                         class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                        wappler-command="editContent">{{'Exit'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg"
+                        wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
                           style="height: 25px !important; vertical-align: sub;"></button>
                     <button id="btn5a3" [routerLink]="['/']"
                       class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                      wappler-command="editContent">{{'Cancel'|translate}}&nbsp;<img src="assets/images/cancel.svg"
+                      wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg"
                         style="height: 25px !important; vertical-align: sub;"></button>
                     <button id="btn5a4" [routerLink]="['/info-declarativa-stakeholder']"
                       class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                       wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                        style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;</button>
+                        style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
                     <button [disabled]="!listValue.valid && !(returned == 'consult')" id="btn5a2" (click) = "submit()"
                       class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                      wappler-command="editContent">{{'Next'|translate}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
+                      wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
                         style="height: 25px !important; vertical-align: sub;"></button>
                       </span>
                   </nav>

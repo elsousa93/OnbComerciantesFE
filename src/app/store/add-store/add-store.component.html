@@ -14,7 +14,7 @@
      </div>
      <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0" *ngIf="!edit">
       <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'stores.information'|translate|uppercase}}</h2>
-      <p class="titul campo_obrigatrio">{{'mandatoryField'|translate}}</p>
+      <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mb-3 ps-0">
         <!--<form [formGroup]="formStores" (ngSubmit)="submit()">-->
@@ -39,9 +39,9 @@
               <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
               <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.replicateAddress'|translate}}</p>
               <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
-                <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=false id="radio1" name="replicateAddress" (click)="chooseAddress(false)"><label class="form-check-label radio pe-5" for="replicateAddress" wappler-command="editContent">{{'Yes'|translate}}</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=false id="radio1" name="replicateAddress" (click)="chooseAddress(false)"><label class="form-check-label radio pe-5" for="replicateAddress" wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label></div>
                 </span><span class="navbar-text">
-                <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=true id="radio1" name="replicateAddress" (click)="chooseAddress(true)"><label class="form-check-label radio" for="replicateAddress" wappler-command="editContent">{{'No'|translate}}</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicateAddress" [value]=true id="radio1" name="replicateAddress" (click)="chooseAddress(true)"><label class="form-check-label radio" for="replicateAddress" wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label></div>
                 </span></nav>
                 <p *ngIf="formStores.get('replicateAddress').value" class="titulo-form-simples" wappler-command="editContent">{{'stores.country'|translate}} *</p>
                 <!--<input formControlName="countryStore" *ngIf="formStores.get('replicateAddress').value" id="text1" name="text1" type="text" class="form-control campo_form">-->
@@ -55,11 +55,11 @@
                 <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.shoppingCenter'|translate}}</p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
                   <div class="form-check"><input formControlName="commercialCenter" (click)="comercialCentre(true)" class="form-check-input" type="radio" [value]=true id="radio2" name="commercialCenter">
-                    <label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent">{{'Yes'|translate}}</label>
+                    <label class="form-check-label radio pe-5" for="radio2" wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                   </div>
                   </span><span class="navbar-text">
                   <div class="form-check"><input formControlName="commercialCenter" (click)="comercialCentre(false)" class="form-check-input" type="radio" [value]=false id="radio2" name="commercialCenter">
-                    <label class="form-check-label radio" for="radio2" wappler-command="editContent">{{'No'|translate}}</label>
+                    <label class="form-check-label radio" for="radio2" wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                   </div>
                   </span></nav>
                 <p *ngIf="formStores.get('commercialCenter').value" class="titulo-form-simples" wappler-command="editContent">{{'stores.subZone'|translate}}</p>
@@ -99,16 +99,16 @@
                   <hr>
                   <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                     <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                      <button id="btn5a5" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'Exit'|translate}}&nbsp;
+                      <button id="btn5a5" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                         <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
                       </button>
-                      <button id="btn5a5" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'Cancel'|translate}}&nbsp;
+                      <button id="btn5a5" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                         <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
                       </button>
                       <button id="btn5a5" [routerLink]="['/store-comp']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
-                        <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;
+                        <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
                       </button>
-                      <button id="btn5a5" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'Next'|translate}}&nbsp;
+                      <button id="btn5a5" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
                         <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
                       </button>
                     </span>

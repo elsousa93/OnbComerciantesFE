@@ -56,7 +56,7 @@
         <nav *ngIf="!edit" class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
             <button type="submit" [disabled]="isCardNotPresent && !isURLFilled" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-              {{'Add'|translate}}&nbsp;
+              {{'generalKeywords.add'|translate|uppercase}}&nbsp;
               <img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;">
             </button>
           </span>
@@ -71,18 +71,18 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
               <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                {{'Exit'|translate}}&nbsp;
+                {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                 <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
               <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                {{'Cancel'|translate}}&nbsp;
+                {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                 <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
               <button id="btn5a1" [routerLink]="['/add-store']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
-                <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;
+                <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
               <button id="btn5a1" [routerLink]="['/comprovativos']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-                {{'Next'|translate}}&nbsp;
+                {{'generalKeywords.next'|translate|uppercase}}&nbsp;
                 <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
             </span>

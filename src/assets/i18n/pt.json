@@ -95,9 +95,45 @@
       "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?"
     }
   },
-
-  
-  
+  "searches": {
+    "title": "Consultas",
+    "search": "Pesquisa",
+    "processNumber": "Nº de Processo",
+    "state": "Estado",
+    "incompleted": "Incompleto",
+    "running": "A decorrer",
+    "completed": "Completado",
+    "returned": "Retornado",
+    "cancelled": "Cancelado",
+    "orderDateFrom": "Date do Pedido - De:",
+    "orderDateUntil": "Data do Pedido - Até:",
+    "documentType": "Tipo de Documento",
+    "documentNumber": "Nº de Documento",
+    "companyName": "Nome da Empresa",
+    "openProcess": "Abrir Processo"
+  },
+  "generalKeywords": {
+    "yes": "Sim",
+    "no": "Não",
+    "next": "Seguinte",
+    "back": "Voltar",
+    "type": "Tipo",
+    "exit": "Sair",
+    "documentDate": "Data do Documento",
+    "attach": "Anexar",
+    "mandatoryField": "* campo obrigatório",
+    "add": "Adicionar",
+    "stakeholder": "Interveniente",
+    "expirationDate": "Data de Validade",
+    "entryDate": "Data de Entrada",
+    "deleteFile": "Tem a certeza que deseja excluir o ficheiro?"
+  },
+  "generalButtons": {
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "submit": "Submeter Pedido",
+    "send": "Enviar"
+  },
 
   "//CommercialOffer": "CommercialOfferElement",
   "CODetails": "Detalhes da Oferta Comercial",
@@ -125,49 +161,5 @@
   "COCommType": "Tipo de comunucação",
   "COPrivateTerminal": "Os terminais serão defenidos com a sua entidade de apoio ao terminal",
   "COReplicateProduts": "Pretende replicar produtos de outros establecimentos?",
-  "COSelectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos( Loja de Representação)",
-
-  "//Consultas": "Consultas",
-  "Searches": "CONSULTAS",
-  "Search": "PESQUISA",
-  "ProcessNumber": "Nº DE PROCESSO",
-  "State": "ESTADO",
-  "Incompleted": "Incompleto",
-  "Running": "A decorrer",
-  "Completed": "Completado",
-  "Returned": "Retornado",
-  "Cancelled": "Cancelado",
-  "OrderDateFrom": "DATA DO PEDIDO - DE:",
-  "OrderDateUntil": "DATA DO PEDIDO - ATÉ:",
-  "DocumentType": "TIPO DE DOCUMENTO",
-  "DocumentNumber": "Nº DE DOCUMENTO",
-  "CompanyName": "NOME DA EMPRESA",
-  "OpenProcess": "ABRIR PROCESSO",
-
-  "//Default": "default",
-  "Yes": "SIM",
-  "No": "NÃO",
-  "Next": "SEGUINTE",
-  "Back": "VOLTAR",
-  "Type": "TIPO",
-  "Exit": "SAIR",
-  "DocumentDate": "DATA DO DOCUMENTO",
-  "Attach": "ANEXAR",
-  "mandatoryField": "* campo obrigatório",
-  "Add": "ADICIONAR",
-  "Stakeholder": "Interveniente",
-  "ExpirationDate": "Data de Validade",
-  "EntryDate": "Data de Entrada",
-  "deleteFile": "Tem a certeza que deseja excluir o ficheiro?",
-
-  "//Buttons": "ButtonComponents",
-  "Continue": "Continuar",
-  "Cancel": "CANCELAR",
-  "Delete": "Eliminar",
-  "Save": "Guardar",
-  "Edit": "Editar",
-  "Confirm": "Confirmar",
-  "submit": "Submeter Pedido",
-  "send": "Enviar"
-  
+  "COSelectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos( Loja de Representação)"  
 }

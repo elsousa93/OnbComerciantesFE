@@ -19,19 +19,19 @@
         <p>{{'stores.validateStores'|translate}}</p>
         <mat-table [dataSource]="storesMat" class="table" matSort>
           <ng-container matColumnDef="nameEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate|uppercase}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="activityEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate|uppercase}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="subActivityEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="zoneEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate|uppercase}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{(store.address !== null && store.address.address !== null) ? store.address.address.postalArea : ''}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -122,13 +122,13 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
               <button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                {{'Exit'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-              </button><button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'Cancel'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              </button><button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
               <button [routerLink]="['/stakeholders']" id="btn5a5" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
                 <img src="assets/images/arrow_back_ios_white.svg"
-                     style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;
+                     style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
-              <button (click)="submit()" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'Next'|translate}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              <button (click)="submit()" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </span>
           </nav>
         </div>

@@ -19,11 +19,11 @@
                   <table class="table table-success" *ngIf="client" style="overflow-x: hidden !important;">
                      <thead class="table-primary text-primary">
                         <tr class="text-center text-primary table-light">
-                           <th scope="col" class="align-baseline text-primary table-white">{{'Type'|translate}}</th>
-                           <th scope="col" class="text-center bg-light">{{'Stakeholder'|translate}}</th>
-                           <th scope="col" class="text-center bg-white">{{'ExpirationDate'|translate}}</th>
-                           <th scope="col" class="text-center bg-white">{{'EntryDate'|translate}}</th>
-                           <th scope="col" class="text-center bg-white">Status</th>
+                           <th scope="col" class="align-baseline text-primary table-white">{{'generalKeywords.type'|translate|uppercase}}</th>
+                           <th scope="col" class="text-center bg-light">{{'generalKeywords.stakeholder'|translate|uppercase}}</th>
+                           <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate|uppercase}}</th>
+                           <th scope="col" class="text-center bg-white">{{'generalKeywords.entryDate'|translate|uppercase}}</th>
+                           <th scope="col" class="text-center bg-white">STATUS</th>
                            <th scope="col" class="text-center bg-white"></th>
                         </tr>
                      </thead>
@@ -124,17 +124,17 @@
                         <nav
                           class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
                           <span class="navbar-text">
-                            <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">{{'deleteFile'|translate}}</h5>
+                            <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">{{'generalKeywords.deleteFile'|translate}}</h5>
                           </span>
                         </nav>
                         <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                           <span class="navbar-text"></span>
                           <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
                               class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
-                              wappler-command="editContent" (click)="confirmDelete()" data-bs-dismiss="modal">{{'Yes'|translate}}</button></span>
+                              wappler-command="editContent" (click)="confirmDelete()" data-bs-dismiss="modal">{{'generalKeywords.yes'|translate|uppercase}}</button></span>
                           <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
                               class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4" style="color: white;"
-                              wappler-command="editContent" (click)="declineDelete()">{{'No'|translate}}</button></span>
+                              wappler-command="editContent" (click)="declineDelete()">{{'generalKeywords.no'|translate|uppercase}}</button></span>
                         </nav>
                      </div>
                     </div>
@@ -267,8 +267,8 @@
                          </nav>
                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                              <span class="navbar-text"></span>
-                             <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineFirstSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">{{'Back'|translate}}</button></span>
-                             <span class="navbar-text pt-0 pb-0"><button (click)="continue()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">{{'Continue'|translate|uppercase}}</button></span>
+                             <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineFirstSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">{{'generalKeywords.back'|translate|uppercase}}</button></span>
+                             <span class="navbar-text pt-0 pb-0"><button (click)="continue()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">{{'generalButtons.continue'|translate|uppercase}}</button></span>
                          </nav>
                         </div>
                  </div>
@@ -283,21 +283,21 @@
                <span class="navbar-text me-2 align-self-center ms-0 me-0">
                   <button id="btn5a" style="margin-left: 0px;" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
                      [routerLink]="['/']" wappler-command="editContent">
-                     {{'Exit'|translate}}&nbsp;
+                     {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                      <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
                   </button>
                <button id="btn5a" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                  {{'Cancel'|translate}}&nbsp;
+                  {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                   <img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">
                </button>
                <button id="btn5a" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"
                   [routerLink]="['/store-comp']">
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">
-                  {{'Back'|translate}}&nbsp;
+                  {{'generalKeywords.back'|translate|uppercase}}&nbsp;
                </button>
                <button *ngIf="validatedDocuments" id="btn5a" (click)="firstSubmission()"
                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-                  {{'submit'|translate|uppercase}}&nbsp;
+                  {{'generalButtons.submit'|translate|uppercase}}&nbsp;
                   <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
                </button>
             </span>
