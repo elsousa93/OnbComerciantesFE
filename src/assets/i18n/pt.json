@@ -1,63 +1,40 @@
 {
-  "Stores": "LOJAS",
-  "TitleStores": "IDENTIFICAÇÃO DA(S) LOJA(S)",
-  "RemoveStoreButton": "REMOVER LOJA",
-  "AddStoreButton": "INSERIR LOJA",
-  "NameStores": "NOME DA LOJA",
-  "ActivityStores": "ATIVIDADE",
-  "SubZoneStores": "SUB ZONA",
-  "SubActivityStores": "SUBATIVIDADE",
-  "AddStore": "Adicionar Loja",
-  "EditStore": "Editar Loja",
-  "DefineIbanStore": "Definir Iban",
-  "ContryStore": "País*",
-  "PostalCodeStore": "Código Postal*",
-  "AddressStore": "MORADA*",
-  "IPAddressStore": "Endereço de IP Fixo",
-  "LocaleStore": "LOCALIDADE POSTAL*",
-  "EmailStore": "E-mail",
-  "ContactPointName": "NOME DO PONTO DE CONTATO",
-  "CellIndStore": "Indicador de Telemóvel/Telefone",
-  "CellNrStore": "Número de Telemóvel/Telefone",
-  "IbanStore": "Iban da Loja",
-  "ReplicateAddStore": "PRETENDE REPLICAR A MORADA DO CLIENTE EMPRESA PARA A LOJA?",
-  "ReplicateContStore": "Pretende replicar os contactos do comerciante?",
-  "ReplicateIbanStore": "Pretende utilizar o IBAN do comerciante?",
-  "ComercialCentreStore": "A LOJA ENCONTRA-SE LOCALIZADA NUM CENTRO COMERCIAL?",
-  "SupportBank": "Banco de apoio",
-  "InfoClientBank": "PRETENDE considerar A informação bancária do cliente empresa?",
-  "AttachIBAN": "por favor anexe o comprovativo de IBAN:",
-  "ValidateStores": "Valide a(s) Loja(s) relacionadas com a Empresa. Caso pretenda, adicione ou remova Loja(s)",
-  "StoreInformation": "INFORMAÇÃO CARATERÍSTICA DA LOJA",
-  "BankAccountStoreInformation": "IDENTIFICAÇÃO DA CONTA BANCÁRIA ASSOCIADA À LOJA",
-  "ProductsSelection": "SELECÇÃO DE PRODUTOS",
-  "SolutionType": "Tipo de Solução",
-  "SelectSolutionType":"Selecione tipo de solução UNICRE",
-  "PresencialTransaction": "Transações Presenciais",
-  "NoPresencialTransaction": "Transações não Presenciais",
-  "CombinedOffer": "OFERTA COMBINADA",
-  "SubProduct": "SUB PRODUTO",
-
-  "//Buttons": "ButtonComponents",
-  "Continue": "Continuar",
-  "Cancel": "CANCELAR",
-  "Delete": "Eliminar",
-  "Save": "Guardar",
-  "Edit": "Editar",
-  "Confirm": "Confirmar",
-  "submit": "Submeter Pedido",
-  "send": "Enviar",
-
   "client": {
     "title": "Cliente Empresa",
     "data": "Dados do Cliente"
-    
   },
   "stakeholder": {
     "title": "Interveniente"
   },
   "stores": {
-    "title": "Lojas"
+    "title": "Lojas",
+    "identification": "Identificação da(s) Loja(s)",
+    "remove": "Remover Loja",
+    "insert": "Inserir Loja",
+    "name": "Nome da Loja",
+    "activity": "Atividade",
+    "subZone": "Sub Zona",
+    "subActivity": "Subatividade",
+    "country": "País",
+    "postalCode": "Código Postal",
+    "address": "Morada",
+    "locale": "Localidade Postal",
+    "contactPointName": "Nome do Ponto de Contacto",
+    "replicateAddress": "Pretende replicar a morada do cliente empresa para a loja?",
+    "shoppingCenter": "A loja encontra-se localizada num Centro Comercial?",
+    "supportBank": "Banco de apoio",
+    "infoClientBank": "Pretende considerar a informação bancária do cliente empresa?",
+    "attachIBAN": "por favor anexe o comprovativo de IBAN:",
+    "validateStores": "Valide a(s) Loja(s) relacionadas com a Empresa. Caso pretenda, adicione ou remova Loja(s)",
+    "information": "Informação característica da Loja",
+    "bankAccount": "Identificação da conta bancária associada à loja",
+    "productSelection": "Selecção de Produtos",
+    "solutionType": "Tipo de Solução",
+    "selectSolutionType":"Selecione tipo de solução UNICRE",
+    "presencialTransaction": "Transações Presenciais",
+    "noPresencialTransaction": "Transações não Presenciais",
+    "combinedOffer": "Oferta Combinada",
+    "subProduct": "Sub Produto"
   },
 
   "supportingDocuments": {
@@ -93,7 +70,6 @@
       }
     }
   },
-
   "declarativeInformation": {
     "title": "Informação Declarativa",
     "packSignature": "Assinatura Pack",
@@ -182,6 +158,16 @@
   "Stakeholder": "Interveniente",
   "ExpirationDate": "Data de Validade",
   "EntryDate": "Data de Entrada",
-  "deleteFile": "Tem a certeza que deseja excluir o ficheiro?"
+  "deleteFile": "Tem a certeza que deseja excluir o ficheiro?",
+
+  "//Buttons": "ButtonComponents",
+  "Continue": "Continuar",
+  "Cancel": "CANCELAR",
+  "Delete": "Eliminar",
+  "Save": "Guardar",
+  "Edit": "Editar",
+  "Confirm": "Confirmar",
+  "submit": "Submeter Pedido",
+  "send": "Enviar"
   
 }

@@ -3,32 +3,32 @@
   <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()" >
     <div class="row">
       <div class="offset-1 col-10 mt-0 mb-0 pt-0 pb-0 ps-0 pe-0" *ngIf="!edit">
-        <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/add_card.svg" class="img_add">&nbsp;{{'ProductsSelection'|translate}}</h2>
+        <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/add_card.svg" class="img_add">&nbsp;{{'stores.productSelection'|translate|uppercase}}</h2>
       </div>
       <div class="offset-1 col-10 pt-3 ps-0">
-        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'SolutionType'|translate}}</h5>
-        <p class=" mt-0 mb-3 ms-0 ps-0 S" wappler-command="editContent">{{'SelectSolutionType'|translate}}&nbsp;</p>
+        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.solutionType'|translate}}</h5>
+        <p class=" mt-0 mb-3 ms-0 ps-0 S" wappler-command="editContent">{{'stores.selectSolutionType'|translate}}&nbsp;</p>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
           <span class="navbar-text text-primary">
             <div class="form-check"><input (click)="chooseSolution(true, false, false)" formControlName="solutionType" class="form-check-input" type="radio" value="cardPresent" id="solutionType1" name="solutionType"><label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b>CARD PRESENT</b></label></div>
-            <div class="form-check"><label class="form-check-label" for="solutionType">{{'PresencialTransaction'|translate}}</label></div>
+            <div class="form-check"><label class="form-check-label" for="solutionType">{{'stores.presencialTransaction'|translate}}</label></div>
           </span>
           <span class="navbar-text ms-3">
             <span class="navbar-text text-primary">
               <div class="form-check"><input (click)="chooseSolution(false, true, false)" class="form-check-input" formControlName="solutionType" type="radio" value="cardNotPresent" id="solutionType2" name="solutionType"><label class="form-check-label radio pe-5" for="solutionType"><b>CARD NOT PRESENT</b></label></div>
-              <div class="form-check"><label class="form-check-label" for="solutionType" wappler-command="editContent">{{'NoPresencialTransaction'|translate}}</label></div>
+              <div class="form-check"><label class="form-check-label" for="solutionType" wappler-command="editContent">{{'stores.noPresencialTransaction'|translate}}</label></div>
             </span>
           </span>
           <span class="navbar-text ms-3">
             <span class="navbar-text text-primary">
-              <div class="form-check"><input (click)="chooseSolution(false, false, true)" class="form-check-input" formControlName="solutionType" type="radio" value="combinedOffer" id="solutionType3" name="solutionType"><label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b>{{'CombinedOffer'|translate}}</b></label></div>
+              <div class="form-check"><input (click)="chooseSolution(false, false, true)" class="form-check-input" formControlName="solutionType" type="radio" value="combinedOffer" id="solutionType3" name="solutionType"><label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b>{{'stores.combinedOffer'|translate}}</b></label></div>
               <div class="form-check"><label class="form-check-label" for="solutionType"></label></div>
             </span>
           </span>
         </nav>
       </div>
       <div *ngIf="formStores.get('solutionType').value == 'cardPresent'" class="offset-1 col-10 pt-0 ps-0">
-        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'SubProduct'|translate}}</h5>
+        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.subProduct'|translate}}</h5>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
           <span class="navbar-text text-primary">
             <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="easy" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct" wappler-command="editContent"><b>EASY</b></label></div>
@@ -40,7 +40,7 @@
         </nav>
       </div>
       <div *ngIf="formStores.get('solutionType').value == 'cardNotPresent'" class="offset-1 col-10 pt-0 ps-0">
-        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'SubProduct'|translate}}</h5>
+        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.subProduct'|translate}}</h5>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
           <span class="navbar-text text-primary">
             <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="keyOnHand" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct" wappler-command="editContent"><b>CHAVE NA MÃO</b></label></div>

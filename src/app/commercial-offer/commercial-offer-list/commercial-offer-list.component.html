@@ -20,15 +20,15 @@
          </h2>
          <mat-table [dataSource]="storesOfferMat" class="table" matSort>
            <ng-container matColumnDef="nameEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate}} </mat-header-cell>
              <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
            </ng-container>
            <ng-container matColumnDef="activityEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ActivityStores'|translate}} </mat-header-cell>
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate}} </mat-header-cell>
              <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
            </ng-container>
            <ng-container matColumnDef="subActivityEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubActivityStores'|translate}} </mat-header-cell>
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate}} </mat-header-cell>
              <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
            </ng-container>
            <ng-container matColumnDef="bank">

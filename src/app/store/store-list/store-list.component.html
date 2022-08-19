@@ -8,30 +8,30 @@
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
           </span>
           <span class="navbar-text">
-            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'stores.title'|translate}}</h5>
+            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'stores.title'|translate|uppercase}}</h5>
           </span>
         </nav>
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
         <h2 class="text-primary mt-5 ps-0 ">
-          <img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'TitleStores'|translate}}
+          <img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'stores.identification'|translate|uppercase}}
         </h2>
-        <p>{{'ValidateStores'|translate}}</p>
+        <p>{{'stores.validateStores'|translate}}</p>
         <mat-table [dataSource]="storesMat" class="table" matSort>
           <ng-container matColumnDef="nameEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="activityEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ActivityStores'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="subActivityEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubActivityStores'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="zoneEstab">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubZoneStores'|translate}} </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{(store.address !== null && store.address.address !== null) ? store.address.address.postalArea : ''}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -51,11 +51,11 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-5">
             <span class="navbar-text align-self-center mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
               <button id="btn4a" [disabled]="returned === 'consult'" (click)="deleteStore()" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
-                {{'RemoveStoreButton'|translate}}&nbsp;
+                {{'stores.remove'|translate|uppercase}}&nbsp;
                 <img src="assets/images/store.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
               <button id="btn5a" [disabled]="returned === 'consult'" [routerLink]="['/add-store']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-                {{'AddStoreButton'|translate}}&nbsp;
+                {{'stores.insert'|translate|uppercase}}&nbsp;
                 <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
             </span>
@@ -72,7 +72,7 @@
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/storefront.svg"/>
                   </span>
-                  &nbsp;&nbsp;{{'StoreInformation'|translate}}
+                  &nbsp;&nbsp;{{'stores.information'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
@@ -88,7 +88,7 @@
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/account_balance.svg" />
                   </span>
-                  &nbsp;&nbsp;{{'BankAccountStoreInformation'|translate}}
+                  &nbsp;&nbsp;{{'stores.bankAccount'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
@@ -104,7 +104,7 @@
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/add_card.svg" />
                   </span>
-                  &nbsp;&nbsp;{{'ProductsSelection'|translate}}
+                  &nbsp;&nbsp;{{'stores.productSelection'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"

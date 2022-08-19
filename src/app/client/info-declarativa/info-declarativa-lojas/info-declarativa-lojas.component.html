@@ -41,15 +41,15 @@
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
                 <mat-table [dataSource]="dataSource" class="table" matSort>
                   <ng-container matColumnDef="nameEstab">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="activityEstab">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ActivityStores'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="subActivityEstab">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubActivityStores'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="zoneEstab">
@@ -68,7 +68,7 @@
                 </mat-paginator>
               </div>
               <div  class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-                <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;{{'StoreInformation'|translate|uppercase}}
+                <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;{{'stores.information'|translate|uppercase}}
                 </h2>
                 <p *ngIf="selectedStore != null" class="titul campo_obrigatrio">{{'mandatoryField'|translate}}</p>
                 <form *ngIf="selectedStore != null" [formGroup]="listValue">
