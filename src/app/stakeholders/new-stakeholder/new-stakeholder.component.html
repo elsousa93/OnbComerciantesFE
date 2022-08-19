@@ -18,7 +18,8 @@
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
         <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
-          <div class="table-responsive me-2 ps-3 pe-3">
+          <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="updateForm($event)"></app-stakeholders-list>
+          <!--<div class="table-responsive me-2 ps-3 pe-3">
             <table class="table table-success">
               <thead class="text-primary table-primary">
                 <tr class="text-center text-primary table-light">
@@ -31,9 +32,9 @@
                   <th scope="col" class="align-baseline text-primary table-white">Vai Assinar Contrato</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody>-->
                 <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
-                <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}">
+                <!--<tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}">
                   <td scope="row" class="text-primary text-center">{{stakeholder.shortName}}</td>
                   <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                   <td class="text-primary text-center"> - </td>
@@ -44,7 +45,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div>-->
         </div>
         
         <div class="row ms-0 me-0" *ngIf="isSelected">
@@ -59,14 +60,14 @@
                 <div class="form-check">
                   <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
                          type="radio" value='true' id="contractAssociation" />
-                  <label class="form-check-label radio pe-5" for="radio8">{{'Yes'|translate}}</label>
+                  <label class="form-check-label radio pe-5" for="radio8">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
                          type="radio" value='false' id="contractAssociation" />
-                  <label class="form-check-label radio" for="radio2">{{'No'|translate}}</label>
+                  <label class="form-check-label radio" for="radio2">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
             </nav>
@@ -80,7 +81,7 @@
                   <input class="form-check-input" formControlName="flagRecolhaEletronica"
                          name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC" [attr.disabled]="returned === 'consult' ? true : null"
                          (click)="validateCC(true)" />
-                  <label class="form-check-label radio pe-5" for="radio2">{{'Yes'|translate}}</label>
+                  <label class="form-check-label radio pe-5" for="radio2">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span>
               <span class="navbar-text">
@@ -88,7 +89,7 @@
                   <input input class="form-check-input" formControlName="flagRecolhaEletronica"
                          name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica || returned === 'consult' ? true : null"
                          (click)="validateCC(false)" />
-                  <label class="form-check-label radio" for="radio2">{{'No'|translate}}</label>
+                  <label class="form-check-label radio" for="radio2">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
             </nav>
@@ -102,14 +103,14 @@
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
                          value='true' id="proxy" [attr.disabled]="returned === 'consult' ? true : null"/>
-                  <label class="form-check-label radio pe-5" for="radio1">{{'Yes'|translate}}</label>
+                  <label class="form-check-label radio pe-5" for="radio1">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
                          value='false' id="proxy" [attr.disabled]="returned === 'consult' ? true : null"/>
-                  <label class="form-check-label radio" for="radio1">{{'No'|translate}}</label>
+                  <label class="form-check-label radio" for="radio1">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
             </nav>
@@ -283,9 +284,9 @@
           <hr>
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
-              <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'Exit'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
-              <button id="btn5a4" [routerLink]="['/stakeholders']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;</button>
-              <button id="btn5a2" [routerLink]="['/store-comp']" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'Next'|translate}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              <button id="btn5a4" [routerLink]="['/stakeholders']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
+              <button id="btn5a2" [routerLink]="['/store-comp']" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </span>
           </nav>
         </div>

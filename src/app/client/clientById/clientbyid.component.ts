@@ -39,6 +39,8 @@ export class ClientByIdComponent implements OnInit {
   form: FormGroup;
   myControl = new FormControl('');
 
+  errorMsg: string = "";
+
   public clientId: string;
   
   //client: Client = {} as Client;
@@ -668,7 +670,6 @@ export class ClientByIdComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
-
   setCommercialSociety(id: boolean) {
     this.crcFound = false;
     this.collectCRC = undefined;
@@ -777,13 +778,23 @@ export class ClientByIdComponent implements OnInit {
      if (!crcFormat.test(crcInserted)) {
        this.crcError = true;
        this.crcFound = false;
+       this.errorMsg = 'CRC inserido não está com o formato correto'
        return;
      }
      this.crcError = false;
      this.crcService.getCRC(crcInserted, '001').subscribe(o => {
+       if (o === {} || o === undefined || o === null) {
+         this.crcError = true;
+         this.crcFound = false;
+         this.errorMsg = 'CRC inserido não foi encontrado';
+       }
+
+       console.log("CHEGOU AQUI TB 2!!");
         var clientByCRC = o;
 
-        this.crcFound = true;
+       this.crcFound = true;
+       this.crcError = false;
+       this.errorMsg = '';
         this.processClient.legalNature = clientByCRC.legalNature;
         this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
         this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;

@@ -16,19 +16,19 @@
 
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
          <h2 class="text-primary mt-5 ps-0 ">
-           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'Stores'|translate}}
+           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.title'|translate}}
          </h2>
          <mat-table [dataSource]="storesOfferMat" class="table" matSort>
            <ng-container matColumnDef="nameEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NameStores'|translate}} </mat-header-cell>
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate}} </mat-header-cell>
              <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
            </ng-container>
            <ng-container matColumnDef="activityEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ActivityStores'|translate}} </mat-header-cell>
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate}} </mat-header-cell>
              <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
            </ng-container>
            <ng-container matColumnDef="subActivityEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'SubActivityStores'|translate}} </mat-header-cell>
+             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate}} </mat-header-cell>
              <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
            </ng-container>
            <ng-container matColumnDef="bank">
@@ -85,14 +85,14 @@
                               <div class="form-check">
                                  <input class="form-check-input" type="radio" [value]=true id="radio1" formControlName="replicateProducts" name="replicateProducts" (click)="changeReplicateProducts(true)">
                                  <label class="form-check-label radio pe-5" for="radio1"
-                                    wappler-command="editContent">{{'Yes'|translate}}</label>
+                                    wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                               </div>
                            </span>
                            <span class="navbar-text">
                               <div class="form-check">
                                  <input class="form-check-input" type="radio" [value]=false id="radio1" formControlName="replicateProducts" name="replicateProducts" (click)="changeReplicateProducts(false)">
                                  <label class="form-check-label radio" for="radio1"
-                                    wappler-command="editContent">{{'No'|translate}}</label>
+                                    wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                               </div>
                            </span>
                         </nav>
@@ -114,14 +114,14 @@
                               <div class="form-check">
                                  <input (click)="changeUnicre(true)" class="form-check-input" type="radio" [value]=true id="radio2" formControlName="isUnicre" name="isUnicre">
                                  <label class="form-check-label radio pe-5" for="radio2"
-                                    wappler-command="editContent">{{'Yes'|translate}}</label>
+                                    wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                               </div>
                            </span>
                            <span class="navbar-text">
                               <div class="form-check">
                                  <input (click)="changeUnicre(false)" class="form-check-input" type="radio" [value]=false id="radio2" formControlName="isUnicre" name="isUnicre">
                                  <label class="form-check-label radio" for="radio2"
-                                    wappler-command="editContent">{{'No'|translate}}</label>
+                                    wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                               </div>
                            </span>
                         </nav>
@@ -529,19 +529,19 @@
                <span class="navbar-text me-2 align-self-center ms-0 me-0">
                   <button [routerLink]="['/']" id="btn5a1"
                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                     wappler-command="editContent">{{'Exit'|translate}}&nbsp;
+                     wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                      <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
                   </button><button id="btn5a1" [routerLink]="['/']"
                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                     wappler-command="editContent">{{'Cancel'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg"
+                     wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
                         style="height: 25px !important; vertical-align: sub;"></button><button
                      [routerLink]="['/comprovativos']" id="btn5a1"
                      class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                      wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                        style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;</button>
+                        style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
                   <button [routerLink]="['/info-declarativa']" id="btn5a1"
                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                     wappler-command="editContent">{{'Next'|translate}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
+                     wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
                         style="height: 25px !important; vertical-align: sub;"></button>
                </span>
             </nav>

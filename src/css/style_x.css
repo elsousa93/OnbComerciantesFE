@@ -386,7 +386,8 @@ main {
 
   .menu-footer {
     margin-top: 2px;
-    margin-bottom: 1px
+    margin-bottom: 1px;
+    cursor: pointer;
   }
 
   .copyright-footer {

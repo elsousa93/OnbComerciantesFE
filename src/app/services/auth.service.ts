@@ -28,6 +28,10 @@ export class AuthService {
     this.authenticated.next(true);
   }
 
+  GetToken() {
+    return this.dataSource.getValue().token;
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(this.user);
     this.authenticated.next(false);

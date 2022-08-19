@@ -116,10 +116,6 @@ export class StakeholdersComponent implements OnInit {
 
   }
 
-
-
-
-
   newStake: IStakeholders = {
     "fiscalId": "",
     "identificationDocument": {
@@ -184,6 +180,8 @@ export class StakeholdersComponent implements OnInit {
 
   submissionId: string;
 
+  processNumber: string;
+
 //  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   submissionStakeholders: IStakeholders[] = [];
@@ -233,6 +231,7 @@ export class StakeholdersComponent implements OnInit {
       private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
     this.submissionId = localStorage.getItem('submissionId');
+    this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
 
     this.ngOnInit();

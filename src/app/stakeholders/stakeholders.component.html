@@ -15,7 +15,7 @@
     </div>
     <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
       <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
-        <div class="table-responsive me-2 ps-3 pe-3">
+        <!--<div class="table-responsive me-2 ps-3 pe-3">
           <table class="table table-success">
             <thead class="text-primary table-primary">
               <tr class="text-center text-primary table-light">
@@ -46,7 +46,8 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </div>-->
+        <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false ></app-stakeholders-list>
       </div>
       <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -67,7 +68,7 @@
           <span class="navbar-text me-2">
             <button id="btn5a3" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent"
                     (click)="redirectInfoStakeholder()">
-              {{'Next'|translate}}&nbsp;<span class="material-symbols-rounded m-align">
+              {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
 
                 <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">
 

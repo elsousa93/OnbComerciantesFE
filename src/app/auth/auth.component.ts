@@ -41,13 +41,22 @@ export class AuthComponent implements OnInit {
     user.bankName = this.authForm.get('bankName').value;
     user.bankLocation = this.authForm.get('bankLocation').value;
     user.permissions = this.authForm.get('role').value;
-    user.authTime = (new Date()).toISOString();
+    user.authTime = (new Date()).toLocaleString('pt-PT');
 
+    this.token.getAccessToken().then(result => {
+      user.token = result.access_token;
+
+      // this.authService.changeUser(user);
+
+      // console.log(this.authService);
+
+      // this.router.navigate(['/']);
+    });
     this.authService.changeUser(user);
 
-    console.log(this.authService);
+      console.log(this.authService);
 
-    this.router.navigate(['/']);
+      this.router.navigate(['/']);
   }
 
   openDiv: boolean = false;

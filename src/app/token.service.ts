@@ -4,6 +4,7 @@ import { Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { merge, Observable, switchMap } from 'rxjs';
 import { Configuration, configurationToken } from './configuration';
+import { AuthService } from './services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class TokenService {
   private authTokenUrl: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private authService: AuthService) {
     this.DOCASUrl = configuration.DOCASUrl;
     this.authTokenUrl = configuration.authTokenUrl;
   }
@@ -31,16 +32,25 @@ export class TokenService {
   }
 
   getCRC(code: string, requestReason: string, requestedBy?: string): any {
+    var token = '';
 
-    const HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-      }),
-    }
-    var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
-    var observable = this.http.get<any>(URI, HTTP_OPTIONS);
-    return observable;
+    console.log("getCRC!!!");
 
+    this.authService.currentUser.subscribe(result => {
+      console.log("resultado: ", result);
+      token = result.token;
+
+      console.log("token: ", token);
+
+      const HTTP_OPTIONS = {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        }),
+      }
+      var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
+      var observable = this.http.get<any>(URI, HTTP_OPTIONS);
+      return observable;
+    })
   }
 
 }

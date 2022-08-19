@@ -555,6 +555,7 @@ export class ClientComponent implements OnInit {
 
   changeListElementDocType(docType, e: any) {
     // this.activateButtons(true);
+    
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
     if (this.docType === '004') { //código do Cartão do Cidadão
@@ -631,6 +632,8 @@ export class ClientComponent implements OnInit {
   }
 
   activateButtons(id: boolean) {
+    this.newClient.clientId = '';
+    this.newClient.documentationDeliveryMethod = '';
     this.logger.debug("Client typology: ", this.clientTypology);
     this.logger.debug("isCC:  ", this.isCC, this.isCC);
     this.logger.debug("showENI:  ", this.showENI);
