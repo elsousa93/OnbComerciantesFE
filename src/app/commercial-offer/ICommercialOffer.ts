@@ -68,7 +68,7 @@ export interface ProductPack {
   groups?: ProductPackRootAttributeProductPackKind[]
 }
 
-interface ProductPackRootAttributeProductPackKind {
+export interface ProductPackRootAttributeProductPackKind {
   id?: string
   description?: string
   kind?: ProductPackKindEnum
@@ -156,7 +156,7 @@ export interface ProductPackCommission {
   attributes?: ProductPackCommissionAttribute[]
 }
 
-interface ProductPackCommissionAttribute {
+export interface ProductPackCommissionAttribute {
   id?: string
   description?: string
   fixedValue?: ProductPackCommissionAttributeValue

@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Istore, ShopDetailsAcquiring } from '../../store/IStore.interface';
+import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
 import { NGXLogger } from 'ngx-logger';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -131,6 +131,9 @@ export class CommercialOfferListComponent implements OnInit {
   currentUser: User = {};
   replicateProducts: boolean;
   disableNewConfiguration: boolean;
+  public storeEquip: ShopEquipment;
+  public returned: string;
+  public showMore: boolean;
 
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
@@ -139,21 +142,28 @@ export class CommercialOfferListComponent implements OnInit {
 
   constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService) {
     this.baseUrl = configuration.baseUrl;
+
+    if (this.route.getCurrentNavigation()?.extras?.state) {
+      this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
+      this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"];
+    }
+
     authService.currentUser.subscribe(user => this.currentUser = user);
 
     this.initializeForm();
 
     if (this.currentUser.permissions == UserPermissions.BANCA) {
       this.form.get("isUnicre").setValue(false);
+      this.isUnicre = false;
       this.form.get("isUnicre").disable();
     }
 
-    /*Get stores list*/
-    this.ngOnInit();
-    http.get<Istore[]>(this.baseUrl + 'bestores/GetAllStores/' + this.clientID).subscribe(result => {
-      this.logger.debug(result);
-      this.stores = result;
-    }, error => console.error(error));
+    if (this.returned == 'consult') {
+      //ir buscar a lista de lojas associadas ao processo que estamos a consultar
+    } else {
+      //ir buscar a lista de lojas da submissão em que nos encontramos
+    }
+
     this.data.updateData(false, 5);
   }
 
@@ -161,6 +171,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.loadStores();
+    this.returned = localStorage.getItem("returned");
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
@@ -172,17 +183,25 @@ export class CommercialOfferListComponent implements OnInit {
     this.currentStore = store;
     this.currentIdx = idx;
 
-    if (store.supportEntity == 'other')
+    if (this.form.get("replicateProducts").value)
+      this.loadStoresWithSameBank(this.currentStore.bank.bank.bank);
+
+    if (store.supportEntity == 'other' || this.returned == 'consult')
       this.disableNewConfiguration = true;
     else
       this.disableNewConfiguration = false;
 
-    setTimeout(() => this.setFormData(), 500);
+    if (this.returned != null)
+      setTimeout(() => this.setFormData(), 500);
+
+    if (this.returned == 'consult')
+      this.form.disable();
   }
 
   initializeForm() {
     this.form = new FormGroup({
       replicateProducts: new FormControl(this.replicateProducts, [Validators.required]),
+      store: new FormControl(''),
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
       terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
@@ -217,8 +236,19 @@ export class CommercialOfferListComponent implements OnInit {
     }
   }
 
+  //fazer a lógica de atribuir os valores ao form aqui
   setFormData() {
+    //setValue(null) - são valores que ainda não conseguimos ir buscar
+    this.form.get("replicateProducts").setValue(null);
+    this.form.get("isUnicre").setValue(this.currentStore.supportEntity);
 
+    if (this.form.get("replicateProducts").value)
+      this.form.get("store").setValue(null);
+
+    if (!this.form.get("isUnicre").value)
+      this.form.get("terminalRegistrationNumber").setValue(null);
+
+    this.form.get("productPackKind").setValue(null);
   }
 
   onCickContinue() {
@@ -245,6 +275,16 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
+    if (this.returned != 'consult') {
 
+    }
+  }
+
+  changeShowMore() {
+    this.showMore = !this.showMore;
+  }
+
+  loadStoresWithSameBank(bank: string) {
+    
   }
 }

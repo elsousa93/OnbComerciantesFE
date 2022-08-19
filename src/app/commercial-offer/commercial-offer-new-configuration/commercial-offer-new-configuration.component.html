@@ -98,7 +98,7 @@
                </div>
             </div>
             <div class="col mt-0 mb-0 pt-5 pb-4 ps-1">
-               <button id="btn5a2" (click)="loadMensalidades()" class="btn botao_azul btn-lg mt-2 ms-1 me-1" wappler-command="editContent">CARREGAR MENSALIDADES&nbsp;&nbsp;<img src="assets/images/move_up_white.svg" style="height: 25px !important; vertical-align: sub;"></button>
+               <button id="btn5a2" type="button" (click)="loadMensalidades()" class="btn botao_azul btn-lg mt-2 ms-1 me-1" wappler-command="editContent">CARREGAR MENSALIDADES&nbsp;&nbsp;<img src="assets/images/move_up_white.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </div>
             <div class="col mt-0 mb-0 pt-5 pb-4 ps-1">
 
@@ -138,7 +138,7 @@
            <div class="col mt-0 mb-0 pt-0 pb-4 ps-1">
 
                <button id="btn5a3" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-4 pe-4" wappler-command="editContent">CANCELAR CONFIGURAÇÃO&nbsp;<img src="assets/images/close.svg" style="height: 25px !important; vertical-align: sub;"></button>
-               <button id="btn5a4" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5" wappler-command="editContent">GRAVAR&nbsp;&nbsp;<img src="assets/images/save.svg" style="height: 25px !important; vertical-align: sub;"></button>
+               <button id="btn5a4" type="submit" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5" wappler-command="editContent">GRAVAR&nbsp;&nbsp;<img src="assets/images/save.svg" style="height: 25px !important; vertical-align: sub;"></button>
            </div>
        </div>
          
@@ -148,11 +148,11 @@
            <hr>
            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
               <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                <button [routerLink]="['/']" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'Exit'|translate}}&nbsp;
+                <button [routerLink]="['/']" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                   <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-              </button><button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'Cancel'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button><button [routerLink]="['/commercial-offert-list']" id="btn5a1" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;</button>
-              <button [routerLink]="['/info-declarativa']" id="btn5a1" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'Next'|translate}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              </button><button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button><button [routerLink]="['/commercial-offert-list']" id="btn5a1" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+                style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
+              <button [routerLink]="['/info-declarativa']" id="btn5a1" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
               </span>
            </nav>
         </div>

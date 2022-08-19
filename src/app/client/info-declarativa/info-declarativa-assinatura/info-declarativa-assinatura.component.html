@@ -7,23 +7,23 @@
       <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
       </span>
       <span class="navbar-text">
-       <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">INFORMAÇÃO DECLARATIVA</h5>
+       <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'declarativeInformation.title'|translate|uppercase}}</h5>
       </span>
      </nav>
     </div>
       <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
         <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
           <li class="nav-item">
-           <a class="nav-link disabled  btn-outline-primary activo_tabs activo-tabd"id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">Cliente Empresa</a>
+           <a class="nav-link disabled  btn-outline-primary activo_tabs activo-tabd"id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">{{'client.title'|translate}}</a>
           </li>
           <li class="nav-item_x">
-           <a class="nav-link disabled btn-outline-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">Interveniente</a>
+           <a class="nav-link disabled btn-outline-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">{{'stakeholder.title'|translate}}</a>
           </li>
           <li class="nav-item_x">
-           <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">Lojas</a>
+           <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">{{'stores.title'|translate}}</a>
           </li>
           <li class="nav-item_x">
-           <a class="nav-link disabled active btn-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">Assinatura Pack</a>
+           <a class="nav-link disabled active btn-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
           </li>
          </ul>
          <div class="tab-content" id="navTabs1_content">
@@ -31,14 +31,14 @@
             <div class="row">
                <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
                   <h4 class="text-primary mt-3 ps-0"><img src="assets/images/save_as.svg"
-                    style="height: 25px !important; vertical-align: sub;">&nbsp;SELECIONE A FORMA DE ASSINATURA DO CONTRATO
+                    style="height: 25px !important; vertical-align: sub;">&nbsp;{{'declarativeInformation.signature.type'|translate|uppercase}}
                   </h4><p></p>
                   <!-- <p class="titul campo_obrigatrio">* campo obrigatório</p> -->
                   <div class="row ms-0 me-0">
                     <div class="ms-0 me-0 ps-0 pe-0 col-7">
                        <div class="row">
                           <div class="col-4">
-                             <p class="titulo-form-simples mt-0">Idioma</p>
+                             <p class="titulo-form-simples mt-0">{{'declarativeInformation.signature.language'|translate}}</p>
                              <select class="form-select">
                               <option selected value="Português">Português</option>
                               <option value="-">-</option>
@@ -47,7 +47,7 @@
                        </div>
                        <div class="row">
                           <div class="col-6 ms-0 me-0 ps-4 pe-5">
-                             <p class="titulo-form-simples mb-1">SELECIONE UMA DAS OPÇÕES</p>
+                             <p class="titulo-form-simples mb-1">{{'declarativeInformation.signature.chooseOption'|translate}}</p>
                              <nav class="navbar navbar-expand-lg navbar-light bg-light">
                                 <span class="navbar-text">
                                    <div class="form-check">
@@ -57,7 +57,7 @@
                                     name="isVisible"
                                     type="radio"
                                     [checked]="isSelected" />
-                                      <label class="form-check-label radio pe-5" for="radio8">ASSINATURA EM PAPEL&nbsp;</label>
+                                      <label class="form-check-label radio pe-5" for="radio8">{{'declarativeInformation.signature.paperSignature'|translate|uppercase}}&nbsp;</label>
                                    </div>
                                 </span>
                                 <span class="navbar-text">
@@ -68,7 +68,7 @@
                                     name="isVisible"
                                     type="radio"
                                     [checked]="!isSelected" />
-                                      <label class="form-check-label radio" for="radio8">ASSINATURA ELECTRÓNICA</label>
+                                      <label class="form-check-label radio" for="radio8">{{'declarativeInformation.signature.eletronicSignature'|translate|uppercase}}</label>
                                    </div>
                                 </span>
                              </nav>
@@ -79,7 +79,7 @@
                     </div>
                  </div>
                  <h4 *ngIf="isVisible == 0" class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
-                  style="height: 25px !important; vertical-align: bottom;">&nbsp;SELECIONE OS REPRESENTANTES QUE OBRIGAM A EMPRESA
+                  style="height: 25px !important; vertical-align: bottom;">&nbsp;{{'declarativeInformation.signature.representatives'|translate|uppercase}}
                </h4>
                </div>
                <div class="bg-white align-self-center col-12 laterais_tabs4 mt-0 ms-0 me-0 pt-2 ps-5 pe-5">
@@ -87,9 +87,9 @@
   <table *ngIf="isVisible == 0" class='table table-striped' aria-labelledby="tableLabel" >
     <thead class="text-primary table-primary">
       <tr class="table-white text-primary">
-        <th scope="col" class="text-center text-primary bg-light table-white">Nome do Cliente</th>
+        <th scope="col" class="text-center text-primary bg-light table-white">{{'declarativeInformation.signature.clientName'|translate}}</th>
         <th scope="col" class="text-center bg-light">NIF</th>
-        <th scope="col" class="text-center bg-light">Tipo assinatura digital</th>
+        <th scope="col" class="text-center bg-light">{{'declarativeInformation.signature.digitalSignatureType'|translate}}</th>
       </tr>
     </thead>
     <tbody>
@@ -112,7 +112,7 @@
   <ng-template #closeSubmissionModal>
     <!-- <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
        <p>Após efetuar a primeira submissão, o BackOffice irá reiniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.</p>
-       <button type="button" class="btn btn-primary" (click)="back()">{{'Back'|translate}}</button>
+       <button type="button" class="btn btn-primary" (click)="back()">{{'generalKeywords.back'|translate|uppercase}}</button>
        <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="continue()">Continuar</button>
     </div> -->
     <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
@@ -133,13 +133,13 @@
                        </nav>
                        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
                            <span class="navbar-text">
-                               <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?&nbsp;</h5>
+                               <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">{{'declarativeInformation.signature.submission'|translate}}&nbsp;</h5>
                            </span>
                        </nav>
                        <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                            <span class="navbar-text"></span>
-                           <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineCloseSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">{{'Back'|translate}}</button></span>
-                           <span class="navbar-text pt-0 pb-0"><button (click)="closeSubmission()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">ENVIAR</button></span>
+                           <span class="navbar-text pb-0 pt-sm-0"><button (click)="declineCloseSubmission()" id="btn5a" class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-5 pe-lg-5" style="color: white" wappler-command="editContent">{{'generalKeywords.back'|translate|uppercase}}</button></span>
+                           <span class="navbar-text pt-0 pb-0"><button (click)="closeSubmission()" id="btn5a1" class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4" style="color: white" wappler-command="editContent">{{'generalButtons.send'|translate|uppercase}}</button></span>
                        </nav>
                       </div>
                </div>
@@ -153,19 +153,19 @@
       <span class="navbar-text me-2 align-self-center ms-0 me-0">
         <button id="btn5a1" [routerLink]="['/']"
           class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-          wappler-command="editContent">{{'Exit'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg"
+          wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
             style="height: 25px !important; vertical-align: sub;"></button>
       <button id="btn5a3" [routerLink]="['/']"
         class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-        wappler-command="editContent">{{'Cancel'|translate}}&nbsp;<img src="assets/images/cancel.svg"
+        wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg"
           style="height: 25px !important; vertical-align: sub;"></button>
       <button id="btn5a4" [routerLink]="['/info-declarativa-lojas']"
         class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
         wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-          style="height: 25px !important; vertical-align: sub;">{{'Back'|translate}}&nbsp;</button>
+          style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
       <button id="btn5a2" (click)="openCloseSubmissionModal()"
         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-        wappler-command="editContent">SUBMETER PEDIDO&nbsp;</button>
+        wappler-command="editContent">{{'generalButtons.submit'|translate|uppercase}}&nbsp;</button>
       </span>
     </nav>
   </div>

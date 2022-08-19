@@ -65,14 +65,14 @@
               <div class="form-check">
                 <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=true
                        id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true" />
-                <label class="form-check-label radio pe-5" for="radio3">{{'Yes'|translate}}</label>
+                <label class="form-check-label radio pe-5" for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required formControlName="flagAutCol" type="radio" value=false
                        id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false" />
-                <label class="form-check-label radio" for="radio3">{{'No'|translate}}</label>
+                <label class="form-check-label radio" for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
           </nav>
@@ -137,16 +137,16 @@
         <div class="modal-body">
           Tem acesso ao pin da morada?
         </div>
-        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCC()">{{'Yes'|translate}}</button>
-        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCCAddress()">{{'No'|translate}}</button>
+        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCC()">{{'generalKeywords.yes'|translate|uppercase}}</button>
+        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCCAddress()">{{'generalKeywords.no'|translate|uppercase}}</button>
       </ng-template>
 
       <!-- Seccao do Modal PIN da Morada-->
       <!--<ng-template #newModal>
     <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
       <p>Tem o pin de acesso aos dados da morada?</p>
-      <button type="button" class="btn btn-primary" value="true" (click)="callreadCCAddress(); closeModal()">{{'Yes'|translate}}</button>
-      <button type="button" class="btn btn-primary" value="false" (click)="callreadCC(); closeModal(); setOkCC()">{{'No'|translate}}</button>
+      <button type="button" class="btn btn-primary" value="true" (click)="callreadCCAddress(); closeModal()">{{'generalKeywords.yes'|translate}}</button>
+      <button type="button" class="btn btn-primary" value="false" (click)="callreadCC(); closeModal(); setOkCC()">{{'generalKeywords.no'|translate}}</button>
     </div>
   </ng-template>-->
       <!--Fim da Seccao do Modal PIN da Morada-->
@@ -204,18 +204,18 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <!--<span class="navbar-text me-2 align-self-center ms-0 me-0">
         <button [routerLink]="['/']" style="margin-left: 0px;" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-          {{'Exit'|translate}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+          {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
         </button>
       </span>-->
           <!--<button [routerLink]="['/']" id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-        {{'Cancel'|translate}}&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+        {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
       </button>-->
           <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" [routerLink]="['/stakeholders/']">
             <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
-            {{'Back'|translate}}&nbsp;
+            {{'generalKeywords.back'|translate|uppercase}}&nbsp;
           </button>
           <button *ngIf="(newStake !== null && newStake !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()">
-            {{'Next'|translate}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+            {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
           </button>
         </nav>
       </div>

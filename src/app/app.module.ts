@@ -13,14 +13,11 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
 import { ComprovativosComponent } from './comprovativos/comprovativos.component';
 import { ClientComponent } from './client/client.component';
 import { ClientExtendedComponent } from './client/client-extended/client-extended.component';
 import { StakeholdersComponent } from './stakeholders/stakeholders.component';
 import { NewStakeholderComponent } from './stakeholders/new-stakeholder/new-stakeholder.component';
-import { CheckDocumentsComponent } from './comprovativos/check-documents/check-documents.component';
 import { StoreIbanComponent } from './store/store-iban/store-iban.component';
 import { StoreComponent } from './store/store-list/store-list.component';
 import { AddStoreComponent } from './store/add-store/add-store.component';
@@ -36,12 +33,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { CookieService } from 'ngx-cookie-service';
 import { PepComponent } from './pep/pep.component';
 import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
-import { FooterComponent } from './footer/footer.component';
-import { NewClientComponent } from './client/new-client/new-client.component';
-import { CircularProgressComponent } from './circular-progress/circular-progress.component';
 import { ProcessComponent } from './process/process.component';
-import { BannerHomeComponent } from './banner-home/banner-home.component';
-import { BarrazulHomeComponent } from './barrazul-home/barrazul-home.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { AcceptanceComponent } from './process/acceptance/acceptance.component';
 import { NavMenuPresencialComponent } from './nav-menu-presencial/nav-menu-presencial.component';
@@ -88,8 +80,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   declarations: [
     AppComponent,
     DashboardComponent,
-    NavMenuComponent,
-    HomeComponent,
     StoreComponent,
     ClientComponent,
     AddStoreComponent,
@@ -97,7 +87,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NewStakeholderComponent,
     UpdateStakeholderComponent,
     ComprovativosComponent,
-    CheckDocumentsComponent,
     CommercialOfferListComponent,
     CommercialOfferNewConfigurationComponent,
     StoreIbanComponent,
@@ -113,13 +102,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PackContratualComponent,
     ObterPackContratualComponent,
     NavMenuInternaComponent,
-    FooterComponent,
-    CircularProgressComponent,
     ProcessComponent,
-    NewClientComponent,
-    BannerHomeComponent,
     LoginComponent,
-    BarrazulHomeComponent,
     AcceptanceComponent,
     NavMenuPresencialComponent,
     FooterPresencialComponent,
@@ -190,8 +174,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
-      { path: 'app-new-client/:id', component: NewClientComponent },
-      { path: 'app-new-client', component: NewClientComponent },
       { path: 'app-client-extended', component: ClientExtendedComponent },
 
       { path: 'readcardcc', component: ReadcardComponent },

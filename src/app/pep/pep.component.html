@@ -15,7 +15,7 @@
       <p>É, ou foi nos últimos 12 meses, Pessoa Politicamente Exposta (PEP)?: </p>
 
       <label>
-        {{'Yes'|translate}}
+        {{'generalKeywords.yes'|translate}}
         <input formControlName="pep12months"
                name="pep12months"
                type="radio"
@@ -25,7 +25,7 @@
 
       <br><br>
       <label>
-        {{'No'|translate}}
+        {{'generalKeywords.no'|translate}}
         <input formControlName="pep12months"
                name="pep12months"
                type="radio"
@@ -114,7 +114,7 @@
       <p> É familiar de uma PEP?:</p>
 
       <label>
-        {{'Yes'|translate}}
+        {{'generalKeywords.yes'|translate}}
         <input formControlName="pepFamiliarOf"
                name="pepFamiliarOf"
                type="radio"
@@ -123,7 +123,7 @@
       </label>
       <br><br>
       <label>
-        {{'No'|translate}}
+        {{'generalKeywords.no'|translate}}
         <input formControlName="pepFamiliarOf"
                name="pepFamiliarOf"
                type="radio"
@@ -159,14 +159,14 @@
     <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false">
       <label>  Mantem relações de natureza societária ou comercial com uma PEP?:</label>
 
-      <label>{{'Yes'|translate}}</label>
+      <label>{{'generalKeywords.yes'|translate}}</label>
       <input formControlName="pepRelations"
              name="pepRelations"
              type="radio"
              value="true"
              (change)="onChangeValues($event)" />
       <br><br>
-      <label>{{'No'|translate}}</label>
+      <label>{{'generalKeywords.no'|translate}}</label>
       <input formControlName="pepRelations"
              name="pepRelations"
              type="radio"
@@ -201,14 +201,14 @@
     <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false && isVisiblePepRelations == false">
       <label> É, ou foi nos últimos 12 meses, titular de outros Cargos Políticos ou Públicos em território nacional?</label>
 
-      <label>{{'Yes'|translate}}</label>
+      <label>{{'generalKeywords.yes'|translate}}</label>
       <input formControlName="pepPoliticalPublicJobs"
              name="pepPoliticalPublicJobs"
              type="radio"
              value="true"
              (change)="onChangeValues($event)" />
       <br><br>
-      <label>{{'No'|translate}}</label>
+      <label>{{'generalKeywords.no'|translate}}</label>
       <input formControlName="pepPoliticalPublicJobs"
              name="pepPoliticalPublicJobs"
              type="radio"
@@ -431,7 +431,7 @@
 
     </div>-->
 
-    <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" [disabled]="!form.valid">{{'Next'|translate}}</button>
+    <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" [disabled]="!form.valid">{{'generalKeywords.next'|translate|uppercase}}</button>
   </form>
 
 </div>
