@@ -1,4 +1,29 @@
 {
+  "homepage": {
+    "diaryPerformance": "Performance Diária",
+    "pending": "Processos pendentes de Envio",
+    "backOffice": "Tratamento Backoffice",
+    "returned": "Devolvidos Backoffice",
+    "acceptance": "Em fase de aceitação",
+    "pendingFisical": "Pendentes de envio para arquivo físico",
+    "queues": "Filas de trabalho",
+    "processNumber": "Nº Processo",
+    "processDate": "Data Processo",
+    "clientName": "Nome Cliente Empresa",
+    "findProcess": "Consultar Processo",
+    "editProcess": "Editar Processo",
+    "openProcess": "Abertura de Processo",
+    "findProcessButton": "Consulta de Processo",
+    "home": "Início",
+    "processTreatment": "Tratamento de Processos",
+    "eligibility": "Pareceres de Eligibilidade",
+    "multipleClients": "Múltiplos Clientes",
+    "validation": "Validação",
+    "priceNegotiation": "Aprovação de negociação de preçário",
+    "validationSIBS": "validação matrícula SIBS",
+    "risk": "Parecer de Risco",
+    "compliance": "Dúvidas Compliance"
+  },
   "auth": {
     "title": "Autenticação",
     "identification": "Identificação",
@@ -70,7 +95,7 @@
     "postalCode": "Código Postal"
   },
   "stakeholder": {
-    "title": "Interveniente"
+    "title": "Intervenientes"
   },
   "stores": {
     "title": "Lojas",
@@ -138,8 +163,12 @@
       }
     }
   },
+  "commercialOffer": {
+    "title": "Oferta Comercial"
+  },
   "declarativeInformation": {
     "title": "Informação Declarativa",
+    "titleResume": "Info Declarativa",
     "packSignature": "Assinatura Pack",
     "indicative": "Indicativo",
     "phone": "Telefone",
@@ -239,7 +268,11 @@
     "expirationDate": "Data de Validade",
     "entryDate": "Data de Entrada",
     "deleteFile": "Tem a certeza que deseja excluir o ficheiro?",
-    "mandatoryParameter": "O parâmetro acima é obrigatório."
+    "mandatoryParameter": "O parâmetro acima é obrigatório.",
+    "search": "Procurar",
+    "deleteProcess": "Quer apagar este processo?",
+    "maintainProcess": "Manter Processo",
+    "confirmDeleteProcess": "Apagar Processo"
   },
   "generalButtons": {
     "continue": "Continuar",
@@ -248,6 +281,11 @@
     "send": "Enviar",
     "returnCommercial": "Devolver ao Comercial",
     "returnBackoffice": "Devolver ao BackOffice"
+  },
+  "footer": {
+    "cookies": "Política de Cookies",
+    "privacy": "Política de Privacidade",
+    "contacts": "Contactos de Suporte"
   },
 
   "//CommercialOffer": "CommercialOfferElement",

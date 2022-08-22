@@ -34,7 +34,6 @@ import { PepComponent } from './pep/pep.component';
 import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
 import { ProcessComponent } from './process/process.component';
 import { SubmissionComponent } from './submission/submission.component';
-import { AcceptanceComponent } from './process/acceptance/acceptance.component';
 import { NavMenuPresencialComponent } from './nav-menu-presencial/nav-menu-presencial.component';
 import { MaterialModule } from './material/material.module';
 import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component';
@@ -102,7 +101,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NavMenuInternaComponent,
     ProcessComponent,
     LoginComponent,
-    AcceptanceComponent,
     NavMenuPresencialComponent,
     FooterPresencialComponent,
     SidenavPresencialComponent,
@@ -174,7 +172,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
-      { path: 'acceptance/:submissionID', component: AcceptanceComponent },
       { path: 'process', component: ProcessComponent },
       { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent },
       { path: 'info-declarativa-lojas', component: InfoDeclarativaLojasComponent },
