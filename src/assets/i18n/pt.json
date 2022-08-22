@@ -86,7 +86,7 @@
     "process": "Processo mais rápido e dispensa a apresentação de comprovativos em papel",
     "readClick": "Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão",
     "read": "Ler Cartão de Cidadão",
-    "addressPIN": "Tem o pin de acesso aos dados da morada?",
+    "addressPIN": "Tem o pin do cartão de cidadão para obtenção dos dados da morada?",
     "documentCountry": "País do Documento",
     "readData": "Leitura dos dados do cartão de cidadão",
     "name": "Nome",
