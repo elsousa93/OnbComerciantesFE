@@ -24,3 +24,7 @@ fetch(path)
   ]).bootstrapModule(AppModule);
   }).catch(err => console.log(err));
 
+window.addEventListener('unload', function () {
+  console.log("deu unload");
+})
+

@@ -47,6 +47,12 @@ export class AppComponent {
   @Input() url: string;
 
   ngOnInit() {
+    var context = this;
+    window.addEventListener('beforeunload', function () {
+      console.log("app component reload !!!");
+      context.saveAuthState();
+    });
+
     this.router.events.subscribe((event) => {
       if (!(event instanceof NavigationEnd)) {
         return;
@@ -84,6 +90,10 @@ export class AppComponent {
     console.log("a guardar: ", this.authService.GetCurrentUser());
     localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
       window.location.reload();
+  }
+
+  saveAuthState() {
+    localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
   }
 
 }
