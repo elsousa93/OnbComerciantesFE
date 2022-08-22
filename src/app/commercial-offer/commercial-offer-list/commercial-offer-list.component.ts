@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
+import { CommunicationOwnershipTypeEnum, EquipmentOwnershipTypeEnum, Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
 import { NGXLogger } from 'ngx-logger';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,6 +14,9 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
 import { ProductPackAttribute, TerminalSupportEntityEnum } from '../ICommercialOffer';
+import { StoreService } from '../../store/store.service';
+import { CommercialOfferService } from '../commercial-offer.service';
+import { SubmissionService } from '../../submission/service/submission-service.service';
 
 
 const testValues: ShopDetailsAcquiring[] = [
@@ -89,9 +92,38 @@ const testValues: ShopDetailsAcquiring[] = [
     subActivity: "99",
     subproductCode: "keyOnHand",
     website: "google.com",
-    supportEntity: TerminalSupportEntityEnum.ACQUIRER
+    supportEntity: TerminalSupportEntityEnum.OTHER
   },
 ]
+
+const storeEquipTest: ShopEquipment = {
+  communicationOwnership: CommunicationOwnershipTypeEnum.CLIENT,
+  communicationType: "2",
+  equipmentOwnership: EquipmentOwnershipTypeEnum.SELF,
+  equipmentType: "1",
+  quantity: 10,
+  pricing: {
+    attributes: 
+      [
+        {
+          id: "abc",
+          description: "description",
+          value: 100,
+          isReadOnly: true,
+          isVisible: false
+        },
+        {
+          id: "bde",
+          description: "description 2",
+          value: 500,
+          isReadOnly: false,
+          isVisible: true
+        },
+      ]
+    ,
+    pricingId: "id"
+  }
+}
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -134,13 +166,16 @@ export class CommercialOfferListComponent implements OnInit {
   public storeEquip: ShopEquipment;
   public returned: string;
   public showMore: boolean;
+  storesList: ShopDetailsAcquiring[];
+
+  storeEquipTest = storeEquipTest;
 
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesOfferMat.paginator = this.paginator;
   }
 
-  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService) {
+  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService) {
     this.baseUrl = configuration.baseUrl;
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
@@ -156,13 +191,36 @@ export class CommercialOfferListComponent implements OnInit {
       this.form.get("isUnicre").setValue(false);
       this.isUnicre = false;
       this.form.get("isUnicre").disable();
+    } else {
+      this.form.get("isUnicre").setValue(true);
+      this.isUnicre = true;
     }
 
-    if (this.returned == 'consult') {
-      //ir buscar a lista de lojas associadas ao processo que estamos a consultar
-    } else {
-      //ir buscar a lista de lojas da submissão em que nos encontramos
-    }
+    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
+    //this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
+    //  result.forEach(value => {
+    //    this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+    //      this.storesList.push(res);
+    //    });
+    //  });
+    //  this.loadStores(this.storesList);
+    //});
+
+    //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
+    //if (this.returned !== null) {
+    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+    //    this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
+    //      resul.forEach(val => {
+    //        this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
+    //          var index = this.storesList.findIndex(store => store.id == res.id);
+    //          if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
+    //            this.storesList.push(res);
+    //        });
+    //      });
+    //      this.loadStores(this.storesList);
+    //    })
+    //  });
+    //}
 
     this.data.updateData(false, 5);
   }
@@ -223,7 +281,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   get productPackAttributesAddInfo() {
-    return this.form.get("productPackAttributesBundles") as FormArray;
+    return this.form.get("productPackAttributesAddInfo") as FormArray;
   }
 
   //chamar este metodo no html quando estivermos a fazer o ngFor aos atributos do productPack
@@ -240,7 +298,7 @@ export class CommercialOfferListComponent implements OnInit {
   setFormData() {
     //setValue(null) - são valores que ainda não conseguimos ir buscar
     this.form.get("replicateProducts").setValue(null);
-    this.form.get("isUnicre").setValue(this.currentStore.supportEntity);
+    this.form.get("isUnicre").setValue(this.currentStore.supportEntity == 'acquirer' ? true : false);
 
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
@@ -276,7 +334,13 @@ export class CommercialOfferListComponent implements OnInit {
 
   submit() {
     if (this.returned != 'consult') {
-
+      if (this.currentIdx < (testValues.length - 1)) {
+        this.currentIdx = this.currentIdx + 1;
+        this.selectStore(testValues[this.currentIdx], this.currentIdx);
+        this.onActivate();
+      } else {
+        this.route.navigate(['info-declarativa']);
+      }
     }
   }
 
@@ -286,5 +350,34 @@ export class CommercialOfferListComponent implements OnInit {
 
   loadStoresWithSameBank(bank: string) {
     
+  }
+
+  deleteConfiguration(shopEquipment: ShopEquipment = storeEquipTest) {
+    if (this.returned != 'consult') { 
+    //CHAMADA À API QUE REMOVE UMA CONFUGURAÇÃO DE UM TERMINAL
+    }
+  }
+
+  editConfiguration(shopEquipment: ShopEquipment = storeEquipTest) {
+    if (this.returned != 'consult') { 
+      let navigationExtras: NavigationExtras = {
+        state: {
+          store: this.currentStore,
+          storeEquip: shopEquipment
+        }
+      }
+      this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
+    }
+  }
+
+  onActivate() {
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 100); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
   }
 }
