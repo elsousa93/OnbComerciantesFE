@@ -8,84 +8,94 @@
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
           </span>
           <span class="navbar-text">
-            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">CLIENTE EMPRESA</h5>
+            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+              {{'client.title'|translate|uppercase}}
+            </h5>
           </span>
         </nav>
       </div>
-
       <div class="offset-1 center-align bg-white col-10 ps-3">
         <h4 class="text-primary mt-5 ps-0 ">
-          <img src="assets/images/manage_accounts.svg" class="img_add">&nbsp;INFORMAÇÃO COMPLEMENTAR DA EMPRESA
+          <img src="assets/images/manage_accounts.svg"
+            class="img_add">&nbsp;{{'client.companyInformation'|translate|uppercase}}
         </h4>
-        <p class="titul campo_obrigatrio">* campo obrigatório</p>
+        <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
 
         <div class="row ms-0 me-0">
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
 
-            <p class="titulo-form-simples mt-0">FATURAÇÃO ANUAL EXPECTÁVEL*</p>
+            <p class="titulo-form-simples mt-0">{{'client.faturation'|translate|uppercase}}*</p>
             <input type="text" class="form-control campo_form" formControlName="expectableAnualInvoicing"
-                   name="expectableAnualInvoicing" id="expectableAnualInvoicing"
-                   [readonly]="returned == 'consult'">
-            <div class="alert alert-danger" *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
-              <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
-                O parâmetro acima é obrigatório.
+              name="expectableAnualInvoicing" id="expectableAnualInvoicing" [readonly]="returned == 'consult'">
+            <div class="alert alert-danger"
+              *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
+              <div
+                *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
 
 
-            <p class="titulo-form-simples">PRODUTOS VENDIDOS/SERVIÇOS PRESTADOS*</p>
-            <input formControlName="services" name="services" type="text"
-                   id="services" class="form-control campo_form" [readonly]="returned == 'consult'">
+            <p class="titulo-form-simples">{{'client.products'|translate|uppercase}}*</p>
+            <input formControlName="services" name="services" type="text" id="services" class="form-control campo_form"
+              [readonly]="returned == 'consult'">
 
-            <div class="alert alert-danger" *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
+            <div class="alert alert-danger"
+              *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
               <div *ngIf="this.form.get('services').errors && this.form.get('services').errors?.['required']">
-                O parâmetro acima é obrigatório.
+                {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
 
 
-            <p class="titulo-form-simples mb-1">Transações média*</p>
-            <input minlength="2" maxlength="100" formControlName="transactionsAverage"
-                   name="transactionsAverage" type="text" id="transactionsAverage" class="form-control campo_form"
-                   [readonly]="returned == 'consult'">
-            <div class="alert alert-danger" *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
-              <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
-                O parâmetro acima é obrigatório.
+            <p class="titulo-form-simples mb-1">{{'client.mediaTransactions'|translate}}*</p>
+            <input minlength="2" maxlength="100" formControlName="transactionsAverage" name="transactionsAverage"
+              type="text" id="transactionsAverage" class="form-control campo_form" [readonly]="returned == 'consult'">
+            <div class="alert alert-danger"
+              *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
+              <div
+                *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
 
 
-            <p class="titulo-form-simples mb-1">SELECIONE A SUA PREFERÊNCIA DE RECEÇÃO DE DOCUMENTAÇÃO</p>
+            <p class="titulo-form-simples mb-1">{{'client.documentation'|translate|uppercase}}</p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Portal"
-                         formControlName="preferenceDocuments" id="preferenceDocuments" [disabled]="returned == 'consult'">
+                    formControlName="preferenceDocuments" id="preferenceDocuments" [disabled]="returned == 'consult'">
                   <label class="form-check-label radio pe-5" for="preferenceDocuments">100% DIGITAL</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Mail"
-                         formControlName="preferenceDocuments" id="preferenceDocuments" [disabled]="returned == 'consult'">
-                  <label class="form-check-label radio" for="preferenceDocuments">DOCUMENTAÇÃO POR CARTA</label>
+                    formControlName="preferenceDocuments" id="preferenceDocuments" [disabled]="returned == 'consult'">
+                  <label class="form-check-label radio"
+                    for="preferenceDocuments">{{'client.letter'|translate|uppercase}}</label>
                 </div>
               </span>
 
             </nav>
-            <p class="titulo-form-simples mb-1">PRETENDE ASSOCIAR A EMPRESA A GRUPO/FRANCHISE EXISTENTE?</p>
+            <p class="titulo-form-simples mb-1">{{'client.franchise'|translate|uppercase}}</p>
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=true
-                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(true)" [readonly]="returned == 'consult'">
-                  <label class="form-check-label radio pe-5" for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                    formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
+                    (click)="setAssociatedWith(true)" [readonly]="returned == 'consult'">
+                  <label class="form-check-label radio pe-5"
+                    for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=false
-                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise" (click)="setAssociatedWith(false)" [readonly]="returned == 'consult'">
-                  <label class="form-check-label radio" for="associatedWithGroupOrFranchise">{{'generalKeywords.no'|translate|uppercase}}</label>
+                    formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
+                    (click)="setAssociatedWith(false)" [readonly]="returned == 'consult'">
+                  <label class="form-check-label radio"
+                    for="associatedWithGroupOrFranchise">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
 
@@ -96,7 +106,7 @@
 
           <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
 
-            <p class="titulo-form-simples mt-0 mb-3">PAÍSES DE DESTINO DOS PRODUTOS/SERVIÇOS*</p>
+            <p class="titulo-form-simples mt-0 mb-3">{{'client.destinationCountry'|translate|uppercase}}*</p>
             <textarea id="text5" class="form_control campo_form w-75" readonly></textarea>
             <div class="row ms-0 me-0">
               <div class="row ms-0 me-0">
@@ -105,124 +115,95 @@
                   <p class="titulo_paises mt-0"></p>
                   <div *ngFor="let item of countriesCheckBox">
                     <div class="form-check">
-                      <input type="checkbox" formControlName="{{item.formControlName}}" value="{{item.value}}" id="{{item.value}}"
-                           name="{{item.value}}" class="form-check-input" (click)="countrys(item)" [checked]="item.isSelected"
-                           [attr.disabled]="returned == 'consult' ? true : null">
+                      <input type="checkbox" formControlName="{{item.formControlName}}" value="{{item.value}}"
+                        id="{{item.value}}" name="{{item.value}}" class="form-check-input" (click)="countrys(item)"
+                        [checked]="item.isSelected" [attr.disabled]="returned == 'consult' ? true : null">
                       <label class="form-check-label radio" for="{{item.value}}">{{item.value}}</label>
                     </div>
                   </div>
-                  <!--<div class="form-check">
-                    <input type="checkbox" formControlName="inputEuropa" value="EUROPA" id="EUROPA" name="EUROPA"
-                           class="form-check-input" (click)="countrys('EUROPA')" [readonly]="returned == 'edit'">
-                    <label class="form-check-label radio" for="EUROPA">EUROPA</label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" formControlName="inputAfrica" value="AFRICA" id="AFRICA" name="AFRICA"
-                           class="form-check-input" (click)="countrys('AFRICA')" [readonly]="returned == 'edit'">
-                    <label class="form-check-label radio" for="AFRICA">ÁFRICA</label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" formControlName="inputAsia" value="ASIA" name="ASIA" class="form-check-input"
-                           (click)="countrys('ASIA')" [readonly]="returned == 'edit'">
-                    <label class="form-check-label radio" for="ASIA">ÁSIA</label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" formControlName="inputAmerica" value="AMERICA DO NORTE / SUL" name="AMERICA"
-                           class="form-check-input" (click)="countrys('AMERICA DO NORTE / SUL')" [readonly]="returned == 'edit'">
-                    <label class="form-check-label radio" for="AMERICA DO NORTE / SUL">AMÉRICA DO NORTE / SUL</label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" formControlName="inputOceania" value="OCEANIA" name="OCEANIA"
-                           class="form-check-input" (click)="countrys('OCEANIA')" [readonly]="returned == 'edit'">
-                    <label class="form-check-label radio" for="OCEANIA">OCEÂNIA</label>
-                  </div>-->
                 </div>
                 <div class="col ps-5">
                   <div class="form-check" *ngFor="let item of lstCountry; index as i">
-                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16" (change)="onCountryChange(item)" [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
+                      (change)="onCountryChange(item)"
+                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry1; index as i">
-                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16" (change)="onCountryChange(item)" [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
+                      (change)="onCountryChange(item)"
+                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry2; index as i">
-                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16" (change)="onCountryChange(item)" [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
+                      (change)="onCountryChange(item)"
+                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
                   </div>
                 </div>
-
-
-
               </div>
             </div><button id="btn5a3"
-                          class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent" (click)="inserirText(this.form)" type="button" [disabled]="returned == 'consult'">
-              <img src="assets/images/public.svg" style="height: 23px;" class="img_add"> ESCOLHER&nbsp;
+              class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
+              wappler-command="editContent" (click)="inserirText(this.form)" type="button"
+              [disabled]="returned == 'consult'">
+              <img src="assets/images/public.svg" style="height: 23px;" class="img_add">
+              {{'client.choose'|translate|uppercase}}&nbsp;
             </button>
-
-
-
           </div>
-
           <div class="col-6 ms-0 me-0 ps-0 pe-5" *ngIf="associatedWithGroupOrFranchise == true">
-            <p class="titulo-form-simples mt-0">NOME FRANCHISE</p>
+            <p class="titulo-form-simples mt-0">{{'client.franchiseName'|translate|uppercase}}</p>
             <select class="form-select  campo_form" formControlName="franchiseName" name="franchiseName"
-                    id="franchiseName"
-                    [attr.disabled]="returned == 'consult' || clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null ">
+              id="franchiseName"
+              [attr.disabled]="returned == 'consult' || clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null ">
               <option value=""></option>
               <option value="1">Franchise 1</option>
               <option value="2">Franchise 2</option>
               <option value="3">Franchise 3</option>
             </select>
-            <div class="alert alert-danger" *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
+            <div class="alert alert-danger"
+              *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
               <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
-                O parâmetro acima é obrigatório.
+                {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
             <p class="titulo-form-simples"></p>
           </div>
-
           <div class="col-6 ms-0 me-0 ps-5 pe-0" *ngIf="associatedWithGroupOrFranchise == true">
-
-
             <p class="titulo-form-simples mt-0">NIPC GRUPO</p>
-
-
-            <input class="form-control campo_form" formControlName="NIPCGroup"
-                   name="NIPCGroup" type="text" id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || returned == 'consult'">
-            <div class="alert alert-danger" *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
+            <input class="form-control campo_form" formControlName="NIPCGroup" name="NIPCGroup" type="text"
+              id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || returned == 'consult'">
+            <div class="alert alert-danger"
+              *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
               <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
-                O parâmetro acima é obrigatório.
+                {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
-
-
-
-
-
             <p class="titulo-form-simples"></p>
           </div>
-
           <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
             <div class="table-responsive mt-5 mb-5 pb-5">
               <table class="table">
                 <thead class="text-primary table-primary">
                   <tr class="table-white text-primary">
-                    <th scope="col" class="text-center text-primary bg-light table-white">Tipo de Comprovativo</th>
-                    <th scope="col" class="text-center bg-light">Data de Receção</th>
-                    <th scope="col" class="text-center bg-white">Data de Validade</th>
+                    <th scope="col" class="text-center text-primary bg-light table-white">
+                      {{'supportingDocuments.type'|translate}}</th>
+                    <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
+                    <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let docum of client.documents">
                     <td class="text-primary text-center">{{docum.documentType}}</td>
-                    <td class="text-primary text-center">{{docum.receivedAt}}</td><!--Não sei o que equivale a este campo nos documents-->
+                    <td class="text-primary text-center">{{docum.receivedAt}}</td>
+                    <!--Não sei o que equivale a este campo nos documents-->
                     <td class="text-primary text-center">{{docum.validUntil}}</td>
                     <td>
                       <span>
-                        <img src="assets/images/search_blue.svg" (click)="b64toBlob(docum.uniqueReference, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                        <img src="assets/images/search_blue.svg"
+                          (click)="b64toBlob(docum.uniqueReference, 'application/pdf', 512)"
+                          style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                       </span>
                     </td>
                   </tr>
@@ -231,51 +212,35 @@
                 </tbody>
               </table>
             </div>
-
-
-
-
-
-
-
           </div>
-
           <div class="col ms-0 ps-0">
-
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
               <span class="navbar-text align-self-center ms-0 me-0">
-                <button id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" type="button" (click)="goBackToHomePage()">
+                <button id="btn5a1"
+                  class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
+                  wappler-command="editContent" type="button" (click)="goBackToHomePage()">
                   {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
                   </span>
                 </button>
               </span>
-
-
-
-
-              <!--<button id="btn5a3" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" type="button" (click)="goBackToHomePage()">
-                {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded center-align">
-                  exit_to_app
-                </span>
-              </button>-->
-              <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" type="button" (click)="redirectToClientById()">
+              <button id="btn5a4"
+                class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
+                wappler-command="editContent" type="button" (click)="redirectToClientById()">
                 <span class="material-symbols-rounded m-align">
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
                 </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
-              <button id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" type="submit">
+              <button id="btn5a2"
+                class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                wappler-command="editContent" type="submit">
                 {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                   <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                 </span>
               </button>
             </nav>
-
           </div>
-
-
         </div>
-
       </div>
     </div>
   </div>

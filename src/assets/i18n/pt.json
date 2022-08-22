@@ -1,10 +1,101 @@
 {
+  "homepage": {
+    "diaryPerformance": "Performance Diária",
+    "pending": "Processos pendentes de Envio",
+    "backOffice": "Tratamento Backoffice",
+    "returned": "Devolvidos Backoffice",
+    "acceptance": "Em fase de aceitação",
+    "pendingFisical": "Pendentes de envio para arquivo físico",
+    "queues": "Filas de trabalho",
+    "processNumber": "Nº Processo",
+    "processDate": "Data Processo",
+    "clientName": "Nome Cliente Empresa",
+    "findProcess": "Consultar Processo",
+    "editProcess": "Editar Processo",
+    "openProcess": "Abertura de Processo",
+    "findProcessButton": "Consulta de Processo",
+    "home": "Início",
+    "processTreatment": "Tratamento de Processos",
+    "eligibility": "Pareceres de Eligibilidade",
+    "multipleClients": "Múltiplos Clientes",
+    "validation": "Validação",
+    "priceNegotiation": "Aprovação de negociação de preçário",
+    "validationSIBS": "validação matrícula SIBS",
+    "risk": "Parecer de Risco",
+    "compliance": "Dúvidas Compliance"
+  },
+  "auth": {
+    "title": "Autenticação",
+    "identification": "Identificação",
+    "username":"Username",
+    "bankName": "Nome do Banco",
+    "bankLocation": "Localização do Banco",
+    "role": "Cargo",
+    "submit": "Submeter"
+  },
   "client": {
     "title": "Cliente Empresa",
-    "data": "Dados do Cliente"
+    "data": "Dados do Cliente",
+    "identification": "Identificação do Cliente Empresa",
+    "typology":"Qual a tipologia do cliente empresa?",
+    "company": "Empresa",
+    "search": "Pesquisar Comerciante",
+    "add": "Adicionar Comerciante",
+    "found": "Resultados: Clientes Encontrados",
+    "number": "Nº de Cliente",
+    "nameSocialDesignation": "Nome/Designação Social",
+    "address": "Morada",
+    "postalCode": "Código Postal",
+    "locale": "Localidade",
+    "country": "País",
+    "companyCaracterization": "Caracterização social da empresa",
+    "isCommercialSociety": "a empresa é uma sociedade comercial?",
+    "collectCRC": "Pretende a recolha de informação do Código de Certidão de Registo Comercial?",
+    "CRC": "Código de certidão do registo comercial",
+    "legalNature": "Natureza Jurídica",
+    "principalCAE": "CAE Principal",
+    "secondaryCAE": "CAE Secundário",
+    "socialDenomination": "Denominação Social",
+    "principalCAEBranch": "Ramo de Negócio de Objeto Social Principal",
+    "secondaryCAEBranch": "Ramo de Negócio de Objeto Social Secundário",
+    "invalidCAE": "Interagiram com o CAE. CAE não é válido.",
+    "invalidCAE2": "Interagiram com o CAE. CAE é valido (tem mais de 2 caracteres).",
+    "constitutionDate": "Data de Constituição",
+    "registeredOfficeCountry": "País da Sede Social",
+    "registeredOfficePostalCode": "Código-Postal da Sede Social",
+    "registeredOfficeLocale": "Localidade da Sede Social",
+    "registeredOfficeAddress": "Morada da Sede Social",
+    "socialDenominationName": "Denominação Social/Nome ENI",
+    "companyPower": "Informação de poderes da empresa",
+    "name": "Nome Cliente",
+    "representationPower": "Poderes de Representação",
+    "representationRestrictions": "Restrições de Representação",
+    "companyInformation": "Informação Complementar da Empresa",
+    "faturation": "Faturação Anual Expectável",
+    "products": "Produtos vendidos/serviços prestados",
+    "mediaTransactions": "Transações média",
+    "documentation": "Selecione a sua preferência de receção da documentação",
+    "letter": "Documentação por carta",
+    "franchise": "Prentende associar a empresa a um grupo/franchise existente?",
+    "destinationCountry": "Países de destino dos produtos/serviços",
+    "choose": "Escolher",
+    "franchiseName": "Nome Franchise"
+  },
+  "citizenCard": {
+    "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",
+    "process": "Processo mais rápido e dispensa a apresentação de comprovativos em papel",
+    "readClick": "Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão",
+    "read": "Ler Cartão de Cidadão",
+    "addressPIN": "Tem o pin de acesso aos dados da morada?",
+    "documentCountry": "País do Documento",
+    "readData": "Leitura dos dados do cartão de cidadão",
+    "name": "Nome",
+    "ccNumber": "Nº do CC",
+    "address": "Morada",
+    "postalCode": "Código Postal"
   },
   "stakeholder": {
-    "title": "Interveniente"
+    "title": "Intervenientes"
   },
   "stores": {
     "title": "Lojas",
@@ -39,6 +130,8 @@
 
   "supportingDocuments": {
     "title": "Comprovativos",
+    "type": "Tipo de Comprovativo",
+    "receptionDate": "Data de Receção",
     "consultChecklist": "Consultar Checklist",
     "attachDocuments": "Anexar Documentos",
     "observations": "Observações",
@@ -70,8 +163,12 @@
       }
     }
   },
+  "commercialOffer": {
+    "title": "Oferta Comercial"
+  },
   "declarativeInformation": {
     "title": "Informação Declarativa",
+    "titleResume": "Info Declarativa",
     "packSignature": "Assinatura Pack",
     "indicative": "Indicativo",
     "phone": "Telefone",
@@ -112,6 +209,50 @@
     "companyName": "Nome da Empresa",
     "openProcess": "Abrir Processo"
   },
+  "acceptance": {
+    "title": "Aceitação",
+    "historic": "Histórico",
+    "detail": "Detalhe",
+    "processNumber": "Número do Processo",
+    "contractNumber": "Número de Contrato",
+    "actualState": "Estado Atual",
+    "date": "Data",
+    "user": "Utilizador",
+    "comments": "Observações",
+    "opinions": "Pareceres / Decisão",
+    "name": "Nome",
+    "clientNumber": "Nº Cliente",
+    "eligibility": "Elegibilidade",
+    "opinionNumber": "Nº Parecer",
+    "requestNumber": "Nº Pedido",
+    "state": "Estado",
+    "stateDate": "Data do Estado",
+    "returnReasons": "Motivos de Devolução",
+    "returnReason0": "Motivo Devolução N0",
+    "returnReason1": "Motivo Devolução N1",
+    "returnReason2": "Motivo Devolução N2",
+    "contratualPack": {
+      "title": "Pack Contratual",
+      "documentation": "Documentação Gerada no Processo",
+      "step": "Neste passo, deve entregar a documentação gerada ao cliente para assinar",
+      "reduniq": "Contrato de adesão ao sistema reduniq de aceitação de pagamentos com cartões",
+      "form": "Formulário",
+      "downloadAll": "Download Todos",
+      "addProcess": "Adicionar ao Processo",
+      "scannAttach": "Digitalize / anexe os documentos necessários",
+      "type": "Tipo",
+      "expiryDate": "Data de Validade",
+      "submission": "Ao efectuar a submissão, o processo irá continuar o tratamento.",
+      "continue": "Deseja continuar?",
+      "identificationType": "Tipo de Identificação",
+      "representation": "Restrições de Representação",
+      "getContratualPack": "Obter Pack Contratual",
+      "uploadPADDocuments": "Carregar Documentos da PAD",
+      "cancelPADDocuments": "Cancelar Documentos da PAD",
+      "digitalSignaturePlatform": "Plataforma de Assinatura Digital",
+      "processSent": "Processo enviado para assinatura digital"
+    }
+  },
   "generalKeywords": {
     "yes": "Sim",
     "no": "Não",
@@ -126,13 +267,25 @@
     "stakeholder": "Interveniente",
     "expirationDate": "Data de Validade",
     "entryDate": "Data de Entrada",
-    "deleteFile": "Tem a certeza que deseja excluir o ficheiro?"
+    "deleteFile": "Tem a certeza que deseja excluir o ficheiro?",
+    "mandatoryParameter": "O parâmetro acima é obrigatório.",
+    "search": "Procurar",
+    "deleteProcess": "Quer apagar este processo?",
+    "maintainProcess": "Manter Processo",
+    "confirmDeleteProcess": "Apagar Processo"
   },
   "generalButtons": {
     "continue": "Continuar",
     "cancel": "Cancelar",
     "submit": "Submeter Pedido",
-    "send": "Enviar"
+    "send": "Enviar",
+    "returnCommercial": "Devolver ao Comercial",
+    "returnBackoffice": "Devolver ao BackOffice"
+  },
+  "footer": {
+    "cookies": "Política de Cookies",
+    "privacy": "Política de Privacidade",
+    "contacts": "Contactos de Suporte"
   },
 
   "//CommercialOffer": "CommercialOfferElement",
@@ -158,7 +311,7 @@
   "COTerminalCofig": "Configuração dos Terminais",
   "COEATUnicre": "EAT Unicre?",
   "COTerminalType": "Tipo de terminal",
-  "COCommType": "Tipo de comunucação",
+  "COCommType": "Tipo de comunicação",
   "COPrivateTerminal": "Os terminais serão defenidos com a sua entidade de apoio ao terminal",
   "COReplicateProduts": "Pretende replicar produtos de outros establecimentos?",
   "COSelectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos( Loja de Representação)"  
