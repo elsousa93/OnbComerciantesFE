@@ -15,7 +15,6 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { ComprovativosComponent } from './comprovativos/comprovativos.component';
 import { ClientComponent } from './client/client.component';
-import { ClientExtendedComponent } from './client/client-extended/client-extended.component';
 import { StakeholdersComponent } from './stakeholders/stakeholders.component';
 import { NewStakeholderComponent } from './stakeholders/new-stakeholder/new-stakeholder.component';
 import { StoreIbanComponent } from './store/store-iban/store-iban.component';
@@ -94,7 +93,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaStakeholderComponent,
     PepComponent,
     ClientByIdComponent,
-    ClientExtendedComponent,
     ReadcardComponent,
     DevolucaoComponent,
     AceitacaoComponent,
@@ -135,8 +133,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
        { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'clientbyid', component: ClientByIdComponent },
        { path: 'client/:id', component: ClientComponent },
-      { path: 'client-extended', component: ClientExtendedComponent },
-      { path: 'client-extended/:id', component: ClientExtendedComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
       { path: 'stakeholders/:nif', component: StakeholdersComponent },
       { path: 'create-stakeholder', component: CreateStakeholderComponent },
@@ -174,7 +170,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
-      { path: 'app-client-extended', component: ClientExtendedComponent },
 
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
