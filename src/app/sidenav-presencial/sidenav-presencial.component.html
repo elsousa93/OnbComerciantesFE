@@ -135,18 +135,11 @@
           </a>
         </div>
         <div class="nav-item">
-          <a [routerLink]="['/readcardcc']" role="button">
-            <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
-              <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Read Card &nbsp;
-            </p>
-          </a>
-        </div>
-        <div class="nav-item">
-          <a role="button" (click)="logout()">
+          <button (click)="logout()">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Terminar sessão &nbsp;
             </p>
-          </a>
+          </button>
         </div>
         <!--<div class="nav-item">
     <button (click)="testeAuth()">Teste auth</button>
