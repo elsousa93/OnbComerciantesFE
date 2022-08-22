@@ -25,6 +25,10 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     console.log("roles: ", this.roles);
     this.generateAuthForm();
+
+    this.authService.currentUser.subscribe(result => {
+      console.log("Autenticado atual: ", result);
+    })
   }
 
   submit() {

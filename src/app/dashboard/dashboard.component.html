@@ -6,8 +6,7 @@
           <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
         </span>
         <span class="navbar-text">
-          <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">PERFORMANCE
-            DIÁRIA: <span id="date">{{date}}</span>
+          <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">{{'homepage.diaryPerformance'|translate|uppercase}}: <span id="date">{{date}}</span>
             </h5>
         </span>
       </nav>
@@ -25,8 +24,7 @@
               <img src="assets/images/move_up_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE
-            ENVIO<br><br></h1>
+          <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.pending'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
@@ -40,8 +38,7 @@
               <img src="assets/images/assignment_returned_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">&nbsp;TRATAMENTO
-            BACKOFFICE<br><br></h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">&nbsp;{{'homepage.backOffice'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
@@ -55,8 +52,7 @@
               <img src="assets/images/assignment_return_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">DEVOLVIDOS
-            BACKOFFICE<br><br></h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.returned'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
@@ -70,8 +66,7 @@
               <img src="assets/images/assignment_turned_in_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">EM FASE DE
-            ACEITAÇÃO<br><br></h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.acceptance'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button type="button" class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center"
@@ -85,8 +80,7 @@
               <img src="assets/images/inventory_2_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">PENDENTES DE ENVIO
-            PARA <br> ARQUIVO FÍSICO<br></h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.pendingFisical'|translate|uppercase}}</h1>
         </button>
       </div>
     </div>
@@ -98,8 +92,7 @@
               <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
             </span>
             <span class="navbar-text">
-              <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">FILAS DE
-                TRABALHO</h5>
+              <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">{{'homepage.queues'|translate|uppercase}}</h5>
             </span>
           </nav>
         </div>
@@ -111,7 +104,7 @@
                   data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                   <span class="material-symbols-outlined icon-accordion ">
                     <img src="assets/images/move_up.svg">
-                  </span>&nbsp;&nbsp;PROCESSOS PENDENTES DE ENVIO
+                  </span>&nbsp;&nbsp;{{'homepage.pending'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
@@ -119,20 +112,20 @@
                 <mat-table [dataSource]="dataSourcePendentes" matSort #empTbSort="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Processo
+                      {{'homepage.processDate'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nome Cliente Empresa
+                      {{'homepage.clientName'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       -
@@ -141,7 +134,7 @@
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Consultar Processo
+                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
                     </mat-header-cell>
                     
                     <mat-cell *matCellDef="let row">
@@ -197,7 +190,7 @@
                   data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                   <span class="material-symbols-outlined icon-accordion ">
                     <img src="assets/images/assignment_returned.svg">
-                  </span>&nbsp;&nbsp;TRATAMENTO BACKOFFICE
+                  </span>&nbsp;&nbsp;{{'homepage.backOffice'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
@@ -206,20 +199,20 @@
                 <mat-table [dataSource]="dataSourceTratamento" matSort #empTbSortWithObject="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Processo
+                      {{'homepage.processDate'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nome Cliente Empresa
+                      {{'homepage.clientName'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       -
@@ -228,7 +221,7 @@
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Consultar Processo
+                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -277,7 +270,7 @@
                   data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                   <span class="material-symbols-outlined icon-accordion ">
                     <img src="assets/images/assignment_return.svg">
-                  </span>&nbsp;&nbsp;DEVOLVIDOS BACKOFFICE
+                  </span>&nbsp;&nbsp;{{'homepage.returned'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
@@ -285,20 +278,20 @@
                 <mat-table [dataSource]="dataSourceDevolvidos" matSort #empTbSortDevolvidos="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Processo
+                      {{'homepage.processDate'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nome Cliente Empresa
+                      {{'homepage.clientName'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       -
@@ -307,7 +300,7 @@
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Editar Processo
+                      &nbsp;&nbsp;&nbsp;{{'homepage.editProcess'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a [routerLink]="['/app-devolucao/', row.processId]" (click)="streamHistoryMenu()">
@@ -352,7 +345,7 @@
                   data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
                   <span class="material-symbols-outlined icon-accordion ">
                     <img src="assets/images/assignment_turned_in.svg">
-                  </span>&nbsp;&nbsp;FASE DE ACEITAÇÃO
+                  </span>&nbsp;&nbsp;{{'homepage.acceptance'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
@@ -360,20 +353,20 @@
                 <mat-table [dataSource]="dataSourceAceitacao" matSort #empTbSortAceitacao="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Processo
+                      {{'homepage.processDate'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nome Cliente Empresa
+                      {{'homepage.clientName'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       -
@@ -382,7 +375,7 @@
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Consultar Processo
+                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -432,7 +425,7 @@
                   data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
                   <span class="material-symbols-outlined icon-accordion ">
                     <img src="assets/images/inventory_2.svg">
-                  </span>&nbsp;&nbsp;PENDENTES DE ENVIO PARA ARQUIVO FÍSICO
+                  </span>&nbsp;&nbsp;{{'homepage.pendingFisical'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
@@ -440,20 +433,20 @@
                 <mat-table [dataSource]="dataSourceArquivoFisico" matSort #empTbSortArquivoFisico="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nº Processo </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Data Processo
+                      {{'homepage.processDate'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      Nome Cliente Empresa
+                      {{'homepage.clientName'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       -
@@ -462,7 +455,7 @@
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;Consultar Processo
+                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
@@ -519,12 +512,10 @@
                     <a [routerLink]="['/client']" id="anchor">
                       <button id="btn1"
                         class="btn bg-primary text-white botao_esquerda img-button mt-0 ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
-                        wappler-command="editContent"><img src="assets/images/folder-open-solid.svg">&nbsp; ABERTURA
-                        DE
-                        PROCESSO</button></a></span>
+                      wappler-command="editContent"><img src="assets/images/folder-open-solid.svg">&nbsp; {{'homepage.openProcess'|translate|uppercase}}</button></a></span>
                   <span class="navbar-text ms-1 me-auto">
                     <button [routerLink]="['/app-consultas']" id="btn3" class="btn img-button botao_direita ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
-                      wappler-command="editContent">CONSULTA DE PROCESSO&nbsp;&nbsp;<img
+                      wappler-command="editContent">{{'homepage.findProcessButton'|translate|uppercase}}&nbsp;&nbsp;<img
                         src="assets/images/search-solid.svg"></button>
 
                   </span>

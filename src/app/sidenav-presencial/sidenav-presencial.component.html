@@ -7,7 +7,7 @@
           <a role="button" [routerLink]="['/']" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/home.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Início &nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.home'|translate}} &nbsp;
             </p>
           </a>
         </div>
@@ -15,7 +15,7 @@
           <a role="button" [routerLink]="['/client']" (click)="hideHistoryTab()" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/folder_open.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Abertura de Processo &nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.openProcess'|translate}} &nbsp;
             </p>
           </a>
         </div>
@@ -24,7 +24,7 @@
              aria-expanded="true" aria-controls="collapseOne3">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle">
               <img src="assets/images/edit_note.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Tratamento de Processos &nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.processTreatment'|translate}} &nbsp;
             </p>
           </a>
           <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3"
@@ -35,8 +35,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Pareceres
-                      de Elegibilidade &nbsp;
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.eligibility'|translate}} &nbsp;
                     </p>
                   </a>
                 </span>
@@ -48,8 +47,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Múltiplos
-                      clientes &nbsp;
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.multipleClients'|translate}} &nbsp;
                     </p>
                   </a>
                 </span>
@@ -61,7 +59,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.validation'|translate}}
                       DO &nbsp;
                     </p>
                   </a>
@@ -75,8 +73,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Aprovação
-                      de &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;negociação de precário &nbsp;
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.priceNegotiation'|translate}} &nbsp;
                     </p>
                   </a>
                 </span>
@@ -89,8 +86,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Validação
-                      matricula SIBS &nbsp;
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.validationSIBS'|translate}} &nbsp;
                     </p>
                   </a>
                 </span>
@@ -103,8 +99,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Parecer
-                      de Risco &nbsp;
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.risk'|translate}} &nbsp;
                     </p>
                   </a>
                 </span>
@@ -116,8 +111,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Dúvidas
-                      Compliance &nbsp;
+                           class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;{{'homepage.compliance'|translate} &nbsp;
                     </p>
                   </a>
                 </span>
@@ -129,7 +123,7 @@
           <a [routerLink]="['/app-consultas']" role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/search.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav ">&nbsp;Consultas&nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav ">&nbsp;{{'searches.title'|translate}}&nbsp;
             </p>
           </a>
         </div>
@@ -141,16 +135,16 @@
           </a>
         </div>
         <div class="nav-item">
-          <a [routerLink]="['/readcardcc']" role="button">
+          <button (click)="logout()">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
-              <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Read Card &nbsp;
+              <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav">&nbsp;Terminar sessão &nbsp;
             </p>
-          </a>
+          </button>
         </div>
         <!--<div class="nav-item">
-          <button (click)="testeAuth()">Teste auth</button>
-        </div>-->
-        
+    <button (click)="testeAuth()">Teste auth</button>
+  </div>-->
+
       </div>
     </mat-nav-list>
 
@@ -185,17 +179,17 @@
                 <nav
                   class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
                   <span class="navbar-text">
-                    <h3 class="fw-bold text-light mb-2">QUER APAGAR ESTE PROCESSO?</h3>
+                    <h3 class="fw-bold text-light mb-2">{{'generalKeywords.deleteProcess'|translate|uppercase}}</h3>
                   </span>
                 </nav>
                 <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                   <span class="navbar-text"></span>
                   <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
                       class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3"
-                      wappler-command="editContent" data-bs-dismiss="modal">MANTER PROCESSO</button></span>
+                      wappler-command="editContent" data-bs-dismiss="modal">{{'generalKeywords.maintainProcess'|translate|uppercase}}</button></span>
                   <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
                       class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
-                      wappler-command="editContent">APAGAR PROCESSO</button></span>
+                      wappler-command="editContent">{{'generalKeywords.confirmDeleteProcess'|translate|uppercase}}</button></span>
                 </nav>
              </div>
             </div>
