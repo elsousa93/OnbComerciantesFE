@@ -184,8 +184,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'client-power-representation/:id', component: RepresentationPowerComponent },
       { path: 'client-power-representation/', component: RepresentationPowerComponent },
       { path: 'add-store-product', component: ProductSelectionComponent }
-      
-    ]),
+
+    ], { onSameUrlNavigation: 'reload' }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -37,6 +37,10 @@ export class AuthService implements OnDestroy {
     return this.dataSource.getValue();
   }
 
+  hasUser(user: User) {
+    return !(user === this.user);
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(this.user);
     this.authenticated.next(false);
@@ -48,7 +52,12 @@ export class AuthService implements OnDestroy {
     console.log("auth: ", auth);
 
     if (auth !== undefined && auth !== null && auth !== '') {
-      this.changeUser(JSON.parse(auth));
+      var user = JSON.parse(auth);
+
+      if (this.hasUser(user))
+        this.changeUser(JSON.parse(auth));
+      else
+        console.log("vazio");
     }
   }
 
