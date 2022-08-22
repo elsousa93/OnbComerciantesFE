@@ -66,6 +66,7 @@ import { NGXLogger } from 'ngx-logger';
 import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
 import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
 import { AuthService } from './services/auth.service';
+import { ClientSearchComponent } from './client/client-search/client-search.component';
 
 registerLocaleData(localePT);
 
@@ -113,7 +114,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AuthComponent,
     RepresentationPowerComponent,
     ProductSelectionComponent,
-    StakeholdersListComponent
+    StakeholdersListComponent,
+    ClientSearchComponent
   ],
   imports: [
     ReactiveFormsModule,
