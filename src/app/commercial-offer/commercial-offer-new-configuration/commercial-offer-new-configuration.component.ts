@@ -7,6 +7,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
 import { NGXLogger } from 'ngx-logger';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { StoreService } from '../../store/store.service';
 
 @Component({
   selector: 'app-commercial-offer-new-configuration',
@@ -30,13 +31,18 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   public currentPage: number;
 
   form: FormGroup;
+  edit: boolean;
+  submissionId: string;
 
-  constructor(private logger : NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService) {
+  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService) {
     this.baseUrl = configuration.baseUrl;
 
-    if (this.route.getCurrentNavigation().extras.state) {
+    if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
-      //this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"]; CASO SEJA PARA EDITAR UMA CONFIGURAÇÃO
+      this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"]; //CASO SEJA PARA EDITAR UMA CONFIGURAÇÃO
+
+      if (this.storeEquip != undefined)
+        this.edit = true;
     }
 
     this.initializeForm();
@@ -57,8 +63,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       }
     }
 
-
-    /*Get stores list*/
     this.ngOnInit();
     
     this.data.updateData(false, 5);
@@ -67,19 +71,20 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.submissionId = localStorage.getItem("submissionId");
   }
 
   initializeForm() {
     this.form = new FormGroup({
       name: new FormControl(''),
-      terminalProperty: new FormControl('', Validators.required),
-      communicationOwnership: new FormControl(''),
-      terminalType: new FormControl(''),
-      communicationType: new FormControl(''),
-      terminalAmount: new FormControl(''),
+      terminalProperty: new FormControl(this.storeEquip != null ? this.storeEquip.equipmentOwnership : '', Validators.required),
+      communicationOwnership: new FormControl(this.storeEquip != null ? this.storeEquip.communicationOwnership : ''),
+      terminalType: new FormControl(this.storeEquip != null ? this.storeEquip.equipmentType : ''),
+      communicationType: new FormControl(this.storeEquip != null ? this.storeEquip.communicationType : ''),
+      terminalAmount: new FormControl(this.storeEquip != null ? this.storeEquip.quantity : ''),
       //adicionar um form para o preço
     });
-    console.log(this.form);
+
     this.form.get("terminalProperty").valueChanges.subscribe(val => {
       if (val === 'acquirer') {
         this.form.get('communicationOwnership').setValidators([Validators.required]);
@@ -114,18 +119,34 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
+      this.storeEquip = {};
       this.storeEquip.equipmentOwnership = this.form.get("terminalProperty").value;
       this.storeEquip.communicationOwnership = this.form.get("communicationOwnership").value;
       this.storeEquip.equipmentType = this.form.get("terminalType").value;
       this.storeEquip.equipmentType = this.form.get("communicationType").value;
       this.storeEquip.quantity = this.form.get("terminalAmount").value;
       //falta o campo para o preço
+
       let navigationExtras: NavigationExtras = {
         state: {
           store: this.store,
-          storeEquip: this.storeEquip
         }
       }
+
+      if (this.edit) {
+        console.log("Editar ");
+        //chamada à API para editar uma configuração
+        //this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.id, this.storeEquip).subscribe(result => {
+        //  this.logger.debug("Update Shop Equipment From Submission Response ", result);
+        //});
+      } else {
+        console.log("Criar ");
+        //chamada à API para criar uma nova configuração
+        //this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.id, this.storeEquip).subscribe(result => {
+        //  this.logger.debug("Add Shop Equipment To Submission Response ", result);
+        //});
+      }
+
       this.route.navigate(['commercial-offert-list'], navigationExtras);
     }
   }

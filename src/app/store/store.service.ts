@@ -77,7 +77,7 @@ export class StoreService {
   /////////////
 
   getProcessShopsList(processId: string) {
-    return this.http.get<SimplifiedReference>(this.baseUrl + 'process/' + processId + '/shop');
+    return this.http.get<SimplifiedReference[]>(this.baseUrl + 'process/' + processId + '/shop');
   }
 
   getProcessShopDetails(processId: string, shopId: string) {
