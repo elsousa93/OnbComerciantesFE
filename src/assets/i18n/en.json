@@ -248,12 +248,13 @@
       "type": "Select the contract signature method",
       "language": "Language",
       "chooseOption": "Choose one option",
-      "paperSignature": "Electronic signature",
-      "eletronicSignature": "Assinatura Eletrónica",
+      "paperSignature": "Paper signature",
+      "eletronicSignature": "Electronic signature",
       "representatives": "Select the representatives that oblige the company",
       "clientName": "Client Name",
       "digitalSignatureType": "Digital Signature Type",
-      "submission": "Are you sure you want to close the submission and send it to the backoffice?"
+      "submission": "Are you sure you want to close the submission and send it to the backoffice?",
+      "title": "Choose the digital signature type"
     }
   },
   "searches": {
