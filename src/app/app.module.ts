@@ -67,6 +67,7 @@ import { ProductSelectionComponent } from './store/product-selection/product-sel
 import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
 import { AuthService } from './services/auth.service';
 import { ClientSearchComponent } from './client/client-search/client-search.component';
+import { SearchStakeholdersComponent } from './stakeholders/search-stakeholders/search-stakeholders.component';
 
 registerLocaleData(localePT);
 
@@ -115,7 +116,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     RepresentationPowerComponent,
     ProductSelectionComponent,
     StakeholdersListComponent,
-    ClientSearchComponent
+    ClientSearchComponent,
+    SearchStakeholdersComponent
   ],
   imports: [
     ReactiveFormsModule,

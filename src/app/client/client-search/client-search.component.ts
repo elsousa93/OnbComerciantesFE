@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, Output, OnInit, Inject } from '@angular/core';
+import { Component, Input, Output, OnInit, Inject, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Configuration, configurationToken } from '../../configuration';
@@ -14,16 +14,20 @@ import { ClientService } from '../client.service';
 })
 export class ClientSearchComponent implements OnInit {
   // Inputs do componente (searchType e requestID não foram desenhados ainda)
-  @Input() clientID: string;
+  @Input() clientID: string = "";
   @Input() searchType?: string = "por mudar";
   @Input() requestID?: string = "por mudar";
   //@Input() canEdit?: boolean = false; Pode vir a ser preciso
   @Input() canSelect?: boolean = true;
 
   //Output
-  @Output() selectedClient: Client;
+  @Output() selectedClientEmitter = new EventEmitter<{
+    client: Client,
+    idx: number
+  }>();
   @Output() foundClients: boolean = false;
 
+  //Variáveis locais
   clientsToShow: Client[] = [];
   
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
@@ -71,6 +75,16 @@ export class ClientSearchComponent implements OnInit {
       //context.resultError = "Não existe Comerciante com esse número.";
       //this.searchDone = true;
 
+    });
+  }
+
+  emitSelectedClient(client, idx) {
+    if (!this.canSelect) //Se não for escolher, terminar logo a função
+      return;
+
+    this.selectedClientEmitter.emit({
+      client: client,
+      idx: idx
     });
   }
 

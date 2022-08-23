@@ -50,17 +50,37 @@ export class AuthComponent implements OnInit {
     this.token.getAccessToken().then(result => {
       user.token = result.access_token;
 
-      // this.authService.changeUser(user);
+       this.authService.changeUser(user);
 
-      // console.log(this.authService);
+       console.log(this.authService);
 
-      // this.router.navigate(['/']);
+       this.router.navigate(['/']);
     });
+  }
+
+  noToken() {
+    console.log(this.authForm);
+
+    if (this.authForm.invalid) {
+      console.log("inválido");
+      return;
+    }
+
+    var user: User = {};
+
+    user.userName = this.authForm.get('userName').value;
+    user.bankName = this.authForm.get('bankName').value;
+    user.bankLocation = this.authForm.get('bankLocation').value;
+    user.permissions = UserPermissions.ADMIN;
+    user.authTime = (new Date()).toLocaleString('pt-PT');
+    user.token = ''
+    
     this.authService.changeUser(user);
 
-      console.log(this.authService);
+    console.log(this.authService);
 
-      this.router.navigate(['/']);
+    this.router.navigate(['/']);
+  
   }
 
   openDiv: boolean = false;

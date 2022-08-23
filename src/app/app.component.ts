@@ -25,7 +25,9 @@ export class AppComponent {
   isToggle: boolean = false;
   isAutoHide: boolean = false;
 
-  hasAuthenticated: boolean = false;
+  hasAuthenticated: boolean = true;
+  wantsLogin: boolean = false;
+
 
   translationLanguages = translationLanguages;
 
@@ -48,7 +50,8 @@ export class AppComponent {
 
     authService.hasAuthenticated.subscribe(auth => {
       this.hasAuthenticated = auth;
-    })
+    });
+
   }
 
   @Input() url: string;
