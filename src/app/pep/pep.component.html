@@ -1,452 +1,241 @@
-<h1>PEP</h1>
-<div class="container">
-
-  <form [formGroup]="form" (ngSubmit)="submit()" name="form">
-
-    <!--<div class="form-group">
-      <label for="id"> id</label>
-      <input formControlName="id"
-             id="id"
-             type="number"
-             class="form-control">
-
-    </div>-->
-    <div class="form-group">
-      <p>É, ou foi nos últimos 12 meses, Pessoa Politicamente Exposta (PEP)?: </p>
-
-      <label>
-        {{'generalKeywords.yes'|translate}}
-        <input formControlName="pep12months"
-               name="pep12months"
-               type="radio"
-               value="true"
-               (change)="onChangeValues($event)" />
-      </label>
-
-      <br><br>
-      <label>
-        {{'generalKeywords.no'|translate}}
-        <input formControlName="pep12months"
-               name="pep12months"
-               type="radio"
-               value="false"
-               (change)="onChangeValues($event)" />
-      </label>
-
-
-      <div class="showDiv form-group" *ngIf="isVisiblePep12months == true">
-        <label for="pepType">
-          Tipo de PEP:*
-          <!--input formControlName="pepType"
-                 name="pepType"
-                 id="pepType"
-                 type="text"
-                 class="form-control" />-->
-
-          <select class="form-select" formControlName="pepType" name="pepType" id="pepType">
-            <option value="">Tipo de Pep:</option>
-            <!--<option value="Gestores Públicos"> Gestores Públicos </option>-->
-            <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
-          </select>
-        </label>
-
-
-        <div class="alert alert-danger" *ngIf="this.form.get('pepType').touched && !this.form.get('pepType').valid">
-          <div *ngIf="this.form.get('pepType').errors && this.form.get('pepType').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-        <!--<div class="alert alert-danger" *ngIf="pepType.touched && !pepType.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-
-        <label for="pepCountry">
-          Em que País:*
-          <!--<input formControlName="pepCountry"
-                 name="pepCountry"
-                 id="pepCountry"
-                 type="text"
-                 class="form-control">-->
-
-          <select class="form-select" formControlName="pepCountry" name="pepCountry" id="pepCountry">
-            <option value="">Em que país:</option>
-            <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
-          </select>
-        </label>
-
-        <div class="alert alert-danger" *ngIf="this.form.get('pepCountry').touched && !this.form.get('pepCountry').valid">
-          <div *ngIf="this.form.get('pepCountry').errors && this.form.get('pepCountry').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-        <!--<div class="alert alert-danger" *ngIf="pepCountry.touched && !pepCountry.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-
-
-        <label for="pepSinceWhen">
-          Desde Quando:
-          <input formControlName="pepSinceWhen"
-                 name="pepSinceWhen"
-                 id="pepSinceWhen"
-                 type="date"
-                 class="form-control">
-        </label>
-
-        <div class="alert alert-danger" *ngIf="this.form.get('pepSinceWhen').touched && !this.form.get('pepSinceWhen').valid">
-          <div *ngIf="this.form.get('pepSinceWhen').errors && this.form.get('pepSinceWhen').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-        <!--<div class="alert alert-danger" *ngIf="pepSinceWhen.touched && !pepSinceWhen.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-
-
-      </div>
-    </div> <!-- fecha form do pep12months-->
-
-
-    <div class="form-group" *ngIf="isVisiblePep12months == false">
-      <p> É familiar de uma PEP?:</p>
-
-      <label>
-        {{'generalKeywords.yes'|translate}}
-        <input formControlName="pepFamiliarOf"
-               name="pepFamiliarOf"
-               type="radio"
-               value="true"
-               (change)="onChangeValues($event)" />
-      </label>
-      <br><br>
-      <label>
-        {{'generalKeywords.no'|translate}}
-        <input formControlName="pepFamiliarOf"
-               name="pepFamiliarOf"
-               type="radio"
-               value="false"
-               (change)="onChangeValues($event)" />
-      </label>
-      <div class="form-group" *ngIf="isVisiblePepFamiliarOf == true">
-        <!-- Se for familiar de uma PEP--->
-        <label for="pepFamilyRelation"> Grau de Parentesco:*</label>
-        <!--<input formControlName="pepFamilyRelation"
-               id="pepFamilyRelation"
-               name="pepFamilyRelation"
-               type="text"
-               class="form-control" />-->
-
-        <select class="form-select" formControlName="pepFamilyRelation" name="pepFamilyRelation" id="pepFamilyRelation">
-          <option value="">Grau de Parentesco:</option>
-          <option value="1"> (1) - Filha </option>
-        </select>
-        <!--pepSinceWhen="pepFamilyRelation"/>-->
-
-        <div class="alert alert-danger" *ngIf="this.form.get('pepFamilyRelation').touched && !this.form.get('pepFamilyRelation').valid">
-          <div *ngIf="this.form.get('pepFamilyRelation').errors && this.form.get('pepFamilyRelation').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-      </div>
-
-    </div> <!--Fecha é familiar de uma PEP-->
-
-
-    <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false">
-      <label>  Mantem relações de natureza societária ou comercial com uma PEP?:</label>
-
-      <label>{{'generalKeywords.yes'|translate}}</label>
-      <input formControlName="pepRelations"
-             name="pepRelations"
-             type="radio"
-             value="true"
-             (change)="onChangeValues($event)" />
-      <br><br>
-      <label>{{'generalKeywords.no'|translate}}</label>
-      <input formControlName="pepRelations"
-             name="pepRelations"
-             type="radio"
-             value="false"
-             (change)="onChangeValues($event)" />
-
-      <div class="form-group" *ngIf="isVisiblePepRelations == true">
-        <!-- Se mantiver relações com uma PEP--->
-        <label for="pepTypeOfRelation">
-          Tipo de relação societária/comercial:*
-        </label>
-        <!--<input formControlName="pepTypeOfRelation"
-         name="pepTypeOfRelation"
-         id="pepTypeOfRelation"
-         type="text"
-         class="form-control">-->
-
-        <select class="form-select" formControlName="pepTypeOfRelation" name="pepTypeOfRelation" id="pepTypeOfRelation">
-          <option value="">Tipo de relação societária/comercial:</option>
-          <option value="1"> (1) - Sócio </option>
-        </select>
-
-        <div class="alert alert-danger" *ngIf="this.form.get('pepTypeOfRelation').touched && !this.form.get('pepTypeOfRelation').valid">
-          <div *ngIf="this.form.get('pepTypeOfRelation').errors && this.form.get('pepTypeOfRelation').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-      </div>
+<app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <div class="row">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <span class="navbar-text text-light">
+          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+        </span>
+        <span class="navbar-text">
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+            {{'declarativeInformation.title'|translate|uppercase}}</h5>
+        </span>
+      </nav>
     </div>
+    <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
+      <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link disabled btn-outline-primary activo_tabs activo-tabd" id="navTabs1_1_tab"
+            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1"
+            aria-selected="true">{{'client.title'|translate}}</a>
+        </li>
+        <li class="nav-item_x">
+          <a class="nav-link disabled active btn-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
+            aria-selected="false">{{'stakeholder.title'|translate}}</a>
+        </li>
+        <li class="nav-item_x">
+          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+            aria-selected="false">{{'stores.title'|translate}}</a>
+        </li>
+        <li class="nav-item_x">
+          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+            aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="navTabs1_content">
+        <div class="tab-pane fade show active" id="navTabs1_2" role="tabpanel">
+          <div class="container-fluid mt-0 ps-3 pe-3">
+            <div class="row">
+              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
+                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/frame_person.svg" class="img_add"
+                    style="height:37px;">&nbsp;{{'declarativeInformation.stakeholder.pep.title'|translate}}
+                </h2>
+                <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
+                <div class="row ms-0 me-0">
+                  <form [formGroup]="form" (ngSubmit)="submit()" name="form">
+                      <div class="col-6 ms-0 me-0 ps-0 pe-5 form-group">
+                      <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.isPEP'|translate}}:</p>
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <span class="navbar-text">
+                          <div class="form-check"><label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}
+                            <input class="form-check-input" name="pep12months" type="radio" value="true" 
+                            formControlName="pep12months" id="pep12months" (change)="onChangeValues($event)">
+                            </label>
+                          </div>
+                        </span><span class="navbar-text">
+                          <div class="form-check"><label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}
+                            <input class="form-check-input" name="pep12months" type="radio" value="false"
+                              formControlName="pep12months" id="pep12months"
+                              (change)="onChangeValues($event)">
+                            </label>
+                          </div>
+                        </span>
+                      </nav>
+                      <div class="showDiv form-group" *ngIf="isVisiblePep12months == true">
+                        <label class="form-check-label titulo-form-simples mb-1" for="pepType">
+                          {{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:*
+                          <select class="form-select" formControlName="pepType" name="pepType" id="pepType">
+                            <option value="">{{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:</option>
+                            <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
+                          </select>
+                        </label>
+                        <div class="alert alert-danger"
+                          *ngIf="this.form.get('pepType').touched && !this.form.get('pepType').valid">
+                          <div *ngIf="this.form.get('pepType').errors && this.form.get('pepType').errors?.['required']">
+                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          </div>
+                        </div>
+                        <label class="form-check-label titulo-form-simples mb-1" for="pepCountry">
+                          {{'declarativeInformation.stakeholder.pep.country'|translate}}:*
+                          <select class="form-select" formControlName="pepCountry" name="pepCountry" id="pepCountry">
+                            <option value="">{{'declarativeInformation.stakeholder.pep.country'|translate}}:</option>
+                            <option *ngFor="let country of Countries" value={{country.description}}>
+                              {{country.description}} </option>
+                          </select>
+                        </label>
+                        <div class="alert alert-danger"
+                          *ngIf="this.form.get('pepCountry').touched && !this.form.get('pepCountry').valid">
+                          <div
+                            *ngIf="this.form.get('pepCountry').errors && this.form.get('pepCountry').errors?.['required']">
+                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          </div>
+                        </div>
+                        <label class="form-check-label titulo-form-simples mb-1" for="pepSinceWhen">
+                          {{'declarativeInformation.stakeholder.pep.since'|translate}}:
+                          <input formControlName="pepSinceWhen" name="pepSinceWhen" id="pepSinceWhen" type="date"
+                            class="form-control">
+                        </label>
+                      </div>
+                    </div> <!-- fecha form do pep12months-->
+                    <div class="form-group" *ngIf="isVisiblePep12months == false">
 
-    <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false && isVisiblePepRelations == false">
-      <label> É, ou foi nos últimos 12 meses, titular de outros Cargos Políticos ou Públicos em território nacional?</label>
-
-      <label>{{'generalKeywords.yes'|translate}}</label>
-      <input formControlName="pepPoliticalPublicJobs"
-             name="pepPoliticalPublicJobs"
-             type="radio"
-             value="true"
-             (change)="onChangeValues($event)" />
-      <br><br>
-      <label>{{'generalKeywords.no'|translate}}</label>
-      <input formControlName="pepPoliticalPublicJobs"
-             name="pepPoliticalPublicJobs"
-             type="radio"
-             value="false"
-             (change)="onChangeValues($event)" />
-
-
-      <div class="form-group" *ngIf="isVisiblePepPoliticalPublicJobs == true">
-        <!-- Se tiver tido cargos políticos ou públicos--->
-        <label for="pepPoliticalPublicJobDesignation"> Cargo:*</label>
-        <!--<input formControlName="pepPoliticalPublicJobDesignation"
-               name="pepPoliticalPublicJobDesignation"
-               id="pepPoliticalPublicJobDesignation"
-               type="text"
-               class="form-control">-->
-
-        <select class="form-select" formControlName="pepPoliticalPublicJobDesignation" name="pepPoliticalPublicJobDesignation" id="pepPoliticalPublicJobDesignation">
-          <option value="">Cargo:</option>
-          <option value="Administrador"> Administrador </option>
-        </select>
-
-        <div class="alert alert-danger" *ngIf="this.form.get('pepPoliticalPublicJobDesignation').touched && !this.form.get('pepPoliticalPublicJobDesignation').valid">
-          <div *ngIf="this.form.get('pepPoliticalPublicJobDesignation').errors && this.form.get('pepPoliticalPublicJobDesignation').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-
-
-    <!--<div *ngIf="isVisiblePepFamiliarOf == true || isVisiblePepRelations == true ">
-      <p>Identificação do PEP relacionado</p>
-
-      <div class="form-group relatedPep">
-        <label for="relatedPep_type">
-          Tipo de PEP:-->
-          <!--<input formControlName="relatedPep_type" name="relatedPep_type" type="text" id="relatedPep_type" class="form-control">-->
-          <!--<select class="form-select" formControlName="relatedPep_type" name="relatedPep_type" id="relatedPep_type">
-            <option value="">Tipo de PEP:</option>-->
-            <!--<option value="Gestores Públicos"> Gestores Públicos </option>-->
-            <!--<option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
-          </select>
-        </label>-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_type.touched && !relatedPep_type.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_type').touched && !this.form.get('relatedPep_type').valid">
-          <div *ngIf="this.form.get('relatedPep_type').errors && this.form.get('relatedPep_type').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-        <label for="relatedPep_country">
-          Em que País:-->
-          <!--<input formControlName="relatedPep_country" name="relatedPep_country" type="text" id="relatedPep_country" class="form-control">-->
-          <!--<select class="form-select" formControlName="relatedPep_country" name="relatedPep_country" id="relatedPep_country">
-            <option value="">Em que país:</option>
-            <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
-          </select>
-        </label>-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_country.touched && !relatedPep_country.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_country').touched && !this.form.get('relatedPep_country').valid">
-          <div *ngIf="this.form.get('relatedPep_country').errors && this.form.get('relatedPep_country').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-        <label for="relatedPep_sinceWhen">
-          Desde Quando:
-          <input formControlName="relatedPep_sinceWhen" name="relatedPep_sinceWhen" type="date" id="relatedPep_sinceWhen" class="form-control">
-        </label>-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_country.touched && !relatedPep_country.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_sinceWhen').touched && !this.form.get('relatedPep_sinceWhen').valid">
-          <div *ngIf="this.form.get('relatedPep_sinceWhen').errors && this.form.get('relatedPep_sinceWhen').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-        <label for="relatedPep_nif">NIF:</label>
-        <input formControlName="relatedPep_nif" name="relatedPep_nif" type="text" id="relatedPep_nif" class="form-control">-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_nif.touched && !relatedPep_nif.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_nif').touched && !this.form.get('relatedPep_nif').valid">
-          <div *ngIf="this.form.get('relatedPep_nif').errors && this.form.get('relatedPep_nif').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-        <label for="relatedPep_name">Nome:*</label>
-        <input formControlName="relatedPep_name" name="relatedPep_name" type="text" id="relatedPep_name" class="form-control">-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_name.touched && !relatedPep_name.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_name').touched && !this.form.get('relatedPep_name').valid">
-          <div *ngIf="this.form.get('relatedPep_name').errors && this.form.get('relatedPep_name').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-        <label for="relatedPep_idNumber">Número do Documento de Identificação:</label>
-        <input formControlName="relatedPep_idNumber" idNumber="relatedPep_idNumber" type="text" id="relatedPep_idNumber" class="form-control">-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_idNumber.touched && !relatedPep_idNumber.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_idNumber').touched && !this.form.get('relatedPep_idNumber').valid">
-          <div *ngIf="this.form.get('relatedPep_idNumber').errors && this.form.get('relatedPep_idNumber').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-        <label for="relatedPep_idDocumentType">Tipo de Documento:*</label>-->
-        <!--<input formControlName="relatedPep_idDocumentType" idDocumentType="relatedPep_idDocumentType" type="text" id="relatedPep_idDocumentType" class="form-control">-->
-        <!--<select class="form-select" formControlName="relatedPep_idDocumentType" name="relatedPep_idDocumentType" id="relatedPep_idDocumentType">
-          <option value="">Tipo de Documento:</option>
-          <option value="Cartão do Cidadão"> Cartão do Cidadão </option>
-        </select>-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_idDocumentType.touched && !relatedPep_idDocumentType.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_idDocumentType').touched && !this.form.get('relatedPep_idDocumentType').valid">
-          <div *ngIf="this.form.get('relatedPep_idDocumentType').errors && this.form.get('relatedPep_idDocumentType').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-        <label for="relatedPep_idDocumentValidity">Data de Validade do Documento:*</label>
-        <input formControlName="relatedPep_idDocumentValidity" idDocumentValidity="relatedPep_idDocumentValidity" type="text" id="relatedPep_idDocumentValidity" class="form-control">-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_idDocumentValidity.touched && !relatedPep_idDocumentValidity.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_idDocumentValidity').touched && !this.form.get('relatedPep_idDocumentValidity').valid">
-          <div *ngIf="this.form.get('relatedPep_idDocumentValidity').errors && this.form.get('relatedPep_idDocumentValidity').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-        <label for="relatedPep_idDocumentCountry">Pais do Documento de Identificação:*</label>-->
-        <!--<input formControlName="relatedPep_idDocumentCountry" idDocumentCountry="relatedPep_idDocumentCountry" type="text" id="relatedPep_idDocumentCountry" class="form-control">-->
-        <!--<select class="form-select" formControlName="relatedPep_idDocumentCountry" name="relatedPep_idDocumentCountry" id="relatedPep_idDocumentCountry">
-          <option value="">Pais do Documento de Identificação:</option>
-          <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
-        </select>-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_idDocumentCountry.touched && !relatedPep_idDocumentCountry.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_idDocumentCountry').touched && !this.form.get('relatedPep_idDocumentCountry').valid">
-          <div *ngIf="this.form.get('relatedPep_idDocumentCountry').errors && this.form.get('relatedPep_idDocumentCountry').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-        <label for="relatedPep_addressCountry">País da Morada:</label>-->
-        <!--<input formControlName="relatedPep_addressCountry" addressCountry="relatedPep_addressCountry" type="text" id="relatedPep_addressCountry" class="form-control">-->
-        <!--<select class="form-select" formControlName="relatedPep_addressCountry" name="relatedPep_addressCountry" id="relatedPep_addressCountry">
-          <option value="">Pais da Morada:</option>
-          <option *ngFor="let country of Countries" value={{country.description}}>{{country.description}} </option>
-        </select>-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_addressCountry.touched && !relatedPep_addressCountry.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_addressCountry').touched && !this.form.get('relatedPep_addressCountry').valid">
-          <div *ngIf="this.form.get('relatedPep_addressCountry').errors && this.form.get('relatedPep_addressCountry').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-        <label for="relatedPep_address">Morada:</label>
-        <input formControlName="relatedPep_address" address="relatedPep_address" type="text" id="relatedPep_address" class="form-control">-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_address.touched && !relatedPep_address.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_address').touched && !this.form.get('relatedPep_address').valid">
-          <div *ngIf="this.form.get('relatedPep_address').errors && this.form.get('relatedPep_address').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-        <label for="relatedPep_addressLocation">Localidade:</label>
-        <input formControlName="relatedPep_addressLocation" addressLocation="relatedPep_addressLocation" type="text" id="relatedPep_addressLocation" class="form-control">-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_addressLocation.touched && !relatedPep_addressLocation.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_addressLocation').touched && !this.form.get('relatedPep_addressLocation').valid">
-          <div *ngIf="this.form.get('relatedPep_addressLocation').errors && this.form.get('relatedPep_addressLocation').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-
-        <label for="relatedPep_postalCode">Código Postal:</label>
-        <input formControlName="relatedPep_postalCode" postalCode="relatedPep_postalCode" type="text" id="relatedPep_postalCode" class="form-control">-->
-        <!--<div class="alert alert-danger" *ngIf="relatedPep_postalCode.touched && !relatedPep_postalCode.valid">
-    O parâmetro acima é obrigatório.
-  </div>-->
-        <!--<div class="alert alert-danger" *ngIf="this.form.get('relatedPep_postalCode').touched && !this.form.get('relatedPep_postalCode').valid">
-          <div *ngIf="this.form.get('relatedPep_postalCode').errors && this.form.get('relatedPep_postalCode').errors?.['required']">
-            O parâmetro acima é obrigatório.
-          </div>
-        </div>
-
-      </div>
-
-      
-
-    </div>-->
-
-    <button class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg" [disabled]="!form.valid">{{'generalKeywords.next'|translate|uppercase}}</button>
-  </form>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                      <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.isFamiliar'|translate}}:</p>
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <span class="navbar-text">
+                          <div class="form-check"><label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}
+                            <input class="form-check-input" name="pepFamiliarOf" type="radio" value="true" 
+                            formControlName="pepFamiliarOf" id="pepFamiliarOf" (change)="onChangeValues($event)">
+                            </label>
+                          </div>
+                        </span><span class="navbar-text">
+                          <div class="form-check">
+                            <input class="form-check-input" name="pepFamiliarOf" type="radio" value="false"
+                              formControlName="pepFamiliarOf" id="pepFamiliarOf"
+                              (change)="onChangeValues($event)">
+                            <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
+                          </div>
+                        </span>
+                      </nav>
+                      <div class="form-group" *ngIf="isVisiblePepFamiliarOf == true">
+                        <!-- Se for familiar de uma PEP--->
+                        <label class="form-check-label titulo-form-simples mb-1"
+                          for="pepFamilyRelation">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*</label>
+                        <select class="form-select" formControlName="pepFamilyRelation" name="pepFamilyRelation"
+                          id="pepFamilyRelation">
+                          <option value="">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:
+                          </option>
+                          <option value="1">Filha</option>
+                        </select>
+                        <div class="alert alert-danger"
+                          *ngIf="this.form.get('pepFamilyRelation').touched && !this.form.get('pepFamilyRelation').valid">
+                          <div *ngIf="this.form.get('pepFamilyRelation').errors && this.form.get('pepFamilyRelation').errors?.['required']">
+                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--Fecha é familiar de uma PEP-->
+                    <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false">
+                      <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.relations'|translate}}:</p>
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <span class="navbar-text">
+                          <div class="form-check"><label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}
+                            <input class="form-check-input" name="pepRelations" type="radio" value="true" 
+                            formControlName="pepRelations" id="pepRelations" (change)="onChangeValues($event)">
+                            </label>
+                          </div>
+                        </span><span class="navbar-text">
+                          <div class="form-check">
+                            <input class="form-check-input" name="pepRelations" type="radio" value="false"
+                              formControlName="pepRelations" id="pepRelations"
+                              (change)="onChangeValues($event)">
+                            <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
+                          </div>
+                        </span>
+                      </nav>
+                      <div class="form-group" *ngIf="isVisiblePepRelations == true">
+                        <!-- Se mantiver relações com uma PEP--->
+                        <label class="form-check-label titulo-form-simples mb-1" for="pepTypeOfRelation">
+                          {{'declarativeInformation.stakeholder.pep.relationType'|translate}}:*
+                        </label>
+                        <select class="form-select" formControlName="pepTypeOfRelation" name="pepTypeOfRelation"
+                          id="pepTypeOfRelation">
+                          <option value="">{{'declarativeInformation.stakeholder.pep.relationType'|translate}}:</option>
+                          <option value="1">Sócio </option>
+                        </select>
+                        <div class="alert alert-danger"
+                          *ngIf="this.form.get('pepTypeOfRelation').touched && !this.form.get('pepTypeOfRelation').valid">
+                          <div
+                            *ngIf="this.form.get('pepTypeOfRelation').errors && this.form.get('pepTypeOfRelation').errors?.['required']">
+                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false && isVisiblePepRelations == false">
+                      
+                      <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.politicJobs'|translate}}:</p>
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <span class="navbar-text">
+                          <div class="form-check"><label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}
+                            <input class="form-check-input" name="pepPoliticalPublicJobs" type="radio" value="true" 
+                            formControlName="pepPoliticalPublicJobs" id="pepPoliticalPublicJobs" (change)="onChangeValues($event)">
+                            </label>
+                          </div>
+                        </span><span class="navbar-text">
+                          <div class="form-check"><label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}
+                            <input class="form-check-input" name="pepPoliticalPublicJobs" type="radio" value="false"
+                              formControlName="pepPoliticalPublicJobs" id="pepPoliticalPublicJobs"
+                              (change)="onChangeValues($event)">
+                            </label>
+                          </div>
+                        </span>
+                      </nav>
+                      <div class="form-group" *ngIf="isVisiblePepPoliticalPublicJobs == true">
+                        <!-- Se tiver tido cargos políticos ou públicos--->
+                        <label class="form-check-label titulo-form-simples mb-1"
+                          for="pepPoliticalPublicJobDesignation">{{'declarativeInformation.stakeholder.pep.role'|translate}}:*</label>
+                        <select class="form-select" formControlName="pepPoliticalPublicJobDesignation"
+                          name="pepPoliticalPublicJobDesignation" id="pepPoliticalPublicJobDesignation">
+                          <option value="">{{'declarativeInformation.stakeholder.pep.role'|translate}}:</option>
+                          <option value="Administrador">Administrador</option>
+                        </select>
+                        <div class="alert alert-danger"
+                          *ngIf="this.form.get('pepPoliticalPublicJobDesignation').touched && !this.form.get('pepPoliticalPublicJobDesignation').valid">
+                          <div
+                            *ngIf="this.form.get('pepPoliticalPublicJobDesignation').errors && this.form.get('pepPoliticalPublicJobDesignation').errors?.['required']">
+                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="col ms-0 ps-0">
+                    <hr>
+                    <nav
+                      class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                      <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                        <button id="btn5a1" [routerLink]="['/']"
+                          class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                          wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
+                            style="height: 25px !important; vertical-align: sub;"></button>
+                      <button id="btn5a3" [routerLink]="['/']"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg"
+                          style="height: 25px !important; vertical-align: sub;"></button>
+                      <button id="btn5a4" [routerLink]="['/info-declarativa-stakeholder']"
+                        class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                        wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+                          style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
+                      <button [disabled]="!form.valid" id="btn5a2" (click) = "submit()"
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                        wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
+                          style="height: 25px !important; vertical-align: sub;"></button>
+                        </span>
+                    </nav>
+                    
+                  </div>
+                </div>

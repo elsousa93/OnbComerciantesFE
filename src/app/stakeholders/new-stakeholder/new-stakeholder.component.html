@@ -140,12 +140,13 @@
             
           </div>
           <div *ngIf="showYesCC && !showNoCC">
-          <p class="titulo-form-simples">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
+          <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
           <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
                  class="form-control campo_form">
           <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
           <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
                  cols="30" rows="10" class="form-control campo_form">
+                 <p class="titulo-form-simples"></p>
           </div></div>
           <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">

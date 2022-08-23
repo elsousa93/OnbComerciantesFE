@@ -242,7 +242,20 @@
       "name": "Comercial Name"
     },
     "stakeholder":{
-      "contacts": "contacts"
+      "contacts": "contacts",
+      "pep": {
+        "title": "PEP",
+        "isPEP": "Are, or have been in the last 12 months, a Politically Exposed Person (PEP)?",
+        "PEPType": "PEP Type",
+        "country": "In which country",
+        "since": "Since",
+        "isFamiliar": "Is familiar of a Politically Exposed Person (PEP)?",
+        "familyRelation": "Degree of kinship",
+        "relations": "Maintains corporate or commercial relationships with a Politically Exposed Person (PEP)?",
+        "relationType": "Type of corporate/business relationship",
+        "politicJobs": "Is, or was in the last 12 months, holder of other Political or Public Positions in national territory?",
+        "role": "Role"
+      }
     },
     "signature": {
       "type": "Select the contract signature method",

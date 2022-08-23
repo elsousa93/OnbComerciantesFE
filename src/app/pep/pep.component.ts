@@ -7,6 +7,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { CountryInformation, PEPTypes } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { NGXLogger } from 'ngx-logger';
+import { DataService } from '../nav-menu-interna/data.service';
 
 @Component({
   selector: 'app-pep',
@@ -22,7 +23,7 @@ export class PepComponent implements OnInit {
   PEPTypes: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private data: DataService,
     private http: HttpClient,
     private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private route: Router,
@@ -72,6 +73,7 @@ export class PepComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.data.updateData(false, 6, 3);
   }
 
   loadDataFromBE() {
