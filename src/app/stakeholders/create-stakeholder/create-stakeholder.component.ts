@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
+import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
 import { docTypeListE, docTypeListP } from '../docType';
 import { IStakeholders } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
@@ -244,7 +245,9 @@ export class CreateStakeholderComponent implements OnInit {
   foundStakeholders: boolean;
 
   constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
+    private stakeholderService: StakeholderService, private submissionService: SubmissionService,
+    private submissionDocumentService: SubmissionDocumentService  ) {
 
 
     this.submissionId = localStorage.getItem('submissionId');
@@ -514,6 +517,9 @@ export class CreateStakeholderComponent implements OnInit {
    * date 23/08/22
    */
   addStakeholderWithCC() {
+    //Colocar comprovativo d CC na Submissao 
+    this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
+
     var stakeholderToInsert: IStakeholders = {
       "fiscalId": this.dataCCcontents.nifCC,
       "identificationDocument": {
@@ -524,11 +530,15 @@ export class CreateStakeholderComponent implements OnInit {
       "phone2": {},
       "shortName": this.dataCCcontents.nameCC
     }
+
+
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
       this.route.navigate(['/stakeholders/']);
     }, error => {
       this.logger.error("Erro ao adicionar stakeholder com o CC");
     });
+
+
   }
   
 
