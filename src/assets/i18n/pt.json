@@ -253,7 +253,8 @@
       "representatives": "Selecione os representantes que obrigam a empresa",
       "clientName": "Nome do Cliente",
       "digitalSignatureType": "Tipo de Assinatura Digital",
-      "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?"
+      "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?",
+      "title": "Selecione o tipo de assinatura digital"
     }
   },
   "searches": {

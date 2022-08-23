@@ -91,7 +91,7 @@
                           <th scope="col" class="text-center bg-light">NIF</th>
                           <th scope="col" class="text-center bg-white">
                             {{'declarativeInformation.signature.digitalSignatureType'|translate|uppercase}}</th>
-                          <th *ngIf="isPaper == false" scope="col" class="text-center bg-white">
+                          <th *ngIf="isPaper == true" scope="col" class="text-center bg-white">
                             {{'acceptance.contratualPack.identificationType'|translate|uppercase}}
                           </th>
                         </tr>
@@ -103,7 +103,7 @@
                           <td class="text-primary text-center align-middle"><select class="form-select">
                               <option value="-">-</option>
                             </select></td>
-                          <td *ngIf="isPaper == false" class="text-primary text-center align-middle"><select
+                          <td *ngIf="isPaper == true" class="text-primary text-center align-middle"><select
                               class="form-select">
                               <option value="-">-</option>
                             </select></td>

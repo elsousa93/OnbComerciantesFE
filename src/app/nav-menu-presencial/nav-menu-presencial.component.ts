@@ -2,14 +2,17 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
 import { AuthService } from '../services/auth.service';
+import { TranslationLanguage, translationLanguages } from '../translationLanguages';
 import { User } from '../userPermissions/user';
 import { ProcessNumberService } from './process-number.service';
 import { progressSteps } from './progressSteps';
+
 
 @Component({
   selector: 'app-nav-menu-presencial',
@@ -55,10 +58,14 @@ export class NavMenuPresencialComponent implements OnInit {
 
   currentUser: User = {};
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: NGXLogger) {
-    authService.currentUser.subscribe(user => this.currentUser = user);
+  translationLanguages = translationLanguages;
+  currentLanguage: TranslationLanguage;
 
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: NGXLogger, public translate: TranslateService) {
+    authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
+    this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
+    this.changeLanguage(this.translate.getDefaultLang());
   }
 
   ngOnInit(): void {
@@ -76,8 +83,6 @@ export class NavMenuPresencialComponent implements OnInit {
 
     //this.navPosition = '0';
     var prevScrollpos = window.pageYOffset;
-
-    
     
     window.addEventListener("scroll", this.autohide.bind(this), false);
 
@@ -136,5 +141,18 @@ export class NavMenuPresencialComponent implements OnInit {
   searchProcess() {
     this.logger.debug(this.processNumberToSearch);
     this.route.navigate(['/app-consultas/', this.processNumberToSearch]);
+  }
+
+  changeLanguage(language) {
+    this.translate.use(language);
+    this.getLanguageInfo(language);
+  }
+
+  getLanguageInfo(language: string) {
+    this.translationLanguages.forEach(value => {
+      if (language == value.abbreviation) {
+        this.currentLanguage = value;
+      }
+    });
   }
 }
