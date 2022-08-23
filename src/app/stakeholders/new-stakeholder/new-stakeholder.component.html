@@ -97,15 +97,7 @@
               <p class="titulo-form-simples">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
               <select readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
                 <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
-              </select>
-            
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
-              <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
-                     class="form-control campo_form">
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
-              <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
-                     cols="30" rows="10" class="form-control campo_form">
-            
+              </select>            
           </div>
           <div *ngIf="!showYesCC && showNoCC">
             
@@ -147,12 +139,20 @@
               <p class="titulo-form-simples"></p>
             
           </div>
+          <div *ngIf="showYesCC && !showNoCC">
+          <p class="titulo-form-simples">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
+          <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+                 class="form-control campo_form">
+          <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
+          <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+                 cols="30" rows="10" class="form-control campo_form">
           </div>
           <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span>
             </nav>
+          </div>
           </div>
         </div>
 
