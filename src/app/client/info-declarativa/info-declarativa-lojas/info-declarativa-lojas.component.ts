@@ -170,7 +170,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   } 
 
   ngOnInit(): void {
-    this.data.updateData(false, 6, 3);
+    this.data.updateData(false, 6, 4);
     this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
     this.returned = localStorage.getItem("returned");
 

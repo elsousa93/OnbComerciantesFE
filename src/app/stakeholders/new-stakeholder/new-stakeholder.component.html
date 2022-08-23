@@ -89,26 +89,17 @@
 
 
           <!--Sem CC-->
+          <div class="col-6 ms-0 me-0 ps-0 pe-5">
           <div *ngIf="showYesCC && !showNoCC">
-            <div class="col-6 ms-0 me-0 ps-0 pe-5">
+            
               <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
               <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
               <p class="titulo-form-simples">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
               <select readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
                 <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
-              </select>
-            </div>
-            <div class="col-6 ms-0 me-0 ps-5 pe-0">
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
-              <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
-                     class="form-control campo_form">
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
-              <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
-                     cols="30" rows="10" class="form-control campo_form">
-            </div>
+              </select>            
           </div>
           <div *ngIf="!showYesCC && showNoCC">
-            <div class="col-6 ms-0 me-0 ps-0 pe-5">
             
               <p class="titulo-form-simples mt-0">NIF</p>
               <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="selectedStakeholderIsFromCRC">
@@ -120,7 +111,9 @@
               <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keyup)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
               <p class="titulo-form-simples"></p>
             </div>
+            </div>
           <div class="col-6 ms-0 me-0 ps-5 pe-0">
+            <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
               <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
               <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false" >
@@ -137,7 +130,7 @@
     O parâmetro "Código postal" é obrigatório.
   </div>-->
 
-              <p class="titulo-form-simples ">{{'stakeholder.adrress'|translate|uppercase}}</p>
+              <p class="titulo-form-simples ">{{'stakeholder.address'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger"
     *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
@@ -146,12 +139,21 @@
               <p class="titulo-form-simples"></p>
             
           </div>
-          </div>
+          <div *ngIf="showYesCC && !showNoCC">
+          <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
+          <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+                 class="form-control campo_form">
+          <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
+          <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+                 cols="30" rows="10" class="form-control campo_form">
+                 <p class="titulo-form-simples"></p>
+          </div></div>
           <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span>
             </nav>
+          
           </div>
         </div>
 

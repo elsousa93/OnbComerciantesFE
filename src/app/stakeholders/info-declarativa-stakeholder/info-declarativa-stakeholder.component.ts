@@ -171,13 +171,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
           this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
         } else {
 
-          this.route.navigate(['/info-declarativa-lojas']);
+          this.route.navigate(['/app-pep']);
         }
 
       }, error => {
       });
     } else {
-      this.route.navigate(['/info-declarativa-lojas']);
+      this.route.navigate(['/app-pep']);
     }
   }
 
