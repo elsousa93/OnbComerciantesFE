@@ -469,7 +469,7 @@ export class CountrysComponent implements OnInit {
             fileType: 'PDF',
             binary: this.comprovativoCC.file
           },
-          validUntil: "2022-07-13T11:10:13.420Z",
+          validUntil: "2022-07-13T11:10:13.420Z", //FIXME
           data: null
         })
       }
