@@ -177,7 +177,14 @@
             </tr>
           </tbody>
         </table>
-        <button class="btn botao_azul_pesquisa" type="submit">{{'generalKeywords.add'|translate}}</button>
+
+        <span class="navbar-text me-2">
+          <button id="btn5a2" (click)="addStakeholderWithCC()" routerLink="/add-stakeholder"
+                  class="btn botao_branco" wappler-command="editContent">
+            {{'generalKeywords.add'|translate}}&nbsp;
+            <img src="assets/images/person_add_blue.svg" class="img_btn">
+          </button>
+        </span>
       </div>
 
 
