@@ -123,12 +123,13 @@
         </p>
   <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
          #clientId="ngModel" [class]="errorInput"></div></div>-->
-              <div *ngIf="isNoDataReadable && isCC"> <!--  && toShowReadCC  -->
-                <div>
-                  Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
-                </div>
-                <button class="btn botao_azul_pesquisa" (click)="launchNewModal()" type="submit">Ler Cartão de Cidadão</button>
+            <div *ngIf="isNoDataReadable && isCC">
+              <!--  && toShowReadCC  -->
+              <div>
+                Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão
               </div>
+              <button type="button" class="btn botao_azul_pesquisa" (click)="openModal(template)">Ler Cartão de Cidadão</button>
+            </div>
 
               <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -151,12 +152,18 @@
 
               <!--Seccao do Modal PIN da Morada-->
 
-              <ng-template #newModal>
-                <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
-                  <p>Tem o pin de acesso aos dados da morada?</p>
-                  <button type="button" class="btn btn-primary" value="true" (click)="callreadCCAddress(); closeModal()">{{'generalKeywords.yes'|translate|uppercase}}</button>
-                  <button type="button" class="btn btn-primary" value="false" (click)="callreadCC(); closeModal(); setOkCC()">{{'generalKeywords.no'|translate|uppercase}}</button>
+              <ng-template #template>
+                <div class="modal-header">
+                  <h4 class="modal-title pull-left">Leitura do Cartão de Cidadão</h4>
+                  <button type="button" aria-label="Não" (click)="modalRef.hide()">
+                    <span aria-hidden="true">×</span>
+                  </button>
                 </div>
+                <div class="modal-body">
+                  Tem acesso ao pin da morada?
+                </div>
+                <button type="button" class="btn btn-default" value="true" (click)="modalRef.hide(); callreadCCAddress()">{{'generalKeywords.yes'|translate|uppercase}}</button>
+                <button type="button" class="btn btn-default" value="false" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">{{'generalKeywords.no'|translate|uppercase}}</button>
               </ng-template>
               <!--Fim da Seccao do Modal PIN da Morada-->
             </div>
@@ -185,27 +192,33 @@
               <tbody>
                 <tr>
                   <th scope="row" class="titulo-form-simples">Nome:</th>
-                  <td>{{nameCC}}</td>
+                  <td>{{dataCCcontents.nameCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">Nº do CC:</th>
-                  <td>{{cardNumberCC}}</td>
+                  <td>{{dataCCcontents.cardNumberCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">NIF:</th>
-                  <td>{{nifCC}}</td>
+                  <td>{{dataCCcontents.nifCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">Morada:</th>
-                  <td>{{addressCC}}</td>
+                  <td>{{dataCCcontents.addressCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">Código Postal:</th>
-                  <td>{{postalCodeCC}}</td>
+                  <td>{{dataCCcontents.postalCodeCC}}</td>
                 </tr>
               </tbody>
             </table>
-            <button class="btn botao_azul_pesquisa" type="submit">Adicionar</button>
+            <span class="navbar-text me-2">
+              <button  id="btn5a2" (click)="createNewClient(dataCCcontents.nifCC)" routerLink="/add-stakeholder"
+                      class="btn botao_branco" wappler-command="editContent">
+                ADICIONAR COMERCIANTE&nbsp;
+                <img src="assets/images/person_add_blue.svg" class="img_btn">
+              </button>
+            </span>
           </div>
         </div>
         </div>

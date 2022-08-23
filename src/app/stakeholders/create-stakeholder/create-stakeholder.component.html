@@ -137,8 +137,8 @@
         <div class="modal-body">
           Tem acesso ao pin da morada?
         </div>
-        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCC()">{{'generalKeywords.yes'|translate|uppercase}}</button>
-        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCCAddress()">{{'generalKeywords.no'|translate|uppercase}}</button>
+        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCCAddress()">{{'generalKeywords.yes'|translate|uppercase}}</button>
+        <button type="button" class="btn btn-default" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">{{'generalKeywords.no'|translate|uppercase}}</button>
       </ng-template>
 
       <!-- Seccao do Modal PIN da Morada-->
