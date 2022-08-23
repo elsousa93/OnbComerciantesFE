@@ -21,6 +21,8 @@ import { ProcessService } from '../../process/process.service';
 import { DatePipe, formatDate } from '@angular/common';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { NGXLogger } from 'ngx-logger';
+import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
+
 
 @Component({
   selector: 'app-client',
@@ -158,6 +160,7 @@ export class ClientByIdComponent implements OnInit {
   isAssociatedWithFranchise: boolean;
   NIFNIPC: any;
   idClient: string;
+  comprovativoCC: FileAndDetailsCC; 
 
   DisableNIFNIPC: boolean = false;
   collectCRC: boolean;
@@ -583,9 +586,11 @@ export class ClientByIdComponent implements OnInit {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
 
       console.log("nif recebido pelo state:", this.NIFNIPC);
       console.log("tipo: ", typeof this.NIFNIPC);
+      console.log("comprov: ", this.comprovativoCC);
 
       if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
         this.DisableNIFNIPC = true;
@@ -935,6 +940,7 @@ export class ClientByIdComponent implements OnInit {
         merchantInfo: this.merchantInfo,
         crc: (this.crcFound) ? this.processClient : null,
         crcCode: this.processClient.code,
+        comprovativoCC: this.comprovativoCC
        
       }
     };
