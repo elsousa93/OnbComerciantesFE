@@ -653,3 +653,16 @@ main {
   border: 2px #1e66b0;
   border-right-style: dashed;
 }
+
+.cdk-overlay-connected-position-bounding-box,
+.cdk-global-overlay-wrapper,
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}
+
+.language-select {
+  width: 4.7% !important ;
+  margin-left: 645px;
+  
+}
+

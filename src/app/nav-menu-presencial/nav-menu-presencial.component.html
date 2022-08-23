@@ -56,6 +56,14 @@
                 [@AutoHideLogo]="isAutohide ? 'hide' : 'show'">
             </span>
           </a>
+            <mat-select #langSelect (selectionChange)="changeLanguage(langSelect.value)" class="p-xxl-2 form-control me-2 form-control-sm language-select bg-white" [value]="translate.currentLang">
+              <mat-select-trigger>
+                <img class="m-2" width="27" height="17" src="{{currentLanguage.imageUrl}}" />
+              </mat-select-trigger>
+              <mat-option *ngFor="let lang of translationLanguages" [value]="lang.abbreviation" id="{{lang.imageUrl}}">
+                <img class="img-fluid" style="height: 15px; width: 25px;" [src]="lang.imageUrl" /> {{lang.fullName}}
+              </mat-option>
+            </mat-select>
           <span class="navbar-text text-light ms-auto">
             <form class="d-flex" style="margin-bottom: 0px;">
               <input class="form-control me-2 form-control-sm" type="search" placeholder="Nº processo" #processNumberToSearch

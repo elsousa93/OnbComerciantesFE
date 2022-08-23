@@ -43,7 +43,6 @@ export interface ProductPackFilter {
 interface MerchantCatalog {
   fiscalIdentification?: FiscalIdentification
   context?: MerchantContextEnum
-
 }
 
 interface StoreCatalog {

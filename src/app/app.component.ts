@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { CRCService } from './CRC/crcservice.service';
 import { NGXLogger } from 'ngx-logger';
 import { AuthService } from './services/auth.service';
+import { translationLanguages } from './translationLanguages';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +27,15 @@ export class AppComponent {
 
   hasAuthenticated: boolean = false;
 
+  translationLanguages = translationLanguages;
+
   constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService) {
-    translate.addLangs(['pt', 'en']);
+    //ir buscar as linguagens disponiveis. para adicionar uma nova linguagem basta adicionar à lista que se encontra no 'translationLanguages.ts'
+    let langs = this.translationLanguages.map(val => {
+      return val.abbreviation;
+    });
+    translate.addLangs(langs);
     translate.setDefaultLang('pt');
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
