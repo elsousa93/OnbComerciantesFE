@@ -508,5 +508,28 @@ export class CreateStakeholderComponent implements OnInit {
       });
     }
   }
+  /**
+   * Add Stakeholder with CC: Only gets the Name and NIF from the stakeholder.
+   * waiting for enums for identificationDocument "type" and "number".
+   * date 23/08/22
+   */
+  addStakeholderWithCC() {
+    var stakeholderToInsert: IStakeholders = {
+      "fiscalId": this.dataCCcontents.nifCC,
+      "identificationDocument": {
+        "type": "CC",         //FIXME
+        "number": this.dataCCcontents.cardNumberCC, //FIXME
+      },
+      "phone1": {},
+      "phone2": {},
+      "shortName": this.dataCCcontents.nameCC
+    }
+    this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+      this.route.navigate(['/stakeholders/']);
+    }, error => {
+      this.logger.error("Erro ao adicionar stakeholder com o CC");
+    });
+  }
+  
 
 }
