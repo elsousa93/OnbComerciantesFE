@@ -269,6 +269,13 @@ export class ClientComponent implements OnInit {
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('newModal') newModal;
 
+  selectedClient: {
+    client?: Client,
+    idx?: number
+  } = {};
+
+  clientID: string = '';
+
 
   emit(url: string) {
     this.urlEmitter.emit(url);
@@ -431,6 +438,8 @@ export class ClientComponent implements OnInit {
 
 
   searchClient() {
+
+    //this.clientID || Definir com o valor do campo
     this.logger.debug(this.newClient.clientId);
 
     var context = this;
@@ -570,16 +579,14 @@ export class ClientComponent implements OnInit {
 
   obterSelecionado() {
     this.logger.debug(this.clientId);
-
+    var selectedClient = this.selectedClient.client;
     var NIFNIPC = null;
-    this.logger.debug("DOCUMENTAIONDELIVERYMETHOD -->");
-    this.logger.debug(this.newClient.documentationDeliveryMethod);
-    if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
+    if (selectedClient.documentationDeliveryMethod === '002' || selectedClient.documentationDeliveryMethod === '005') {
       this.logger.debug("entrou aqui no if complexo");
-      NIFNIPC = this.newClient.clientId;
+      NIFNIPC = selectedClient.clientId;
     }
 
-    if (this.newClient.documentationDeliveryMethod === '004') {
+    if (selectedClient.documentationDeliveryMethod === '004') {
       this.dataCC = {
         nomeCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
@@ -599,7 +606,7 @@ export class ClientComponent implements OnInit {
         }
       };
     this.logger.debug("a passar para a proxima pagina");
-      this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
+    this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }
@@ -691,5 +698,11 @@ export class ClientComponent implements OnInit {
   newSearch() {
    // location.reload();
   this.route.navigate(['/client'])
+  }
+
+  //PARA O NOVO COMPONENTE
+  selectClient(clientEmitted) {
+    this.selectedClient.client = clientEmitted.client;
+    this.selectedClient.idx = clientEmitted.idx;
   }
 }

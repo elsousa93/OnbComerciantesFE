@@ -44,16 +44,20 @@
               <select formControlName="role" name="role" id="role"
                       class="form-control campo_form">
                 <option value="">Selecione</option>
-                <option *ngFor="let role of roles" value={{role.code}} >{{role.name}}</option>
+                <option *ngFor="let role of roles" value={{role.code}}>{{role.name}}</option>
               </select>
               <!--<input type="text" formControlName="role" name="role" id="role"
-                     class="form-control campo_form" />-->
+               class="form-control campo_form" />-->
             </div>
           </div>
         </div>
         <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
                 type="submit">
           &nbsp;{{'auth.submit'|translate}}
+        </button>
+        <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+                type="button" (click)="noToken()">
+          &nbsp;Entrar sem token
         </button>
       </form>
     </div>

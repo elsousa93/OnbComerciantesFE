@@ -20,15 +20,19 @@ export class AuthService implements OnDestroy {
 
   private dataSource = new BehaviorSubject(this.user);
   private authenticated = new BehaviorSubject(false);
+  private wantsLogin = new BehaviorSubject(false);
 
   currentUser = this.dataSource.asObservable();
   hasAuthenticated = this.authenticated.asObservable();
+  doLogin = this.wantsLogin.asObservable();
 
   changeUser(user: User) {
     this.dataSource.next(user);
     this.authenticated.next(true);
     console.log("user template: ", this.user);
   }
+
+  
 
   GetToken() {
     return this.dataSource.getValue().token;

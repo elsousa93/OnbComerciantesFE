@@ -24,7 +24,9 @@ export class AppComponent {
   isToggle: boolean = false;
   isAutoHide: boolean = false;
 
-  hasAuthenticated: boolean = false;
+  hasAuthenticated: boolean = true;
+  wantsLogin: boolean = false;
+
 
   constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService) {
@@ -41,7 +43,8 @@ export class AppComponent {
 
     authService.hasAuthenticated.subscribe(auth => {
       this.hasAuthenticated = auth;
-    })
+    });
+
   }
 
   @Input() url: string;

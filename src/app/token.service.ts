@@ -20,7 +20,11 @@ export class TokenService {
   }
 
   async getAccessToken(): Promise<any> {
-    var secret = btoa("4bd86de7-5640-4048-887e-7ecb6cedb01d" + ":" + "SIBS123456");
+
+    var clientID = this.configuration.clientID;
+    var clientSecret = this.configuration.clientSecret;
+
+    var secret = btoa(clientID + ":" + clientSecret);
 
     const HTTP_OPTIONS_AUTH = {
       headers: new HttpHeaders({
