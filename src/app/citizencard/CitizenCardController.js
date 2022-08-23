@@ -143,7 +143,7 @@ function ClearCCFields() {
     $("#submitDataFromCC").click();
 } */
 
-const BASE_URL = 'http://localhost:7269/BackendPortal'; //FIXME
+const BASE_URL = 'http://localhost:12000/BackendPortal'; //FIXME
 
 (function () {
   /* http://stackoverflow.com/questions/12404528/ie-parameters-get-undefined-when-using-them-in-settimeout/12404562#12404562 */
@@ -253,7 +253,6 @@ export function readCC(componentCallback) {
 };
 
   let SetNewCCData;
-  let SetNewCCcountry;
 
 var autenticacaoGovPT = (function operations() {
   'use strict';

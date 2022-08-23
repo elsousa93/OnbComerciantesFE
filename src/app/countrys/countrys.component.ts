@@ -20,6 +20,8 @@ import { Configuration, configurationToken } from '../configuration';
 import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { NGXLogger } from 'ngx-logger';
+import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
+
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
@@ -107,6 +109,7 @@ export class CountrysComponent implements OnInit {
     },
 
   ];
+  comprovativoCC: FileAndDetailsCC;
 
   ngOnInit() {
     this.initializeForm();
@@ -130,6 +133,7 @@ export class CountrysComponent implements OnInit {
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
+      this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
       if (this.route.getCurrentNavigation().extras.state["crc"])
         this.crc = this.route.getCurrentNavigation().extras.state["crc"];
     }
@@ -454,6 +458,18 @@ export class CountrysComponent implements OnInit {
             binary: this.crc.pdf
           },
           validUntil: this.crc.expirationDate,
+          data: null
+        })
+      }
+      if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
+        this.newSubmission.documents.push({
+          documentType: 'comprovativoCC_PDF',
+          documentPurpose: 'Identification',
+          file: {
+            fileType: 'PDF',
+            binary: this.comprovativoCC.file
+          },
+          validUntil: "2022-07-13T11:10:13.420Z",
           data: null
         })
       }

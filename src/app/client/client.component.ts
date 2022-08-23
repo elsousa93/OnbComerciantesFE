@@ -18,13 +18,14 @@ import { Configuration, configurationToken } from '../configuration';
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../citizencard/ICCInfo.interface';
-import { dataCC } from './dataCC.interface';
+import { dataCC } from '../citizencard/dataCC.interface';
 import { ReadcardService } from '../readcard/readcard.service';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { NGXLogger } from 'ngx-logger';
 import jsPDF from 'jspdf';
+import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 
 @Component({
   selector: 'app-client',
@@ -60,8 +61,28 @@ export class ClientComponent implements OnInit {
   process: any;
 
   //---- Cartão de Cidadao - vars ------
-  public dataCCcontents: dataCC;
-  public prettyPDF: jsPDF = null;
+  public dataCCcontents: dataCC = {
+    cardNumberCC: null,
+    nameCC: null,
+    sexCC: null,
+    heightCC: null,
+    nationalityCC: null,
+    birthdateCC: null,
+    expiricyDateCC: null,
+    localOfEmissionCC: null,
+    fathersNameCC: null,
+    mothersNameCC: null,
+    nifCC: null,
+    socialSecurityCC: null,
+    healthNumberCC: null,
+    signatureCC: null,
+    addressCC: null,
+    postalCodeCC: null,
+    countryCC: null
+  };
+  public prettyPDF: FileAndDetailsCC = null;
+
+  //Variaveis para imprimir no html
   public nameCC = null;
   public nationalityCC = null;
   public birthDateCC = null;
@@ -73,7 +94,7 @@ export class ClientComponent implements OnInit {
 
   public okCC = null;
   public dadosCC: Array<string> = []; //apagar
-
+  public addressReading = null;
   //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
     readCC(this.SetNewCCData.bind(this));
@@ -90,51 +111,70 @@ export class ClientComponent implements OnInit {
     this.okCC = true;
     this.logger.debug("okCC valor: ", this.okCC);
   }
+  setAddressFalse() {
+    this.addressReading = false;
+  }
   /**
    * Information from the Citizen Card will be associated to the client structure
-   * cardNumber não é guardado?
+   * 
    * 
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-    this.logger.debug("Name: ", name, "type: ", typeof (name));
+    console.log("Name: ", name);
 
-    this.logger.debug("nationality: ", nationality);
-    this.logger.debug("birthDate: ", birthDate);
-    this.logger.debug("cardNumber: ", cardNumber);
-    this.logger.debug("nif: ", nif);
-  
-    this.dataCCcontents.nomeCC = name;
+    this.dataCCcontents.nameCC = name;
     this.dataCCcontents.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
-    this.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
     this.dataCCcontents.nifCC = nif;
-   
-    this.dataCCcontents.countryCC = countryIssuer;
+    this.dataCCcontents.countryCC = country;
+    this.countryCC = countryIssuer; //HTML
 
-    if (!(address == null)) {
+    if (notes != null || notes != "") {
+      var assinatura = "Sabe assinar";
+      if (notes.toLowerCase().includes("não sabe assinar") || notes.toLowerCase().includes("não pode assinar")) {
+        assinatura = "Não sabe assinar";
+      }
+    }
+
+    if (this.addressReading == false) {
+
+      //Without address
+      console.log("Without Address PDF");
+      this.dataCCcontents.addressCC = "Sem PIN de morada";
+      this.dataCCcontents.postalCodeCC = " ";
+      this.dataCCcontents.countryCC = " ";
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
+
+      console.log(ccArrayData);
+
+      //Send to PDF without address -- type base64
+      this.readCardService.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
+
+    } else {
+
+      //WITH ADDRESS
+      console.log("With Address PDF");
       this.dataCCcontents.addressCC = address;
       this.dataCCcontents.postalCodeCC = postalCode;
 
       var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
-        nameFather, nameMother, nif, nss, sns, notes];
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, address, postalCode, country];
 
       //Send to PDF
-
-      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
+      this.readCardService.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
     }
-    else {
-      
-      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
-        nameFather, nameMother, nif, nss, sns, notes, address, postalCode, country];
-
-      //Send to PDF without address
-      this.prettyPDF = this.readCardService.formatPDF(ccArrayData);
-
-    }
-
   }
 
 
@@ -156,6 +196,7 @@ export class ClientComponent implements OnInit {
   CCReaderCCID: number;
   CCID: ICCInfo;
 
+  @ViewChild('newModal') newModal;
   //--------- fim do CC ----------------------
 
   clientIdNew;
@@ -178,7 +219,7 @@ export class ClientComponent implements OnInit {
   searchDone: boolean = false;
 
   showButtons: boolean = false;
-  
+
   showSeguinte: boolean = false;
   showENI: boolean = false;
   isENI: boolean = false;
@@ -197,7 +238,7 @@ export class ClientComponent implements OnInit {
     "id": "",
 
     "companyName": "J SILVESTRE LIMITADA",
-    "commercialName":"CAFE CENTRAL",
+    "commercialName": "CAFE CENTRAL",
     "shortName": "SILVESTRE LDA",
     "headquartersAddress": {
       "address": "Rua da Azoia 4",
@@ -267,7 +308,6 @@ export class ClientComponent implements OnInit {
 
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
-  @ViewChild('newModal') newModal;
 
   selectedClient: {
     client?: Client,
@@ -294,8 +334,8 @@ export class ClientComponent implements OnInit {
     private processService: ProcessService, public modalService: BsModalService,
     private submissionService: SubmissionService, private readCardService: ReadcardService) {
 
-      this.baseUrl = configuration.baseUrl;
-      this.neyondBackUrl = configuration.neyondBackUrl;
+    this.baseUrl = configuration.baseUrl;
+    this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.ngOnInit();
     this.logger.debug(this.baseUrl);
@@ -387,7 +427,7 @@ export class ClientComponent implements OnInit {
       "documentationDeliveryMethod": "",
       "billingEmail": ""
     }
-    
+
   }
 
   receiveSearchValue(box: string) {
@@ -397,7 +437,7 @@ export class ClientComponent implements OnInit {
   }
 
   getValueENI() {
-   // this.activateButtons(true);
+    // this.activateButtons(true);
     this.logger.debug("chamar a funcao de leitura do cartao: ");
     this.http.get(this.neyondBackUrl + 'CitizenCard/searchCC').subscribe(result => {
       if (result == null) {
@@ -493,12 +533,12 @@ export class ClientComponent implements OnInit {
   onSearchSimulation(idToSeacrh: number) {
     //No New SubmissionResponse, este é o valor do merchant.id
     if (idToSeacrh == 22181900000011) {
-     //Cliente Encontrado
+      //Cliente Encontrado
       this.logger.debug("Cliente Encontrado");
       this.showFoundClient = true;
 
     }
-    if (!(idToSeacrh==22181900000011)) {
+    if (!(idToSeacrh == 22181900000011)) {
       this.showFoundClient = false;
       this.resultError = "Não existe Comerciante com esse número.";
     }
@@ -506,8 +546,8 @@ export class ClientComponent implements OnInit {
     this.searchDone = true;
   }
 
-  changeSearch(){
-    this.toSearch=true;
+  changeSearch() {
+    this.toSearch = true;
   }
 
   sendToParent() {
@@ -561,7 +601,7 @@ export class ClientComponent implements OnInit {
 
   changeListElementDocType(docType, e: any) {
     // this.activateButtons(true);
-    
+
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
     if (this.docType === '004') { //código do Cartão do Cidadão
@@ -572,7 +612,7 @@ export class ClientComponent implements OnInit {
     this.documentType = true;
   }
 
-  changeDocType(){
+  changeDocType() {
     this.documentType = true;
   }
 
@@ -588,25 +628,27 @@ export class ClientComponent implements OnInit {
 
     if (selectedClient.documentationDeliveryMethod === '004') {
       this.dataCC = {
-        nomeCC: this.nameCC,
+        nameCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
         nifCC: this.nifCC,
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC
-      }
+      };
+      NIFNIPC = this.nifCC;
     }
     this.logger.debug("antes de passar");
-      let navigationExtras: NavigationExtras = {
-        state: {
-          tipologia: this.tipologia,
-          NIFNIPC: NIFNIPC,
-          clientExists: true,
-          clientId: this.clientId,
-          dataCC: this.dataCC
-        }
-      };
+    let navigationExtras: NavigationExtras = {
+      state: {
+        tipologia: this.tipologia,
+        NIFNIPC: NIFNIPC,
+        clientExists: true,
+        clientId: this.clientId,
+        dataCC: this.dataCC
+      }
+    };
+    console.log("dataCC em ObterSelecionado: ", this.dataCC)
     this.logger.debug("a passar para a proxima pagina");
-    this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
+    this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }
@@ -614,8 +656,8 @@ export class ClientComponent implements OnInit {
    *
    * @param readable: true: quero ler o CC; false: não quer ler o CC
    */
-  changeDataReadable(readable: boolean){
-    this.isNoDataReadable=readable;
+  changeDataReadable(readable: boolean) {
+    this.isNoDataReadable = readable;
     this.toSearch = false;
     this.toShowReadCC = readable;
   }
@@ -627,12 +669,10 @@ export class ClientComponent implements OnInit {
       if (result) {
         this.Window.readCCAddress();
       } else {
-        this.logger.debug("fechar");
         this.Window.readCC();
-
-        this.closeModal();
+        this.newModal.hide();
       }
-    }.bind(this));
+    }); // }.bind(this));
   }
 
   activateButtons(id: boolean) {
@@ -652,12 +692,12 @@ export class ClientComponent implements OnInit {
     this.errorInput = 'form-control campo_form_coment';
     if (id == true) {
       this.showENI = false;
-      this.isENI=false;
+      this.isENI = false;
       this.tipologia = "Company";
 
     } else {
       this.showENI = true;
-      this.isENI=true;
+      this.isENI = true;
       this.tipologia = "ENI";
     }
   }
@@ -679,16 +719,34 @@ export class ClientComponent implements OnInit {
       this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
     }
+    if (this.newClient.documentationDeliveryMethod === '004') {
+      console.log("criar novo cliente COM CC");
+      NIFNIPC = this.dataCCcontents.nifCC;
+    }
 
+    console.log("PRETTY PDF no createNewClient: ", this.prettyPDF);
+    if (this.newClient.documentationDeliveryMethod === '004') {
+      this.dataCC = {
+        nameCC: this.nameCC,
+        cardNumberCC: this.cardNumberCC,
+        nifCC: this.nifCC,
+        addresssCC: this.addressCC,
+        postalCodeCC: this.postalCodeCC
+      };
+      NIFNIPC = this.dataCCcontents.nifCC;
+    }
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
         NIFNIPC: NIFNIPC,
-        exists: false
+        exists: false,
+        comprovativoCC: this.prettyPDF,
+        dataCC: this.dataCCcontents
       }
-    };
+    }; console.log("dataCC conctens a evnviar:", this.dataCCcontents),
+    console.log("EM dataCCcontents.nifCC: ", NIFNIPC , "TYPE OF: ", typeof (NIFNIPC));
     this.route.navigate(['/clientbyid', clientId], navigationExtras);
-  //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
+    //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 
   close() {
@@ -696,8 +754,8 @@ export class ClientComponent implements OnInit {
   }
 
   newSearch() {
-   // location.reload();
-  this.route.navigate(['/client'])
+    // location.reload();
+    this.route.navigate(['/client'])
   }
 
   //PARA O NOVO COMPONENTE

@@ -76,7 +76,6 @@
 
                     {{'citizenCard.process'|translate}}:*
 
-
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                       <span class="navbar-text">
                         <div class="form-check">
@@ -132,7 +131,7 @@
                 <div>
                   {{'citizenCard.readClick'|translate}}
                 </div>
-                <button class="btn botao_azul_pesquisa" (click)="launchNewModal()"
+                <button class="btn botao_azul_pesquisa" (click)="openModal(template)"
                   type="submit">{{'citizenCard.read'|translate}}</button>
               </div>
 
@@ -159,14 +158,18 @@
 
               <!--Seccao do Modal PIN da Morada-->
 
-              <ng-template #newModal>
-                <div style="margin: auto;width: 100%;padding: 10px;text-align: center;">
-                  <p>{{'citizenCard.addressPIN'|translate}}</p>
-                  <button type="button" class="btn btn-primary" value="true"
-                    (click)="callreadCCAddress(); closeModal()">{{'generalKeywords.yes'|translate|uppercase}}</button>
-                  <button type="button" class="btn btn-primary" value="false"
-                    (click)="callreadCC(); closeModal(); setOkCC()">{{'generalKeywords.no'|translate|uppercase}}</button>
+              <ng-template #template>
+                <div class="modal-header">          <!--<div style="margin: auto;width: 100%;padding: 10px;text-align: center;"> -->
+                  <h4 class="modal-title pull-left">Leitura do Cartão de Cidadão</h4>
+                  <button type="button" aria-label="Não" (click)="modalRef.hide()">
+                    <span aria-hidden="true">×</span>
+                  </button>
                 </div>
+                <div class="modal-body">
+                  {{'citizenCard.addressPIN'|translate}}
+                </div>
+                <button type="button" class="btn btn-default" value="true" (click)="modalRef.hide(); callreadCCAddress()">{{'generalKeywords.yes'|translate|uppercase}}</button>
+                <button type="button" class="btn btn-default" value="false" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">{{'generalKeywords.no'|translate|uppercase}}</button>
               </ng-template>
               <!--Fim da Seccao do Modal PIN da Morada-->
             </div>
@@ -196,35 +199,39 @@
               <tbody>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.name'|translate}}:</th>
-                  <td>{{nameCC}}</td>
+                   <td>{{dataCCcontents.nameCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.ccNumber'|translate}}:</th>
-                  <td>{{cardNumberCC}}</td>
+                   <td>{{dataCCcontents.cardNumberCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">NIF:</th>
-                  <td>{{nifCC}}</td>
+                      <td>{{dataCCcontents.nifCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.address'|translate}}:</th>
-                  <td>{{addressCC}}</td>
+                   <td>{{dataCCcontents.addressCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.postalCode'|translate}}:</th>
-                  <td>{{postalCodeCC}}</td>
+                    <td>{{dataCCcontents.postalCodeCC}}</td>
                 </tr>
               </tbody>
             </table>
-            <button class="btn botao_azul_pesquisa" type="submit">{{'generalKeywords.add'|translate}}</button>
+            <span class="navbar-text me-2">
+              <button  id="btn5a2" (click)="createNewClient(dataCCcontents.nifCC)" routerLink="/add-stakeholder"
+                      class="btn botao_branco" wappler-command="editContent">
+                {{'client.add'|translate|uppercase}}&nbsp;
+                <img src="assets/images/person_add_blue.svg" class="img_btn">
+              </button>
+            </span>
           </div>
         </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
-</div>
-<!--row ends-->
+    </div> <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
+  </div> <!--row ends-->
 
 
 <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="showFoundClient == true">
