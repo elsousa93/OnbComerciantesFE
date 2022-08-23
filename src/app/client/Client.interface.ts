@@ -28,7 +28,9 @@ export interface OutboundClient {
   shareCapital?: ShareCapital,
   shortName?: string
 }
-
+/** Interface Client
+* documentationDeliveryMethod: see docType.ts for the codes
+**/
 export interface Client {
   id?: string,
   fiscalId?: string,

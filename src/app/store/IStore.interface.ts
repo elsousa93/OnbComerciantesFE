@@ -130,8 +130,6 @@ interface ShopProductPackPricingViewModel {
   attributes?: ProductPackPricingAttribute[]
 }
 
-
-
 export enum CommunicationOwnershipTypeEnum {
   UNKNOWN = "unknown",
   CLIENT = "client",

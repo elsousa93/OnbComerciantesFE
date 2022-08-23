@@ -909,7 +909,7 @@ export class ClientByIdComponent implements OnInit {
       this.client.shortName = this.form.value["socialDenomination"];
       if (this.dataCC !== {}) {
         console.log("dataCC: ", this.dataCC);
-        this.client.shortName = this.dataCC.nomeCC;
+        this.client.shortName = this.dataCC.nameCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
         this.client.fiscalIdentification.fiscalId = this.dataCC.nifCC;
       //  this.client.addressCC = this.dataCC.value["addressCC"];

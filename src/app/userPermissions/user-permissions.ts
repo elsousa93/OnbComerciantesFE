@@ -20,7 +20,8 @@ export enum UserPermissions {
   CALLCENTER = "CALLCENTER",
   DO = "DO",
   COMPLIANCEOFFICE = "COMPLIANCEOFFICE",
-  COMERCIAL = "COMERCIAL"
+  COMERCIAL = "COMERCIAL",
+  ADMIN = "ADMIN"
 }
 
 export function getMenuPermissions(user: any) {
@@ -45,6 +46,11 @@ export function getMenuPermissions(user: any) {
       return permissions;
     case UserPermissions.COMERCIAL:
       permissions = { HomePage: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } };
+      return permissions;
+    case UserPermissions.ADMIN:
+      permissions = {
+        HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true, MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true, RiskOpinion: true, ComplianceDoubts: true }
+      };
       return permissions;
   }
 }

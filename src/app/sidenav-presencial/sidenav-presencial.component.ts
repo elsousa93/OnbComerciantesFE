@@ -390,4 +390,12 @@ export class SidenavPresencialComponent implements OnInit {
     localStorage.removeItem('auth');
     this.authService.reset();
   }
+
+  login() {
+    this.authService.reset();
+
+    console.log("currentUser: ", this.authService.GetCurrentUser());
+
+    this.logout();
+  }
 }
