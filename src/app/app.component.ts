@@ -29,7 +29,7 @@ export class AppComponent {
   constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService) {
     translate.addLangs(['pt', 'en']);
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('pt');
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
