@@ -53,7 +53,7 @@
                     <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="zoneEstab">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'ZoneStores'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate}} </mat-header-cell>
                     <mat-cell *matCellDef="let store"> {{(store.address !== null && store.address.address !== null) ? store.address.address.postalArea : ''}} </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

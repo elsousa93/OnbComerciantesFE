@@ -11,7 +11,7 @@
           </span>
           <span class="navbar-text">
             <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
-              INTERVENIENTES
+              {{'stakeholder.title'|translate|uppercase}}
             </h5>
           </span>
         </nav>
@@ -19,42 +19,14 @@
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
         <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
           <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="updateForm($event)"></app-stakeholders-list>
-          <!--<div class="table-responsive me-2 ps-3 pe-3">
-            <table class="table table-success">
-              <thead class="text-primary table-primary">
-                <tr class="text-center text-primary table-light">
-                  <th scope="col" class="align-baseline text-primary table-white">Nome/Designação Social</th>
-                  <th scope="col" class="text-center bg-white">NIF/NIPC</th>
-                  <th scope="col" class="text-center bg-white">Tipo Interveniente</th>
-                  <th scope="col" class="text-center bg-white">Tipo Relação</th>
-                  <th scope="col" class="text-center bg-white">Elegível</th>
-                  <th scope="col" class="text-center bg-light">Nº Cliente</th>
-                  <th scope="col" class="align-baseline text-primary table-white">Vai Assinar Contrato</th>
-                </tr>
-              </thead>
-              <tbody>-->
-                <!-- Fazer um ngFor a todos os intervenientes que estão associados ao Cliente -->
-                <!--<tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" (click)="updateForm(stakeholder, idx)" [ngClass]="{'row-selected': stakeholder === currentStakeholder}">
-                  <td scope="row" class="text-primary text-center">{{stakeholder.shortName}}</td>
-                  <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
-                  <td class="text-primary text-center"> - </td>
-                  <td class="text-primary text-center"> - </td>
-                  <td class="text-primary text-center">Elegivel?</td>
-                  <td class="text-primary text-center">{{stakeholder.id}}</td>
-                  <th scope="row" class="text-primary text-center">Sim</th>
-                </tr>
-              </tbody>
-            </table>
-          </div>-->
         </div>
         
         <div class="row ms-0 me-0" *ngIf="isSelected">
           <h2 class="text-primary mt-5 ps-0 center-align">
-            <img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;IDENTIFICAÇÃO DO
-            INTERVENIENTE
+            <img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;{{'stakeholder.identification'|translate|uppercase}}
           </h2>
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
-            <p class="titulo-form-simples mb-1">Vai assinar o contrato:*</p>
+            <p class="titulo-form-simples mb-1">{{'stakeholder.signature'|translate}}:*</p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
@@ -72,8 +44,7 @@
               </span>
             </nav>
             <p class="titulo-form-simples mb-1">
-              PRETENDE EFECTUAR A ATUALIZAÇÃO ELECTRÓNICA DOS DADOS UTILIZANDO O
-              CARTÃO DO CIDADÃO?*
+              {{'citizenCard.updateData'|translate|uppercase}}*
             </p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
@@ -96,7 +67,7 @@
             <p class="titulo-form-simples"></p>
           </div>
           <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
-            <p class="titulo-form-simples mb-3">Procurador:*</p>
+            <p class="titulo-form-simples mb-3">{{'stakeholder.proxy'|translate}}:*</p>
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
@@ -118,79 +89,39 @@
 
 
           <!--Sem CC-->
-          <div class="col-6 ms-0 me-0 ps-0 pe-5">
-            <div *ngIf="showYesCC && !showNoCC">
-              <!--<form [formGroup]="formNewStakeholder" (ngSubmit)="submit(formNewStakeholder.value)">-->
-              <!--<div class="form-group">
-        <label for="fullName">Nome do Cliente</label>
-        <input type="text" formControlName="fullName"
-               id="fullName" class="form-control" [(ngModel)]="newStake.fullName">
-        <div class="alert alert-danger" *ngIf="fullName.touched && !fullName.valid">
-          <div *ngIf="clientName.errors && clientName.errors['required']">Client Name is required.</div>
-          <div *ngIf="clientName.errors && clientName.errors['minlength']">
-            Client Name must have at least 2 characters.
-          </div>
-          <div *ngIf="clientName.errors && clientName.errors['maxlength']">
-            Clients Name has a maximum of 100 characters.
-          </div>
-        </div>
-      </div>-->
-              <p class="titulo-form-simples mt-0">Tipo de Documento de Identificação (1ª Nacionalidade):*</p>
+          <div *ngIf="showYesCC && !showNoCC">
+            <div class="col-6 ms-0 me-0 ps-0 pe-5">
+              <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
               <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
-              
-              <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
-        documentType is required.
-      </div>-->
-              <p class="titulo-form-simples">País de Documento de Identificação (1ª Nacionalidade):*</p>
+              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
               <select readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
                 <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
               </select>
-              <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
-      documentCountry is required.
-      </div>-->
-              <p class="titulo-form-simples">Nº Documento de Identificação (1ª Nacionalidade):*</p>
+            </div>
+            <div class="col-6 ms-0 me-0 ps-5 pe-0">
+              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
               <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
                      class="form-control campo_form">
-              <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
-      nrDocumentoID is required.
-      </div>-->
-              <p class="titulo-form-simples">Data de Validade Doc. de Identificação (1ª Nacionalidade):*</p>
+              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
               <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
                      cols="30" rows="10" class="form-control campo_form">
-              <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
-      dataDocumentoID is required.
-      </div>-->
-              <!--</form>-->
             </div>
-
-            <div *ngIf="!showYesCC && showNoCC">
+          </div>
+          <div *ngIf="!showYesCC && showNoCC">
+            <div class="col-6 ms-0 me-0 ps-0 pe-5">
+            
               <p class="titulo-form-simples mt-0">NIF</p>
               <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="selectedStakeholderIsFromCRC">
-              <!--returned === 'consult'-->
-              <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
-    O parâmetro "NIF" é obrigatório.
-  </div>-->
-
-              <p class="titulo-form-simples ">PAÍS DA MORADA FISCAL</p>
-              <!--<input id="streetAdressStakeholder" class="form-control campo_form" type="text" formControlName="Country">-->
+              <p class="titulo-form-simples ">{{'stakeholder.country'|translate|uppercase}}</p>
               <select id="streetAddressStakeholder" class="form-select" formControlName="Country" (click)="GetCountryByZipCode()" [attr.disabled]="returned === 'consult' ? true : null">
                 <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">{{country.description}}</option>
               </select>
-              <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-    O parâmetro "Morada Fiscal" é obrigatório.
-  </div>-->
-
-              <p class="titulo-form-simples ">CÓDIGO POSTAL</p>
+              <p class="titulo-form-simples ">{{'stakeholder.postalCode'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keyup)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
-              <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
-    O parâmetro "Código postal" é obrigatório.
-  </div>-->
               <p class="titulo-form-simples"></p>
             </div>
-          </div>
           <div class="col-6 ms-0 me-0 ps-5 pe-0">
-            <div *ngIf="!showYesCC && showNoCC">
-              <p class="titulo-form-simples mt-0">CARGO</p>
+              <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
               <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
               <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false" >
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
@@ -199,21 +130,22 @@
   O parâmetro "Cargo" é obrigatório.
   </div>-->
 
-              <p class="titulo-form-simples ">LOCALIDADE</p>
+              <p class="titulo-form-simples ">{{'stakeholder.locale'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="canEditLocality() === false">
               <!--<div class="alert alert-danger"
     *ngIf="postalArea.touched && !postalArea.valid">
     O parâmetro "Código postal" é obrigatório.
   </div>-->
 
-              <p class="titulo-form-simples ">MORADA FISCAL</p>
+              <p class="titulo-form-simples ">{{'stakeholder.adrress'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger"
     *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
     O parâmetro "Código postal" é obrigatório.
   </div>-->
               <p class="titulo-form-simples"></p>
-            </div>
+            
+          </div>
           </div>
           <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
@@ -257,9 +189,9 @@
             <table class="table table-success">
               <thead class="text-primary table-primary">
                 <tr class="table-light text-center text-primary">
-                  <th scope="col" class="align-baseline text-primary table-white">Tipo de Comprovativo</th>
-                  <th scope="col" class="text-center bg-light">Data de Receção</th>
-                  <th scope="col" class="text-center bg-white">Data de Validade</th>
+                  <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.type'|translate}}</th>
+                  <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
+                  <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
                 </tr>
               </thead>
               <tbody>

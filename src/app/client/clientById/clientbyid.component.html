@@ -414,7 +414,7 @@
           <!-- se NÃO for Sociedade Comercial e for ENI -->
           <div *ngIf="isCommercialSociety == false && tipologia==='ENI'">
             <div class="col-10 ms-3 me-3 ps-3 pe-3">
-              <p class="titulo-form-simples" for="socialDenomination">{{'client.socialDenominationName'|translate}}::*
+              <p class="titulo-form-simples" for="socialDenomination">{{'client.socialDenominationName'|translate}}:*
               </p>
               <input minlength="2" maxlength="100" formControlName="socialDenomination" name="socialDenomination"
                 type="text" id="socialDenomination" class="form-control campo_form" style="width: 906px;"

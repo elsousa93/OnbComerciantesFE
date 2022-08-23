@@ -86,16 +86,45 @@
     "process": "Processo mais rápido e dispensa a apresentação de comprovativos em papel",
     "readClick": "Clique em Ler Cartão para proceder à leitura do Cartão de Cidadão",
     "read": "Ler Cartão de Cidadão",
-    "addressPIN": "Tem o pin de acesso aos dados da morada?",
+    "addressPIN": "Tem o pin do cartão de cidadão para obtenção dos dados da morada?",
     "documentCountry": "País do Documento",
     "readData": "Leitura dos dados do cartão de cidadão",
     "name": "Nome",
     "ccNumber": "Nº do CC",
     "address": "Morada",
-    "postalCode": "Código Postal"
+    "postalCode": "Código Postal",
+    "updateData": "Pretende efetuar a atualização eletrónica dos dados usando o cartão de cidadão?",
+    "identificationDocumentType": "Tipo de Documento de Identificação (1ª Nacionalidade)",
+    "identificationDocumentCountry": "País de Documento de Identificação (1ª Nacionalidade)",
+    "identificationDocumentNumber": "Nº Documento Documento de Identificação (1ª Nacionalidade)",
+    "identificationDocumentDate": "Data de Validade Doc. de Identificação (1ª Nacionalidade)"
   },
   "stakeholder": {
-    "title": "Intervenientes"
+    "title": "Intervenientes",
+    "add": "Adicionar Interveniente",
+    "edit": "Editar Interveniente",
+    "searchAdd": "Pesquisar ou Adicionar Interveniente",
+    "type": "Tipo de Interveniente",
+    "documentNumber": "Número do Documento",
+    "search": "Pesquisar Interveniente",
+    "foundStakeholder": "Interveniente Encontrado!",
+    "fiscalID": "ID Fiscal",
+    "name": "Nome",
+    "identification": "Identificação do Interveniente",
+    "signature": "Vai assinar o contrato",
+    "proxy": "Procurador",
+    "country": "País da Morada Fiscal",
+    "postalCode": "Código Postal",
+    "role": "Cargo",
+    "locale": "Localidade",
+    "address": "Morada Fiscal",
+    "entityType": "Tipo Entidade",
+    "relationType": "Tipo Relação",
+    "elegible": "Elegível",
+    "clientNumber": "Nº Cliente",
+    "clientName": "Nome do Cliente",
+    "identification2": "Identificação do Interveniente II",
+    "area": "Área"
   },
   "stores": {
     "title": "Lojas",
@@ -127,7 +156,6 @@
     "combinedOffer": "Oferta Combinada",
     "subProduct": "Sub Produto"
   },
-
   "supportingDocuments": {
     "title": "Comprovativos",
     "type": "Tipo de Comprovativo",
@@ -164,7 +192,43 @@
     }
   },
   "commercialOffer": {
-    "title": "Oferta Comercial"
+    "title": "Oferta Comercial",
+    "bank": "Banco de Apoio do IBAN",
+    "terminalNumber": "Número de Terminal",
+    "product": "Produto",
+    "relation": "Relação Loja Produtos",
+    "replicate": "Prentende replicar produtos de outras lojas para todos os terminais escolhidos?",
+    "selectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos (Loja de Representação)",
+    "EATUnicre": "A Entidade de Apoio Terminal (EAT) é da Unicre?",
+    "registrationTerminalNumber": "Número Matrícula Terminal SIBS",
+    "commercialPack": "Pacote Comercial",
+    "traditional": "Tradicional",
+    "lessDetail": "Menos Detalhe",
+    "moreDetail": "Mais Detalhe",
+    "cardType": "Tipo de Cartão",
+    "clientType": "Tipo de Cliente",
+    "terminalConfig": "Configurações de Terminais",
+    "terminalIdentification": "Identificação de Configuração",
+    "terminalType": "Tipo Terminal",
+    "communicationType": "Tipo Comunicação",
+    "number": "Número Terminais",
+    "mensal": "Mensalidade",
+    "TPA": "Valor Associado por TPA",
+    "newConfiguration": "Nova Configuração",
+    "price": "Preçário Loja",
+    "name": "Nome",
+    "typology": "Tipologia",
+    "selection": "Seleção",
+    "property": "Propriedade do Terminal",
+    "client": "Cliente",
+    "totalTerminal": "Nº Terminais",
+    "communications": "Comunicações a cargo de",
+    "communication": "Comunicações",
+    "uploadMensal": "Carregar Mensalidades",
+    "terminal": "Terminal",
+    "discount": "Desconto",
+    "finalValue": "Valor Final",
+    "cancelConfiguration": "Cancelar Configuração"
   },
   "declarativeInformation": {
     "title": "Informação Declarativa",
@@ -189,7 +253,8 @@
       "representatives": "Selecione os representantes que obrigam a empresa",
       "clientName": "Nome do Cliente",
       "digitalSignatureType": "Tipo de Assinatura Digital",
-      "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?"
+      "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?",
+      "title": "Selecione o tipo de assinatura digital"
     }
   },
   "searches": {
@@ -264,7 +329,6 @@
     "attach": "Anexar",
     "mandatoryField": "* campo obrigatório",
     "add": "Adicionar",
-    "stakeholder": "Interveniente",
     "expirationDate": "Data de Validade",
     "entryDate": "Data de Entrada",
     "deleteFile": "Tem a certeza que deseja excluir o ficheiro?",
@@ -272,7 +336,8 @@
     "search": "Procurar",
     "deleteProcess": "Quer apagar este processo?",
     "maintainProcess": "Manter Processo",
-    "confirmDeleteProcess": "Apagar Processo"
+    "confirmDeleteProcess": "Apagar Processo",
+    "save": "Gravar"
   },
   "generalButtons": {
     "continue": "Continuar",
@@ -286,33 +351,5 @@
     "cookies": "Política de Cookies",
     "privacy": "Política de Privacidade",
     "contacts": "Contactos de Suporte"
-  },
-
-  "//CommercialOffer": "CommercialOfferElement",
-  "CODetails": "Detalhes da Oferta Comercial",
-  "COPerStore": "Oferta Comercial Por Loja",
-  "COConfigName": "Nome da Configuração",
-  "CONumberTerminals": "Número de terminais",
-  "COTypeSolutions": "Tipo de solução",
-  "COBrands": "Brands",
-  "COPackages": "Pacotes",
-  "COPackage": "Pacote",
-  "COAdditionalInfo": "Informações adicionais",
-  "CODenomination": "Denominação",
-  "COValue": "Valor",
-  "COTSC": "TSC",
-  "COPricing": "Preçário",
-  "COName": "Nome",
-  "COTipology": "Tipologia",
-  "COSelection": "Seleção",
-  "COPackageSel": "Seleção de Pacotes",
-  "COPricingTariff": "Preçário Tarifas",
-  "COPricingMont": "Preçário Mensalidades",
-  "COTerminalCofig": "Configuração dos Terminais",
-  "COEATUnicre": "EAT Unicre?",
-  "COTerminalType": "Tipo de terminal",
-  "COCommType": "Tipo de comunicação",
-  "COPrivateTerminal": "Os terminais serão defenidos com a sua entidade de apoio ao terminal",
-  "COReplicateProduts": "Pretende replicar produtos de outros establecimentos?",
-  "COSelectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos( Loja de Representação)"  
+  }
 }

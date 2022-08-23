@@ -292,7 +292,7 @@ export class ReadcardComponent implements OnInit {
                 fontStyle: "bold"
               }
             },
-            { content: ccArrayData[14] + " " + ccArrayData[15] + " " + ccArrayData[16], colSpan: 4, styles: { valign: "middle" } }
+            { content: ccArrayData[14] + " " + ccArrayData[15], colSpan: 4, styles: { valign: "middle" } }
           ],
 
         ],

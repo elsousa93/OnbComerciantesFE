@@ -1,7 +1,7 @@
 
 export interface dataCC {
   cardNumberCC: any;
-  nomeCC: any;
+  nameCC: any;
   sexCC: any;
   heightCC: any;
   nationalityCC: any,

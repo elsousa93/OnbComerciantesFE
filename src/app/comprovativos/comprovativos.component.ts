@@ -47,7 +47,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "clientId": "",
     "fiscalId": "",
     "companyName": "",
-    "commercialName":"",
+    "commercialName": "",
     "shortName": "",
     "headquartersAddress": {
       "address": "",
@@ -199,8 +199,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
   // TESTE //////////////
 
-  constructor(private logger : NGXLogger, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService,private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
+  constructor(private logger: NGXLogger, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
+    private modalService: BsModalService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
     //this.submissionId = localStorage.getItem("submissionId");
@@ -271,7 +271,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         });
       });
 
-      
+
 
       this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
         this.submissionClient = c;
@@ -320,7 +320,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       //    //  //});
       //    //  //this.logger.debug("comps a mostrar");
       //    //  //this.logger.debug(this.compsToShow);
-            
+
       //    //}, error => {
       //    //  this.logger.debug("deu erro!!!");
       //    //  this.logger.debug(error);
@@ -352,7 +352,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.returned = localStorage.getItem("returned");
 
-    this.data.updateData(false,4,1);
+    this.data.updateData(false, 4, 1);
   }
 
 
@@ -400,7 +400,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     //const limSize = 10
 
 
-    
+
     // this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
 
     // this.newComp.clientId = String(this.clientNr);
@@ -415,7 +415,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     //        reader.onload = (eve: any) => {
     //          //this.logger.debug('Local URL ', event);
     //          //this.localUrl = event.target.result;
-              
+
     //          let blob = new Blob(event.target.files, { type: event.target.files[0].type });
     //          let url = window.URL.createObjectURL(blob);
     //          this.logger.debug(event.target.files);
@@ -485,7 +485,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     link.download = file.name;
     link.click();
 
-    
+
   }
 
   onDelete(id: any, clientId: any, filename: any, file: File) {
@@ -521,7 +521,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         console.error(err);
       }
     )
-    
+
   }
 
   onCheckList() {
@@ -552,7 +552,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   continue() {
     this.firstSubmissionModalRef?.hide();
     this.files.forEach(doc => {
-      
+
       this.readBase64(doc).then((data) => {
         var docToSend: PostDocument = {
           "documentType": "string",
@@ -567,7 +567,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
           this.logger.debug('Ficheiro foi submetido ', result);
         });
-      })      
+      })
     });
 
     if (this.returned !== null) {
@@ -597,7 +597,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.deleteModalRef?.hide();
   }
 
-  declineFirstSubmission(){
+  declineFirstSubmission() {
     this.firstSubmissionModalRef?.hide();
   }
 
@@ -625,19 +625,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     return future;
   }
 
-   readFile(file) {
-  return new Promise((resolve, reject) => {
-    // Create file reader
-    let reader = new FileReader()
+  readFile(file) {
+    return new Promise((resolve, reject) => {
+      // Create file reader
+      let reader = new FileReader()
 
-    // Register event listeners
-    reader.addEventListener("loadend", e => resolve(e.target.result))
-    reader.addEventListener("error", reject)
+      // Register event listeners
+      reader.addEventListener("loadend", e => resolve(e.target.result))
+      reader.addEventListener("error", reject)
 
-    // Read file
-    reader.readAsArrayBuffer(file)
-  })
-}
+      // Read file
+      reader.readAsArrayBuffer(file)
+    })
+  }
 
 
 }

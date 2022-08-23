@@ -18,9 +18,14 @@ import { Configuration, configurationToken } from '../../configuration';
 import { readCC } from '../../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../../citizencard/ICCInfo.interface';
+import { dataCC } from '../../citizencard/dataCC.interface';
 
+import { ReadcardService } from '../../readcard/readcard.service';
+
+import jsPDF from 'jspdf';
 import { BrowserModule } from '@angular/platform-browser';
 import { NGXLogger } from 'ngx-logger';
+import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -36,8 +41,29 @@ export class CreateStakeholderComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  //---- Cartão de Cidadao - vars ------------
+  //---- Cartão de Cidadao - vars ------
+  public dataCCcontents: dataCC = {
+    cardNumberCC: null,
+    nameCC: null,
+    sexCC: null,
+    heightCC: null,
+    nationalityCC: null,
+    birthdateCC: null,
+    expiricyDateCC: null,
+    localOfEmissionCC: null,
+    fathersNameCC: null,
+    mothersNameCC: null,
+    nifCC: null,
+    socialSecurityCC: null,
+    healthNumberCC: null,
+    signatureCC: null,
+    addressCC: null,
+    postalCodeCC: null,
+    countryCC: null
+  };
+  public prettyPDF: FileAndDetailsCC = null;
 
+  //Variaveis para imprimir no html
   public nameCC = null;
   public nationalityCC = null;
   public birthDateCC = null;
@@ -48,9 +74,9 @@ export class CreateStakeholderComponent implements OnInit {
   public countryCC = null;
 
   public okCC = null;
-  public dadosCC: Array<string> = [];
-
-  //---- Cartão de Cidadao - funcoes ---------
+  public dadosCC: Array<string> = []; //apagar
+  public addressReading = null;
+  //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
     readCC(this.SetNewCCData.bind(this));
     this.setOkCC();
@@ -64,35 +90,72 @@ export class CreateStakeholderComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
+    this.logger.debug("okCC valor: ", this.okCC);
+  }
+  setAddressFalse() {
+    this.addressReading = false;
   }
 
   /**
    * Information from the Citizen Card will be associated to the client structure
-   * cardNumber não é guardado
+   * em "create-stakeholder"
    * 
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-    this.logger.debug("Name: ", name, "type: ", typeof (name));
+    console.log("Name: ", name);
 
-    this.logger.debug("nationality: ", nationality);
-    this.logger.debug("birthDate: ", birthDate);
-    this.logger.debug("cardNumber: ", cardNumber);
-    this.logger.debug("nif: ", nif);
-
-    this.nameCC = name;
-    this.nationalityCC = nationality;
+    this.dataCCcontents.nameCC = name;
+    this.dataCCcontents.nationalityCC = nationality;
     // this.birthDateCC = birthDate;
-    this.cardNumberCC = cardNumber; // Nº do CC
-    this.nifCC = nif;
+    this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.nifCC = nif;
+    this.dataCCcontents.countryCC = country;
+    this.countryCC = countryIssuer; //HTML
 
-    this.countryCC = countryIssuer;
+    if (notes != null || notes != "") {
+      var assinatura = "Sabe assinar";
+      if (notes.toLowerCase().includes("não sabe assinar") || notes.toLowerCase().includes("não pode assinar")) {
+        assinatura = "Não sabe assinar";
+      }
+    }
 
-    if (!(address == null)) {
-      this.addressCC = address;
-      this.postalCodeCC = postalCode;
+    if (this.addressReading == false) {
+
+      //Without address
+      console.log("Without Address PDF");
+      this.dataCCcontents.addressCC = "Sem PIN de morada";
+      this.dataCCcontents.postalCodeCC = " ";
+      this.dataCCcontents.countryCC = " ";
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
+
+      console.log(ccArrayData);
+
+      //Send to PDF without address -- type base64
+      this.readCardService.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
+
+    } else {
+
+      //WITH ADDRESS
+      console.log("With Address PDF");
+      this.dataCCcontents.addressCC = address;
+      this.dataCCcontents.postalCodeCC = postalCode;
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, address, postalCode, country];
+
+      //Send to PDF
+      this.readCardService.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
     }
   }
 
@@ -180,7 +243,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   foundStakeholders: boolean;
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute, public modalService: BsModalService,
+  constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
 
