@@ -1,31 +1,38 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row">
-    <form [formGroup]="form" name="form" id="form" (ngSubmit)="submit()">
-     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
-           <span class="navbar-text text-light">
-           <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
-           </span>
-           <span class="navbar-text">
-              <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">OFERTA COMERCIAL</h5>
-           </span>
-        </nav>
-     </div>
+   <div class="row">
+      <form [formGroup]="form" name="form" id="form" (ngSubmit)="submit()">
+         <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+               <span class="navbar-text text-light">
+                  <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+               </span>
+               <span class="navbar-text">
+                  <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+                     {{'commercialOffer.title'|translate|uppercase}}</h5>
+               </span>
+            </nav>
+         </div>
          <div class="offset-1 mt-0 mb-0 pt-0 pb-0 ps-0 pe-0 col-10">
-            <h3 class="text-primary mt-5 pb-3 ps-2 pe-2"><img src="assets/images/point_of_sale.svg" class="img_add">&nbsp;CONFIGURAÇÕES DE TERMINAIS&nbsp;<span class="material-symbols-rounded">
+            <h3 class="text-primary mt-5 pb-3 ps-2 pe-2"><img src="assets/images/point_of_sale.svg"
+                  class="img_add">&nbsp;{{'commercialOffer.terminalConfig'|translate|uppercase}}&nbsp;<span
+                  class="material-symbols-rounded">
                </span>
             </h3>
             <div class="table-responsive me-2 ps-3 pe-3">
                <table class="table table-success">
                   <thead class="text-primary table-primary">
                      <tr class="text-center text-primary table-light">
-                        <th scope="col" class="text-primary table-white">IDENTIFICAÇÃO DE CONFIGURAÇÃO</th>
-                        <th scope="col" class="text-center bg-white">TIPO TERMINAL</th>
-                        <th scope="col" class="text-center bg-white">TIPO COMUNICAÇÕES</th>
-                        <th scope="col" class="text-center bg-white">NÚMERO DE TERMINAIS</th>
-                        <th scope="col" class="text-center bg-white">MENSALIDADE
-                           <br>(valor associado por TPA)
+                        <th scope="col" class="text-primary table-white">
+                           {{'commercialOffer.terminalIdentification'|translate|uppercase}}</th>
+                        <th scope="col" class="text-center bg-white">
+                           {{'commercialOffer.terminalType'|translate|uppercase}}</th>
+                        <th scope="col" class="text-center bg-white">
+                           {{'commercialOffer.communicationType'|translate|uppercase}}</th>
+                        <th scope="col" class="text-center bg-white">{{'commercialOffer.number'|translate|uppercase}}
+                        </th>
+                        <th scope="col" class="text-center bg-white">{{'commercialOffer.mensal'|translate|uppercase}}
+                           <br>({{'commercialOffer.TPA'|translate}})
                         </th>
                      </tr>
                   </thead>
@@ -48,49 +55,59 @@
             </div>
             <div class="row">
                <div class="mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 text-start col-5">
-                  <p class="titulo-form-simples ps-4">IDENTIFICAÇÃO DA CONFIGURAÇÃO</p>
+                  <p class="titulo-form-simples ps-4">{{'commercialOffer.terminalIdentification'|translate|uppercase}}
+                  </p>
                   <input id="text1" name="name" formControlName="name" type="text" class="form-control campo_form ms-4">
-                  <p class="titulo-form-simples ps-4">PROPRIEDADE DO TERMINAL:</p>
+                  <p class="titulo-form-simples ps-4">{{'commercialOffer.property'|translate|uppercase}}:</p>
                   <nav class="navbar navbar-expand-lg navbar-light bg-light ms-4">
                      <span class="navbar-text">
                         <div class="form-check">
-                           <input class="form-check-input" type="radio" value="client" id="radio8" formControlName="terminalProperty" name="terminalProperty">
-                           <label class="form-check-label radio pe-5" for="radio8">CLIENTE</label>
+                           <input class="form-check-input" type="radio" value="client" id="radio8"
+                              formControlName="terminalProperty" name="terminalProperty">
+                           <label class="form-check-label radio pe-5"
+                              for="radio8">{{'commercialOffer.client'|translate|uppercase}}</label>
                         </div>
                      </span>
                      <span class="navbar-text">
                         <div class="form-check">
-                           <input class="form-check-input" type="radio" value="acquirer" id="radio8" formControlName="terminalProperty" name="terminalProperty">
+                           <input class="form-check-input" type="radio" value="self" id="radio8"
+                              formControlName="terminalProperty" name="terminalProperty">
                            <label class="form-check-label radio" for="radio8">REDUNQ</label>
                         </div>
                      </span>
                   </nav>
-                  <p class="titulo-form-simples ps-4">TIPO TERMINAL*</p>
-                  <select name="terminalType" formControlName="terminalType" id="select1" class="form-select campo_form ms-4">
+                  <p class="titulo-form-simples ps-4">{{'commercialOffer.terminalType'|translate|uppercase}}*</p>
+                  <select name="terminalType" formControlName="terminalType" id="select1"
+                     class="form-select campo_form ms-4">
                      <option value="1">FIXO</option>
                      <option value="2">MOVEL</option>
                   </select>
-                  <p class="titulo-form-simples ps-4">Nº TERMINAIS</p>
-                  <input id="text3" formControlName="terminalAmount" name="terminalAmount" type="text" class="form-control campo_form ms-4">
+                  <p class="titulo-form-simples ps-4">{{'commercialOffer.totalTerminal'|translate|uppercase}}</p>
+                  <input id="text3" formControlName="terminalAmount" name="terminalAmount" type="text"
+                     class="form-control campo_form ms-4">
                </div>
                <div class="mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 text-start col-5 offset-1">
-                  <p class="titulo-form-simples">COMUNICAÇÕES A CARGO DE:</p>
+                  <p class="titulo-form-simples">{{'commercialOffer.communications'|translate|uppercase}}:</p>
                   <nav class="navbar navbar-expand-lg navbar-light bg-light ms-0">
                      <span class="navbar-text">
                         <div class="form-check">
-                           <input class="form-check-input" type="radio" value="client" id="radio1" name="communicationOwnership" formControlName="communicationOwnership">
-                           <label class="form-check-label radio pe-5" for="radio1">CLIENTE</label>
+                           <input class="form-check-input" type="radio" value="client" id="radio1"
+                              name="communicationOwnership" formControlName="communicationOwnership">
+                           <label class="form-check-label radio pe-5"
+                              for="radio1">{{'commercialOffer.client'|translate|uppercase}}</label>
                         </div>
                      </span>
                      <span class="navbar-text">
                         <div class="form-check">
-                           <input class="form-check-input" type="radio" value="acquirer" id="radio1" name="communicationOwnership" formControlName="communicationOwnership">
+                           <input class="form-check-input" type="radio" value="acquirer" id="radio1"
+                              name="communicationOwnership" formControlName="communicationOwnership">
                            <label class="form-check-label radio" for="radio1">REDUNQ</label>
                         </div>
                      </span>
                   </nav>
-                  <p class="titulo-form-simples">TIPO&nbsp; COMUNICAÇÕES*</p>
-                  <select formControlName="communicationType" name="communicationType" id="select2" class="form-select campo_form">
+                  <p class="titulo-form-simples">TIPO&nbsp; {{'commercialOffer.communication'|translate|uppercase}}*</p>
+                  <select formControlName="communicationType" name="communicationType" id="select2"
+                     class="form-select campo_form">
                      <option value="1">WIFI</option>
                      <option value="2">GPRS</option>
                      <option value="4">Linha Comutada</option>
@@ -98,65 +115,95 @@
                </div>
             </div>
             <div class="col mt-0 mb-0 pt-5 pb-4 ps-1">
-               <button id="btn5a2" type="button" (click)="loadMensalidades()" class="btn botao_azul btn-lg mt-2 ms-1 me-1" wappler-command="editContent">CARREGAR MENSALIDADES&nbsp;&nbsp;<img src="assets/images/move_up_white.svg" style="height: 25px !important; vertical-align: sub;"></button>
+               <button id="btn5a2" type="button" (click)="loadMensalidades()"
+                  class="btn botao_azul btn-lg mt-2 ms-1 me-1"
+                  wappler-command="editContent">{{'commercialOffer.uploadMensal'|translate|uppercase}}&nbsp;&nbsp;<img
+                     src="assets/images/move_up_white.svg"
+                     style="height: 25px !important; vertical-align: sub;"></button>
             </div>
             <div class="col mt-0 mb-0 pt-5 pb-4 ps-1">
 
-               <h5 class="text-primary m-align mt-5 pb-0 ps-3 pe-2"><img src="assets/images/calendar_month.svg" style="height: 25px !important; vertical-align: sub;">&nbsp;MENSALIDADE<span class="material-symbols-rounded">
-                   </span></h5>
-               <div class="table-responsive mb-2 ps-2 pe-2 text-center"> <!-- FAZER IF PARA MOSTRAR UMA TABELA OU OUTRA DEPENDENDO DE ONDE CARREGAMOS -->
-                   <table class="table text-center">
-                       <thead class="text-primary table-primary text-center">
-                           <tr class="table-white text-primary text-center">
-                               <th scope="col" class="text-center text-primary bg-light table-white">TERMINAL</th>
-                               <th scope="col" class="text-center bg-light">MENSALIDADE</th>
-                               <th scope="col" class="text-center bg-light">DESCONTO</th>
-                               <th scope="col" class="text-center bg-light">VALOR FINAL</th>
-                           </tr>
-                       </thead>
-                       <tbody class="text-center align-middle">
-                           <tr class="text-center align-middle">
-                               <td class="text-primary text-center pt-0 pb-0">TPA</td>
-                               <td class="text-primary text-center pt-0 pb-0">€10</td>
-                               <td class="text-center align-middle texto_centrado ">
-                                   <input id="text2" name="text2" type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="€0,00">
-                               </td>
-                               <td class="text-primary text-center pt-0 pb-0">€10</td>
+               <h5 class="text-primary m-align mt-5 pb-0 ps-3 pe-2"><img src="assets/images/calendar_month.svg"
+                     style="height: 25px !important; vertical-align: sub;">&nbsp;{{'commercialOffer.mensal'|translate|uppercase}}<span
+                     class="material-symbols-rounded">
+                  </span></h5>
+               <div class="table-responsive mb-2 ps-2 pe-2 text-center">
+                  <!-- FAZER IF PARA MOSTRAR UMA TABELA OU OUTRA DEPENDENDO DE ONDE CARREGAMOS -->
+                  <table class="table text-center">
+                     <thead class="text-primary table-primary text-center">
+                        <tr class="table-white text-primary text-center">
+                           <th scope="col" class="text-center text-primary bg-light table-white">
+                              {{'commercialOffer.terminal'|translate|uppercase}}</th>
+                           <th scope="col" class="text-center bg-light">{{'commercialOffer.mensal'|translate|uppercase}}
+                           </th>
+                           <th scope="col" class="text-center bg-light">
+                              {{'commercialOffer.discount'|translate|uppercase}}</th>
+                           <th scope="col" class="text-center bg-light">
+                              {{'commercialOffer.finalValue'|translate|uppercase}}</th>
+                        </tr>
+                     </thead>
+                     <tbody class="text-center align-middle">
+                        <tr class="text-center align-middle">
+                           <td class="text-primary text-center pt-0 pb-0">TPA</td>
+                           <td class="text-primary text-center pt-0 pb-0">€10</td>
+                           <td class="text-center align-middle texto_centrado ">
+                              <input id="text2" name="text2" type="text"
+                                 class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm"
+                                 placeholder="€0,00">
+                           </td>
+                           <td class="text-primary text-center pt-0 pb-0">€10</td>
 
-                           </tr>
-                           <tr>
-                           </tr>
-                           <tr>
-                           </tr>
-                           <tr>
-                           </tr>
-                       </tbody>
-                   </table>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                        </tr>
+                     </tbody>
+                  </table>
 
                </div>
-           </div>
-           <div class="col mt-0 mb-0 pt-0 pb-4 ps-1">
+            </div>
+            <div class="col mt-0 mb-0 pt-0 pb-4 ps-1">
 
-               <button id="btn5a3" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-4 pe-4" wappler-command="editContent">CANCELAR CONFIGURAÇÃO&nbsp;<img src="assets/images/close.svg" style="height: 25px !important; vertical-align: sub;"></button>
-               <button id="btn5a4" type="submit" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5" wappler-command="editContent">GRAVAR&nbsp;&nbsp;<img src="assets/images/save.svg" style="height: 25px !important; vertical-align: sub;"></button>
-           </div>
-       </div>
-         
+               <button id="btn5a3" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-4 pe-4"
+                  wappler-command="editContent">{{'commercialOffer.cancelConfiguration'|translate|uppercase}}&nbsp;<img
+                     src="assets/images/close.svg" style="height: 25px !important; vertical-align: sub;"></button>
+               <button id="btn5a4" type="submit" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5"
+                  wappler-command="editContent">{{'generalKeywords.save'|translate|uppercase}}&nbsp;&nbsp;<img
+                     src="assets/images/save.svg" style="height: 25px !important; vertical-align: sub;"></button>
+            </div>
+         </div>
 
-     <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
-        <div class="col ms-0 ps-0">
-           <hr>
-           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-              <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                <button [routerLink]="['/']" id="btn5a1" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                  <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-              </button><button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button><button [routerLink]="['/commercial-offert-list']" id="btn5a1" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-              <button [routerLink]="['/info-declarativa']" id="btn5a1" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
-              </span>
-           </nav>
-        </div>
-     </div>
-    </form>
-  </div>
+
+         <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
+            <div class="col ms-0 ps-0">
+               <hr>
+               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                  <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                     <button [routerLink]="['/']" id="btn5a1"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                        <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                     </button><button id="btn5a1" [routerLink]="['/']"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
+                           src="assets/images/exit_to_app.svg"
+                           style="height: 25px !important; vertical-align: sub;"></button><button
+                        [routerLink]="['/commercial-offert-list']" id="btn5a1"
+                        class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                        wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+                           style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
+                     <button [routerLink]="['/info-declarativa']" id="btn5a1"
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                        wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
+                           src="assets/images/arrow_forward_ios.svg"
+                           style="height: 25px !important; vertical-align: sub;"></button>
+                  </span>
+               </nav>
+            </div>
+         </div>
+      </form>
+   </div>
 </div>

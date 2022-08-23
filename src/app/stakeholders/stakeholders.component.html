@@ -8,78 +8,37 @@
         </span>
         <span class="navbar-text">
           <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
-            INTERVENIENTES
+            {{'stakeholder.title'|translate|uppercase}}
           </h5>
         </span>
       </nav>
     </div>
     <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
       <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
-        <!--<div class="table-responsive me-2 ps-3 pe-3">
-          <table class="table table-success">
-            <thead class="text-primary table-primary">
-              <tr class="text-center text-primary table-light">
-                <th scope="col" class="align-baseline text-primary table-white">Nome/Designação Social</th>
-                <th scope="col" class="text-center bg-white">NIF/NIPC</th>
-                <th scope="col" class="text-center bg-white">Tipo Interveniente</th>
-                <th scope="col" class="text-center bg-white">Tipo Relação</th>
-                <th scope="col" class="text-center bg-white">Elegível</th>
-                <th scope="col" class="text-center bg-light">Nº Cliente</th>
-                <th scope="col" class="align-baseline text-primary table-white">Vai Assinar Contrato</th>
-                <th scope="col" class="bg-white"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let stakeholder of submissionStakeholders">
-                <td class="text-primary text-center">{{stakeholder.shortName}}</td>
-                <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
-                <td class="text-primary text-center"> - </td>
-                <td class="text-primary text-center"> - </td>
-                <td class="text-primary text-center">Elegivel?</td>
-                <td class="text-primary text-center">{{stakeholder.id}}</td>
-                <th scope="row" class="text-primary text-center">Sim</th>
-                <td>
-                  <span>
-                    <img src="assets/images/delete_blue.svg" (click)="deleteStakeholder(stakeholder)" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>-->
-        <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false ></app-stakeholders-list>
+        <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false>
+        </app-stakeholders-list>
       </div>
       <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-          <!--<span *ngIf="currentStakeholder !== undefined && currentStakeholder !== null" class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-            <button id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="deleteStakeholder()">
-              REMOVER
-              INTERVENIENTE&nbsp;&nbsp;
-              <img src="assets/images/person_search.svg" class="img_btn">
-            </button>
-          </span>-->
           <span class="navbar-text me-2">
             <button id="btn5a2" (click)="redirectAddStakeholder()"
-                    class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent" [disabled]="returned === 'consult'">
-              ADICIONAR INTERVENIENTE&nbsp;
+              class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+              wappler-command="editContent" [disabled]="returned === 'consult'">
+              {{'stakeholder.add'|translate|uppercase}}&nbsp;
               <img src="assets/images/person_add_blue.svg" class="img_btn">
             </button>
           </span>
           <span class="navbar-text me-2">
-            <button id="btn5a3" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent"
-                    (click)="redirectInfoStakeholder()">
+            <button id="btn5a3"
+              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+              wappler-command="editContent" (click)="redirectInfoStakeholder()">
               {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
-
                 <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">
-
               </span>
             </button>
           </span>
-
         </nav>
       </div>
     </div>
   </div>
 </div>
-
-

@@ -7,8 +7,7 @@
         </span>
         <span class="navbar-text">
           <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
-            AUTENTICAÇÃO
-
+            {{'auth.title'|translate|uppercase}}
           </h5>
         </span>
       </nav>
@@ -18,30 +17,30 @@
         <h2 class="text-primary mt-5 ps-0 center-align">
           <span class="material-symbols-rounded icon-titulos m-align">
             <img src="assets/images/group_add_blue.svg" class="img_add">
-          </span>&nbsp;IDENTIFICAÇÃO<br>
+          </span>&nbsp;{{'auth.identification'|translate|uppercase}}<br>
         </h2>
-        <p class="titul campo_obrigatrio">* campo obrigatório</p>
+        <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
 
 
         <div class="row">
           <div class="col-xxl col-6">
             <div>
-              <p class="titulo-form-simples" for="userName">Username: </p>
+              <p class="titulo-form-simples" for="userName">{{'auth.username'|translate}}: </p>
               <input type="text" formControlName="userName" name="userName" id="userName"
                      class="form-control campo_form" />
             </div>
             <div>
-              <p class="titulo-form-simples" for="bankName">Nome do Banco: </p>
+              <p class="titulo-form-simples" for="bankName">{{'auth.bankName'|translate}}: </p>
               <input type="text" formControlName="bankName" name="bankName" id="bankName"
                      class="form-control campo_form" />
             </div>
             <div>
-              <p class="titulo-form-simples" for="bankLocation">Localização do Banco: </p>
+              <p class="titulo-form-simples" for="bankLocation">{{'auth.bankLocation'|translate}}: </p>
               <input type="text" formControlName="bankLocation" name="bankLocation" id="bankLocation"
                      class="form-control campo_form" />
             </div>
             <div>
-              <p class="titulo-form-simples" for="role">Cargo: </p>
+              <p class="titulo-form-simples" for="role">{{'auth.role'|translate}}: </p>
               <select formControlName="role" name="role" id="role"
                       class="form-control campo_form">
                 <option value="">Selecione</option>
@@ -54,7 +53,7 @@
         </div>
         <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
                 type="submit">
-          &nbsp;Submeter
+          &nbsp;{{'auth.submit'|translate}}
         </button>
       </form>
     </div>

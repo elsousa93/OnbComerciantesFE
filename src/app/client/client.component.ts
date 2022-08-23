@@ -332,9 +332,6 @@ export class ClientComponent implements OnInit {
 
     this.ngOnInit();
     this.logger.debug(this.baseUrl);
-    http.get<Client[]>(this.baseUrl + 'BEClients/GetAllClients/').subscribe(result => {
-      this.clients = result;
-    }, error => console.error(error));
     this.data.updateData(false, 1);
     // this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
@@ -681,6 +678,9 @@ export class ClientComponent implements OnInit {
     this.isCC = false;
     this.toSearch = false;
     this.documentType = false;
+    this.errorMsg = '';
+    this.resultError = ''
+    this.errorInput = 'form-control campo_form_coment';
     if (id == true) {
       this.showENI = false;
       this.isENI = false;

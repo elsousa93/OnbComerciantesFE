@@ -27,6 +27,7 @@ export class AuthService implements OnDestroy {
   changeUser(user: User) {
     this.dataSource.next(user);
     this.authenticated.next(true);
+    console.log("user template: ", this.user);
   }
 
   GetToken() {
@@ -42,7 +43,7 @@ export class AuthService implements OnDestroy {
   }
 
   reset() {
-    this.dataSource = new BehaviorSubject(this.user);
+    this.dataSource.next(this.user);
     this.authenticated.next(false);
   }
 

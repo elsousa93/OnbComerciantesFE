@@ -15,7 +15,6 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { ComprovativosComponent } from './comprovativos/comprovativos.component';
 import { ClientComponent } from './client/client.component';
-import { ClientExtendedComponent } from './client/client-extended/client-extended.component';
 import { StakeholdersComponent } from './stakeholders/stakeholders.component';
 import { NewStakeholderComponent } from './stakeholders/new-stakeholder/new-stakeholder.component';
 import { StoreIbanComponent } from './store/store-iban/store-iban.component';
@@ -35,7 +34,6 @@ import { PepComponent } from './pep/pep.component';
 import { NavMenuInternaComponent } from './nav-menu-interna/nav-menu-interna.component';
 import { ProcessComponent } from './process/process.component';
 import { SubmissionComponent } from './submission/submission.component';
-import { AcceptanceComponent } from './process/acceptance/acceptance.component';
 import { NavMenuPresencialComponent } from './nav-menu-presencial/nav-menu-presencial.component';
 import { MaterialModule } from './material/material.module';
 import { FooterPresencialComponent } from './footer-presencial/footer-presencial.component';
@@ -68,6 +66,7 @@ import { NGXLogger } from 'ngx-logger';
 import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
 import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
 import { AuthService } from './services/auth.service';
+import { ClientSearchComponent } from './client/client-search/client-search.component';
 
 registerLocaleData(localePT);
 
@@ -94,7 +93,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaStakeholderComponent,
     PepComponent,
     ClientByIdComponent,
-    ClientExtendedComponent,
     ReadcardComponent,
     DevolucaoComponent,
     AceitacaoComponent,
@@ -104,7 +102,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NavMenuInternaComponent,
     ProcessComponent,
     LoginComponent,
-    AcceptanceComponent,
     NavMenuPresencialComponent,
     FooterPresencialComponent,
     SidenavPresencialComponent,
@@ -117,7 +114,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AuthComponent,
     RepresentationPowerComponent,
     ProductSelectionComponent,
-    StakeholdersListComponent
+    StakeholdersListComponent,
+    ClientSearchComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -135,8 +133,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
        { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'clientbyid', component: ClientByIdComponent },
        { path: 'client/:id', component: ClientComponent },
-      { path: 'client-extended', component: ClientExtendedComponent },
-      { path: 'client-extended/:id', component: ClientExtendedComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
       { path: 'stakeholders/:nif', component: StakeholdersComponent },
       { path: 'create-stakeholder', component: CreateStakeholderComponent },
@@ -174,12 +170,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
-      { path: 'app-client-extended', component: ClientExtendedComponent },
 
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },
-      { path: 'acceptance/:submissionID', component: AcceptanceComponent },
       { path: 'process', component: ProcessComponent },
       { path: 'info-declarativa-assinatura', component: InfoDeclarativaAssinaturaComponent },
       { path: 'info-declarativa-lojas', component: InfoDeclarativaLojasComponent },

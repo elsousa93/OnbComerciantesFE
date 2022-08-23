@@ -127,18 +127,18 @@ export interface ShopEquipment {
 
 interface ShopProductPackPricingViewModel {
   pricingId?: string
-  attributes?: ProductPackPricingAttribute
+  attributes?: ProductPackPricingAttribute[]
 }
 
 
 
-enum CommunicationOwnershipTypeEnum {
+export enum CommunicationOwnershipTypeEnum {
   UNKNOWN = "unknown",
   CLIENT = "client",
   SELF = "self"
 }
 
-enum EquipmentOwnershipTypeEnum {
+export enum EquipmentOwnershipTypeEnum {
   UNKNOWN = "unknown",
   CLIENT = "client",
   SELF = "self"
