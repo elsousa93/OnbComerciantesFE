@@ -464,12 +464,12 @@ export class CountrysComponent implements OnInit {
       if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
         this.newSubmission.documents.push({
           documentType: 'comprovativoCC_PDF',
-          documentPurpose: 'PrivateClientIdentification',
+          documentPurpose: 'Identification',
           file: {
             fileType: 'PDF',
             binary: this.comprovativoCC.file
           },
-          validUntil: this.comprovativoCC.expirationDate,
+          validUntil: "2022-07-13T11:10:13.420Z",
           data: null
         })
       }

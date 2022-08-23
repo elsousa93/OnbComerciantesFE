@@ -626,7 +626,8 @@ export class ClientComponent implements OnInit {
         nifCC: this.nifCC,
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC
-      }
+      };
+      NIFNIPC = this.nifCC;
     }
     this.logger.debug("antes de passar");
     let navigationExtras: NavigationExtras = {
@@ -638,6 +639,7 @@ export class ClientComponent implements OnInit {
         dataCC: this.dataCC
       }
     };
+    console.log("dataCC em ObterSelecionado: ", this.dataCC)
     this.logger.debug("a passar para a proxima pagina");
     this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
@@ -710,15 +712,32 @@ export class ClientComponent implements OnInit {
       this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
     }
-    console.log("PRETTY PDF ", this.prettyPDF);
+    if (this.newClient.documentationDeliveryMethod === '004') {
+      console.log("criar novo cliente COM CC");
+      NIFNIPC = this.dataCCcontents.nifCC;
+    }
+
+    console.log("PRETTY PDF no createNewClient: ", this.prettyPDF);
+    if (this.newClient.documentationDeliveryMethod === '004') {
+      this.dataCC = {
+        nameCC: this.nameCC,
+        cardNumberCC: this.cardNumberCC,
+        nifCC: this.nifCC,
+        addresssCC: this.addressCC,
+        postalCodeCC: this.postalCodeCC
+      };
+      NIFNIPC = this.dataCCcontents.nifCC;
+    }
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
         NIFNIPC: NIFNIPC,
         exists: false,
-        comprovativoCC: this.prettyPDF
+        comprovativoCC: this.prettyPDF,
+        dataCC: this.dataCCcontents
       }
-    };
+    }; console.log("dataCC conctens a evnviar:", this.dataCCcontents),
+    console.log("EM dataCCcontents.nifCC: ", NIFNIPC , "TYPE OF: ", typeof (NIFNIPC));
     this.route.navigate(['/clientbyid', clientId], navigationExtras);
     //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
