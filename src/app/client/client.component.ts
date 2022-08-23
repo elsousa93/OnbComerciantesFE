@@ -619,7 +619,7 @@ export class ClientComponent implements OnInit {
 
   obterSelecionado() {
     this.logger.debug(this.clientId);
-    var selectedClient = this.selectedClient.client;
+    var selectedClient = this.newClient;
     var NIFNIPC = null;
     if (selectedClient.documentationDeliveryMethod === '002' || selectedClient.documentationDeliveryMethod === '005') {
       this.logger.debug("entrou aqui no if complexo");
