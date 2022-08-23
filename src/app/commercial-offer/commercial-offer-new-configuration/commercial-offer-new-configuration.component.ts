@@ -150,4 +150,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       this.route.navigate(['commercial-offert-list'], navigationExtras);
     }
   }
+
+  cancelConfig() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        store: this.store,
+      }
+    }
+    this.route.navigate(['commercial-offert-list'], navigationExtras);
+  }
 }

@@ -111,6 +111,9 @@ export class CountrysComponent implements OnInit {
   ];
   comprovativoCC: FileAndDetailsCC;
 
+  countryError: boolean;
+  errorMsg: string;
+
   ngOnInit() {
     this.initializeForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -183,6 +186,7 @@ export class CountrysComponent implements OnInit {
     //    this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
     //  });
     //});
+    console.log("valor do preference documents ", this.form);
   }
 
   initializeForm() {
@@ -192,7 +196,7 @@ export class CountrysComponent implements OnInit {
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''/*this.client.documentationDeliveryMethod*/, Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : '', Validators.required),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -359,165 +363,173 @@ export class CountrysComponent implements OnInit {
     }
 
     if (this.returned !== 'consult') {
-      this.data.updateData(true, 1);
-      this.newSubmission.startedAt = new Date().toISOString();
-      this.newSubmission.merchant.commercialName = "string";
-      this.newSubmission.merchant.billingEmail = this.client.billingEmail;
-      //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
-      this.newSubmission.merchant.bankInformation = this.client.bankInformation;
-      this.newSubmission.merchant.byLaws = this.client.byLaws;
-      //this.newSubmission.merchant.clientId = this.client.clientId;
-      this.newSubmission.merchant.companyName = this.client.companyName;
-      this.newSubmission.merchant.contacts = this.client.contacts;
-      this.newSubmission.merchant.crc = this.client.crc;
-      this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
-      this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
-      this.newSubmission.merchant.fiscalId = this.client.fiscalId;
-      this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-      this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
-      this.newSubmission.merchant.id = this.client.id;
-      this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-      this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-      this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-      this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
-      this.newSubmission.merchant.legalName = this.client.legalName;
-      this.newSubmission.merchant.legalNature = this.client.legalNature;
-      this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
-      this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
-      this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
-      this.newSubmission.merchant.merchantType = "Corporate";
-      this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
-      this.newSubmission.merchant.shareCapital = this.client.shareCapital;
-      this.newSubmission.merchant.shortName = this.client.shortName;
-      //this.newSubmission.stakeholders = this.stakeholdersToInsert;
-      var context = this;
+      if (this.lstPaisPreenchido.length == 0) {
+        this.countryError = true;
+        this.errorMsg = 'Escolha pelo menos um país';
+        return;
+      } else {
+        if (this.form.valid) { 
+          this.data.updateData(true, 1);
+          this.newSubmission.startedAt = new Date().toISOString();
+          this.newSubmission.merchant.commercialName = "string";
+          this.newSubmission.merchant.billingEmail = this.client.billingEmail;
+          //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+          this.newSubmission.merchant.bankInformation = this.client.bankInformation;
+          this.newSubmission.merchant.byLaws = this.client.byLaws;
+          //this.newSubmission.merchant.clientId = this.client.clientId;
+          this.newSubmission.merchant.companyName = this.client.companyName;
+          this.newSubmission.merchant.contacts = this.client.contacts;
+          this.newSubmission.merchant.crc = this.client.crc;
+          this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+          this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
+          this.newSubmission.merchant.fiscalId = this.client.fiscalId;
+          this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
+          this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+          this.newSubmission.merchant.id = this.client.id;
+          this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
+          this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+          this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
+          this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+          this.newSubmission.merchant.legalName = this.client.legalName;
+          this.newSubmission.merchant.legalNature = this.client.legalNature;
+          this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
+          this.newSubmission.merchant.mainEconomicActivity = this.client.mainEconomicActivity;
+          this.newSubmission.merchant.mainOfficeAddress = this.client.mainOfficeAddress;
+          this.newSubmission.merchant.merchantType = "Corporate";
+          this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
+          this.newSubmission.merchant.shareCapital = this.client.shareCapital;
+          this.newSubmission.merchant.shortName = this.client.shortName;
+          //this.newSubmission.stakeholders = this.stakeholdersToInsert;
+          var context = this;
 
-      if (this.returned !== null) {
-        //this.newSubmission.processNumber = localStorage.getItem("processNumber");
+          if (this.returned !== null) {
+            //this.newSubmission.processNumber = localStorage.getItem("processNumber");
+          }
+
+
+          //this.newSubmission.merchant.commercialName = this.merchantInfo.companyName;
+          //this.newSubmission.merchant.billingEmail = this.merchantInfo.billingEmail;
+          ////this.newSubmission.merchant.businessGroup = this.client.businessGroup;
+          //this.newSubmission.merchant.bankInformation = this.merchantInfo.bankInformation;
+          //this.newSubmission.merchant.byLaws = this.merchantInfo.byLaws;
+          ////this.newSubmission.merchant.clientId = this.client.clientId;
+          //this.newSubmission.merchant.companyName = this.merchantInfo.companyName;
+          //this.newSubmission.merchant.contacts = this.merchantInfo.contacts;
+          //this.newSubmission.merchant.crc = this.merchantInfo.crc;
+          //this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+          //this.newSubmission.merchant.establishmentDate = this.merchantInfo.establishmentDate;
+          //this.newSubmission.merchant.fiscalId = this.merchantInfo.fiscalId;
+          //this.newSubmission.merchant.foreignFiscalInformation = this.merchantInfo.foreignFiscalInformation;
+          //this.newSubmission.merchant.headquartersAddress = this.merchantInfo.headquartersAddress;
+          //this.newSubmission.merchant.id = this.merchantInfo.merchantId;
+          //this.newSubmission.merchant.knowYourSales.annualEstimatedRevenue = this.form.get("expectableAnualInvoicing").value;
+          //this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
+          //this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
+          //this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+          //this.newSubmission.merchant.legalName = this.merchantInfo.legalName;
+          //this.newSubmission.merchant.legalNature = this.merchantInfo.legalNature;
+          //this.newSubmission.merchant.legalNature2 = this.merchantInfo.legalNature2;
+          //this.newSubmission.merchant.mainEconomicActivity = this.merchantInfo.mainEconomicActivity;
+          //this.newSubmission.merchant.mainOfficeAddress = this.merchantInfo.mainOfficeAddress;
+          //this.newSubmission.merchant.merchantType = "Corporate";
+          //this.newSubmission.merchant.otherEconomicActivities = this.merchantInfo.otherEconomicActivities;
+          //this.newSubmission.merchant.shareCapital = this.merchantInfo.shareCapital;
+          //this.newSubmission.merchant.shortName = this.merchantInfo.shortName;
+
+
+
+
+
+          //var clientToAdd = {} as ClientForProcess;
+          //var a = this.stakeholdersToInsert; 
+          //for (var i = 0, len = a.length; i < len; i++) {
+          //  this.newSubmission.stakeholders.push({
+          //    fiscalId: a[i].fiscalId,
+
+          //  });
+          //}
+
+          var context = this;
+          localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
+          //this.logger.debug(this.newSubmission.merchant);
+
+          this.stakeholdersToInsert.forEach(function (value, idx) {
+            context.newSubmission.stakeholders.push({
+              "fiscalId": value.fiscalId,
+              "shortName": value.name
+            })
+          });
+          if (this.crc !== null && this.crc !== undefined) {
+            this.newSubmission.documents.push({
+              documentType: 'crcPDF',
+              documentPurpose: 'CompanyIdentification',
+              file: {
+                fileType: 'PDF',
+                binary: this.crc.pdf
+              },
+              validUntil: this.crc.expirationDate,
+              data: null
+            })
+          }
+          if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
+            this.newSubmission.documents.push({
+              documentType: 'comprovativoCC_PDF',
+              documentPurpose: 'Identification',
+              file: {
+                fileType: 'PDF',
+                binary: this.comprovativoCC.file
+              },
+              validUntil: "2022-07-13T11:10:13.420Z", //FIXME
+              data: null
+            })
+          }
+          if (this.tipologia == 'Company')
+            this.newSubmission.merchant.merchantType = 'Corporate';
+          else
+            this.newSubmission.merchant.merchantType = 'Entrepeneur';
+
+          this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
+            localStorage.setItem("submissionId", result.id);
+            this.processNrService.changeProcessNumber(result.processNumber);
+
+            //this.storeService.getShopsListOutbound(this.newSubmission.merchant.id, "por mudar", "por mudar").subscribe(res => {
+            //  res.forEach(value => {
+            //    this.storeService.getShopInfoOutbound(context.newSubmission.merchant.id, value.shopId, "por mudar", "por mudar").subscribe(r => {
+            //      var storeToAdd: ShopDetailsAcquiring = {
+            //        activity: r.activity,
+            //        subActivity: r.secondaryActivity,
+            //        address: {
+            //          address: r.address.address,
+            //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+            //          shoppingCenter: r.address.shoppingCenter,
+            //          useMerchantAddress: r.address.sameAsMerchantAddress
+            //        },
+            //        bank: {
+            //          bank: r.bankingInformation
+            //        },
+            //        name: r.name,
+            //        productCode: r.product,
+            //        subproductCode: r.subproduct,
+            //        website: r.url,
+            //      }
+
+            //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+
+            //      });
+            //    });
+            //  });
+            //});
+
+
+
+            //localStorage.setItem("crcStakeholders", JSON.stringify());
+
+            this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
+
+          });
+        }
       }
-
-
-      //this.newSubmission.merchant.commercialName = this.merchantInfo.companyName;
-      //this.newSubmission.merchant.billingEmail = this.merchantInfo.billingEmail;
-      ////this.newSubmission.merchant.businessGroup = this.client.businessGroup;
-      //this.newSubmission.merchant.bankInformation = this.merchantInfo.bankInformation;
-      //this.newSubmission.merchant.byLaws = this.merchantInfo.byLaws;
-      ////this.newSubmission.merchant.clientId = this.client.clientId;
-      //this.newSubmission.merchant.companyName = this.merchantInfo.companyName;
-      //this.newSubmission.merchant.contacts = this.merchantInfo.contacts;
-      //this.newSubmission.merchant.crc = this.merchantInfo.crc;
-      //this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
-      //this.newSubmission.merchant.establishmentDate = this.merchantInfo.establishmentDate;
-      //this.newSubmission.merchant.fiscalId = this.merchantInfo.fiscalId;
-      //this.newSubmission.merchant.foreignFiscalInformation = this.merchantInfo.foreignFiscalInformation;
-      //this.newSubmission.merchant.headquartersAddress = this.merchantInfo.headquartersAddress;
-      //this.newSubmission.merchant.id = this.merchantInfo.merchantId;
-      //this.newSubmission.merchant.knowYourSales.annualEstimatedRevenue = this.form.get("expectableAnualInvoicing").value;
-      //this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-      //this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-      //this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
-      //this.newSubmission.merchant.legalName = this.merchantInfo.legalName;
-      //this.newSubmission.merchant.legalNature = this.merchantInfo.legalNature;
-      //this.newSubmission.merchant.legalNature2 = this.merchantInfo.legalNature2;
-      //this.newSubmission.merchant.mainEconomicActivity = this.merchantInfo.mainEconomicActivity;
-      //this.newSubmission.merchant.mainOfficeAddress = this.merchantInfo.mainOfficeAddress;
-      //this.newSubmission.merchant.merchantType = "Corporate";
-      //this.newSubmission.merchant.otherEconomicActivities = this.merchantInfo.otherEconomicActivities;
-      //this.newSubmission.merchant.shareCapital = this.merchantInfo.shareCapital;
-      //this.newSubmission.merchant.shortName = this.merchantInfo.shortName;
-
-
-
-
-
-      //var clientToAdd = {} as ClientForProcess;
-      //var a = this.stakeholdersToInsert; 
-      //for (var i = 0, len = a.length; i < len; i++) {
-      //  this.newSubmission.stakeholders.push({
-      //    fiscalId: a[i].fiscalId,
-
-      //  });
-      //}
-
-      var context = this;
-      localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
-      //this.logger.debug(this.newSubmission.merchant);
-
-      this.stakeholdersToInsert.forEach(function (value, idx) {
-        context.newSubmission.stakeholders.push({
-          "fiscalId": value.fiscalId,
-          "shortName": value.name
-        })
-      });
-      if (this.crc !== null && this.crc !== undefined) {
-        this.newSubmission.documents.push({
-          documentType: 'crcPDF',
-          documentPurpose: 'CompanyIdentification',
-          file: {
-            fileType: 'PDF',
-            binary: this.crc.pdf
-          },
-          validUntil: this.crc.expirationDate,
-          data: null
-        })
-      }
-      if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
-        this.newSubmission.documents.push({
-          documentType: 'comprovativoCC_PDF',
-          documentPurpose: 'Identification',
-          file: {
-            fileType: 'PDF',
-            binary: this.comprovativoCC.file
-          },
-          validUntil: "2022-07-13T11:10:13.420Z", //FIXME
-          data: null
-        })
-      }
-      if (this.tipologia == 'Company')
-        this.newSubmission.merchant.merchantType = 'Corporate';
-      else
-        this.newSubmission.merchant.merchantType = 'Entrepeneur';
-
-      this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-        localStorage.setItem("submissionId", result.id);
-        this.processNrService.changeProcessNumber(result.processNumber);
-
-        //this.storeService.getShopsListOutbound(this.newSubmission.merchant.id, "por mudar", "por mudar").subscribe(res => {
-        //  res.forEach(value => {
-        //    this.storeService.getShopInfoOutbound(context.newSubmission.merchant.id, value.shopId, "por mudar", "por mudar").subscribe(r => {
-        //      var storeToAdd: ShopDetailsAcquiring = {
-        //        activity: r.activity,
-        //        subActivity: r.secondaryActivity,
-        //        address: {
-        //          address: r.address.address,
-        //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-        //          shoppingCenter: r.address.shoppingCenter,
-        //          useMerchantAddress: r.address.sameAsMerchantAddress
-        //        },
-        //        bank: {
-        //          bank: r.bankingInformation
-        //        },
-        //        name: r.name,
-        //        productCode: r.product,
-        //        subproductCode: r.subproduct,
-        //        website: r.url,
-        //      }
-
-        //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
-
-        //      });
-        //    });
-        //  });
-        //});
-
-
-
-      //localStorage.setItem("crcStakeholders", JSON.stringify());
-
-        this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
-
-      });
-    } else {
+  } else {
       this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
     }
   }

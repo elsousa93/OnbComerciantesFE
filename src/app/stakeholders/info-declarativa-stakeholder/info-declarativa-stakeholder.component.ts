@@ -186,10 +186,11 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   selectStakeholder(info /*stakeholder, idx*/) {
-
     this.currentStakeholder = info.stakeholder;
     this.currentIdx = info.idx;
-    this.initializeForm();
+    this.formContactos.get("phone").get("countryCode").setValue(this.currentStakeholder.phone1.countryCode);
+    this.formContactos.get("phone").get("phoneNumber").setValue(this.currentStakeholder.phone1.phoneNumber);
+    this.formContactos.get("email").setValue(this.currentStakeholder.email);
   }
 
 }

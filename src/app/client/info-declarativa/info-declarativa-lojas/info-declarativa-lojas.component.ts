@@ -222,9 +222,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
       //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-        if (this.currentIdx < (this.stores.length - 1)) {
-          this.currentIdx = this.currentIdx + 1;
-          this.selectRow(this.stores[this.currentIdx], this.currentIdx);
+      if (this.currentIdx < (testValues.length - 1)) {
+        this.currentIdx = this.currentIdx + 1;
+        this.selectRow(testValues[this.currentIdx], this.currentIdx);
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }
