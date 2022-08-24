@@ -4,7 +4,7 @@ import { IPep } from './IPep.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
-import { CountryInformation, PEPTypes } from '../table-info/ITable-info.interface';
+import { CountryInformation, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { NGXLogger } from 'ngx-logger';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -22,6 +22,7 @@ export class PepComponent implements OnInit {
   //Informação de campos/tabelas
   PEPTypes: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
+  stakeholdersRoles: StakeholderRole[] = [];
 
   constructor(private logger : NGXLogger, private router: ActivatedRoute, private data: DataService,
     private http: HttpClient,
@@ -36,6 +37,10 @@ export class PepComponent implements OnInit {
 
       this.tableInfo.GetAllPEPTypes().subscribe(result => {
         this.PEPTypes = result;
+      });
+
+      this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
+        this.stakeholdersRoles = result;
       });
   }
 
