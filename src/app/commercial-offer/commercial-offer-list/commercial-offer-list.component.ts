@@ -339,6 +339,7 @@ export class CommercialOfferListComponent implements OnInit {
         this.selectStore(testValues[this.currentIdx], this.currentIdx);
         this.onActivate();
       } else {
+        this.data.updateData(true, 5);
         this.route.navigate(['info-declarativa']);
       }
     }
