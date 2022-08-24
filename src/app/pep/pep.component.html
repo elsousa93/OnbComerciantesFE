@@ -196,8 +196,7 @@
                           for="pepPoliticalPublicJobDesignation">{{'declarativeInformation.stakeholder.pep.role'|translate}}:*</label>
                         <select class="form-select" formControlName="pepPoliticalPublicJobDesignation"
                           name="pepPoliticalPublicJobDesignation" id="pepPoliticalPublicJobDesignation">
-                          <option value="">{{'declarativeInformation.stakeholder.pep.role'|translate}}:</option>
-                          <option value="Administrador">Administrador</option>
+                          <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
                         </select>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('pepPoliticalPublicJobDesignation').touched && !this.form.get('pepPoliticalPublicJobDesignation').valid">
