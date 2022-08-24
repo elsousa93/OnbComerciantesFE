@@ -292,8 +292,11 @@ export class CreateStakeholderComponent implements OnInit {
     this.formStakeholderSearch.get("documentType").valueChanges.subscribe(data => {
       if (data !== 'Cartão do Cidadão') {
         this.formStakeholderSearch.controls["documentNumber"].setValidators([Validators.required]);
+        this.formStakeholderSearch.removeControl("flagAutCol");
       } else {
         this.formStakeholderSearch.controls["documentNumber"].clearValidators();
+        this.formStakeholderSearch.addControl("flagAutCol", new FormControl('', Validators.required));
+        this.formStakeholderSearch.get("flagAutCol").updateValueAndValidity();
       }
       this.formStakeholderSearch.controls["documentNumber"].updateValueAndValidity();
     });
@@ -337,16 +340,6 @@ export class CreateStakeholderComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  createForm() {
-    this.formStakeholderSearch = this.fb.group({
-      stakeholderType: [''],
-      docType: [''],
-      docNumber: [''],
-      flagAutCol: [''],
-      identificationDocumentId: [''],
-      documentType: ['']
-    });
-  }
 
   onClickSearch() {
     this.logger.debug("pesq");
