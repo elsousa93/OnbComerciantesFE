@@ -292,8 +292,11 @@ export class CreateStakeholderComponent implements OnInit {
     this.formStakeholderSearch.get("documentType").valueChanges.subscribe(data => {
       if (data !== 'Cartão do Cidadão') {
         this.formStakeholderSearch.controls["documentNumber"].setValidators([Validators.required]);
+        this.formStakeholderSearch.removeControl("flagAutCol");
       } else {
         this.formStakeholderSearch.controls["documentNumber"].clearValidators();
+        this.formStakeholderSearch.addControl("flagAutCol", new FormControl('', Validators.required));
+        this.formStakeholderSearch.get("flagAutCol").updateValueAndValidity();
       }
       this.formStakeholderSearch.controls["documentNumber"].updateValueAndValidity();
     });
@@ -325,32 +328,12 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Get Id from the store
-    // this.clientNr = Number(this.router.snapshot.params['nif']);
-    //this.form = new FormGroup({
-    //   stakeholderType: new FormControl(''),
-    //   tipoDocumento: new FormControl(''),
-    //   stakeholderNif: new FormControl(''),
-    // });
-    //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  createForm() {
-    this.formStakeholderSearch = this.fb.group({
-      stakeholderType: [''],
-      docType: [''],
-      docNumber: [''],
-      flagAutCol: [''],
-      identificationDocumentId: [''],
-      documentType: ['']
-    });
-  }
-
   onClickSearch() {
     this.logger.debug("pesq");
-
   }
 
   //When canceling the create new store feature the user must navigate back to store list
@@ -408,16 +391,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeShow.push(stake);
     // GetByid(StakeholderNif, 0)
-
   }
-
-  //searchStakeholder(formStakeholderSearch) {
-  //  this.logger.debug(formStakeholderSearch);
-  //  this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
-  //    this.logger.debug(result);
-  //    this.toggleShow(result);
-  //  }, error => console.error(error));
-  //}
 
   searchStakeholder() {
     //this.formStakeholderSearch

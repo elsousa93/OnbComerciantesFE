@@ -71,6 +71,12 @@ export class PepComponent implements OnInit {
   isVisiblePepRelations: any;
   isVisiblePepPoliticalPublicJobs: any;
 
+  isPEPTypeSelected: boolean = false;
+  isPEPCountrySelected: boolean = false;
+  isPEPSinceSelected: boolean = false;
+  isPEPFamilyRelationSelected: boolean = false;
+  isPEPRelationSelected: boolean = false;
+
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 3);
@@ -87,37 +93,8 @@ export class PepComponent implements OnInit {
   }
 
   form = new FormGroup({
-    id: new FormControl(''),
-    pep12months: new FormControl('', [Validators.required]),
-    //pepType: new FormControl(''),
-    //pepCountry: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    //pepSinceWhen: new FormControl(''),
-    //pepFamiliarOf: new FormControl(''),
-    //pepFamilyRelation: new FormControl(''),
-    //pepRelations: new FormControl(''),
-    //pepTypeOfRelation: new FormControl(''),
-    //pepPoliticalPublicJobs: new FormControl(''),
-    //pepPoliticalPublicJobDesignation: new FormControl(''),
-    //relatedPep_type: new FormControl(''),
-    //relatedPep_country: new FormControl(''),
-    //relatedPep_sinceWhen: new FormControl(''),
-    //relatedPep_nif: new FormControl(''),
-    //relatedPep_name: new FormControl(''),
-    //relatedPep_idNumber: new FormControl(''),
-    //relatedPep_idDocumentType: new FormControl(''),
-    //relatedPep_idDocumentValidity: new FormControl(''),
-    //relatedPep_idDocumentCountry: new FormControl(''),
-    //relatedPep_address: new FormControl(''),
-    //relatedPep_addressLocation: new FormControl(''),
-    //relatedPep_postalCode: new FormControl(''),
-    //relatedPep_addressCountry: new FormControl(''),
+    id: new FormControl('')
   });
-
-
-
-  get f() {
-    return this.form.controls;
-  }
 
   submit() {
     if (this.isVisiblePep12months) {
@@ -195,13 +172,16 @@ export class PepComponent implements OnInit {
         //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
         //alguma das opções anteriores como "Sim",
         //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
+
+        this.isPEPTypeSelected = false;
+        this.isPEPSinceSelected = false;
+        this.isPEPCountrySelected = false;
+        
         if (this.isVisiblePepFamiliarOf) {
           this.form.removeControl('pepFamilyRelation');
-          this.removeRelatedPepFormControl();
         }
         if (this.isVisiblePepRelations) {
           this.form.removeControl('pepTypeOfRelation');
-          this.removeRelatedPepFormControl();
         }
         if (this.isVisiblePepPoliticalPublicJobs) {
           this.form.removeControl('pepPoliticalPublicJobDesignation');
@@ -231,9 +211,12 @@ export class PepComponent implements OnInit {
         //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
         //alguma das opções anteriores como "Sim",
         //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
+
+        this.isPEPFamilyRelationSelected = false;
+        this.isPEPRelationSelected = false;
+
         if (this.isVisiblePepRelations) {
           this.form.removeControl('pepTypeOfRelation');
-          this.removeRelatedPepFormControl();
         }
         if (this.isVisiblePepPoliticalPublicJobs) {
           this.form.removeControl('pepPoliticalPublicJobDesignation');
@@ -245,14 +228,11 @@ export class PepComponent implements OnInit {
         this.form.removeControl('pepPoliticalPublicJobs');
         this.form.addControl('pepFamilyRelation', new FormControl('', [Validators.required]));
 
-        this.addRelatedPepFormControl();
-
         
       } else {
         this.form.addControl('pepRelations', new FormControl('', [Validators.required]));
         this.form.removeControl('pepFamilyRelation');
 
-        this.removeRelatedPepFormControl();
 
       }
     }
@@ -263,6 +243,9 @@ export class PepComponent implements OnInit {
         //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
         //alguma das opções anteriores como "Sim",
         //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
+
+        this.isPEPRelationSelected = false;
+
         if (this.isVisiblePepPoliticalPublicJobs) {
           this.form.removeControl('pepPoliticalPublicJobDesignation');
         }
@@ -271,12 +254,9 @@ export class PepComponent implements OnInit {
         this.form.removeControl('pepPoliticalPublicJobs');
         this.form.addControl('pepTypeOfRelation', new FormControl('', [Validators.required]));
 
-        this.addRelatedPepFormControl();
       } else {
         this.form.addControl('pepPoliticalPublicJobs', new FormControl('', [Validators.required]));
         this.form.removeControl('pepTypeOfRelation');
-
-        this.removeRelatedPepFormControl();
       }
     }
     if (event.target.name == 'pepPoliticalPublicJobs') {
@@ -290,35 +270,50 @@ export class PepComponent implements OnInit {
     this.logger.debug(this.form);
   }
 
-  addRelatedPepFormControl() {
-    this.form.addControl('relatedPep_type', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_country', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_sinceWhen', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_nif', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_name', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_idNumber', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_idDocumentType', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_idDocumentValidity', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_idDocumentCountry', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_address', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_addressLocation', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_postalCode', new FormControl('', [Validators.required]));
-    this.form.addControl('relatedPep_addressCountry', new FormControl('', [Validators.required]));
-  }
+  // check selected on 1st question
+  checkSelectedPEP() {
+    this.isPEPTypeSelected = false;
+    this.isPEPSinceSelected = false;
+    this.isPEPCountrySelected = false;
+    this.isPEPFamilyRelationSelected = false;
+    this.isPEPRelationSelected = false;
+    var pepType = (<HTMLInputElement>document.getElementById("pepType")).value;
+    var pepCountry = (<HTMLInputElement>document.getElementById("pepCountry")).value;
+    var pepSince = (<HTMLInputElement>document.getElementById("pepSinceWhen")).value;
+    
+    if (pepType != "") {
+      this.isPEPTypeSelected = true;
+    }
+    if (pepCountry != "") {
+      this.isPEPCountrySelected = true;
+    }
+    if (pepSince != "") {
+      this.isPEPSinceSelected = true;
+    }
 
-  removeRelatedPepFormControl() {
-    this.form.removeControl('relatedPep_type');
-    this.form.removeControl('relatedPep_country');
-    this.form.removeControl('relatedPep_sinceWhen');
-    this.form.removeControl('relatedPep_nif');
-    this.form.removeControl('relatedPep_name');
-    this.form.removeControl('relatedPep_idNumber');
-    this.form.removeControl('relatedPep_idDocumentType');
-    this.form.removeControl('relatedPep_idDocumentValidity');
-    this.form.removeControl('relatedPep_idDocumentCountry');
-    this.form.removeControl('relatedPep_address');
-    this.form.removeControl('relatedPep_addressLocation');
-    this.form.removeControl('relatedPep_postalCode');
-    this.form.removeControl('relatedPep_addressCountry');
+    this.form.addControl('pepFamiliarOf', new FormControl('', [Validators.required]));
+  }
+  checkSelectedFamiliar() {
+    this.isPEPFamilyRelationSelected = false;
+    this.isPEPRelationSelected = false;
+    var pepFamilyRelation = (<HTMLInputElement>document.getElementById("pepFamilyRelation")).value;
+
+    if (pepFamilyRelation != "") {
+      this.isPEPFamilyRelationSelected = true;
+    }
+
+    this.form.addControl('pepRelations', new FormControl('', [Validators.required]));
+
+  }
+  checkSelectedRelations() {
+    this.isPEPRelationSelected = false;
+    var pepRelationType = (<HTMLInputElement>document.getElementById("pepTypeOfRelation")).value;
+
+    if (pepRelationType != "") {
+      this.isPEPRelationSelected = true;
+    }
+
+    this.form.addControl('pepPoliticalPublicJobs', new FormControl('', [Validators.required]));
+    
   }
 }
