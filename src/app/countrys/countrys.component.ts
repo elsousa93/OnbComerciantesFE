@@ -459,6 +459,7 @@ export class CountrysComponent implements OnInit {
             })
           });
           if (this.crc !== null && this.crc !== undefined) {
+            console.log("ENTROU NO CRC");
             this.newSubmission.documents.push({
               documentType: 'crcPDF',
               documentPurpose: 'CompanyIdentification',
@@ -471,6 +472,7 @@ export class CountrysComponent implements OnInit {
             })
           }
           if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
+            console.log("ENTROU NO CC");
             this.newSubmission.documents.push({
               documentType: 'comprovativoCC_PDF',
               documentPurpose: 'Identification',
@@ -487,6 +489,7 @@ export class CountrysComponent implements OnInit {
           else
             this.newSubmission.merchant.merchantType = 'Entrepeneur';
 
+          console.log("OBJETO DA NOVA SUBMISSAO ", this.newSubmission);
           this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
             localStorage.setItem("submissionId", result.id);
             this.processNrService.changeProcessNumber(result.processNumber);
