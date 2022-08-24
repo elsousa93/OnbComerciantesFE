@@ -27,7 +27,11 @@ export class SearchStakeholdersComponent implements OnInit {
     stakeholder: IStakeholders,
     idx: number
   }>();
-  @Output() foundStakeholders: boolean = false;
+
+  @Output() searchAditionalInfoEmitter = new EventEmitter<{
+    found: boolean,
+    errorMsg?: string
+  }>();
 
   //Variáveis locais
   stakeholdersToShow: IStakeholders[] = [];
@@ -51,7 +55,10 @@ export class SearchStakeholdersComponent implements OnInit {
 
       if (clients.length > 0) {
         //context.deactivateNotFoundForm();
-        context.foundStakeholders = true;
+        context.searchAditionalInfoEmitter.emit({
+          found: true,
+          errorMsg: ''
+        });
         context.stakeholdersToShow = [];
         clients.forEach(function (value, index) {
           context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
@@ -62,19 +69,34 @@ export class SearchStakeholdersComponent implements OnInit {
               "elegible": "elegivel",
               "associated": "SIM"
             }
+
             //context.stakeholdersToShow.push(stakeholder);
           });
         })
       } else {
         //context.initializeNotFoundForm();
         context.stakeholdersToShow = [];
-        context.foundStakeholders = false;
+        context.searchAditionalInfoEmitter.emit({
+          found: false,
+          errorMsg: "Sem resultados"
+        });
       }
     }, error => {
+      context.searchAditionalInfoEmitter.emit({
+        found: false,
+        errorMsg: "Ocorreu um erro, tente novamente"
+      });
       //context.showFoundClient = false;
       //this.logger.debug("entrou aqui no erro huajshudsj");
       //context.resultError = "Não existe Comerciante com esse número.";
       //this.searchDone = true;
+    });
+  }
+
+  selectStakeholder(stakeholder, index) {
+    this.selectedStakeholderEmitter.emit({
+      stakeholder: stakeholder,
+      idx: index
     });
   }
 
