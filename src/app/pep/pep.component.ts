@@ -30,7 +30,15 @@ export class PepComponent implements OnInit {
     private tableInfo: TableInfoService) {      
       this.baseUrl = configuration.baseUrl;
 
+      this.tableInfo.GetAllCountries().subscribe(result => {
+        this.Countries = result;
+      });
+
+      this.tableInfo.GetAllPEPTypes().subscribe(result => {
+        this.PEPTypes = result;
+      });
   }
+
   newPep: IPep = {
     isPep: undefined,
     hasFamilyRelationship: undefined,
@@ -80,16 +88,6 @@ export class PepComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 3);
-  }
-
-  loadDataFromBE() {
-    this.tableInfo.GetAllPEPTypes().subscribe(res => {
-      this.PEPTypes = res;
-    });
-
-    this.tableInfo.GetAllCountries().subscribe(res => {
-      this.Countries = res;
-    })
   }
 
   form = new FormGroup({
