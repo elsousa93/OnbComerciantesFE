@@ -365,11 +365,10 @@ export class CountrysComponent implements OnInit {
     if (this.returned !== 'consult') {
       if (this.lstPaisPreenchido.length == 0) {
         this.countryError = true;
-        this.errorMsg = 'Escolha pelo menos um país';
+        //this.errorMsg = 'Escolha pelo menos um país';
         return;
       } else {
         if (this.form.valid) { 
-          this.data.updateData(true, 1);
           this.newSubmission.startedAt = new Date().toISOString();
           this.newSubmission.merchant.commercialName = "string";
           this.newSubmission.merchant.billingEmail = this.client.billingEmail;
@@ -571,43 +570,6 @@ export class CountrysComponent implements OnInit {
     } else {
       this.contPais.push(country);
     }
-
-    //var index1 = this.lstCountry.findIndex(elem => {
-    //  if (elem.description == event.target.id.description) {
-    //    return true;
-    //  }
-    //  return false;
-    //});
-    //if (index1 > -1) {
-    //  this.lstCountry.splice(index1, 1);
-    //} else {
-    //  this.lstCountry.push(event.target.id);
-    //}
-
-    //var index2 = this.lstCountry1.findIndex(elem => {
-    //  if (elem.description == event.target.id.description) {
-    //    return true;
-    //  }
-    //  return false;
-    //});
-    //if (index2 > -1) {
-    //  this.lstCountry1.splice(index2, 1);
-    //} else {
-    //  this.lstCountry1.push(event.target.id);
-    //}
-
-    //var index3 = this.lstCountry2.findIndex(elem => {
-    //  if (elem.description == event.target.id.description) {
-    //    return true;
-    //  }
-    //  return false;
-    //});
-    //if (index3 > -1) {
-    //  this.lstCountry2.splice(index3, 1);
-    //} else {
-    //  this.lstCountry2.push(event.target.id);
-    //}
-
   }
 
   countryExists(item) {
@@ -657,14 +619,6 @@ export class CountrysComponent implements OnInit {
 
         } else {
           this.inputEuropa = false;
-        //  //this.countryList.forEach(country => {
-        //  //  if (country.continent == "Europa") {
-        //  //    this.removeCountryFromList(country, this.lstCountry);
-        //  //    this.removeCountryFromList(country, this.lstCountry1);
-        //  //    this.removeCountryFromList(country, this.lstCountry2);
-        //  //    //this.removeCountryFromList(country, this.contPais);
-        //  //  }
-        //  //});
         }
         break;
       case 'AFRICA':
@@ -691,15 +645,6 @@ export class CountrysComponent implements OnInit {
 
         } else {
           this.inputAfrica = false;
-
-        //  //this.countryList.forEach(country => {
-        //  //  if (country.continent == "Africa") {
-        //  //    this.removeCountryFromList(country, this.lstCountry);
-        //  //    this.removeCountryFromList(country, this.lstCountry1);
-        //  //    this.removeCountryFromList(country, this.lstCountry2);
-        //  //    //this.removeCountryFromList(country, this.contPais);
-        //  //  }
-        //  //});
         }
         break;
       case 'OCEANIA':
@@ -726,15 +671,6 @@ export class CountrysComponent implements OnInit {
 
         } else {
           this.inputOceania = false;
-
-        //  //this.countryList.forEach(country => {
-        //  //  if (country.continent == "Oceania") {
-        //  //    this.removeCountryFromList(country, this.lstCountry);
-        //  //    this.removeCountryFromList(country, this.lstCountry1);
-        //  //    this.removeCountryFromList(country, this.lstCountry2);
-        //  //    //this.removeCountryFromList(country, this.contPais);
-        //  //  }
-        //  //});
         }
         break;
       case 'ASIA':
@@ -761,15 +697,6 @@ export class CountrysComponent implements OnInit {
 
         } else {
           this.inputAsia = false;
-
-        //  //this.countryList.forEach(country => {
-        //  //  if (country.continent == "Ásia") {
-        //  //    this.removeCountryFromList(country, this.lstCountry);
-        //  //    this.removeCountryFromList(country, this.lstCountry1);
-        //  //    this.removeCountryFromList(country, this.lstCountry2);
-        //  //    //this.removeCountryFromList(country, this.contPais);
-        //  //  }
-        //  //});
         }
         break;
       case 'AMERICA DO NORTE / SUL':
@@ -796,15 +723,6 @@ export class CountrysComponent implements OnInit {
 
         } else {
           this.inputAmericas = false;
-
-        //  //this.countryList.forEach(country => {
-        //  //  if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-        //  //    this.removeCountryFromList(country, this.lstCountry);
-        //  //    this.removeCountryFromList(country, this.lstCountry1);
-        //  //    this.removeCountryFromList(country, this.lstCountry2);
-        //  //    //this.removeCountryFromList(country, this.contPais);
-        //  //  }
-        //  //});
         }
         break;
     }

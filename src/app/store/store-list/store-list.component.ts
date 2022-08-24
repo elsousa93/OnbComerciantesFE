@@ -288,6 +288,7 @@ export class StoreComponent implements AfterViewInit{
         this.selectStore(testValues[this.currentIdx], this.currentIdx);
         this.onActivate();
       } else {
+        this.data.updateData(true, 3);
         this.route.navigate(['comprovativos']);
       }
     }

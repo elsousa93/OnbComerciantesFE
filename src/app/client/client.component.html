@@ -102,9 +102,7 @@
                       <p class="titulo-form-simples"> <!--Nº de documento-->
                         {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
                           class="titulo-form-simples-erro">
-                          {{
-                          resultError
-                          }}
+                          {{resultError}}
                         </span>
                       </p>
                       <input id="clientId" (focusout)="changeSearch()" type="text" [(ngModel)]="newClient.clientId"
