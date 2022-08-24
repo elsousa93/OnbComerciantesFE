@@ -197,7 +197,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   }
-  // TESTE //////////////
 
   constructor(private logger: NGXLogger, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
     private modalService: BsModalService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
@@ -206,6 +205,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     //this.submissionId = localStorage.getItem("submissionId");
     this.logger.debug("id:!!!!");
     this.logger.debug(this.submissionId);
+    var context = this;
     this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
       this.submission = result;
       this.logger.debug('Submission ', result);
@@ -236,38 +236,45 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
       this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
         var documents = res;
+        console.log("Lista inicial ", res);
 
         documents.forEach(function (value, index) {
           var document = value;
-          this.logger.debug("Documento do for");
-          this.logger.debug(document);
+          console.log("Cada documento ", document);
+          context.logger.debug("Documento do for");
+          context.logger.debug(document);
 
-          if (document.type === 'crcPDF') {
-            this.logger.debug("encontrou!!!!");
-            this.documentService.GetDocumentImage(this.submissionId, document.id).then(async (res) => {
-              this.logger.debug("entrou no document get image!!!");
-              this.logger.debug(res)
+          //if (document.documentPurpose === 'crcPDF') {
+          context.logger.debug("encontrou!!!!");
+            context.documentService.GetDocumentImage(this.submissionId, document.id).then(async (res) => {
+              context.logger.debug("entrou no document get image!!!");
+              context.logger.debug(res)
+              console.log("imagem de um documento ", res);
               var teste = await res.blob();
-              this.logger.debug(teste);
+              context.logger.debug(teste);
+              console.log('teste ', teste);
 
               teste.lastModifiedDate = new Date();
               teste.name = "nome";
 
-              this.file = <File>teste;
+              context.file = <File>teste;
 
-              this.logger.debug("ficheiro tratado");
-              this.logger.debug(this.file);
+              context.logger.debug("ficheiro tratado");
+              context.logger.debug(context.file);
+              console.log("Ficheiro encontrado ", context.file);
 
-              this.compsToShow.push({
+              context.compsToShow.push({
                 type: "pdf",
                 expirationDate: "2024-10-10",
                 stakeholder: "Manuel",
                 status: "não definido",
                 uploadDate: "2020-10-10",
-                file: this.file
+                file: context.file,
+                documentPurpose: document.documentPurpose
               })
+              console.log("Lista de comprovativos ", context.compsToShow);
             });
-          }
+          //}
         });
       });
 
@@ -346,7 +353,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.clientNr = Number(this.router.snapshot.params['id']);
-    //this.logger.debug(String(this.router.snapshot.params['pagename']));
     this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -358,24 +364,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   selectFile(event: any, comp: any) {
     this.compToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataValidade: "desconhecido", dataEntrada: "desconhecido", status: "Ativo" }
-    this.newComp.clientId = "2";
-    this.newComp.id = 1;
-    this.newComp.filename = "teste";
-    this.newComp.url = "img/";
     const files = <File[]>event.target.files;
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-      this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', this.newComp.clientId);
-      if (this.result != null) {
         if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
           if (event.target.files && files[i]) {
             var reader = new FileReader();
-            reader.onload = (event: any) => {
-              this.localUrl = event.target.result;
-            }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
             this.compsToShow.push({
@@ -390,66 +387,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
         }
-      }
     }
     this.logger.debug(this.files);
-
-    //this.file = <File>event.target.files[0];
-    //const sizeFile = this.file.size / (1024 * 1024);
-    //var extensoesPermitidas = /(.pdf)$/i;
-    //const limSize = 10
-
-
-
-    // this.comprovativos.push({ id: 1, clientId: "2", filename: "ola", url: "url" });
-
-    // this.newComp.clientId = String(this.clientNr);
-    //this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
-    //// .subscribe(result => {
-    //  // this.logger.debug(this.result);
-    //  if (this.result != null) {
-    //    // this.compClientId = this.result;
-    //    if ((sizeFile <= limSize) && (extensoesPermitidas.exec(this.file.name))) {
-    //      if (event.target.files && event.target.files[0]) {
-    //        var reader = new FileReader();
-    //        reader.onload = (eve: any) => {
-    //          //this.logger.debug('Local URL ', event);
-    //          //this.localUrl = event.target.result;
-
-    //          let blob = new Blob(event.target.files, { type: event.target.files[0].type });
-    //          let url = window.URL.createObjectURL(blob);
-    //          this.logger.debug(event.target.files);
-    //          this.localUrl = url;
-    //          this.logger.debug('URKLSDLSDSDMSLK ',url);
-    //        }
-    //        reader.readAsDataURL(event.target.files[0]);
-    //        this.uploadFile(this.newComp.clientId);
-    //      }
-    //    } else {
-    //      alert("Verifique o tipo / tamanho do ficheiro");
-    //    }
-    //  }
-    // }, error => console.error(error));
-  }
-
-  //recebe o ficheiro que vai dar upload
-  uploadFile(id: any) {
-    if (this.file != undefined) {
-      this.compService.uploadFile(this.file, id).subscribe(data => {
-        this.logger.debug(data);
-        if (data != null) {
-          alert("Upload efetuado!");
-          this.load();
-        }
-
-      },
-        err => {
-          console.error(err);
-        }
-      )
-    } else {
-      alert("Selecione um arquivo!")
-    }
   }
 
   load() {
@@ -458,8 +397,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   //mandamos uma lista dos ficheiros (for)  recebemos um ficheiro e transformamos esse ficheiro em blob e depois redirecionamos para essa página
   search(/*url: any, imgName: any*/ file: File) {
-    //this.logger.debug('url ', url);
-    //this.logger.debug('image name ', imgName);
     let blob = new Blob([file], { type: file.type });
     let url = window.URL.createObjectURL(blob);
 
@@ -475,23 +412,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   //mandar como parametro o ficheiro ou o nome do ficheiro
   download(/*imgName: any*/ file: File) {
-    //const fileName = new Blob([imgName], { type: 'application/pdf;base64' });
-    //const blob = window.URL.createObjectURL(fileName);
-
     let blob = new Blob([file], { type: file.type });
     let url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = file.name;
     link.click();
-
-
   }
 
-  onDelete(id: any, clientId: any, filename: any, file: File) {
-    this.id = id;
-    this.clientId = clientId;
-    this.filename = filename;
+  onDelete(file: File) {
     this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
     this.fileToDelete = file;
   }
@@ -506,21 +435,28 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   confirmDelete() {
     this.deleteModalRef?.hide();
+
+    const index1 = this.compsToShow.findIndex(value => value.file == this.fileToDelete);
+    if (index1 > -1)
+      this.compsToShow.splice(index1, 1);
+
     const index = this.files.indexOf(this.fileToDelete);
     if (index > -1) {
       this.files.splice(index, 1);
     }
-    this.compService.delFile(this.id).subscribe(data => {
-      this.logger.debug("DATA: ", data);
-      if (data != null) {
-        alert("Ficheiro apagado com sucesso!!");
-        this.load();
-      }
-    },
-      err => {
-        console.error(err);
-      }
-    )
+
+    this.fileToDelete = null;
+    //this.compService.delFile(this.id).subscribe(data => {
+    //  this.logger.debug("DATA: ", data);
+    //  if (data != null) {
+    //    alert("Ficheiro apagado com sucesso!!");
+    //    this.load();
+    //  }
+    //},
+    //  err => {
+    //    console.error(err);
+    //  }
+    //)
 
   }
 

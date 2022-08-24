@@ -11,5 +11,6 @@ export interface ComprovativosTemplate {
   expirationDate?: string,
   uploadDate?: string,
   status?: string,
-  file?: File
+  file?: File,
+  documentPurpose?: string
 }
