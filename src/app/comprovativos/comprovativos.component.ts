@@ -263,16 +263,21 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               context.logger.debug(context.file);
               console.log("Ficheiro encontrado ", context.file);
 
-              context.compsToShow.push({
-                type: "pdf",
-                expirationDate: "2024-10-10",
-                stakeholder: "Manuel",
-                status: "não definido",
-                uploadDate: "2020-10-10",
-                file: context.file,
-                documentPurpose: document.documentPurpose
-              })
-              console.log("Lista de comprovativos ", context.compsToShow);
+              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+
+                console.log("Value do purpose ", val);
+
+                context.compsToShow.push({
+                  type: "pdf",
+                  expirationDate: "2024-10-10",
+                  stakeholder: "Manuel",
+                  status: "não definido",
+                  uploadDate: "2020-10-10",
+                  file: context.file,
+                  documentPurpose: val.documentPurpose
+                })
+                console.log("Lista de comprovativos ", context.compsToShow);
+              });
             });
           //}
         });

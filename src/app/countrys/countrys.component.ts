@@ -211,7 +211,7 @@ export class CountrysComponent implements OnInit {
         services: new FormControl('aaa', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : '', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''/*this.client.documentationDeliveryMethod, Validators.required*/),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
