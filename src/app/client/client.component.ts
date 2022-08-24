@@ -190,6 +190,7 @@ export class ClientComponent implements OnInit {
   BlockNIF: boolean;
   Validations: boolean;
   DisableButtons: boolean;
+  BlockDocumentNumber: boolean = null; //if you want to read the CC NEW
   //  DocumentTypes: Array<IRefData>;
   IsInsolventCantPass: boolean;
   CCReaderPresent: boolean;
@@ -660,9 +661,10 @@ export class ClientComponent implements OnInit {
     this.isNoDataReadable = readable;
     this.toSearch = false;
     this.toShowReadCC = readable;
+    this.BlockDocumentNumber = readable;
   }
 
-  //Modal que questiona se tem o PIN da Morada
+  //Modal que questiona se tem o PIN da Morada -- APAGAR
   launchNewModal() {
     this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
     this.newModal.result.then(function (result: boolean): void {

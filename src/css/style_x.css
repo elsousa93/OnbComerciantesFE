@@ -1288,7 +1288,10 @@ mat-paginator {
   width: 217px !important;
   color: #f8f9fa !important;
 }
-
+.img_badge {
+  width: 217px !important;
+  color: #f8f9fa !important;
+}
 .texto_status {
   font-family: 'roboto';
   font-size: 12px;
