@@ -244,7 +244,7 @@ export class NewStakeholderComponent implements OnInit {
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
       NIF: new FormControl(this.currentStakeholder.fiscalId, Validators.required),
-      Role: new FormControl('', Validators.required),
+      Role: new FormControl(''),
       Country: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
       ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
       Locality: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
@@ -288,6 +288,7 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   submit() {
+    console.log('OlaAAAAAAAAAAAAAAAAAAAAAA');
     if (this.returned !== 'consult') {
       if (this.formNewStakeholder.valid) {
         this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
