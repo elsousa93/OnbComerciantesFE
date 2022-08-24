@@ -246,7 +246,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
           //if (document.documentPurpose === 'crcPDF') {
           context.logger.debug("encontrou!!!!");
-            context.documentService.GetDocumentImage(this.submissionId, document.id).then(async (res) => {
+            context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
               context.logger.debug("entrou no document get image!!!");
               context.logger.debug(res)
               console.log("imagem de um documento ", res);
@@ -263,16 +263,21 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               context.logger.debug(context.file);
               console.log("Ficheiro encontrado ", context.file);
 
-              context.compsToShow.push({
-                type: "pdf",
-                expirationDate: "2024-10-10",
-                stakeholder: "Manuel",
-                status: "não definido",
-                uploadDate: "2020-10-10",
-                file: context.file,
-                documentPurpose: document.documentPurpose
-              })
-              console.log("Lista de comprovativos ", context.compsToShow);
+              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+
+                console.log("Value do purpose ", val);
+
+                context.compsToShow.push({
+                  type: "pdf",
+                  expirationDate: "2024-10-10",
+                  stakeholder: "Manuel",
+                  status: "não definido",
+                  uploadDate: "2020-10-10",
+                  file: context.file,
+                  documentPurpose: val.documentPurpose
+                })
+                console.log("Lista de comprovativos ", context.compsToShow);
+              });
             });
           //}
         });
