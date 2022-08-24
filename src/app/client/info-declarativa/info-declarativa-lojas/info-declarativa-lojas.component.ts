@@ -225,6 +225,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       if (this.currentIdx < (testValues.length - 1)) {
         this.currentIdx = this.currentIdx + 1;
         this.selectRow(testValues[this.currentIdx], this.currentIdx);
+        this.onActivate();
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }
@@ -247,5 +248,17 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.listValue.get("email").setValue(this.client.contacts.email);
     if (this.returned == 'consult')
       this.listValue.disable();
+  }
+
+  onActivate() {
+    console.log('Chamado');
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 100); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
   }
 }
