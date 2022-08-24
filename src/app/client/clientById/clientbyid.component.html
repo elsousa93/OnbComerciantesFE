@@ -64,10 +64,15 @@
 
 
               <!--empresa é sociedade comercial -- big div-->
-              <p *ngIf="collectCRC == true" class="titulo-form-simples">{{'client.CRC'|translate|uppercase}}: <span
-                  class="titulo-form-error" *ngIf="collectCRC == true && crcError" class="titulo-form-simples-erro">
-                  {{errorMsg}}
-                </span></p>
+              <p *ngIf="collectCRC == true" class="titulo-form-simples">{{'client.CRC'|translate|uppercase}}:
+                <span
+                  class="titulo-form-error" *ngIf="collectCRC == true && crcIncorrect == true" class="titulo-form-simples-erro">
+                  {{'client.incorrectCRC'|translate}}
+                </span>
+                <span class="titulo-form-error" *ngIf="collectCRC == true && crcNotExists == true" class="titulo-form-simples-erro">
+                  {{'client.CRCNotFound'|translate}}
+                </span>
+              </p>
               <input *ngIf="collectCRC == true" maxlength="14" formControlName="crcCode" name="crcCode" type="text"
                 id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()"
                 [disabled]="returned === 'consult'" />

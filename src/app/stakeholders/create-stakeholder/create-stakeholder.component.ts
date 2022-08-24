@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
+import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
 import { docTypeListE, docTypeListP } from '../docType';
 import { IStakeholders } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
@@ -244,7 +245,9 @@ export class CreateStakeholderComponent implements OnInit {
   foundStakeholders: boolean;
 
   constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
+    private stakeholderService: StakeholderService, private submissionService: SubmissionService,
+    private submissionDocumentService: SubmissionDocumentService  ) {
 
 
     this.submissionId = localStorage.getItem('submissionId');
@@ -289,8 +292,11 @@ export class CreateStakeholderComponent implements OnInit {
     this.formStakeholderSearch.get("documentType").valueChanges.subscribe(data => {
       if (data !== 'Cartão do Cidadão') {
         this.formStakeholderSearch.controls["documentNumber"].setValidators([Validators.required]);
+        this.formStakeholderSearch.removeControl("flagAutCol");
       } else {
         this.formStakeholderSearch.controls["documentNumber"].clearValidators();
+        this.formStakeholderSearch.addControl("flagAutCol", new FormControl('', Validators.required));
+        this.formStakeholderSearch.get("flagAutCol").updateValueAndValidity();
       }
       this.formStakeholderSearch.controls["documentNumber"].updateValueAndValidity();
     });
@@ -322,32 +328,12 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Get Id from the store
-    // this.clientNr = Number(this.router.snapshot.params['nif']);
-    //this.form = new FormGroup({
-    //   stakeholderType: new FormControl(''),
-    //   tipoDocumento: new FormControl(''),
-    //   stakeholderNif: new FormControl(''),
-    // });
-    //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
-  createForm() {
-    this.formStakeholderSearch = this.fb.group({
-      stakeholderType: [''],
-      docType: [''],
-      docNumber: [''],
-      flagAutCol: [''],
-      identificationDocumentId: [''],
-      documentType: ['']
-    });
-  }
-
   onClickSearch() {
     this.logger.debug("pesq");
-
   }
 
   //When canceling the create new store feature the user must navigate back to store list
@@ -405,16 +391,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeShow.push(stake);
     // GetByid(StakeholderNif, 0)
-
   }
-
-  //searchStakeholder(formStakeholderSearch) {
-  //  this.logger.debug(formStakeholderSearch);
-  //  this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
-  //    this.logger.debug(result);
-  //    this.toggleShow(result);
-  //  }, error => console.error(error));
-  //}
 
   searchStakeholder() {
     //this.formStakeholderSearch
@@ -508,5 +485,35 @@ export class CreateStakeholderComponent implements OnInit {
       });
     }
   }
+  /**
+   * Add Stakeholder with CC: Only gets the Name and NIF from the stakeholder.
+   * waiting for enums for identificationDocument "type" and "number".
+   * date 23/08/22
+   */
+  addStakeholderWithCC() {
+    //Colocar comprovativo d CC na Submissao 
+    this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
+
+    var stakeholderToInsert: IStakeholders = {
+      "fiscalId": this.dataCCcontents.nifCC,
+      "identificationDocument": {
+        "type": "CC",         //FIXME
+        "number": this.dataCCcontents.cardNumberCC, //FIXME
+      },
+      "phone1": {},
+      "phone2": {},
+      "shortName": this.dataCCcontents.nameCC
+    }
+
+
+    this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+      this.route.navigate(['/stakeholders/']);
+    }, error => {
+      this.logger.error("Erro ao adicionar stakeholder com o CC");
+    });
+
+
+  }
+  
 
 }

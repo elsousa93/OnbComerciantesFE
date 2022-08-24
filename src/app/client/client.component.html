@@ -99,16 +99,14 @@
                 <div class="row me-0">
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
-                      <p class="titulo-form-simples">
+                      <p class="titulo-form-simples"> <!--Nº de documento-->
                         {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
                           class="titulo-form-simples-erro">
-                          {{
-                          resultError
-                          }}
+                          {{resultError}}
                         </span>
                       </p>
                       <input id="clientId" (focusout)="changeSearch()" type="text" [(ngModel)]="newClient.clientId"
-                        name="clientId" [disabled]="isCC && isNoDataReadable" #clientId="ngModel" [class]="errorInput">
+                        name="clientId" [disabled]="isCC && BlockDocumentNumber" #clientId="ngModel" [class]="errorInput">
                     </div>
                   </div>
                 </div>
@@ -126,10 +124,10 @@
         </p>
   <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
          #clientId="ngModel" [class]="errorInput"></div></div>-->
-              <div *ngIf="isNoDataReadable && isCC">
+              <div *ngIf="isNoDataReadable && isCC" class="pt-2">
                 <!--  && toShowReadCC  -->
-                <div>
-                  {{'citizenCard.readClick'|translate}}
+                <div class="titulo-form-simples">
+                  {{'citizenCard.readClick'|translate}}:
                 </div>
                 <button class="btn botao_azul_pesquisa" (click)="openModal(template)"
                   type="submit">{{'citizenCard.read'|translate}}</button>
@@ -159,17 +157,59 @@
               <!--Seccao do Modal PIN da Morada-->
 
               <ng-template #template>
-                <div class="modal-header">          <!--<div style="margin: auto;width: 100%;padding: 10px;text-align: center;"> -->
-                  <h4 class="modal-title pull-left">Leitura do Cartão de Cidadão</h4>
-                  <button type="button" aria-label="Não" (click)="modalRef.hide()">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  {{'citizenCard.addressPIN'|translate}}
-                </div>
-                <button type="button" class="btn btn-default" value="true" (click)="modalRef.hide(); callreadCCAddress()">{{'generalKeywords.yes'|translate|uppercase}}</button>
-                <button type="button" class="btn btn-default" value="false" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">{{'generalKeywords.no'|translate|uppercase}}</button>
+                <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+                  <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+                    <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+                      <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                        <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                          <span class="navbar-text ms-auto align-self-start">
+                            <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
+                                (click)="modalRef.hide()">
+                              x
+                            </h2>
+                          </span>
+                        </nav>
+                      </div>
+                      <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+                        <div class="mb-5 ps-0 pe-0 col-12">
+                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                            <span class="navbar-text"></span>
+                            <span class="material-symbols-rounded img_badge">
+                              <img src="assets/images/badge.svg" class="img_badge">
+                            </span>
+                          </nav>
+                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                            <span class="navbar-text">
+                              <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
+                                {{'citizenCard.addressPIN'|translate}}
+                              </h5>
+                            </span>
+                          </nav>
+
+                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+                            <span class="navbar-text"></span>
+                            <span class="navbar-text pb-0 pt-sm-0">
+                              <button id="btn5a"
+                                      class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                                      style="color: white;" wappler-command="editContent"
+                                      data-bs-dismiss="modal" (click)="modalRef.hide(); callreadCCAddress()">
+                                {{'generalKeywords.yes'|translate|uppercase}}
+                              </button>
+                            </span>
+                            <span class="navbar-text pt-0 pb-0">
+                              <button id="btn5a1"
+                                      class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                                      style="color: white;" wappler-command="editContent" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
+                                {{'generalKeywords.no'|translate|uppercase}}
+                              </button>
+                            </span>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </main>
+
               </ng-template>
               <!--Fim da Seccao do Modal PIN da Morada-->
             </div>

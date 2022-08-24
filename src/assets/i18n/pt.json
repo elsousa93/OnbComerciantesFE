@@ -37,7 +37,7 @@
     "title": "Cliente Empresa",
     "data": "Dados do Cliente",
     "identification": "Identificação do Cliente Empresa",
-    "typology":"Qual a tipologia do cliente empresa?",
+    "typology": "Qual a tipologia do cliente empresa?",
     "company": "Empresa",
     "search": "Pesquisar Comerciante",
     "add": "Adicionar Comerciante",
@@ -79,7 +79,11 @@
     "franchise": "Prentende associar a empresa a um grupo/franchise existente?",
     "destinationCountry": "Países de destino dos produtos/serviços",
     "choose": "Escolher",
-    "franchiseName": "Nome Franchise"
+    "franchiseName": "Nome Franchise",
+    "searchError": "Não existe Comerciante com esse número",
+    "incorrectCRC": "CRC inserido não está com o formato correto",
+    "CRCNotFound": "CRC inserido não foi encontrado",
+    "countryError": "Escolha pelo menos um país"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",
@@ -242,7 +246,20 @@
       "name": "Nome Comercial"
     },
     "stakeholder":{
-      "contacts": "contactos"
+      "contacts": "contactos",
+      "pep": {
+        "title": "PEP",
+        "isPEP": "É, ou foi nos últimos 12 meses, Pessoa Politicamente Exposta (PEP)?",
+        "PEPType": "Tipo de PEP",
+        "country": "Em que País",
+        "since": "Desde Quando",
+        "isFamiliar": "É familiar de uma Pessoa Politicamente Exposta (PEP)?",
+        "familyRelation": "Grau de Parentesco",
+        "relations": "Mantém relações de natureza societária ou comercial com uma Pessoa Politicamente Exposta (PEP)?",
+        "relationType": "Tipo de relação societária/comercial",
+        "politicJobs": "É, ou foi nos últimos 12 meses, titular de outros Cargos Políticos ou Públicos em território nacional?",
+        "role": "Cargo"
+      }
     },
     "signature": {
       "type": "Selecione a forma de assinatura do contrato",
@@ -272,7 +289,8 @@
     "documentType": "Tipo de Documento",
     "documentNumber": "Nº de Documento",
     "companyName": "Nome da Empresa",
-    "openProcess": "Abrir Processo"
+    "openProcess": "Abrir Processo",
+    "placeholderSearch": "Nº processo"
   },
   "acceptance": {
     "title": "Aceitação",

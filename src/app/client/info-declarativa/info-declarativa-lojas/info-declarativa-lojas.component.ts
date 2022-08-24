@@ -170,7 +170,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   } 
 
   ngOnInit(): void {
-    this.data.updateData(false, 6, 3);
+    this.data.updateData(false, 6, 4);
     this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
     this.returned = localStorage.getItem("returned");
 
@@ -222,9 +222,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
       //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-        if (this.currentIdx < (this.stores.length - 1)) {
-          this.currentIdx = this.currentIdx + 1;
-          this.selectRow(this.stores[this.currentIdx], this.currentIdx);
+      if (this.currentIdx < (testValues.length - 1)) {
+        this.currentIdx = this.currentIdx + 1;
+        this.selectRow(testValues[this.currentIdx], this.currentIdx);
+        this.onActivate();
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }
@@ -247,5 +248,17 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.listValue.get("email").setValue(this.client.contacts.email);
     if (this.returned == 'consult')
       this.listValue.disable();
+  }
+
+  onActivate() {
+    console.log('Chamado');
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 100); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
   }
 }

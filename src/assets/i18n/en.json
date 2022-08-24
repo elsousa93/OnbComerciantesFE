@@ -13,7 +13,7 @@
     "findProcess": "Search Process",
     "editProcess": "Edit Process",
     "openProcess": "Open Process",
-    "findProcessButton": "Process Search",
+    "findProcessButton": "Search Process",
     "home": "Home",
     "processTreatment": "Process Treatment",
     "eligibility": "Eligibility Opinions",
@@ -37,7 +37,7 @@
     "title": "Client",
     "data": "Client Data",
     "identification": "Client Identification",
-    "typology":"What is the type of business customer?",
+    "typology": "What is the type of business customer?",
     "company": "Company",
     "search": "Search Merchant",
     "add": "Add Merchant",
@@ -79,7 +79,11 @@
     "franchise": "Do you intend to associate the company with an existing group/franchise?",
     "destinationCountry": "Destination countries for products/services",
     "choose": "Choose",
-    "franchiseName": "Franchise Name"
+    "franchiseName": "Franchise Name",
+    "searchError": "Merchant with this number does not exist",
+    "incorrectCRC": "Inserted CRC does not have the correct format",
+    "CRCNotFound": "Inserted CRC was not found",
+    "countryError": "Choose at least one country"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",
@@ -242,7 +246,20 @@
       "name": "Comercial Name"
     },
     "stakeholder":{
-      "contacts": "contacts"
+      "contacts": "contacts",
+      "pep": {
+        "title": "PEP",
+        "isPEP": "Are, or have been in the last 12 months, a Politically Exposed Person (PEP)?",
+        "PEPType": "PEP Type",
+        "country": "In which country",
+        "since": "Since",
+        "isFamiliar": "Is familiar of a Politically Exposed Person (PEP)?",
+        "familyRelation": "Degree of kinship",
+        "relations": "Maintains corporate or commercial relationships with a Politically Exposed Person (PEP)?",
+        "relationType": "Type of corporate/business relationship",
+        "politicJobs": "Is, or was in the last 12 months, holder of other Political or Public Positions in national territory?",
+        "role": "Role"
+      }
     },
     "signature": {
       "type": "Select the contract signature method",
@@ -272,7 +289,8 @@
     "documentType": "Document Type",
     "documentNumber": "Document Number",
     "companyName": "Company Name",
-    "openProcess": "Open Process"
+    "openProcess": "Open Process",
+    "placeholderSearch": "Process Nr."
   },
   "acceptance": {
     "title": "Acceptance",

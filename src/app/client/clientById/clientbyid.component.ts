@@ -103,6 +103,8 @@ export class ClientByIdComponent implements OnInit {
   };
 
   crcError: boolean = false;
+  crcNotExists: boolean = false;
+  crcIncorrect: boolean = false;
 
   //client: OutboundClient = {};
 
@@ -696,6 +698,8 @@ export class ClientByIdComponent implements OnInit {
     this.crcFound = false;
     this.collectCRC = undefined;
     console.log(this.canChangeCommercialSociety());
+    this.crcIncorrect = false;
+    this.crcNotExists = false;
     this.form.get('collectCRC').setValue(undefined);
     if (id == true) {
       this.initializeBasicCRCFormControl();
@@ -799,24 +803,24 @@ export class ClientByIdComponent implements OnInit {
      var crcInserted = this.form.get('crcCode').value;
      var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
      if (!crcFormat.test(crcInserted)) {
-       this.crcError = true;
+       this.crcIncorrect = true;
        this.crcFound = false;
-       this.errorMsg = 'CRC inserido não está com o formato correto'
+       //this.errorMsg = 'CRC inserido não está com o formato correto'
        return;
      }
-     this.crcError = false;
+     this.crcIncorrect = false;
      this.crcService.getCRC(crcInserted, '001').subscribe(o => {
        if (o === {} || o === undefined || o === null) {
-         this.crcError = true;
+         this.crcNotExists = true;
          this.crcFound = false;
-         this.errorMsg = 'CRC inserido não foi encontrado';
+         //this.errorMsg = 'CRC inserido não foi encontrado';
        }
 
        console.log("CHEGOU AQUI TB 2!!");
         var clientByCRC = o;
 
        this.crcFound = true;
-       this.crcError = false;
+       this.crcNotExists = false;
        this.errorMsg = '';
         this.processClient.legalNature = clientByCRC.legalNature;
         this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
@@ -1019,6 +1023,8 @@ export class ClientByIdComponent implements OnInit {
 
   setCollectCRC(value: boolean) {
     this.collectCRC = value;
+    this.crcIncorrect = false;
+    this.crcNotExists = false;
     if (value == false)
       this.initializeFormControlOther();
     else

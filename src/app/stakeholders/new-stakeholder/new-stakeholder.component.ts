@@ -309,6 +309,9 @@ export class NewStakeholderComponent implements OnInit {
           if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
             this.currentIdx = this.currentIdx + 1;
             this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
+          } else {
+            this.data.updateData(true, 2);
+            this.route.navigate(['/store-comp']);
           }
 
         }, error => {

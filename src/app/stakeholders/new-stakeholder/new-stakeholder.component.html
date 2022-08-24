@@ -97,16 +97,7 @@
               <p class="titulo-form-simples">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
               <select readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
                 <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
-              </select>
-            </div>
-            <div class="col-6 ms-0 me-0 ps-5 pe-0">
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
-              <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
-                     class="form-control campo_form">
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
-              <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
-                     cols="30" rows="10" class="form-control campo_form">
-            
+              </select>            
           </div>
           <div *ngIf="!showYesCC && showNoCC">
             
@@ -139,7 +130,7 @@
     O parâmetro "Código postal" é obrigatório.
   </div>-->
 
-              <p class="titulo-form-simples ">{{'stakeholder.adrress'|translate|uppercase}}</p>
+              <p class="titulo-form-simples ">{{'stakeholder.address'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address" [readonly]="returned === 'consult'">
               <!--<div class="alert alert-danger"
     *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
@@ -148,12 +139,21 @@
               <p class="titulo-form-simples"></p>
             
           </div>
-          </div>
+          <div *ngIf="showYesCC && !showNoCC">
+          <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
+          <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+                 class="form-control campo_form">
+          <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
+          <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+                 cols="30" rows="10" class="form-control campo_form">
+                 <p class="titulo-form-simples"></p>
+          </div></div>
           <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span>
             </nav>
+          
           </div>
         </div>
 
@@ -220,7 +220,7 @@
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
               <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
               <button id="btn5a4" [routerLink]="['/stakeholders']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-              <button id="btn5a2" [routerLink]="['/store-comp']" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              <button id="btn5a2" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </span>
           </nav>
         </div>
