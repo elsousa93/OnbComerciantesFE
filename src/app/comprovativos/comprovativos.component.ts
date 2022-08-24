@@ -246,7 +246,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
           //if (document.documentPurpose === 'crcPDF') {
           context.logger.debug("encontrou!!!!");
-            context.documentService.GetDocumentImage(this.submissionId, document.id).then(async (res) => {
+            context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
               context.logger.debug("entrou no document get image!!!");
               context.logger.debug(res)
               console.log("imagem de um documento ", res);
