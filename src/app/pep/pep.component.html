@@ -67,8 +67,8 @@
                       <div class="showDiv form-group" *ngIf="isVisiblePep12months == true">
                         <label class="form-check-label titulo-form-simples mb-1" for="pepType">
                           {{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:*
-                          <select class="form-select" formControlName="pepType" name="pepType" id="pepType">
-                            <option value="">{{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:</option>
+                          <select (change)="checkSelectedPEP()" class="form-select" formControlName="pepType" name="pepType" id="pepType">
+                            <option>teste</option>
                             <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
                           </select>
                         </label>
@@ -80,8 +80,8 @@
                         </div>
                         <label class="form-check-label titulo-form-simples mb-1" for="pepCountry">
                           {{'declarativeInformation.stakeholder.pep.country'|translate}}:*
-                          <select class="form-select" formControlName="pepCountry" name="pepCountry" id="pepCountry">
-                            <option value="">{{'declarativeInformation.stakeholder.pep.country'|translate}}:</option>
+                          <select (change)="checkSelectedPEP()" class="form-select" formControlName="pepCountry" name="pepCountry" id="pepCountry">
+                            <option>Portugal</option>
                             <option *ngFor="let country of Countries" value={{country.description}}>
                               {{country.description}} </option>
                           </select>
@@ -93,14 +93,13 @@
                             {{'generalKeywords.mandatoryParameter'|translate}}
                           </div>
                         </div>
-                        <label class="form-check-label titulo-form-simples mb-1" for="pepSinceWhen">
+                        <label (change)="checkSelectedPEP()" class="form-check-label titulo-form-simples mb-1" for="pepSinceWhen">
                           {{'declarativeInformation.stakeholder.pep.since'|translate}}:
                           <input formControlName="pepSinceWhen" name="pepSinceWhen" id="pepSinceWhen" type="date"
-                            class="form-control">
+                            class="form-control" value="">
                         </label>
-                      </div>
-                    </div> <!-- fecha form do pep12months-->
-                    <div class="form-group" *ngIf="isVisiblePep12months == false">
+                      </div><!-- fecha form do pep12months-->
+                    <div class="form-group" *ngIf="isVisiblePep12months == false || isVisiblePep12months == true && isPEPTypeSelected == true && isPEPCountrySelected && isPEPSinceSelected == true">
 
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.isFamiliar'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -111,24 +110,21 @@
                             </label>
                           </div>
                         </span><span class="navbar-text">
-                          <div class="form-check">
+                          <div class="form-check"><label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}
                             <input class="form-check-input" name="pepFamiliarOf" type="radio" value="false"
-                              formControlName="pepFamiliarOf" id="pepFamiliarOf"
-                              (change)="onChangeValues($event)">
-                            <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
+                              formControlName="pepFamiliarOf" id="pepFamiliarOf" (change)="onChangeValues($event)">
+                            </label>
                           </div>
                         </span>
                       </nav>
-                      <div class="form-group" *ngIf="isVisiblePepFamiliarOf == true">
+                      <div class="showDiv form-group" *ngIf="isVisiblePepFamiliarOf == true">
                         <!-- Se for familiar de uma PEP--->
                         <label class="form-check-label titulo-form-simples mb-1"
-                          for="pepFamilyRelation">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*</label>
-                        <select class="form-select" formControlName="pepFamilyRelation" name="pepFamilyRelation"
+                          for="pepFamilyRelation">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*
+                        <select (change)="checkSelectedFamiliar()" class="form-select" formControlName="pepFamilyRelation" name="pepFamilyRelation"
                           id="pepFamilyRelation">
-                          <option value="">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:
-                          </option>
-                          <option value="1">Filha</option>
-                        </select>
+                          <option>Filha</option>
+                        </select></label>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('pepFamilyRelation').touched && !this.form.get('pepFamilyRelation').valid">
                           <div *ngIf="this.form.get('pepFamilyRelation').errors && this.form.get('pepFamilyRelation').errors?.['required']">
@@ -138,7 +134,7 @@
                       </div>
                     </div>
                     <!--Fecha é familiar de uma PEP-->
-                    <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false">
+                    <div class="form-group" *ngIf="isVisiblePepFamiliarOf == false || isVisiblePepFamiliarOf == true && isPEPFamilyRelationSelected == true">
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.relations'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <span class="navbar-text">
@@ -148,11 +144,11 @@
                             </label>
                           </div>
                         </span><span class="navbar-text">
-                          <div class="form-check">
+                          <div class="form-check"><label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}
                             <input class="form-check-input" name="pepRelations" type="radio" value="false"
                               formControlName="pepRelations" id="pepRelations"
                               (change)="onChangeValues($event)">
-                            <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
+                            </label>
                           </div>
                         </span>
                       </nav>
@@ -161,7 +157,7 @@
                         <label class="form-check-label titulo-form-simples mb-1" for="pepTypeOfRelation">
                           {{'declarativeInformation.stakeholder.pep.relationType'|translate}}:*
                         </label>
-                        <select class="form-select" formControlName="pepTypeOfRelation" name="pepTypeOfRelation"
+                        <select (change)="checkSelectedRelations()" class="form-select" formControlName="pepTypeOfRelation" name="pepTypeOfRelation"
                           id="pepTypeOfRelation">
                           <option value="">{{'declarativeInformation.stakeholder.pep.relationType'|translate}}:</option>
                           <option value="1">Sócio </option>
@@ -175,7 +171,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="form-group" *ngIf="isVisiblePep12months == false && isVisiblePepFamiliarOf == false && isVisiblePepRelations == false">
+                    <div class="form-group" *ngIf="isVisiblePepRelations == false || isVisiblePepRelations == true && isPEPRelationSelected == true">
                       
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.politicJobs'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -211,6 +207,7 @@
                           </div>
                         </div>
                       </div>
+                    </div>
                     </div>
                   </form>
                   <div class="col ms-0 ps-0">
