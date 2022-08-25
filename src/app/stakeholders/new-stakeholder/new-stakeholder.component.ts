@@ -293,6 +293,8 @@ export class NewStakeholderComponent implements OnInit {
     console.log('OlaAAAAAAAAAAAAAAAAAAAAAA');
     if (this.returned !== 'consult') {
       if (this.formNewStakeholder.valid) {
+        if (this.currentStakeholder.fiscalAddress === null || this.currentStakeholder.fiscalAddress === undefined)
+          this.currentStakeholder.fiscalAddress = {};
         this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
         this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
         this.currentStakeholder.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
@@ -302,6 +304,8 @@ export class NewStakeholderComponent implements OnInit {
         this.currentStakeholder.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
 
         if (this.showYesCC && !this.showNoCC) {
+          if (this.currentStakeholder.identificationDocument === null || this.currentStakeholder.identificationDocument === undefined)
+            this.currentStakeholder.identificationDocument = {};
           this.currentStakeholder.identificationDocument.type = this.formNewStakeholder.get("documentType").value;
           this.currentStakeholder.identificationDocument.number = this.formNewStakeholder.get("identificationDocumentId").value;
           this.currentStakeholder.identificationDocument.country = this.formNewStakeholder.get("identificationDocumentCountry").value;

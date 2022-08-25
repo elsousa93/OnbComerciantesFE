@@ -243,6 +243,9 @@ export class CreateStakeholderComponent implements OnInit {
   stakeholderNumber: string;
 
   foundStakeholders: boolean;
+  errorMsg: string = "";
+
+  currentStakeholder: IStakeholders = {};
 
   constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
@@ -456,6 +459,15 @@ export class CreateStakeholderComponent implements OnInit {
       "shortName": ''
     };
     this.stakeholderNumber = stakeholder.stakeholderNumber;
+  }
+
+  selectNewStakeholder(emittedStakeholder) {
+    this.currentStakeholder = emittedStakeholder.stakeholder;
+  }
+
+  searchResultNotifier(info) {
+    this.foundStakeholders = info.found;
+    this.errorMsg = info.errorMsg;
   }
 
   addStakeholder() {
