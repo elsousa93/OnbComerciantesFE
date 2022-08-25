@@ -168,7 +168,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder.id, this.newStakeholder).subscribe(result => {
         if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
           this.currentIdx = this.currentIdx + 1;
-          this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
+          this.selectStakeholder({ stakeholder: this.submissionStakeholders[this.currentIdx], info: this.currentIdx });
+          //this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
         } else {
 
           this.route.navigate(['/app-pep']);

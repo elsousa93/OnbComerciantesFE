@@ -96,7 +96,8 @@ const testValues: ShopDetailsAcquiring[] = [
   },
 ]
 
-const storeEquipTest: ShopEquipment = {
+const storeEquipTest: ShopEquipment[] = [
+  {
   communicationOwnership: CommunicationOwnershipTypeEnum.CLIENT,
   communicationType: "2",
   equipmentOwnership: EquipmentOwnershipTypeEnum.SELF,
@@ -122,8 +123,37 @@ const storeEquipTest: ShopEquipment = {
       ]
     ,
     pricingId: "id"
+    }
+  },
+  {
+    communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+    communicationType: "1",
+    equipmentOwnership: EquipmentOwnershipTypeEnum.CLIENT,
+    equipmentType: "4",
+    quantity: 200,
+    pricing: {
+      attributes:
+        [
+          {
+            id: "abc",
+            description: "description",
+            value: 100,
+            isReadOnly: true,
+            isVisible: false
+          },
+          {
+            id: "bde",
+            description: "description 2",
+            value: 500,
+            isReadOnly: false,
+            isVisible: true
+          },
+        ]
+      ,
+      pricingId: "id"
+    }
   }
-}
+]
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -133,12 +163,16 @@ const storeEquipTest: ShopEquipment = {
 export class CommercialOfferListComponent implements OnInit {
 
   storesOfferMat: MatTableDataSource<ShopDetailsAcquiring>;
+  storeEquipMat: MatTableDataSource<ShopEquipment>;
 
   form: FormGroup;
   private baseUrl: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  @ViewChild('storeEquipPaginator') storeEquipPaginator: MatPaginator;
+  @ViewChild('storeEquipSort') storeEquipSort: MatSort;
 
   public stores: Istore[] = [];
   public clientID: number = 12345678;
@@ -159,6 +193,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   displayedColumns: string[] = ['nameEstab', 'activityEstab', 'subActivityEstab', 'bank', 'terminalNumber', 'product'];
 
+  storeEquipColumns: string[] = ['equipmentOwnership', 'equipmentType', 'communicationType', 'quantity', 'monthlyFee', 'delete', 'edit'];
 
   currentUser: User = {};
   replicateProducts: boolean;
@@ -173,6 +208,8 @@ export class CommercialOfferListComponent implements OnInit {
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesOfferMat.paginator = this.paginator;
+    this.storeEquipMat.paginator = this.storeEquipPaginator;
+    this.storeEquipMat.sort = this.storeEquipSort;
   }
 
   constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService) {
@@ -229,12 +266,19 @@ export class CommercialOfferListComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.loadStores();
+    this.loadStoreEquips();
     this.returned = localStorage.getItem("returned");
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
     this.storesOfferMat = new MatTableDataSource(storesValues);
     this.storesOfferMat.paginator = this.paginator;
+  }
+
+  loadStoreEquips(storeEquipValues: ShopEquipment[] = storeEquipTest) {
+    this.storeEquipMat = new MatTableDataSource(storeEquipValues);
+    this.storeEquipMat.paginator = this.storeEquipPaginator;
+    this.storeEquipMat.sort = this.storeEquipSort;
   }
 
   selectStore(store: ShopDetailsAcquiring, idx: number) {
@@ -353,13 +397,13 @@ export class CommercialOfferListComponent implements OnInit {
     
   }
 
-  deleteConfiguration(shopEquipment: ShopEquipment = storeEquipTest) {
+  deleteConfiguration(shopEquipment: ShopEquipment) {
     if (this.returned != 'consult') { 
     //CHAMADA À API QUE REMOVE UMA CONFUGURAÇÃO DE UM TERMINAL
     }
   }
 
-  editConfiguration(shopEquipment: ShopEquipment = storeEquipTest) {
+  editConfiguration(shopEquipment: ShopEquipment) {
     if (this.returned != 'consult') { 
       let navigationExtras: NavigationExtras = {
         state: {

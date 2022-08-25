@@ -34,27 +34,30 @@ export class StakeholdersListComponent implements OnInit {
   submissionStakeholders: IStakeholders[] = [];
 
   selectedStakeholder: IStakeholders = {};
+  returned: string;
 
   ngOnInit(): void {
-
+    this.returned = localStorage.getItem("returned");
     this.getSubmissionStakeholders();
   }
 
   getSubmissionStakeholders() {
     var context = this;
-    this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
-      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-        this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-          res.forEach(function (value, index) {
-            context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-              context.submissionStakeholders.push(r);
+    if (this.returned !== null) { 
+      this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+            res.forEach(function (value, index) {
+              context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                context.submissionStakeholders.push(r);
+              }, error => {
+              });
             }, error => {
             });
-          }, error => {
           });
         });
       });
-    });
+    }
 
     if (this.submissionId !== null) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {

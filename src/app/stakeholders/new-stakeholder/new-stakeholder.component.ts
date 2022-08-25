@@ -127,20 +127,22 @@ export class NewStakeholderComponent implements OnInit {
     this.ngOnInit();
 
     var context = this;
-    this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-        this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-          res.forEach(function (value, index) {
-            context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-              context.submissionStakeholders.push(r);
+
+    if (this.returned != null) { 
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+            res.forEach(function (value, index) {
+              context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                context.submissionStakeholders.push(r);
+              }, error => {
+              });
             }, error => {
             });
-          }, error => {
           });
         });
       });
-    });
-
+    }
 
     stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
