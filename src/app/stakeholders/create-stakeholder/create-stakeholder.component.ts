@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit,  EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
@@ -246,6 +246,8 @@ export class CreateStakeholderComponent implements OnInit {
   errorMsg: string = "";
 
   currentStakeholder: IStakeholders = {};
+  searchEvent: Subject<void> = new Subject<void>();
+
 
   constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
@@ -397,51 +399,45 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   searchStakeholder() {
-    //this.formStakeholderSearch
-    //this.logger.debug("ola");
-    //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  this.logger.debug(o);
-    //});
     if (this.formStakeholderSearch.invalid)
       return false;
 
-    var context = this;
+    console.log("ola");
+    this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
+    console.log("stakeholderNumber: ", this.stakeholderNumber);
 
-    var documentNumberToSearch = this.formStakeholderSearch.get('documentNumber').value;
+    //var context = this;
 
-    /*this.onSearchSimulation(22181900000011);*/
-    this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
-      var clients = o;
+    //var documentNumberToSearch = this.formStakeholderSearch.get('documentNumber').value;
 
-      context.isShown = true;
+    //this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
+    //  var clients = o;
+
+    //  context.isShown = true;
       
-      if (clients.length > 0) {
-        context.deactivateNotFoundForm();
-        context.foundStakeholders = true;
-        context.stakeholdersToShow = [];
-        clients.forEach(function (value, index) {
-          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-            var stakeholder = {
-              "stakeholderNumber": c.stakeholderId,
-              "stakeholderName": c.shortName,
-              "stakeholderNIF": c.fiscalIdentification.fiscalId,
-              "elegible": "elegivel",
-              "associated": "SIM"
-            }
-            context.stakeholdersToShow.push(stakeholder);
-          });
-        })
-      } else {
-        context.initializeNotFoundForm();
-        context.stakeholdersToShow = [];
-        context.foundStakeholders = false;
-      }
-    }, error => {
-      //context.showFoundClient = false;
-      //this.logger.debug("entrou aqui no erro huajshudsj");
-      //context.resultError = "Não existe Comerciante com esse número.";
-      //this.searchDone = true;
-    });
+    //  if (clients.length > 0) {
+    //    context.deactivateNotFoundForm();
+    //    context.foundStakeholders = true;
+    //    context.stakeholdersToShow = [];
+    //    clients.forEach(function (value, index) {
+    //      context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+    //        var stakeholder = {
+    //          "stakeholderNumber": c.stakeholderId,
+    //          "stakeholderName": c.shortName,
+    //          "stakeholderNIF": c.fiscalIdentification.fiscalId,
+    //          "elegible": "elegivel",
+    //          "associated": "SIM"
+    //        }
+    //        context.stakeholdersToShow.push(stakeholder);
+    //      });
+    //    })
+    //  } else {
+    //    context.initializeNotFoundForm();
+    //    context.stakeholdersToShow = [];
+    //    context.foundStakeholders = false;
+    //  }
+    //}, error => {
+    //});
   }
 
   refreshDiv() {
@@ -463,6 +459,8 @@ export class CreateStakeholderComponent implements OnInit {
 
   selectNewStakeholder(emittedStakeholder) {
     this.currentStakeholder = emittedStakeholder.stakeholder;
+
+    console.log("current stakeholder: ", this.currentStakeholder);
   }
 
   searchResultNotifier(info) {

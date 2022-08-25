@@ -101,8 +101,8 @@
  
   <div *ngIf="isShown" class="row container-fluid" id="divshow">
     <h2 *ngIf="foundStakeholders">{{'stakeholder.foundStakeholder'|translate}}</h2>
-        <!--<app-search-stakeholders [clientID]="stakeholderNumber" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>-->
-        <table class="table table-success" *ngIf="foundStakeholders">
+        <app-search-stakeholders [clientID]="stakeholderNumber" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
+        <!--<table class="table table-success" *ngIf="foundStakeholders">
           <thead class="text-primary table-primary">
             <tr class="text-center text-primary table-light">
               <th scope="col" class="align-baseline text-primary table-white">{{'stakeholder.fiscalID'|translate}}</th>
@@ -115,7 +115,7 @@
               <td class="text-primary text-center">{{stake.stakeholderName}}</td>
             </tr>
           </tbody>
-        </table>
+        </table>-->
         <div *ngIf="!foundStakeholders">
           <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p><input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
         </div>

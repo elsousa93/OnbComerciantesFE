@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, Output, EventEmitter, OnInit, Inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, Inject, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { ClientService } from '../../client/client.service';
@@ -13,7 +13,7 @@ import { StakeholderService } from '../stakeholder.service';
   templateUrl: './search-stakeholders.component.html',
   styleUrls: ['./search-stakeholders.component.css']
 })
-export class SearchStakeholdersComponent implements OnInit {
+export class SearchStakeholdersComponent implements OnInit, OnChanges {
 
   //Variáveis de Input
   @Input() clientID: string = "";
@@ -36,13 +36,23 @@ export class SearchStakeholdersComponent implements OnInit {
   //Variáveis locais
   stakeholdersToShow: IStakeholders[] = [];
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
+  currentStakeholder: IStakeholders = {};
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private stakeholderService: StakeholderService, private authService: AuthService) { }
 
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("mudou");
+    console.log(changes);
+    }
+
   ngOnInit(): void {
+    
   }
+
+  
 
   searchStakeholders() {
     var context = this;
@@ -98,6 +108,8 @@ export class SearchStakeholdersComponent implements OnInit {
       stakeholder: stakeholder,
       idx: index
     });
+
+    this.currentStakeholder = stakeholder;
   }
 
 }
