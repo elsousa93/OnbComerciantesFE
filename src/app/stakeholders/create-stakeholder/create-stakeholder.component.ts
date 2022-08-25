@@ -13,7 +13,6 @@ import { stakeTypeList } from '../stakeholderType';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
 import { Configuration, configurationToken } from '../../configuration';
 
 import { readCC } from '../../citizencard/CitizenCardController.js';
@@ -183,18 +182,6 @@ export class CreateStakeholderComponent implements OnInit {
 
   //-------------- fim do CC ------------
 
-  newStake: IStakeholders = {
-    "fiscalId": "",
-    "identificationDocument": {
-      "type": "",
-      "number": "",
-      "country": "",
-      "expirationDate": "",
-    },
-    "fullName": "",
-    "contactName": "",
-    "shortName": ""
-  } as IStakeholders;
 
  submissionId: string;
  // submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
@@ -224,7 +211,6 @@ export class CreateStakeholderComponent implements OnInit {
   public clientNr: number = 8875;
   public totalUrl: string = "";
   public auxUrl: string = "";
-  public stakeSearch: IStakeholders[] = [this.newStake];
   isShown: boolean = false;
   isFoundStakeholderShown: boolean = false;
   public flagRecolhaEletronica: boolean = true;
@@ -246,7 +232,8 @@ export class CreateStakeholderComponent implements OnInit {
   errorMsg: string = "";
 
   currentStakeholder: IStakeholders = {};
-  searchEvent: Subject<void> = new Subject<void>();
+  searchEvent: Subject<string> = new Subject<string>();
+  testEvent = this.searchEvent.asObservable();
 
 
   constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
@@ -375,8 +362,6 @@ export class CreateStakeholderComponent implements OnInit {
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
 
-    this.newStake.identificationDocument.type = this.documentType;
-
     if (this.documentType === 'Cartão do Cidadão') {
       this.isCC = true;
     } else {
@@ -404,7 +389,8 @@ export class CreateStakeholderComponent implements OnInit {
 
     console.log("ola");
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
-    console.log("stakeholderNumber: ", this.stakeholderNumber);
+    this.isShown = true;
+    this.searchEvent.next(this.stakeholderNumber);
 
     //var context = this;
 
@@ -445,18 +431,6 @@ export class CreateStakeholderComponent implements OnInit {
     this.ngOnInit();
   }
 
-  selectStakeholder(stakeholder) {
-    
-    this.newStake = {
-      "fiscalId": stakeholder.stakeholderNIF,
-      "identificationDocument": {},
-      "fullName": '',
-      "contactName": '',
-      "shortName": ''
-    };
-    this.stakeholderNumber = stakeholder.stakeholderNumber;
-  }
-
   selectNewStakeholder(emittedStakeholder) {
     this.currentStakeholder = emittedStakeholder.stakeholder;
 
@@ -464,13 +438,21 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   searchResultNotifier(info) {
+    console.log("Info: ", info);
     this.foundStakeholders = info.found;
     this.errorMsg = info.errorMsg;
+
+    if (!this.foundStakeholders)
+      this.initializeNotFoundForm();
+    else
+      this.deactivateNotFoundForm();
+
   }
 
   addStakeholder() {
+    console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders) {
-      this.stakeholderService.getStakeholderByID(this.stakeholderNumber, 'por mudar', 'por mudar').subscribe(stakeholder => {
+      this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
 
@@ -479,7 +461,7 @@ export class CreateStakeholderComponent implements OnInit {
         });
       });
     } else {
-
+      console.log("formstakeholder: ", this.formStakeholderSearch);
       var stakeholderToInsert: IStakeholders = {
         "fiscalId": this.formStakeholderSearch.get("documentNumber").value,
         "identificationDocument": {
