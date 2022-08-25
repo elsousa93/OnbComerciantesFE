@@ -242,17 +242,17 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         documents.forEach(function (value, index) {
           var document = value;
           console.log("Cada documento ", document);
-          context.logger.debug("Documento do for");
-          context.logger.debug(document);
+          //context.logger.debug("Documento do for");
+          //context.logger.debug(document);
 
           //if (document.documentPurpose === 'crcPDF') {
-          context.logger.debug("encontrou!!!!");
+          //context.logger.debug("encontrou!!!!");
             context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-              context.logger.debug("entrou no document get image!!!");
-              context.logger.debug(res)
+              //context.logger.debug("entrou no document get image!!!");
+              //context.logger.debug(res)
               console.log("imagem de um documento ", res);
               var teste = await res.blob();
-              context.logger.debug(teste);
+              //context.logger.debug(teste);
               console.log('teste ', teste);
 
               teste.lastModifiedDate = new Date();
@@ -260,8 +260,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
               context.file = <File>teste;
 
-              context.logger.debug("ficheiro tratado");
-              context.logger.debug(context.file);
+              //context.logger.debug("ficheiro tratado");
+              //context.logger.debug(context.file);
               console.log("Ficheiro encontrado ", context.file);
 
               context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {

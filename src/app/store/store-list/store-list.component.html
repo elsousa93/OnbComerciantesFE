@@ -18,21 +18,21 @@
         </h2>
         <p>{{'stores.validateStores'|translate}}</p>
         <mat-table [dataSource]="storesMat" class="table" matSort>
-          <ng-container matColumnDef="nameEstab">
+          <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate|uppercase}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="activityEstab">
+          <ng-container matColumnDef="activity">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate|uppercase}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="subActivityEstab">
+          <ng-container matColumnDef="subActivity">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
             <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="zoneEstab">
+          <ng-container matColumnDef="address">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate|uppercase}} </mat-header-cell>
-            <mat-cell *matCellDef="let store"> {{(store.address !== null && store.address.address !== null) ? store.address.address.postalArea : ''}} </mat-cell>
+            <mat-cell *matCellDef="let store"> {{store.address?.address?.postalArea}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; let idx = index; columns: displayedColumns;"

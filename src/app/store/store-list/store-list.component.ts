@@ -13,6 +13,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Client } from '../../client/Client.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ViewportScroller } from '@angular/common';
+import { MatSort } from '@angular/material/sort';
 
 interface Stores {
   storeName: string;
@@ -58,7 +59,7 @@ const testValues: ShopDetailsAcquiring[] = [
     website: "google.com"
   },
   {
-    activity: "Activity2",
+    activity: "nctivity2",
     address:
     {
       isInsideShoppingCenter: true,
@@ -68,7 +69,7 @@ const testValues: ShopDetailsAcquiring[] = [
       {
         address: "A2",
         country: "B2",
-        postalArea: "C2",
+        postalArea: "ZZ",
         postalCode: "1232"
       }
     },
@@ -88,7 +89,7 @@ const testValues: ShopDetailsAcquiring[] = [
     },
     id: "2",
     manager: "Manager2",
-    name: "ShopName2",
+    name: "xhopName2",
     productCode: "cardNotPresent",
     subActivity: "99",
     subproductCode: "keyOnHand",
@@ -119,9 +120,10 @@ export class StoreComponent implements AfterViewInit{
   public currentPage: number;
   public subscription: Subscription;
 
-  displayedColumns: string[] = ['nameEstab', 'activityEstab', 'subActivityEstab', 'zoneEstab'];
+  displayedColumns: string[] = ['name', 'activity', 'subActivity', 'address'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   public storeList: ShopDetailsAcquiring[] = [];
   public currentStore: ShopDetailsAcquiring = null;
@@ -136,6 +138,7 @@ export class StoreComponent implements AfterViewInit{
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesMat.paginator = this.paginator;
+    this.storesMat.sort = this.sort;
   }
 
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService)
@@ -224,6 +227,7 @@ export class StoreComponent implements AfterViewInit{
   loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
     this.storesMat = new MatTableDataSource(storesValues);
     this.storesMat.paginator = this.paginator;
+    this.storesMat.sort = this.sort;
   }
 
   deleteStore() {
