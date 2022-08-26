@@ -71,7 +71,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
               });
             }, error => {
             });
-            this.loadStakeholders(this.submissionStakeholders);
           });
         });
       });
@@ -85,7 +84,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
           }, error => {
           });
         });
-        this.loadStakeholders(this.submissionStakeholders);
       }, error => {
       });
     }
