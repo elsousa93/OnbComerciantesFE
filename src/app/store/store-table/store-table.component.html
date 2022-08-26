@@ -1,0 +1,41 @@
+<div class="table-responsive mb-2 ps-2 pe-3">
+  <mat-table [dataSource]="storesMat" class="table" matSort>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="activity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="subActivity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="address">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.address?.address?.postalArea}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="bank">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer"> {{'commercialOffer.bank'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer"></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="terminalNumber">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer"> {{'commercialOffer.terminalNumber'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer"></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="product">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer"> {{'commercialOffer.product'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer"></mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let store; let idx = index; columns: displayedColumns;"
+             (click)="emitSelectedStore(store, idx)"
+             [ngClass]="{'row-selected': store === selectedStore}">
+    </mat-row>
+  </mat-table>
+  <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
+                 showFirstLastButtons>
+  </mat-paginator>
+
+</div>

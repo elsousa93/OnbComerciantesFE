@@ -237,11 +237,11 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    this.listValue.get("cellphone").get("countryCode").setValue((this.client.contacts !== null) ? this.client.contacts?.phone1?.countryCode : '+351');
-    this.listValue.get("cellphone").get("phoneNumber").setValue((this.client.contacts !== null) ? this.client.contacts?.phone1?.phoneNumber : '937564300');
-    this.listValue.get("telephone").get("countryCode").setValue((this.client.contacts !== null) ? this.client.contacts?.phone2?.phoneNumber : '+351');
-    this.listValue.get("telephone").get("phoneNumber").setValue((this.client.contacts !== null) ? this.client.contacts?.phone2?.phoneNumber : '912432876');
-    this.listValue.get("email").setValue(this.client.contacts.email);
+    this.listValue.get("cellphone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.countryCode : '');
+    this.listValue.get("cellphone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.phoneNumber : '');
+    this.listValue.get("telephone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.countryCode : '');
+    this.listValue.get("telephone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.phoneNumber : '');
+    this.listValue.get("email").setValue((this.client.contacts != null) ? this.client?.contacts?.email : '');
     if (this.returned == 'consult')
       this.listValue.disable();
   }

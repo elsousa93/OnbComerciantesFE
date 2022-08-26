@@ -162,8 +162,8 @@ const storeEquipTest: ShopEquipment[] = [
 })
 export class CommercialOfferListComponent implements OnInit {
 
-  storesOfferMat: MatTableDataSource<ShopDetailsAcquiring>;
-  storeEquipMat: MatTableDataSource<ShopEquipment>;
+  storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
+  storeEquipMat!: MatTableDataSource<ShopEquipment>;
 
   form: FormGroup;
   private baseUrl: string;
@@ -205,6 +205,9 @@ export class CommercialOfferListComponent implements OnInit {
 
   storeEquipTest = storeEquipTest;
 
+  submissionId: string;
+  processNumber: string;
+
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     this.storesOfferMat.paginator = this.paginator;
@@ -245,7 +248,7 @@ export class CommercialOfferListComponent implements OnInit {
 
     //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
     //if (this.returned !== null) {
-    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+    //  this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
     //    this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
     //      resul.forEach(val => {
     //        this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
@@ -267,6 +270,8 @@ export class CommercialOfferListComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.loadStores();
     this.loadStoreEquips();
+    this.submissionId = localStorage.getItem("submissionId");
+    this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
   }
 
@@ -279,16 +284,17 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat = new MatTableDataSource(storeEquipValues);
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
+
   }
 
-  selectStore(store: ShopDetailsAcquiring, idx: number) {
-    this.currentStore = store;
-    this.currentIdx = idx;
+  selectStore(info) {
+    this.currentStore = info.store;
+    this.currentIdx = info.idx;
 
     if (this.form.get("replicateProducts").value)
       this.loadStoresWithSameBank(this.currentStore.bank.bank.bank);
 
-    if (store.supportEntity == 'other' || this.returned == 'consult')
+    if (info.store.supportEntity == 'other' || this.returned == 'consult')
       this.disableNewConfiguration = true;
     else
       this.disableNewConfiguration = false;
@@ -380,7 +386,7 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.returned != 'consult') {
       if (this.currentIdx < (testValues.length - 1)) {
         this.currentIdx = this.currentIdx + 1;
-        this.selectStore(testValues[this.currentIdx], this.currentIdx);
+        this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
         this.onActivate();
       } else {
         this.data.updateData(true, 5);

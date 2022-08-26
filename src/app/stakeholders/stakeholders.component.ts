@@ -160,6 +160,7 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
     
     var context = this;
+    if (this.returned !== null) { 
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
@@ -173,6 +174,7 @@ export class StakeholdersComponent implements OnInit {
           });
         });
       });
+    }
 
     if (this.submissionId !== null) {
       stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
