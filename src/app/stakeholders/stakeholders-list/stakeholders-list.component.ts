@@ -22,7 +22,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
 
-  stakesMat = new MatTableDataSource<IStakeholders>();
+  stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -34,18 +34,18 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
-    stakeholder: IStakeholders,
+    stakeholder: StakeholdersCompleteInformation,
     idx: number
   }>();
 
-  submissionStakeholders: IStakeholders[] = [];
+  submissionStakeholders: StakeholdersCompleteInformation[] = [];
 
-  selectedStakeholder: IStakeholders = {};
+  selectedStakeholder: StakeholdersCompleteInformation = {};
   returned: string;
 
   displayedColumns: string[] = ['shortName', 'fiscalId', 'entityType', 'relationType', 'elegible', 'clientNumber', 'signature', 'delete'];
 
-  subStakeholders: StakeholdersCompleteInformation[] = [];
+  //subStakeholders: StakeholdersCompleteInformation[] = [];
 
   ngOnInit(): void {
     console.log('Oninit');
@@ -70,7 +70,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
             res.forEach(function (value, index) {
               context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
                 console.log("stakeholder: ", r);
-                context.submissionStakeholders.push(r);
+                context.submissionStakeholders.push({
+                  displayName: '',
+                  eligibility: false,
+                  stakeholderAcquiring: r,
+                  stakeholderOutbound: undefined
+                });
               }, error => {
               });
             }, error => {
@@ -88,7 +93,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
           console.log("valor de cada iteração foreach: ", value);
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
             console.log("stakeholder individual: ", result);
-            context.submissionStakeholders.push(result);
+            context.submissionStakeholders.push({
+              displayName: '',
+              eligibility: false,
+              stakeholderAcquiring: result,
+              stakeholderOutbound: undefined
+            });
+            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
           }, error => {
           });
         });
@@ -127,7 +138,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     this.selectedStakeholder = stakeholder;
   }
 
-  loadStakeholders(stakesList: IStakeholders[]) {
+  loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {
     this.stakesMat = new MatTableDataSource(stakesList);
     this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;

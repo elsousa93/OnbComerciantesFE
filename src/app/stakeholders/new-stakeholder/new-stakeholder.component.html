@@ -96,7 +96,7 @@
               <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
               <p class="titulo-form-simples">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
               <select readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
-                <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
+                <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
               </select>            
           </div>
           <div *ngIf="!showYesCC && showNoCC">

@@ -2,11 +2,11 @@
   <mat-table [dataSource]="stakesMat" class=" table-success" matSort>
     <ng-container matColumnDef="shortName">
       <mat-header-cell *matHeaderCellDef mat-sort-header scope="col" class="align-baseline text-primary table-white"> {{'client.nameSocialDesignation'|translate}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" class="text-primary text-center"> {{stakeholder.shortName}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" class="text-primary text-center"> {{stakeholder.stakeholderAcquiring.shortName}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="fiscalId">
       <mat-header-cell *matHeaderCellDef mat-sort-header> NIF/NIPC </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.shortName}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.shortName}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="entityType">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.entityType'|translate}} </mat-header-cell>
@@ -18,15 +18,15 @@
     </ng-container>
     <ng-container matColumnDef="elegible">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.elegible'|translate}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> Elegivel? </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.eligibility}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="clientNumber">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.id}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.id}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="signature">
       <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white"> {{'stakeholder.signature'|translate}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> Associado? </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.isProxy}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="canDelete == false"> </mat-header-cell>

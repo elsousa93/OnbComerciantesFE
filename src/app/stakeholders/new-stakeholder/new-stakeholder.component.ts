@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StakeholdersComponent } from '../stakeholders.component';
-import { IStakeholders } from '../IStakeholders.interface';
+import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IReadCard } from './IReadCard.interface';
 import { DataService } from '../../nav-menu-interna/data.service';
@@ -82,7 +82,7 @@ export class NewStakeholderComponent implements OnInit {
     },
   } as unknown as IStakeholders
 
-  currentStakeholder: IStakeholders = {};
+  currentStakeholder: StakeholdersCompleteInformation = {};
   currentIdx: number = 0;
 
   submissionStakeholders: IStakeholders[] = [];
@@ -209,13 +209,13 @@ export class NewStakeholderComponent implements OnInit {
     this.currentIdx = info.idx;
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
-    this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderId];
+    this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
     console.log("Selecionou outro stakeholder", this.currentStakeholder);
     console.log("é do crc? ", this.selectedStakeholderIsFromCRC);
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
-      if (this.currentStakeholder.identificationDocument != undefined || this.currentStakeholder.identificationDocument != null) {
-        //if (this.currentStakeholder.identificationDocument.number == '004') {
+      if (this.currentStakeholder.stakeholderAcquiring.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring.identificationDocument != null) {
+        //if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.number == '004') {
         //  this.logger.debug('ENtrou cartão de cidadão');
         //  this.createFormCC();// mudei a ordem
         //  this.validateCC(true);
@@ -244,13 +244,13 @@ export class NewStakeholderComponent implements OnInit {
     console.log("STAKEHOLDER NIF:", this.currentStakeholder);
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
-      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
-      NIF: new FormControl(this.currentStakeholder.fiscalId, Validators.required),
+      proxy: new FormControl((this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined) ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : false, Validators.required),
+      NIF: new FormControl((this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalId : '', Validators.required),
       Role: new FormControl(''),
-      Country: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.country : '', Validators.required),
-      ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.postalCode : '', Validators.required),
-      Locality: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.locality : '', Validators.required),
-      Address: new FormControl((this.returned !== null && this.currentStakeholder.fiscalAddress !== undefined && this.currentStakeholder.fiscalAddress !== null) ? this.currentStakeholder.fiscalAddress.address : '', Validators.required)
+      Country: new FormControl((this.returned !== null && this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required),
+      ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required),
+      Locality: new FormControl((this.returned !== null && this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required),
+      Address: new FormControl((this.returned !== null && this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required)
     });
     this.GetCountryByZipCode();
   }
@@ -280,12 +280,12 @@ export class NewStakeholderComponent implements OnInit {
   createFormCC() {
     this.formNewStakeholder = this.fb.group({
       flagRecolhaEletronica: new FormControl(this.showYesCC),
-      documentType: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.type : ''),
-      identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.country : ''),
-      identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder.identificationDocument.expirationDate, 'dd-MM-yyyy') : ''),
-      identificationDocumentId: new FormControl((this.returned !== null && this.currentStakeholder.identificationDocument !== undefined) ? this.currentStakeholder.identificationDocument.number : ''),
+      documentType: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.type : ''),
+      identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.country : ''),
+      identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate, 'dd-MM-yyyy') : ''),
+      identificationDocumentId: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.number : ''),
       contractAssociation: new FormControl('false', Validators.required),
-      proxy: new FormControl(this.currentStakeholder.isProxy !== undefined ? this.currentStakeholder.isProxy + '' : false, Validators.required),
+      proxy: new FormControl(this.currentStakeholder.stakeholderAcquiring.isProxy !== undefined ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : false, Validators.required),
     });
   }
 
@@ -293,29 +293,29 @@ export class NewStakeholderComponent implements OnInit {
     console.log('OlaAAAAAAAAAAAAAAAAAAAAAA');
     if (this.returned !== 'consult') {
       if (this.formNewStakeholder.valid) {
-        if (this.currentStakeholder.fiscalAddress === null || this.currentStakeholder.fiscalAddress === undefined)
-          this.currentStakeholder.fiscalAddress = {};
-        this.currentStakeholder.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
-        this.currentStakeholder.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
-        this.currentStakeholder.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
-        this.currentStakeholder.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
-        this.currentStakeholder.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
+        if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
+        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
+        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
+        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
+        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
+        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
 
-        this.currentStakeholder.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
+        this.currentStakeholder.stakeholderAcquiring.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
 
         if (this.showYesCC && !this.showNoCC) {
-          if (this.currentStakeholder.identificationDocument === null || this.currentStakeholder.identificationDocument === undefined)
-            this.currentStakeholder.identificationDocument = {};
-          this.currentStakeholder.identificationDocument.type = this.formNewStakeholder.get("documentType").value;
-          this.currentStakeholder.identificationDocument.number = this.formNewStakeholder.get("identificationDocumentId").value;
-          this.currentStakeholder.identificationDocument.country = this.formNewStakeholder.get("identificationDocumentCountry").value;
-          this.currentStakeholder.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
+          if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = this.formNewStakeholder.get("documentType").value;
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = this.formNewStakeholder.get("identificationDocumentId").value;
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = this.formNewStakeholder.get("identificationDocumentCountry").value;
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
         }
 
-        this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.id, this.currentStakeholder).subscribe(result => {
+        this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
           if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
             this.currentIdx = this.currentIdx + 1;
-            this.currentStakeholder = this.submissionStakeholders[this.currentIdx];
+            this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
           } else {
             this.data.updateData(true, 2);
             this.route.navigate(['/store-comp']);

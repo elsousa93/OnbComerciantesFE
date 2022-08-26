@@ -14,7 +14,7 @@ export interface StakeholdersProcess {
 export interface StakeholdersCompleteInformation {
   stakeholderAcquiring?: IStakeholders,
   stakeholderOutbound?: StakeholderOutbound,
-  elegibility?: boolean,
+  eligibility?: boolean,
   displayName?: string
 }
 
