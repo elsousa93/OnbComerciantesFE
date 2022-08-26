@@ -49,10 +49,11 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     console.log('Oninit');
     this.returned = localStorage.getItem("returned");
     this.getSubmissionStakeholders();
+    setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 500);
   }
 
   ngAfterViewInit(): void {
-    this.stakesMat.data = this.submissionStakeholders;
+    //this.stakesMat.data = this.submissionStakeholders;
     this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
