@@ -142,8 +142,8 @@ export class StoreComponent implements AfterViewInit{
 
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
-    this.storesMat.paginator = this.paginator;
-    this.storesMat.sort = this.sort;
+    //this.storesMat.paginator = this.paginator;
+    //this.storesMat.sort = this.sort;
   }
 
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService)
