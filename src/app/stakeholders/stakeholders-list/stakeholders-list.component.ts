@@ -46,16 +46,20 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['shortName', 'fiscalId', 'entityType', 'relationType', 'elegible', 'clientNumber', 'signature', 'delete'];
 
   ngOnInit(): void {
+    console.log('Oninit');
     this.returned = localStorage.getItem("returned");
     this.getSubmissionStakeholders();
   }
 
   ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
+    this.stakesMat = new MatTableDataSource(this.submissionStakeholders);
     this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
 
   getSubmissionStakeholders() {
+    console.log('getSubmission');
     var context = this;
     if (this.returned !== null) { 
       this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
