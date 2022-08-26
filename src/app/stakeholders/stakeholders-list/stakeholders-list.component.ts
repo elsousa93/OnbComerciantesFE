@@ -9,7 +9,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { ReadcardService } from '../../readcard/readcard.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { IStakeholders, StakeholderOutbound } from '../IStakeholders.interface';
+import { IStakeholders, StakeholderOutbound, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 
 @Component({
@@ -45,6 +45,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['shortName', 'fiscalId', 'entityType', 'relationType', 'elegible', 'clientNumber', 'signature', 'delete'];
 
+  subStakeholders: StakeholdersCompleteInformation[] = [];
+
   ngOnInit(): void {
     console.log('Oninit');
     this.returned = localStorage.getItem("returned");
@@ -73,7 +75,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
               });
             }, error => {
             });
-            this.loadStakeholders(this.submissionStakeholders);
+            //this.loadStakeholders(this.submissionStakeholders);
           });
         });
       });
@@ -91,10 +93,32 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
           }, error => {
           });
         });
-        this.loadStakeholders(this.submissionStakeholders);
+        //this.loadStakeholders(this.submissionStakeholders);
       }, error => {
       });
     }
+
+    //if (this.submissionId !== null) {
+    //  console.log("submission: ", this.submissionId);
+    //  this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+    //    var allSubmissionStakeholders = result;
+    //    console.log("todos os stakeholders: ", allSubmissionStakeholders);
+    //    allSubmissionStakeholders.forEach(function (value, index) {
+    //      var submissionStakeholder = value;
+    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, submissionStakeholder.id).subscribe(result => {
+    //        var AcquiringStakeholder = result;
+    //        console.log("info stakeholder: ", AcquiringStakeholder);
+    //        context.subStakeholders.push({
+    //          displayName: '',
+    //          stakeholderAcquiring: result,
+    //          stakeholderOutbound: undefined,
+    //          elegibility: false
+    //        })
+    //      });
+    //    });
+    //  })
+    //}
+
   }
 
   emitSelectedStakeholder(stakeholder, idx) {

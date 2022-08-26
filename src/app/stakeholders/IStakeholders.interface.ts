@@ -12,8 +12,10 @@ export interface StakeholdersProcess {
 }
 
 export interface StakeholdersCompleteInformation {
-  stakeholder: IStakeholders,
-  elegibility: boolean
+  stakeholderAcquiring?: IStakeholders,
+  stakeholderOutbound?: StakeholderOutbound,
+  elegibility?: boolean,
+  displayName?: string
 }
 
 export interface IStakeholders {
@@ -44,7 +46,7 @@ export interface StakeholderOutbound {
   contacts?: Contacts,
   identificationDocument?: IdentificationDocument,
   birthDate?: string,
-  document?: Document[]
+  document?: OutboundDocument[]
 }
 
 export interface IdentificationDocument {
@@ -52,6 +54,15 @@ export interface IdentificationDocument {
   number?: string
   country?: string
   expirationDate?: string
+}
+
+export interface OutboundDocument {
+  purpose?: string,
+  documentType?: string,
+  receiveAt?: string,
+  validUntil?: string,
+  uniqueReference?: string,
+  archiveSource?: string,
 }
 
 export interface FiscalAddress {
