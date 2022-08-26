@@ -38,11 +38,10 @@ export class DevolucaoComponent implements OnInit{
 
     this.data.updateData(true, 0);
 
-    this.processService.searchProcessByNumber(this.processId, 0, 1).subscribe(result => {
-      result.items.forEach(val => {
-        this.process = val;
-      });
+    this.processService.getProcessById(this.processId).subscribe(result => {
+      this.process = result;
     });
+
   }
 
 ngOnInit(): void {

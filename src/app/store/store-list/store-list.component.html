@@ -17,33 +17,34 @@
           <img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'stores.identification'|translate|uppercase}}
         </h2>
         <p>{{'stores.validateStores'|translate}}</p>
-        <mat-table [dataSource]="storesMat" class="table" matSort>
-          <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate|uppercase}} </mat-header-cell>
-            <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="activity">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate|uppercase}} </mat-header-cell>
-            <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="subActivity">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
-            <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="address">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate|uppercase}} </mat-header-cell>
-            <mat-cell *matCellDef="let store"> {{store.address?.address?.postalArea}} </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; let idx = index; columns: displayedColumns;"
-                   (click)="selectStore(row, idx)"
-                   [ngClass]="{'row-selected': row === currentStore}">
-          </mat-row>
+        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"></app-store-table>
+        <!--<mat-table [dataSource]="storesMat" class="table" matSort>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="activity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="subActivity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="address">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subZone'|translate|uppercase}} </mat-header-cell>
+      <mat-cell *matCellDef="let store"> {{store.address?.address?.postalArea}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; let idx = index; columns: displayedColumns;"
+             (click)="selectStore(row, idx)"
+             [ngClass]="{'row-selected': row === currentStore}">
+    </mat-row>
 
-        </mat-table>
-        <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
-                       showFirstLastButtons>
-        </mat-paginator>
+  </mat-table>
+  <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
+                 showFirstLastButtons>
+  </mat-paginator>-->
       </div>
 
       <div class="offset-1 bg-white align-self-center col-10 mb-3 ps-0">
