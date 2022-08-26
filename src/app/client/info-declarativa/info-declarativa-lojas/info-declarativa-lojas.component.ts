@@ -119,6 +119,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   client: Client;
   returned: string;
+  submissionId: string;
+  processNumber: string;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -173,6 +175,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.data.updateData(false, 6, 4);
     this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
     this.returned = localStorage.getItem("returned");
+    this.submissionId = localStorage.getItem("submissionId");
+    this.processNumber = localStorage.getItem("processNumber");
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
@@ -203,9 +207,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   //  this.logger.debug(e.target.id);
   }
 
-  selectRow(store: any, idx: number) {
-    this.selectedStore = store;
-    this.currentIdx = idx;
+  selectStore(info) {
+    this.selectedStore = info.store;
+    this.currentIdx = info.idx;
     this.setForm();
   }
 
@@ -222,7 +226,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       if (this.currentIdx < (testValues.length - 1)) {
         this.currentIdx = this.currentIdx + 1;
         this.onActivate();
-        this.selectRow(testValues[this.currentIdx], this.currentIdx);
+        this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }

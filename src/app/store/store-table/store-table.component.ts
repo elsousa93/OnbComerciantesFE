@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -116,21 +116,21 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   returned: string;
   storesList: ShopDetailsAcquiring[] = [];
 
-  constructor(private submissionService: SubmissionService, private storeService: StoreService) { }
+  constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    var store = {};
-    var idx = -1;
-    for (const propName in changes) {
-      const change = changes[propName];
-      if (propName == 'currentStore')
-        store = change.currentValue;
-      if (propName == 'currentIdx')
-        idx = change.currentValue;
-
+    //var store = {};
+    //var idx = 0;
+    //for (const propName in changes) {
+    //  const change = changes[propName];
+    //  if (propName == 'currentStore')
+    //    store = change.currentValue;
+    //  if (propName == 'currentIdx')
+    //    idx = change.currentValue;
+    //}
+    if (changes["currentStore"]) {
+      this.emitSelectedStore(this.currentStore, this.currentIdx);
     }
-
-    this.emitSelectedStore(store, idx);
   }
 
   ngOnInit(): void {
@@ -141,6 +141,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;
+    
   }
 
   getStoreList() {
@@ -177,6 +178,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.selectedStoreEmitter.emit({ store: store, idx: idx });
     this.selectedStore = store;
     this.currentIdx = idx;
+    console.log('Current store ', this.selectedStore);
+    console.log('Index ', this.currentIdx);
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
