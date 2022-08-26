@@ -22,7 +22,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
 
-  stakesMat!: MatTableDataSource<IStakeholders>;
+  stakesMat = new MatTableDataSource<IStakeholders>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -54,8 +54,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
-    this.stakesMat = new MatTableDataSource(this.submissionStakeholders);
+    this.stakesMat.data = this.submissionStakeholders;
     this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
@@ -75,7 +74,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
               });
             }, error => {
             });
-            //this.loadStakeholders(this.submissionStakeholders);
           });
         });
       });
@@ -93,7 +91,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
           }, error => {
           });
         });
-        //this.loadStakeholders(this.submissionStakeholders);
       }, error => {
       });
     }
