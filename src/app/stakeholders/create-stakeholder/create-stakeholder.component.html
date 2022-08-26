@@ -114,7 +114,7 @@
         </tr>
       </tbody>
     </table>-->
-        <div *ngIf="!foundStakeholders">
+        <div *ngIf="foundStakeholders == false">
           <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p><input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
         </div>
       </div>

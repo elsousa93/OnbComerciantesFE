@@ -11,6 +11,11 @@ export interface StakeholdersProcess {
   role?: string
 }
 
+export interface StakeholdersCompleteInformation {
+  stakeholder: IStakeholders,
+  elegibility: boolean
+}
+
 export interface IStakeholders {
   fiscalId?: string
   identificationDocument?: IdentificationDocument

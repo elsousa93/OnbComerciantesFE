@@ -49,6 +49,7 @@ export class StakeholdersListComponent implements OnInit {
           this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
             res.forEach(function (value, index) {
               context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                console.log("stakeholder: ", r);
                 context.submissionStakeholders.push(r);
               }, error => {
               });
@@ -60,9 +61,13 @@ export class StakeholdersListComponent implements OnInit {
     }
 
     if (this.submissionId !== null) {
+      console.log("submissionId é !== null");
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+        console.log("resultado: todos os stakeholders: ", result);
         result.forEach(function (value, index) {
+          console.log("valor de cada iteração foreach: ", value);
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+            console.log("stakeholder individual: ", result);
             context.submissionStakeholders.push(result);
           }, error => {
           });

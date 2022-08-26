@@ -268,10 +268,17 @@ export class CreateStakeholderComponent implements OnInit {
 
   initializeNotFoundForm() {
     this.formStakeholderSearch.addControl("socialDenomination", new FormControl('', Validators.required));
+    this.formStakeholderSearch.updateValueAndValidity();
+
+    this.foundStakeholders = false;
   }
 
   deactivateNotFoundForm() {
     this.formStakeholderSearch.removeControl("socialDenomination");
+    this.formStakeholderSearch.updateValueAndValidity();
+
+    this.foundStakeholders = true;
+
   }
 
   initializeForm() {
@@ -387,7 +394,6 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.formStakeholderSearch.invalid)
       return false;
 
-    console.log("ola");
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
     this.isShown = true;
     this.searchEvent.next(this.stakeholderNumber);
@@ -439,14 +445,13 @@ export class CreateStakeholderComponent implements OnInit {
 
   searchResultNotifier(info) {
     console.log("Info: ", info);
-    this.foundStakeholders = info.found;
-    this.errorMsg = info.errorMsg;
 
-    if (!this.foundStakeholders)
+    if (!info.found)
       this.initializeNotFoundForm();
     else
       this.deactivateNotFoundForm();
 
+    this.errorMsg = info.errorMsg;
   }
 
   addStakeholder() {
