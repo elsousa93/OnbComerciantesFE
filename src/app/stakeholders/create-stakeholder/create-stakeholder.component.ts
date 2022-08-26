@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit,  EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
@@ -13,7 +13,6 @@ import { stakeTypeList } from '../stakeholderType';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
 import { Configuration, configurationToken } from '../../configuration';
 
 import { readCC } from '../../citizencard/CitizenCardController.js';
@@ -183,18 +182,6 @@ export class CreateStakeholderComponent implements OnInit {
 
   //-------------- fim do CC ------------
 
-  newStake: IStakeholders = {
-    "fiscalId": "",
-    "identificationDocument": {
-      "type": "",
-      "number": "",
-      "country": "",
-      "expirationDate": "",
-    },
-    "fullName": "",
-    "contactName": "",
-    "shortName": ""
-  } as IStakeholders;
 
  submissionId: string;
  // submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
@@ -224,7 +211,6 @@ export class CreateStakeholderComponent implements OnInit {
   public clientNr: number = 8875;
   public totalUrl: string = "";
   public auxUrl: string = "";
-  public stakeSearch: IStakeholders[] = [this.newStake];
   isShown: boolean = false;
   isFoundStakeholderShown: boolean = false;
   public flagRecolhaEletronica: boolean = true;
@@ -246,6 +232,9 @@ export class CreateStakeholderComponent implements OnInit {
   errorMsg: string = "";
 
   currentStakeholder: IStakeholders = {};
+  searchEvent: Subject<string> = new Subject<string>();
+  testEvent = this.searchEvent.asObservable();
+
 
   constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
@@ -373,8 +362,6 @@ export class CreateStakeholderComponent implements OnInit {
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
 
-    this.newStake.identificationDocument.type = this.documentType;
-
     if (this.documentType === 'Cartão do Cidadão') {
       this.isCC = true;
     } else {
@@ -397,51 +384,46 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   searchStakeholder() {
-    //this.formStakeholderSearch
-    //this.logger.debug("ola");
-    //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  this.logger.debug(o);
-    //});
     if (this.formStakeholderSearch.invalid)
       return false;
 
-    var context = this;
+    console.log("ola");
+    this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
+    this.isShown = true;
+    this.searchEvent.next(this.stakeholderNumber);
 
-    var documentNumberToSearch = this.formStakeholderSearch.get('documentNumber').value;
+    //var context = this;
 
-    /*this.onSearchSimulation(22181900000011);*/
-    this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
-      var clients = o;
+    //var documentNumberToSearch = this.formStakeholderSearch.get('documentNumber').value;
 
-      context.isShown = true;
+    //this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
+    //  var clients = o;
+
+    //  context.isShown = true;
       
-      if (clients.length > 0) {
-        context.deactivateNotFoundForm();
-        context.foundStakeholders = true;
-        context.stakeholdersToShow = [];
-        clients.forEach(function (value, index) {
-          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-            var stakeholder = {
-              "stakeholderNumber": c.stakeholderId,
-              "stakeholderName": c.shortName,
-              "stakeholderNIF": c.fiscalIdentification.fiscalId,
-              "elegible": "elegivel",
-              "associated": "SIM"
-            }
-            context.stakeholdersToShow.push(stakeholder);
-          });
-        })
-      } else {
-        context.initializeNotFoundForm();
-        context.stakeholdersToShow = [];
-        context.foundStakeholders = false;
-      }
-    }, error => {
-      //context.showFoundClient = false;
-      //this.logger.debug("entrou aqui no erro huajshudsj");
-      //context.resultError = "Não existe Comerciante com esse número.";
-      //this.searchDone = true;
-    });
+    //  if (clients.length > 0) {
+    //    context.deactivateNotFoundForm();
+    //    context.foundStakeholders = true;
+    //    context.stakeholdersToShow = [];
+    //    clients.forEach(function (value, index) {
+    //      context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+    //        var stakeholder = {
+    //          "stakeholderNumber": c.stakeholderId,
+    //          "stakeholderName": c.shortName,
+    //          "stakeholderNIF": c.fiscalIdentification.fiscalId,
+    //          "elegible": "elegivel",
+    //          "associated": "SIM"
+    //        }
+    //        context.stakeholdersToShow.push(stakeholder);
+    //      });
+    //    })
+    //  } else {
+    //    context.initializeNotFoundForm();
+    //    context.stakeholdersToShow = [];
+    //    context.foundStakeholders = false;
+    //  }
+    //}, error => {
+    //});
   }
 
   refreshDiv() {
@@ -449,30 +431,28 @@ export class CreateStakeholderComponent implements OnInit {
     this.ngOnInit();
   }
 
-  selectStakeholder(stakeholder) {
-    
-    this.newStake = {
-      "fiscalId": stakeholder.stakeholderNIF,
-      "identificationDocument": {},
-      "fullName": '',
-      "contactName": '',
-      "shortName": ''
-    };
-    this.stakeholderNumber = stakeholder.stakeholderNumber;
-  }
-
   selectNewStakeholder(emittedStakeholder) {
     this.currentStakeholder = emittedStakeholder.stakeholder;
+
+    console.log("current stakeholder: ", this.currentStakeholder);
   }
 
   searchResultNotifier(info) {
+    console.log("Info: ", info);
     this.foundStakeholders = info.found;
     this.errorMsg = info.errorMsg;
+
+    if (!this.foundStakeholders)
+      this.initializeNotFoundForm();
+    else
+      this.deactivateNotFoundForm();
+
   }
 
   addStakeholder() {
+    console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders) {
-      this.stakeholderService.getStakeholderByID(this.stakeholderNumber, 'por mudar', 'por mudar').subscribe(stakeholder => {
+      this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
 
@@ -481,7 +461,7 @@ export class CreateStakeholderComponent implements OnInit {
         });
       });
     } else {
-
+      console.log("formstakeholder: ", this.formStakeholderSearch);
       var stakeholderToInsert: IStakeholders = {
         "fiscalId": this.formStakeholderSearch.get("documentNumber").value,
         "identificationDocument": {

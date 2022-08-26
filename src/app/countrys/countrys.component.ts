@@ -380,6 +380,7 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.contacts = this.client.contacts;
           this.newSubmission.merchant.crc = this.client.crc;
           this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+
           this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
           this.newSubmission.merchant.fiscalId = this.client.fiscalId;
           this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
