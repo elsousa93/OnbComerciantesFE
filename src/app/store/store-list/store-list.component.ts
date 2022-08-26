@@ -146,7 +146,7 @@ export class StoreComponent implements AfterViewInit{
     //this.storesMat.sort = this.sort;
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService)
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef)
   {
     this.baseUrl = configuration.baseUrl;
      
@@ -176,28 +176,28 @@ export class StoreComponent implements AfterViewInit{
   }
 
   setFormData() {
-    var infoStores = this.editStores.controls["infoStores"];
-    infoStores.get("storeName").setValue(this.currentStore.name);
-    infoStores.get("activityStores").setValue(this.currentStore.activity);
-    infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
-    infoStores.get("contactPoint").setValue(this.currentStore.manager);
-    //infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
-    infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
-    infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
-    infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
-    infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
-    infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
-    infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
+    //var infoStores = this.editStores.controls["infoStores"];
+    //infoStores.get("storeName").setValue(this.currentStore.name);
+    //infoStores.get("activityStores").setValue(this.currentStore.activity);
+    //infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
+    //infoStores.get("contactPoint").setValue(this.currentStore.manager);
+    ////infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
+    //infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
+    //infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
+    //infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
+    //infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+    //infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+    //infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
 
-    var bankStores = this.editStores.controls["bankStores"];
-    bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
-    bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
+    //var bankStores = this.editStores.controls["bankStores"];
+    //bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
+    //bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
 
 
-    var productStores = this.editStores.controls["productStores"];
-    productStores.get("solutionType").setValue(this.currentStore.productCode);
-    productStores.get("subProduct").setValue(this.currentStore.subproductCode);
-    productStores.get("url").setValue(this.currentStore.website);
+    //var productStores = this.editStores.controls["productStores"];
+    //productStores.get("solutionType").setValue(this.currentStore.productCode);
+    //productStores.get("subProduct").setValue(this.currentStore.subproductCode);
+    //productStores.get("url").setValue(this.currentStore.website);
 
   }
 
@@ -258,7 +258,10 @@ export class StoreComponent implements AfterViewInit{
       //  }
       //});
       //if (this.currentIdx < (testValues.length - 1)) {
+
+    //this.currentStore = testValues[this.currentIdx + 1];
       this.currentIdx = this.currentIdx + 1;
+   
       this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
       this.onActivate();
       //} else {
