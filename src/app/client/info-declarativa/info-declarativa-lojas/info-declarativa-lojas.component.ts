@@ -119,6 +119,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   client: Client;
   returned: string;
+  submissionId: string;
+  processNumber: string;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -173,6 +175,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.data.updateData(false, 6, 4);
     this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
     this.returned = localStorage.getItem("returned");
+    this.submissionId = localStorage.getItem("submissionId");
+    this.processNumber = localStorage.getItem("processNumber");
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
@@ -203,12 +207,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   //  this.logger.debug(e.target.id);
   }
 
-  selectRow(store: any, idx: number) {
-    this.selectedStore = store;
-    this.currentIdx = idx;
-    console.log("Store selected ", this.selectedStore);
-    console.log("Current index ", this.currentIdx);
-    console.log(this.selectedStore === store);
+  selectStore(info) {
+    this.selectedStore = info.store;
+    this.currentIdx = info.idx;
     this.setForm();
   }
 
@@ -224,8 +225,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
       if (this.currentIdx < (testValues.length - 1)) {
         this.currentIdx = this.currentIdx + 1;
-        this.selectRow(testValues[this.currentIdx], this.currentIdx);
         this.onActivate();
+        this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }
@@ -234,24 +235,22 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
     this.dataSource = new MatTableDataSource(storesValues);
     this.dataSource.paginator = this.paginator;
   }
 
   setForm() {
-    this.listValue.get("cellphone").get("countryCode").setValue(this.client.contacts.phone1.countryCode);
-    this.listValue.get("cellphone").get("phoneNumber").setValue(this.client.contacts.phone1.phoneNumber);
-    this.listValue.get("telephone").get("countryCode").setValue(this.client.contacts.phone2.phoneNumber);
-    this.listValue.get("telephone").get("phoneNumber").setValue(this.client.contacts.phone2.phoneNumber);
-    this.listValue.get("email").setValue(this.client.contacts.email);
+    this.listValue.get("cellphone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.countryCode : '');
+    this.listValue.get("cellphone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.phoneNumber : '');
+    this.listValue.get("telephone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.countryCode : '');
+    this.listValue.get("telephone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.phoneNumber : '');
+    this.listValue.get("email").setValue((this.client.contacts != null) ? this.client?.contacts?.email : '');
     if (this.returned == 'consult')
       this.listValue.disable();
   }
 
   onActivate() {
-    console.log('Chamado');
     let scrollToTop = window.setInterval(() => {
       let pos = window.pageYOffset;
       if (pos > 0) {

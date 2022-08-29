@@ -1,5 +1,5 @@
 import { Client } from "../client/Client.interface"
-import { IStakeholders } from "../stakeholders/IStakeholders.interface"
+import { IStakeholders, OutboundDocument } from "../stakeholders/IStakeholders.interface"
 import { SimplifiedDocument } from "./document/ISubmission-document"
 
 
@@ -48,7 +48,7 @@ export interface SubmissionPostResponse {
   bank?: string
   merchant?: Client
   stakeholders?: IStakeholders[]
-  documents?: Document[]
+  documents?: OutboundDocument[]
   submissionType?: string
   processNumber?: string
   processKind?: string

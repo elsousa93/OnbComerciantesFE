@@ -1,32 +1,48 @@
 <div class="table-responsive me-2 ps-3 pe-3">
-  <table class="table table-success">
-    <thead class="text-primary table-primary">
-      <tr class="text-center text-primary table-light">
-        <th scope="col" class="align-baseline text-primary table-white">{{'client.nameSocialDesignation'|translate}}</th>
-        <th scope="col" class="text-center bg-white">NIF/NIPC</th>
-        <th scope="col" class="text-center bg-white">{{'stakeholder.entityType'|translate}}</th>
-        <th scope="col" class="text-center bg-white">{{'stakeholder.relationType'|translate}}</th>
-        <th scope="col" class="text-center bg-white">{{'stakeholder.elegible'|translate}}</th>
-        <th scope="col" class="text-center bg-light">{{'stakeholder.clientNumber'|translate}}</th>
-        <th scope="col" class="align-baseline text-primary table-white">{{'stakeholder.signature'|translate}}</th>
-        <th scope="col" class="bg-white" *ngIf="canDelete"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let stakeholder of submissionStakeholders; let idx=index" [ngClass]="{'row-selected': canSelect && (stakeholder === selectedStakeholder)}" (click)="emitSelectedStakeholder(stakeholder, idx)">
-        <td class="text-primary text-center">{{stakeholder.shortName}}</td>
-        <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
-        <td class="text-primary text-center"> - </td>
-        <td class="text-primary text-center"> - </td>
-        <td class="text-primary text-center">Elegivel?</td>
-        <td class="text-primary text-center">{{stakeholder.id}}</td>
-        <th scope="row" class="text-primary text-center">Associado?</th>
-        <td *ngIf="canDelete">
-          <span>
-            <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <mat-table [dataSource]="stakesMat" class=" table-success" matSort>
+    <ng-container matColumnDef="shortName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header scope="col" class="align-baseline text-primary table-white"> {{'client.nameSocialDesignation'|translate}} </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder" class="text-primary text-center"> {{stakeholder.stakeholderAcquiring.shortName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="fiscalId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> NIF/NIPC </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.shortName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="entityType">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.entityType'|translate}} </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder"> - </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="relationType">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.relationType'|translate}} </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder"> - </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="elegible">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.elegible'|translate}} </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.eligibility}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="clientNumber">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate}} </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.id}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="signature">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white"> {{'stakeholder.signature'|translate}} </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.isProxy}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="canDelete == false"> </mat-header-cell>
+      <mat-cell *matCellDef="let stakeholder" [hidden]="canDelete == false">
+        <span>
+          <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+        </span>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary"></mat-header-row>
+    <mat-row *matRowDef="let stakeholder; let idx = index; columns: displayedColumns;"
+             [ngClass]="{'row-selected': canSelect && (stakeholder === selectedStakeholder)}"
+             (click)="emitSelectedStakeholder(stakeholder, idx)">
+    </mat-row>
+  </mat-table>
+  <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
+                 showFirstLastButtons>
+  </mat-paginator>
 </div>

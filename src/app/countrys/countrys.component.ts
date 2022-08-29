@@ -196,7 +196,7 @@ export class CountrysComponent implements OnInit {
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : '', Validators.required),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -211,7 +211,7 @@ export class CountrysComponent implements OnInit {
         services: new FormControl('aaa', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : '', Validators.required/*this.client.documentationDeliveryMethod, Validators.required*/),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -380,6 +380,7 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.contacts = this.client.contacts;
           this.newSubmission.merchant.crc = this.client.crc;
           this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+
           this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
           this.newSubmission.merchant.fiscalId = this.client.fiscalId;
           this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
@@ -459,6 +460,7 @@ export class CountrysComponent implements OnInit {
             })
           });
           if (this.crc !== null && this.crc !== undefined) {
+            console.log("ENTROU NO CRC");
             this.newSubmission.documents.push({
               documentType: 'crcPDF',
               documentPurpose: 'CompanyIdentification',
@@ -471,6 +473,7 @@ export class CountrysComponent implements OnInit {
             })
           }
           if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
+            console.log("ENTROU NO CC");
             this.newSubmission.documents.push({
               documentType: 'comprovativoCC_PDF',
               documentPurpose: 'Identification',
@@ -487,6 +490,7 @@ export class CountrysComponent implements OnInit {
           else
             this.newSubmission.merchant.merchantType = 'Entrepeneur';
 
+          console.log("OBJETO DA NOVA SUBMISSAO ", this.newSubmission);
           this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
             localStorage.setItem("submissionId", result.id);
             this.processNrService.changeProcessNumber(result.processNumber);

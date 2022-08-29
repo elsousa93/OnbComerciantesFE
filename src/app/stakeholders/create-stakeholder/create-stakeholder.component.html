@@ -55,7 +55,7 @@
             </select>
           </div>
           <p class="titulo-form-simples">{{'stakeholder.documentNumber'|translate}}:</p><input [readonly]="isCC && isNoDataReadable" (focusout)="find()"
-                                                                        id="text1" name="text1" type="text" class="form-control campo_form" formControlName="documentNumber">
+                                                                                               id="text1" name="text1" type="text" class="form-control campo_form" formControlName="documentNumber">
         </div>
         <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0" *ngIf="isCC">
           <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
@@ -63,14 +63,14 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <span class="navbar-text">
               <div class="form-check">
-                <input class="form-check-input"  formControlName="flagAutCol" type="radio" value=true
+                <input class="form-check-input" formControlName="flagAutCol" type="radio" value=true
                        id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true" />
                 <label class="form-check-label radio pe-5" for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
-                <input class="form-check-input"  formControlName="flagAutCol" type="radio" value=false
+                <input class="form-check-input" formControlName="flagAutCol" type="radio" value=false
                        id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false" />
                 <label class="form-check-label radio" for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
@@ -96,85 +96,83 @@
       </button>
       </span>-->
 
-    </nav>
-  </div>
- 
-  <div *ngIf="isShown" class="row container-fluid" id="divshow">
-    <h2 *ngIf="foundStakeholders">{{'stakeholder.foundStakeholder'|translate}}</h2>
-
-        <table class="table table-success" *ngIf="foundStakeholders">
-          <thead class="text-primary table-primary">
-            <tr class="text-center text-primary table-light">
-              <th scope="col" class="align-baseline text-primary table-white">{{'stakeholder.fiscalID'|translate}}</th>
-              <th scope="col" class="text-center bg-light">{{'stakeholder.name'|translate}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let stake of stakeholdersToShow" (click)="selectStakeholder(stake)" [ngClass]="{'row-selected': stake.stakeholderNIF === newStake.fiscalId}">
-              <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
-              <td class="text-primary text-center">{{stake.stakeholderName}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div *ngIf="!foundStakeholders">
+        </nav>
+      </div>
+      <div *ngIf="isShown" class="row container-fluid" id="divshow">
+        <app-search-stakeholders [clientID]="this.testEvent" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
+        <!--<table class="table table-success" *ngIf="foundStakeholders">
+      <thead class="text-primary table-primary">
+        <tr class="text-center text-primary table-light">
+          <th scope="col" class="align-baseline text-primary table-white">{{'stakeholder.fiscalID'|translate}}</th>
+          <th scope="col" class="text-center bg-light">{{'stakeholder.name'|translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stake of stakeholdersToShow" (click)="selectStakeholder(stake)" [ngClass]="{'row-selected': stake.stakeholderNIF === newStake.fiscalId}">
+          <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
+          <td class="text-primary text-center">{{stake.stakeholderName}}</td>
+        </tr>
+      </tbody>
+    </table>-->
+        <div *ngIf="foundStakeholders == false">
           <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p><input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
         </div>
       </div>
 
-  <ng-template #template>
-      <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
-        <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
-          <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
-            <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
-              <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
-                <span class="navbar-text ms-auto align-self-start">
-                  <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
-                      (click)="modalRef.hide()">
-                    x
-                  </h2>
-                </span>
-              </nav>
-            </div>
-            <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
-              <div class="mb-5 ps-0 pe-0 col-12">
-                <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
-                  <span class="navbar-text"></span>
-                  <span class="material-symbols-rounded img_badge">
-                    <img src="assets/images/badge.svg" class="img_badge">
-                  </span>
-                </nav>
-                <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
-                  <span class="navbar-text">
-                    <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
-                      {{'citizenCard.addressPIN'|translate}}
-                    </h5>
-                  </span>
-                </nav>
-
-                <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
-                  <span class="navbar-text"></span>
-                  <span class="navbar-text pb-0 pt-sm-0">
-                    <button id="btn5a"
-                            class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
-                            style="color: white;" wappler-command="editContent"
-                            data-bs-dismiss="modal" (click)="modalRef.hide(); callreadCCAddress()">
-                      {{'generalKeywords.yes'|translate|uppercase}}
-                    </button>
-                  </span>
-                  <span class="navbar-text pt-0 pb-0">
-                    <button id="btn5a1"
-                            class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
-                            style="color: white;" wappler-command="editContent" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
-                      {{'generalKeywords.no'|translate|uppercase}}
-                    </button>
+      <ng-template #template>
+        <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+          <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+            <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+              <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                  <span class="navbar-text ms-auto align-self-start">
+                    <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
+                        (click)="modalRef.hide()">
+                      x
+                    </h2>
                   </span>
                 </nav>
               </div>
+              <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+                <div class="mb-5 ps-0 pe-0 col-12">
+                  <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                    <span class="navbar-text"></span>
+                    <span class="material-symbols-rounded img_badge">
+                      <img src="assets/images/badge.svg" class="img_badge">
+                    </span>
+                  </nav>
+                  <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                    <span class="navbar-text">
+                      <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
+                        {{'citizenCard.addressPIN'|translate}}
+                      </h5>
+                    </span>
+                  </nav>
+
+                  <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+                    <span class="navbar-text"></span>
+                    <span class="navbar-text pb-0 pt-sm-0">
+                      <button id="btn5a"
+                              class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                              style="color: white;" wappler-command="editContent"
+                              data-bs-dismiss="modal" (click)="modalRef.hide(); callreadCCAddress()">
+                        {{'generalKeywords.yes'|translate|uppercase}}
+                      </button>
+                    </span>
+                    <span class="navbar-text pt-0 pb-0">
+                      <button id="btn5a1"
+                              class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                              style="color: white;" wappler-command="editContent" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
+                        {{'generalKeywords.no'|translate|uppercase}}
+                      </button>
+                    </span>
+                  </nav>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-  </ng-template>
+        </main>
+      </ng-template>
       <div *ngIf="!(okCC == null)">
 
         <div class="row me-0">
@@ -237,7 +235,7 @@
             <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
             {{'generalKeywords.back'|translate|uppercase}}&nbsp;
           </button>
-          <button *ngIf="(newStake !== null && newStake !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()">
+          <button *ngIf="(currentStakeholder !== null && currentStakeholder !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()">
             {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
           </button>
         </nav>

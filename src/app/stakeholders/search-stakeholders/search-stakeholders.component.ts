@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, Output, EventEmitter, OnInit, Inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, Inject, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
+import { config, Observable, Subscription } from 'rxjs';
 import { ClientService } from '../../client/client.service';
 import { Configuration, configurationToken } from '../../configuration';
 import { AuthService } from '../../services/auth.service';
@@ -15,8 +16,10 @@ import { StakeholderService } from '../stakeholder.service';
 })
 export class SearchStakeholdersComponent implements OnInit {
 
+  private eventsSubscription: Subscription;
+
   //Variáveis de Input
-  @Input() clientID: string = "";
+  @Input() clientID: Observable<string>;
   @Input() searchType?: string = "por mudar";
   @Input() requestID?: string = "por mudar";
   //@Input() canEdit?: boolean = false; Pode vir a ser preciso
@@ -27,31 +30,48 @@ export class SearchStakeholdersComponent implements OnInit {
     stakeholder: IStakeholders,
     idx: number
   }>();
-  @Output() foundStakeholders: boolean = false;
+
+  @Output() searchAditionalInfoEmitter = new EventEmitter<{
+    found: boolean,
+    errorMsg?: string
+  }>();
 
   //Variáveis locais
   stakeholdersToShow: IStakeholders[] = [];
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
+  currentStakeholder: IStakeholders = {};
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
     @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private stakeholderService: StakeholderService, private authService: AuthService) { }
-
-  ngOnInit(): void {
+    private route: Router, private stakeholderService: StakeholderService, private authService: AuthService) {
+    
   }
 
-  searchStakeholders() {
+  ngOnInit() {
+    var context = this;
+    console.log("------");
+    this.eventsSubscription = this.clientID.subscribe(result => {
+      console.log("result:", result);
+      context.searchStakeholders(result);
+    });
+  }
+
+  searchStakeholders(clientID) {
+    console.log("pesquisou");
     var context = this;
 
     /*this.onSearchSimulation(22181900000011);*/
-    this.stakeholderService.SearchStakeholderByQuery(this.clientID, "por mudar", this.UUIDAPI, "2").subscribe(o => {
+    this.stakeholderService.SearchStakeholderByQuery(clientID, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
 
       //context.isShown = true;
 
       if (clients.length > 0) {
         //context.deactivateNotFoundForm();
-        context.foundStakeholders = true;
+        context.searchAditionalInfoEmitter.emit({
+          found: true,
+          errorMsg: ''
+        });
         context.stakeholdersToShow = [];
         clients.forEach(function (value, index) {
           context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
@@ -61,21 +81,38 @@ export class SearchStakeholdersComponent implements OnInit {
               "stakeholderNIF": c.fiscalIdentification.fiscalId,
               "elegible": "elegivel",
               "associated": "SIM"
-            }
-            //context.stakeholdersToShow.push(stakeholder);
+            } as IStakeholders;
+
+            context.stakeholdersToShow.push(stakeholder);
           });
         })
       } else {
         //context.initializeNotFoundForm();
         context.stakeholdersToShow = [];
-        context.foundStakeholders = false;
+        context.searchAditionalInfoEmitter.emit({
+          found: false,
+          errorMsg: "Sem resultados"
+        });
       }
     }, error => {
+      context.searchAditionalInfoEmitter.emit({
+        found: false,
+        errorMsg: "Ocorreu um erro, tente novamente"
+      });
       //context.showFoundClient = false;
       //this.logger.debug("entrou aqui no erro huajshudsj");
       //context.resultError = "Não existe Comerciante com esse número.";
       //this.searchDone = true;
     });
+  }
+
+  selectStakeholder(stakeholder, index) {
+    this.selectedStakeholderEmitter.emit({
+      stakeholder: stakeholder,
+      idx: index
+    });
+
+    this.currentStakeholder = stakeholder;
   }
 
 }
