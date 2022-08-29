@@ -7,6 +7,10 @@ import { ComprovativosService } from '../comprovativos/services/comprovativos.se
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { NGXLogger } from 'ngx-logger';
 import { FileAndDetailsCC } from './fileAndDetailsCC.interface';
+import { readCC } from '../citizencard/CitizenCardController.js';
+import { readCCAddress } from '../citizencard/CitizenCardController.js';
+import { ICCInfo } from '../citizencard/ICCInfo.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +21,112 @@ export class ReadcardService {
   constructor(private comprovativosService: ComprovativosService, private documentService: SubmissionDocumentService,
     private logger: NGXLogger) { }
 
+  public prettyPDF: FileAndDetailsCC = null;
+
+  //---- Cartão de Cidadao - vars ---
+  dataCCcontents: dataCC = {
+    cardNumberCC: null,
+    nameCC: null,
+    sexCC: null,
+    heightCC: null,
+    nationalityCC: null,
+    birthdateCC: null,
+    expiricyDateCC: null,
+    localOfEmissionCC: null,
+    fathersNameCC: null,
+    mothersNameCC: null,
+    nifCC: null,
+    socialSecurityCC: null,
+    healthNumberCC: null,
+    signatureCC: null,
+    addressCC: null,
+    postalCodeCC: null,
+    countryCC: " "
+  };
+
+  public addressReading = null; //user chooses to read the address or not
+
+   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+    gender, height, nationality, expiryDate, nameFather, nameMother,
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
+
+    console.log("address reading chegoui aqui ");
+    console.log("Name: ", name);
+
+    this.dataCCcontents.nameCC = name;
+    this.dataCCcontents.nationalityCC = nationality;
+    // this.birthDateCC = birthDate;
+    this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.nifCC = nif;
+    this.dataCCcontents.countryCC = country;
+    this.dataCCcontents.countryCC = countryIssuer; //HTML
+
+     console.log("country: ", country);
+     console.log("country issuer: ", countryIssuer);
+
+
+    if (notes != null || notes != "") {
+      var assinatura = "Sabe assinar";
+      if (notes.toLowerCase().includes("não sabe assinar") || notes.toLowerCase().includes("não pode assinar")) {
+        assinatura = "Não sabe assinar";
+      }
+    }
+
+    if (this.addressReading == false) {
+      //Without address
+      console.log("Without Address PDF");
+      this.dataCCcontents.addressCC = "Sem PIN de morada";
+      this.dataCCcontents.postalCodeCC = " ";
+      //this.dataCCcontents.countryCC = " ";
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
+
+      console.log(ccArrayData);
+
+      //Send to PDF without address -- type base64
+      this.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
+
+      return this.dataCCcontents;
+
+    } else {
+
+      //WITH ADDRESS
+      console.log("With Address PDF");
+      this.dataCCcontents.addressCC = address;
+      this.dataCCcontents.postalCodeCC = postalCode;
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, address, postalCode, country];
+
+      //Send to PDF
+      this.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
+    }
+     return this.dataCCcontents;
+  }
+
+  //Calls the .js function
+  startReadCC(){
+
+      readCC(this.SetNewCCData);
+ 
+  };
+
+ //Calls the .js function
+  async startReadCCAddress(): Promise <any>{
+    return new Promise<any>((resolve, reject) => {
+      return readCCAddress(this.SetNewCCData);
+    });
+  };
+
+  /** Formats PFD - All design choices are done in this function.
+  */
   async formatPDF(ccArrayData: Array<string>): Promise<FileAndDetailsCC> {
     return new Promise<FileAndDetailsCC>((resolve, reject) => {
 
