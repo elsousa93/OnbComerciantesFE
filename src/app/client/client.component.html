@@ -98,7 +98,7 @@
                 </div>
                 <div class="row me-0">
                   <div class="col">
-                    <div class="me-0 ps-0 pe-0 col-7">
+                    <div class="me-0 ps-0 pe-0 col-7" *ngIf="BlockDocumentNumber == true ">
                       <p class="titulo-form-simples"> <!--Nº de documento-->
                         {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
                           class="titulo-form-simples-erro">
@@ -106,7 +106,17 @@
                         </span>
                       </p>
                       <input id="clientId" (focusout)="changeSearch()" type="text" [(ngModel)]="newClient.clientId"
-                        name="clientId" [disabled]="isCC && BlockDocumentNumber" #clientId="ngModel" [class]="errorInput">
+                        name="clientId" [disabled]="true" #clientId="ngModel" [class]="errorInput">
+                    </div>
+                    <div class="me-0 ps-0 pe-0 col-7" *ngIf="BlockDocumentNumber == false">
+                      <p class="titulo-form-simples"> <!--Nº de documento-->
+                        {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
+                          class="titulo-form-simples-erro">
+                          {{resultError}}
+                        </span>
+                      </p>
+                      <input id="clientId" (focusout)="changeSearch()" type="text" [(ngModel)]="newClient.clientId"
+                        name="clientId" #clientId="ngModel" [class]="errorInput">
                     </div>
                   </div>
                 </div>
@@ -144,7 +154,7 @@
                     </button>
                   </span>
                   <span class="navbar-text me-2">
-                    <button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient(clientId.value)"
+                    <button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient(clientId)"
                       routerLink="/add-stakeholder" class="btn botao_branco" wappler-command="editContent">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">

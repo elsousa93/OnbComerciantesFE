@@ -43,7 +43,7 @@
                 </div>
               </span>
             </nav>
-            <p class="titulo-form-simples mb-1">
+            <p class="titulo-form-simples mb-1"> <!--Pretende efetuar a atualização...-->
               {{'citizenCard.updateData'|translate|uppercase}}*
             </p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -115,29 +115,21 @@
           <div class="col-6 ms-0 me-0 ps-5 pe-0">
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
-              <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
+                 <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
               <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false" >
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
-              <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-  O parâmetro "Cargo" é obrigatório.
-  </div>-->
+                  <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">  O parâmetro "Cargo" é obrigatório.</div>-->
 
-              <p class="titulo-form-simples ">{{'stakeholder.locale'|translate|uppercase}}</p>
+              <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="canEditLocality() === false">
-              <!--<div class="alert alert-danger"
-    *ngIf="postalArea.touched && !postalArea.valid">
-    O parâmetro "Código postal" é obrigatório.
-  </div>-->
+
+                  <!--<div class="alert alert-danger" *ngIf="postalArea.touched && !postalArea.valid"> O parâmetro "Código postal" é obrigatório. </div>-->
 
               <p class="titulo-form-simples ">{{'stakeholder.address'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address" [readonly]="returned === 'consult'">
-              <!--<div class="alert alert-danger"
-    *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
-    O parâmetro "Código postal" é obrigatório.
-  </div>-->
+                  <!--<div class="alert alert-danger" *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">  O parâmetro "Código postal" é obrigatório. </div>-->
               <p class="titulo-form-simples"></p>
-            
           </div>
           <div *ngIf="showYesCC && !showNoCC">
           <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>

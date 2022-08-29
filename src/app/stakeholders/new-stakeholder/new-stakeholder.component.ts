@@ -40,6 +40,7 @@ export class NewStakeholderComponent implements OnInit {
   stakeholderNumber: string;
 
   crcStakeholders: IStakeholders[] = [];
+  ccStakeholders: IStakeholders[] = [];
 
   submissionId: string;
   processNumber: string;
@@ -61,6 +62,7 @@ export class NewStakeholderComponent implements OnInit {
   flagRecolhaEletronica: boolean = null;
 
   selectedStakeholderIsFromCRC = false;
+  selectedStakeholderIsFromCC = false;
 
   formNewStakeholder!: FormGroup;
 
@@ -192,6 +194,17 @@ export class NewStakeholderComponent implements OnInit {
     //}
   }
 
+  isStakeholderFromCC(stakeholder) {
+    this.selectedStakeholderIsFromCC = false;
+    var context = this;
+    this.ccStakeholders.forEach(function (value, idx) {
+      var stakeholderFromCC = value;
+      if (stakeholder.fiscalId === stakeholderFromCC.fiscalId) {
+        context.selectedStakeholderIsFromCC = true;
+      }
+    });
+  }
+
   isStakeholderFromCRC(stakeholder) {
     this.selectedStakeholderIsFromCRC = false;
     var context = this;
@@ -209,9 +222,13 @@ export class NewStakeholderComponent implements OnInit {
     this.currentIdx = info.idx;
     this.isSelected = true;
     this.isStakeholderFromCRC(this.currentStakeholder);
+    this.isStakeholderFromCC(this.currentStakeholder);
+
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
     console.log("Selecionou outro stakeholder", this.currentStakeholder);
     console.log("é do crc? ", this.selectedStakeholderIsFromCRC);
+    console.log("é do CC? ", this.selectedStakeholderIsFromCC);
+
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.stakeholderAcquiring.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring.identificationDocument != null) {
