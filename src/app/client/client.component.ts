@@ -190,7 +190,7 @@ export class ClientComponent implements OnInit {
   BlockNIF: boolean;
   Validations: boolean;
   DisableButtons: boolean;
-  BlockDocumentNumber: boolean = null; //if you want to read the CC NEW
+  BlockDocumentNumber: boolean = false; //if you want to read the CC NEW
   //  DocumentTypes: Array<IRefData>;
   IsInsolventCantPass: boolean;
   CCReaderPresent: boolean;
@@ -662,6 +662,7 @@ export class ClientComponent implements OnInit {
     this.toSearch = false;
     this.toShowReadCC = readable;
     this.BlockDocumentNumber = readable;
+    console.log("BlockDocumentNumber (true? disable caixa): ", this.BlockDocumentNumber);
   }
 
   //Modal que questiona se tem o PIN da Morada -- APAGAR
