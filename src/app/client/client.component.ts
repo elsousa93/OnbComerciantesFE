@@ -577,23 +577,23 @@ export class ClientComponent implements OnInit {
 
     var context = this;
 
-    var processToInsert = {
-      "processNumber": "5",
-      "goal": "merchantOnboarding",
-      "startedByUsername": "string",
-      "startedByBranch": "string",
-      "startedByPartner": "string",
-      "startedAt": "2022-05-05"
-    } as Process;
+    //var processToInsert = {
+    //  "processNumber": "5",
+    //  "goal": "merchantOnboarding",
+    //  "startedByUsername": "string",
+    //  "startedByBranch": "string",
+    //  "startedByPartner": "string",
+    //  "startedAt": "2022-05-05"
+    //} as Process;
 
-    this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
-      this.logger.debug("começou um processo");
-      this.logger.debug(o);
+    //this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
+    //  this.logger.debug("começou um processo");
+    //  this.logger.debug(o);
 
-      context.process = o;
+    //  context.process = o;
 
-      this.logger.debug(context.process);
-    });
+    //  this.logger.debug(context.process);
+    //});
   }
 
 

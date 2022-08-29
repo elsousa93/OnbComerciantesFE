@@ -42,7 +42,8 @@ export class ProcessService {
 
   //OUTBOUND API
 
-  startProcess(process: Process, RequestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
+  startProcess(process: Process, RequestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any
+  {
 
     var URI = this.urlOutbound + "api/v1/process/";
 

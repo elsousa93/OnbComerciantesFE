@@ -164,7 +164,7 @@ export class ClientByIdComponent implements OnInit {
   idClient: string;
   comprovativoCC: FileAndDetailsCC; 
 
-  DisableNIFNIPC: boolean = false;
+  DisableNIFNIPC = null;
   collectCRC: boolean;
 
   initializeTableInfo() {
@@ -195,7 +195,6 @@ export class ClientByIdComponent implements OnInit {
   }
 
   updateBasicForm() {
-    console.log("form: ", this.form);
     this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
   }
 
@@ -245,23 +244,20 @@ export class ClientByIdComponent implements OnInit {
   initializeENI() {
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
-    console.log("merchant: ", this.merchantInfo);
-    console.log("returned: ", this.returned);
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       socialDenomination: new FormControl((this.returned !== null && this.returned !== undefined) ? this.merchantInfo.legalName : '', Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
 
-    console.log("form eni: ", this.form);
   }
 
   initializeBasicCRCFormControl() {
     this.logger.debug("intializebasiccrcform");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required), //sim
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
@@ -306,7 +302,7 @@ export class ClientByIdComponent implements OnInit {
 
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
-      natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC, disabled: (this.NIFNIPC !== '') }, Validators.required),
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
       socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : this.client?.legalName, Validators.required), //sim
@@ -581,22 +577,17 @@ export class ClientByIdComponent implements OnInit {
     
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
-      console.log("sim");
-      console.log(this.route.getCurrentNavigation());
-      console.log(this.route.getCurrentNavigation().extras.state["dataCC"]);
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
 
-      console.log("nif recebido pelo state:", this.NIFNIPC);
-      console.log("tipo: ", typeof this.NIFNIPC);
-      console.log("comprov: ", this.comprovativoCC);
-
       if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
         this.DisableNIFNIPC = true;
-        console.log("disable: ", this.DisableNIFNIPC);
+      }
+      else {
+        this.DisableNIFNIPC = null;
       }
 
       
@@ -610,15 +601,12 @@ export class ClientByIdComponent implements OnInit {
     }
 
     var context = this;
-    console.log("cliente id recebido: ", this.clientId);
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
       this.clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
         this.clientExists = true;
         this.client = result;
         context.NIFNIPC = this.client.fiscalIdentification.fiscalId;
-        console.log(context.NIFNIPC);
-        console.log("cliente pesquisado: ", this.client);
         this.updateBasicForm();
 
 
@@ -632,7 +620,6 @@ export class ClientByIdComponent implements OnInit {
 
     } else {
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
-      console.log("NIFNIPC inserido: ", this.NIFNIPC);
       this.initializeFormControls();
       this.updateBasicForm();
     }
@@ -697,7 +684,6 @@ export class ClientByIdComponent implements OnInit {
   setCommercialSociety(id: boolean) {
     this.crcFound = false;
     this.collectCRC = undefined;
-    console.log(this.canChangeCommercialSociety());
     this.crcIncorrect = false;
     this.crcNotExists = false;
     this.form.get('collectCRC').setValue(undefined);
@@ -816,7 +802,6 @@ export class ClientByIdComponent implements OnInit {
          //this.errorMsg = 'CRC inserido não foi encontrado';
        }
 
-       console.log("CHEGOU AQUI TB 2!!");
         var clientByCRC = o;
 
        this.crcFound = true;
@@ -876,7 +861,6 @@ export class ClientByIdComponent implements OnInit {
   submit() {
     var formValues = this.form.value;
 
-    console.log("form a ser submetido: ", this.form);
     if (this.isCommercialSociety) {
       this.client.headquartersAddress = {
         address: this.form.value["address"],
@@ -903,6 +887,8 @@ export class ClientByIdComponent implements OnInit {
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
     } else {
+      this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+
       if (this.tipologia === 'Company') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
         this.client.legalNature2 = this.form.value["natJuridicaN2"];
@@ -912,7 +898,6 @@ export class ClientByIdComponent implements OnInit {
     if (this.tipologia === 'ENI') {
       this.client.shortName = this.form.value["socialDenomination"];
       if (this.dataCC !== {}) {
-        console.log("dataCC: ", this.dataCC);
         this.client.shortName = this.dataCC.nameCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
         this.client.fiscalIdentification.fiscalId = this.dataCC.nifCC;

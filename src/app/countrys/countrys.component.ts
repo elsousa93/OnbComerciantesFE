@@ -15,7 +15,7 @@ import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
-import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
+import { IStakeholders, StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
@@ -186,7 +186,6 @@ export class CountrysComponent implements OnInit {
     //    this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
     //  });
     //});
-    console.log("valor do preference documents ", this.form);
   }
 
   initializeForm() {
@@ -368,7 +367,7 @@ export class CountrysComponent implements OnInit {
         //this.errorMsg = 'Escolha pelo menos um país';
         return;
       } else {
-        if (this.form.valid) { 
+        if (this.form.valid) {
           this.newSubmission.startedAt = new Date().toISOString();
           this.newSubmission.merchant.commercialName = "string";
           this.newSubmission.merchant.billingEmail = this.client.billingEmail;
@@ -382,7 +381,7 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
 
           this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
-          this.newSubmission.merchant.fiscalId = this.client.fiscalId;
+          this.newSubmission.merchant.fiscalId = this.NIFNIPC;
           this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
           this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
           this.newSubmission.merchant.id = this.client.id;
@@ -452,15 +451,57 @@ export class CountrysComponent implements OnInit {
           var context = this;
           localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
           //this.logger.debug(this.newSubmission.merchant);
-
+          console.log("stakeholders a inserir: ", this.stakeholdersToInsert);
           this.stakeholdersToInsert.forEach(function (value, idx) {
-            context.newSubmission.stakeholders.push({
-              "fiscalId": value.fiscalId,
-              "shortName": value.name
-            })
+            console.log("stakeholder: ", value);
+            var fiscalID = value.fiscalId;
+
+            var stakeholderToInsert = {
+              "fiscalId": fiscalID,
+              "shortName": value.name,
+              "fiscalAddress": {
+                "postalCode": "",
+                "postalArea": "",
+                "country": "",
+                "address": ""
+              }
+            } as IStakeholders;
+
+            if (fiscalID !== undefined && fiscalID !== null && fiscalID !== '') {
+              console.log("tem fiscalid", value);
+              context.stakeholderService.SearchStakeholderByQuery(fiscalID, "por mudar", "por mudar", "por mudar").subscribe(result => {
+                var OutboundStakeholderSearch = result[0];
+
+                console.log("Outbound stakeholder a usar o id: ", OutboundStakeholderSearch);
+                context.stakeholderService.getStakeholderByID(OutboundStakeholderSearch.stakeholderId, "por mudar", "por mudar").subscribe(result => {
+                  OutboundStakeholderSearch = result;
+                  stakeholderToInsert.contactName = OutboundStakeholderSearch.contacts.contactName;
+                  stakeholderToInsert.fullName = OutboundStakeholderSearch.fullName;
+                  stakeholderToInsert.stakeholderId = OutboundStakeholderSearch.stakeholderId;
+                  stakeholderToInsert.fiscalAddress = OutboundStakeholderSearch.address;
+                  stakeholderToInsert.phone1 = OutboundStakeholderSearch.contacts.phone1;
+                  stakeholderToInsert.phone2 = OutboundStakeholderSearch.contacts.phone2;
+                  stakeholderToInsert.foreignFiscalInformation = OutboundStakeholderSearch.fiscalIdentification;
+                  stakeholderToInsert.birthDate = OutboundStakeholderSearch.birthDate;
+
+                  context.newSubmission.stakeholders.push(stakeholderToInsert);
+
+                  console.log("lista de stakeholders: ", context.newSubmission.stakeholders);
+                });
+
+              })
+            } else {
+              console.log("Nao tem nif");
+              stakeholderToInsert.fiscalId = '';
+              context.newSubmission.stakeholders.push(stakeholderToInsert);
+            }
+
+            //context.newSubmission.stakeholders.push({
+            //  "fiscalId": value.fiscalId,
+            //  "shortName": value.name
+            //})
           });
           if (this.crc !== null && this.crc !== undefined) {
-            console.log("ENTROU NO CRC");
             this.newSubmission.documents.push({
               documentType: 'crcPDF',
               documentPurpose: 'CompanyIdentification',
@@ -473,7 +514,6 @@ export class CountrysComponent implements OnInit {
             })
           }
           if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
-            console.log("ENTROU NO CC");
             this.newSubmission.documents.push({
               documentType: 'comprovativoCC_PDF',
               documentPurpose: 'Identification',
@@ -490,7 +530,6 @@ export class CountrysComponent implements OnInit {
           else
             this.newSubmission.merchant.merchantType = 'Entrepeneur';
 
-          console.log("OBJETO DA NOVA SUBMISSAO ", this.newSubmission);
           this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
             localStorage.setItem("submissionId", result.id);
             this.processNrService.changeProcessNumber(result.processNumber);
