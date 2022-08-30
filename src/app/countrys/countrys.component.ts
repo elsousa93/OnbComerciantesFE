@@ -190,6 +190,7 @@ export class CountrysComponent implements OnInit {
 
   initializeForm() {
     if (this.clientExists) {
+      console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
@@ -346,6 +347,8 @@ export class CountrysComponent implements OnInit {
 
   submit() {
     var context = this;
+    var stakeholdersLength = 0;
+    var stakeholdersidx = 0;
 
     var navigationExtras: NavigationExtras = {
       state: {
@@ -452,12 +455,15 @@ export class CountrysComponent implements OnInit {
           localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
           //this.logger.debug(this.newSubmission.merchant);
           console.log("stakeholders a inserir: ", this.stakeholdersToInsert);
+
+          stakeholdersLength = this.stakeholdersToInsert.length;
+
           this.stakeholdersToInsert.forEach(function (value, idx) {
             console.log("stakeholder: ", value);
             var fiscalID = value.fiscalId;
 
             var stakeholderToInsert = {
-              "fiscalId": fiscalID,
+              "fiscalId": (fiscalID !== null && fiscalID !== undefined) ? fiscalID: '',
               "shortName": value.name,
               "fiscalAddress": {
                 "postalCode": "",
@@ -467,34 +473,40 @@ export class CountrysComponent implements OnInit {
               }
             } as IStakeholders;
 
-            if (fiscalID !== undefined && fiscalID !== null && fiscalID !== '') {
-              console.log("tem fiscalid", value);
-              context.stakeholderService.SearchStakeholderByQuery(fiscalID, "por mudar", "por mudar", "por mudar").subscribe(result => {
-                var OutboundStakeholderSearch = result[0];
+            context.newSubmission.stakeholders.push(stakeholderToInsert);
 
-                console.log("Outbound stakeholder a usar o id: ", OutboundStakeholderSearch);
-                context.stakeholderService.getStakeholderByID(OutboundStakeholderSearch.stakeholderId, "por mudar", "por mudar").subscribe(result => {
-                  OutboundStakeholderSearch = result;
-                  stakeholderToInsert.contactName = OutboundStakeholderSearch.contacts.contactName;
-                  stakeholderToInsert.fullName = OutboundStakeholderSearch.fullName;
-                  stakeholderToInsert.stakeholderId = OutboundStakeholderSearch.stakeholderId;
-                  stakeholderToInsert.fiscalAddress = OutboundStakeholderSearch.address;
-                  stakeholderToInsert.phone1 = OutboundStakeholderSearch.contacts.phone1;
-                  stakeholderToInsert.phone2 = OutboundStakeholderSearch.contacts.phone2;
-                  stakeholderToInsert.foreignFiscalInformation = OutboundStakeholderSearch.fiscalIdentification;
-                  stakeholderToInsert.birthDate = OutboundStakeholderSearch.birthDate;
+            //if (fiscalID !== undefined && fiscalID !== null && fiscalID !== '') {
+            //  console.log("tem fiscalid", value);
+            //  context.stakeholderService.SearchStakeholderByQuery(fiscalID, "por mudar", "por mudar", "por mudar").subscribe(result => {
+            //    var OutboundStakeholderSearch = result[0];
 
-                  context.newSubmission.stakeholders.push(stakeholderToInsert);
+            //    console.log("Outbound stakeholder a usar o id: ", OutboundStakeholderSearch);
+            //    context.stakeholderService.getStakeholderByID(OutboundStakeholderSearch.stakeholderId, "por mudar", "por mudar").subscribe(result => {
+            //      OutboundStakeholderSearch = result;
+            //      stakeholderToInsert.contactName = OutboundStakeholderSearch.contacts.contactName;
+            //      stakeholderToInsert.fullName = OutboundStakeholderSearch.fullName;
+            //      stakeholderToInsert.stakeholderId = OutboundStakeholderSearch.stakeholderId;
+            //      stakeholderToInsert.fiscalAddress = OutboundStakeholderSearch.address;
+            //      stakeholderToInsert.phone1 = OutboundStakeholderSearch.contacts.phone1;
+            //      stakeholderToInsert.phone2 = OutboundStakeholderSearch.contacts.phone2;
+            //      stakeholderToInsert.foreignFiscalInformation = OutboundStakeholderSearch.fiscalIdentification;
+            //      stakeholderToInsert.birthDate = OutboundStakeholderSearch.birthDate;
 
-                  console.log("lista de stakeholders: ", context.newSubmission.stakeholders);
-                });
+            //      context.newSubmission.stakeholders.push(stakeholderToInsert);
+            //      stakeholdersidx++;
 
-              })
-            } else {
-              console.log("Nao tem nif");
-              stakeholderToInsert.fiscalId = '';
-              context.newSubmission.stakeholders.push(stakeholderToInsert);
-            }
+
+            //      console.log("lista de stakeholders: ", context.newSubmission.stakeholders);
+            //    });
+
+            //  })
+            //} else {
+            //  console.log("Nao tem nif");
+            //  stakeholderToInsert.fiscalId = '';
+            //  context.newSubmission.stakeholders.push(stakeholderToInsert);
+            //  stakeholdersidx++;
+
+            //}
 
             //context.newSubmission.stakeholders.push({
             //  "fiscalId": value.fiscalId,
@@ -569,6 +581,7 @@ export class CountrysComponent implements OnInit {
             this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
 
           });
+        
         }
       }
   } else {

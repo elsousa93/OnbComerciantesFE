@@ -66,10 +66,10 @@ export interface SubProduct {
 export interface ShopActivity {
   activityCode: string 
   activityDescription: string
-  subActivities: SubActivities[]
+  subActivities: SubActivity[]
 }
 
-export interface SubActivities {
+export interface SubActivity {
   subActivityCode: string
   subActivityDescription: string
 }
@@ -87,4 +87,31 @@ export interface Address {
   postalCode: string
   postalArea: string
   country: string
+}
+
+export interface ShoppingCenter {
+  lowerPostalCode?: string
+  postPostalCode?: string
+  code?: string
+  description?: string
+}
+
+export interface DocumentSearchType {
+  code?: string
+  description?: string
+}
+
+export interface TenantCommunication {
+  code?: string
+  description?: string
+}
+
+export interface TenantTerminal {
+  code?: string
+  description?: string
+}
+
+export enum UserTypes {
+  MERCHANT = "Merchant",
+  STAKEHOLDER = "Stakeholder"
 }

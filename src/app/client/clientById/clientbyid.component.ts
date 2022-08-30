@@ -896,7 +896,7 @@ export class ClientByIdComponent implements OnInit {
       this.client.commercialName = this.form.value["socialDenomination"];
     }
     if (this.tipologia === 'ENI') {
-      this.client.shortName = this.form.value["socialDenomination"];
+      this.client.legalName = this.form.value["socialDenomination"];
       if (this.dataCC !== {}) {
         this.client.shortName = this.dataCC.nameCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
@@ -917,6 +917,8 @@ export class ClientByIdComponent implements OnInit {
     //  this.client.companyName = this.form.value["franchiseName"];
     //  //this.client.businessGroup.fiscalId = this.form.value["NIPCGroup"]; //deve ter de ser alterado
     //}
+
+    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     let navigationExtras: NavigationExtras = {
       state: {
         clientExists: this.clientExists,

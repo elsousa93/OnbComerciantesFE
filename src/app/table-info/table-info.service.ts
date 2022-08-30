@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
-import { Address, CountryInformation, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, ShopActivity, StakeholderRole } from './ITable-info.interface';
+import { Address, CountryInformation, DocumentSearchType, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, UserTypes } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +58,22 @@ export class TableInfoService {
   GetAddressByZipCode(cp4: number, cp3: number) {
     return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
   }
+
+  GetAllShoppingCenters(postalCode: string) {
+    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'shop/shoppingCenter?postalCode=' + postalCode);
+  }
+
+  GetAllSearchTypes(userType: UserTypes) {
+    return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType);
+  }
+
+  GetTenantCommunications() {
+    return this.http.get<TenantCommunication[]>(this.acquiringUrl + 'tenant/comunication');
+  }
+
+  GetTenantTerminals() {
+    return this.http.get<TenantTerminal[]>(this.acquiringUrl + 'tenant/terminal');
+  }
+
 
 }

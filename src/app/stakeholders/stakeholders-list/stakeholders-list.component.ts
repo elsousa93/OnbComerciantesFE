@@ -160,4 +160,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     this.stakesMat.sort = this.sort;
   }
 
+  removeStakeholder(stakeholder) {
+    console.log("stakeholder a remover: ", stakeholder);
+    this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
+      console.log("apagou: ", result);
+    }, error => {
+      console.log("error: ", error);
+    });
+  }
+
 }
