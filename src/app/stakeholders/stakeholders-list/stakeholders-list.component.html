@@ -30,7 +30,7 @@
     </ng-container>
     <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="canDelete == false"> </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" [hidden]="canDelete == false">
+      <mat-cell *matCellDef="let stakeholder" [hidden]="canDelete == false" (click)="removeStakeholder(stakeholder)">
         <span>
           <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
         </span>

@@ -26,6 +26,8 @@ import { SubmissionService } from '../submission/service/submission-service.serv
 import { NGXLogger } from 'ngx-logger';
 import jsPDF from 'jspdf';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
+import { TableInfoService } from '../table-info/table-info.service';
+import { UserTypes } from '../table-info/ITable-info.interface';
 
 @Component({
   selector: 'app-client',
@@ -203,8 +205,11 @@ export class ClientComponent implements OnInit {
   clientIdNew;
   ccInfo;
   newId;
-  ListaDocType = docType;
-  ListaDocTypeENI = docTypeENI;
+  //ListaDocType = docType;
+  //ListaDocTypeENI = docTypeENI;
+
+  ListaDocType;
+  ListaDocTypeENI;
   formDocType!: FormGroup;
   docType?: string = "";
 
@@ -237,7 +242,6 @@ export class ClientComponent implements OnInit {
     "clientId": "",
     "fiscalId": "22181900000011",
     "id": "",
-
     "companyName": "J SILVESTRE LIMITADA",
     "commercialName": "CAFE CENTRAL",
     "shortName": "SILVESTRE LDA",
@@ -332,11 +336,20 @@ export class ClientComponent implements OnInit {
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private clientService: ClientService,
+    private tableInfo: TableInfoService,
     private processService: ProcessService, public modalService: BsModalService,
     private submissionService: SubmissionService, private readCardService: ReadcardService) {
 
     this.baseUrl = configuration.baseUrl;
     this.neyondBackUrl = configuration.neyondBackUrl;
+
+    this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
+      this.ListaDocType = result;
+    });
+
+    this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
+      this.ListaDocTypeENI = result;
+    });
 
     this.ngOnInit();
     this.logger.debug(this.baseUrl);
@@ -577,23 +590,23 @@ export class ClientComponent implements OnInit {
 
     var context = this;
 
-    var processToInsert = {
-      "processNumber": "5",
-      "goal": "merchantOnboarding",
-      "startedByUsername": "string",
-      "startedByBranch": "string",
-      "startedByPartner": "string",
-      "startedAt": "2022-05-05"
-    } as Process;
+    //var processToInsert = {
+    //  "processNumber": "5",
+    //  "goal": "merchantOnboarding",
+    //  "startedByUsername": "string",
+    //  "startedByBranch": "string",
+    //  "startedByPartner": "string",
+    //  "startedAt": "2022-05-05"
+    //} as Process;
 
-    this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
-      this.logger.debug("começou um processo");
-      this.logger.debug(o);
+    //this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
+    //  this.logger.debug("começou um processo");
+    //  this.logger.debug(o);
 
-      context.process = o;
+    //  context.process = o;
 
-      this.logger.debug(context.process);
-    });
+    //  this.logger.debug(context.process);
+    //});
   }
 
 
@@ -622,12 +635,12 @@ export class ClientComponent implements OnInit {
     this.logger.debug(this.clientId);
     var selectedClient = this.newClient;
     var NIFNIPC = null;
-    if (selectedClient.documentationDeliveryMethod === '002' || selectedClient.documentationDeliveryMethod === '005') {
+    if (selectedClient.documentationDeliveryMethod === '0502' || selectedClient.documentationDeliveryMethod === '0501') {
       this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = selectedClient.clientId;
     }
 
-    if (selectedClient.documentationDeliveryMethod === '004') {
+    if (selectedClient.documentationDeliveryMethod === '1001') {
       this.dataCC = {
         nameCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
@@ -718,17 +731,17 @@ export class ClientComponent implements OnInit {
 
   createNewClient(clientId: string) {
     var NIFNIPC = null;
-    if (this.newClient.documentationDeliveryMethod === '002' || this.newClient.documentationDeliveryMethod === '005') {
+    if (this.newClient.documentationDeliveryMethod === '0502' || this.newClient.documentationDeliveryMethod === '0501') {
       this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = this.newClient.clientId;
     }
-    if (this.newClient.documentationDeliveryMethod === '004') {
+    if (this.newClient.documentationDeliveryMethod === '1001') {
       console.log("criar novo cliente COM CC");
       NIFNIPC = this.dataCCcontents.nifCC;
     }
 
     console.log("PRETTY PDF no createNewClient: ", this.prettyPDF);
-    if (this.newClient.documentationDeliveryMethod === '004') {
+    if (this.newClient.documentationDeliveryMethod === '1001') {
       this.dataCC = {
         nameCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
@@ -746,9 +759,13 @@ export class ClientComponent implements OnInit {
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents
       }
-    }; console.log("dataCC conctens a evnviar:", this.dataCCcontents),
-    console.log("EM dataCCcontents.nifCC: ", NIFNIPC , "TYPE OF: ", typeof (NIFNIPC));
-    this.route.navigate(['/clientbyid', clientId], navigationExtras);
+    };
+    console.log("dataCC conctens a evnviar:", this.dataCCcontents),
+      console.log("EM dataCCcontents.nifCC: ", NIFNIPC, "TYPE OF: ", typeof (NIFNIPC));
+    if (NIFNIPC !== null && NIFNIPC !== undefined)
+      this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
+    else
+      this.route.navigate(['/clientbyid', 9999], navigationExtras);
     //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 

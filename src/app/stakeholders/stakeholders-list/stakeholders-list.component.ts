@@ -93,12 +93,28 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
           console.log("valor de cada iteração foreach: ", value);
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
             console.log("stakeholder individual: ", result);
-            context.submissionStakeholders.push({
+            var AcquiringStakeholder = result;
+            var stakeholderToInsert = {
               displayName: '',
               eligibility: false,
-              stakeholderAcquiring: result,
+              stakeholderAcquiring: AcquiringStakeholder,
               stakeholderOutbound: undefined
-            });
+            }
+
+            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
+
+            context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+              stakeholderToInsert.stakeholderOutbound = outboundResult;
+              console.log("stakeholder com a informação completa: ", stakeholderToInsert);
+              context.submissionStakeholders.push(stakeholderToInsert);
+              
+            })
+            //context.submissionStakeholders.push({
+            //  displayName: '',
+            //  eligibility: false,
+            //  stakeholderAcquiring: result,
+            //  stakeholderOutbound: undefined
+            //});
             console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
           }, error => {
           });
@@ -142,6 +158,15 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     this.stakesMat = new MatTableDataSource(stakesList);
     this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
+  }
+
+  removeStakeholder(stakeholder) {
+    console.log("stakeholder a remover: ", stakeholder);
+    this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
+      console.log("apagou: ", result);
+    }, error => {
+      console.log("error: ", error);
+    });
   }
 
 }
