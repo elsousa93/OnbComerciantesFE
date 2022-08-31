@@ -44,6 +44,14 @@ export class ReadcardService {
     countryCC: " "
   };
 
+ //novo objecto a enviar 
+  objectCCsend: FileAndDetailsCC = {
+    lastModifiedDate: null,
+    expirationDate: null,
+    name: null,
+    file: null,
+  }
+
   public addressReading = null; //user chooses to read the address or not
 
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
@@ -129,6 +137,7 @@ export class ReadcardService {
   /** Formats PFD - All design choices are done in this function.
   */
   async formatPDF(ccArrayData: Array<string>): Promise<FileAndDetailsCC> {
+
     return new Promise<FileAndDetailsCC>((resolve, reject) => {
 
       const doc = new jsPDF('p', 'pt', 'a4');
@@ -139,7 +148,6 @@ export class ReadcardService {
 
       doc.setFontSize(10);
       doc.text("Ficheiro gerado à data: " + dateHelper, 20, 820)
-
 
       var config = {
         autoSize: true,
@@ -376,7 +384,7 @@ export class ReadcardService {
 
       doc.save("digitalCC_NIF" + ccArrayData[10] + ".pdf"); //Download automatico do comprovativo
       var doc_base64 = doc.output('datauristring'); //retorna base64(?)
-      var splitres = doc_base64.split(',')[1];
+    //  var splitres = doc_base64.split(',')[1];
       var doc_blob = doc.output('blob');
 
       var ficheiroCC = <File>doc_blob;
@@ -385,22 +393,25 @@ export class ReadcardService {
       this.comprovativosService.readBase64(ficheiroCC).then(result => {
         var result_clean = result.split(',')[1]; //para retirar a parte inicial "data:application/pdf;base64"
 
-        //novo objecto a enviar 
-        let objectCCsend: FileAndDetailsCC = {
+        //Popular o objecto a enviar 
+         this.objectCCsend = {
           lastModifiedDate: new Date(),
           expirationDate: new Date() + "", // A confirmar com a equipa de produto
           name: 'comprovativoCC',
           file: result_clean
         }
 
-        resolve(objectCCsend);
+        resolve(this.objectCCsend);
 
-      }).catch(function (error) {
+      }, error => {
         //reject(null);
         console.log(error);
       });
 
-    });//fecha a promessa da linha 131
+      //resolve da Promessa da linha 131
+      resolve(this.objectCCsend);
 
+    });//fecha a promessa da linha 131
+  
   }
 }
