@@ -77,7 +77,8 @@ export class ClientComponent implements OnInit {
   /**
    * Information from the Citizen Card will be associated to the client structure
    * */
-  public dataCCcontents: any; 
+  public dataCCcontents : dataCCcontents; 
+  public conteudoCC : dataCCcontents; 
 
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
@@ -270,18 +271,23 @@ export class ClientComponent implements OnInit {
   }
 
   callreadCC() {
-    this.dataCCcontents = null;
-    this.dataCCcontents = this.readCardService.startReadCC();
-    //this.readCardService.startReadCC().then(resolve => {
-    //  this.dataCCcontents = resolve;
-    //});
+    this.conteudoCC = null;
+  //   var conteudoCCPromessa = this.readCardService.startReadCC();
+ //   console.log("data cc contents: antes da chamada", conteudoCCPromessa);
+    this.readCardService.startReadCC().then(resolve => {
+
+
+      //conteudoCCPromessa = resolve;
+      //console.log(" conteudo promessa recebido depois do start read cc : ", conteudoCCPromessa);
+      //console.log("data cc recebido depois do start read cc : ", this.dataCCcontents);
+    });
 
     this.setOkCC();
    // this.ccArrayData/ content CC = this.readCardService.startReadCC();
-    console.log("DATA CC CONTENTS, ANY: " + this.dataCCcontents.value);
+   // console.log("DATA CC CONTENTS, ANY: " + conteudoCCPromessa);
   }
   callreadCCAddress() {
-    this.dataCCcontents = null;
+    var conteudoCCPromessa = null;
     this.readCardService.startReadCCAddress();
     this.setOkCC();
   //  this.ccdataCCcontents = this.readCardService.startReadCCAddress();

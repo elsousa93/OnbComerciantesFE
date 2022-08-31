@@ -58,7 +58,7 @@ export class ReadcardService {
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-    console.log("address reading chegoui aqui ");
+    console.log("address reading - serviço - chegoui aqui ");
     console.log("Name: ", name);
 
     this.dataCCcontents.nameCC = name;
@@ -120,11 +120,10 @@ export class ReadcardService {
   }
 
   //Calls the .js function
-  startReadCC() {
-
-    readCC(this.SetNewCCData);
-
-
+  async startReadCC(): Promise<any>{
+    return new Promise<any>((resolve, reject) => {
+      resolve(readCC(this.SetNewCCData));
+    });
   };
 
   //Calls the .js function
@@ -408,7 +407,7 @@ export class ReadcardService {
         console.log(error);
       });
 
-      //resolve da Promessa da linha 131
+      //resolve da Promessa da linha 131!
       resolve(this.objectCCsend);
 
     });//fecha a promessa da linha 131
