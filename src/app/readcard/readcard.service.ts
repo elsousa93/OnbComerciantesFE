@@ -46,7 +46,7 @@ export class ReadcardService {
 
   public addressReading = null; //user chooses to read the address or not
 
-   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+  SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
@@ -61,8 +61,8 @@ export class ReadcardService {
     this.dataCCcontents.countryCC = country;
     this.dataCCcontents.countryCC = countryIssuer; //HTML
 
-     console.log("country: ", country);
-     console.log("country issuer: ", countryIssuer);
+    console.log("country: ", country);
+    console.log("country issuer: ", countryIssuer);
 
 
     if (notes != null || notes != "") {
@@ -108,18 +108,19 @@ export class ReadcardService {
       });
       console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
     }
-     return this.dataCCcontents;
+    return this.dataCCcontents;
   }
 
   //Calls the .js function
-  startReadCC(){
+  startReadCC() {
 
-      readCC(this.SetNewCCData);
- 
+    readCC(this.SetNewCCData);
+
+
   };
 
- //Calls the .js function
-  async startReadCCAddress(): Promise <any>{
+  //Calls the .js function
+  async startReadCCAddress(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       return readCCAddress(this.SetNewCCData);
     });
@@ -380,23 +381,26 @@ export class ReadcardService {
 
       var ficheiroCC = <File>doc_blob;
 
+      //ReadBase64 devolve uma promessa - aqui 
       this.comprovativosService.readBase64(ficheiroCC).then(result => {
         var result_clean = result.split(',')[1]; //para retirar a parte inicial "data:application/pdf;base64"
 
         //novo objecto a enviar 
-         let objectCCsend: FileAndDetailsCC = {
-             lastModifiedDate: new Date(), 
-              expirationDate: new Date()+"", // A confirmar com a equipa de produto
-             name: 'comprovativoCC',
-             file: result_clean
-         }
+        let objectCCsend: FileAndDetailsCC = {
+          lastModifiedDate: new Date(),
+          expirationDate: new Date() + "", // A confirmar com a equipa de produto
+          name: 'comprovativoCC',
+          file: result_clean
+        }
+
         resolve(objectCCsend);
-      }, error => {
-        reject(null);
-      })
-    })
 
+      }).catch(function (error) {
+        //reject(null);
+        console.log(error);
+      });
 
+    });//fecha a promessa da linha 131
 
   }
 }
