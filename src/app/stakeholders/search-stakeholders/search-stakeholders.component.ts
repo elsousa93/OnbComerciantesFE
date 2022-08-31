@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, Output, EventEmitter, OnInit, Inject, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, Inject, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { config, Observable, Subscription } from 'rxjs';
@@ -12,7 +12,8 @@ import { StakeholderService } from '../stakeholder.service';
 @Component({
   selector: 'app-search-stakeholders',
   templateUrl: './search-stakeholders.component.html',
-  styleUrls: ['./search-stakeholders.component.css']
+  styleUrls: ['./search-stakeholders.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchStakeholdersComponent implements OnInit {
 
