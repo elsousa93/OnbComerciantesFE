@@ -56,11 +56,10 @@
         </button>
 
         <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
-          data-bs-toggle="collapse" data-bs-target="#flush-collapseFour">
-          <h1
-            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="contractAcceptanceCount" *ngIf="contractAcceptanceCount !== undefined && contractAcceptanceCount !== null"></app-number-counter>
-          </h1>
+                data-bs-toggle="collapse" data-bs-target="#flush-collapseFour">
+          <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]=0 *ngIf="contractAcceptanceCount !== undefined && contractAcceptanceCount !== null"></app-number-counter>
+          </h1> <!--FIX ME [number]=0 -- ANTES: contractAcceptanceCount-->
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash">
               <img src="assets/images/assignment_turned_in_dash.svg">
