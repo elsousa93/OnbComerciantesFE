@@ -19,6 +19,11 @@ import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 
 
+
+
+
+
+
 const testValues: ShopDetailsAcquiring[] = [
   {
     activity: "Activity1",
@@ -46,6 +51,10 @@ const testValues: ShopDetailsAcquiring[] = [
       href: "",
       type: "",
       id: ""
+    },
+    pack: {
+      packId: "8981281",
+
     },
     id: "1",
     manager: "Manager1",

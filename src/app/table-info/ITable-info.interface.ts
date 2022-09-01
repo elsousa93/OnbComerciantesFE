@@ -1,6 +1,19 @@
 export interface ITableInfo {
 }
 
+export interface RequestResponse {
+  result?: any,
+  error?: {
+    code?: string,
+    message?: string
+  }
+}
+
+export interface TreatedResponse<E> {
+  result?: E,
+  msg?: string
+}
+
 export interface Activity {
   code?: string
   description?: string

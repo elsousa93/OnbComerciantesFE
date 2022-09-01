@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
-import { Address, CountryInformation, DocumentSearchType, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, UserTypes } from './ITable-info.interface';
+import { HttpMethod } from '../enums/enum-data';
+import { Address, CountryInformation, DocumentSearchType, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,72 @@ export class TableInfoService {
   constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
     this.acquiringUrl = configuration.acquiringAPIUrl;
 
-   }
+  }
+
+  callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
+    var requestResponse: RequestResponse = {};
+
+    return new Promise<RequestResponse>((resolve, reject) => {
+      this.http[httpMethod]<TenantCommunication[]>(httpURL, body).subscribe({
+        next: (res: any) => {
+          requestResponse.result = res;
+          requestResponse.error = null;
+          resolve(requestResponse);
+        },
+        error: (err: any) => {
+          requestResponse.result = null;
+          requestResponse.error = {
+            code: err.status,
+            message: err.statusText
+          }
+          reject(requestResponse);
+        },
+        complete: () => {
+          console.log("pedido terminado!!");
+        }
+      });
+    });
+  }
+
+  callAPIOutbound(httpMethod: HttpMethod, httpURL: string, searchId: string, searchType: string, requestId: string, AcquiringUserId: string, body?: any, countryId?: string, acceptLanguage?: string, AcquiringPartnerId?: string, AcquiringBranchId?: string, AcquiringProcessId?: string) {
+    var requestResponse: RequestResponse = {};
+
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Request-Id': requestId,
+        'X-Acquiring-UserId': AcquiringUserId,
+      }),
+    }
+
+    if (AcquiringPartnerId !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerId);
+    if (AcquiringBranchId !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchId);
+    if (AcquiringProcessId !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessId);
+
+    return new Promise<RequestResponse>((resolve, reject) => {
+      this.http[httpMethod]<TenantCommunication[]>(httpURL, body, HTTP_OPTIONS).subscribe({
+        next: (res: any) => {
+          requestResponse.result = res;
+          requestResponse.error = null;
+          resolve(requestResponse);
+        },
+        error: (err: any) => {
+          requestResponse.result = null;
+          requestResponse.error = {
+            code: err.status,
+            message: err.statusText
+          }
+          reject(requestResponse);
+        },
+        complete: () => {
+          console.log("pedido terminado!!");
+        }
+      });
+    });
+  }
+
 
   GetAllCountries(): any{
     return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country');
@@ -56,7 +122,28 @@ export class TableInfoService {
   }
 
   GetAddressByZipCode(cp4: number, cp3: number) {
-    return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
+        return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
+  }
+
+  GetAddressByZipCodeTeste(cp4: number, cp3: number): Promise<TreatedResponse<Address>> {
+
+    var url = this.acquiringUrl + 'address/pt/'+ cp4 + '/' + cp3;
+
+    var response: TreatedResponse<Address> = {};
+
+    return new Promise<TreatedResponse<Address>>((resolve, reject) => {
+      this.callAPIAcquiring(HttpMethod.GET, url).then(success => {
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        console.log("erro que deu: ", error);
+        response.result = null;
+        response.msg = "Código Postal inválido";
+        reject(response);
+      })
+    });
+
   }
 
   GetAllShoppingCenters(postalCode: string) {
@@ -67,12 +154,44 @@ export class TableInfoService {
     return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType);
   }
 
-  GetTenantCommunications() {
-    return this.http.get<TenantCommunication[]>(this.acquiringUrl + 'tenant/comunication');
+  
+
+  GetTenantCommunications(): Promise<TreatedResponse<TenantCommunication[]>> {
+    var url = this.acquiringUrl + 'tenant/communication';
+
+    var response: TreatedResponse<TenantCommunication[]> = {};
+
+    return new Promise<TreatedResponse<TenantCommunication[]>>((resolve, reject) => {
+      this.callAPIAcquiring(HttpMethod.GET, url).then(success => {
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        console.log("erro que deu: ", error);
+        response.result = null;
+        response.msg = "Erro";
+        reject(response);
+      })
+    });
   }
 
-  GetTenantTerminals() {
-    return this.http.get<TenantTerminal[]>(this.acquiringUrl + 'tenant/terminal');
+  GetTenantTerminals(): Promise<TreatedResponse<TenantTerminal[]>> {
+    var url = this.acquiringUrl + 'tenant/terminal';
+
+    var response: TreatedResponse<TenantTerminal[]> = {};
+
+    return new Promise<TreatedResponse<TenantTerminal[]>>((resolve, reject) => {
+      this.callAPIAcquiring(HttpMethod.GET, url).then(success => {
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        console.log("erro que deu: ", error);
+        response.result = null;
+        response.msg = "Erro";
+        reject(response);
+      })
+    });
   }
 
 

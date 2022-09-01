@@ -78,9 +78,10 @@
                   </nav>
                   <p class="titulo-form-simples ps-4">{{'commercialOffer.terminalType'|translate|uppercase}}*</p>
                   <select name="terminalType" formControlName="terminalType" id="select1"
-                     class="form-select campo_form ms-4">
-                     <option value="1">FIXO</option>
-                     <option value="2">MOVEL</option>
+                          class="form-select campo_form ms-4">
+                    <option *ngFor="let terminal of allTerminals" value={{terminal.code}}>
+                      {{terminal.description}}
+                    </option>
                   </select>
                   <p class="titulo-form-simples ps-4">{{'commercialOffer.totalTerminal'|translate|uppercase}}</p>
                   <input id="text3" formControlName="terminalAmount" name="terminalAmount" type="text"
@@ -108,9 +109,9 @@
                   <p class="titulo-form-simples">TIPO&nbsp; {{'commercialOffer.communication'|translate|uppercase}}*</p>
                   <select formControlName="communicationType" name="communicationType" id="select2"
                      class="form-select campo_form">
-                     <option value="1">WIFI</option>
-                     <option value="2">GPRS</option>
-                     <option value="4">Linha Comutada</option>
+                    <option *ngFor="let communication of allCommunications" value={{communication.code}}>
+                      {{communication.description}}
+                    </option>
                   </select>
                </div>
             </div>

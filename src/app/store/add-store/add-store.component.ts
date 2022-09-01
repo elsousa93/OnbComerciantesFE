@@ -341,6 +341,36 @@ export class AddStoreComponent implements OnInit {
     }
   }
 
+  GetCountryByZipCodeTest() {
+    var currentCountry = this.formStores.get('countryStore').value;
+    this.logger.debug("Pais escolhido atual");
+
+    if (currentCountry === 'PT') {
+      var zipcode = this.formStores.value['zipCodeStore'];
+      if (zipcode.length === 8) {
+        var zipCode = zipcode.split('-');
+
+        this.tableData.GetAddressByZipCodeTeste(Number(zipCode[0]), Number(zipCode[1])).then(success => {
+          console.log(success);
+          var address = success.result;
+          var addressToShow = address[0];
+
+          this.formStores.get('addressStore').setValue(addressToShow.address);
+          this.formStores.get('countryStore').setValue(addressToShow.country);
+          this.formStores.get('localeStore').setValue(addressToShow.postalArea);
+
+          this.storeService.subzonesNearby(zipCode[0], zipCode[1]).subscribe(result => {
+            this.subzones = result;
+          })
+
+          this.formStores.updateValueAndValidity();
+        }, error => {
+          console.log("error no codigo postal: ", error);
+        });
+      }
+    }
+  }
+
   GetCountryByZipCode() {
     var currentCountry = this.formStores.get('countryStore').value;
     this.logger.debug("Pais escolhido atual");

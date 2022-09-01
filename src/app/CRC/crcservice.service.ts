@@ -17,8 +17,6 @@ export class CRCService {
   constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private authService: AuthService) {
     this.DOCASUrl = configuration.DOCASUrl;
     this.authTokenUrl = configuration.authTokenUrl
-
-    
   }
 
   async getAccessToken(): Promise<any> {

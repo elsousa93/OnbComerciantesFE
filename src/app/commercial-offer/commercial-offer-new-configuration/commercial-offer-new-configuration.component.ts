@@ -8,6 +8,8 @@ import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.
 import { NGXLogger } from 'ngx-logger';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StoreService } from '../../store/store.service';
+import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
+import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({
   selector: 'app-commercial-offer-new-configuration',
@@ -20,6 +22,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   public storeEquip: ShopEquipment = {};
   public store: ShopDetailsAcquiring;
   public clientID: number = 12345678;
+
+  /////////////////////////////////////////
+  //Informação proveniente de reference data
+  allCommunications: TenantCommunication[] = [];
+  allTerminals: TenantTerminal[] = [];
+
+  //////////////////////////////////////////
+
 
   /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
@@ -34,7 +44,21 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   edit: boolean;
   submissionId: string;
 
-  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService) {
+  loadReferenceData() {
+    this.tableInfo.GetTenantCommunications().then(success => {
+      this.allCommunications = success.result
+    }, error => {
+      console.log(error.msg);
+    });
+
+    this.tableInfo.GetTenantTerminals().then(success => {
+      this.allTerminals = success.result
+    }, error => {
+      console.log(error.msg);
+    });
+  }
+
+  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.baseUrl;
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
@@ -44,7 +68,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       if (this.storeEquip != undefined)
         this.edit = true;
     }
-
+    this.loadReferenceData();
     this.initializeForm();
 
     if (this.store.productCode == 'cardPresent') {

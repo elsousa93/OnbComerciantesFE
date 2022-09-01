@@ -618,7 +618,7 @@ export class ClientComponent implements OnInit {
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
-    if (this.docType === '004') { //código do Cartão do Cidadão
+    if (this.docType === '1001') { //código do Cartão do Cidadão
       this.isCC = true;
     } else {
       this.isCC = false;

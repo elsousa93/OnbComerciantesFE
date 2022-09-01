@@ -8,6 +8,8 @@ import { CRCService } from './CRC/crcservice.service';
 import { NGXLogger } from 'ngx-logger';
 import { AuthService } from './services/auth.service';
 import { translationLanguages } from './translationLanguages';
+import { TableInfoService } from './table-info/table-info.service';
+import { HttpMethod } from './enums/enum-data';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +34,14 @@ export class AppComponent {
   translationLanguages = translationLanguages;
 
   constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService) {
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
+
+    tableInfo.GetAddressByZipCodeTeste(2830, 105).then(success => {
+      console.log("sucesso: ", success);
+    }, error => {
+      console.log("error: ", error);
+    });
+
     //ir buscar as linguagens disponiveis. para adicionar uma nova linguagem basta adicionar à lista que se encontra no 'translationLanguages.ts'
     let langs = this.translationLanguages.map(val => {
       return val.abbreviation;
