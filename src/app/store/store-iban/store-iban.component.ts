@@ -7,9 +7,9 @@ import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { StoreService } from '../store.service';
-import { NGXLogger } from 'ngx-logger';
 import { AuthService } from '../../services/auth.service';
 import { UserPermissions } from '../../userPermissions/user-permissions';
+import { LoggerService } from 'src/app/logger.service';
 
 @Component({
   selector: 'app-store-iban',
@@ -117,7 +117,7 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
-  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(false, 3, 3), 0);
 
     if (this.route.getCurrentNavigation()?.extras?.state) {

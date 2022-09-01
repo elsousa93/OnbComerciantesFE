@@ -23,7 +23,6 @@ import { ReadcardService } from '../readcard/readcard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import jsPDF from 'jspdf';
 import { dataCC } from '../citizencard/dataCC.interface';
-import { NGXLogger } from 'ngx-logger';
 
 /** Listagem Intervenientes / Intervenientes
  *

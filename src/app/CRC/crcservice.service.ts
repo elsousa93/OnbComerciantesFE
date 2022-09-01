@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { merge, Observable, switchMap } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class CRCService {
   private authTokenUrl: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private authService: AuthService) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private authService: AuthService) {
     this.DOCASUrl = configuration.DOCASUrl;
     this.authTokenUrl = configuration.authTokenUrl
 

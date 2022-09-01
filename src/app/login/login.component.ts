@@ -4,7 +4,7 @@ import { ILogin } from 'src/app/login/ILogin.interface';
 import { AuthService } from '../services/auth.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service'
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     userid: ['', Validators.required],
     password: ['', Validators.required]
   })
-  constructor(private logger : NGXLogger, 
+  constructor(private logger : LoggerService, 
     private formBuilder: FormBuilder,
     private route: Router,
     private authService: AuthService,

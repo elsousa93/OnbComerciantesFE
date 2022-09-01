@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISubmission } from './ISubmission.interface';
 import { Configuration, configurationToken } from '../configuration';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Component({
   selector: 'app-submission',
@@ -20,7 +20,7 @@ export class SubmissionComponent implements OnInit {
   public submissionsList: ISubmission[] = [];
 
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute,
+  constructor(private logger : LoggerService, private router: ActivatedRoute,
     @Inject(configurationToken) private configuration: Configuration,
     private http: HttpClient, private route: Router) {
     this.baseUrl = configuration.baseUrl;

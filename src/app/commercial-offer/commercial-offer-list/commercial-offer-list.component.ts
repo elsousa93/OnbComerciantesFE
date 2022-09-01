@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { CommunicationOwnershipTypeEnum, EquipmentOwnershipTypeEnum, Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -215,7 +215,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService) {
+  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService) {
     this.baseUrl = configuration.baseUrl;
 
     if (this.route.getCurrentNavigation()?.extras?.state) {

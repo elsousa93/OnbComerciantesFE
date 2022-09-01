@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from '../../configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
@@ -67,7 +67,7 @@ export class ProductSelectionComponent implements OnInit {
   public isCombinedOffer: boolean = false;
   public isURLFilled: boolean = false;
 
-  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
     setTimeout(() => this.data.updateData(false, 3, 3), 0);
 
 

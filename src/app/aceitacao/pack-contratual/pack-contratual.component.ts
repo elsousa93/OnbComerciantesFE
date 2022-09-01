@@ -6,7 +6,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class PackContratualComponent implements OnInit{
   @ViewChild('submeterPedidoModal') submeterPedidoModal;
 
   
-  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
   private route: Router,
   private router: ActivatedRoute, private modalService: BsModalService,) {
 

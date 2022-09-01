@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from './configuration';
 import { ITableInformation } from './ITableInformation.interface';
 import { DataService } from './nav-menu-interna/data.service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class TableinfoService {
   }
   private baseUrl;
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute,
+  constructor(private logger : LoggerService, private router: ActivatedRoute,
     private http: HttpClient, 
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router,

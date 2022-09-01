@@ -6,7 +6,7 @@ import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angula
 import { TableInfoService } from '../table-info/table-info.service';
 import { CountryInformation, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class PepComponent implements OnInit {
   Countries: CountryInformation[] = [];
   stakeholdersRoles: StakeholderRole[] = [];
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute, private data: DataService,
+  constructor(private logger : LoggerService, private router: ActivatedRoute, private data: DataService,
     private http: HttpClient,
     private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private route: Router,

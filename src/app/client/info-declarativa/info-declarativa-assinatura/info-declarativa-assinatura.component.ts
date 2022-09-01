@@ -8,7 +8,7 @@ import { DataService } from '../../../nav-menu-interna/data.service';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -31,7 +31,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
-  constructor(private logger : NGXLogger, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService) {
+  constructor(private logger : LoggerService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService) {
     this.baseUrl = configuration.baseUrl;
     http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;

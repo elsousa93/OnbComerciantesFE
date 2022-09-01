@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
 import { IStakeholders } from './IStakeholders.interface';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class StakeholderService {
   private urlOutbound: string;
 
 
-  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
     this.baseUrl = configuration.acquiringAPIUrl;      
     this.urlOutbound = configuration.outboundUrl;
 

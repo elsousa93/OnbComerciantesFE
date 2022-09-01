@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class DataService {
   currentPage = this.dataPage.asObservable();
   currentSubPage = this.dataSubPage.asObservable();
 
-  constructor(private logger : NGXLogger, ) { }
+  constructor(private logger : LoggerService, ) { }
 
   //mudar valores do map
   changeData(values: Map<number, boolean>) {

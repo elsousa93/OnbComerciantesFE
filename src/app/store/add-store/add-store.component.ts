@@ -13,7 +13,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { Merchant, SubmissionGetTemplate } from '../../submission/ISubmission.interface';
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { StoreService } from '../store.service';
 import { Country } from '../../stakeholders/IStakeholders.interface';
 
@@ -160,7 +160,7 @@ export class AddStoreComponent implements OnInit {
 
       this.submissionClient = client;
 
-      this.logger.debug("cliente da submissao: ", this.submissionClient);
+      this.logger.debug("cliente da submissao: " + this.submissionClient);
       this.updateForm();
     });
 
@@ -178,7 +178,7 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private logger: NGXLogger, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
     this.submissionId = localStorage.getItem("submissionId");
     this.fetchStartingInfo();
     this.loadTableInfo();

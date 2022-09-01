@@ -23,7 +23,7 @@ import { ReadcardService } from '../readcard/readcard.service';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { SubmissionService } from '../submission/service/submission-service.service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import jsPDF from 'jspdf';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -111,7 +111,7 @@ export class ClientComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    this.logger.debug("okCC valor: ", this.okCC);
+    this.logger.debug("okCC valor: "+ this.okCC);
   }
   setAddressFalse() {
     this.addressReading = false;
@@ -333,7 +333,7 @@ export class ClientComponent implements OnInit {
   public returned: string;
   public merchantInfo: any;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService,
@@ -361,12 +361,12 @@ export class ClientComponent implements OnInit {
     if (this.returned !== null) { // && this.returned !== undefined
       this.logger.debug("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
+        this.logger.debug('Submissão retornada quando pesquisada pelo número de processo'+ result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.logger.debug('Submissão com detalhes mais especificos ', resul);
+          this.logger.debug('Submissão com detalhes mais especificos '+ resul);
           this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
-            this.logger.debug("MERCHANT QUE FOMOS BUSCAR ", this.merchantInfo);
+            this.logger.debug("MERCHANT QUE FOMOS BUSCAR "+ this.merchantInfo);
             if (this.merchantInfo.merchantType == 'Corporate') {
               this.logger.debug("O tipo é empresa");
               this.activateButtons(true); // se for Empresa
@@ -584,7 +584,7 @@ export class ClientComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.modalService.onHide.subscribe((e) => {
-      this.logger.debug('close', this.modalService);
+      this.logger.debug('close'+ this.modalService);
     });
     this.returned = localStorage.getItem("returned");
 
@@ -694,9 +694,9 @@ export class ClientComponent implements OnInit {
   activateButtons(id: boolean) {
     this.newClient.clientId = '';
     this.newClient.documentationDeliveryMethod = '';
-    this.logger.debug("Client typology: ", this.clientTypology);
-    this.logger.debug("isCC:  ", this.isCC, this.isCC);
-    this.logger.debug("showENI:  ", this.showENI);
+    this.logger.debug("Client typology: "+ this.clientTypology);
+    this.logger.debug("isCC:  "+ this.isCC+ this.isCC);
+    this.logger.debug("showENI:  "+ this.showENI);
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;

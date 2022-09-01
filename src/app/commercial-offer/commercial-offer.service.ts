@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { Configuration, configurationToken } from '../configuration';
 import { Product, ProductPack, ProductPackCommission, ProductPackCommissionEntry, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer';
 
@@ -12,7 +12,7 @@ export class CommercialOfferService {
   public baseUrl: string;
   public urlOutbound: string;
 
-  constructor(private logger: NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
     this.baseUrl = configuration.acquiringAPIUrl;
     this.urlOutbound = configuration.outboundUrl;
   }
