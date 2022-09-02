@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Configuration, configurationToken } from '../configuration';
+import { HttpMethod } from '../enums/enum-data';
+import { TreatedResponse } from '../table-info/ITable-info.interface';
+import { TableInfoService } from '../table-info/table-info.service';
 import { Product, ProductPack, ProductPackCommission, ProductPackCommissionEntry, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer';
 
 @Injectable({
@@ -12,11 +15,82 @@ export class CommercialOfferService {
   public baseUrl: string;
   public urlOutbound: string;
 
-  constructor(private logger: NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger: NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.acquiringAPIUrl;
     this.urlOutbound = configuration.outboundUrl;
   }
 
+  //JÁ COM O NOVO FORMATO (TESTES)
+  OutboundGetProductsAvailable(): Promise<TreatedResponse<Product[]>> {
+    var URI = this.urlOutbound + "api/v1/product/catalog";
+
+    var treatedResponse: TreatedResponse<Product[]> = {};
+
+
+    return new Promise<TreatedResponse<Product[]>>((resolve, reject) => {
+      this.tableInfo.callAPIOutbound(HttpMethod.GET, URI, "por mudar", "por mudar", "por mudar", "por mudar").then(success => {
+        console.log("success: ", success);
+
+        treatedResponse.result = success.result;
+        treatedResponse.msg = "sucesso";
+
+        resolve(treatedResponse);
+
+      }, error => {
+        treatedResponse.result = null;
+        treatedResponse.msg = "Codigo errado";
+      });
+    });
+  }
+
+  OutboundGetPacks(productPackFilter: ProductPackFilter): Promise<TreatedResponse<ProductPackEntry[]>> {
+    var URI = this.urlOutbound + "api/v1/product/pack";
+
+    var treatedResponse: TreatedResponse<ProductPackEntry[]> = {};
+
+
+    return new Promise<TreatedResponse<ProductPackEntry[]>>((resolve, reject) => {
+      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
+        console.log("success: ", success);
+
+        treatedResponse.result = success.result;
+        treatedResponse.msg = "sucesso";
+
+        resolve(treatedResponse);
+
+      }, error => {
+        treatedResponse.result = null;
+        treatedResponse.msg = "Codigo errado";
+      });
+    });
+  }
+
+  OutboundGetPackDetails(packID: string, productPackFilter: ProductPackFilter): Promise<TreatedResponse<ProductPack>> {
+    var URI = this.urlOutbound + "api/v1/product/pack/" + packID;
+
+    var treatedResponse: TreatedResponse<ProductPack> = {};
+
+
+    return new Promise<TreatedResponse<ProductPack>>((resolve, reject) => {
+      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
+        console.log("success: ", success);
+
+        treatedResponse.result = success.result;
+        treatedResponse.msg = "sucesso";
+
+        resolve(treatedResponse);
+
+      }, error => {
+        treatedResponse.result = null;
+        treatedResponse.msg = "Codigo errado";
+      });
+    });
+  }
+
+
+  
+  ////////////////////////////////
+  //FORMATO ANTIGO
   GetProductsAvailable(requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
 
     var URI = this.urlOutbound + "api/v1/product/catalog";

@@ -27,6 +27,7 @@ export class TableInfoService {
           resolve(requestResponse);
         },
         error: (err: any) => {
+          console.log("erro obj: ", err);
           requestResponse.result = null;
           requestResponse.error = {
             code: err.status,

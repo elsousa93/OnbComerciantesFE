@@ -62,7 +62,7 @@ export interface ShopDetailsAcquiring {
 
 //Interfaces auxiliares
 
-interface ShopProductPack {
+export interface ShopProductPack {
   packId?: string
   packDetails?: ProductPackRootAttributeProductPackKind[]
   commission?: ShopProductPackCommission

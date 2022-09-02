@@ -181,7 +181,7 @@ export enum TerminalSupportEntityEnum {
   ACQUIRER = "acquirer"
 }
 
-enum ProductPackKindEnum {
+export enum ProductPackKindEnum {
   SIMPLE = "simple",
   ADVANCED = "advanced"
 }

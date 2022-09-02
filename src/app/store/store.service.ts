@@ -129,4 +129,7 @@ export class StoreService {
   updateShopEquipmentConfigurationsInSubmission(submissionId: string, shopId: string, newShopEquipment: ShopEquipment) {
     return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment', newShopEquipment);
   }
+
+
+
 }
