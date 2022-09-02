@@ -20,7 +20,7 @@ import { CRCProcess } from '../../CRC/crcinterfaces';
 import { ProcessService } from '../../process/process.service';
 import { DatePipe, formatDate } from '@angular/common';
 import { Configuration, configurationToken } from 'src/app/configuration';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 
 
@@ -571,7 +571,7 @@ export class ClientByIdComponent implements OnInit {
     //}
   }
 
-  constructor(private logger : NGXLogger, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
     
     

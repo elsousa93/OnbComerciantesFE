@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { ComprovativosService } from './comprovativos/services/comprovativos.services';
@@ -53,8 +53,9 @@ import { PackContratualComponent } from './aceitacao/pack-contratual/pack-contra
 import { ObterPackContratualComponent } from './aceitacao/obter-pack-contratual/obter-pack-contratual.component';
 import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-stakeholder.component';
 import { CreateStakeholderComponent } from './stakeholders/create-stakeholder/create-stakeholder.component';
-import { LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_WRITER_SERVICE } from 'ngx-logger';
+import { LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_WRITER_SERVICE, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { WriterCustomService } from 'src/logger/writer-custom.service';
+import { ServerCustomService } from 'src/logger/server-custom.service';
 import { AuthComponent } from './auth/auth.component';
 import { RepresentationPowerComponent } from './client/representation-power/representation-power.component';
 
@@ -62,7 +63,6 @@ import { RepresentationPowerComponent } from './client/representation-power/repr
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 import { environment } from 'src/environments/environment';
-import { NGXLogger } from 'ngx-logger';
 import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
 import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
 import { AuthService } from './services/auth.service';
@@ -76,6 +76,7 @@ registerLocaleData(localePT);
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/');
 }
+
 
 @NgModule({
   declarations: [
@@ -197,12 +198,18 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     LoggerModule.forRoot({
       level : environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
-      enableSourceMaps: true
+      enableSourceMaps: true,
+      serverLoggingUrl:"/BELogging",
+      serverLogLevel:NgxLoggerLevel.DEBUG
+      
     },{
       writerProvider : {
           provide: TOKEN_LOGGER_WRITER_SERVICE, useClass: WriterCustomService
+        },
+      serverProvider : {
+          provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: ServerCustomService
         }
-    })
+    }),
   ],
   providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
   bootstrap: [AppComponent]

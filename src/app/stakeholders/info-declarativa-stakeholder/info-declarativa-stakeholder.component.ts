@@ -17,7 +17,7 @@ import { StakeholderService } from '../stakeholder.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { ConstantPool } from '@angular/compiler';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -72,7 +72,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private logger : NGXLogger, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
+  constructor(private logger : LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     this.baseUrl = configuration.baseUrl;
 
     this.ngOnInit();

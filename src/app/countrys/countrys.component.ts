@@ -19,7 +19,7 @@ import { IStakeholders, StakeholdersProcess } from '../stakeholders/IStakeholder
 import { Configuration, configurationToken } from '../configuration';
 import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 
 @Component({
@@ -123,7 +123,7 @@ export class CountrysComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
-  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
     private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService, private storeService: StoreService) {
     this.ngOnInit();

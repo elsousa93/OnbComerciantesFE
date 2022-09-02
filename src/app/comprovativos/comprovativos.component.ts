@@ -19,7 +19,7 @@ import { SubmissionGetTemplate, SubmissionPutTemplate } from '../submission/ISub
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { ComprovativosTemplate, IComprovativos } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 
 @Component({
@@ -199,7 +199,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     return blob;
   }
 
-  constructor(private logger: NGXLogger, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger: LoggerService, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
     private modalService: BsModalService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
@@ -209,7 +209,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     var context = this;
     this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
       this.submission = result;
-      this.logger.debug('Submission ', result);
+      this.logger.debug('Submission ' + result);
 
       //this.crcService.getCRC('001', '001').subscribe(result => {
 
@@ -288,12 +288,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
       this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
         this.submissionClient = c;
-        this.logger.debug('Cliente ', c);
+        this.logger.debug('Cliente ' + c);
       });
 
       this.submission.stakeholders.forEach(stake => {
         this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-          this.logger.debug('Stakeholder ', result);
+          this.logger.debug('Stakeholder ' + result);
           this.stakeholdersList.push(result);
         });
       });
@@ -349,10 +349,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       //});
     });
 
-    this.logger.debug('Submission ', this.submission);
-    this.logger.debug('Client ', this.client);
-    this.logger.debug('stakeholders list ', this.stakeholdersList);
-    this.logger.debug('Submission id ', localStorage.getItem("submissionId"));
+    this.logger.debug('Submission ' + this.submission);
+    this.logger.debug('Client ' + this.client);
+    this.logger.debug('stakeholders list ' + this.stakeholdersList);
+    this.logger.debug('Submission id ' + localStorage.getItem("submissionId"));
     this.ngOnInit();
 
   }
@@ -453,7 +453,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     this.fileToDelete = null;
     //this.compService.delFile(this.id).subscribe(data => {
-    //  this.logger.debug("DATA: ", data);
+    //  this.logger.debug("DATA: " + data);
     //  if (data != null) {
     //    alert("Ficheiro apagado com sucesso!!");
     //    this.load();
@@ -507,7 +507,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           "data": {}
         }
         this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
-          this.logger.debug('Ficheiro foi submetido ', result);
+          this.logger.debug('Ficheiro foi submetido ' + result);
         });
       })
     });
@@ -515,11 +515,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (this.returned !== null) {
       this.logger.debug("Entrei no if dos comprovativos quando faço o submit ");
       this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
-      this.logger.debug("Objeto com os valores atualizados ", this.submissionPutTeste);
+      this.logger.debug("Objeto com os valores atualizados " + this.submissionPutTeste);
     }
 
     this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
-      this.logger.debug('Editar sub ', result);
+      this.logger.debug('Editar sub ' + result);
     });
 
 

@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from '../configuration';
 import { Client } from './Client.interface';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class ClientService {
   private baseUrl: string;
   private urlOutbound: string;
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute,
+  constructor(private logger : LoggerService, private router: ActivatedRoute,
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
       this.baseUrl = configuration.baseUrl;
       this.urlOutbound = configuration.outboundUrl;
@@ -21,7 +21,6 @@ export class ClientService {
     }
 
   GetClientById(submissionID: string): any {
-    this.logger.info(`Getting client for submission ${submissionID}`)
     return this.http.get<Client>(this.baseUrl + 'submission/' + submissionID + "/merchant");
   }
 

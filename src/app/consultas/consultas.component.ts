@@ -17,7 +17,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { ClientService } from '../client/client.service';
 import { Configuration, configurationToken } from '../configuration';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 interface Process {
   processNumber: string;
@@ -51,7 +51,7 @@ export class ConsultasComponent implements OnInit{
   public subscription: Subscription;
 
   
-  constructor(private logger : NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
     private router: ActivatedRoute, private submissionService: SubmissionService, private clientService: ClientService) {
 

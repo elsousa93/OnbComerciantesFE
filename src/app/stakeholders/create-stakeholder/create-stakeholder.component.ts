@@ -24,7 +24,7 @@ import { ReadcardService } from '../../readcard/readcard.service';
 
 import jsPDF from 'jspdf';
 import { BrowserModule } from '@angular/platform-browser';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 
 @Component({
@@ -90,7 +90,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    this.logger.debug("okCC valor: ", this.okCC);
+    this.logger.debug("okCC valor: " + this.okCC);
   }
   setAddressFalse() {
     this.addressReading = false;
@@ -236,7 +236,7 @@ export class CreateStakeholderComponent implements OnInit {
   testEvent = this.searchEvent.asObservable();
 
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
+  constructor(private logger : LoggerService, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
     private stakeholderService: StakeholderService, private submissionService: SubmissionService,
     private submissionDocumentService: SubmissionDocumentService  ) {

@@ -14,7 +14,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { error } from '@angular/compiler/src/util';
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -116,7 +116,7 @@ export class NewStakeholderComponent implements OnInit {
     this.loadStakeholdersRoles();
   }
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute,
+  constructor(private logger : LoggerService, private router: ActivatedRoute,
     private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService, private datePipe: DatePipe) {

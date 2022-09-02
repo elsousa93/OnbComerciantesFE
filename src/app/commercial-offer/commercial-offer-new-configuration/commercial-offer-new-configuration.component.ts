@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StoreService } from '../../store/store.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
@@ -58,7 +58,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
     });
   }
 
-  constructor(private logger: NGXLogger, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService) {
+    constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.baseUrl;
 
     if (this.route.getCurrentNavigation()?.extras?.state) {

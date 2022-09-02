@@ -5,7 +5,7 @@ import autoTable from 'jspdf-autotable';
 import { DatePipe } from '@angular/common';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from './fileAndDetailsCC.interface';
 
 @Injectable({
@@ -15,7 +15,7 @@ import { FileAndDetailsCC } from './fileAndDetailsCC.interface';
 export class ReadcardService {
 
   constructor(private comprovativosService: ComprovativosService, private documentService: SubmissionDocumentService,
-    private logger: NGXLogger) { }
+    private logger: LoggerService) { }
 
   async formatPDF(ccArrayData: Array<string>): Promise<FileAndDetailsCC> {
     return new Promise<FileAndDetailsCC>((resolve, reject) => {

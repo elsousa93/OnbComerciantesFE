@@ -3,7 +3,7 @@ import { Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
 import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -61,7 +61,7 @@ export class NavMenuPresencialComponent implements OnInit {
   translationLanguages = translationLanguages;
   currentLanguage: TranslationLanguage;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: NGXLogger, public translate: TranslateService) {
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: LoggerService, public translate: TranslateService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido

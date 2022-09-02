@@ -5,9 +5,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CRCService } from './CRC/crcservice.service';
-import { NGXLogger } from 'ngx-logger';
 import { AuthService } from './services/auth.service';
 import { translationLanguages } from './translationLanguages';
+import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from './table-info/table-info.service';
 import { HttpMethod } from './enums/enum-data';
 
@@ -33,7 +33,7 @@ export class AppComponent {
 
   translationLanguages = translationLanguages;
 
-  constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
+    constructor(private logger: LoggerService, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
 
     tableInfo.GetAddressByZipCodeTeste(2830, 105).then(success => {

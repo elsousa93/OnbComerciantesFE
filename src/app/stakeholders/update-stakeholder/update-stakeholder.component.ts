@@ -6,7 +6,7 @@ import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/form
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 //import { DataService } from '../nav-menu-interna/data.service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Component({
   selector: 'app-update-stakeholder',
@@ -96,7 +96,7 @@ export class UpdateStakeholderComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute,
+  constructor(private logger : LoggerService, private router: ActivatedRoute,
     private http: HttpClient, 
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router,  private fb: FormBuilder) {
@@ -158,11 +158,11 @@ export class UpdateStakeholderComponent implements OnInit {
       postalArea: this.newStake.fiscalAddress.postalArea,
       country: this.newStake.fiscalAddress.country,
     });
-    this.logger.debug("New Stake uploaded: ", this.newStake);
+    this.logger.debug("New Stake uploaded: " + this.newStake);
   }
 
   submit(formUpdateStakeholder) {
-    this.logger.debug("Form result: ", formUpdateStakeholder);
+    this.logger.debug("Form result: " + formUpdateStakeholder);
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     }

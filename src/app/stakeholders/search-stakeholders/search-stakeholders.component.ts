@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, EventEmitter, OnInit, Inject, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { config, Observable, Subscription } from 'rxjs';
 import { ClientService } from '../../client/client.service';
 import { Configuration, configurationToken } from '../../configuration';
@@ -42,7 +42,7 @@ export class SearchStakeholdersComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
   currentStakeholder: IStakeholders = {};
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private stakeholderService: StakeholderService, private authService: AuthService) {
     

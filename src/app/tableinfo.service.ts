@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from './configuration';
 import { ITableInformation } from './ITableInformation.interface';
 import { DataService } from './nav-menu-interna/data.service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class TableinfoService {
   }
   private baseUrl;
 
-  constructor(private logger : NGXLogger, private router: ActivatedRoute,
+  constructor(private logger : LoggerService, private router: ActivatedRoute,
     private http: HttpClient, 
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router,
@@ -27,19 +27,22 @@ export class TableinfoService {
 
 // To get: /api/country
   getAllCountriesList() {
-    this.logger.debug("get all countries service");
-    this.http.get<ITableInformation>(this.baseUrl + 'betable/GetAllCountries/').subscribe(result => {
-      this.logger.debug(result);
-    }, error => console.error(error));
+    let messageId = ""
+    let url = this.baseUrl + 'betable/GetAllCountries/';
+    this.http.get<ITableInformation>(url , {observe: "response"}).subscribe(result => {
+      this.logger.response(result, "");
+    }, error => this.logger.responseCustom(url, JSON.stringify(error.headers), error.message, messageId, error.status.toString()));
   }
 
 
 // To get: /api/country/{code} 
   getCountry(countryCode) {
-    this.logger.debug("get a specific country service");
-    this.http.get<ITableInformation>(this.baseUrl + 'betable/GetCountry/' + countryCode).subscribe(result => {
-      this.logger.debug(result);
-    }, error => console.error(error));
+    let messageId = ""
+    let url = this.baseUrl + 'betable/GetCountry/' + countryCode;
+    this.logger.request("GET", this.baseUrl + 'betable/GetAllCountries/', "", "", messageId);
+    this.http.get<ITableInformation>(url, {observe: "response"} ).subscribe(result => {
+      this.logger.response(result, "");
+    }, error => this.logger.responseError(error, ""));
   }
 
 

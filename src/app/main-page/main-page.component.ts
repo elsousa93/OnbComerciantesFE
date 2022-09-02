@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { CRCService } from '../CRC/crcservice.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class MainPageComponent implements OnInit {
   isToggle: boolean = false;
   isAutoHide: boolean = false;
 
-  constructor(private logger: NGXLogger, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
+  constructor(private logger: LoggerService, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService) {
     translate.addLangs(['pt', 'en']);
     translate.setDefaultLang('pt');

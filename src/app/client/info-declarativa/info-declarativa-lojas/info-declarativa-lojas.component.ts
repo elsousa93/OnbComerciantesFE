@@ -13,7 +13,7 @@ import { TableInfoService } from '../../../table-info/table-info.service';
 import { Client } from '../../Client.interface';
 import { ClientService } from '../../client.service';
 import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 
 const testValues: ShopDetailsAcquiring[] = [
   {
@@ -126,7 +126,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-    constructor(private logger: NGXLogger, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
+    constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
     this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
     

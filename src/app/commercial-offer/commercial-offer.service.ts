@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { TreatedResponse } from '../table-info/ITable-info.interface';
@@ -15,12 +15,12 @@ export class CommercialOfferService {
   public baseUrl: string;
   public urlOutbound: string;
 
-  constructor(private logger: NGXLogger, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService) {
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
     this.baseUrl = configuration.acquiringAPIUrl;
     this.urlOutbound = configuration.outboundUrl;
   }
 
-  //JÁ COM O NOVO FORMATO (TESTES)
+  //J� COM O NOVO FORMATO (TESTES)
   OutboundGetProductsAvailable(): Promise<TreatedResponse<Product[]>> {
     var URI = this.urlOutbound + "api/v1/product/catalog";
 

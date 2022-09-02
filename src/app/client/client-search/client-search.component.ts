@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, OnInit, Inject, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NGXLogger } from 'ngx-logger';
+import { LoggerService } from 'src/app/logger.service';
 import { Configuration, configurationToken } from '../../configuration';
 import { AuthService } from '../../services/auth.service';
 import { Client } from '../Client.interface';
@@ -30,7 +30,7 @@ export class ClientSearchComponent implements OnInit {
   //Variáveis locais
   clientsToShow: Client[] = [];
   
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: NGXLogger,
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private clientService: ClientService, private authService: AuthService) { }
 
