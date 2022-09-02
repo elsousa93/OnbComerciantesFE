@@ -63,7 +63,6 @@ import { RepresentationPowerComponent } from './client/representation-power/repr
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 import { environment } from 'src/environments/environment';
-import { NGXLogger } from 'ngx-logger';
 import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
 import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
 import { AuthService } from './services/auth.service';

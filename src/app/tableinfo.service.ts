@@ -27,19 +27,22 @@ export class TableinfoService {
 
 // To get: /api/country
   getAllCountriesList() {
-    this.logger.debug("get all countries service");
-    this.http.get<ITableInformation>(this.baseUrl + 'betable/GetAllCountries/').subscribe(result => {
-      this.logger.debug(result);
-    }, error => console.error(error));
+    let messageId = ""
+    let url = this.baseUrl + 'betable/GetAllCountries/';
+    this.http.get<ITableInformation>(url , {observe: "response"}).subscribe(result => {
+      this.logger.response(result, "");
+    }, error => this.logger.responseCustom(url, JSON.stringify(error.headers), error.message, messageId, error.status.toString()));
   }
 
 
 // To get: /api/country/{code} 
   getCountry(countryCode) {
-    this.logger.debug("get a specific country service");
-    this.http.get<ITableInformation>(this.baseUrl + 'betable/GetCountry/' + countryCode).subscribe(result => {
-      this.logger.debug(result);
-    }, error => console.error(error));
+    let messageId = ""
+    let url = this.baseUrl + 'betable/GetCountry/' + countryCode;
+    this.logger.request("GET", this.baseUrl + 'betable/GetAllCountries/', "", "", messageId);
+    this.http.get<ITableInformation>(url, {observe: "response"} ).subscribe(result => {
+      this.logger.response(result, "");
+    }, error => this.logger.responseError(error, ""));
   }
 
 
