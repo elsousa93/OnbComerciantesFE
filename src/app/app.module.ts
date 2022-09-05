@@ -199,7 +199,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LoggerModule.forRoot({
       level : environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
       enableSourceMaps: true,
-      serverLoggingUrl:"/BELogging",
+      serverLoggingUrl:"BELogging",
       serverLogLevel:NgxLoggerLevel.DEBUG
       
     },{

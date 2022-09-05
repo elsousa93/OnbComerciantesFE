@@ -361,7 +361,8 @@
     "deleteProcess": "Quer apagar este processo?",
     "maintainProcess": "Manter Processo",
     "confirmDeleteProcess": "Apagar Processo",
-    "save": "Gravar"
+    "save": "Gravar",
+    "select": "Selecione"
   },
   "generalButtons": {
     "continue": "Continuar",

@@ -99,7 +99,7 @@ export class NewStakeholderComponent implements OnInit {
     this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
     }, error => {
-      this.logger.debug(error);
+      this.logger.error(error);
     })
   }
 
@@ -107,7 +107,7 @@ export class NewStakeholderComponent implements OnInit {
     this.tableData.GetAllStakeholderRoles().subscribe(result => {
       this.stakeholdersRoles = result;
     }, error => {
-      this.logger.debug(error);
+      this.logger.error(error);
     });
   }
 
