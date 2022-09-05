@@ -23,11 +23,9 @@ export class AuthComponent implements OnInit {
   constructor(private token: TokenService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    console.log("roles: ", this.roles);
     this.generateAuthForm();
 
     this.authService.currentUser.subscribe(result => {
-      console.log("Autenticado atual: ", result);
     })
   }
 
@@ -35,7 +33,6 @@ export class AuthComponent implements OnInit {
     console.log(this.authForm);
 
     if (this.authForm.invalid) {
-      console.log("inválido");
       return;
     }
 
@@ -62,7 +59,6 @@ export class AuthComponent implements OnInit {
     console.log(this.authForm);
 
     if (this.authForm.invalid) {
-      console.log("inválido");
       return;
     }
 

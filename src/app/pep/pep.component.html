@@ -78,12 +78,6 @@
                             <input formControlName="pepSinceWhen" name="pepSinceWhen" id="pepSinceWhen" type="date"
                               class="form-control campo_form" value="">
                           </div>
-                        <!-- <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepType').touched && !this.form.get('pepType').valid">
-                          <div *ngIf="this.form.get('pepType').errors && this.form.get('pepType').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
-                        </div> -->
                         <div class="col-6 ms-0 me-0 ps-0 pe-5">
                         <p class="form-check-label titulo-form-simples mt-0 text-start" for="pepCountry">
                           {{'declarativeInformation.stakeholder.pep.country'|translate}}:*</p>
@@ -94,13 +88,6 @@
                           </select>
                           <p class="titulo-form-simples"></p>
                         </div>
-                        <!-- <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepCountry').touched && !this.form.get('pepCountry').valid">
-                          <div
-                            *ngIf="this.form.get('pepCountry').errors && this.form.get('pepCountry').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
-                        </div> -->
                         <hr>
                         </div>
                         <p class="titulo-form-simples"></p>
@@ -135,12 +122,6 @@
                           <option>Filha</option>
                         </select>
                         </div><hr></div>
-                        <!-- <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepFamilyRelation').touched && !this.form.get('pepFamilyRelation').valid">
-                          <div *ngIf="this.form.get('pepFamilyRelation').errors && this.form.get('pepFamilyRelation').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div> 
-                        </div>-->
                       </div>
                     </div>
                     <!--Fecha é familiar de uma PEP-->
@@ -176,13 +157,6 @@
                           <option value="">{{'declarativeInformation.stakeholder.pep.relationType'|translate}}:</option>
                           <option value="1">Sócio </option>
                         </select>
-                        <!-- <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepTypeOfRelation').touched && !this.form.get('pepTypeOfRelation').valid">
-                          <div
-                            *ngIf="this.form.get('pepTypeOfRelation').errors && this.form.get('pepTypeOfRelation').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
-                        </div> -->
                       </div><hr></div><p class="titulo-form-simples"></p>
                     </div>
                     <div class="form-group" *ngIf="isVisiblePepRelations == false || isVisiblePepRelations == true && isPEPRelationSelected == true">
@@ -214,13 +188,6 @@
                           name="pepPoliticalPublicJobDesignation" id="pepPoliticalPublicJobDesignation">
                           <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
                         </select>
-                        <!-- <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepPoliticalPublicJobDesignation').touched && !this.form.get('pepPoliticalPublicJobDesignation').valid">
-                          <div
-                            *ngIf="this.form.get('pepPoliticalPublicJobDesignation').errors && this.form.get('pepPoliticalPublicJobDesignation').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
-                        </div> -->
                       </div><hr>
                     </div><p class="titulo-form-simples"></p></div>
                     </div>

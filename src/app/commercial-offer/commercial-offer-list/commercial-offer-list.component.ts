@@ -1130,7 +1130,6 @@ export class CommercialOfferListComponent implements OnInit {
 
     var context = this;
 
-    console.log("CHECKBOXES:");
     pack.forEach(function (value, idx) {
       console.log(value)
       var group = new FormGroup({});

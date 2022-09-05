@@ -50,15 +50,12 @@ export class SearchStakeholdersComponent implements OnInit {
 
   ngOnInit() {
     var context = this;
-    console.log("------");
     this.eventsSubscription = this.clientID.subscribe(result => {
-      console.log("result:", result);
       context.searchStakeholders(result);
     });
   }
 
   searchStakeholders(clientID) {
-    console.log("pesquisou");
     var context = this;
 
     /*this.onSearchSimulation(22181900000011);*/

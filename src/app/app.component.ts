@@ -68,7 +68,6 @@ export class AppComponent {
   ngOnInit() {
     var context = this;
     window.addEventListener('beforeunload', function () {
-      console.log("app component reload !!!");
       context.saveAuthState();
     });
 
@@ -105,7 +104,6 @@ export class AppComponent {
   }
 
   refresh(): void {
-    console.log("deu refresh!!");
     console.log("a guardar: ", this.authService.GetCurrentUser());
     localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
       window.location.reload();

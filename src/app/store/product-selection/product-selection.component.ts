@@ -73,7 +73,6 @@ export class ProductSelectionComponent implements OnInit {
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
-      console.log('Store recebddnjkn ', this.store);
     }
   }
 
@@ -141,7 +140,6 @@ export class ProductSelectionComponent implements OnInit {
     this.store.subproductCode = this.formStores.get("subProduct").value;
     this.store.website = this.formStores.get("url").value;
 
-    console.log("Store submetida ", this.store);
 
     this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.store).subscribe(result => {
       console.log("Uma nova loja foi adicionada à submissão", result);

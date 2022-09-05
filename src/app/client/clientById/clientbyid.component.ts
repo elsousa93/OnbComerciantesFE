@@ -971,6 +971,7 @@ export class ClientByIdComponent implements OnInit {
 
   GetCountryByZipCode() {
     var zipcode = this.form.value['ZIPCode'];
+    console.log("ZIP Code length: " + zipcode.length);
     if (zipcode.length === 8) {
       var zipCode = zipcode.split('-');
 
@@ -982,6 +983,11 @@ export class ClientByIdComponent implements OnInit {
         this.form.get('country').setValue(addressToShow.country);
         this.form.get('location').setValue(addressToShow.postalArea);
       });
+    } else if (zipcode.length === 0){
+        this.form.get('ZIPCode').setValue(null);
+        this.form.get('address').setValue(null);
+        this.form.get('country').setValue(null);
+        this.form.get('location').setValue(null);
     }
   }
 

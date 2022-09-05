@@ -225,9 +225,6 @@ export class NewStakeholderComponent implements OnInit {
     this.isStakeholderFromCC(this.currentStakeholder);
 
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
-    console.log("Selecionou outro stakeholder", this.currentStakeholder);
-    console.log("é do crc? ", this.selectedStakeholderIsFromCRC);
-    console.log("é do CC? ", this.selectedStakeholderIsFromCC);
 
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
@@ -258,7 +255,6 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   initializeFormWithoutCC() {
-    console.log("STAKEHOLDER NIF:", this.currentStakeholder);
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl((this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined) ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : false, Validators.required),
@@ -307,7 +303,6 @@ export class NewStakeholderComponent implements OnInit {
   }
 
   submit() {
-    console.log('OlaAAAAAAAAAAAAAAAAAAAAAA');
     if (this.returned !== 'consult') {
       if (this.formNewStakeholder.valid) {
         if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
@@ -454,13 +449,10 @@ export class NewStakeholderComponent implements OnInit {
     var teste1 = true;
     
     if ((teste === 'consult' ? true : null) || teste1)
-      console.log("entrou aqui no if do ou");
 
     var currentCountry = this.formNewStakeholder.get('Country').value;
 
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
-    console.log("tamanho do codigo postal: ", zipcode.length);
-    console.log("zipcode: ", zipcode);
 
     if (currentCountry === 'PT') {
       this.lockLocality = true;

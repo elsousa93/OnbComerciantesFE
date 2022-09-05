@@ -415,8 +415,6 @@ export class AddStoreComponent implements OnInit {
     })
       this.formStores.get("activityStores").valueChanges.subscribe(v => {
         this.logger.debug("alterou");
-        console.log("Alterou activity stores");
-        console.log(v);
         var subactivities = this.activities.find(element => element.code === v)["subactivities"];
 
         this.subActivities = subactivities;

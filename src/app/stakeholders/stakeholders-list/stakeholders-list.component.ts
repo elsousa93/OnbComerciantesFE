@@ -48,7 +48,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   //subStakeholders: StakeholdersCompleteInformation[] = [];
 
   ngOnInit(): void {
-    console.log('Oninit');
     this.returned = localStorage.getItem("returned");
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 500);
@@ -61,7 +60,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   }
 
   getSubmissionStakeholders() {
-    console.log('getSubmission');
     var context = this;
     if (this.returned !== null) { 
       this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
@@ -86,13 +84,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     }
 
     if (this.submissionId !== null) {
-      console.log("submissionId é !== null");
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-        console.log("resultado: todos os stakeholders: ", result);
         result.forEach(function (value, index) {
-          console.log("valor de cada iteração foreach: ", value);
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            console.log("stakeholder individual: ", result);
             var AcquiringStakeholder = result;
             var stakeholderToInsert = {
               displayName: '',
@@ -105,7 +99,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
             context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
               stakeholderToInsert.stakeholderOutbound = outboundResult;
-              console.log("stakeholder com a informação completa: ", stakeholderToInsert);
               context.submissionStakeholders.push(stakeholderToInsert);
               
             })
