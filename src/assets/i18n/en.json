@@ -5,7 +5,7 @@
     "backOffice": "Backoffice Treatment",
     "returned": "Returned Backoffice",
     "acceptance": "Acceptance phase",
-    "pendingFisical": "Pending submissions for physical file",
+    "pendingElligibility": "Pending submissions for physical file",
     "queues": "Queues",
     "processNumber": "Process Number",
     "processDate": "Process Date",

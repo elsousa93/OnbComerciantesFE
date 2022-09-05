@@ -25,14 +25,14 @@
                 <div class="alert alert-danger"
                *ngIf="this.formStores.get('storeName').touched && !this.formStores.get('storeName').valid">
             <div *ngIf="this.formStores.get('storeName').errors && this.formStores.get('storeName').errors?.['required']">
-              {{'ObligatoryParameter'|translate}}
+              {{'generalKeywords.mandatoryParameter'|translate}}
             </div>
           </div>
               <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}</p>
                 <select class="form-select campo-form-select"
                         id="activityStores" formControlName="activityStores">
-                  <option *ngFor="let activity of activities" value={{activity.code}}>
-                    {{activity.description}}
+                  <option *ngFor="let activity of activities" value={{activity.activityCode}}>
+                    {{activity.activityDescription}}
                   </option>
                 </select>
 
@@ -76,8 +76,8 @@
                   <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
                   <select style="margin-bottom: 132px;" class="form-select campo-form-select"
                         id="subactivityStore" formControlName="subactivityStore">
-                    <option *ngFor="let subActivity of subActivities" value={{subActivity.code}}>
-                      {{subActivity.description}}
+                    <option *ngFor="let subActivity of subActivities" value={{subActivity.subActivityCode}}>
+                      {{subActivity.subActivityDescription}}
                     </option>
                   </select>
 

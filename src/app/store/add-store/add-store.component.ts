@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Host, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
+import { Istore, ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { Activity, CountryInformation, SubActivity } from '../../table-info/ITable-info.interface';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
@@ -33,7 +33,7 @@ export class AddStoreComponent implements OnInit {
   submission: SubmissionGetTemplate;
   submissionClient: Client;
 
-  subActivities: SubActivity[] = [];
+  subActivities: ShopSubActivities[] = [];
 
   //Informação de campos/tabelas
   Countries: CountryInformation[] = [];
@@ -133,7 +133,7 @@ export class AddStoreComponent implements OnInit {
   public idisabledAdd: boolean = false;
   public idisabledContact: boolean = false;
 
-  activities: Activity[] = [];
+  activities: ShopActivities[] = [];
 
   returned: string;
 
@@ -164,7 +164,7 @@ export class AddStoreComponent implements OnInit {
       this.updateForm();
     });
 
-    this.storeService.activitiesbycode(this.cae).subscribe(result => {
+    this.storeService.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       console.log("resultado: ", result);
 
@@ -290,8 +290,8 @@ export class AddStoreComponent implements OnInit {
     else
       this.store.manager = this.formStores.get("contactPoint").value;
 
-    //this.store.activity = this.formStores.get("activityStores").value;
-    //this.store.subActivity = this.formStores.get("subactivityStores").value;
+    this.store.activity = this.formStores.get("activityStores").value;
+    this.store.subActivity = this.formStores.get("subactivityStores").value;
     if (this.chooseAddressV) {
       this.store.address.address.address = this.formStores.get("addressStore").value;
       this.store.address.address.country = this.formStores.get("countryStore").value;
@@ -415,7 +415,7 @@ export class AddStoreComponent implements OnInit {
     })
       this.formStores.get("activityStores").valueChanges.subscribe(v => {
         this.logger.debug("alterou");
-        var subactivities = this.activities.find(element => element.code === v)["subactivities"];
+        var subactivities = this.activities.find(element => element.activityCode === v)["subactivities"];
 
         this.subActivities = subactivities;
         //console.log(this.subActivities);
