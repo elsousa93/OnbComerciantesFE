@@ -402,12 +402,12 @@ export class AddStoreComponent implements OnInit {
     var storename = '';
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
-      activityStores: new FormControl('', Validators.required),
+      activityStores: new FormControl((this.returned !== null) ? this.store.activity : '', [Validators.required]),
       countryStore: new FormControl(''),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
       contactPoint: new FormControl(''),
-      subactivityStore: new FormControl('', Validators.required),
+      subactivityStore: new FormControl((this.returned !== null) ? this.store.subActivity : '', [Validators.required]),
       localeStore: new FormControl(''),
       addressStore: new FormControl(''),
       replicateAddress: new FormControl(this.chooseAddressV, Validators.required),
@@ -415,6 +415,8 @@ export class AddStoreComponent implements OnInit {
     })
       this.formStores.get("activityStores").valueChanges.subscribe(v => {
         this.onActivitiesSelected();
+        console.log("Já saiu do activities selected")
+        console.log("Subactivities length: " + this.subActivities.length);
         if (this.subActivities.length > 0)
           this.formStores.controls["subactivityStore"].setValidators([Validators.required]);
         else
@@ -433,6 +435,8 @@ comercialCentre(isCentre: boolean) {
 
 onActivitiesSelected() {
   var exists = false;
+
+  console.log("entrei no activies selected")
 
   this.activities.forEach(act => {
     var actToSearch = this.formStores.get('activityStores').value;
