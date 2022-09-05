@@ -414,16 +414,13 @@ export class AddStoreComponent implements OnInit {
       commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
     })
       this.formStores.get("activityStores").valueChanges.subscribe(v => {
-        this.logger.debug("alterou");
-        var subactivities = this.activities.find(element => element.activityCode === v)["subactivities"];
-
-        this.subActivities = subactivities;
-        //console.log(this.subActivities);
+        this.onActivitiesSelected();
+        if (this.subActivities.length > 0)
+          this.formStores.controls["subactivityStore"].setValidators([Validators.required]);
+        else
+          this.formStores.controls["subactivityStore"].clearValidators();
+          this.formStores.controls["subactivityStore"].updateValueAndValidity();
       });
-
-    //this.storeService.activitiesbycode(this.cae).subscribe(result => {
-    //  this.formStores.get()
-    //});
 }
 
 comercialCentre(isCentre: boolean) {
@@ -432,5 +429,20 @@ comercialCentre(isCentre: boolean) {
     this.formStores.get('subZoneStore').setValidators([Validators.required]);
   else
     this.formStores.get('subZoneStore').setValidators(null);
+}
+
+onActivitiesSelected() {
+  var exists = false;
+
+  this.activities.forEach(act => {
+    var actToSearch = this.formStores.get('activityStores').value;
+    if (actToSearch == act.activityCode) {
+      exists = true;
+      this.subActivities = act.subActivities;
+    }
+  })
+  if (!exists) {
+    this.subActivities = [];
+  }
 }
 }

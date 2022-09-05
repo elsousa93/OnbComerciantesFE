@@ -307,7 +307,11 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
       socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : this.client?.legalName, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC)
+      collectCRC: new FormControl(this.collectCRC),
+      country: new FormControl(null, Validators.required), //sim
+      location: new FormControl(null, Validators.required), //sim
+      ZIPCode: new FormControl(null, Validators.required), //sim
+      address: new FormControl(null, Validators.required), //sim
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -971,7 +975,6 @@ export class ClientByIdComponent implements OnInit {
 
   GetCountryByZipCode() {
     var zipcode = this.form.value['ZIPCode'];
-    console.log("ZIP Code length: " + zipcode.length);
     if (zipcode.length === 8) {
       var zipCode = zipcode.split('-');
 
@@ -983,11 +986,6 @@ export class ClientByIdComponent implements OnInit {
         this.form.get('country').setValue(addressToShow.country);
         this.form.get('location').setValue(addressToShow.postalArea);
       });
-    } else if (zipcode.length === 0){
-        this.form.get('ZIPCode').setValue(null);
-        this.form.get('address').setValue(null);
-        this.form.get('country').setValue(null);
-        this.form.get('location').setValue(null);
     }
   }
 

@@ -29,14 +29,14 @@ export interface ShopsListOutbound {
 }
 
 export interface ShopActivities {
-  activityCode?: string
-  activityDescription?: string
-  subActivities?: ShopSubActivities
+  activityCode: string
+  activityDescription: string
+  subActivities: ShopSubActivities[]
 }
 
 export interface ShopSubActivities {
-  subActivityCode?: string
-  subActivityDescription?: string
+  subActivityCode: string
+  subActivityDescription: string
 }
 
 export interface ShopDetailsOutbound {
