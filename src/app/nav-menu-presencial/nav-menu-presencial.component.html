@@ -42,8 +42,8 @@
 <header class="bg-dark fixed-top" [@AutoHideNavbarAdjust]="isAutohide ? 'hide' : 'show'">
   <div class="container-fluid">
     <div class="row">
-      <div class="col ps-0 pe-0">
-        <nav class="navbar navbar-expand-lg navbar-light bg-dark pt-3 pb-3 shadow">
+      <div class="col">
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-dark pt-2 pb-2 shadow">
           <span class="navbar-text text-light ms-4">
             <button id="btn2" (click)="toggleEvent()"
               class="btn btn-dark-toggle text-muted btn-lg align-self-center ms-0 pt-0 pb-0 ps-0 pe-0">
@@ -56,26 +56,27 @@
                 [@AutoHideLogo]="isAutohide ? 'hide' : 'show'">
             </span>
           </a>
-            <mat-select #langSelect (selectionChange)="changeLanguage(langSelect.value)" class="p-xxl-2 form-control me-2 form-control-sm language-select bg-white" [value]="translate.currentLang">
-              <mat-select-trigger>
-                <img class="m-2" width="27" height="17" src="{{currentLanguage.imageUrl}}" />
-              </mat-select-trigger>
-              <mat-option *ngFor="let lang of translationLanguages" [value]="lang.abbreviation" id="{{lang.imageUrl}}">
-                <img class="img-fluid" style="height: 15px; width: 25px;" [src]="lang.imageUrl" /> {{lang.fullName}}
-              </mat-option>
-            </mat-select>
           <span class="navbar-text text-light ms-auto">
             <form class="d-flex" style="margin-bottom: 0px;">
               <input class="form-control me-2 form-control-sm" type="search" placeholder="{{'searches.placeholderSearch'|translate}}" #processNumberToSearch
                 aria-label="Search">
-              <button class="btn btn-procurar btn-sm ms-1 me-4 pt-2 pb-2" type="submit" (click)="openProcess(processNumberToSearch.value)">{{'generalKeywords.search'|translate}}</button>
+                <button class="btn align-self-center btn-sm mt-0 mb-0 ms-0 me-3 pt-0 pb-0 ps-1 pe-1 text-white-50" type="submit" (click)="openProcess(processNumberToSearch.value)">
+                  <img src="assets/images/search.svg" class="img_btn">
+                </button>
             </form>
+          </span><div id="navbar1_collapse">
+            <mat-select #langSelect (selectionChange)="changeLanguage(langSelect.value)" class="navbar-text bg-transparent mt-0 mb-0 ms-0 pt-0 pb-0 d-flex" [value]="translate.currentLang">
+              <mat-select-trigger>
+                <p class="botao_linguas form-select form-select-lg mt-0 mb-0 pt-0 pb-0">{{currentLanguage.name}}</p>
+              </mat-select-trigger>
+              <mat-option *ngFor="let lang of translationLanguages" [value]="lang.abbreviation" id="{{lang.imageUrl}}">
+                <p class="img-fluid" style="height: 15px; width: 25px;"> {{lang.name}}</p>
+              </mat-option>
+            </mat-select></div>
+            <span class="navbar-text mt-0 mb-0 pt-0 pb-0 ms-0 d-flex" style="margin-bottom: 4px !important;">
+              <button id="btn1" class="btn align-self-end pt-3 ps-1 fw-bold text-info"><img src="assets/images/logout.svg" class="img_btn"></button>
           </span>
-          <div id="navbar1_collapse">
-
-          </div>
         </nav>
-
       </div>
     </div>
   </div>
