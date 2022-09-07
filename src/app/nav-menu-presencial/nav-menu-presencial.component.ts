@@ -12,6 +12,7 @@ import { TranslationLanguage, translationLanguages } from '../translationLanguag
 import { User } from '../userPermissions/user';
 import { ProcessNumberService } from './process-number.service';
 import { progressSteps } from './progressSteps';
+import { MenuPermissions, UserPermissions, getMenuPermissions } from '../userPermissions/user-permissions';
 
 
 @Component({
@@ -61,6 +62,9 @@ export class NavMenuPresencialComponent implements OnInit {
   translationLanguages = translationLanguages;
   currentLanguage: TranslationLanguage;
 
+  userType: string = "Banca";
+  userPermissions: MenuPermissions;
+
   constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: LoggerService, public translate: TranslateService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
@@ -69,6 +73,17 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.authService.currentUser.subscribe(user => {
+      this.currentUser = user;
+      var a = UserPermissions[this.currentUser.permissions];
+
+      console.log("permissões: ", this.currentUser.permissions);
+      console.log("userPermission tratada: ", a);
+
+      this.userPermissions = getMenuPermissions(a);
+
+    });
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.dataService.currentPage.subscribe((currentPage) => {
       this.currentPage = currentPage;
@@ -154,5 +169,23 @@ export class NavMenuPresencialComponent implements OnInit {
         this.currentLanguage = value;
       }
     });
+  }
+
+  testeAuth() {
+    console.log(this.currentUser);
+    console.log(this.userPermissions);
+  }
+
+  logout() {
+    localStorage.removeItem('auth');
+    this.authService.reset();
+  }
+
+  login() {
+    this.authService.reset();
+
+    console.log("currentUser: ", this.authService.GetCurrentUser());
+
+    this.logout();
   }
 }

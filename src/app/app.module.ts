@@ -49,6 +49,7 @@ import { CountrysComponent } from './countrys/countrys.component';
 import { DevolucaoComponent } from './devolucao/devolucao.component';
 import { AceitacaoComponent } from './aceitacao/aceitacao.component';
 import { ConsultasComponent } from './consultas/consultas.component';
+import { ConsultasFTComponent } from './consultas-ft/consultas-ft.component';
 import { PackContratualComponent } from './aceitacao/pack-contratual/pack-contratual.component';
 import { ObterPackContratualComponent } from './aceitacao/obter-pack-contratual/obter-pack-contratual.component';
 import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-stakeholder.component';
@@ -100,6 +101,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DevolucaoComponent,
     AceitacaoComponent,
     ConsultasComponent,
+    ConsultasFTComponent,
     PackContratualComponent,
     ObterPackContratualComponent,
     NavMenuInternaComponent,
@@ -153,6 +155,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'app-devolucao', component: DevolucaoComponent },
       { path: 'app-devolucao/:id', component: DevolucaoComponent },
       { path: 'app-consultas', component: ConsultasComponent },
+      { path: 'app-consultas-ft', component: ConsultasFTComponent },
       { path: 'app-consultas/:id', component: ConsultasComponent },
       { path: 'app-pack-contratual', component: PackContratualComponent},
       { path: 'app-obter-pack-contratual', component: ObterPackContratualComponent},
