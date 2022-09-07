@@ -19,11 +19,12 @@ import { ClientService } from '../client/client.service';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 
-interface Process {
+interface ProcessFT {
   processNumber: string;
-  nipc: number;
+  contractNumber: string;
+  processDate: string;
   nome: string;
-  estado: string;
+  user: string;
 }
 
 @Component({
@@ -33,7 +34,7 @@ interface Process {
 })
 
 export class ConsultasFTComponent implements OnInit{
-  processes: MatTableDataSource<Process> = new MatTableDataSource();
+  processes: MatTableDataSource<ProcessFT> = new MatTableDataSource();
 
   displayedColumns = ['processNumber', 'contractNumber', 'processDate', 'nome', 'user', 'abrirProcesso'];
   @ViewChild('paginator') paginator: MatPaginator;
@@ -62,10 +63,7 @@ export class ConsultasFTComponent implements OnInit{
     if (this.route.getCurrentNavigation().extras.state) {
       this.queueName = this.route.getCurrentNavigation().extras.state["queueName"];
     }
-    //Initialize Form
-    
     this.ngOnInit();
-    //this.data.updateData(false, 0, 0);
   }
 
   initializeForm() {
@@ -111,12 +109,13 @@ export class ConsultasFTComponent implements OnInit{
         var encodedCode = encodeURIComponent(processNumber);
         this.processService.searchProcessByNumber(encodedCode, 0, 1).subscribe(result => {
           this.processService.searchProcessByNumber(encodedCode, 0, result.pagination.total).subscribe(resul => {
-            let processesArray: Process[] = resul.items.map<Process>((process) => {
+            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
               return {
                 processNumber: process.processNumber,
-                nipc: 529463466,
+                contractNumber: "123",
+                processDate: "12-02-2022",
                 nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
+                user: "EMPRESA UNIPESSOAL TESTES",
               };
             })
             this.loadProcesses(processesArray);
@@ -131,12 +130,13 @@ export class ConsultasFTComponent implements OnInit{
         var processStateToSearch = this.form.get("state").value;
         this.processService.searchProcessByState(processStateToSearch, 0, 1).subscribe(result => {
           this.processService.searchProcessByState(processStateToSearch, 0, result.pagination.total).subscribe(resul => {
-            let processesArray: Process[] = resul.items.map<Process>((process) => {
+            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
               return {
                 processNumber: process.processNumber,
-                nipc: 529463466,
+                contractNumber: "123",
+                processDate: "12-02-2022",
                 nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
+                user: "EMPRESA UNIPESSOAL TESTES",
               };
             })
             this.loadProcesses(processesArray);
@@ -176,7 +176,7 @@ export class ConsultasFTComponent implements OnInit{
     this.processes.paginator = this.paginator;
   }
 
-  loadProcesses(processValues: Process[]){
+  loadProcesses(processValues: ProcessFT[]){
     this.processes = new MatTableDataSource(processValues);
     this.processes.paginator = this.paginator;
   }

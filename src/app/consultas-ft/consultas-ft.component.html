@@ -16,15 +16,9 @@
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
             <p class="titulo-form-simples mt-0">{{'searches.processNumber'|translate}}</p><input id="text8" name="text5"
               type="text" class="form-control campo_form" formControlName="processNumber">
-            <p class="titulo-form-simples">{{'searches.state'|translate}}</p><select id="select1"
-              class="form-select  campo_form" formControlName="state">
-              <option value=""></option>
-              <option value="Incomplete">{{'searches.incompleted'|translate}}</option>
-              <option value="Ongoing">{{'searches.running'|translate}}</option>
-              <option value="Completed">{{'searches.completed'|translate}}</option>
-              <option value="Returned">{{'searches.returned'|translate}}</option>
-              <option value="Cancelled">{{'searches.cancelled'|translate}}</option>
-              <option value="ContractAcceptance">ContractAcceptance</option>
+            <p class="titulo-form-simples">{{'searches.state'|translate}}</p>
+            <select id="select1" disabled class="form-select  campo_form" formControlName="state">
+              <option selected value="">{{ 'homepage.' + queueName|translate}}</option>
             </select>
             <p class="titulo-form-simples mb-1">{{'searches.orderDateFrom'|translate|uppercase}}</p><input id="text1"
               name="text1" type="date" class="form-control campo_form" formControlName="processDateStart">
@@ -61,14 +55,14 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                   {{'homepage.contractNumber'|translate|uppercase}}
                 </mat-header-cell>
-                <mat-cell *matCellDef="let row"></mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
               </ng-container>
               <!-- processDate Column -->
               <ng-container matColumnDef="processDate">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                   {{'homepage.processDate'|translate|uppercase}}
                 </mat-header-cell>
-                <mat-cell *matCellDef="let row"></mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.processDate}} </mat-cell>
               </ng-container>
               <!-- Nome da Empresa Column -->
               <ng-container matColumnDef="nome">
@@ -82,7 +76,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                   {{'homepage.user'|translate|uppercase}}
                 </mat-header-cell>
-                <mat-cell *matCellDef="let row"></mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.user}} </mat-cell>
               </ng-container>
               <ng-container matColumnDef="abrirProcesso">
                 <mat-header-cell *matHeaderCellDef> </mat-header-cell>

@@ -17,10 +17,12 @@
     "eligibility": "Eligibility Opinions",
     "multipleClients": "Múltiple Clients",
     "validation": "Validation",
-    "priceNegotiation": "Price negotiation approval",
+    "negotiationAproval": "Price negotiation approval",
     "validationSIBS": "SIBS registration validation",
     "risk": "Risk Opinion",
     "compliance": "Compliance Doubts",
+    "DOValidation": "Valida DO",
+    "MCCTreatment": "MCC Treatment",
     "queues": {
       "title": "Queues",
       "eligibility": "Queue of Eligibility Opinions",
