@@ -1565,5 +1565,33 @@ mat-paginator {
   .texto_centrado {
     text-align: center;
   }
+  
+  .botao_linguas {
+    background-color: #000;
+    color: #7a7a7a;
+    font-size: 18px;
+    font-family: sans-serif;
+    margin-right: 0px;
+    margin-top:  0px;
+    padding: 2px 3px 2px 0px;
+    border: 0px rgba(0, 0, 0, 0);
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    }
+    
+.botao_linguas:hover {
+    border-style: none;
+}
 
+.mat-select-arrow {
+  color: #7a7a7a;
+}
 
+.mat-option {
+  display: block !important;
+  text-align: center !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}

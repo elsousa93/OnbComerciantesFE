@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -88,7 +88,8 @@ const testValues: ShopDetailsAcquiring[] = [
 @Component({
   selector: 'app-store-table',
   templateUrl: './store-table.component.html',
-  styleUrls: ['./store-table.component.css']
+  styleUrls: ['./store-table.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {

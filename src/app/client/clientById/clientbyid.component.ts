@@ -307,11 +307,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
       socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : this.client?.legalName, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC),
-      country: new FormControl(null, Validators.required), //sim
-      location: new FormControl(null, Validators.required), //sim
-      ZIPCode: new FormControl(null, Validators.required), //sim
-      address: new FormControl(null, Validators.required), //sim
+      collectCRC: new FormControl(this.collectCRC)
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -872,10 +868,10 @@ export class ClientByIdComponent implements OnInit {
         postalCode: this.form.value["ZIPCode"],
         postalArea: this.form.value["location"]
       }
-      //this.client.headquartersAddress.address = this.form.value["address"];
-      //this.client.headquartersAddress.country = this.form.value["country"];
-      //this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
-      //this.client.headquartersAddress.postalArea = this.form.value["location"];
+      // this.client.headquartersAddress.address = this.form.value["address"];
+      // this.client.headquartersAddress.country = this.form.value["country"];
+      // this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
+      // this.client.headquartersAddress.postalArea = this.form.value["location"];
       this.client.principalEconomicActivity = this.form.value["CAE1"];
       this.client.otherEconomicActivities = [];
       this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);

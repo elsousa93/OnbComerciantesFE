@@ -339,7 +339,6 @@ export class SidenavPresencialComponent implements OnInit {
   private _mobileQueryListener: () => void;
   @HostBinding('style.--toptestexpto') public toptestexpto: string = '5px';
 
-  userType: string = "Banca";
   userPermissions: MenuPermissions;
 
   currentUser: User = {};
@@ -364,9 +363,6 @@ export class SidenavPresencialComponent implements OnInit {
       this.userPermissions = getMenuPermissions(a);
 
     });
-  }
-
-  assignMenus() {
   }
 
   hideHistoryTab(){
