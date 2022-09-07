@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { ComprovativosService } from './comprovativos/services/comprovativos.services';
 import { HttpUtilService } from './comprovativos/services/http.services';
@@ -70,6 +70,7 @@ import { AuthService } from './services/auth.service';
 import { ClientSearchComponent } from './client/client-search/client-search.component';
 import { SearchStakeholdersComponent } from './stakeholders/search-stakeholders/search-stakeholders.component';
 import { StoreTableComponent } from './store/store-table/store-table.component';
+import { LoggingInterceptor } from 'src/logger/loggerInterceptor';
 
 registerLocaleData(localePT);
 
@@ -214,7 +215,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         }
     }),
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
+  providers: [{provide:HTTP_INTERCEPTORS, useClass:LoggingInterceptor, multi:true}, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

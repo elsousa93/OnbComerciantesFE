@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
@@ -6,23 +6,26 @@ import { NGXLogger } from 'ngx-logger';
   providedIn: 'root'
 })
 export class LoggerService {
-
   constructor(private logger : NGXLogger) {}
+
+  requestObj(request: HttpRequest<any>) {
+    this.request(request.method, request.urlWithParams, this.serializeHeaders(request.headers), request.body, "");
+  }
 
   request(method:string, url: string, header: string, body:string, messageId: string ){
     this.logger.info(`${method} request made to ${url}`, "int", method, url, header, body, messageId, "");
   }
 
-  responseCustom(url: string, header: string, body:string, messageId: string, status: string  ){
+  response(url: string, header: string, body:string, messageId: string, status: string  ){
     this.logger.info(`Response recieved from ${url} with status code ${status}`, "int", "", url, header, body, messageId, status);
   }
 
   responseError(error: any, messageId: string){
-    this.responseCustom(error.url, JSON.stringify(error.headers.headers), error.message, messageId, error.status.toString());
+    this.response(error.url, JSON.stringify(error.headers.headers), error.message, messageId, error.status.toString());
   }
 
-  response(response: HttpResponse<any>, messageId: string ){
-    this.responseCustom(response.url, JSON.stringify(response.headers), JSON.stringify(response.body), messageId, response.status.toString())
+  responseObj(response: HttpResponse<any>, messageId: string ){
+    this.response(response.url, JSON.stringify(response.headers), JSON.stringify(response.body), messageId, response.status.toString())
   }
 
   exception(exception:string, context:string, description: string){
@@ -43,5 +46,12 @@ export class LoggerService {
 
   error(description: any, error?: Error, messageId: string = ""){
     this.logger.error(description, "app", error.name || "", error.stack || "", messageId);
+  }
+  serializeHeaders(headers : HttpHeaders){
+    const headersObj = {};
+    for(let key in headers.keys()){
+       headersObj[key] = headers.get(key);
+    }
+    return JSON.stringify(headers);
   }
 }
