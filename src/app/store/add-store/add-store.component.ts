@@ -24,7 +24,6 @@ import { Country } from '../../stakeholders/IStakeholders.interface';
 })
 
   //This component allows to add a new store or edit the main configutarion of a store
-  //If the storeId value is -1 it means that it is a new store to be added - otherwise the storeId corresponds to the id of the store to edit
 
 export class AddStoreComponent implements OnInit {
 
@@ -178,7 +177,12 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
+    private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
+    private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
+    private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+
     this.submissionId = localStorage.getItem("submissionId");
     this.fetchStartingInfo();
     this.loadTableInfo();
