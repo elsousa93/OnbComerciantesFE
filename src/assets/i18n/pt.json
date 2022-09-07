@@ -197,7 +197,7 @@
   },
   "commercialOffer": {
     "title": "Oferta Comercial",
-    "bank": "Banco de Apoio do IBAN",
+    "bank": "Banco Apoio IBAN",
     "terminalNumber": "Número de Terminal",
     "product": "Produto",
     "relation": "Relação Loja Produtos",
