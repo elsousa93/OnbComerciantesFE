@@ -25,8 +25,8 @@ export class LoggerService {
     this.responseCustom(response.url, JSON.stringify(response.headers), JSON.stringify(response.body), messageId, response.status.toString())
   }
 
-  exception(exception:string, context:string, description: string, messageId: string = ""){
-    this.logger.error(description, "app", exception, context, messageId);
+  exception(exception:string, context:string, description: string){
+    this.logger.error(description, "app", exception, context);
   }
 
   trace(description: any, messageId: string = ""){
