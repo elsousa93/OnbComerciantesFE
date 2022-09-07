@@ -1,17 +1,15 @@
 {
   "homepage": {
     "diaryPerformance": "Daily Performance",
-    "pending": "Pending Processes",
     "backOffice": "Backoffice Treatment",
     "returned": "Returned Backoffice",
     "acceptance": "Acceptance phase",
-    "pendingElligibility": "Processes at the stage of eligibility opinions",
-    "queues": "Queues",
     "processNumber": "Process Number",
+    "contractNumber": "Contract Number",
     "processDate": "Process Date",
     "clientName": "Merchant's Name",
+    "user": "User",
     "findProcess": "Search Process",
-    "editProcess": "Edit Process",
     "openProcess": "Open Process",
     "findProcessButton": "Search Process",
     "home": "Home",
@@ -22,7 +20,33 @@
     "priceNegotiation": "Price negotiation approval",
     "validationSIBS": "SIBS registration validation",
     "risk": "Risk Opinion",
-    "compliance": "Compliance Doubts"
+    "compliance": "Compliance Doubts",
+    "queues": {
+      "title": "Queues",
+      "eligibility": "Queue of Eligibility Opinions",
+      "risk": "Queue of Risk Opinions",
+      "compliance": "Queue of Compliance Doubts",
+      "multipleClients": "Queue of Multiple Clients",
+      "DOValidation": "Queue Valida DO",
+      "negotiationAproval": "Queue of Price Negotiation Approval",
+      "MCCTreatment": "Queue of MCC Treatment",
+      "validationSIBS": "Queue of SIBS Enrollment Validation"
+    },
+    "processes": {
+      "pending": "Pending Shipping Processes",
+      "backOffice": "Backoffice treatment processes",
+      "returned": "Backoffice returned processes",
+      "acceptance": "Processes in the acceptance phase",
+      "pendingSent": "Pending submission processes for physical file",
+      "pendingEligibility": "Eligibility opinion process under way",
+      "multipleClients": "Processes in multiple clients",
+      "DOValidation": "Processes in DO valid",
+      "negotiationAproval": "Processes in price negotiation approval",
+      "MCCTreatment": "Processes in MCC treatment",
+      "validationSIBS ": "Processes in SIBS registration validation",
+      "riskOpinion": "Processes in risk opinion",
+      "complianceDoubts": "Processos in compliance doubts"
+    }
   },
   "auth": {
     "title": "Autentication",
