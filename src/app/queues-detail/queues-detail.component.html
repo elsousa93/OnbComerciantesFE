@@ -1,0 +1,259 @@
+<app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+   <div class="row">
+   <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
+   <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span class="navbar-text text-light"><img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70"></span><span class="navbar-text">
+      <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{ 'homepage.queues.' + queueName|translate|uppercase }}&nbsp;</h5>
+     </span></nav>
+   </div>
+   <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
+   <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
+     <li class="nav-item"><a class="nav-link active activo_tabs activo-tabd" id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">{{'acceptance.detail'|translate}}</a></li>
+     <li class="nav-item_x"><a class="nav-link" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">{{'acceptance.historic'|translate}}</a></li>
+     <li class="nav-item_x"></li>
+     <li class="nav-item_x"></li>
+   </ul>
+   <div class="tab-content" id="navTabs1_content">
+     <div class="tab-pane fade show active" id="navTabs1_1" role="tabpanel">
+      <div class="container-fluid mt-0 ps-3 pe-3">
+        <div class="row">
+         <div class="bg-white align-self-center col-12 laterais_tabs mt-0 me-0 pt-4 ps-5 pe-5" style="margin-left: 1px;">
+           <div class="row">
+            <div class="col bg-white">
+              <div class="row">
+               <div class="col bg-primary bg-opacity-10 mt-3 ms-3 pt-4 pb-3">
+                 <div class="row ms-0 me-0 pe-0">
+                  <div class="col-3 ms-3 pt-3 pb-3 ps-3 pe-0">
+                    <p class="mb-0 text-end text-primary">{{'acceptance.processNumber'|translate}}</p>
+                    <p class="mb-0 text-end text-primary">{{'acceptance.contractNumber'|translate}}</p>
+                    <p class="mb-0 text-end text-primary">{{'acceptance.actualState'|translate}}</p>
+                    <p class="mb-0 text-end text-primary">{{'acceptance.date'|translate}}</p>
+                    <p class="mb-0 text-end text-primary">{{'acceptance.user'|translate}}</p>
+                    <p class="mb-0 text-end text-primary">{{'acceptance.comments'|translate}}</p>
+                  </div>
+                  <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2">
+                    <p class="mb-0 text-primary text-start">{{process.processNumber === undefined ? "-" : process.processNumber}}</p>
+                    <p class="mb-0 text-primary text-start">-</p>
+                    <p class="mb-0 text-primary text-start">{{ 'homepage.' + queueName|translate|uppercase }}</p>
+                    <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
+                    <p class="mb-0 text-primary text-start"> User1 </p>
+                    <p class="mb-0 text-primary text-start">Queiram enviar CRC devidamente actualizada, visto que na inscrição nº3 verifica-se que a nomeação do gerente Bual de Canela é provisória.</p>
+                  </div>
+                 </div>
+               </div>
+              </div>
+            </div>
+           </div>
+           <h3 class="text-primary mt-5 mb-0 ps-0"><img src="assets/images/assignment_returned.svg" style="height: 30px; vertical-align: bottom;">&nbsp;{{'acceptance.returnReasons'|translate|uppercase}}</h3>
+           <div class="row mt-0 ms-0 me-0 pt-0">
+            <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+              <div class="table-responsive mb-5 pb-4">
+               <table class="table">
+                 <thead class="text-primary table-primary">
+                  <tr class="table-white text-primary">
+                    <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.returnReason0'|translate}}</th>
+                    <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
+                    <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
+                  </tr>
+                 </thead>
+                 <tbody>
+                  <tr>
+                    <td class="text-primary text-center">{{'generalKeywords.yes'|translate}}</td>
+                    <td class="text-primary text-center">CERTIDÃO DO REGISTO COMERCIAL</td>
+                    <td class="text-primary text-start">Os intervenientes associados ao processo não estão de acordo com os comprovativos de sociedade. Queiram enviar documentos que sustentem a sua intervenção.</td>
+                  </tr>
+                  <tr>
+                    <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
+                    <td class="text-primary text-center">-</td>
+                    <td class="text-primary text-center">Empresa Testes SA</td>
+                  </tr>
+                  <tr></tr>
+                 </tbody>
+               </table>
+              </div>
+            </div>
+           </div>
+           <h3 class="text-primary mt-5 ps-0" style="margin-bottom: 20px;"><img src="assets/images/gavel.svg" style="height: 30px; vertical-align: bottom;">&nbsp;{{'acceptance.opinions'|translate|uppercase}}</h3>
+           <h4 class="mt-0 mb-0 ps-0">Cliente Empresa</h4>
+           <div class="row ms-0 me-0">
+            <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+              <div class="table-responsive mb-5">
+               <table class="table">
+                 <thead class="text-primary table-primary">
+                  <tr class="table-white text-primary">
+                    <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.name'|translate}}</th>
+                    <th scope="col" class="text-center bg-light">NIPC</th>
+                    <th scope="col" class="text-center bg-white">{{'acceptance.clientNumber'|translate}}&nbsp;</th>
+                    <th scope="col" class="text-center bg-white">BEF</th>
+                    <th scope="col" class="text-center bg-white">PEP</th>
+                    <th scope="col" class="text-center bg-white">{{'acceptance.eligibility'|translate}}</th>
+                    <th scope="col" class="text-center bg-white">{{'acceptance.opinionNumber'|translate}}</th>
+                    <th scope="col" class="text-center bg-white">Compliance Office</th>
+                  </tr>
+                 </thead>
+                 <tbody>
+                  <tr>
+                    <td class="text-primary text-center">{{'generalKeywords.yes'|translate}} </td>
+                    <td class="text-primary text-center">572612010</td>
+                    <td class="text-primary text-center">-</td>
+                    <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
+                    <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
+                    <td class="text-primary text-center">-</td>
+                    <td class="text-primary text-center">-</td>
+                    <td class="text-primary text-center">-</td>
+                  </tr>
+                  <tr></tr>
+                 </tbody>
+               </table>
+              </div>
+            </div>
+           </div>
+           <h4 class="mt-0 mb-0 ps-0">{{'stakeholder.title'|translate}}</h4>
+           <div class="row ms-0 me-0">
+            <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+              <div class="table-responsive mb-5">
+               <table class="table">
+                 <thead class="text-primary table-primary">
+                  <tr class="table-white text-primary">
+                    <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.name'|translate}}</th>
+                    <th scope="col" class="text-center bg-light">NIF</th>
+                    <th scope="col" class="text-center bg-white">{{'acceptance.clientNumber'|translate}}&nbsp;</th>
+                    <th scope="col" class="text-center bg-white">BEF</th>
+                    <th scope="col" class="text-center bg-white">PEP</th>
+                    <th scope="col" class="text-center bg-white">{{'acceptance.eligibility'|translate}}</th>
+                    <th scope="col" class="text-center bg-white">{{'acceptance.opinionNumber'|translate}}</th>
+                    <th scope="col" class="text-center bg-white">Compliance Office</th>
+                  </tr>
+                 </thead>
+                 <tbody>
+                  <tr>
+                    <td class="text-primary text-center">{{'generalKeywords.yes'|translate}} </td>
+                    <td class="text-primary text-center">572612010</td>
+                    <td class="text-primary text-center">-</td>
+                    <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
+                    <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
+                    <td class="text-primary text-center">-</td>
+                    <td class="text-primary text-center">-</td>
+                    <td class="text-primary text-center">-</td>
+                  </tr>
+                  <tr></tr>
+                 </tbody>
+               </table>
+              </div>
+            </div>
+           </div>
+           <div class="col mt-4 ms-0 ps-0">
+            <hr>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+              <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" 
+                wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              </button>
+            
+            <button id="btn5a2" (click)="nextPage()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3" 
+            wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
+            <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
+          </button></span></nav>
+           </div>
+         </div>
+        </div>
+      </div>
+     </div>
+     <div class="tab-pane fade show" id="navTabs1_2" role="tabpanel">
+      <div class="container-fluid mt-0 ps-3 pe-3">
+        <div class="row">
+         <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+           <div class="table-responsive mb-5">
+            <table class="table">
+              <thead class="text-primary table-primary">
+               <tr class="table-white text-primary">
+                 <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.opinionNumber'|translate}}</th>
+                 <th scope="col" class="text-center bg-light">{{'acceptance.state'|translate}}</th>
+                 <th scope="col" class="text-center bg-white">{{'acceptance.stateDate'|translate}}</th>
+                 <th scope="col" class="text-center bg-white">{{'acceptance.user'|translate}}</th>
+                 <th scope="col" class="text-center bg-white">{{'acceptance.comments'|translate}}</th>
+               </tr>
+              </thead>
+              <tbody>
+               <tr>
+                 <td class="text-primary text-center">228060</td>
+                 <td class="text-primary text-center">Envio para o Backoffice</td>
+                 <td class="text-primary text-center">29-12-2021 07:50:21</td>
+                 <td class="text-primary text-center">UNICRE</td>
+                 <td class="text-primary text-center"></td>
+               </tr>
+               <tr>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">228060</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">29-12-2021 09:50:21</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-10"></td>
+               </tr>
+               <tr>
+                 <td class="text-primary text-center">228060</td>
+                 <td class="text-primary text-center">Validação DO</td>
+                 <td class="text-primary text-center">30-12-2021 11:50:21</td>
+                 <td class="text-primary text-center">UNICRE</td>
+                 <td class="text-primary text-start">Apesar do gerente&nbsp; Bujal de Canela constar na CRC como Gerente, na inscrição 3 verifica-se que a sua nomeação é provisória, podemos aceitar o documento?</td>
+               </tr>
+               <tr>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">228060</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">31-12-2021 12:50:21</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
+                 <td class="text-primary bg-primary bg-opacity-10 text-start">Devolver a solicitar a CRC devidamente atualizada com a nomeação do gerente defenitiva.</td>
+               </tr>
+               <tr>
+                 <td class="text-primary text-center bg-primary bg-opacity-25">228060</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-25">Devolvido do Backoffice</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-25">29-12-2021 10:50:21</td>
+                 <td class="text-primary text-center bg-primary bg-opacity-25">UNICRE</td>
+                 <td class="text-primary bg-primary bg-opacity-25 text-start">Queiram enviar CRC devidamente&nbsp; atualizada visto que na inscrição nº3 verifica-se que a nomeação de gerente Bukjal de Canela&nbsp; é provisória.&nbsp;</td>
+               </tr>
+              </tbody>
+            </table>
+           </div>
+         </div>
+         <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+          <h3 class="text-primary mt-5 mb-0 ps-0"><img src="assets/images/assignment_returned.svg" style="height: 30px; vertical-align: bottom;">&nbsp;{{'acceptance.returnReasons'|translate|uppercase}}</h3>
+           <div class="table-responsive mb-5">
+            <table class="table">
+              <thead class="text-primary table-primary">
+               <tr class="table-white text-primary">
+                 <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.returnReason0'|translate}}</th>
+                 <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
+                 <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
+               </tr>
+              </thead>
+              <tbody>
+               <tr>
+                 <td scope="row" class="text-primary text-center">228060</td>
+                 <td class="text-primary text-center">Certidão do Registo Comercial</td>
+                 <td class="text-primary text-start">Os intervenientes associados ao processo não estão de acordo com os comprovativos de Sociedade. Queiram enviar documentos que sustentem a sua intervenção.</td>
+                 <td class="text-primary text-center"></td>
+               </tr>
+              </tbody>
+            </table>
+           </div>
+         </div>
+         <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
+           <div class="col ms-0 ps-0">
+            <hr>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+              <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              </button>
+            
+            <button id="btn5a2" (click)="nextPage()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+             wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
+            </button></span></nav>
+           </div>
+         </div>
+        </div>
+      </div>
+     </div>
+   </div>
+   </div>
+   </div>
+   </div>

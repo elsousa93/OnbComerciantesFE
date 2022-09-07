@@ -31,7 +31,7 @@
                data-bs-parent="#accordion">
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EligibilityOpinions">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light" style="height: 35px;">
+                <span (click)="FTSearch('eligibility')" class="sub-icon sidenav-item navbar-text text-light" style="height: 35px;">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
@@ -43,7 +43,7 @@
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.MultipleClientes">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light">
+                <span (click)="FTSearch('multipleClients')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
@@ -55,7 +55,7 @@
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.DOValidation">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light">
+                <span (click)="FTSearch('DOValidation')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
@@ -69,7 +69,7 @@
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.NegotiationAproval">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light">
+                <span (click)="FTSearch('negotiationAproval')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
@@ -82,7 +82,7 @@
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.MCCTreatment">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light">
+                <span (click)="FTSearch('MCCTreatment')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
@@ -95,7 +95,7 @@
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EnrollmentValidation">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light">
+                <span (click)="FTSearch('validationSIBS')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
@@ -108,7 +108,7 @@
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.RiskOpinion">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light">
+                <span (click)="FTSearch('risk')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
@@ -120,7 +120,7 @@
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.ComplianceDoubts">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
-                <span class="sub-icon sidenav-item navbar-text text-light">
+                <span (click)="FTSearch('compliance')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
