@@ -266,41 +266,42 @@
                 <mat-table [dataSource]="dataSourcePendentes" matSort #empTbSort="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber|uppercase}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-
+                    <mat-header-cell *matHeaderCellDef class="small-cell">x</mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon img">
@@ -363,40 +364,40 @@
                 <mat-table [dataSource]="dataSourceTratamento" matSort #empTbSortWithObject="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef class="small-cell"></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon img">
@@ -452,40 +453,40 @@
                 <mat-table [dataSource]="dataSourceDevolvidos" matSort #empTbSortDevolvidos="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef class="small-cell"></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a [routerLink]="['/app-devolucao/', row.processId]" (click)="streamHistoryMenu()">
                         <span class="material-symbols-rounded edit-icon">
@@ -543,34 +544,35 @@
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef class="small-cell"></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon">
@@ -627,40 +629,42 @@
                 <mat-table [dataSource]="dataSourcePendingSent" matSort #empTbSortPendingSent="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef class="small-cell"></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button type="button" class="btn btn-outline-light"
                         data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -713,40 +717,42 @@
                 <mat-table [dataSource]="dataSourcePendingEligibility" matSort #empTbSortPendingEligibility="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef class="small-cell"></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button (click)="FTSearch('eligibility')" type="button" class="btn btn-outline-light"
                         data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -800,40 +806,42 @@
                 <mat-table [dataSource]="dataSourceMultipleClients" matSort #empTbSortMultipleClients="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef class="small-cell"></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button (click)="FTSearch('multipleClients')" type="button" class="btn btn-outline-light"
                         data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -886,40 +894,42 @@
                 <mat-table [dataSource]="dataSourceDOValidation" matSort #empTbSortDOValidation="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef class="small-cell"></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button (click)="FTSearch('DOValidation')" type="button" class="btn btn-outline-light"
                         data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -972,34 +982,36 @@
                 <mat-table [dataSource]="dataSourceNegotiationAproval" matSort #empTbSortNegotiationAproval="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
@@ -1059,34 +1071,34 @@
                 <mat-table [dataSource]="dataSourceMCCTreatment" matSort #empTbSortMCCTreatment="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
@@ -1158,21 +1170,21 @@
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
@@ -1231,34 +1243,36 @@
                 <mat-table [dataSource]="dataSourceRiskOpinion" matSort #empTbSortRiskOpinion="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
@@ -1317,34 +1331,36 @@
                 <mat-table [dataSource]="dataSourceComplianceDoubts" matSort #empTbSortComplianceDoubts="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- Nº Contrato Column -->
                   <ng-container matColumnDef="contractNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.user'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
