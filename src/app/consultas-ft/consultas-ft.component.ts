@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Route, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription, take } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
@@ -149,11 +149,20 @@ export class ConsultasFTComponent implements OnInit{
   }
 
   openProcess(process) {
-    this.logger.debug(process);
+    if (localStorage.getItem("returned") != 'consult') {
+      localStorage.setItem('returned', 'edit');
+      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
+    }
     localStorage.setItem("processNumber", process.processNumber);
-    localStorage.setItem("returned", 'consult');
+    this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
 
-    this.route.navigate(['/client']);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        queueName: this.queueName
+      }
+    };
+
+    this.route.navigate(['/queues-detail'], navigationExtras);
     //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
     //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
     //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
@@ -163,7 +172,6 @@ export class ConsultasFTComponent implements OnInit{
     //    });
     //  });
     //});
-
   }
 
   ngOnInit(): void {
