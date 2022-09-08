@@ -298,7 +298,7 @@
       "language": "Language",
       "chooseOption": "Choose one option",
       "paperSignature": "Paper signature",
-      "eletronicSignature": "Electronic signature",
+      "digitalSignature": "Digital signature",
       "representatives": "Select the representatives that oblige the company",
       "clientName": "Client Name",
       "digitalSignatureType": "Digital Signature Type",
@@ -334,6 +334,7 @@
     "date": "Date",
     "user": "User",
     "comments": "Comments",
+    "commentsCompliance": "Compliance Doubts Comments",
     "opinions": "Opinions / Decisions",
     "name": "Name",
     "clientNumber": "Client Number",
@@ -368,6 +369,17 @@
       "processSent": "Process sent for digital signature"
     }
   },
+  "queues": {
+    "attach": "Please attach evidence if any:",
+    "completed": "Complete opinion",
+    "favorable": "Favorable",
+    "unfavorable": "Not Favorable",
+    "risk": "Risk",
+    "amlLevel": "AML Level",
+    "returnBackoffice": "Return BackOffice",
+    "returnComercial": "Return Comercial",
+    "returnCoff": "Return COFF"
+  },
   "generalKeywords": {
     "yes": "Yes",
     "no": "No",
@@ -388,7 +400,8 @@
     "maintainProcess": "Keep Process",
     "confirmDeleteProcess": "Delete Process",
     "save": "Save",
-    "select": "Select"
+    "select": "Select",
+    "restrictions": "Restrictions"
   },
   "generalButtons": {
     "continue": "Continue",

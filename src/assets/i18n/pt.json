@@ -298,7 +298,7 @@
       "language": "Idioma",
       "chooseOption": "Selecione uma das opções",
       "paperSignature": "Assinatura em Papel",
-      "eletronicSignature": "Assinatura Eletrónica",
+      "digitalSignature": "Assinatura Digital",
       "representatives": "Selecione os representantes que obrigam a empresa",
       "clientName": "Nome do Cliente",
       "digitalSignatureType": "Tipo de Assinatura Digital",
@@ -334,6 +334,7 @@
     "date": "Data",
     "user": "Utilizador",
     "comments": "Observações",
+    "commentsCompliance": "Observações Dúvidas Compliance",
     "opinions": "Pareceres / Decisão",
     "name": "Nome",
     "clientNumber": "Nº Cliente",
@@ -368,6 +369,17 @@
       "processSent": "Processo enviado para assinatura digital"
     }
   },
+  "queues": {
+    "attach": "Por favor anexe evidencia caso exista:",
+    "completed": "Concluir parecer",
+    "favorable": "Favorável",
+    "unfavorable": "Não Favorável",
+    "risk": "Risco",
+    "amlLevel": "Nível AML",
+    "returnBackoffice": "Devolver BackOffice",
+    "returnComercial": "Devolver Comercial",
+    "returnCoff": "Devolver COFF"
+  },
   "generalKeywords": {
     "yes": "Sim",
     "no": "Não",
@@ -388,7 +400,8 @@
     "maintainProcess": "Manter Processo",
     "confirmDeleteProcess": "Apagar Processo",
     "save": "Gravar",
-    "select": "Selecione"
+    "select": "Selecione",
+    "restrictions": "Restrições"
   },
   "generalButtons": {
     "continue": "Continuar",

@@ -282,7 +282,7 @@ export class DashboardComponent implements OnInit {
         this.ongoingProcessess = resul;
         this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess.items);
 
-        this.empTbSortWithObject.disableClear = true;
+        // this.empTbSortWithObject.disableClear = true;
         this.dataSourceTratamento.sort = this.empTbSortWithObject;
         this.dataSourceTratamento.paginator = this.paginatorPageSize;
         this.ongoingCount = result.pagination.total;

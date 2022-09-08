@@ -24,12 +24,23 @@ export class QueuesDetailComponent implements OnInit{
 
   @Input() queueName: string;
 
+  private baseUrl;
+  localUrl: any;
+
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
 
   public processId: string;
   public process: ProcessList;
+  public type: string;
+
+  files?: File[] = [];
+
+  public attach: {tipo:string, dataDocumento: string};
+  public result: any;
+
+  public fillComments: string;
 
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService,
@@ -71,6 +82,43 @@ ngOnInit(): void {
     this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
 
     this.route.navigate(['/client']);
+  }
+
+  selectFile(event: any) {
+    this.type = "Evidência de Aprovação Elegibilidade" // to remove
+    if (this.queueName === "eligibility") {
+      this.type = "Evidência de Aprovação Elegibilidade" // to add translation 
+    } else if (this.queueName === "compliance") {
+      this.type = "Evidência de Esclarecimento de Dúvidas Compliance" // to add translation 
+    } else if (this.queueName === "DOValidation") {
+      this.type = "Evidência de Esclarecimento de Dúvida DO" // to add translation 
+    } else if (this.queueName === "risk") {
+      this.type = "Evidência de Aprovação Risco" // to add translation 
+    } 
+    this.attach = { tipo: this.type, dataDocumento:"01-08-2022" }
+    const files = <File[]>event.target.files;
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      const sizeFile = file.size / (1024 * 1024);
+      var extensoesPermitidas = /(.pdf)$/i;
+      const limSize = 10;
+      this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', 1);
+      if (this.result != null) {
+        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+          if (event.target.files && files[i]) {
+            var reader = new FileReader();
+            reader.onload = (event: any) => {
+              this.localUrl = event.target.result;
+            }
+            reader.readAsDataURL(files[i]);
+            this.files.push(file);
+          } else {
+            alert("Verifique o tipo / tamanho do ficheiro");
+          }
+        }
+      }
+    }
+    this.logger.debug(this.files);
   }
 
 }
