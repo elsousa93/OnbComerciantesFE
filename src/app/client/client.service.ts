@@ -57,15 +57,15 @@ export class ClientService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    this.logger.info(`[Outbound] Searching client with id ${searchID}`);
-    this.logger.debug(`[Outbound] URI used is ${URI}`);
-    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
-      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
-      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
-      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
-      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
-      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
-    }, null, 2)}`);
+    //this.logger.info(`[Outbound] Searching client with id ${searchID}`);
+    //this.logger.debug(`[Outbound] URI used is ${URI}`);
+    //this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
+    //  "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
+    //  "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
+    //  "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
+    //  "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
+    //  "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
+    //}, null, 2)}`);
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
@@ -89,15 +89,6 @@ export class ClientService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    this.logger.info(`[Outbound] Getting client with id ${clientID}`);
-    this.logger.debug(`[Outbound] URI used is ${URI}`);
-    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
-      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
-      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
-      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
-      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
-      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
-    }, null, 2)}`);
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
@@ -124,19 +115,7 @@ export class ClientService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    this.logger.info(`[Outbound] Creating client for process id ${processReferenceID}`);
-    this.logger.debug(`[Outbound] URI used is ${URI}`);
-    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
-      "Content-Type": HTTP_OPTIONS.headers.get('Content-Type'),
-      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
-      "Date": HTTP_OPTIONS.headers.get('Date'),
-      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
-      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
-      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
-      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
-    }, null, 2)}`);
-    this.logger.debug(`[Outbound] Body is ${JSON.stringify(client)}`);
-    
+   
     return this.http.post<any>(URI, client, HTTP_OPTIONS);
   }
 
@@ -164,18 +143,6 @@ export class ClientService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    this.logger.info(`[Outbound] Updating client ${clientID} for process id ${processReferenceID}`);
-    this.logger.debug(`[Outbound] URI used is ${URI}`);
-    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
-      "Content-Type": HTTP_OPTIONS.headers.get('Content-Type'),
-      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
-      "Date": HTTP_OPTIONS.headers.get('Date'),
-      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
-      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
-      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
-      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
-    }, null, 2)}`);
-    this.logger.debug(`[Outbound] Body is ${JSON.stringify(client)}`);
 
     return this.http.put<any>(URI, client, HTTP_OPTIONS);
   }
