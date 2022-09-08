@@ -7,7 +7,7 @@ viewBox="0 0 200 200">
   <style type="text/css">
    <![CDATA[
     .fil2 {fill:#d9d9d9}
-    .fil1 {fill:#d9d9d9}
+    .fil1 {fill:white}
     .fil3 {fill:#d9d9d9}
     .fil0 {fill:#d9d9d9;fill-rule:nonzero}
    ]]>
