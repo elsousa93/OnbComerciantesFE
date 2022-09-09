@@ -33,15 +33,15 @@ export class LoggerService {
   }
 
   trace(description: any, messageId: string = ""){
-    this.logger.trace(description, "app", "", "", messageId);
+    this.logger.trace(description, "app", "", this.getContext(), messageId);
   }
 
   info(description: any, messageId: string = ""){
-    this.logger.info(description, "app", "", "", messageId);
+    this.logger.info(description, "app", "", this.getContext(), messageId);
   }
 
   debug(description: any, messageId: string = ""){
-    this.logger.debug(description, "app", "", "", messageId);
+    this.logger.debug(description, "app", "", this.getContext(), messageId);
   }
 
   error(description: any, error?: Error, messageId: string = ""){
@@ -50,8 +50,20 @@ export class LoggerService {
   serializeHeaders(headers : HttpHeaders){
     const headersObj = {};
     for(let key in headers.keys()){
-       headersObj[key] = headers.get(key);
+      if (key.match(/token/i)){
+        headersObj[key] = headers.get(key).slice(0,10)+"...";
+      } else {
+        headersObj[key] = headers.get(key);
+      }
     }
     return JSON.stringify(headers);
+  }
+  getContext(){
+    try{
+      throw new Error();
+    } catch (err){
+      let context = err.stack.split('\n').slice(3).join('\n'); // first 3 lines removed
+      return context;
+    }
   }
 }

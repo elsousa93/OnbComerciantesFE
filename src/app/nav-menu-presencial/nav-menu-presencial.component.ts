@@ -78,8 +78,8 @@ export class NavMenuPresencialComponent implements OnInit {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
 
-      console.log("permissões: ", this.currentUser.permissions);
-      console.log("userPermission tratada: ", a);
+      this.logger.debug("permissões: " + this.currentUser.permissions);
+      this.logger.debug("userPermission tratada: " + a);
 
       this.userPermissions = getMenuPermissions(a);
 
@@ -107,7 +107,7 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   openProcess(process) {
-    this.logger.debug(process);
+    this.logger.debug("Opening process: " + process);
     var encodedCode = encodeURIComponent(process);
     localStorage.setItem("processNumber", process);
     this.processNrService.changeProcessNumber(process);
@@ -154,7 +154,7 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   searchProcess() {
-    this.logger.debug(this.processNumberToSearch);
+    this.logger.debug("Searching process " + this.processNumberToSearch);
     this.route.navigate(['/app-consultas/', this.processNumberToSearch]);
   }
 
