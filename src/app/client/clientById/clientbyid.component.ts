@@ -820,7 +820,7 @@ export class ClientByIdComponent implements OnInit {
         this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
         this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
         this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.district;
+        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
         this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
 
         this.processClient.expirationDate = clientByCRC.expirationDate;

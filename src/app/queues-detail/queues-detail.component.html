@@ -144,25 +144,25 @@
                       <button id="btn5a2" *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                         wappler-command="editContent">{{'queues.completed'|translate|uppercase}}&nbsp;
-                        
+                        <img src="assets/images/queues/conclude_opinion.svg" style="height: 25px !important; vertical-align: sub;">
                       </button>
 
                       <button id="btn5a2" *ngIf="queueName==='DOValidation && !(fillComments?.length > 0)'"
                       class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                       wappler-command="editContent">{{'queues.returnBackoffice'|translate|uppercase}}&nbsp;
-                      
+                      <img src="assets/images/assignment_return_white.svg" style="height: 25px !important; vertical-align: sub;">
                     </button>
 
                     <button id="btn5a2" *ngIf="queueName==='DOValidation && !(fillComments?.length > 0)'"
                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                     wappler-command="editContent">{{'queues.returnComercial'|translate|uppercase}}&nbsp;
-                    
+                    <img src="assets/images/queues/return_comercial.svg" style="height: 25px !important; vertical-align: sub;">
                   </button>
 
                   <button id="btn5a2" *ngIf="queueName==='DOValidation && !(fillComments?.length > 0)'"
                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                   wappler-command="editContent">{{'queues.returnCoff'|translate|uppercase}}&nbsp;
-                  
+                  <img src="assets/images/queues/return_coff.svg" style="height: 25px !important; vertical-align: sub;">
                 </button>
 
                       <button id="btn5a2" (click)="nextPage()" [disabled]="!(fillComments?.length > 0) && queueName==='compliance' || queueName!=='compliance'"
