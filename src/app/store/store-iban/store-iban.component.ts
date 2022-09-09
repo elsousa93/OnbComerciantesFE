@@ -134,12 +134,10 @@ export class StoreIbanComponent implements OnInit {
           this.updateForm();
         }
       });
-      console.log('Store recebddnjkn ', this.store);
     }
   }
 
   ngOnInit(): void {
-    console.log('INIT');
     this.returned = localStorage.getItem("returned");
     this.initializeForm();
 

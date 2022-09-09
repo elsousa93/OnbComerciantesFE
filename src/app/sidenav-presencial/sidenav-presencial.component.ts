@@ -1,7 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, HostBinding, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { Client, Crc } from '../client/Client.interface';
@@ -339,7 +339,6 @@ export class SidenavPresencialComponent implements OnInit {
   private _mobileQueryListener: () => void;
   @HostBinding('style.--toptestexpto') public toptestexpto: string = '5px';
 
-  userType: string = "Banca";
   userPermissions: MenuPermissions;
 
   currentUser: User = {};
@@ -366,9 +365,6 @@ export class SidenavPresencialComponent implements OnInit {
     });
   }
 
-  assignMenus() {
-  }
-
   hideHistoryTab(){
     this.dataService.historyStream$.next(false); 
   }
@@ -379,6 +375,15 @@ export class SidenavPresencialComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  FTSearch(queue: string){
+    let navigationExtras: NavigationExtras = {
+      state: {
+        queueName: queue
+      }
+    };
+    this.router.navigate(["/app-consultas-ft"], navigationExtras);
   }
 
   testeAuth() {

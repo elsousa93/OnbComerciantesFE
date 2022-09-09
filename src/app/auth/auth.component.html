@@ -43,7 +43,7 @@
               <p class="titulo-form-simples" for="role">{{'auth.role'|translate}}: </p>
               <select formControlName="role" name="role" id="role"
                       class="form-control campo_form">
-                <option value="">Selecione</option>
+                      <option value="">{{'generalKeywords.select'|translate}}</option>
                 <option *ngFor="let role of roles" value={{role.code}}>{{role.name}}</option>
               </select>
               <!--<input type="text" formControlName="role" name="role" id="role"

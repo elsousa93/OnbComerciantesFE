@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { ComprovativosService } from './comprovativos/services/comprovativos.services';
 import { HttpUtilService } from './comprovativos/services/http.services';
@@ -47,8 +47,10 @@ import { TableInfoService } from './table-info/table-info.service';
 import { InfoDeclarativaLojasComponent } from './client/info-declarativa/info-declarativa-lojas/info-declarativa-lojas.component';
 import { CountrysComponent } from './countrys/countrys.component';
 import { DevolucaoComponent } from './devolucao/devolucao.component';
+import { QueuesDetailComponent } from './queues-detail/queues-detail.component';
 import { AceitacaoComponent } from './aceitacao/aceitacao.component';
 import { ConsultasComponent } from './consultas/consultas.component';
+import { ConsultasFTComponent } from './consultas-ft/consultas-ft.component';
 import { PackContratualComponent } from './aceitacao/pack-contratual/pack-contratual.component';
 import { ObterPackContratualComponent } from './aceitacao/obter-pack-contratual/obter-pack-contratual.component';
 import { InfoStakeholderComponent } from './stakeholders/info-stakeholder/info-stakeholder.component';
@@ -69,6 +71,7 @@ import { AuthService } from './services/auth.service';
 import { ClientSearchComponent } from './client/client-search/client-search.component';
 import { SearchStakeholdersComponent } from './stakeholders/search-stakeholders/search-stakeholders.component';
 import { StoreTableComponent } from './store/store-table/store-table.component';
+import { LoggingInterceptor } from 'src/logger/loggerInterceptor';
 
 registerLocaleData(localePT);
 
@@ -98,8 +101,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientByIdComponent,
     ReadcardComponent,
     DevolucaoComponent,
+    QueuesDetailComponent,
     AceitacaoComponent,
     ConsultasComponent,
+    ConsultasFTComponent,
     PackContratualComponent,
     ObterPackContratualComponent,
     NavMenuInternaComponent,
@@ -135,9 +140,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
-       { path: 'clientbyid/:id', component: ClientByIdComponent },
+      { path: 'clientbyid/:id', component: ClientByIdComponent },
       { path: 'clientbyid', component: ClientByIdComponent },
-       { path: 'client/:id', component: ClientComponent },
+      { path: 'client/:id', component: ClientComponent },
       { path: 'stakeholders', component: StakeholdersComponent },
       { path: 'stakeholders/:nif', component: StakeholdersComponent },
       { path: 'create-stakeholder', component: CreateStakeholderComponent },
@@ -151,8 +156,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'app-aceitacao', component: AceitacaoComponent },
       { path: 'app-aceitacao/:id', component: AceitacaoComponent },
       { path: 'app-devolucao', component: DevolucaoComponent },
+      { path: 'queues-detail', component: QueuesDetailComponent },
       { path: 'app-devolucao/:id', component: DevolucaoComponent },
       { path: 'app-consultas', component: ConsultasComponent },
+      { path: 'app-consultas-ft', component: ConsultasFTComponent },
       { path: 'app-consultas/:id', component: ConsultasComponent },
       { path: 'app-pack-contratual', component: PackContratualComponent},
       { path: 'app-obter-pack-contratual', component: ObterPackContratualComponent},
@@ -199,7 +206,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LoggerModule.forRoot({
       level : environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
       enableSourceMaps: true,
-      serverLoggingUrl:"/BELogging",
+      serverLoggingUrl:"BELogging",
       serverLogLevel:NgxLoggerLevel.DEBUG
       
     },{
@@ -211,7 +218,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         }
     }),
   ],
-  providers: [ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
+  providers: [{provide:HTTP_INTERCEPTORS, useClass:LoggingInterceptor, multi:true}, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

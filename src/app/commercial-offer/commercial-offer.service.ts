@@ -15,7 +15,7 @@ export class CommercialOfferService {
   public baseUrl: string;
   public urlOutbound: string;
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.acquiringAPIUrl;
     this.urlOutbound = configuration.outboundUrl;
   }

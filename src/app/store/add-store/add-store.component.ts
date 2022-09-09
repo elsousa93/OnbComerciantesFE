@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Host, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
+import { Istore, ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { Activity, CountryInformation, SubActivity } from '../../table-info/ITable-info.interface';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
@@ -24,7 +24,6 @@ import { Country } from '../../stakeholders/IStakeholders.interface';
 })
 
   //This component allows to add a new store or edit the main configutarion of a store
-  //If the storeId value is -1 it means that it is a new store to be added - otherwise the storeId corresponds to the id of the store to edit
 
 export class AddStoreComponent implements OnInit {
 
@@ -33,7 +32,7 @@ export class AddStoreComponent implements OnInit {
   submission: SubmissionGetTemplate;
   submissionClient: Client;
 
-  subActivities: SubActivity[] = [];
+  subActivities: ShopSubActivities[] = [];
 
   //Informação de campos/tabelas
   Countries: CountryInformation[] = [];
@@ -133,7 +132,7 @@ export class AddStoreComponent implements OnInit {
   public idisabledAdd: boolean = false;
   public idisabledContact: boolean = false;
 
-  activities: Activity[] = [];
+  activities: ShopActivities[] = [];
 
   returned: string;
 
@@ -164,7 +163,7 @@ export class AddStoreComponent implements OnInit {
       this.updateForm();
     });
 
-    this.storeService.activitiesbycode(this.cae).subscribe(result => {
+    this.storeService.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       console.log("resultado: ", result);
 
@@ -178,7 +177,12 @@ export class AddStoreComponent implements OnInit {
     })
   }
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration, private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
+    private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
+    private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
+    private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+
     this.submissionId = localStorage.getItem("submissionId");
     this.fetchStartingInfo();
     this.loadTableInfo();
@@ -290,8 +294,8 @@ export class AddStoreComponent implements OnInit {
     else
       this.store.manager = this.formStores.get("contactPoint").value;
 
-    //this.store.activity = this.formStores.get("activityStores").value;
-    //this.store.subActivity = this.formStores.get("subactivityStores").value;
+    this.store.activity = this.formStores.get("activityStores").value;
+    this.store.subActivity = this.formStores.get("subactivityStores").value;
     if (this.chooseAddressV) {
       this.store.address.address.address = this.formStores.get("addressStore").value;
       this.store.address.address.country = this.formStores.get("countryStore").value;
@@ -402,30 +406,27 @@ export class AddStoreComponent implements OnInit {
     var storename = '';
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
-      activityStores: new FormControl('', Validators.required),
+      activityStores: new FormControl((this.returned !== null) ? this.store.activity : '', [Validators.required]),
       countryStore: new FormControl(''),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
       contactPoint: new FormControl(''),
-      subactivityStore: new FormControl('', Validators.required),
+      subactivityStore: new FormControl((this.returned !== null) ? this.store.subActivity : '', [Validators.required]),
       localeStore: new FormControl(''),
       addressStore: new FormControl(''),
       replicateAddress: new FormControl(this.chooseAddressV, Validators.required),
       commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
     })
       this.formStores.get("activityStores").valueChanges.subscribe(v => {
-        this.logger.debug("alterou");
-        console.log("Alterou activity stores");
-        console.log(v);
-        var subactivities = this.activities.find(element => element.code === v)["subactivities"];
-
-        this.subActivities = subactivities;
-        //console.log(this.subActivities);
+        this.onActivitiesSelected();
+        console.log("Já saiu do activities selected")
+        console.log("Subactivities length: " + this.subActivities.length);
+        if (this.subActivities.length > 0)
+          this.formStores.controls["subactivityStore"].setValidators([Validators.required]);
+        else
+          this.formStores.controls["subactivityStore"].clearValidators();
+          this.formStores.controls["subactivityStore"].updateValueAndValidity();
       });
-
-    //this.storeService.activitiesbycode(this.cae).subscribe(result => {
-    //  this.formStores.get()
-    //});
 }
 
 comercialCentre(isCentre: boolean) {
@@ -434,5 +435,22 @@ comercialCentre(isCentre: boolean) {
     this.formStores.get('subZoneStore').setValidators([Validators.required]);
   else
     this.formStores.get('subZoneStore').setValidators(null);
+}
+
+onActivitiesSelected() {
+  var exists = false;
+
+  console.log("entrei no activies selected")
+
+  this.activities.forEach(act => {
+    var actToSearch = this.formStores.get('activityStores').value;
+    if (actToSearch == act.activityCode) {
+      exists = true;
+      this.subActivities = act.subActivities;
+    }
+  })
+  if (!exists) {
+    this.subActivities = [];
+  }
 }
 }

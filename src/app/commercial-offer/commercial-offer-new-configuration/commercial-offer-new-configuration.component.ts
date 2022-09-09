@@ -89,7 +89,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
 
     this.ngOnInit();
     
-    this.data.updateData(false, 5);
+    this.data.updateData(false, 5, 2);
   }
 
   ngOnInit(): void {

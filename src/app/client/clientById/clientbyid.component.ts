@@ -820,7 +820,7 @@ export class ClientByIdComponent implements OnInit {
         this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
         this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
         this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.district;
+        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
         this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
 
         this.processClient.expirationDate = clientByCRC.expirationDate;
@@ -868,10 +868,10 @@ export class ClientByIdComponent implements OnInit {
         postalCode: this.form.value["ZIPCode"],
         postalArea: this.form.value["location"]
       }
-      //this.client.headquartersAddress.address = this.form.value["address"];
-      //this.client.headquartersAddress.country = this.form.value["country"];
-      //this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
-      //this.client.headquartersAddress.postalArea = this.form.value["location"];
+      // this.client.headquartersAddress.address = this.form.value["address"];
+      // this.client.headquartersAddress.country = this.form.value["country"];
+      // this.client.headquartersAddress.postalCode = this.form.value["ZIPCode"];
+      // this.client.headquartersAddress.postalArea = this.form.value["location"];
       this.client.principalEconomicActivity = this.form.value["CAE1"];
       this.client.otherEconomicActivities = [];
       this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);

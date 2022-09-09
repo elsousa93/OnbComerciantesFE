@@ -10,7 +10,8 @@ import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../proce
 
 @Component({
   selector: 'app-aceitacao',
-  templateUrl: './aceitacao.component.html'
+  templateUrl: './aceitacao.component.html',
+  styleUrls: ['../stakeholders/stakeholders-list/stakeholders-list.component.css']
 })
 
 export class AceitacaoComponent implements OnInit{

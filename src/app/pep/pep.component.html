@@ -1,6 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row">
+  <div class="row ">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
         <span class="navbar-text text-light">
@@ -40,13 +40,13 @@
           <div class="container-fluid mt-0 ps-3 pe-3">
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/frame_person.svg" class="img_add"
+                <h2 class="text-primary mt-3 pb-3 ps-0"><img src="assets/images/frame_person.svg" class="img_add"
                     style="height:37px;">&nbsp;{{'declarativeInformation.stakeholder.pep.title'|translate}}
                 </h2>
                 <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
                 <div class="row ms-0 me-0">
                   <form [formGroup]="form" (ngSubmit)="submit()" name="form">
-                      <div class="col-6 ms-0 me-0 ps-0 pe-5 form-group">
+                      <div class="col-7 ms-0 me-0 ps-0 pe-0 form-group">
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.isPEP'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <span class="navbar-text">
@@ -65,39 +65,31 @@
                         </span>
                       </nav>
                       <div class="showDiv form-group" *ngIf="isVisiblePep12months == true">
-                        <label class="form-check-label titulo-form-simples mb-1" for="pepType">
-                          {{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:*
-                          <select (change)="checkSelectedPEP()" class="form-select" formControlName="pepType" name="pepType" id="pepType">
+                        <div class="row ms-0 me-0">
+                          <div class="col-6 mb-4 ms-0 me-0 ps-0 pe-5">
+                        <p class="form-check-label titulo-form-simples mt-0" for="pepType">
+                          {{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:*</p>
+                          <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepType" name="pepType" id="pepType">
                             <option>teste</option>
                             <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
                           </select>
-                        </label>
-                        <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepType').touched && !this.form.get('pepType').valid">
-                          <div *ngIf="this.form.get('pepType').errors && this.form.get('pepType').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          <p (change)="checkSelectedPEP()" class="form-check-label titulo-form-simples" for="pepSinceWhen">
+                            {{'declarativeInformation.stakeholder.pep.since'|translate}}:</p>
+                            <input formControlName="pepSinceWhen" name="pepSinceWhen" id="pepSinceWhen" type="date"
+                              class="form-control campo_form" value="">
                           </div>
-                        </div>
-                        <label class="form-check-label titulo-form-simples mb-1" for="pepCountry">
-                          {{'declarativeInformation.stakeholder.pep.country'|translate}}:*
-                          <select (change)="checkSelectedPEP()" class="form-select" formControlName="pepCountry" name="pepCountry" id="pepCountry">
+                        <div class="col-6 ms-0 me-0 ps-0 pe-5">
+                        <p class="form-check-label titulo-form-simples mt-0 text-start" for="pepCountry">
+                          {{'declarativeInformation.stakeholder.pep.country'|translate}}:*</p>
+                          <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepCountry" name="pepCountry" id="pepCountry">
                             <option>Portugal</option>
                             <option *ngFor="let country of Countries" value={{country.description}}>
                               {{country.description}} </option>
                           </select>
-                        </label>
-                        <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepCountry').touched && !this.form.get('pepCountry').valid">
-                          <div
-                            *ngIf="this.form.get('pepCountry').errors && this.form.get('pepCountry').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
+                          <p class="titulo-form-simples"></p>
                         </div>
-                        <label (change)="checkSelectedPEP()" class="form-check-label titulo-form-simples mb-1" for="pepSinceWhen">
-                          {{'declarativeInformation.stakeholder.pep.since'|translate}}:
-                          <input formControlName="pepSinceWhen" name="pepSinceWhen" id="pepSinceWhen" type="date"
-                            class="form-control" value="">
-                        </label>
+                        </div>
+                        <p class="titulo-form-simples"></p>
                       </div><!-- fecha form do pep12months-->
                     <div class="form-group" *ngIf="isVisiblePep12months == false || isVisiblePep12months == true && isPEPTypeSelected == true && isPEPCountrySelected && isPEPSinceSelected == true">
 
@@ -117,24 +109,24 @@
                           </div>
                         </span>
                       </nav>
+                      <p class="titulo-form-simples"></p>
                       <div class="showDiv form-group" *ngIf="isVisiblePepFamiliarOf == true">
+                        <div class="row ms-0 me-0">
+                          <div class="col-6 ms-0 me-0 pb-4 ps-0 pe-5">
                         <!-- Se for familiar de uma PEP--->
-                        <label class="form-check-label titulo-form-simples mb-1"
-                          for="pepFamilyRelation">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*
+                        <p class="form-check-label titulo-form-simples mt-0"
+                          for="pepFamilyRelation">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*</p>
                         <select (change)="checkSelectedFamiliar()" class="form-select" formControlName="pepFamilyRelation" name="pepFamilyRelation"
                           id="pepFamilyRelation">
                           <option>Filha</option>
-                        </select></label>
-                        <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepFamilyRelation').touched && !this.form.get('pepFamilyRelation').valid">
-                          <div *ngIf="this.form.get('pepFamilyRelation').errors && this.form.get('pepFamilyRelation').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
-                        </div>
+                        </select>
+                        </div></div>
                       </div>
                     </div>
                     <!--Fecha é familiar de uma PEP-->
+
                     <div class="form-group" *ngIf="isVisiblePepFamiliarOf == false || isVisiblePepFamiliarOf == true && isPEPFamilyRelationSelected == true">
+                      
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.relations'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <span class="navbar-text">
@@ -152,24 +144,19 @@
                           </div>
                         </span>
                       </nav>
+                      <p class="titulo-form-simples"></p>
                       <div class="form-group" *ngIf="isVisiblePepRelations == true">
                         <!-- Se mantiver relações com uma PEP--->
-                        <label class="form-check-label titulo-form-simples mb-1" for="pepTypeOfRelation">
+                        <div class="col-6 ms-0 me-0 pb-4 ps-0 pe-5">
+                        <p class="form-check-label titulo-form-simples mb-1" for="pepTypeOfRelation">
                           {{'declarativeInformation.stakeholder.pep.relationType'|translate}}:*
-                        </label>
+                        </p>
                         <select (change)="checkSelectedRelations()" class="form-select" formControlName="pepTypeOfRelation" name="pepTypeOfRelation"
                           id="pepTypeOfRelation">
                           <option value="">{{'declarativeInformation.stakeholder.pep.relationType'|translate}}:</option>
                           <option value="1">Sócio </option>
                         </select>
-                        <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepTypeOfRelation').touched && !this.form.get('pepTypeOfRelation').valid">
-                          <div
-                            *ngIf="this.form.get('pepTypeOfRelation').errors && this.form.get('pepTypeOfRelation').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
-                        </div>
-                      </div>
+                      </div></div><p class="titulo-form-simples"></p>
                     </div>
                     <div class="form-group" *ngIf="isVisiblePepRelations == false || isVisiblePepRelations == true && isPEPRelationSelected == true">
                       
@@ -190,23 +177,18 @@
                           </div>
                         </span>
                       </nav>
+                      <p class="titulo-form-simples"></p>
                       <div class="form-group" *ngIf="isVisiblePepPoliticalPublicJobs == true">
                         <!-- Se tiver tido cargos políticos ou públicos--->
-                        <label class="form-check-label titulo-form-simples mb-1"
-                          for="pepPoliticalPublicJobDesignation">{{'declarativeInformation.stakeholder.pep.role'|translate}}:*</label>
+                        <div class="col-6 ms-0 me-0 pb-4 ps-0 pe-5">
+                        <p class="form-check-label titulo-form-simples mt-0"
+                          for="pepPoliticalPublicJobDesignation">{{'declarativeInformation.stakeholder.pep.role'|translate}}:*</p>
                         <select class="form-select" formControlName="pepPoliticalPublicJobDesignation"
                           name="pepPoliticalPublicJobDesignation" id="pepPoliticalPublicJobDesignation">
                           <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
                         </select>
-                        <div class="alert alert-danger"
-                          *ngIf="this.form.get('pepPoliticalPublicJobDesignation').touched && !this.form.get('pepPoliticalPublicJobDesignation').valid">
-                          <div
-                            *ngIf="this.form.get('pepPoliticalPublicJobDesignation').errors && this.form.get('pepPoliticalPublicJobDesignation').errors?.['required']">
-                            {{'generalKeywords.mandatoryParameter'|translate}}
-                          </div>
-                        </div>
                       </div>
-                    </div>
+                    </div><p class="titulo-form-simples"></p></div>
                     </div>
                   </form>
                   <div class="col ms-0 ps-0">

@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { CommunicationOwnershipTypeEnum, EquipmentOwnershipTypeEnum, Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
+import { CommunicationOwnershipTypeEnum, EquipmentOwnershipTypeEnum, Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -1065,7 +1065,7 @@ export class CommercialOfferListComponent implements OnInit {
     //  });
     //}
 
-    this.data.updateData(false, 5);
+    this.data.updateData(false, 5, 1);
   }
 
   ngOnInit(): void {
@@ -1130,7 +1130,6 @@ export class CommercialOfferListComponent implements OnInit {
 
     var context = this;
 
-    console.log("CHECKBOXES:");
     pack.forEach(function (value, idx) {
       console.log(value)
       var group = new FormGroup({});

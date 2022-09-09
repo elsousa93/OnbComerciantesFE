@@ -37,15 +37,8 @@ export class TokenService {
 
   getCRC(code: string, requestReason: string, requestedBy?: string): any {
     var token = '';
-
-    console.log("getCRC!!!");
-
     this.authService.currentUser.subscribe(result => {
-      console.log("resultado: ", result);
       token = result.token;
-
-      console.log("token: ", token);
-
       const HTTP_OPTIONS = {
         headers: new HttpHeaders({
           'Authorization': 'Bearer ' + token

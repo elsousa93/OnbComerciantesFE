@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CookieService } from 'ngx-cookie-service'
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -9,13 +9,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
-import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
+import { UserPermissions, FTPermissions, getFTPermissions } from '../userPermissions/user-permissions'
 import { Sort } from '@angular/material/sort';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../process/process.service';
 import { Process } from '../process/process.interface';
 import { DatePipe } from '@angular/common';
 import { LoggerService } from 'src/app/logger.service';
+import { User } from '../userPermissions/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -144,25 +145,49 @@ export class DashboardComponent implements OnInit {
   dataSourceTratamento: MatTableDataSource<ProcessList>;
   dataSourceDevolvidos: MatTableDataSource<ProcessList>;
   dataSourceAceitacao: MatTableDataSource<ProcessList>;
-  dataSourceArquivoFisico: MatTableDataSource<ProcessList>;
+  dataSourcePendingSent: MatTableDataSource<ProcessList>;
+  dataSourcePendingEligibility: MatTableDataSource<ProcessList>;
+  dataSourceMultipleClients: MatTableDataSource<ProcessList>;
+  dataSourceDOValidation: MatTableDataSource<ProcessList>;
+  dataSourceNegotiationAproval: MatTableDataSource<ProcessList>;
+  dataSourceMCCTreatment: MatTableDataSource<ProcessList>;
+  dataSourceValidationSIBS: MatTableDataSource<ProcessList>;
+  dataSourceRiskOpinion: MatTableDataSource<ProcessList>;
+  dataSourceComplianceDoubts: MatTableDataSource<ProcessList>;
   
   @ViewChild('empTbSort') empTbSort = new MatSort();
   @ViewChild('empTbSortWithObject') empTbSortWithObject = new MatSort();
   @ViewChild('empTbSortDevolvidos') empTbSortDevolvidos = new MatSort();
   @ViewChild('empTbSortAceitacao') empTbSortAceitacao = new MatSort();
-  @ViewChild('empTbSortArquivoFisico') empTbSortArquivoFisico = new MatSort();
+  @ViewChild('empTbSortPendingSent') empTbSortPendingSent = new MatSort();
+  @ViewChild('empTbSortPendingEligibility') empTbSortPendingEligibility = new MatSort();
+  @ViewChild('empTbSortMultipleClients') empTbSortMultipleClients = new MatSort();
+  @ViewChild('empTbSortDOValidation') empTbSortDOValidation = new MatSort();
+  @ViewChild('empTbSortNegotiationAproval') empTbSortNegotiationAproval = new MatSort();
+  @ViewChild('empTbSortMCCTreatment') empTbSortMCCTreatment = new MatSort();
+  @ViewChild('empTbSortValidationSIBS') empTbSortValidationSIBS = new MatSort();
+  @ViewChild('empTbSortRiskOpinion') empTbSortRiskOpinion = new MatSort();
+  @ViewChild('empTbSortComplianceDoubts') empTbSortComplianceDoubts = new MatSort();
   @ViewChild('paginatorPage') paginatorPage : MatPaginator;
   @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
   @ViewChild('paginatorPageDevolvidos') paginatorPageDevolvidos: MatPaginator;
   @ViewChild('paginatorPageAceitacao') paginatorPageAceitacao: MatPaginator;
-  @ViewChild('paginatorPageArquivoFisico') paginatorPageArquivoFisico: MatPaginator;
+  @ViewChild('paginatorPagePendingSent') paginatorPagePendingSent: MatPaginator;
+  @ViewChild('paginatorPagePendingEligibility') paginatorPagePendingEligibility: MatPaginator;
+  @ViewChild('paginatorPageMultipleClients') paginatorPageMultipleClients: MatPaginator;
+  @ViewChild('paginatorPageDOValidation') paginatorPageDOValidation: MatPaginator;
+  @ViewChild('paginatorPageNegotiationAproval') paginatorPageNegotiationAproval: MatPaginator;
+  @ViewChild('paginatorPageMCCTreatment') paginatorPageMCCTreatment: MatPaginator;
+  @ViewChild('paginatorPageValidationSIBS') paginatorPageValidationSIBS: MatPaginator;
+  @ViewChild('paginatorPageRiskOpinion') paginatorPageRiskOpinion: MatPaginator;
+  @ViewChild('paginatorPageComplianceDoubts') paginatorPageComplianceDoubts: MatPaginator;
   
   //---------------------------
   
   @Input() isToggle: boolean = false;
   @Input() isAutoHide: boolean = false;
 
-  displayedColumns = ['processNumber', 'requestDate', 'user', 'buttons'];
+  displayedColumns = ['processNumber', 'contractNumber', 'requestDate','clientName', 'user', 'buttons'];
 
   process: ProcessGet = {
     items: 
@@ -198,9 +223,8 @@ export class DashboardComponent implements OnInit {
   private _mobileQueryListener: () => void;
   @HostBinding('style.--toptestexpto') public toptestexpto: string = '5px';
 
-
-  userType: string = "Banca";
-  userPermissions: MenuPermissions;
+  FTPermissions: FTPermissions;
+  currentUser: User = {};
 
   incompleteProcessess: ProcessGet;
   ongoingProcessess: ProcessGet;
@@ -218,7 +242,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private logger : LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe, private authService: AuthService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -258,7 +282,7 @@ export class DashboardComponent implements OnInit {
         this.ongoingProcessess = resul;
         this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess.items);
 
-        this.empTbSortWithObject.disableClear = true;
+        // this.empTbSortWithObject.disableClear = true;
         this.dataSourceTratamento.sort = this.empTbSortWithObject;
         this.dataSourceTratamento.paginator = this.paginatorPageSize;
         this.ongoingCount = result.pagination.total;
@@ -278,31 +302,132 @@ export class DashboardComponent implements OnInit {
         this.returnedCount = result.pagination.total;
       });
     });
-
-
-    //Fase de aceitação
-    //this.processService.searchProcessByState('ContractAcceptance').subscribe(result => {
-    //  this.logger.debug('Fase de aceitação ' + result);
-    //  this.contractAcceptanceProcessess = result;
-    //  this.dataSourceAceitacao = new MatTableDataSource(this.contractAcceptanceProcessess);
-
-    //  this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
-    //  this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
-    //});
     
-
     //Arquivo Fisico
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.completeProcessess = resul;
-        this.dataSourceArquivoFisico = new MatTableDataSource(this.completeProcessess.items);
+        this.dataSourcePendingSent = new MatTableDataSource(this.completeProcessess.items);
 
-        this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
-        this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
+        this.dataSourcePendingSent.paginator = this.paginatorPagePendingSent;
+        this.dataSourcePendingSent.sort = this.empTbSortPendingSent;
         this.completeCount = result.pagination.total;
       });
     });
+
+    //Pareceres de Eligibilidade
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourcePendingEligibility = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourcePendingEligibility.paginator = this.paginatorPagePendingEligibility;
+        this.dataSourcePendingEligibility.sort = this.empTbSortPendingEligibility;
+        this.completeCount = result.pagination.total;
+      });
+    });
+
+    //Múltiplos Clientes
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceMultipleClients = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourceMultipleClients.paginator = this.paginatorPageMultipleClients;
+        this.dataSourceMultipleClients.sort = this.empTbSortMultipleClients;
+        this.completeCount = result.pagination.total;
+      });
+    });
+
+    //Valida DO
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceDOValidation = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourceDOValidation.paginator = this.paginatorPageDOValidation;
+        this.dataSourceDOValidation.sort = this.empTbSortDOValidation;
+        this.completeCount = result.pagination.total;
+      });
+    });
+
+    //Aprovação de Negociação
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceNegotiationAproval = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourceNegotiationAproval.paginator = this.paginatorPageNegotiationAproval;
+        this.dataSourceNegotiationAproval.sort = this.empTbSortNegotiationAproval;
+        this.completeCount = result.pagination.total;
+      });
+    });
+
+    //MCC
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceMCCTreatment = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourceMCCTreatment.paginator = this.paginatorPageMCCTreatment;
+        this.dataSourceMCCTreatment.sort = this.empTbSortMCCTreatment;
+        this.completeCount = result.pagination.total;
+      });
+    });
+
+    //Vaidação SIBS
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceValidationSIBS = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourceValidationSIBS.paginator = this.paginatorPageValidationSIBS;
+        this.dataSourceValidationSIBS.sort = this.empTbSortValidationSIBS;
+        this.completeCount = result.pagination.total;
+      });
+    });
+
+    //Parecer de Risco
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceRiskOpinion = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourceRiskOpinion.paginator = this.paginatorPageRiskOpinion;
+        this.dataSourceRiskOpinion.sort = this.empTbSortRiskOpinion;
+        this.completeCount = result.pagination.total;
+      });
+    });
+
+    //Dúvidas Compliance
+    this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.logger.debug('Completos ' + result);
+      this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+        this.completeProcessess = resul;
+        this.dataSourceComplianceDoubts = new MatTableDataSource(this.completeProcessess.items);
+
+        this.dataSourceComplianceDoubts.paginator = this.paginatorPageComplianceDoubts;
+        this.dataSourceComplianceDoubts.sort = this.empTbSortComplianceDoubts;
+        this.completeCount = result.pagination.total;
+      });
+    });
+  }
+  
+  FTSearch(queue: string){
+    let navigationExtras: NavigationExtras = {
+      state: {
+        queueName: queue
+      }
+    };
+    this.router.navigate(["/app-consultas-ft"], navigationExtras);
   }
 
   cancelProcess(processId: string) {
@@ -318,10 +443,16 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userPermissions = getMenuPermissions(UserPermissions.DO);
-  }
+    this.authService.currentUser.subscribe(user => {
+      this.currentUser = user;
+      var a = UserPermissions[this.currentUser.permissions];
 
-  assignMenus() {
+      console.log("permissões: ", this.currentUser.permissions);
+      console.log("userPermission tratada: ", a);
+
+      this.FTPermissions = getFTPermissions(a);
+
+    });
   }
 
   public toggleSideNav(toggled: boolean) {
@@ -330,7 +461,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
-  }
+  } 
 
   streamHistoryMenu(){
     this.dataService.historyStream$.next(true); 
@@ -379,12 +510,61 @@ export class DashboardComponent implements OnInit {
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceAceitacao.filter = filterValue;
   }
-  
-  applyFilterArquivoFisico(filterValue: string) {
+
+  applyFilterPendingSent(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSourceArquivoFisico.filter = filterValue;
+    this.dataSourcePendingSent.filter = filterValue;
   }
+  
+  applyFilterPendingEligibility(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourcePendingEligibility.filter = filterValue;
+  }
+
+  applyFilterMultipleClients(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceMultipleClients.filter = filterValue;
+  }
+
+  applyFilterDOValidation(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceDOValidation.filter = filterValue;
+  }
+
+  applyFilterNegotiationAproval(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceNegotiationAproval.filter = filterValue;
+  }
+
+  applyFilterMCCTreatment(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceMCCTreatment.filter = filterValue;
+  }
+
+  applyFilterValidationSIBS(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceValidationSIBS.filter = filterValue;
+  }
+
+  applyFilterRiskOpinion(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceRiskOpinion.filter = filterValue;
+  }
+
+  applyFilterComplianceDoubts(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourceComplianceDoubts.filter = filterValue;
+  }
+
 }
 
 

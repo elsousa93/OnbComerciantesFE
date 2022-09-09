@@ -218,7 +218,6 @@ function submit(data) {
 
 export function readCCAddress(componentCallback) {
   SetNewCCData = componentCallback;
-  console.log("read cc address");
   ClearCCFields();
   let url = BASE_URL + '/api/citizencard/generateccpluginrequestwithaddress';
   //const processid = $("#CCCallProcessId").text();
@@ -236,7 +235,6 @@ export function readCCAddress(componentCallback) {
 
 export function readCC(componentCallback) {
   SetNewCCData = componentCallback;
-  console.log("read cc");
   ClearCCFields();
   let url = BASE_URL + '/api/citizencard/generateccpluginrequest';
   //const processid = $("#CCCallProcessId").text();

@@ -386,7 +386,12 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
           this.newSubmission.merchant.fiscalId = this.NIFNIPC;
           this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-          this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+          if (this.client.headquartersAddress.values === undefined) {
+            this.newSubmission.merchant.headquartersAddress = null;
+          } else {
+            this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+          }
+          
           this.newSubmission.merchant.id = this.client.id;
           this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
           this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;

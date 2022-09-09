@@ -125,7 +125,6 @@ export class ClientComponent implements OnInit {
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
-    console.log("Name: ", name);
 
     this.dataCCcontents.nameCC = name;
     this.dataCCcontents.nationalityCC = nationality;
@@ -145,7 +144,6 @@ export class ClientComponent implements OnInit {
     if (this.addressReading == false) {
 
       //Without address
-      console.log("Without Address PDF");
       this.dataCCcontents.addressCC = "Sem PIN de morada";
       this.dataCCcontents.postalCodeCC = " ";
       this.dataCCcontents.countryCC = " ";
@@ -159,12 +157,10 @@ export class ClientComponent implements OnInit {
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
         this.prettyPDF = resolve;
       });
-      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
 
     } else {
 
       //WITH ADDRESS
-      console.log("With Address PDF");
       this.dataCCcontents.addressCC = address;
       this.dataCCcontents.postalCodeCC = postalCode;
 
@@ -175,7 +171,6 @@ export class ClientComponent implements OnInit {
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
         this.prettyPDF = resolve;
       });
-      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
     }
   }
 
@@ -517,10 +512,10 @@ export class ClientComponent implements OnInit {
             var client = {
               "clientId": c.merchantId,
               "commercialName": c.commercialName,
-              "address": "Rua Gomes Artur",
-              "ZIPCode": "1000-001",
-              "locality": "Lisboa",
-              "country": "Portugal",
+              "address": c.headquartersAddress.address,
+              "ZIPCode": c.headquartersAddress.postalCode,
+              "locality": c.headquartersAddress.postalArea,
+              "country": c.headquartersAddress.country,
             }
             context.clientsToShow.push(client);
             context.logger.debug(context.clientsToShow);
@@ -660,7 +655,6 @@ export class ClientComponent implements OnInit {
         dataCC: this.dataCC
       }
     };
-    console.log("dataCC em ObterSelecionado: ", this.dataCC)
     this.logger.debug("a passar para a proxima pagina");
     this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
@@ -675,7 +669,6 @@ export class ClientComponent implements OnInit {
     this.toSearch = false;
     this.toShowReadCC = readable;
     this.BlockDocumentNumber = readable;
-    console.log("BlockDocumentNumber (true? disable caixa): ", this.BlockDocumentNumber);
   }
 
   //Modal que questiona se tem o PIN da Morada -- APAGAR
@@ -736,11 +729,9 @@ export class ClientComponent implements OnInit {
       NIFNIPC = this.newClient.clientId;
     }
     if (this.newClient.documentationDeliveryMethod === '1001') {
-      console.log("criar novo cliente COM CC");
       NIFNIPC = this.dataCCcontents.nifCC;
     }
 
-    console.log("PRETTY PDF no createNewClient: ", this.prettyPDF);
     if (this.newClient.documentationDeliveryMethod === '1001') {
       this.dataCC = {
         nameCC: this.nameCC,
@@ -760,8 +751,6 @@ export class ClientComponent implements OnInit {
         dataCC: this.dataCCcontents
       }
     };
-    console.log("dataCC conctens a evnviar:", this.dataCCcontents),
-      console.log("EM dataCCcontents.nifCC: ", NIFNIPC, "TYPE OF: ", typeof (NIFNIPC));
     if (NIFNIPC !== null && NIFNIPC !== undefined)
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
     else

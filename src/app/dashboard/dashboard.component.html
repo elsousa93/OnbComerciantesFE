@@ -6,80 +6,234 @@
           <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
         </span>
         <span class="navbar-text">
-          <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">{{'homepage.diaryPerformance'|translate|uppercase}}: <span id="date">{{date}}</span>
-            </h5>
+          <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">
+            {{'homepage.diaryPerformance'|translate|uppercase}}: <span id="date">{{date}}</span>
+          </h5>
         </span>
       </nav>
     </div>
     <div class="offset-1 col-10 mt-3 ps-1 pe-1 ">
       <div class="row">
-        <button type="button" class="col mt-2 mb-2 ms-3 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
-          data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+        <button *ngIf="FTPermissions.pending" type="button"
+          class="col mt-2 mb-2 ms-3 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapsePending">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="incompleteCount" *ngIf="incompleteCount !== undefined && incompleteCount !== null"></app-number-counter>
+            <app-number-counter [number]="incompleteCount"
+              *ngIf="incompleteCount !== undefined && incompleteCount !== null"></app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash ">
-              <img src="assets/images/move_up_dash.svg">
+              <img src="assets/images/queues/move_up_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.pending'|translate|uppercase}}<br><br></h1>
+          <h1 class="subtitulo_dashboard text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.pending'|translate|uppercase}}<br><br></h1>
         </button>
 
-        <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
-          data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo">
+        <button *ngIf="FTPermissions.backOffice" type="button"
+          class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseBackOffice">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="ongoingCount" *ngIf="ongoingCount !== undefined && ongoingCount !== null"></app-number-counter>
+            <app-number-counter [number]="ongoingCount" *ngIf="ongoingCount !== undefined && ongoingCount !== null">
+            </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash">
-              <img src="assets/images/assignment_returned_dash.svg">
+              <img src="assets/images/queues/assignment_returned_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">&nbsp;{{'homepage.backOffice'|translate|uppercase}}<br><br></h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            &nbsp;{{'homepage.processes.backOffice'|translate|uppercase}}<br><br></h1>
         </button>
 
-        <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
-          data-bs-toggle="collapse" data-bs-target="#flush-collapseThree">
+        <button *ngIf="FTPermissions.returned" type="button"
+          class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseReturned">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="returnedCount" *ngIf="returnedCount !== undefined && returnedCount !== null"></app-number-counter>
+            <app-number-counter [number]="returnedCount" *ngIf="returnedCount !== undefined && returnedCount !== null">
+            </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash">
-              <img src="assets/images/assignment_return_dash.svg">
+              <img src="assets/images/queues/assignment_return_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.returned'|translate|uppercase}}<br><br></h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.returned'|translate|uppercase}}<br><br></h1>
         </button>
 
-        <button type="button" class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center"
-                data-bs-toggle="collapse" data-bs-target="#flush-collapseFour">
-          <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]=0 *ngIf="contractAcceptanceCount !== undefined && contractAcceptanceCount !== null"></app-number-counter>
-          </h1> <!--FIX ME [number]=0 -- ANTES: contractAcceptanceCount-->
-          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
-            <span class="material-symbols-outlined icon-dash">
-              <img src="assets/images/assignment_turned_in_dash.svg">
-            </span>
-          </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.acceptance'|translate|uppercase}}<br><br></h1>
-        </button>
-
-        <button type="button" class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center"
-          data-bs-toggle="collapse" data-bs-target="#flush-collapseFive">
+        <button *ngIf="FTPermissions.acceptance" type="button"
+          class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseAcceptance">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null"></app-number-counter>
+            <app-number-counter [number]=0
+              *ngIf="contractAcceptanceCount !== undefined && contractAcceptanceCount !== null"></app-number-counter>
+          </h1>
+          <!--FIX ME [number]=0 -- ANTES: contractAcceptanceCount-->
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/assignment_turned_in_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.acceptance'|translate|uppercase}}<br><br></h1>
+        </button>
+
+        <button *ngIf="FTPermissions.pendingSent" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapsePendingSent">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash">
-              <img src="assets/images/inventory_2_dash.svg">
+              <img src="assets/images/queues/pending_sent_dash.svg">
             </span>
           </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">{{'homepage.pendingFisical'|translate|uppercase}}</h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.pendingSent'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.pendingEligibility" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapsePendingEligibility">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/inventory_2_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.pendingEligibility'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.multipleClientes" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseMultipleClients">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/multiple_clients_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.multipleClients'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.DOValidation" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseDOValidation">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/DO_Validation_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.DOValidation'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.negotiationAproval" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseNegotiationAproval">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/negotiation_approval_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.negotiationAproval'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.MCCTreatment" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseMCCTreatment">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/MCC_treatment_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.MCCTreatment'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.validationSIBS" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseValidationSIBS">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/validation_sibs_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.validationSIBS'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.riskOpinion" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseRiskOpinion">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/risk_opinion_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.riskOpinion'|translate|uppercase}}</h1>
+        </button>
+
+        <button *ngIf="FTPermissions.complianceDoubts" type="button"
+          class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseComplianceDoubts">
+          <h1
+            class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/compliance_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.complianceDoubts'|translate|uppercase}}</h1>
         </button>
       </div>
     </div>
@@ -91,51 +245,63 @@
               <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
             </span>
             <span class="navbar-text">
-              <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">{{'homepage.queues'|translate|uppercase}}</h5>
+              <h5 class="align-self-center subtitulo_barras_horizontais mt-0 mb-0 pt-0 pb-0">
+                {{'homepage.queues.title'|translate|uppercase}}</h5>
             </span>
           </nav>
         </div>
         <div class="offset-1 col-10 mb-3 mt-4 ps-0 pe-0 ">
           <div class="accordion1 accordion-flush" id="accordionFlushExample">
-            <div class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingOne">
+            <div *ngIf="FTPermissions.pending" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingPending">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  data-bs-target="#flush-collapsePending" aria-expanded="false" aria-controls="flush-collapsePending">
                   <span class="material-symbols-outlined icon-accordion ">
-                    <img src="assets/images/move_up.svg">
-                  </span>&nbsp;&nbsp;{{'homepage.pending'|translate|uppercase}}
+                    <img src="assets/images/queues/move_up.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.pending'|translate|uppercase}}
                 </button>
               </h2>
-              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+              <div id="flush-collapsePending" class="accordion-collapse collapse" aria-labelledby="flush-headingPending"
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourcePendentes" matSort #empTbSort="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber|uppercase}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      -
-                    </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
-                    </mat-header-cell>
-                    
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon img">
@@ -145,11 +311,6 @@
                       <a [routerLink]="['/app-devolucao/', row.processId]">
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg" title="Edit">
-                        </span>
-                      </a>
-                      <a>
-                        <span class="material-symbols-rounded edit-icon" style="cursor: pointer;">
-                          <img src="assets/images/search_blue.svg">
                         </span>
                       </a>
                     </mat-cell>
@@ -183,45 +344,55 @@
               </div>
             </div>
 
-            <div class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingTwo">
+            <div *ngIf="FTPermissions.backOffice" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingBackOffice">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  data-bs-target="#flush-collapseBackOffice" aria-expanded="false" aria-controls="flush-collapseBackOffice">
                   <span class="material-symbols-outlined icon-accordion ">
-                    <img src="assets/images/assignment_returned.svg">
-                  </span>&nbsp;&nbsp;{{'homepage.backOffice'|translate|uppercase}}
+                    <img src="assets/images/queues/assignment_returned.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.backOffice'|translate|uppercase}}
                 </button>
               </h2>
-              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+              <div id="flush-collapseBackOffice" class="accordion-collapse collapse" aria-labelledby="flush-headingBackOffice"
                 data-bs-parent="#accordionFlushExample">
                 <!--dataSourceWithObjectColumn-->
                 <mat-table [dataSource]="dataSourceTratamento" matSort #empTbSortWithObject="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      -
-                    </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
-                    </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon img">
@@ -263,44 +434,54 @@
                 </div>
               </div>
             </div>
-            <div class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingThree">
+            <div *ngIf="FTPermissions.returned" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingReturned">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  data-bs-target="#flush-collapseReturned" aria-expanded="false" aria-controls="flush-collapseReturned">
                   <span class="material-symbols-outlined icon-accordion ">
-                    <img src="assets/images/assignment_return.svg">
-                  </span>&nbsp;&nbsp;{{'homepage.returned'|translate|uppercase}}
+                    <img src="assets/images/queues/assignment_return.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.returned'|translate|uppercase}}
                 </button>
               </h2>
-              <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+              <div id="flush-collapseReturned" class="accordion-collapse collapse" aria-labelledby="flush-headingReturned"
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceDevolvidos" matSort #empTbSortDevolvidos="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      -
-                    </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;{{'homepage.editProcess'|translate}}
-                    </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a [routerLink]="['/app-devolucao/', row.processId]" (click)="streamHistoryMenu()">
                         <span class="material-symbols-rounded edit-icon">
@@ -338,44 +519,55 @@
                 </div>
               </div>
             </div>
-            <div class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingFour">
+            <div *ngIf="FTPermissions.acceptance" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingAcceptance">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                  data-bs-target="#flush-collapseAcceptance" aria-expanded="false" aria-controls="flush-collapseAcceptance">
                   <span class="material-symbols-outlined icon-accordion ">
-                    <img src="assets/images/assignment_turned_in.svg">
-                  </span>&nbsp;&nbsp;{{'homepage.acceptance'|translate|uppercase}}
+                    <img src="assets/images/queues/assignment_turned_in.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.acceptance'|translate|uppercase}}
                 </button>
               </h2>
-              <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+              <div id="flush-collapseAcceptance" class="accordion-collapse collapse" aria-labelledby="flush-headingAcceptance"
                 data-bs-parent="#accordionFlushExample">
                 <mat-table [dataSource]="dataSourceAceitacao" matSort #empTbSortAceitacao="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      -
-                    </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
-                    </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-rounded delete-icon">
@@ -418,51 +610,62 @@
                 </div>
               </div>
             </div>
-            <div class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingFive">
+            <div *ngIf="FTPermissions.pendingSent" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingPendingSent">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                  data-bs-target="#flush-collapsePendingSent" aria-expanded="false" aria-controls="flush-collapsePendingSent">
                   <span class="material-symbols-outlined icon-accordion ">
-                    <img src="assets/images/inventory_2.svg">
-                  </span>&nbsp;&nbsp;{{'homepage.pendingFisical'|translate|uppercase}}
+                    <img src="assets/images/queues/pending_sent.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.pendingSent'|translate|uppercase}}
                 </button>
               </h2>
-              <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
+              <div id="flush-collapsePendingSent" class="accordion-collapse collapse" aria-labelledby="flush-headingPendingSent"
                 data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceArquivoFisico" matSort #empTbSortArquivoFisico="matSort">
+                <mat-table [dataSource]="dataSourcePendingSent" matSort #empTbSortPendingSent="matSort">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}} </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate}}
+                      {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
                   <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate}}
+                      {{'homepage.user'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      -
-                    </mat-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef>
-                      &nbsp;&nbsp;&nbsp;{{'homepage.findProcess'|translate}}
-                    </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
+                      <a>
                         <span class="material-symbols-rounded edit-icon" style="cursor: pointer;">
                           <img src="assets/images/search_blue.svg">
                         </span>
-                      </button>
+                      </a>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -474,7 +677,7 @@
                       <nav class="navbar navbar-light bg-light">
                         <span class="navbar-text ms-0 me-0">
                           <mat-form-field>
-                            <input matInput (keyup)="applyFilterArquivoFisico($event.target.value)"
+                            <input matInput (keyup)="applyFilterPendingSent($event.target.value)"
                               placeholder="Efetuar pesquisa">
                           </mat-form-field>
                         </span>
@@ -485,7 +688,701 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageArquivoFisico [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                          <mat-paginator #paginatorPagePendingSent [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.pendingEligibility" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingPendingEligibility">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapsePendingEligibility" aria-expanded="false" aria-controls="flush-collapsePendingEligibility">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/inventory_2.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.pendingEligibility'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapsePendingEligibility" class="accordion-collapse collapse" aria-labelledby="flush-headingPendingEligibility"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourcePendingEligibility" matSort #empTbSortPendingEligibility="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('eligibility')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterPendingEligibility($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPagePendingEligibility [length]="10"
+                            [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.multipleClientes" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingMultipleClients">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseMultipleClients" aria-expanded="false" aria-controls="flush-collapseMultipleClients">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/multiple_clients.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.multipleClients'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseMultipleClients" class="accordion-collapse collapse" aria-labelledby="flush-headingMultipleClients"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourceMultipleClients" matSort #empTbSortMultipleClients="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('multipleClients')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterMultipleClients($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPageMultipleClients [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.DOValidation" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingDOValidation">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseDOValidation" aria-expanded="false" aria-controls="flush-collapseDOValidation">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/DO_Validation.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.DOValidation'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseDOValidation" class="accordion-collapse collapse" aria-labelledby="flush-headingDOValidation"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourceDOValidation" matSort #empTbSortDOValidation="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('DOValidation')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterDOValidation($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPageDOValidation [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.negotiationAproval" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingNegotiationAproval">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseNegotiationAproval" aria-expanded="false" aria-controls="flush-collapseNegotiationAproval">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/negotiation_approval.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.negotiationAproval'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseNegotiationAproval" class="accordion-collapse collapse" aria-labelledby="flush-headingNegotiationAproval"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourceNegotiationAproval" matSort #empTbSortNegotiationAproval="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('negotiationAproval')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterNegotiationAproval($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPageNegotiationAproval [length]="10"
+                            [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.MCCTreatment" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingMCCTreatment">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseMCCTreatment" aria-expanded="false" aria-controls="flush-collapseMCCTreatment">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/MCC_treatment.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.MCCTreatment'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseMCCTreatment" class="accordion-collapse collapse" aria-labelledby="flush-headingMCCTreatment"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourceMCCTreatment" matSort #empTbSortMCCTreatment="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('MCCTreatment')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterMCCTreatment($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPageMCCTreatment [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.validationSIBS" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingValidationSIBS">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseValidationSIBS" aria-expanded="false" aria-controls="flush-collapseValidationSIBS">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/validation_sibs.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.validationSIBS'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseValidationSIBS" class="accordion-collapse collapse" aria-labelledby="flush-headingValidationSIBS"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourceValidationSIBS" matSort #empTbSortValidationSIBS="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.processNumber'|translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'homepage.contractNumber'|translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('validationSIBS')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterValidationSIBS($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPageValidationSIBS [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.riskOpinion" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingRiskOpinion">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseRiskOpinion" aria-expanded="false" aria-controls="flush-collapseRiskOpinion">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/risk_opinion.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.riskOpinion'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseRiskOpinion" class="accordion-collapse collapse" aria-labelledby="flush-headingRiskOpinion"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourceRiskOpinion" matSort #empTbSortRiskOpinion="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('risk')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterRiskOpinion($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPageRiskOpinion [length]="10" [pageSizeOptions]="[10, 25, 100]">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.complianceDoubts" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingComplianceDoubts">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseComplianceDoubts" aria-expanded="false" aria-controls="flush-collapseComplianceDoubts">
+                  <span class="material-symbols-outlined icon-accordion ">
+                    <img src="assets/images/queues/compliance.svg">
+                  </span>&nbsp;&nbsp;{{'homepage.processes.complianceDoubts'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseComplianceDoubts" class="accordion-collapse collapse" aria-labelledby="flush-headingComplianceDoubts"
+                data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourceComplianceDoubts" matSort #empTbSortComplianceDoubts="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Nº Contrato Column -->
+                  <ng-container matColumnDef="contractNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.contractNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="clientName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- User Column -->
+                  <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.user'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="FTSearch('compliance')" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                          <img src="assets/images/search_blue.svg">
+                        </span>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterComplianceDoubts($event.target.value)"
+                              placeholder="Efetuar pesquisa">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPageComplianceDoubts [length]="10" [pageSizeOptions]="[10, 25, 100]">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -511,9 +1408,11 @@
                     <a [routerLink]="['/client']" id="anchor">
                       <button id="btn1"
                         class="btn bg-primary text-white botao_esquerda img-button mt-0 ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
-                      wappler-command="editContent"><img src="assets/images/folder-open-solid.svg">&nbsp; {{'homepage.openProcess'|translate|uppercase}}</button></a></span>
+                        wappler-command="editContent"><img src="assets/images/folder-open-solid.svg">&nbsp;
+                        {{'homepage.openProcess'|translate|uppercase}}</button></a></span>
                   <span class="navbar-text ms-1 me-auto">
-                    <button [routerLink]="['/app-consultas']" id="btn3" class="btn img-button botao_direita ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
+                    <button [routerLink]="['/app-consultas']" id="btn3"
+                      class="btn img-button botao_direita ms-0 me-0 pt-4 pb-4 ps-4 pe-4"
                       wappler-command="editContent">{{'homepage.findProcessButton'|translate|uppercase}}&nbsp;&nbsp;<img
                         src="assets/images/search-solid.svg"></button>
 

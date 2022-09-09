@@ -12,47 +12,14 @@
             </span>
          </nav>
       </div>
-      <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-         <h2 class="text-primary mt-5 ps-0 ">
-           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.title'|translate}}
-         </h2>
-         <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"></app-store-table>
-         <!--<mat-table [dataSource]="storesOfferMat" class="table" matSort>
-           <ng-container matColumnDef="nameEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.name'|translate|uppercase}} </mat-header-cell>
-             <mat-cell *matCellDef="let store"> {{store.name}} </mat-cell>
-           </ng-container>
-           <ng-container matColumnDef="activityEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.activity'|translate|uppercase}} </mat-header-cell>
-             <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
-           </ng-container>
-           <ng-container matColumnDef="subActivityEstab">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
-             <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
-           </ng-container>
-           <ng-container matColumnDef="bank">
-             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'commercialOffer.bank'|translate|uppercase}} </mat-header-cell>
-             <mat-cell *matCellDef="let store"></mat-cell>
-           </ng-container>
-           <ng-container matColumnDef="terminalNumber">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'commercialOffer.terminalNumber'|translate|uppercase}} </mat-header-cell>
-            <mat-cell *matCellDef="let store"></mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="product">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'commercialOffer.product'|translate|uppercase}} </mat-header-cell>
-            <mat-cell *matCellDef="let store"></mat-cell>
-          </ng-container>
-           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-           <mat-row *matRowDef="let row; let idx = index; columns: displayedColumns;"
-                    (click)="selectStore(row, idx)"
-                    [ngClass]="{'row-selected': row === currentStore}">
-           </mat-row>
+      <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">         <!--ANTES offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0-->
+        <h2 class="text-primary mt-5 pb-2 ps-0 m-align">       <!--ps-2-->
+          <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.title'|translate}}
+        </h2>
 
-         </mat-table>
-         <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
-                        showFirstLastButtons>
-         </mat-paginator>-->
-       </div>
+            <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"></app-store-table>
+ 
+     </div>
 
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
          <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>

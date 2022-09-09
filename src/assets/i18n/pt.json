@@ -1,17 +1,15 @@
 {
   "homepage": {
     "diaryPerformance": "Performance Diária",
-    "pending": "Processos pendentes de Envio",
     "backOffice": "Tratamento Backoffice",
     "returned": "Devolvidos Backoffice",
     "acceptance": "Em fase de aceitação",
-    "pendingFisical": "Pendentes de envio para arquivo físico",
-    "queues": "Filas de trabalho",
-    "processNumber": "Nº Processo",
-    "processDate": "Data Processo",
+    "processNumber": "Nº Pedido",
+    "contractNumber": "Nº Contrato",
+    "processDate": "Data do Pedido",
     "clientName": "Nome Cliente Empresa",
+    "user": "Utilizador",
     "findProcess": "Consultar Processo",
-    "editProcess": "Editar Processo",
     "openProcess": "Abertura de Processo",
     "findProcessButton": "Consulta de Processo",
     "home": "Início",
@@ -19,11 +17,39 @@
     "eligibility": "Pareceres de Eligibilidade",
     "multipleClients": "Múltiplos Clientes",
     "validation": "Validação",
-    "priceNegotiation": "Aprovação de negociação de preçário",
-    "validationSIBS": "validação matrícula SIBS",
-    "risk": "Parecer de Risco",
-    "compliance": "Dúvidas Compliance"
-  },
+    "negotiationAproval": "Aprovação de negociação de preçário",
+    "validationSIBS": "Validação matrícula SIBS",
+    "risk": "Pareceres de Risco",
+    "compliance": "Dúvidas Compliance",
+    "DOValidation": "Valida DO",
+    "MCCTreatment": "Tratamento MCC",
+    "queues": {
+      "title": "Filas de trabalho",
+      "eligibility": "Fila de Pareceres de Eligibilidade",
+      "risk": "Fila de Pareceres de Risco",
+      "compliance": "Fila de Dúvidas Compliance",
+      "multipleClients": "Fila de Múltiplos Clientes",
+      "DOValidation": "Fila de Valida DO",
+      "negotiationAproval": "Fila Aprovação de Negociação de Preçário",
+      "MCCTreatment": "Fila de Tratamento MCC",
+      "validationSIBS": "Fila de Validação Matrícula SIBS"
+    },
+    "processes": {
+      "pending": "Processos pendentes de Envio",
+      "backOffice": "Processos em tratamento backoffice",
+      "returned": "Processos devolvidos backoffice",
+      "acceptance": "Processos em fase de aceitação",
+      "pendingSent": "Processos pendentes de envio para arquivo físico",
+      "pendingEligibility": "Processo em fase de pareceres de elegibilidade",
+      "multipleClients": "Processos em múltiplos clientes",
+      "DOValidation": "Processos em valida DO",
+      "negotiationAproval": "Processos em aprovação de negociação de preçário",
+      "MCCTreatment": "Processos em tratamento MCC",
+      "validationSIBS": "Processos em Validação matrícula SIBS",
+      "riskOpinion": "Processos em Parecer de Risco",
+      "complianceDoubts": "Processos em dúvidas compliance"
+    }
+  }, 
   "auth": {
     "title": "Autenticação",
     "identification": "Identificação",
@@ -197,7 +223,7 @@
   },
   "commercialOffer": {
     "title": "Oferta Comercial",
-    "bank": "Banco de Apoio do IBAN",
+    "bank": "Banco Apoio IBAN",
     "terminalNumber": "Número de Terminal",
     "product": "Produto",
     "relation": "Relação Loja Produtos",
@@ -272,7 +298,7 @@
       "language": "Idioma",
       "chooseOption": "Selecione uma das opções",
       "paperSignature": "Assinatura em Papel",
-      "eletronicSignature": "Assinatura Eletrónica",
+      "digitalSignature": "Assinatura Digital",
       "representatives": "Selecione os representantes que obrigam a empresa",
       "clientName": "Nome do Cliente",
       "digitalSignatureType": "Tipo de Assinatura Digital",
@@ -283,7 +309,7 @@
   "searches": {
     "title": "Consultas",
     "search": "Pesquisa",
-    "processNumber": "Nº de Processo",
+    "processNumber": "Nº de Pedido",
     "state": "Estado",
     "incompleted": "Incompleto",
     "running": "A decorrer",
@@ -308,6 +334,7 @@
     "date": "Data",
     "user": "Utilizador",
     "comments": "Observações",
+    "commentsCompliance": "Observações Dúvidas Compliance",
     "opinions": "Pareceres / Decisão",
     "name": "Nome",
     "clientNumber": "Nº Cliente",
@@ -342,6 +369,17 @@
       "processSent": "Processo enviado para assinatura digital"
     }
   },
+  "queues": {
+    "attach": "Por favor anexe evidencia caso exista:",
+    "completed": "Concluir parecer",
+    "favorable": "Favorável",
+    "unfavorable": "Não Favorável",
+    "risk": "Risco",
+    "amlLevel": "Nível AML",
+    "returnBackoffice": "Devolver BackOffice",
+    "returnComercial": "Devolver Comercial",
+    "returnCoff": "Devolver COFF"
+  },
   "generalKeywords": {
     "yes": "Sim",
     "no": "Não",
@@ -361,7 +399,9 @@
     "deleteProcess": "Quer apagar este processo?",
     "maintainProcess": "Manter Processo",
     "confirmDeleteProcess": "Apagar Processo",
-    "save": "Gravar"
+    "save": "Gravar",
+    "select": "Selecione",
+    "restrictions": "Restrições"
   },
   "generalButtons": {
     "continue": "Continuar",

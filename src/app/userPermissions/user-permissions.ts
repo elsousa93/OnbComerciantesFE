@@ -14,6 +14,22 @@ export interface MenuPermissions {
   }
 }
 
+export interface FTPermissions {
+  pending?: boolean,
+  backOffice?: boolean,
+  returned?: boolean,
+  acceptance?: boolean,
+  pendingSent?: boolean,
+  pendingEligibility?: boolean,
+  multipleClientes?: boolean,
+  DOValidation?: boolean,
+  negotiationAproval?: boolean,
+  MCCTreatment?: boolean,
+  validationSIBS?: boolean,
+  riskOpinion?: boolean,
+  complianceDoubts?: boolean
+}
+
 export enum UserPermissions {
   BANCA = "BANCA",
   UNICRE = "UNICRE",
@@ -51,6 +67,34 @@ export function getMenuPermissions(user: any) {
       permissions = {
         HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true, MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true, RiskOpinion: true, ComplianceDoubts: true }
       };
+      return permissions;
+  }
+}
+
+export function getFTPermissions(user: any){ 
+  var permissions: FTPermissions;
+
+  switch (user) {
+    case UserPermissions.BANCA:
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true};
+      return permissions;
+    case UserPermissions.UNICRE:
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true}
+      return permissions;
+    case UserPermissions.CALLCENTER:
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true}
+      return permissions;
+    case UserPermissions.DO:
+      permissions = {multipleClientes: true, DOValidation: true, negotiationAproval: true, MCCTreatment: true, validationSIBS: true};
+      return permissions;
+    case UserPermissions.COMPLIANCEOFFICE:
+      permissions = { riskOpinion: true, complianceDoubts: true};
+      return permissions;
+    case UserPermissions.COMERCIAL:
+      permissions = { pendingEligibility: true};
+      return permissions;
+    case UserPermissions.ADMIN:
+      permissions = {pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true};
       return permissions;
   }
 }
