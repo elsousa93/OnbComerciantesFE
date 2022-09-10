@@ -193,7 +193,7 @@ export class CountrysComponent implements OnInit {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
+        services: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
@@ -208,7 +208,7 @@ export class CountrysComponent implements OnInit {
     } else {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl('aaa', Validators.required),
+        services: new FormControl('', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
@@ -289,10 +289,10 @@ export class CountrysComponent implements OnInit {
         "estimatedAnualRevenue": 45892255.0,
         "averageTransactions": 46895,
         "servicesOrProductsSold": [
-          "Fries"
+         
         ],
         "servicesOrProductsDestinations": [
-          "Fries"
+        
         ]
       },
       "bankInformation": {
@@ -310,7 +310,7 @@ export class CountrysComponent implements OnInit {
           "phoneNumber": "919654421"
         }
       },
-      "documentationDeliveryMethod": "MAIL",
+      "documentationDeliveryMethod": "",
       "billingEmail": "joao@silvestre.pt"
     },
     "stakeholders": [
@@ -395,8 +395,8 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.id = this.client.id;
           this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
           this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-          this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-          this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+          this.newSubmission.merchant.knowYourSales.servicesOrProductsSold.push(this.form.get("services").value); //
+          this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code);
           this.newSubmission.merchant.legalName = this.client.legalName;
           this.newSubmission.merchant.legalNature = this.client.legalNature;
           this.newSubmission.merchant.legalNature2 = this.client.legalNature2;

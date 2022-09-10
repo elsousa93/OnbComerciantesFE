@@ -85,16 +85,14 @@ export class ClientByIdComponent implements OnInit {
     "sales": {
       "annualEstimatedRevenue": 10000000.2,
       "productsOrServicesSold": [
-        "Consultoria",
-        "Bebidas"
+        
       ],
       "productsOrServicesCountries": [
-        "PT",
-        "US"
+        
       ],
       "transactionsAverage": 0
     },
-    "documentationDeliveryMethod": "viaDigital",
+    "documentationDeliveryMethod": "",
     "bankingInformation": null,
     "merchantRegistrationId": null,
     "contacts": null,
@@ -142,13 +140,8 @@ export class ClientByIdComponent implements OnInit {
   legalNatureList: LegalNature[] = [];
   //Natureza Juridica N2
   legalNatureList2: SecondLegalNature[] = [];
-  //Paises de destino
-  countryList: CountryInformation[] = []; 
-  continentsList: string[] = [];
   //CAEs
   CAEsList: EconomicActivityInformation[] = [];
-
-  filteredOptions: Observable<CountryInformation[]>;
 
   public map = new Map();
   public currentPage: number;
@@ -156,7 +149,6 @@ export class ClientByIdComponent implements OnInit {
 
   returned: string; //variável para saber se estamos a editar um processo
   merchantInfo: any;
-  consult: string; //variavel para saber se estamos a consultar um processo
 
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
@@ -176,11 +168,6 @@ export class ClientByIdComponent implements OnInit {
       this.logger.debug(this.legalNatureList);
     }, error => this.logger.error(error));
 
-    //Chamada à API para receber todos os Paises
-    this.tableInfo.GetAllCountries().subscribe(result => {
-      this.countryList = result;
-      this.logger.debug("FETCH PAISES");
-    }, error => this.logger.error(error));
 
     //Chamada à API para obter a lista de CAEs
     //this.tableInfo.GetAllCAEs().subscribe(result => {
@@ -305,7 +292,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : this.client?.legalName, Validators.required), //sim
+      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -624,7 +611,6 @@ export class ClientByIdComponent implements OnInit {
       this.updateBasicForm();
     }
     this.initializeTableInfo();
-    //this.createContinentsList();
 
 
     if (this.returned !== null) {
@@ -659,20 +645,13 @@ export class ClientByIdComponent implements OnInit {
         }
       });
     }
-
-
     this.ngOnInit();  
-    }
+  }
 
    //fim do construtor
 
   ngOnInit(): void {
     // this.clientId = String(this.router.snapshot.params['id']);
-
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
 
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -706,46 +685,6 @@ export class ClientByIdComponent implements OnInit {
     return this.isCommercialSociety;
   }
  
-  continentSelected(event) {
-    if (this.checkedContinents.indexOf(event.target.id) > -1) {
-      var index = this.checkedContinents.indexOf(event.target.id);
-      this.checkedContinents.splice(index, 1);
-      this.countryList.forEach(c => {
-        if (event.target.id == c.continent && this.client.sales.productsOrServicesCountries.indexOf(c.description) > -1) {
-          var index1 = this.client.sales.productsOrServicesCountries.indexOf(c.description);
-          this.client.sales.productsOrServicesCountries.splice(index1, 1);
-        }
-      })
-    } else {
-      this.checkedContinents.push(event.target.id);
-      this.countryList.forEach(c => {
-        if (event.target.id == c.continent && this.client.sales.productsOrServicesCountries.indexOf(c.description) == -1) {
-          this.client.sales.productsOrServicesCountries.push(c.description);
-        }
-      })
-    }
-  }
-
-  onCountryChange(event) {
-    if (this.client.sales.productsOrServicesCountries.indexOf(event.target.id) > -1) {
-      var index = this.client.sales.productsOrServicesCountries.indexOf(event.target.id);
-      this.client.sales.productsOrServicesCountries.splice(index, 1);
-    } else {
-      this.client.sales.productsOrServicesCountries.push(event.target.id);
-    }
-  }
-
-  addCountryToList(country: string) {
-    this.countryList.forEach(c => {
-      if (this.client.sales.productsOrServicesCountries.indexOf(country) == -1) {
-        if (c.description == country) {
-          this.client.sales.productsOrServicesCountries.push(country);
-          this.countryVal = "";
-        }
-      }
-    })
-  }
-
   onLegalNatureSelected() {
     var exists = false;
     this.logger.debug("entrou no legalnatureselected");
@@ -763,21 +702,6 @@ export class ClientByIdComponent implements OnInit {
     }
   }
 
-  createContinentsList() {
-    this.countryList.forEach(country => {
-      if (this.continentsList.length == 0) {
-        this.continentsList.push(country.continent);
-      } else {
-        if (this.continentsList.indexOf(country.continent) == -1) {
-          this.continentsList.push(country.continent);
-        }
-        // else {
-        //  var index = this.continentsList.indexOf(country.continent);
-        //  this.continentsList.splice(index, 1);
-        //}
-      }
-    })
-  }
 
    searchByCRC() {
     //var crcInserted = this.form.get('crcCode');
@@ -956,10 +880,6 @@ export class ClientByIdComponent implements OnInit {
     this.route.navigate(["/"]);
   }
 
-  _filter(value: string): CountryInformation[] { 
-    const filterValue = value.toLowerCase();
-    return this.countryList.filter(option => option.description.toLowerCase().includes(filterValue));
-  }
 
   setAssociatedWith(value: boolean) {
     if (value == true) {
