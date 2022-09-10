@@ -132,6 +132,7 @@ export class CountrysComponent implements OnInit {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.client = this.route.getCurrentNavigation().extras.state["client"];
+      this.newSubmission.merchant = this.client;
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
@@ -254,65 +255,66 @@ export class CountrysComponent implements OnInit {
     "startedAt": "2022-07-13T11:10:13.420Z",
     "state": "Incomplete",
     "bank": "0800",
-    "merchant": {
-      "fiscalId": "585597856",
-      "legalName": "BATATA FRITA CIA LTDA",
-      "shortName": "BATATA FRITA LTDA",
-      "headquartersAddress": {
-        "address": "Rua gusta 3",
-        "postalCode": "2454-298",
-        "postalArea": "Aldeia Vegetariana",
-        "country": "PT"
-      },
-      "merchantType": "Corporate", //ou Entrepreneur -> ENI
-      "commercialName": "BATATAS FRITAS",
-      "legalNature": "35",
-      "crc": {
-        "code": "0000-0000-0001",
-        "validUntil": "2022-07-13T11:10:13.420Z"
-      },
-      "shareCapital": {
-        "capital": 50000.2,
-        "date": "2022-07-13T11:10:13.420Z"
-      },
-      "byLaws": "O Joao pode assinar tudo, like a boss",
-      "mainEconomicActivity": "90010",
-      "otherEconomicActivities": [
-        "055111"
-      ],
-      "establishmentDate": "2022-07-13T11:10:13.420Z",
-      "businessGroup": {
-        "type": "Isolated",
-        "branch": "branch01"
-      },
-      "knowYourSales": {
-        "estimatedAnualRevenue": 45892255.0,
-        "averageTransactions": 46895,
-        "servicesOrProductsSold": [
+    "merchant": null,
+    //"merchant": {
+    //  "fiscalId": "585597856",
+    //  "legalName": "BATATA FRITA CIA LTDA",
+    //  "shortName": "BATATA FRITA LTDA",
+    //  "headquartersAddress": {
+    //    "address": "Rua gusta 3",
+    //    "postalCode": "2454-298",
+    //    "postalArea": "Aldeia Vegetariana",
+    //    "country": "PT"
+    //  },
+    //  "merchantType": "Corporate", //ou Entrepreneur -> ENI
+    //  "commercialName": "BATATAS FRITAS",
+    //  "legalNature": "35",
+    //  "crc": {
+    //    "code": "0000-0000-0001",
+    //    "validUntil": "2022-07-13T11:10:13.420Z"
+    //  },
+    //  "shareCapital": {
+    //    "capital": 50000.2,
+    //    "date": "2022-07-13T11:10:13.420Z"
+    //  },
+    //  "byLaws": "O Joao pode assinar tudo, like a boss",
+    //  "mainEconomicActivity": "90010",
+    //  "otherEconomicActivities": [
+    //    "055111"
+    //  ],
+    //  "establishmentDate": "2022-07-13T11:10:13.420Z",
+    //  "businessGroup": {
+    //    "type": "Isolated",
+    //    "branch": "branch01"
+    //  },
+    //  "knowYourSales": {
+    //    "estimatedAnualRevenue": 45892255.0,
+    //    "averageTransactions": 46895,
+    //    "servicesOrProductsSold": [
          
-        ],
-        "servicesOrProductsDestinations": [
+    //    ],
+    //    "servicesOrProductsDestinations": [
         
-        ]
-      },
-      "bankInformation": {
-        "bank": "0033",
-        "iban": "PT00333506518874499677629"
-      },
-      "contacts": {
-        "email": "joao@silvestre.pt",
-        "phone1": {
-          "countryCode": "+351",
-          "phoneNumber": "919654422"
-        },
-        "phone2": {
-          "countryCode": "+351",
-          "phoneNumber": "919654421"
-        }
-      },
-      "documentationDeliveryMethod": "",
-      "billingEmail": "joao@silvestre.pt"
-    },
+    //    ]
+    //  },
+    //  "bankInformation": {
+    //    "bank": "0033",
+    //    "iban": "PT00333506518874499677629"
+    //  },
+    //  "contacts": {
+    //    "email": "joao@silvestre.pt",
+    //    "phone1": {
+    //      "countryCode": "+351",
+    //      "phoneNumber": "919654422"
+    //    },
+    //    "phone2": {
+    //      "countryCode": "+351",
+    //      "phoneNumber": "919654421"
+    //    }
+    //  },
+    //  "documentationDeliveryMethod": "",
+    //  "billingEmail": "joao@silvestre.pt"
+    //},
     "stakeholders": [
       {
         "fiscalId": "232012610",
@@ -365,7 +367,7 @@ export class CountrysComponent implements OnInit {
     }
 
     if (this.returned !== 'consult') {
-      if (this.lstPaisPreenchido.length == 0) {
+      if (this.lstPaisPreenchido.length == -1) { //mudar o -1 para 0
         this.countryError = true;
         //this.errorMsg = 'Escolha pelo menos um país';
         return;
@@ -386,17 +388,14 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
           this.newSubmission.merchant.fiscalId = this.NIFNIPC;
           this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-          if (this.client.headquartersAddress.values === undefined) {
-            this.newSubmission.merchant.headquartersAddress = null;
-          } else {
-            this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
-          }
-          
+          this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+
           this.newSubmission.merchant.id = this.client.id;
-          this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-          this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-          this.newSubmission.merchant.knowYourSales.servicesOrProductsSold.push(this.form.get("services").value); //
-          this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code);
+          console.log("Merchant a tratar: ", this.newSubmission.merchant);
+          this.newSubmission.merchant["sales"]["annualEstimatedRevenue"] = this.form.get("expectableAnualInvoicing").value;
+          this.newSubmission.merchant["sales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
+          this.newSubmission.merchant["sales"]["productsOrServicesSold"].push(this.form.get("services").value); //
+          this.newSubmission.merchant["sales"]["productsOrServicesCountries"] = this.lstPaisPreenchido.map(country => country.code);
           this.newSubmission.merchant.legalName = this.client.legalName;
           this.newSubmission.merchant.legalNature = this.client.legalNature;
           this.newSubmission.merchant.legalNature2 = this.client.legalNature2;

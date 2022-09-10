@@ -46,58 +46,45 @@ export class ClientByIdComponent implements OnInit {
   public clientId: string;
   
   //client: Client = {} as Client;
+  
   public client: OutboundClient = {
-    "merchantId": "88dab4e9-3818-4491-addb-f518ae649e5a",
-    "legalName": "Silvestre Limitada",
-    "commercialName": "Silvestre - Consultoria",
-    "shortName": "Silvestre Lda",
-    "headquartersAddress": {
-      "address": "Rua da Azoia",
-      "postalCode": "2625-236",
-      "postalArea": "Póvoa de Santa Iria",
-      "country": "PT"
-    },
-    "context": "isolated",
+    "merchantId": null,
+    "legalName": null,
+    "commercialName": null,
+    "shortName": null,
+    "headquartersAddress": {},
+    //"headquartersAddress": {
+    //  "address": "",
+    //  "postalCode": "",
+    //  "postalArea": "Póvoa de Santa Iria",
+    //  "country": "PT"
+    //},
+    "context": null,
     "contextId": null,
-    "fiscalIdentification": {
-      "fiscalId": "",
-      "issuerCountry": "PT"
-    },
+    "fiscalIdentification": {},
     "merchantType": "corporation",
-    "legalNature": "10",
+    "legalNature": null,
     "legalNature2": null,
-    "incorporationStatement": {
-      "code": "000-000-001",
-      "validUntil": "2025-01-01"
-    },
-    "incorporationDate": "2022-07-01",
-    "shareCapital": {
-      "capital": 100000000,
-      //"reportedAt": "2022-07-01"
-    },
-    "bylaws": "O João assina tudo sozinho",
+    "incorporationStatement": {},
+    "incorporationDate": null,
+    "shareCapital": null,
+    "bylaws": null,
     "principalTaxCode": null,
     "otherTaxCodes": [],
     "principalEconomicActivity": null,
-    "otherEconomicActivities": [
-      "56305"
-    ],
+    "otherEconomicActivities": [],
     "sales": {
-      "annualEstimatedRevenue": 10000000.2,
-      "productsOrServicesSold": [
-        
-      ],
-      "productsOrServicesCountries": [
-        
-      ],
-      "transactionsAverage": 0
+      "annualEstimatedRevenue": null,
+      "productsOrServicesSold": [],
+      "productsOrServicesCountries": [],
+      "transactionsAverage": null
     },
-    "documentationDeliveryMethod": "",
-    "bankingInformation": null,
+    "documentationDeliveryMethod": null,
+    "bankingInformation": {},
     "merchantRegistrationId": null,
-    "contacts": null,
+    "contacts": {},
     "billingEmail": null,
-    "documents": []
+    "documents": null
   };
 
   crcError: boolean = false;
@@ -798,8 +785,8 @@ export class ClientByIdComponent implements OnInit {
       // this.client.headquartersAddress.postalArea = this.form.value["location"];
       this.client.principalEconomicActivity = this.form.value["CAE1"];
       this.client.otherEconomicActivities = [];
-      this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);
-      this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"], this.form.value["CAESecondary2Branch"]);
+      this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
+      this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
       //Paises destino
       this.client.incorporationDate = this.form.value["constitutionDate"];
       //this.client.crc.code = this.form.value["crcCode"];
