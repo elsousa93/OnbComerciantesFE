@@ -785,8 +785,14 @@ export class ClientByIdComponent implements OnInit {
       // this.client.headquartersAddress.postalArea = this.form.value["location"];
       this.client.principalEconomicActivity = this.form.value["CAE1"];
       this.client.otherEconomicActivities = [];
-      this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
-      this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
+
+      var CAESecondary1 = (this.form.value["CAESecondary1"]);
+      var CAESecondary2 = (this.form.value["CAESecondary1"]);
+
+      if (CAESecondary1 !== null)
+        this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
+      if (CAESecondary2 !== null)
+        this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
       //Paises destino
       this.client.incorporationDate = this.form.value["constitutionDate"];
       //this.client.crc.code = this.form.value["crcCode"];
@@ -802,7 +808,11 @@ export class ClientByIdComponent implements OnInit {
 
       if (this.tipologia === 'Company') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
-        this.client.legalNature2 = this.form.value["natJuridicaN2"];
+
+        var natJuridicaN2 = this.form.value["natJuridicaN2"];
+
+        if (natJuridicaN2 !== null)
+          this.client.legalNature2 = this.form.value["natJuridicaN2"];
       }
       this.client.commercialName = this.form.value["socialDenomination"];
     }

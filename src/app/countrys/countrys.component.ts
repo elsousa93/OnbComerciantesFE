@@ -21,6 +21,7 @@ import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-countrys',
@@ -123,11 +124,15 @@ export class CountrysComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
     private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService, private storeService: StoreService) {
     this.ngOnInit();
     if (this.route.getCurrentNavigation().extras.state) {
+      var auth = authService.GetCurrentUser();
+      this.newSubmission.submissionUser.user = auth.userName;
+      this.newSubmission.submissionUser.branch = auth.bankName;
+      this.newSubmission.submissionUser.partner = "SIBS";
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
@@ -252,9 +257,9 @@ export class CountrysComponent implements OnInit {
       "branch": "branch01",
       "partner": "SIBS"
     },
-    "startedAt": "2022-07-13T11:10:13.420Z",
+    "startedAt": new Date() + '',
     "state": "Incomplete",
-    "bank": "0800",
+    "bank": null,
     "merchant": null,
     //"merchant": {
     //  "fiscalId": "585597856",
@@ -315,36 +320,8 @@ export class CountrysComponent implements OnInit {
     //  "documentationDeliveryMethod": "",
     //  "billingEmail": "joao@silvestre.pt"
     //},
-    "stakeholders": [
-      {
-        "fiscalId": "232012610",
-        "identificationDocument": {
-          "type": "0020",
-          "number": "13713441",
-          "country": "PT",
-          "expirationDate": "2022-07-13T11:10:13.420Z"
-        },
-        "fullName": "Joao Paulo Ferreira Silvestre",
-        "contactName": "Joao o maior Silvestre",
-        "shortName": "Joao Silvestre",
-        "fiscalAddress": {
-          "address": "Rua da Azoia 4",
-          "postalCode": "2625-236",
-          "postalArea": "Povoa de Santa Iria",
-          "country": "PT"
-        },
-        "isProxy": false,
-        "phone1": {
-          "countryCode": "+351",
-          "phoneNumber": "919654422"
-        },
-        "email": "joao@silvestre.pt",
-        "birthDate": "1990-08-11"
-      }
-    ],
-    "documents": [
-      
-    ]
+    "stakeholders": null,
+    "documents": null
   }
 
   submit() {
@@ -517,6 +494,9 @@ export class CountrysComponent implements OnInit {
             //  "shortName": value.name
             //})
           });
+
+          this.newSubmission.documents = [];
+
           if (this.crc !== null && this.crc !== undefined) {
             this.newSubmission.documents.push({
               documentType: 'crcPDF',
