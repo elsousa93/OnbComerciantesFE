@@ -3,6 +3,11 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from '../configuration';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
+import { TableInfoService } from '../table-info/table-info.service';
+import { Product, Subproduct } from '../commercial-offer/ICommercialOffer.interface';
+
+
+
 import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound } from './IStore.interface';
 
 @Injectable({
@@ -16,7 +21,8 @@ export class StoreService {
   private acquiringUrl: string;
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, private tableinfo: TableInfoService) {
     this.baseUrl = configuration.baseUrl;
     this.urlOutbound = configuration.outboundUrl;
     this.mockacoUrl = configuration.mockacoUrl;
@@ -79,6 +85,10 @@ export class StoreService {
   /////////////
   GetAllShopActivities(): any{
     return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity');
+  }
+
+  GetAllShopProducts() {
+    return this.http.get<Product[]>(this.acquiringUrl + 'shop/activity');
   }
 
   getProcessShopsList(processId: string) {

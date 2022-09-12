@@ -10,6 +10,8 @@ import { StoreService } from '../store.service';
 import { AuthService } from '../../services/auth.service';
 import { UserPermissions } from '../../userPermissions/user-permissions';
 import { LoggerService } from 'src/app/logger.service';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+
 
 @Component({
   selector: 'app-store-iban',
@@ -17,10 +19,15 @@ import { LoggerService } from 'src/app/logger.service';
   styleUrls: ['./store-iban.component.css']
 })
 
-  //This component allows to edit the iban field from the store. THere are two options
-  //1. Use the iban from the cient.
-  //2. Insert a new iban for the store
+//This component allows to edit the iban field from the store. THere are two options
+//1. Use the iban from the cient.
+//2. Insert a new iban for the store
 export class StoreIbanComponent implements OnInit {
+
+  public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
+  public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
+  public ProductPackKindEnum = ProductPackKindEnum;
+
 
   private baseUrl;
 
@@ -30,7 +37,7 @@ export class StoreIbanComponent implements OnInit {
   public clientID: number = 12345678;
 
   public isIBANConsidered: boolean = null;
-  public IBANToShow: {tipo:string, dataDocumento: string};
+  public IBANToShow: { tipo: string, dataDocumento: string };
   public result: any;
   localUrl: any;
 
@@ -76,42 +83,129 @@ export class StoreIbanComponent implements OnInit {
   files?: File[] = [];
 
   public store: ShopDetailsAcquiring = {
-  activity: "",
-    address:
-  {
-    isInsideShoppingCenter: false,
-      sameAsMerchantAddress: false,
-        shoppingCenter: "",
-          address:
-    {
-      address: "",
-        country: "",
-          postalArea: "",
-            postalCode: ""
-    }
-  },
-  bank: {
-    bank:
-    {
-      bank: "",
-        iban: ""
+
+    shopId: "1",
+    name: "ShopName",
+    manager: "Manager1",
+    activity: "C",
+    subActivity: "C1",
+    supportEntity: "Entity1",
+    registrationId: "RegID",
+    address: {
+      useMerchantAddress: true,
+      address: {
+        address: "A",
+        postalCode: "B",
+        postalArea: "C",
+        country: "123"
+      },
+      isInsideShoppingCenter: true,
+      shoppingCenter: "Shopping1"
     },
-    userMerchantBank: null
-  },
-  documents:
-  {
-    href: "",
+    bank: {
+      userMerchantBank: true,
+      bank: {
+        bank: "Bank",
+        iban: "12345"
+      }
+    },
+    website: "www.google.com",
+    productCode: "345",
+    subproductCode: "324",
+    equipments: [
+      {
+        shopEquipmentId: "123",
+        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
+        communicationType: "A",
+        equipmentType: "A",
+        quantity: 0,
+        pricing: {
+          pricingId: "123",
+          attributes: [
+            {
+              id: "A",
+              description: "A",
+              value: 1,
+              isReadOnly: true,
+              isVisible: true
+            }
+          ]
+        }
+      }
+    ],
+    pack: {
+      packId: "123",
+      packDetails: [
+        {
+          id: "1234",
+          description: "123",
+          kind: "1234",
+          attributes: [
+            {
+              id: "1234",
+              description: "AAA",
+              value: true,
+              isReadOnly: true,
+              isVisible: true,
+              isSelected: true,
+              order: 0,
+              bundles: [
+                {
+                  id: "B",
+                  description: "B",
+                  kind: ProductPackKindEnum.SIMPLE,
+                  attributes: [
+                    {
+                      id: "B123",
+                      description: "B123456",
+                      value: true,
+                      isReadOnly: true,
+                      isVisible: true,
+                      isSelected: true,
+                      order: 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      commission: {
+        comissionId: "1",
+        attributes: {
+          id: "",
+          description: "A1",
+          fixedValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          },
+          maxValue: {
+            value: 2,
+            isReadOnly: true,
+            isVisible: true
+          },
+          minValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          },
+          percentageValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          }
+        }
+      }
+    },
+    documents: {
+      href: "",
       type: "",
-        id: ""
-  },
-  id: "",
-    manager: "",
-      name: "",
-        productCode: "",
-          subActivity: "",
-            subproductCode: "",
-              website: ""
-} as ShopDetailsAcquiring
+      id: ""
+    }
+  } as ShopDetailsAcquiring
 
   formStores!: FormGroup;
   returned: string
@@ -166,7 +260,7 @@ export class StoreIbanComponent implements OnInit {
       this.store.bank.bank.iban = this.auxIban;
       this.idisabled = false;
     }
-    
+
   }
 
   submit() {
@@ -183,7 +277,7 @@ export class StoreIbanComponent implements OnInit {
   }
 
   selectFile(event: any) {
-    this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento:"01-08-2022" }
+    this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento: "01-08-2022" }
     this.newStore.id = 1;
     this.newStore.iban = "teste";
     const files = <File[]>event.target.files;

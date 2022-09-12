@@ -13,348 +13,136 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { ProductPackAttribute, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer';
+import { ProductPackAttribute, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 
 const testValues: ShopDetailsAcquiring[] = [
   {
-    activity: "Activity1",
-    address:
-    {
-      isInsideShoppingCenter: true, useMerchantAddress: true, shoppingCenter: "Colombo",
-      address:
-      {
+    shopId: "1",
+    name: "ShopName",
+    manager: "Manager1",
+    activity: "C",
+    subActivity: "C1",
+    supportEntity: "Entity1",
+    registrationId: "RegID",
+    address: {
+      useMerchantAddress: true,
+      address: {
         address: "A",
-        country: "B",
+        postalCode: "B",
         postalArea: "C",
-        postalCode: "123"
-      }
+        country: "123"
+      },
+      isInsideShoppingCenter: true,
+      shoppingCenter: "Shopping1"
     },
     bank: {
-      bank:
+      userMerchantBank: true,
+      bank: {
+        bank: "Bank",
+        iban: "12345"
+      }
+    },
+    website: "www.google.com",
+    productCode: "345",
+    subproductCode: "324",
+    equipments: [
       {
-        bank: "Banco",
-        iban: "893018920"
-      },
-      userMerchantBank: true
-    },
-    documents:
-    {
-      href: "",
-      type: "",
-      id: ""
-    },
-    pack: {
-      packId: "8981281",
-      packDetails: [
-        {
-          id: "111",
-          description: "Pacote 1",
-          kind: ProductPackKindEnum.SIMPLE,
+        shopEquipmentId: "123",
+        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
+        communicationType: "A",
+        equipmentType: "A",
+        quantity: 0,
+        pricing: {
+          pricingId: "123",
           attributes: [
             {
-              id: "1",
-              description: "minimum value",
-              value: true,
+              id: "A",
+              description: "A",
+              value: 1,
               isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 3,
-              bundles: [
-                {
-                  id: "2212",
-                  description: "teste",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "33333",
-                      description: "teste atributo",
-                      value: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 3
-                    },
-                    {
-                      id: "22222",
-                      description: "teste atributo2",
-                      value: false,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: false,
-                      order: 2
-                    }
-                  ]
-                },
-                {
-                  id: "2212",
-                  description: "teste2",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "8921",
-                      description: "teste atributo3",
-                      value: true,
-                      isReadOnly: false,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 1
-                    },
-                    {
-                      id: "98211",
-                      description: "teste atributo4",
-                      value: true,
-                      isReadOnly: true,
-                      isVisible: false,
-                      isSelected: false,
-                      order: 2
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              id: "2",
-              description: "val",
-              value: true,
-              isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 3,
-              bundles: [
-                {
-                  id: "2212",
-                  description: "teste",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "33333",
-                      description: "teste atributo",
-                      value: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 3
-                    },
-                    {
-                      id: "22222",
-                      description: "teste atributo2",
-                      value: false,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: false,
-                      order: 2
-                    }
-                  ]
-                },
-                {
-                  id: "982121",
-                  description: "pacote comercial",
-                  kind: ProductPackKindEnum.ADVANCED,
-                  attributes: [
-                    {
-                      id: "873287",
-                      description: "bundle 2",
-                      value: true,
-                      isReadOnly: false,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 2
-                    },
-                    {
-                      id: "4512521",
-                      description: "bundle 1",
-                      value: true,
-                      isReadOnly: true,
-                      isVisible: false,
-                      isSelected: false,
-                      order: 1
-                    }
-                  ]
-                }
-              ]
-            },
-          ]
-        }, {
-          id: "900912",
-          description: "Pacote 2",
-          kind: ProductPackKindEnum.ADVANCED,
-          attributes: [
-            {
-              id: "923",
-              description: "visa",
-              value: true,
-              isReadOnly: false,
-              isVisible: true,
-              isSelected: true,
-              order: 1,
-              bundles: [
-                {
-                  id: "7322378",
-                  description: "visa bundle",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "9129821",
-                      description: "visa bundle attribute 1",
-                      value: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 3
-                    },
-                    {
-                      id: "81298219",
-                      description: "visa bundle attribute 2",
-                      value: false,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: false,
-                      order: 2
-                    }
-                  ]
-                },
-                {
-                  id: "2212",
-                  description: "bundle 2",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "893212",
-                      description: "bundle2 atributo1",
-                      value: true,
-                      isReadOnly: false,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 1
-                    },
-                    {
-                      id: "721882",
-                      description: "blunde2 atributo2",
-                      value: false,
-                      isReadOnly: false,
-                      isVisible: true,
-                      isSelected: false,
-                      order: 2
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              id: "2",
-              description: "val",
-              value: true,
-              isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 3,
-              bundles: [
-                {
-                  id: "2212",
-                  description: "teste",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "51267328",
-                      description: "description",
-                      value: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 3
-                    },
-                    {
-                      id: "98239832",
-                      description: "wejkew",
-                      value: false,
-                      isReadOnly: false,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 5
-                    }
-                  ]
-                },
-                {
-                  id: "982121",
-                  description: "pacote comercial avançado",
-                  kind: ProductPackKindEnum.ADVANCED,
-                  attributes: [
-                    {
-                      id: "98219821897",
-                      description: "bundle 5312",
-                      value: false,
-                      isReadOnly: false,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 2
-                    },
-                    {
-                      id: "643721",
-                      description: "bundle 5313",
-                      value: true,
-                      isReadOnly: false,
-                      isVisible: true,
-                      isSelected: false,
-                      order: 1
-                    }
-                  ]
-                }
-              ]
-            },
+              isVisible: true
+            }
           ]
         }
-      ]
-    },
-    id: "1",
-    manager: "Manager1",
-    name: "ShopName",
-    productCode: "cardPresent",
-    subActivity: "99",
-    subproductCode: "easy",
-    website: "google.com",
-    supportEntity: TerminalSupportEntityEnum.ACQUIRER
-  },
-  {
-    activity: "Activity2",
-    address:
-    {
-      isInsideShoppingCenter: true,
-      useMerchantAddress: false,
-      shoppingCenter: "Colombo2",
-      address:
-      {
-        address: "A2",
-        country: "B2",
-        postalArea: "C2",
-        postalCode: "1232"
+      }
+    ],
+    pack: {
+      packId: "123",
+      packDetails: [
+        {
+          id: "1234",
+          description: "123",
+          kind: "1234",
+          attributes: [
+            {
+              id: "1234",
+              description: "AAA",
+              value: true,
+              isReadOnly: true,
+              isVisible: true,
+              isSelected: true,
+              order: 0,
+              bundles: [
+                {
+                  id: "B",
+                  description: "B",
+                  kind: ProductPackKindEnum.SIMPLE,
+                  attributes: [
+                    {
+                      id: "B123",
+                      description: "B123456",
+                      value: true,
+                      isReadOnly: true,
+                      isVisible: true,
+                      isSelected: true,
+                      order: 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      commission: {
+        comissionId: "1",
+        attributes: {
+          id: "",
+          description: "A1",
+          fixedValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          },
+          maxValue: {
+            value: 2,
+            isReadOnly: true,
+            isVisible: true
+          },
+          minValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          },
+          percentageValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          }
+        }
       }
     },
-    bank: {
-      bank:
-      {
-        bank: "Banco2",
-        iban: "893018920"
-      },
-      userMerchantBank: false
-    },
-    documents:
-    {
+    documents: {
       href: "",
       type: "",
       id: ""
-    },
-    id: "2",
-    manager: "Manager2",
-    name: "ShopName2",
-    productCode: "cardNotPresent",
-    subActivity: "99",
-    subproductCode: "keyOnHand",
-    website: "google.com",
-    supportEntity: TerminalSupportEntityEnum.OTHER
-  },
+    }
+  }
+  
 ]
 
 const commer: ShopProductPack[] = [

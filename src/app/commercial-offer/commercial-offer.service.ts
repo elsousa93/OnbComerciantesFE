@@ -5,7 +5,7 @@ import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { TreatedResponse } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
-import { Product, ProductPack, ProductPackCommission, ProductPackCommissionEntry, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer';
+import { Product, ProductPack, ProductPackCommission, ProductPackCommissionEntry, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer.interface';
 
 @Injectable({
   providedIn: 'root'

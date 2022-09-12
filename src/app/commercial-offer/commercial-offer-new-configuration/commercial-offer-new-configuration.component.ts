@@ -10,6 +10,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StoreService } from '../../store/store.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+
 
 @Component({
   selector: 'app-commercial-offer-new-configuration',
@@ -18,8 +20,12 @@ import { TableInfoService } from '../../table-info/table-info.service';
 })
 export class CommercialOfferNewConfigurationComponent implements OnInit {
   private baseUrl: string;
+  public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
+  public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
+  public ProductPackKindEnum = ProductPackKindEnum;
 
-  public storeEquip: ShopEquipment = {};
+
+  public storeEquip: ShopEquipment = { };
   public store: ShopDetailsAcquiring;
   public clientID: number = 12345678;
 

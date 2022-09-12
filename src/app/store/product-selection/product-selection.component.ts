@@ -8,6 +8,9 @@ import { Configuration, configurationToken } from '../../configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';
+import { } from '../store.service';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+
 
 @Component({
   selector: 'app-product-selection',
@@ -15,44 +18,133 @@ import { StoreService } from '../store.service';
   styleUrls: ['./product-selection.component.css']
 })
 export class ProductSelectionComponent implements OnInit {
+  public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
+  public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
+  public ProductPackKindEnum = ProductPackKindEnum;
 
   public store: ShopDetailsAcquiring = {
-    activity: "",
-    address:
-    {
-      isInsideShoppingCenter: false,
-      sameAsMerchantAddress: false,
-      shoppingCenter: "",
-      address:
-      {
-        address: "",
-        country: "",
-        postalArea: "",
-        postalCode: ""
-      }
-    },
-    bank: {
-      bank:
-      {
-        bank: "",
-        iban: ""
+      shopId: "",
+      name: "",
+      manager: "",
+      activity: "",
+      subActivity: "",
+      supportEntity: "",
+      registrationId: "",
+      address: {
+          useMerchantAddress: true,
+          address: {
+              address: "",
+              postalCode: "",
+              postalArea: "",
+              country: ""
+          },
+          isInsideShoppingCenter: false,
+          shoppingCenter: ""
       },
-      userMerchantBank: null
+      bank: {
+          userMerchantBank: true,
+          bank: {
+              bank: "",
+              iban: ""
+          }
+      },
+      website: "",
+      productCode: "",
+      subproductCode: "",
+      equipments: [
+          {
+              shopEquipmentId: "",
+              communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+              equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
+              communicationType: "",
+              equipmentType: "",
+              quantity: 0,
+              pricing: {
+                  pricingId: "",
+                  attributes: [
+                      {
+                          id: "",
+                          description: "",
+                          value: 0,
+                          isReadOnly: true,
+                          isVisible: true
+                      }
+                  ]
+              }
+          }
+      ],
+      pack: {
+          packId: "",
+          packDetails: [
+              {
+                  id: "",
+                  description: "",
+                  kind: "",
+                  attributes: [
+                      {
+                          id: "",
+                          description: "",
+                          value: true,
+                          isReadOnly: true,
+                          isVisible: true,
+                          isSelected: true,
+                          order: 0,
+                          bundles: [
+                              {
+                                  id: "",
+                                  description: "",
+                                  kind: ProductPackKindEnum.SIMPLE,
+                                  attributes: [
+                                      {
+                                          id: "",
+                                          description: "",
+                                          value: true,
+                                          isReadOnly: true,
+                                          isVisible: true,
+                                          isSelected: true,
+                                          order: 0
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ],
+          commission: {
+              comissionId: "",
+              attributes: {
+                  id: "",
+                  description: "",
+                  fixedValue: {
+                      value: 0,
+                      isReadOnly: true,
+                      isVisible: true
+                  },
+                  maxValue: {
+                      value: 0,
+                      isReadOnly: true,
+                      isVisible: true
+                  },
+                  minValue: {
+                      value: 0,
+                      isReadOnly: true,
+                      isVisible: true
+                  },
+                  percentageValue: {
+                      value: 0,
+                      isReadOnly: true,
+                      isVisible: true
+                  }
+              }
+          }
     },
-    documents:
-    {
-      href: "",
-      type: "",
-      id: ""
-    },
-    id: "",
-    manager: "",
-    name: "",
-    productCode: "",
-    subActivity: "",
-    subproductCode: "",
-    website: ""
-  } as ShopDetailsAcquiring
+      documents: {
+        href: "",
+        type: "",
+        id: ""
+      }
+  } as  ShopDetailsAcquiring
 
   public map: Map<number, boolean>;
   public currentPage: number;
@@ -67,7 +159,11 @@ export class ProductSelectionComponent implements OnInit {
   public isCombinedOffer: boolean = false;
   public isURLFilled: boolean = false;
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
+  public products;
+
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
+    @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService,
+    private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
     setTimeout(() => this.data.updateData(false, 3, 3), 0);
 
 
@@ -91,13 +187,26 @@ export class ProductSelectionComponent implements OnInit {
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
-  }
 
+
+    this.storeService.GetAllShopProducts().subscribe(result => {
+    this.logger.debug(result);
+          console.log("resultado: ", result);
+
+          this.products = result;
+        }, error => {
+          this.logger.debug("Erro");
+        });
+
+
+  }
 
   chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean) {
     this.logger.debug("cardPresent: " + cardPresent);
     this.logger.debug("cardNotPresent: " + cardNotPresent);
     this.logger.debug("combinedOffer: " + combinedOffer);
+    var prodToSearch = this.storeService.get('activityStores').value;
+
     if (cardPresent) {
       this.isCardPresent = cardPresent;
       this.isCardNotPresent = false;

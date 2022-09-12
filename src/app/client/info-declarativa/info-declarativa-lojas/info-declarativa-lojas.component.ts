@@ -14,80 +14,132 @@ import { Client } from '../../Client.interface';
 import { ClientService } from '../../client.service';
 import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
 
 const testValues: ShopDetailsAcquiring[] = [
   {
-    activity: "Activity1",
-    address:
-    {
-      isInsideShoppingCenter: true, useMerchantAddress: true, shoppingCenter: "Colombo",
-      address:
-      {
-        address: "A",
-        country: "B",
-        postalArea: "C",
-        postalCode: "123"
-      }
-    },
-    bank: {
-      bank:
-      {
-        bank: "Banco",
-        iban: "893018920"
-      },
-      userMerchantBank: true
-    },
-    documents:
-    {
-      href: "",
-      type: "",
-      id: ""
-    },
-    id: "1",
-    manager: "Manager1",
+    shopId: "1",
     name: "ShopName",
-    productCode: "432",
-    subActivity: "99",
-    subproductCode: "0",
-    website: "google.com"
-  },
-  {
-    activity: "Activity2",
-    address:
-    {
-      isInsideShoppingCenter: true,
+    manager: "Manager1",
+    activity: "C",
+    subActivity: "C1",
+    supportEntity: "Entity1",
+    registrationId: "RegID",
+    address: {
       useMerchantAddress: true,
-      shoppingCenter: "Colombo2",
-      address:
-      {
-        address: "A2",
-        country: "B2",
-        postalArea: "C2",
-        postalCode: "1232"
-      }
+      address: {
+        address: "A",
+        postalCode: "B",
+        postalArea: "C",
+        country: "123"
+      },
+      isInsideShoppingCenter: true,
+      shoppingCenter: "Shopping1"
     },
     bank: {
-      bank:
-      {
-        bank: "Banco2",
-        iban: "893018920"
-      },
-      userMerchantBank: true
+      userMerchantBank: true,
+      bank: {
+        bank: "Bank",
+        iban: "12345"
+      }
     },
-    documents:
-    {
+    website: "www.google.com",
+    productCode: "345",
+    subproductCode: "324",
+    equipments: [
+      {
+        shopEquipmentId: "123",
+        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
+        communicationType: "A",
+        equipmentType: "A",
+        quantity: 0,
+        pricing: {
+          pricingId: "123",
+          attributes: [
+            {
+              id: "A",
+              description: "A",
+              value: 1,
+              isReadOnly: true,
+              isVisible: true
+            }
+          ]
+        }
+      }
+    ],
+    pack: {
+      packId: "123",
+      packDetails: [
+        {
+          id: "1234",
+          description: "123",
+          kind: "1234",
+          attributes: [
+            {
+              id: "1234",
+              description: "AAA",
+              value: true,
+              isReadOnly: true,
+              isVisible: true,
+              isSelected: true,
+              order: 0,
+              bundles: [
+                {
+                  id: "B",
+                  description: "B",
+                  kind: ProductPackKindEnum.SIMPLE,
+                  attributes: [
+                    {
+                      id: "B123",
+                      description: "B123456",
+                      value: true,
+                      isReadOnly: true,
+                      isVisible: true,
+                      isSelected: true,
+                      order: 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      commission: {
+        comissionId: "1",
+        attributes: {
+          id: "",
+          description: "A1",
+          fixedValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          },
+          maxValue: {
+            value: 2,
+            isReadOnly: true,
+            isVisible: true
+          },
+          minValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          },
+          percentageValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          }
+        }
+      }
+    },
+    documents: {
       href: "",
       type: "",
       id: ""
-    },
-    id: "2",
-    manager: "Manager2",
-    name: "ShopName2",
-    productCode: "432",
-    subActivity: "99",
-    subproductCode: "01",
-    website: "google.com"
-  },
+    }
+  }
 ]
 
 @Component({
@@ -97,6 +149,9 @@ const testValues: ShopDetailsAcquiring[] = [
 })
 
 export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
+  public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
+  public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
+  public ProductPackKindEnum = ProductPackKindEnum;
 
   private baseUrl: string;
 

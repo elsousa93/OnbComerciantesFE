@@ -1,4 +1,4 @@
-import { ProductPackCommissionAttribute, ProductPackPricingAttribute, ProductPackRootAttributeProductPackKind } from "../commercial-offer/ICommercialOffer";
+import { Product, Subproduct, ProductPackCommissionAttribute, ProductPackPricingAttribute, ProductPackRootAttributeProductPackKind } from "../commercial-offer/ICommercialOffer.interface";
 import { FiscalAddress } from "../stakeholders/IStakeholders.interface";
 import { Document } from "../submission/ISubmission.interface";
 
@@ -55,20 +55,23 @@ export interface ShopDetailsOutbound {
 }
 
 export interface ShopDetailsAcquiring {
+  shopId?: string
   name?: string
-  productCode?: string
-  subproductCode?: string
   manager?: string
   activity?: string
   subActivity?: string
+  supportEntity?: string,
+  registrationId?: string,
   address?: ShopAddressAcquiring
   bank?: ShopBank
   website?: string
-  documents?: ShopDocuments
-  id?: string
-  supportEntity?: string
-  registrationId?: string
+  productCode?: string
+  subproductCode?: string
+  equipments: ShopEquipment[]
   pack?: ShopProductPack
+  product?: Product
+  subProduct?: Subproduct 
+  documents?: ShopDocuments
 }
 
 //Interfaces auxiliares
@@ -81,7 +84,7 @@ export interface ShopProductPack {
 
 interface ShopProductPackCommission {
   comissionId?: string
-  attributes?: ProductPackCommissionAttribute[]
+  attributes?: ProductPackCommissionAttribute
 }
 
 interface ShopAddress {
@@ -128,8 +131,9 @@ interface ShopDocuments {
 }
 
 export interface ShopEquipment {
-  communicationOwnership?: CommunicationOwnershipTypeEnum
-  equipmentOwnership?: EquipmentOwnershipTypeEnum
+  shopEquipmentId?: string
+  communicationOwnership?: string //CommunicationOwnershipTypeEnum
+  equipmentOwnership?: string //EquipmentOwnershipTypeEnum
   communicationType?: string
   equipmentType?: string
   quantity?: number

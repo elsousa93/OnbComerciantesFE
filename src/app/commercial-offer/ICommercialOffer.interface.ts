@@ -23,14 +23,15 @@ export interface ICommercialOffer {
 };
 
 export interface Product {
-  code?: string
-  name?: string
-  subproducts?: Subproduct[]
+  productCode?: string
+  productDescription?: string
+  subProducts?: Subproduct[]
 }
 
-interface Subproduct{
-  code?: string
-  name?: string
+export interface Subproduct{
+  subProductCode?: string
+  subProductDescription?: string
+  fullCode: string
 }
 
 export interface ProductPackFilter {
@@ -40,7 +41,7 @@ export interface ProductPackFilter {
   store?: StoreCatalog
 }
 
-interface MerchantCatalog {
+export interface MerchantCatalog {
   fiscalIdentification?: FiscalIdentification
   context?: MerchantContextEnum
 }
@@ -70,7 +71,7 @@ export interface ProductPack {
 export interface ProductPackRootAttributeProductPackKind {
   id?: string
   description?: string
-  kind?: ProductPackKindEnum
+  kind?: string //  ProductPackKindEnum
   attributes?: ProductPackRootAttribute[]
 }
 
@@ -81,7 +82,7 @@ interface ProductPackRootAttribute {
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
-  aggregatorId?: string
+ // aggregatorId?: string
   order?: number
   bundles?: ProductPackAttributeProductPackKind[]
 }
@@ -109,16 +110,8 @@ export interface ProductPackPricingFilter {
   subproductCode?: string
   merchant?: MerchantCatalog
   store?: StoreCatalog
-  equipment?: EquipmentCatalog
-  packAttributes?: ProductPackRootAttributeProductPackKind[]
-}
 
-interface EquipmentCatalog {
-  equipmentOwnership?: EquipmentOwnershipTypeEnum
-  communicationOwnership?: CommunicationOwnershipTypeEnum
-  equipmentType?: string
-  communicationType?: string
-  quantity?: number
+  packAttributes?: ProductPackRootAttributeProductPackKind[]
 }
 
 export interface ProductPackPricingEntry {
@@ -170,7 +163,7 @@ interface ProductPackCommissionAttributeValue {
   isVisible?: boolean
 }
 
-enum MerchantContextEnum {
+export enum MerchantContextEnum {
   ISOLATED = "isolated",
   HOLDING = "holding",
   FRANCHISE = "franchise"
@@ -186,13 +179,13 @@ export enum ProductPackKindEnum {
   ADVANCED = "advanced"
 }
 
-enum EquipmentOwnershipTypeEnum {
+export enum EquipmentOwnershipTypeEnum {
   UNKNOWN = "unknown",
   CLIENT = "client",
   ACQUIRER = "acquirer"
 }
 
-enum CommunicationOwnershipTypeEnum {
+export enum CommunicationOwnershipTypeEnum {
   UNKNOWN = "unknown",
   CLIENT = "client",
   ACQUIRER = "acquirer"

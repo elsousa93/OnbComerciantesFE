@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Host, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Istore, ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
+import { Istore, ShopActivities, ShopSubActivities, ShopDetailsAcquiring, ShopDetailsOutbound } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
@@ -16,6 +17,8 @@ import { ClientService } from '../../client/client.service';
 import { LoggerService } from 'src/app/logger.service';
 import { StoreService } from '../store.service';
 import { Country } from '../../stakeholders/IStakeholders.interface';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+
 
 @Component({
   selector: 'app-add-store',
@@ -23,9 +26,14 @@ import { Country } from '../../stakeholders/IStakeholders.interface';
   styleUrls: ['./add-store.component.css']
 })
 
-  //This component allows to add a new store or edit the main configutarion of a store
+//This component allows to add a new store or edit the main configutarion of a store
 
 export class AddStoreComponent implements OnInit {
+
+  public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
+  public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
+  public ProductPackKindEnum = ProductPackKindEnum;
+
 
   //Submissao
   submissionId: string;
@@ -52,43 +60,132 @@ export class AddStoreComponent implements OnInit {
 
   /*Variable declaration*/
   public stroreId: number = 0;
-  store: ShopDetailsAcquiring = {
-    activity: "",
-    address:
-    {
-      isInsideShoppingCenter: false,
-      sameAsMerchantAddress: false,
-      shoppingCenter: "",
-      address:
-      {
-        address: "",
-        country: "",
-        postalArea: "",
-        postalCode: ""
-      }
-    },
-    bank: {
-      bank:
-      {
-        bank: "",
-        iban: ""
+  store: ShopDetailsAcquiring =
+  {
+      shopId: "1",
+      name: "ShopName",
+      manager: "Manager1",
+      activity: "C",
+      subActivity: "C1",
+      supportEntity: "Entity1",
+      registrationId: "RegID",
+      address: {
+        useMerchantAddress: true,
+        address: {
+          address: "A",
+          postalCode: "B",
+          postalArea: "C",
+          country: "123"
+        },
+        isInsideShoppingCenter: true,
+        shoppingCenter: "Shopping1"
       },
-      userMerchantBank: false
-    },
-    documents:
-    {
-      href: "",
-      type: "",
-      id: ""
-    },
-    id: "",
-    manager: "",
-    name: "",
-    productCode: "",
-    subActivity: "",
-    subproductCode: "",
-    website: ""
-  } as ShopDetailsAcquiring
+      bank: {
+        userMerchantBank: true,
+        bank: {
+          bank: "Bank",
+          iban: "12345"
+        }
+      },
+      website: "www.google.com",
+      productCode: "345",
+      subproductCode: "324",
+      equipments: [
+        {
+          shopEquipmentId: "123",
+          communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+          equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
+          communicationType: "A",
+          equipmentType: "A",
+          quantity: 0,
+          pricing: {
+            pricingId: "123",
+            attributes: [
+              {
+                id: "A",
+                description: "A",
+                value: 1,
+                isReadOnly: true,
+                isVisible: true
+              }
+            ]
+          }
+        }
+      ],
+      pack: {
+        packId: "123",
+        packDetails: [
+          {
+            id: "1234",
+            description: "123",
+            kind: "1234",
+            attributes: [
+              {
+                id: "1234",
+                description: "AAA",
+                value: true,
+                isReadOnly: true,
+                isVisible: true,
+                isSelected: true,
+                order: 0,
+                bundles: [
+                  {
+                    id: "B",
+                    description: "B",
+                    kind: ProductPackKindEnum.SIMPLE,
+                    attributes: [
+                      {
+                        id: "B123",
+                        description: "B123456",
+                        value: true,
+                        isReadOnly: true,
+                        isVisible: true,
+                        isSelected: true,
+                        order: 0
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        commission: {
+          comissionId: "1",
+          attributes: {
+            id: "",
+            description: "A1",
+            fixedValue: {
+              value: 1,
+              isReadOnly: true,
+              isVisible: true
+            },
+            maxValue: {
+              value: 2,
+              isReadOnly: true,
+              isVisible: true
+            },
+            minValue: {
+              value: 0,
+              isReadOnly: true,
+              isVisible: true
+            },
+            percentageValue: {
+              value: 1,
+              isReadOnly: true,
+              isVisible: true
+            }
+          }
+        }
+      },
+      documents: {
+        href: "",
+        type: "",
+        id: ""
+      }
+
+    } as ShopDetailsAcquiring
+
 
   public clientID: number = 12345678;
   public totalUrl: string = "";
@@ -97,29 +194,29 @@ export class AddStoreComponent implements OnInit {
   defaultZonaTuristica: number = 0;
 
   /*CHANGE - Get via service from the clients  - Address*/
-  public commCountry: string = "England";
+  public commCountry: string = "";
   public auxCountry: string = "";
 
-  public commPostal: string = "1245-123";
+  public commPostal: string = "";
   public auxPostal: string = "";
 
-  public commAddress: string = "Rua da Cidade";
+  public commAddress: string = "";
   public auxAddress: string = "";
 
-  public commIP: string = "123498";
+  public commIP: string = "";
   public auxIP: string = "";
 
-  public commLocal: string = "Brejos de Azeitão";
+  public commLocal: string = "";
   public auxLocal: string = "";
 
   /*CHANGE - Get via service from the clients  - Contacts*/
-  public commEmail: string = "asdfg@gmail.com";
+  public commEmail: string = "";
   public auxEmail: string = "";
 
   public commInd: string = "+351";
   public auxInd: string = "";
 
-  public commCellNumber: string = "914737727"
+  public commCellNumber: string = ""
   public auxCellNumber: string = "";
 
   /*Is it supposed to relicate the Commercial offert from another store?*/
@@ -128,7 +225,7 @@ export class AddStoreComponent implements OnInit {
 
   selectedAddOption = 'Não';
   selectedContactOption = 'Não';
-  
+
   public idisabledAdd: boolean = false;
   public idisabledContact: boolean = false;
 
@@ -144,6 +241,9 @@ export class AddStoreComponent implements OnInit {
     name: string
   }[] = [];
 
+  products: Product[] = [];
+  subProducts: Subproduct[] = [];
+
   loadTableInfo() {
     this.tableInfo.GetAllCountries().subscribe(res => {
       this.Countries = res;
@@ -151,7 +251,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   updateForm() {
-      this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType === 'Entrepeneur') ? this.submissionClient.legalName : '', Validators.required);
+    this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType === 'Entrepeneur') ? this.submissionClient.legalName : '', Validators.required);
   }
 
   fetchStartingInfo() {
@@ -170,6 +270,15 @@ export class AddStoreComponent implements OnInit {
       this.activities = result;
     }, error => {
       this.logger.debug("Deu erro");
+    });
+
+    this.storeService.GetAllShopProducts().subscribe(result => {
+      this.logger.debug(result);
+      console.log("resultado: ", result);
+
+      this.products = result;
+    }, error => {
+      this.logger.debug("Erro");
     });
 
     this.tableData.GetAllCountries().subscribe(result => {
@@ -196,12 +305,12 @@ export class AddStoreComponent implements OnInit {
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.addControl('infoStores', this.formStores);
       this.edit = true;
-      
+
       if (this.returned == 'consult') {
         this.formStores.disable();
       }
     } else {
-      this.chooseAddressV=true;
+      this.chooseAddressV = true;
       this.appComp.updateNavBar("Adicionar Loja")
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -296,13 +405,16 @@ export class AddStoreComponent implements OnInit {
 
     this.store.activity = this.formStores.get("activityStores").value;
     this.store.subActivity = this.formStores.get("subactivityStores").value;
+    this.store.product = this.formStores.get("productStores").value;
+    this.store.subProduct = this.formStores.get("subProductStores").value;
+
     if (this.chooseAddressV) {
       this.store.address.address.address = this.formStores.get("addressStore").value;
       this.store.address.address.country = this.formStores.get("countryStore").value;
       this.store.address.address.postalArea = this.formStores.get("localeStore").value;
       this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
       this.store.address.useMerchantAddress = false;
-      console.log('Valor do replicateAddress ' , this.formStores.get("replicateAddress").value);
+      console.log('Valor do replicateAddress ', this.formStores.get("replicateAddress").value);
     } else {
       this.store.address.address.address = this.submissionClient.headquartersAddress.address;
       this.store.address.address.country = this.submissionClient.headquartersAddress.country;
@@ -417,40 +529,71 @@ export class AddStoreComponent implements OnInit {
       replicateAddress: new FormControl(this.chooseAddressV, Validators.required),
       commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
     })
-      this.formStores.get("activityStores").valueChanges.subscribe(v => {
-        this.onActivitiesSelected();
-        console.log("Já saiu do activities selected")
-        console.log("Subactivities length: " + this.subActivities.length);
-        if (this.subActivities.length > 0)
-          this.formStores.controls["subactivityStore"].setValidators([Validators.required]);
-        else
-          this.formStores.controls["subactivityStore"].clearValidators();
-          this.formStores.controls["subactivityStore"].updateValueAndValidity();
-      });
-}
+    this.formStores.get("activityStores").valueChanges.subscribe(v => {
+      this.onActivitiesSelected();
+      console.log("Já saiu do activities selected")
+      console.log("Subactivities length: " + this.subActivities.length);
+      if (this.subActivities.length > 0)
+        this.formStores.controls["subactivityStore"].setValidators([Validators.required]);
+      else
+        this.formStores.controls["subactivityStore"].clearValidators();
+      this.formStores.controls["subactivityStore"].updateValueAndValidity();
+    });
 
-comercialCentre(isCentre: boolean) {
-  this.isComercialCentreStore = isCentre;
-  if (isCentre)
-    this.formStores.get('subZoneStore').setValidators([Validators.required]);
-  else
-    this.formStores.get('subZoneStore').setValidators(null);
-}
-
-onActivitiesSelected() {
-  var exists = false;
-
-  console.log("entrei no activies selected")
-
-  this.activities.forEach(act => {
-    var actToSearch = this.formStores.get('activityStores').value;
-    if (actToSearch == act.activityCode) {
-      exists = true;
-      this.subActivities = act.subActivities;
-    }
-  })
-  if (!exists) {
-    this.subActivities = [];
+    this.formStores.get("productStores").valueChanges.subscribe(v => {
+      this.onProductsSelected();
+      console.log("Já saiu do products selected")
+      console.log("SubProducst length: " + this.subProducts.length);
+      if (this.subProducts.length > 0)
+        this.formStores.controls["subProductsStore"].setValidators([Validators.required]);
+      else
+        this.formStores.controls["subProductsStore"].clearValidators();
+      this.formStores.controls["subProductsStore"].updateValueAndValidity();
+    });
   }
-}
+
+  comercialCentre(isCentre: boolean) {
+    this.isComercialCentreStore = isCentre;
+    if (isCentre)
+      this.formStores.get('subZoneStore').setValidators([Validators.required]);
+    else
+      this.formStores.get('subZoneStore').setValidators(null);
+  }
+
+  onActivitiesSelected() {
+    var exists = false;
+
+    console.log("entrei no activies selected")
+
+    this.activities.forEach(act => {
+      var actToSearch = this.formStores.get('activityStores').value;
+      if (actToSearch == act.activityCode) {
+        exists = true;
+        this.subActivities = act.subActivities;
+      }
+    })
+    if (!exists) {
+      this.subActivities = [];
+    }
+  }
+
+  onProductsSelected() {
+    var exists = false;
+
+    console.log("product selected")
+
+    this.products.forEach(prod => {
+      var prodToSearch = this.formStores.get('activityStores').value;
+      if (prodToSearch == prod.productCode) {
+        exists = true;
+        // this.subProducts = prod.code;
+      }
+    })
+    if (!exists) {
+      this.subProducts = [];
+    }
+  }
+
+
+
 }

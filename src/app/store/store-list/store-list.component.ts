@@ -14,8 +14,9 @@ import { Client } from '../../client/Client.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ViewportScroller } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
-import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer';
+import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { StoreTableComponent } from '../store-table/store-table.component';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 
 interface Stores {
   storeName: string;
@@ -25,79 +26,128 @@ interface Stores {
 }
 const testValues: ShopDetailsAcquiring[] = [
   {
-    activity: "Activity1",
-    address:
-    {
-      isInsideShoppingCenter: true, useMerchantAddress: true, shoppingCenter: "Colombo",
-      address:
-      {
-        address: "A",
-        country: "B",
-        postalArea: "C",
-        postalCode: "123"
-      }
-    },
-    bank: {
-      bank:
-      {
-        bank: "Banco",
-        iban: "893018920"
-      },
-      userMerchantBank: true
-    },
-    documents:
-    {
-      href: "",
-      type: "",
-      id: ""
-    },
-    id: "1",
-    manager: "Manager1",
+    shopId: "1",
     name: "ShopName",
-    productCode: "cardPresent",
-    subActivity: "99",
-    subproductCode: "easy",
-    website: "google.com",
-    supportEntity: TerminalSupportEntityEnum.ACQUIRER
-  },
-  {
-    activity: "Activity2",
-    address:
-    {
+    manager: "Manager1",
+    activity: "C",
+    subActivity: "C1",
+    supportEntity: "Entity1",
+    registrationId: "RegID",
+    address: {
+      useMerchantAddress: true,
+      address: {
+        address: "A",
+        postalCode: "B",
+        postalArea: "C",
+        country: "123"
+      },
       isInsideShoppingCenter: true,
-      useMerchantAddress: false,
-      shoppingCenter: "Colombo2",
-      address:
-      {
-        address: "A2",
-        country: "B2",
-        postalArea: "C2",
-        postalCode: "1232"
-      }
+      shoppingCenter: "Shopping1"
     },
     bank: {
-      bank:
-      {
-        bank: "Banco2",
-        iban: "893018920"
-      },
-      userMerchantBank: false
+      userMerchantBank: true,
+      bank: {
+        bank: "Bank",
+        iban: "12345"
+      }
     },
-    documents:
-    {
+    website: "www.google.com",
+    productCode: "345",
+    subproductCode: "324",
+    equipments: [
+      {
+        shopEquipmentId: "123",
+        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
+        communicationType: "A",
+        equipmentType: "A",
+        quantity: 0,
+        pricing: {
+          pricingId: "123",
+          attributes: [
+            {
+              id: "A",
+              description: "A",
+              value: 1,
+              isReadOnly: true,
+              isVisible: true
+            }
+          ]
+        }
+      }
+    ],
+    pack: {
+      packId: "123",
+      packDetails: [
+        {
+          id: "1234",
+          description: "123",
+          kind: "1234",
+          attributes: [
+            {
+              id: "1234",
+              description: "AAA",
+              value: true,
+              isReadOnly: true,
+              isVisible: true,
+              isSelected: true,
+              order: 0,
+              bundles: [
+                {
+                  id: "B",
+                  description: "B",
+                  kind: ProductPackKindEnum.SIMPLE,
+                  attributes: [
+                    {
+                      id: "B123",
+                      description: "B123456",
+                      value: true,
+                      isReadOnly: true,
+                      isVisible: true,
+                      isSelected: true,
+                      order: 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      commission: {
+        comissionId: "1",
+        attributes: {
+          id: "",
+          description: "A1",
+          fixedValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          },
+          maxValue: {
+            value: 2,
+            isReadOnly: true,
+            isVisible: true
+          },
+          minValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          },
+          percentageValue: {
+            value: 1,
+            isReadOnly: true,
+            isVisible: true
+          }
+        }
+      }
+    },
+    documents: {
       href: "",
       type: "",
       id: ""
-    },
-    id: "2",
-    manager: "Manager2",
-    name: "ShopName2",
-    productCode: "cardNotPresent",
-    subActivity: "99",
-    subproductCode: "keyOnHand",
-    website: "google.com",
-    supportEntity: TerminalSupportEntityEnum.OTHER
-  },
+    }
+  }
 ]
 //This component displays the list of the existing stores
 
@@ -107,6 +157,9 @@ const testValues: ShopDetailsAcquiring[] = [
   styleUrls: ['./store-list.component.css']
 })
 export class StoreComponent implements AfterViewInit{
+  public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
+  public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
+  public ProductPackKindEnum = ProductPackKindEnum;
 
   storesMat: MatTableDataSource<ShopDetailsAcquiring>;
 
@@ -203,7 +256,7 @@ export class StoreComponent implements AfterViewInit{
 
   deleteStore() {
     if (this.currentStore !== null) {
-      this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
+      this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId).subscribe(result => {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
         this.route.navigateByUrl('store-comp/');
       });
