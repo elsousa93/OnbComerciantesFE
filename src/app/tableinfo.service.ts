@@ -27,22 +27,15 @@ export class TableinfoService {
 
 // To get: /api/country
   getAllCountriesList() {
-    let messageId = ""
     let url = this.baseUrl + 'betable/GetAllCountries/';
-    this.http.get<ITableInformation>(url , {observe: "response"}).subscribe(result => {
-      this.logger.response(result, "");
-    }, error => this.logger.responseCustom(url, JSON.stringify(error.headers), error.message, messageId, error.status.toString()));
+    return this.http.get<ITableInformation>(url , {observe: "response"})
   }
 
 
 // To get: /api/country/{code} 
   getCountry(countryCode) {
-    let messageId = ""
     let url = this.baseUrl + 'betable/GetCountry/' + countryCode;
-    this.logger.request("GET", this.baseUrl + 'betable/GetAllCountries/', "", "", messageId);
-    this.http.get<ITableInformation>(url, {observe: "response"} ).subscribe(result => {
-      this.logger.response(result, "");
-    }, error => this.logger.responseError(error, ""));
+    return this.http.get<ITableInformation>(url, {observe: "response"} )
   }
 
 

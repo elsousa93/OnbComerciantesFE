@@ -21,6 +21,7 @@ import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-countrys',
@@ -123,15 +124,20 @@ export class CountrysComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
     private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService, private storeService: StoreService) {
     this.ngOnInit();
     if (this.route.getCurrentNavigation().extras.state) {
+      var auth = authService.GetCurrentUser();
+      this.newSubmission.submissionUser.user = auth.userName;
+      this.newSubmission.submissionUser.branch = auth.bankName;
+      this.newSubmission.submissionUser.partner = "SIBS";
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.client = this.route.getCurrentNavigation().extras.state["client"];
+      this.newSubmission.merchant = this.client;
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
       this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
@@ -193,7 +199,7 @@ export class CountrysComponent implements OnInit {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl({ value: 'aaa', disabled: true }, Validators.required),
+        services: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
@@ -208,7 +214,7 @@ export class CountrysComponent implements OnInit {
     } else {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl('aaa', Validators.required),
+        services: new FormControl('', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
@@ -251,98 +257,71 @@ export class CountrysComponent implements OnInit {
       "branch": "branch01",
       "partner": "SIBS"
     },
-    "startedAt": "2022-07-13T11:10:13.420Z",
+    "startedAt": new Date() + '',
     "state": "Incomplete",
-    "bank": "0800",
-    "merchant": {
-      "fiscalId": "585597856",
-      "legalName": "BATATA FRITA CIA LTDA",
-      "shortName": "BATATA FRITA LTDA",
-      "headquartersAddress": {
-        "address": "Rua gusta 3",
-        "postalCode": "2454-298",
-        "postalArea": "Aldeia Vegetariana",
-        "country": "PT"
-      },
-      "merchantType": "Corporate", //ou Entrepreneur -> ENI
-      "commercialName": "BATATAS FRITAS",
-      "legalNature": "35",
-      "crc": {
-        "code": "0000-0000-0001",
-        "validUntil": "2022-07-13T11:10:13.420Z"
-      },
-      "shareCapital": {
-        "capital": 50000.2,
-        "date": "2022-07-13T11:10:13.420Z"
-      },
-      "byLaws": "O Joao pode assinar tudo, like a boss",
-      "mainEconomicActivity": "90010",
-      "otherEconomicActivities": [
-        "055111"
-      ],
-      "establishmentDate": "2022-07-13T11:10:13.420Z",
-      "businessGroup": {
-        "type": "Isolated",
-        "branch": "branch01"
-      },
-      "knowYourSales": {
-        "estimatedAnualRevenue": 45892255.0,
-        "averageTransactions": 46895,
-        "servicesOrProductsSold": [
-          "Fries"
-        ],
-        "servicesOrProductsDestinations": [
-          "Fries"
-        ]
-      },
-      "bankInformation": {
-        "bank": "0033",
-        "iban": "PT00333506518874499677629"
-      },
-      "contacts": {
-        "email": "joao@silvestre.pt",
-        "phone1": {
-          "countryCode": "+351",
-          "phoneNumber": "919654422"
-        },
-        "phone2": {
-          "countryCode": "+351",
-          "phoneNumber": "919654421"
-        }
-      },
-      "documentationDeliveryMethod": "MAIL",
-      "billingEmail": "joao@silvestre.pt"
-    },
-    "stakeholders": [
-      {
-        "fiscalId": "232012610",
-        "identificationDocument": {
-          "type": "0020",
-          "number": "13713441",
-          "country": "PT",
-          "expirationDate": "2022-07-13T11:10:13.420Z"
-        },
-        "fullName": "Joao Paulo Ferreira Silvestre",
-        "contactName": "Joao o maior Silvestre",
-        "shortName": "Joao Silvestre",
-        "fiscalAddress": {
-          "address": "Rua da Azoia 4",
-          "postalCode": "2625-236",
-          "postalArea": "Povoa de Santa Iria",
-          "country": "PT"
-        },
-        "isProxy": false,
-        "phone1": {
-          "countryCode": "+351",
-          "phoneNumber": "919654422"
-        },
-        "email": "joao@silvestre.pt",
-        "birthDate": "1990-08-11"
-      }
-    ],
-    "documents": [
-      
-    ]
+    "bank": null,
+    "merchant": null,
+    //"merchant": {
+    //  "fiscalId": "585597856",
+    //  "legalName": "BATATA FRITA CIA LTDA",
+    //  "shortName": "BATATA FRITA LTDA",
+    //  "headquartersAddress": {
+    //    "address": "Rua gusta 3",
+    //    "postalCode": "2454-298",
+    //    "postalArea": "Aldeia Vegetariana",
+    //    "country": "PT"
+    //  },
+    //  "merchantType": "Corporate", //ou Entrepreneur -> ENI
+    //  "commercialName": "BATATAS FRITAS",
+    //  "legalNature": "35",
+    //  "crc": {
+    //    "code": "0000-0000-0001",
+    //    "validUntil": "2022-07-13T11:10:13.420Z"
+    //  },
+    //  "shareCapital": {
+    //    "capital": 50000.2,
+    //    "date": "2022-07-13T11:10:13.420Z"
+    //  },
+    //  "byLaws": "O Joao pode assinar tudo, like a boss",
+    //  "mainEconomicActivity": "90010",
+    //  "otherEconomicActivities": [
+    //    "055111"
+    //  ],
+    //  "establishmentDate": "2022-07-13T11:10:13.420Z",
+    //  "businessGroup": {
+    //    "type": "Isolated",
+    //    "branch": "branch01"
+    //  },
+    //  "knowYourSales": {
+    //    "estimatedAnualRevenue": 45892255.0,
+    //    "averageTransactions": 46895,
+    //    "servicesOrProductsSold": [
+         
+    //    ],
+    //    "servicesOrProductsDestinations": [
+        
+    //    ]
+    //  },
+    //  "bankInformation": {
+    //    "bank": "0033",
+    //    "iban": "PT00333506518874499677629"
+    //  },
+    //  "contacts": {
+    //    "email": "joao@silvestre.pt",
+    //    "phone1": {
+    //      "countryCode": "+351",
+    //      "phoneNumber": "919654422"
+    //    },
+    //    "phone2": {
+    //      "countryCode": "+351",
+    //      "phoneNumber": "919654421"
+    //    }
+    //  },
+    //  "documentationDeliveryMethod": "",
+    //  "billingEmail": "joao@silvestre.pt"
+    //},
+    "stakeholders": null,
+    "documents": null
   }
 
   submit() {
@@ -365,7 +344,7 @@ export class CountrysComponent implements OnInit {
     }
 
     if (this.returned !== 'consult') {
-      if (this.lstPaisPreenchido.length == 0) {
+      if (this.lstPaisPreenchido.length == -1) { //mudar o -1 para 0
         this.countryError = true;
         //this.errorMsg = 'Escolha pelo menos um país';
         return;
@@ -386,17 +365,14 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.establishmentDate = this.client.establishmentDate;
           this.newSubmission.merchant.fiscalId = this.NIFNIPC;
           this.newSubmission.merchant.foreignFiscalInformation = this.client.foreignFiscalInformation;
-          if (this.client.headquartersAddress.values === undefined) {
-            this.newSubmission.merchant.headquartersAddress = null;
-          } else {
-            this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
-          }
-          
+          this.newSubmission.merchant.headquartersAddress = this.client.headquartersAddress;
+
           this.newSubmission.merchant.id = this.client.id;
-          this.newSubmission.merchant.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-          this.newSubmission.merchant.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-          this.newSubmission.merchant.knowYourSales.servicesOrProductsSold = [];
-          this.newSubmission.merchant.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code); //tenho de mandar apenas o CODE
+          console.log("Merchant a tratar: ", this.newSubmission.merchant);
+          this.newSubmission.merchant["sales"]["annualEstimatedRevenue"] = this.form.get("expectableAnualInvoicing").value;
+          this.newSubmission.merchant["sales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
+          this.newSubmission.merchant["sales"]["productsOrServicesSold"].push(this.form.get("services").value); //
+          this.newSubmission.merchant["sales"]["productsOrServicesCountries"] = this.lstPaisPreenchido.map(country => country.code);
           this.newSubmission.merchant.legalName = this.client.legalName;
           this.newSubmission.merchant.legalNature = this.client.legalNature;
           this.newSubmission.merchant.legalNature2 = this.client.legalNature2;
@@ -518,6 +494,9 @@ export class CountrysComponent implements OnInit {
             //  "shortName": value.name
             //})
           });
+
+          this.newSubmission.documents = [];
+
           if (this.crc !== null && this.crc !== undefined) {
             this.newSubmission.documents.push({
               documentType: 'crcPDF',

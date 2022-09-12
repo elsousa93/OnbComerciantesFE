@@ -31,14 +31,43 @@ export interface OutboundClient {
 /** Interface Client
 * documentationDeliveryMethod: see docType.ts for the codes
 **/
-export interface Client {
-  id?: string,
+
+export interface AcquiringClientPost {
+  clientId?: string,
   fiscalId?: string,
-  companyName?: string,
-  commercialName?: string,
+  legalName?: string,
   shortName?: string,
   headquartersAddress?: HeadquartersAddress,
   merchantType?: string,
+  commercialName?: string,
+  legalNature?: string,
+  legalNature2?: string,
+  incorporationStatement?: Crc,
+  shareCapital?: ShareCapital,
+  byLaws?: string,
+  mainEconomicActivity?: string,
+  otherEconomicActivities?: string[],
+  mainTaxCode?: string
+  otherTaxCodes?: string[],
+  incorporationDate?: string,
+  businessGroup?: BusinessGroup,
+  knowYourSales?: Sales,
+  bankInformation?: BankInformation,
+  contacts?: Contacts,
+  documentationDeliveryMethod?: string,
+  billingEmail?: string,
+  merchantRegistrationId?: string
+}
+
+export interface Client {
+  id?: string,
+  fiscalId?: string,
+  legalName?: string,
+  shortName?: string,
+  headquartersAddress?: HeadquartersAddress,
+  merchantType?: string,
+  commercialName?: string,
+  companyName?: string,
   legalNature?: string,
   legalNature2?: string,
   crc?: Crc,
@@ -56,7 +85,6 @@ export interface Client {
   foreignFiscalInformation?: ForeignFiscalInformation,
   businessGroup?: BusinessGroup,
   clientId?: string,
-  legalName?: string,
   merchantRegistrationId?: string
 }
 

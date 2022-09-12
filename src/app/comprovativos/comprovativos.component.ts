@@ -133,8 +133,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public result: any;
   public id: number = 0;
   public clientNr: number = 0;
-  submissionId: string = "";
-  //submissionId: string = '83199e44-f089-471c-9588-f2a68e24b9ab';
+  //submissionId: string = "";
+  submissionId: string = '83199e44-f089-471c-9588-f2a68e24b9ab';
 
   crcCode: string = "";
 
@@ -203,7 +203,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     private modalService: BsModalService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
-    this.submissionId = localStorage.getItem("submissionId");
+    //this.submissionId = localStorage.getItem("submissionId");
     this.logger.debug("id:!!!!");
     this.logger.debug(this.submissionId);
     var context = this;

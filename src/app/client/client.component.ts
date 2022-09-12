@@ -512,10 +512,10 @@ export class ClientComponent implements OnInit {
             var client = {
               "clientId": c.merchantId,
               "commercialName": c.commercialName,
-              "address": "Rua Gomes Artur",
-              "ZIPCode": "1000-001",
-              "locality": "Lisboa",
-              "country": "Portugal",
+              "address": c.headquartersAddress.address,
+              "ZIPCode": c.headquartersAddress.postalCode,
+              "locality": c.headquartersAddress.postalArea,
+              "country": c.headquartersAddress.country,
             }
             context.clientsToShow.push(client);
             context.logger.debug(context.clientsToShow);
@@ -554,11 +554,7 @@ export class ClientComponent implements OnInit {
 
     this.searchDone = true;
   }
-
-  changeSearch() {
-    this.toSearch = true;
-  }
-
+  
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }

@@ -46,60 +46,45 @@ export class ClientByIdComponent implements OnInit {
   public clientId: string;
   
   //client: Client = {} as Client;
+  
   public client: OutboundClient = {
-    "merchantId": "88dab4e9-3818-4491-addb-f518ae649e5a",
-    "legalName": "Silvestre Limitada",
-    "commercialName": "Silvestre - Consultoria",
-    "shortName": "Silvestre Lda",
-    "headquartersAddress": {
-      "address": "Rua da Azoia",
-      "postalCode": "2625-236",
-      "postalArea": "Póvoa de Santa Iria",
-      "country": "PT"
-    },
-    "context": "isolated",
+    "merchantId": null,
+    "legalName": null,
+    "commercialName": null,
+    "shortName": null,
+    "headquartersAddress": {},
+    //"headquartersAddress": {
+    //  "address": "",
+    //  "postalCode": "",
+    //  "postalArea": "Póvoa de Santa Iria",
+    //  "country": "PT"
+    //},
+    "context": null,
     "contextId": null,
-    "fiscalIdentification": {
-      "fiscalId": "",
-      "issuerCountry": "PT"
-    },
+    "fiscalIdentification": {},
     "merchantType": "corporation",
-    "legalNature": "10",
+    "legalNature": null,
     "legalNature2": null,
-    "incorporationStatement": {
-      "code": "000-000-001",
-      "validUntil": "2025-01-01"
-    },
-    "incorporationDate": "2022-07-01",
-    "shareCapital": {
-      "capital": 100000000,
-      //"reportedAt": "2022-07-01"
-    },
-    "bylaws": "O João assina tudo sozinho",
+    "incorporationStatement": {},
+    "incorporationDate": null,
+    "shareCapital": null,
+    "bylaws": null,
     "principalTaxCode": null,
     "otherTaxCodes": [],
     "principalEconomicActivity": null,
-    "otherEconomicActivities": [
-      "56305"
-    ],
+    "otherEconomicActivities": [],
     "sales": {
-      "annualEstimatedRevenue": 10000000.2,
-      "productsOrServicesSold": [
-        "Consultoria",
-        "Bebidas"
-      ],
-      "productsOrServicesCountries": [
-        "PT",
-        "US"
-      ],
-      "transactionsAverage": 0
+      "annualEstimatedRevenue": null,
+      "productsOrServicesSold": [],
+      "productsOrServicesCountries": [],
+      "transactionsAverage": null
     },
-    "documentationDeliveryMethod": "viaDigital",
-    "bankingInformation": null,
+    "documentationDeliveryMethod": null,
+    "bankingInformation": {},
     "merchantRegistrationId": null,
-    "contacts": null,
+    "contacts": {},
     "billingEmail": null,
-    "documents": []
+    "documents": null
   };
 
   crcError: boolean = false;
@@ -142,13 +127,8 @@ export class ClientByIdComponent implements OnInit {
   legalNatureList: LegalNature[] = [];
   //Natureza Juridica N2
   legalNatureList2: SecondLegalNature[] = [];
-  //Paises de destino
-  countryList: CountryInformation[] = []; 
-  continentsList: string[] = [];
   //CAEs
   CAEsList: EconomicActivityInformation[] = [];
-
-  filteredOptions: Observable<CountryInformation[]>;
 
   public map = new Map();
   public currentPage: number;
@@ -156,7 +136,6 @@ export class ClientByIdComponent implements OnInit {
 
   returned: string; //variável para saber se estamos a editar um processo
   merchantInfo: any;
-  consult: string; //variavel para saber se estamos a consultar um processo
 
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
@@ -176,11 +155,6 @@ export class ClientByIdComponent implements OnInit {
       this.logger.debug(this.legalNatureList);
     }, error => this.logger.error(error));
 
-    //Chamada à API para receber todos os Paises
-    this.tableInfo.GetAllCountries().subscribe(result => {
-      this.countryList = result;
-      this.logger.debug("FETCH PAISES");
-    }, error => this.logger.error(error));
 
     //Chamada à API para obter a lista de CAEs
     //this.tableInfo.GetAllCAEs().subscribe(result => {
@@ -305,7 +279,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : this.client?.legalName, Validators.required), //sim
+      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -624,7 +598,6 @@ export class ClientByIdComponent implements OnInit {
       this.updateBasicForm();
     }
     this.initializeTableInfo();
-    //this.createContinentsList();
 
 
     if (this.returned !== null) {
@@ -659,20 +632,13 @@ export class ClientByIdComponent implements OnInit {
         }
       });
     }
-
-
     this.ngOnInit();  
-    }
+  }
 
    //fim do construtor
 
   ngOnInit(): void {
     // this.clientId = String(this.router.snapshot.params['id']);
-
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
 
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -706,46 +672,6 @@ export class ClientByIdComponent implements OnInit {
     return this.isCommercialSociety;
   }
  
-  continentSelected(event) {
-    if (this.checkedContinents.indexOf(event.target.id) > -1) {
-      var index = this.checkedContinents.indexOf(event.target.id);
-      this.checkedContinents.splice(index, 1);
-      this.countryList.forEach(c => {
-        if (event.target.id == c.continent && this.client.sales.productsOrServicesCountries.indexOf(c.description) > -1) {
-          var index1 = this.client.sales.productsOrServicesCountries.indexOf(c.description);
-          this.client.sales.productsOrServicesCountries.splice(index1, 1);
-        }
-      })
-    } else {
-      this.checkedContinents.push(event.target.id);
-      this.countryList.forEach(c => {
-        if (event.target.id == c.continent && this.client.sales.productsOrServicesCountries.indexOf(c.description) == -1) {
-          this.client.sales.productsOrServicesCountries.push(c.description);
-        }
-      })
-    }
-  }
-
-  onCountryChange(event) {
-    if (this.client.sales.productsOrServicesCountries.indexOf(event.target.id) > -1) {
-      var index = this.client.sales.productsOrServicesCountries.indexOf(event.target.id);
-      this.client.sales.productsOrServicesCountries.splice(index, 1);
-    } else {
-      this.client.sales.productsOrServicesCountries.push(event.target.id);
-    }
-  }
-
-  addCountryToList(country: string) {
-    this.countryList.forEach(c => {
-      if (this.client.sales.productsOrServicesCountries.indexOf(country) == -1) {
-        if (c.description == country) {
-          this.client.sales.productsOrServicesCountries.push(country);
-          this.countryVal = "";
-        }
-      }
-    })
-  }
-
   onLegalNatureSelected() {
     var exists = false;
     this.logger.debug("entrou no legalnatureselected");
@@ -763,21 +689,6 @@ export class ClientByIdComponent implements OnInit {
     }
   }
 
-  createContinentsList() {
-    this.countryList.forEach(country => {
-      if (this.continentsList.length == 0) {
-        this.continentsList.push(country.continent);
-      } else {
-        if (this.continentsList.indexOf(country.continent) == -1) {
-          this.continentsList.push(country.continent);
-        }
-        // else {
-        //  var index = this.continentsList.indexOf(country.continent);
-        //  this.continentsList.splice(index, 1);
-        //}
-      }
-    })
-  }
 
    searchByCRC() {
     //var crcInserted = this.form.get('crcCode');
@@ -820,7 +731,7 @@ export class ClientByIdComponent implements OnInit {
         this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
         this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
         this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.district;
+        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
         this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
 
         this.processClient.expirationDate = clientByCRC.expirationDate;
@@ -874,8 +785,14 @@ export class ClientByIdComponent implements OnInit {
       // this.client.headquartersAddress.postalArea = this.form.value["location"];
       this.client.principalEconomicActivity = this.form.value["CAE1"];
       this.client.otherEconomicActivities = [];
-      this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"], this.form.value["CAESecondary1Branch"]);
-      this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"], this.form.value["CAESecondary2Branch"]);
+
+      var CAESecondary1 = (this.form.value["CAESecondary1"]);
+      var CAESecondary2 = (this.form.value["CAESecondary1"]);
+
+      if (CAESecondary1 !== null)
+        this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
+      if (CAESecondary2 !== null)
+        this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
       //Paises destino
       this.client.incorporationDate = this.form.value["constitutionDate"];
       //this.client.crc.code = this.form.value["crcCode"];
@@ -891,7 +808,11 @@ export class ClientByIdComponent implements OnInit {
 
       if (this.tipologia === 'Company') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
-        this.client.legalNature2 = this.form.value["natJuridicaN2"];
+
+        var natJuridicaN2 = this.form.value["natJuridicaN2"];
+
+        if (natJuridicaN2 !== null)
+          this.client.legalNature2 = this.form.value["natJuridicaN2"];
       }
       this.client.commercialName = this.form.value["socialDenomination"];
     }
@@ -956,10 +877,6 @@ export class ClientByIdComponent implements OnInit {
     this.route.navigate(["/"]);
   }
 
-  _filter(value: string): CountryInformation[] { 
-    const filterValue = value.toLowerCase();
-    return this.countryList.filter(option => option.description.toLowerCase().includes(filterValue));
-  }
 
   setAssociatedWith(value: boolean) {
     if (value == true) {
