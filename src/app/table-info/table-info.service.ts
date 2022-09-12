@@ -19,7 +19,7 @@ export class TableInfoService {
     
     this.HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage.abbreviation
+        'Accept-Language': this.currentLanguage.abbreviation,
       }),
     }
 
