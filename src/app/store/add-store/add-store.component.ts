@@ -265,7 +265,7 @@ export class AddStoreComponent implements OnInit {
 
     this.storeService.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
-      console.log("resultado: ", result);
+      console.log("resultado getAllShopActivities: ", result);
 
       this.activities = result;
     }, error => {

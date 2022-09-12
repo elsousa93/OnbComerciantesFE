@@ -191,7 +191,7 @@ export class ProductSelectionComponent implements OnInit {
 
     this.storeService.GetAllShopProducts().subscribe(result => {
     this.logger.debug(result);
-          console.log("resultado: ", result);
+      console.log("resultado getAllShopActivities:: ", result);
 
           this.products = result;
         }, error => {
@@ -205,7 +205,7 @@ export class ProductSelectionComponent implements OnInit {
     this.logger.debug("cardPresent: " + cardPresent);
     this.logger.debug("cardNotPresent: " + cardNotPresent);
     this.logger.debug("combinedOffer: " + combinedOffer);
-    var prodToSearch = this.storeService.get('activityStores').value;
+   
 
     if (cardPresent) {
       this.isCardPresent = cardPresent;
