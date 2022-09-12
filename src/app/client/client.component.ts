@@ -554,11 +554,7 @@ export class ClientComponent implements OnInit {
 
     this.searchDone = true;
   }
-
-  changeSearch() {
-    this.toSearch = true;
-  }
-
+  
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }

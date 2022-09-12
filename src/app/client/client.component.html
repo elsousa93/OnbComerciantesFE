@@ -50,7 +50,7 @@
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeDocType()" id="docType"
+                      <select class="form-select campo-form-select" id="docType"
                         [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
@@ -105,7 +105,7 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" (focusout)="changeSearch()" type="text" [(ngModel)]="newClient.clientId"
+                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId"
                         name="clientId" #clientId="ngModel" [class]="errorInput">
 
                   </div>
@@ -138,7 +138,7 @@
                 <nav
                   class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                   <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                    <button *ngIf="toSearch && documentType" id="btn5a2" class="btn botao_azul" (click)="searchClient()"
+                    <button [disabled]="newClient.clientId?.length === 0 && newClient.documentationDeliveryMethod?.length === 0" id="btn5a2" class="btn botao_azul" (click)="searchClient()"
                       wappler-command="editContent">
                       {{'client.search'|translate|uppercase}}&nbsp;&nbsp;
                       <img src="assets/images/person_search.svg" class="img_btn">

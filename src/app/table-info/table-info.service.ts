@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
+import { TranslationLanguage } from '../translationLanguages';
 import { Address, CountryInformation, DocumentSearchType, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
@@ -9,10 +10,18 @@ import { Address, CountryInformation, DocumentSearchType, EconomicActivityInform
 })
 export class TableInfoService {
   private acquiringUrl: string;
-
+  currentLanguage: TranslationLanguage;
+  HTTP_OPTIONS: { headers: HttpHeaders; };
 
   constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
     this.acquiringUrl = configuration.acquiringAPIUrl;
+
+    
+    this.HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage.abbreviation
+      }),
+    }
 
   }
 
@@ -83,47 +92,47 @@ export class TableInfoService {
 
 
   GetAllCountries(): any{
-    return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country');
+    return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country', this.HTTP_OPTIONS);
   }
 
   GetCountryById(code: string){
-    return this.http.get<CountryInformation>(this.acquiringUrl + 'country/' + code);
+    return this.http.get<CountryInformation>(this.acquiringUrl + 'country/' + code, this.HTTP_OPTIONS);
   }
 
   GetAllCAEs() {
-    return this.http.get<EconomicActivityInformation[]>(this.acquiringUrl + 'merchant/economicactivity');
+    return this.http.get<EconomicActivityInformation[]>(this.acquiringUrl + 'merchant/economicactivity', this.HTTP_OPTIONS);
   }
 
   GetCAEByCode(code: string){
-    return this.http.get<EconomicActivityInformation>(this.acquiringUrl + 'merchant/economicactivity/' + code);
+    return this.http.get<EconomicActivityInformation>(this.acquiringUrl + 'merchant/economicactivity/' + code, this.HTTP_OPTIONS);
   }
 
   GetAllLegalNatures() {
-    return this.http.get<LegalNature[]>(this.acquiringUrl + 'merchant/legalnature');
+    return this.http.get<LegalNature[]>(this.acquiringUrl + 'merchant/legalnature', this.HTTP_OPTIONS);
   }
 
   GetAllStakeholderRoles() {
-    return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'merchant/stakeholder/role');
+    return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'merchant/stakeholder/role', this.HTTP_OPTIONS);
   }
 
   GetAllShopActivities() {
-    return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity');
+    return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity', this.HTTP_OPTIONS);
   }
 
   GetAllPEPTypes() {
-    return this.http.get<PEPTypes[]>(this.acquiringUrl + 'pep/types');
+    return this.http.get<PEPTypes[]>(this.acquiringUrl + 'pep/types', this.HTTP_OPTIONS);
   }
 
   GetAllPOS() {
-    return this.http.get<POS[]>(this.acquiringUrl + 'pos');
+    return this.http.get<POS[]>(this.acquiringUrl + 'pos', this.HTTP_OPTIONS);
   }
 
   GetAllProducts() {
-    return this.http.get<Product[]>(this.acquiringUrl + 'product');
+    return this.http.get<Product[]>(this.acquiringUrl + 'product', this.HTTP_OPTIONS);
   }
 
   GetAddressByZipCode(cp4: number, cp3: number) {
-        return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3);
+        return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3, this.HTTP_OPTIONS);
   }
 
   GetAddressByZipCodeTeste(cp4: number, cp3: number): Promise<TreatedResponse<Address>> {
@@ -133,7 +142,7 @@ export class TableInfoService {
     var response: TreatedResponse<Address> = {};
 
     return new Promise<TreatedResponse<Address>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url).then(success => {
+      this.callAPIAcquiring(HttpMethod.GET, url, this.HTTP_OPTIONS).then(success => {
         response.result = success.result;
         response.msg = "Sucesso";
         resolve(response);
@@ -148,11 +157,11 @@ export class TableInfoService {
   }
 
   GetAllShoppingCenters(postalCode: string) {
-    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'shop/shoppingCenter?postalCode=' + postalCode);
+    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'shop/shoppingCenter?postalCode=' + postalCode, this.HTTP_OPTIONS);
   }
 
   GetAllSearchTypes(userType: UserTypes) {
-    return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType);
+    return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType, this.HTTP_OPTIONS);
   }
 
   
@@ -163,7 +172,7 @@ export class TableInfoService {
     var response: TreatedResponse<TenantCommunication[]> = {};
 
     return new Promise<TreatedResponse<TenantCommunication[]>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url).then(success => {
+      this.callAPIAcquiring(HttpMethod.GET, url, this.HTTP_OPTIONS).then(success => {
         response.result = success.result;
         response.msg = "Sucesso";
         resolve(response);
@@ -182,7 +191,7 @@ export class TableInfoService {
     var response: TreatedResponse<TenantTerminal[]> = {};
 
     return new Promise<TreatedResponse<TenantTerminal[]>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url).then(success => {
+      this.callAPIAcquiring(HttpMethod.GET, url, this.HTTP_OPTIONS).then(success => {
         response.result = success.result;
         response.msg = "Sucesso";
         resolve(response);
