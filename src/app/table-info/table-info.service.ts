@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
-import { TranslationLanguage } from '../translationLanguages';
 import { Address, CountryInformation, DocumentSearchType, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
@@ -10,19 +11,18 @@ import { Address, CountryInformation, DocumentSearchType, EconomicActivityInform
 })
 export class TableInfoService {
   private acquiringUrl: string;
-  currentLanguage: TranslationLanguage;
-  HTTP_OPTIONS: { headers: HttpHeaders; };
+  currentLanguage: string;
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
+
+
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, public translate: TranslateService) {
     this.acquiringUrl = configuration.acquiringAPIUrl;
+    // this.currentLanguage = this.translate.currentLang; 
 
-    
-    this.HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage.abbreviation,
-      }),
-    }
-
+    this.languageStream$.subscribe((val) => {
+      this.currentLanguage = val
+    });
   }
 
   callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
@@ -91,58 +91,131 @@ export class TableInfoService {
   }
 
 
-  GetAllCountries(): any{
-    return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country', this.HTTP_OPTIONS);
+  GetAllCountries(): any {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+
+    return this.http.get<CountryInformation[]>(this.acquiringUrl + 'country', HTTP_OPTIONS);
   }
 
-  GetCountryById(code: string){
-    return this.http.get<CountryInformation>(this.acquiringUrl + 'country/' + code, this.HTTP_OPTIONS);
+  GetCountryById(code: string) {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<CountryInformation>(this.acquiringUrl + 'country/' + code, HTTP_OPTIONS);
   }
 
   GetAllCAEs() {
-    return this.http.get<EconomicActivityInformation[]>(this.acquiringUrl + 'merchant/economicactivity', this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<EconomicActivityInformation[]>(this.acquiringUrl + 'merchant/economicactivity', HTTP_OPTIONS);
   }
 
-  GetCAEByCode(code: string){
-    return this.http.get<EconomicActivityInformation>(this.acquiringUrl + 'merchant/economicactivity/' + code, this.HTTP_OPTIONS);
+  GetCAEByCode(code: string) {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<EconomicActivityInformation>(this.acquiringUrl + 'merchant/economicactivity/' + code, HTTP_OPTIONS);
   }
 
   GetAllLegalNatures() {
-    return this.http.get<LegalNature[]>(this.acquiringUrl + 'merchant/legalnature', this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<LegalNature[]>(this.acquiringUrl + 'merchant/legalnature', HTTP_OPTIONS);
   }
 
   GetAllStakeholderRoles() {
-    return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'merchant/stakeholder/role', this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'merchant/stakeholder/role', HTTP_OPTIONS);
   }
 
   GetAllShopActivities() {
-    return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity', this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
   GetAllPEPTypes() {
-    return this.http.get<PEPTypes[]>(this.acquiringUrl + 'pep/types', this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<PEPTypes[]>(this.acquiringUrl + 'pep/types', HTTP_OPTIONS);
   }
 
   GetAllPOS() {
-    return this.http.get<POS[]>(this.acquiringUrl + 'pos', this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<POS[]>(this.acquiringUrl + 'pos', HTTP_OPTIONS);
   }
 
   GetAllProducts() {
-    return this.http.get<Product[]>(this.acquiringUrl + 'product', this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<Product[]>(this.acquiringUrl + 'product', HTTP_OPTIONS);
   }
 
   GetAddressByZipCode(cp4: number, cp3: number) {
-        return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3, this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3, HTTP_OPTIONS);
   }
 
   GetAddressByZipCodeTeste(cp4: number, cp3: number): Promise<TreatedResponse<Address>> {
 
-    var url = this.acquiringUrl + 'address/pt/'+ cp4 + '/' + cp3;
+    var url = this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3;
 
     var response: TreatedResponse<Address> = {};
 
     return new Promise<TreatedResponse<Address>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url, this.HTTP_OPTIONS).then(success => {
+      var HTTP_OPTIONS = {
+        headers: new HttpHeaders({
+          'Accept-Language': this.currentLanguage,
+
+        }),
+      }
+      this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
         response.result = success.result;
         response.msg = "Sucesso";
         resolve(response);
@@ -157,22 +230,40 @@ export class TableInfoService {
   }
 
   GetAllShoppingCenters(postalCode: string) {
-    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'shop/shoppingCenter?postalCode=' + postalCode, this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'shop/shoppingCenter?postalCode=' + postalCode, HTTP_OPTIONS);
   }
 
   GetAllSearchTypes(userType: UserTypes) {
-    return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType, this.HTTP_OPTIONS);
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType, HTTP_OPTIONS);
   }
 
-  
+
 
   GetTenantCommunications(): Promise<TreatedResponse<TenantCommunication[]>> {
     var url = this.acquiringUrl + 'tenant/communication';
 
     var response: TreatedResponse<TenantCommunication[]> = {};
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
 
     return new Promise<TreatedResponse<TenantCommunication[]>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url, this.HTTP_OPTIONS).then(success => {
+      this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
         response.result = success.result;
         response.msg = "Sucesso";
         resolve(response);
@@ -190,8 +281,15 @@ export class TableInfoService {
 
     var response: TreatedResponse<TenantTerminal[]> = {};
 
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+
     return new Promise<TreatedResponse<TenantTerminal[]>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url, this.HTTP_OPTIONS).then(success => {
+      this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
         response.result = success.result;
         response.msg = "Sucesso";
         resolve(response);

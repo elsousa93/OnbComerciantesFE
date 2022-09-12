@@ -48,6 +48,7 @@ export class AppComponent {
     });
     translate.addLangs(langs);
     translate.setDefaultLang('pt');
+    this.tableInfo.languageStream$.next('pt');
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

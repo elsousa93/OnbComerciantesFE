@@ -13,6 +13,7 @@ import { User } from '../userPermissions/user';
 import { ProcessNumberService } from './process-number.service';
 import { progressSteps } from './progressSteps';
 import { MenuPermissions, UserPermissions, getMenuPermissions } from '../userPermissions/user-permissions';
+import { TableInfoService } from '../table-info/table-info.service';
 
 
 @Component({
@@ -65,7 +66,7 @@ export class NavMenuPresencialComponent implements OnInit {
   userType: string = "Banca";
   userPermissions: MenuPermissions;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: LoggerService, public translate: TranslateService) {
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
@@ -161,6 +162,7 @@ export class NavMenuPresencialComponent implements OnInit {
   changeLanguage(language) {
     this.translate.use(language);
     this.getLanguageInfo(language);
+    this.tableInfo.languageStream$.next(language);
   }
 
   getLanguageInfo(language: string) {
