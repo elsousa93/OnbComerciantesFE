@@ -163,6 +163,7 @@ export class NavMenuPresencialComponent implements OnInit {
     this.translate.use(language);
     this.getLanguageInfo(language);
     this.tableInfo.languageStream$.next(language);
+    this.route.navigate(['/']);
   }
 
   getLanguageInfo(language: string) {

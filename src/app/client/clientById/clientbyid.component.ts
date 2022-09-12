@@ -153,6 +153,7 @@ export class ClientByIdComponent implements OnInit {
       this.logger.debug("FETCH LEGAL NATURES");
       this.logger.debug(result);
       this.logger.debug(this.legalNatureList);
+      this.legalNatureList = this.legalNatureList.sort((a, b) => a.description> b.description? 1 : -1);
     }, error => this.logger.error(error));
 
 
@@ -682,6 +683,7 @@ export class ClientByIdComponent implements OnInit {
       if (legalNatureToSearch == legalNat.code) {
         exists = true;
         this.legalNatureList2 = legalNat.secondaryNatures;
+        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description> b.description? 1 : -1);
       }
     })
     if (!exists) {
