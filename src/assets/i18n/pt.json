@@ -94,6 +94,8 @@
     "socialDenominationName": "Denominação Social/Nome ENI",
     "companyPower": "Informação de poderes da empresa",
     "name": "Nome Cliente",
+    "nif": "Número de Identificação Fiscal",
+    "nipc": "Número de Identificação de Pessoa Coletiva",
     "representationPower": "Poderes de Representação",
     "representationRestrictions": "Restrições de Representação",
     "companyInformation": "Informação Complementar da Empresa",

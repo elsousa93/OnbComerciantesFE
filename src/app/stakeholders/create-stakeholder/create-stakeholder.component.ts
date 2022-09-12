@@ -506,7 +506,7 @@ export class CreateStakeholderComponent implements OnInit {
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
       this.route.navigate(['/stakeholders/']);
     }, error => {
-      this.logger.error("Erro ao adicionar stakeholder com o CC");
+      this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });
 
 

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from './Client.interface';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { docType, docTypeENI } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
@@ -51,6 +51,7 @@ export class ClientComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
   public clients: Client[] = [];
+  public newClientForm: FormGroup;
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
@@ -151,7 +152,6 @@ export class ClientComponent implements OnInit {
       var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
         emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
 
-      console.log(ccArrayData);
 
       //Send to PDF without address -- type base64
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
@@ -200,11 +200,11 @@ export class ClientComponent implements OnInit {
   clientIdNew;
   ccInfo;
   newId;
-  //ListaDocType = docType;
-  //ListaDocTypeENI = docTypeENI;
+  ListaDocType = docType;
+  ListaDocTypeENI = docTypeENI;
 
-  ListaDocType;
-  ListaDocTypeENI;
+  //ListaDocType;
+  //ListaDocTypeENI;
   formDocType!: FormGroup;
   docType?: string = "";
 
@@ -328,7 +328,7 @@ export class ClientComponent implements OnInit {
   public returned: string;
   public merchantInfo: any;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, 
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService,
@@ -339,11 +339,11 @@ export class ClientComponent implements OnInit {
     this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
-      this.ListaDocType = result;
+      //this.ListaDocType = result;
     });
 
     this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
-      this.ListaDocTypeENI = result;
+      //this.ListaDocTypeENI = result;
     });
 
     this.ngOnInit();
@@ -440,7 +440,6 @@ export class ClientComponent implements OnInit {
   }
 
   receiveSearchValue(box: string) {
-    console.warn("VALOR RECEBIDO no Client", box);
     // this.searchParameter.push(box);
     this.searchParameter = (box);
   }
@@ -455,36 +454,28 @@ export class ClientComponent implements OnInit {
         this.ccInfo = result;
         this.logger.debug(this.ccInfo);
       }
-    }, error => console.error(error));
+    }, error => this.logger.error(error));
   }
+  getNIFNIPC(){
+    if (this.newClient.documentationDeliveryMethod === '0502' || this.newClient.documentationDeliveryMethod === '0501') {
+      return this.newClient.clientId;
+    }
 
-  // Search for a client
-  getValueSearch(val: string) {
-    this.activateButtons(true);
-    this.displayValueSearch = val;
-    this.http.get<Client>(this.baseUrl + 'BEClients/GetClientById/' + this.displayValueSearch).subscribe(result => {
-      if (result == null) {
-        this.newClient.clientId = "0";
-        this.clientIdNew = result;
-        this.toggleShowFoundClient(false);
-        this.errorInput = "form-control campo_form_coment_error";
-        this.resultError = "Não existe Comerciante com esse número.";
-        this.errorMsg = "titulo-form-error";
-      } else {
-        this.newClient = result;
-        this.clientIdNew = this.newClient.clientId;
-        this.toggleShowFoundClient(true);
-        this.hasClient == true;
+    if (this.newClient.documentationDeliveryMethod === '1001') {
+      this.dataCC = {
+        nameCC: this.nameCC,
+        cardNumberCC: this.cardNumberCC,
+        nifCC: this.nifCC,
+        addresssCC: this.addressCC,
+        postalCodeCC: this.postalCodeCC
+      };
+      return this.nifCC;
+    }
 
-        this.errorInput = "form-control campo_form_coment";
-        this.errorMsg = "";
-        this.resultError = "";
-      }
-    }, error => console.error(error));
-    return this.newClient;
-
+    if(this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc")){
+      return this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc");
+    }
   }
-
 
   searchClient() {
 
@@ -492,6 +483,7 @@ export class ClientComponent implements OnInit {
     this.logger.debug(this.newClient.clientId);
 
     var context = this;
+    this.newClientForm = null;
 
     /*this.onSearchSimulation(22181900000011);*/
     this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
@@ -505,6 +497,7 @@ export class ClientComponent implements OnInit {
       context.clientsToShow = [];
       this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
+        context.resultError = "";
         clients.forEach(function (value, index) {
           context.logger.debug(value);
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
@@ -525,13 +518,35 @@ export class ClientComponent implements OnInit {
         this.showFoundClient = false;
         context.resultError = "Não existe Comerciante com esse número.";
         this.searchDone = true;
+        this.createAdditionalInfoForm();
+        
+   
       }
     }, error => {
       context.showFoundClient = false;
       context.resultError = "Não existe Comerciante com esse número.";
       this.searchDone = true;
+      this.createAdditionalInfoForm();
 
     });
+  }
+
+  createAdditionalInfoForm(){
+    let NIFNIPC = this.getNIFNIPC();
+    switch(this.tipologia) {
+      case "Company":
+        this.newClientForm = this.formBuilder.group({
+          nipc: new FormControl({value: NIFNIPC, disabled:NIFNIPC}),
+          denominacaoSocial: new FormControl()
+        });
+        break;
+      case "ENI":
+        this.newClientForm = this.formBuilder.group({
+          nif: new FormControl({value: NIFNIPC, disabled:NIFNIPC}),
+          nome: new FormControl()
+        });
+        break;
+    }
   }
 
   /**
@@ -609,6 +624,7 @@ export class ClientComponent implements OnInit {
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
+    this.newClient.documentationDeliveryMethod = e.target.value;
     if (this.docType === '1001') { //código do Cartão do Cidadão
       this.isCC = true;
     } else {
@@ -627,7 +643,6 @@ export class ClientComponent implements OnInit {
     var selectedClient = this.newClient;
     var NIFNIPC = null;
     if (selectedClient.documentationDeliveryMethod === '0502' || selectedClient.documentationDeliveryMethod === '0501') {
-      this.logger.debug("entrou aqui no if complexo");
       NIFNIPC = selectedClient.clientId;
     }
 
@@ -694,6 +709,7 @@ export class ClientComponent implements OnInit {
     this.documentType = false;
     this.errorMsg = '';
     this.resultError = ''
+    this.newClientForm = null;
     this.errorInput = 'form-control campo_form_coment';
     if (id == true) {
       this.showENI = false;
@@ -718,35 +734,18 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  createNewClient(clientId: string) {
-    var NIFNIPC = null;
-    if (this.newClient.documentationDeliveryMethod === '0502' || this.newClient.documentationDeliveryMethod === '0501') {
-      this.logger.debug("entrou aqui no if complexo");
-      NIFNIPC = this.newClient.clientId;
-    }
-    if (this.newClient.documentationDeliveryMethod === '1001') {
-      NIFNIPC = this.dataCCcontents.nifCC;
-    }
-
-    if (this.newClient.documentationDeliveryMethod === '1001') {
-      this.dataCC = {
-        nameCC: this.nameCC,
-        cardNumberCC: this.cardNumberCC,
-        nifCC: this.nifCC,
-        addresssCC: this.addressCC,
-        postalCodeCC: this.postalCodeCC
-      };
-      NIFNIPC = this.dataCCcontents.nifCC;
-    }
+  createNewClient() {
+    var NIFNIPC = this.getNIFNIPC();
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        NIFNIPC: NIFNIPC,
         exists: false,
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents
       }
     };
+    let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value
+    localStorage.setItem("clientName", clientName);
     if (NIFNIPC !== null && NIFNIPC !== undefined)
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
     else

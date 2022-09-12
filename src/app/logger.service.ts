@@ -44,8 +44,8 @@ export class LoggerService {
     this.logger.debug(description, "app", "", this.getContext(), messageId);
   }
 
-  error(description: any, error?: Error, messageId: string = ""){
-    this.logger.error(description, "app", error.name || "", error.stack || "", messageId);
+  error(error?: Error, messageId: string = "", description?: string){
+    this.logger.error(description ?? error?.message ?? "", "app", error?.name || "", error?.stack || "", messageId);
   }
   serializeHeaders(headers : HttpHeaders){
     const headersObj = {};
