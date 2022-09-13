@@ -200,11 +200,11 @@ export class ClientComponent implements OnInit {
   clientIdNew;
   ccInfo;
   newId;
-  // ListaDocType = docType;
-  // ListaDocTypeENI = docTypeENI;
+  ListaDocType = docType;
+  ListaDocTypeENI = docTypeENI;
 
-  ListaDocType;
-  ListaDocTypeENI;
+  // ListaDocType;
+  // ListaDocTypeENI;
   formDocType!: FormGroup;
   docType?: string = "";
 
@@ -341,9 +341,9 @@ export class ClientComponent implements OnInit {
     this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
-      this.ListaDocType = result;
+      // this.ListaDocType = result;
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
-      this.ListaDocTypeENI = result;
+      // this.ListaDocTypeENI = result;
     })));
 
     // this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
@@ -481,6 +481,10 @@ export class ClientComponent implements OnInit {
     }
   }
 
+  test(){
+    console.log(this.newClientForm)
+    console.log(this.newClientForm.valid)
+  }
   searchClient() {
 
     //this.clientID || Definir com o valor do campo
@@ -540,14 +544,14 @@ export class ClientComponent implements OnInit {
     switch(this.tipologia) {
       case "Company":
         this.newClientForm = this.formBuilder.group({
-          nipc: new FormControl({value: NIFNIPC, disabled:NIFNIPC}),
-          denominacaoSocial: new FormControl()
+          nipc: new FormControl({value: NIFNIPC, disabled:NIFNIPC}, Validators.required),
+          denominacaoSocial: new FormControl('', Validators.required)
         });
         break;
       case "ENI":
         this.newClientForm = this.formBuilder.group({
-          nif: new FormControl({value: NIFNIPC, disabled:NIFNIPC}),
-          nome: new FormControl()
+          nif: new FormControl({value: NIFNIPC, disabled:NIFNIPC}, Validators.required),
+          nome: new FormControl('', Validators.required)
         });
         break;
     }
@@ -754,7 +758,7 @@ export class ClientComponent implements OnInit {
         dataCC: this.dataCCcontents
       }
     };
-    let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value
+    let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? ''
     localStorage.setItem("clientName", clientName);
     if (NIFNIPC !== null && NIFNIPC !== undefined)
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
