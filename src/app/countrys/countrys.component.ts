@@ -382,7 +382,7 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
           this.newSubmission.merchant.shareCapital = this.client.shareCapital;
           this.newSubmission.merchant.shortName = this.client.shortName;
-          //this.newSubmission.stakeholders = this.stakeholdersToInsert;
+          this.newSubmission.stakeholders = this.stakeholdersToInsert;
           var context = this;
 
           if (this.returned !== null) {

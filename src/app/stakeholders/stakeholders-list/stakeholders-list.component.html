@@ -22,14 +22,14 @@
     </ng-container>
     <ng-container matColumnDef="clientNumber">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.id|uppercase}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.stakeholderId|uppercase}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="signature">
       <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white"> {{'stakeholder.signature'|translate|uppercase}} </mat-header-cell>
       <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.isProxy}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="delete" class="small-cell">
-      <mat-header-cell *matHeaderCellDef [hidden]="canDelete == false" class="small-cell">x</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef [hidden]="canDelete == false" class="small-cell"></mat-header-cell>
       <mat-cell *matCellDef="let stakeholder" [hidden]="canDelete == false" (click)="removeStakeholder(stakeholder)">
         <span>
           <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">

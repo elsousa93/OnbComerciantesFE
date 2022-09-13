@@ -69,6 +69,8 @@
     "add": "Add Merchant",
     "found": "Result: Found Clients",
     "number": "Client Number",
+    "nif": "Fiscal Identification Number",
+    "nipc": "Legal Person Identification Number",
     "nameSocialDesignation": "Nome/Social Designation",
     "address": "Address",
     "postalCode": "Postal Code",
