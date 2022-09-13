@@ -27,7 +27,7 @@
     <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
       <div class="row ms-0 me-0">
         <div class="col-5 ms-0 me-0 ps-0 pe-0">
-          <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
+          <p class="titulo-form-simples"(click)="test()">{{'stakeholder.type'|translate}}: *</p>
           <select class="form-select campo-form-select"
                   (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
                   formControlName="type">
@@ -98,6 +98,8 @@
 
         </nav>
       </div>
+    </form>
+    <form [formGroup]="formNewStakeholder">
       <div *ngIf="isShown" class="row container-fluid" id="divshow">
         <app-search-stakeholders [clientID]="this.testEvent" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
         <!--<table class="table table-success" *ngIf="foundStakeholders">
@@ -254,7 +256,7 @@
             <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
             {{'generalKeywords.back'|translate|uppercase}}&nbsp;
           </button>
-          <button *ngIf="(currentStakeholder !== null && currentStakeholder !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()">
+          <button *ngIf="(currentStakeholder !== null && currentStakeholder !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()" [disabled]="(!this.formStakeholderSearch.valid || !this.formNewStakeholder.valid) && !this.foundStakeholders">
             {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
           </button>
         </nav>

@@ -49,8 +49,8 @@
                 <div class="row me-0" *ngIf="!showENI">
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
-                      <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" id="docType"
+                      <p class="titulo-form-simples" (click)="test()">{{'searches.documentType'|translate}}:*</p>
+                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" id="docType"
                         [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
@@ -179,7 +179,7 @@
                 <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                   <span class="navbar-text me-2">
                     <button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient()"
-                      class="btn botao_branco" wappler-command="editContent">
+                      class="btn botao_branco"  wappler-command="editContent" [disabled]="!newClientForm.valid">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
                     </button>
