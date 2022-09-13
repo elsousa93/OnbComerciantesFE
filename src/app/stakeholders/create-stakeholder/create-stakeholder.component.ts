@@ -223,6 +223,7 @@ export class CreateStakeholderComponent implements OnInit {
   public subscription: Subscription;
 
   public isParticular: boolean = false;
+  public isParticularSearched: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
@@ -267,8 +268,23 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   initializeNotFoundForm() {
-    this.formStakeholderSearch.addControl("socialDenomination", new FormControl('', Validators.required));
-    this.formStakeholderSearch.updateValueAndValidity();
+    switch (this.isParticularSearched){
+      case false:
+        let nipc = this.formStakeholderSearch.get("documentType").value === "Número de Identificação de Pessoa Colectiva" ? 
+            this.formStakeholderSearch.get("documentNumber").value : ''
+        this.formStakeholderSearch.addControl("nipc", new FormControl({value:nipc, disabled: nipc != ''}, Validators.required));
+        this.formStakeholderSearch.addControl("socialDenomination", new FormControl('', Validators.required));
+        this.formStakeholderSearch.updateValueAndValidity();
+        break;
+      case true:
+        let nif = this.formStakeholderSearch.get("documentType").value === "Número de Identificação Fiscal" ? 
+            this.formStakeholderSearch.get("documentNumber").value : ''
+        this.formStakeholderSearch.addControl("nif", new FormControl({value:nif, disabled: nif != ''}, Validators.required));
+        this.formStakeholderSearch.addControl("name", new FormControl('', Validators.required));
+        this.formStakeholderSearch.updateValueAndValidity();
+        break;
+
+    }
 
     this.foundStakeholders = false;
   }
@@ -443,6 +459,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   searchResultNotifier(info) {
     console.log("Info: ", info);
+    this.isParticularSearched = this.isParticular;
 
     if (!info.found)
       this.initializeNotFoundForm();
@@ -466,14 +483,14 @@ export class CreateStakeholderComponent implements OnInit {
     } else {
       console.log("formstakeholder: ", this.formStakeholderSearch);
       var stakeholderToInsert: IStakeholders = {
-        "fiscalId": this.formStakeholderSearch.get("documentNumber").value,
+        "fiscalId": this.formStakeholderSearch.get("nif")?.value ?? this.formStakeholderSearch.get("nipc")?.value,
         "identificationDocument": {
           "type": this.formStakeholderSearch.get("documentType").value,
           "number": this.formStakeholderSearch.get("documentNumber").value,
         },
         "phone1": {},
         "phone2": {},
-        "shortName": this.formStakeholderSearch.get("socialDenomination").value
+        "shortName": this.formStakeholderSearch.get("socialDenomination")?.value ?? this.formStakeholderSearch.get("nome")?.value
       }
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
         this.route.navigate(['/stakeholders/']);
