@@ -165,14 +165,15 @@ export class NavMenuPresencialComponent implements OnInit {
     this.getLanguageInfo(language);
     this.tableInfo.languageStream$.next(language);
     let currentRoute = [this.route.url];
-    // this.route.navigate(['/'], {skipLocationChange: true}).then(() => {
-    //   this.route.navigate(currentRoute, {queryParamsHandling: "preserve", skipLocationChange: true});
-    // });
+    let currentState = this.route.getCurrentNavigation()?.extras.state;
+    this.route.navigate(['/'], {skipLocationChange: true}).then(() => {
+      this.route.navigate(currentRoute, {queryParamsHandling: "preserve", skipLocationChange: true, state: currentState});
+    });
 
-    this.route.navigateByUrl("/", { skipLocationChange: true }).then(() => {
-      console.log(decodeURI(this._location.path()));
-      this.route.navigate([decodeURI(this._location.path())]);
-      });
+    // this.route.navigateByUrl("/", { skipLocationChange: true }).then(() => {
+    //   console.log(decodeURI(this._location.path()));
+    //   this.route.navigate([decodeURI(this._location.path())]);
+    //   });
   }
 
   getLanguageInfo(language: string) {
