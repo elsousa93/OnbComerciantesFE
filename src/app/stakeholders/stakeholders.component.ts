@@ -124,7 +124,7 @@ export class StakeholdersComponent implements OnInit {
   public stakeShow: IStakeholders[] = [];
   public stakeType: boolean = false;
   public showFoundStake: boolean = null;
-  public stakeDocType: boolean = false;
+  public stakeDocType: boolean = null;
   public stakeholderId : number = 0;
   public fiscalId: number = 0;
   public clientNr: number = 8875;
