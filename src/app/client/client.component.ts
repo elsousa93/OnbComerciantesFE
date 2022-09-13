@@ -718,7 +718,6 @@ export class ClientComponent implements OnInit {
     this.errorMsg = '';
     this.resultError = ''
     this.newClientForm = null;
-    this.BlockDocumentNumber = false;
     this.errorInput = 'form-control campo_form_coment';
     if (id == true) {
       this.showENI = false;
