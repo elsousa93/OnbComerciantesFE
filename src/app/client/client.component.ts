@@ -200,11 +200,11 @@ export class ClientComponent implements OnInit {
   clientIdNew;
   ccInfo;
   newId;
-  ListaDocType = docType;
-  ListaDocTypeENI = docTypeENI;
+  // ListaDocType = docType;
+  // ListaDocTypeENI = docTypeENI;
 
-  // ListaDocType;
-  // ListaDocTypeENI;
+  ListaDocType;
+  ListaDocTypeENI;
   formDocType!: FormGroup;
   docType?: string = "";
 
@@ -341,9 +341,9 @@ export class ClientComponent implements OnInit {
     this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
-      // this.ListaDocType = result;
+       this.ListaDocType = result;
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
-      // this.ListaDocTypeENI = result;
+       this.ListaDocTypeENI = result;
     })));
 
     // this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
@@ -643,6 +643,7 @@ export class ClientComponent implements OnInit {
       this.isCC = false;
     }
     this.documentType = true;
+    this.okCC = false;
   }
 
   changeDocType() {
@@ -690,7 +691,7 @@ export class ClientComponent implements OnInit {
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
     this.toSearch = false;
-    this.okCC = readable;
+    this.okCC = false;
     this.toShowReadCC = readable;
     this.BlockDocumentNumber = readable;
   }
@@ -718,6 +719,7 @@ export class ClientComponent implements OnInit {
     this.ccInfo = null;
     this.showButtons = true;
     this.isCC = false;
+    this.isNoDataReadable = false;
     this.toSearch = false;
     this.documentType = false;
     this.okCC = false;

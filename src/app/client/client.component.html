@@ -49,8 +49,8 @@
                 <div class="row me-0" *ngIf="!showENI">
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
-                      <p class="titulo-form-simples" (click)="test()">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" id="docType"
+                      <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
+                      <select class="form-select campo-form-select" id="docType"
                         [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
@@ -138,7 +138,7 @@
                 <nav
                   class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                   <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                    <button [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0" id="btn5a2" class="btn botao_azul" (click)="searchClient()"
+                    <button [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0 " id="btn5a2" class="btn botao_azul" (click)="searchClient()"
                       wappler-command="editContent">
                       {{'client.search'|translate|uppercase}}&nbsp;&nbsp;
                       <img src="assets/images/person_search.svg" class="img_btn">
@@ -179,7 +179,7 @@
                 <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                   <span class="navbar-text me-2">
                     <button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient()"
-                      class="btn botao_branco"  wappler-command="editContent" [disabled]="!newClientForm.valid">
+                      class="btn botao_branco" wappler-command="editContent">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
                     </button>
@@ -249,7 +249,7 @@
             </div>
           </div>
 
-          <div *ngIf="okCC == true">
+          <div *ngIf="okCC">
 
             <div class="row me-0">
               <div class="col">
