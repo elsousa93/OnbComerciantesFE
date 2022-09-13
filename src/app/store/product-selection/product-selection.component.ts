@@ -9,7 +9,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { } from '../store.service';
-import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, Product } from '../../commercial-offer/ICommercialOffer.interface';
 
 
 @Component({
@@ -191,17 +191,36 @@ export class ProductSelectionComponent implements OnInit {
 
     this.storeService.GetAllShopProducts().subscribe(result => {
     this.logger.debug(result);
-      console.log("resultado getAllShopActivities:: ", result);
+      console.log("resultado getAllShopProducts: ", result);
+    
+      this.products = result; this.getProductDescriptions(this.products);
+      for (let i = 0; i < this.products.length; i++) {
+        console.log(`${i} Description:${this.products[i].productDescription}, code:${this.products[i].productCode}`)
+      }
 
-          this.products = result;
         }, error => {
           this.logger.debug("Erro");
         });
-
-
   }
 
+  //----------------------------
+  getProductDescriptions(products) {
+    console.log("getProductDescriptions");
+    var productsNames;
+    for (let i = 0; i < products.length; i++) {
+      productsNames = products.productDescription[i];
+      console.log("Funcao: ", productsNames)
+      console.log(`${i} Description:${products[i].productDescription}, code:${products[i].productCode}`)
+    }
+    return productsNames;
+  }
+  getProductsubProducts(product) {
+  }
+   //----------------------------
+
   chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean) {
+
+
     this.logger.debug("cardPresent: " + cardPresent);
     this.logger.debug("cardNotPresent: " + cardNotPresent);
     this.logger.debug("combinedOffer: " + combinedOffer);
