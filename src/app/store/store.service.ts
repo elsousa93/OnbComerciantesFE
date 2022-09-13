@@ -88,7 +88,7 @@ export class StoreService {
   }
 
   GetAllShopProducts() {
-    return this.http.get<Product[]>(this.acquiringUrl + 'shop/activity');
+    return this.http.get<Product[]>(this.acquiringUrl + 'product');
   }
 
   getProcessShopsList(processId: string) {
