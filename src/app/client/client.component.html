@@ -106,7 +106,7 @@
                         </span>
                       </p>
                       <input id="clientId" type="text" [(ngModel)]="newClient.clientId"
-                        name="clientId" #clientId="ngModel" [class]="errorInput" [disabled]="BlockDocumentNumber">
+                        name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                   </div>
                 </div>

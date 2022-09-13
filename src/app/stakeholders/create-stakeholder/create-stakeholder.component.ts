@@ -377,10 +377,6 @@ export class CreateStakeholderComponent implements OnInit {
     this.stakeDocType = true;
   }
 
-  find() {
-    this.stakeDocNumber = true;
-  }
-
   toggleShow(stake: IStakeholders) {
     //clear the array
     this.stakeShow = [];
