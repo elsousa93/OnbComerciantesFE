@@ -218,11 +218,13 @@ export class ClientByIdComponent implements OnInit {
   //}
 
   initializeENI() {
+    
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
+    console.log("now NIFNIPC is " + this.NIFNIPC)
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned !== null && this.returned !== undefined) ? this.merchantInfo.legalName : '', Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned !== null && this.returned !== undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -281,7 +283,7 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : '', Validators.required), //sim
+      socialDenomination: new FormControl((this.returned !== null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -556,9 +558,9 @@ export class ClientByIdComponent implements OnInit {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
-      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      //this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
-
+      this.NIFNIPC = this.router.snapshot.params["id"];
       if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
         this.DisableNIFNIPC = true;
       }
@@ -588,14 +590,13 @@ export class ClientByIdComponent implements OnInit {
 
       });
 
-      context.initializeBasicFormControl();
+      this.initializeBasicFormControl();
 
       if (this.tipologia === 'ENI') {
-        context.initializeENI();
+        this.initializeENI();
       }
 
     } else {
-      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.initializeFormControls();
       this.updateBasicForm();
     }

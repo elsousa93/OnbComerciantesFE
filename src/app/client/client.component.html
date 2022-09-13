@@ -144,16 +144,49 @@
                       <img src="assets/images/person_search.svg" class="img_btn">
                     </button>
                   </span>
+                </nav>
+              </div>
+              <form *ngIf="newClientForm" [formGroup]="newClientForm"  name="newClientForm">
+                <div class="row me-0" *ngIf="showENI">
+                  <div class="col">
+                    <div class="me-0 ps-0 pe-0 col-7">
+                      <div class="col">
+                        <p class="titulo-form-simples">{{'client.nif'|translate}}:*</p>
+                        <input name="nif" type="text" id="nif" class="form-control" formControlName="nif">
+                      </div>
+                      <div class="col">
+                        <p class="titulo-form-simples mt-0">{{'client.name'|translate|uppercase}}:*</p>
+                        <input name="nome" type="text" id="nome" class="form-control" formControlName="nome">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+ 
+                <div class="row me-0" *ngIf="!showENI">
+                  <div class="col">
+                    <div class="me-0 ps-0 pe-0 col-7">
+                      <div class="col">
+                        <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
+                        <input name="nipc" type="text" id="nipc" class="form-control" formControlName="nipc">
+                      </div>
+                      <div class="col">
+                        <p class="titulo-form-simples mt-0">{{'client.socialDenomination'|translate|uppercase}}:*</p>
+                        <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control" formControlName="denominacaoSocial">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                   <span class="navbar-text me-2">
-                    <button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient(clientId.value)"
-                      routerLink="/add-stakeholder" class="btn botao_branco" wappler-command="editContent">
+                    <button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient()"
+                      class="btn botao_branco" wappler-command="editContent">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
                     </button>
                   </span>
 
-                </nav>
-              </div>
+                </div>
+              </form>
 
               <!--Seccao do Modal PIN da Morada-->
 
@@ -261,7 +294,7 @@
               </tbody>
             </table>
             <span class="navbar-text me-2">
-              <button  id="btn5a2" (click)="createNewClient(dataCCcontents.nifCC)" routerLink="/add-stakeholder"
+              <button  id="btn5a2" (click)="createNewClient()" routerLink="/add-stakeholder"
                       class="btn botao_branco" wappler-command="editContent">
                 {{'client.add'|translate|uppercase}}&nbsp;
                 <img src="assets/images/person_add_blue.svg" class="img_btn">
@@ -357,3 +390,4 @@
   </div>
 
 </div>
+
