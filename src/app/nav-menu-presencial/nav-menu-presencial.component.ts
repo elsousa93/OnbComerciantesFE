@@ -14,6 +14,7 @@ import { ProcessNumberService } from './process-number.service';
 import { progressSteps } from './progressSteps';
 import { MenuPermissions, UserPermissions, getMenuPermissions } from '../userPermissions/user-permissions';
 import { TableInfoService } from '../table-info/table-info.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -66,7 +67,7 @@ export class NavMenuPresencialComponent implements OnInit {
   userType: string = "Banca";
   userPermissions: MenuPermissions;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
+  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
@@ -164,9 +165,14 @@ export class NavMenuPresencialComponent implements OnInit {
     this.getLanguageInfo(language);
     this.tableInfo.languageStream$.next(language);
     let currentRoute = [this.route.url];
-    this.route.navigate(['/'], {skipLocationChange: true}).then(() => {
-      this.route.navigate(currentRoute, {queryParamsHandling: "preserve", skipLocationChange: true});
-    });
+    // this.route.navigate(['/'], {skipLocationChange: true}).then(() => {
+    //   this.route.navigate(currentRoute, {queryParamsHandling: "preserve", skipLocationChange: true});
+    // });
+
+    this.route.navigateByUrl("/", { skipLocationChange: true }).then(() => {
+      console.log(decodeURI(this._location.path()));
+      this.route.navigate([decodeURI(this._location.path())]);
+      });
   }
 
   getLanguageInfo(language: string) {

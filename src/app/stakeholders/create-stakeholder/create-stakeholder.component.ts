@@ -311,6 +311,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
+    this.okCC = false;
   }
 
   //Modal que pergunta se tem o PIN da Morada
@@ -375,6 +376,7 @@ export class CreateStakeholderComponent implements OnInit {
       this.isCC = false;
     }
     this.stakeDocType = true;
+    this.okCC = false;
   }
 
   toggleShow(stake: IStakeholders) {

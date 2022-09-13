@@ -95,7 +95,7 @@ export class ClientComponent implements OnInit {
   public postalCodeCC = null;
   public countryCC = null;
 
-  public okCC = null;
+  public okCC = false;
   public dadosCC: Array<string> = []; //apagar
   public addressReading = null;
   //---- Cartão de Cidadao - funcoes -----
@@ -686,6 +686,7 @@ export class ClientComponent implements OnInit {
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
     this.toSearch = false;
+    this.okCC = readable;
     this.toShowReadCC = readable;
     this.BlockDocumentNumber = readable;
   }
@@ -715,6 +716,7 @@ export class ClientComponent implements OnInit {
     this.isCC = false;
     this.toSearch = false;
     this.documentType = false;
+    this.okCC = false;
     this.errorMsg = '';
     this.resultError = ''
     this.newClientForm = null;
