@@ -133,6 +133,7 @@ export class ClientByIdComponent implements OnInit {
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
+  public subs: Subscription[] = [];
 
   returned: string; //variável para saber se estamos a editar um processo
   merchantInfo: any;
@@ -148,13 +149,13 @@ export class ClientByIdComponent implements OnInit {
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
-    this.tableInfo.GetAllLegalNatures().subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllLegalNatures().subscribe(result => {
       this.legalNatureList = result;
       this.logger.debug("FETCH LEGAL NATURES");
       this.logger.debug(result);
       this.logger.debug(this.legalNatureList);
       this.legalNatureList = this.legalNatureList.sort((a, b) => a.description> b.description? 1 : -1);
-    }, error => this.logger.error(error));
+    }, error => this.logger.error(error)));
 
 
     //Chamada à API para obter a lista de CAEs
@@ -648,6 +649,10 @@ export class ClientByIdComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
+  }
+
   setCommercialSociety(id: boolean) {
     this.crcFound = false;
     this.collectCRC = undefined;
@@ -893,14 +898,14 @@ export class ClientByIdComponent implements OnInit {
     if (zipcode.length === 8) {
       var zipCode = zipcode.split('-');
 
-      this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+      this.subs.push(this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
         
         var addressToShow = address[0];
 
         this.form.get('address').setValue(addressToShow.address);
         this.form.get('country').setValue(addressToShow.country);
         this.form.get('location').setValue(addressToShow.postalArea);
-      });
+      }));
     }
   }
 

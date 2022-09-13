@@ -249,37 +249,7 @@ export class TableInfoService {
     return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType, HTTP_OPTIONS);
   }
 
-
-
-  GetTenantCommunications(): Promise<TreatedResponse<TenantCommunication[]>> {
-    var url = this.acquiringUrl + 'tenant/communication';
-
-    var response: TreatedResponse<TenantCommunication[]> = {};
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-
-    return new Promise<TreatedResponse<TenantCommunication[]>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
-        response.result = success.result;
-        response.msg = "Sucesso";
-        resolve(response);
-      }, error => {
-        console.log("erro que deu: ", error);
-        response.result = null;
-        response.msg = "Erro";
-        reject(response);
-      })
-    });
-  }
-
-  GetTenantTerminals(): Promise<TreatedResponse<TenantTerminal[]>> {
-    var url = this.acquiringUrl + 'tenant/terminal';
-
-    var response: TreatedResponse<TenantTerminal[]> = {};
+  GetTenantCommunications() {
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
@@ -288,19 +258,20 @@ export class TableInfoService {
       }),
     }
 
-    return new Promise<TreatedResponse<TenantTerminal[]>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
-        response.result = success.result;
-        response.msg = "Sucesso";
-        resolve(response);
-      }, error => {
-        console.log("erro que deu: ", error);
-        response.result = null;
-        response.msg = "Erro";
-        reject(response);
-      })
-    });
-  }
+    return this.http.get<TenantCommunication[]>(this.acquiringUrl + 'tenant/communication', HTTP_OPTIONS);
+    }
+
+  GetTenantTerminals() {
+
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+
+    return this.http.get<TenantTerminal[]>(this.acquiringUrl + 'tenant/terminal', HTTP_OPTIONS);
 
 
+}
 }

@@ -386,7 +386,7 @@
                   </div>
                   <div>
                     <p class="titulo-form-simples" for="natJuridicaN2">{{'client.legalNature'|translate}} N2:*</p>
-                    <select [disabled]="legalNatureList2===[]" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+                    <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                       class="form-control campo_form" [attr.disabled]="returned === 'consult' ? true : null">
                       <!-- <option value="">{{'generalKeywords.select'|translate}}</option> -->
                       <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}

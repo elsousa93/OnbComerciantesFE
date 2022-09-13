@@ -115,12 +115,14 @@ export interface DocumentSearchType {
 }
 
 export interface TenantCommunication {
-  code?: string
+  tenant?: string
+  code?: number
   description?: string
 }
 
 export interface TenantTerminal {
-  code?: string
+  tenant?: string
+  code?: number
   description?: string
 }
 

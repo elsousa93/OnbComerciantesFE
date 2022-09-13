@@ -111,7 +111,7 @@ export class ClientComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    this.logger.debug("okCC valor: "+ this.okCC);
+    this.logger.debug("okCC valor: " + this.okCC);
   }
   setAddressFalse() {
     this.addressReading = false;
@@ -328,6 +328,8 @@ export class ClientComponent implements OnInit {
   public returned: string;
   public merchantInfo: any;
 
+  public subs: Subscription[] = [];
+
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private clientService: ClientService,
@@ -338,13 +340,15 @@ export class ClientComponent implements OnInit {
     this.baseUrl = configuration.baseUrl;
     this.neyondBackUrl = configuration.neyondBackUrl;
 
-    this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListaDocType = result;
-    });
-
-    this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
+    }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
       this.ListaDocTypeENI = result;
-    });
+    })));
+
+    // this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
+    //   this.ListaDocTypeENI = result;
+    // }));
 
     this.ngOnInit();
     this.logger.debug(this.baseUrl);
@@ -356,12 +360,12 @@ export class ClientComponent implements OnInit {
     if (this.returned !== null) { // && this.returned !== undefined
       this.logger.debug("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.logger.debug('Submissão retornada quando pesquisada pelo número de processo'+ result);
+        this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.logger.debug('Submissão com detalhes mais especificos '+ resul);
+          this.logger.debug('Submissão com detalhes mais especificos ' + resul);
           this.clientService.GetClientById(resul.id).subscribe(res => {
             this.merchantInfo = res;
-            this.logger.debug("MERCHANT QUE FOMOS BUSCAR "+ this.merchantInfo);
+            this.logger.debug("MERCHANT QUE FOMOS BUSCAR " + this.merchantInfo);
             if (this.merchantInfo.merchantType == 'Corporate') {
               this.logger.debug("O tipo é empresa");
               this.activateButtons(true); // se for Empresa
@@ -554,7 +558,7 @@ export class ClientComponent implements OnInit {
 
     this.searchDone = true;
   }
-  
+
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
@@ -575,7 +579,7 @@ export class ClientComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.modalService.onHide.subscribe((e) => {
-      this.logger.debug('close'+ this.modalService);
+      this.logger.debug('close' + this.modalService);
     });
     this.returned = localStorage.getItem("returned");
 
@@ -598,6 +602,10 @@ export class ClientComponent implements OnInit {
 
     //  this.logger.debug(context.process);
     //});
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
 
@@ -683,9 +691,9 @@ export class ClientComponent implements OnInit {
   activateButtons(id: boolean) {
     this.newClient.clientId = '';
     this.newClient.documentationDeliveryMethod = '';
-    this.logger.debug("Client typology: "+ this.clientTypology);
-    this.logger.debug("isCC:  "+ this.isCC+ this.isCC);
-    this.logger.debug("showENI:  "+ this.showENI);
+    this.logger.debug("Client typology: " + this.clientTypology);
+    this.logger.debug("isCC:  " + this.isCC + this.isCC);
+    this.logger.debug("showENI:  " + this.showENI);
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;

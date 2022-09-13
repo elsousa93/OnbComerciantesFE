@@ -163,7 +163,10 @@ export class NavMenuPresencialComponent implements OnInit {
     this.translate.use(language);
     this.getLanguageInfo(language);
     this.tableInfo.languageStream$.next(language);
-    this.route.navigate(['/']);
+    let currentRoute = [this.route.url];
+    this.route.navigate(['/']).then(() => {
+      this.route.navigate(currentRoute, {queryParamsHandling: "preserve"});
+    });
   }
 
   getLanguageInfo(language: string) {

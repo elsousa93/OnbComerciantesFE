@@ -51,16 +51,12 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   submissionId: string;
 
   loadReferenceData() {
-    this.tableInfo.GetTenantCommunications().then(success => {
-      this.allCommunications = success.result
-    }, error => {
-      console.log(error.msg);
+    this.tableInfo.GetTenantCommunications().subscribe(result => {
+      this.allCommunications = result;
     });
 
-    this.tableInfo.GetTenantTerminals().then(success => {
-      this.allTerminals = success.result
-    }, error => {
-      console.log(error.msg);
+    this.tableInfo.GetTenantTerminals().subscribe(result => {
+      this.allTerminals = result;
     });
   }
 
