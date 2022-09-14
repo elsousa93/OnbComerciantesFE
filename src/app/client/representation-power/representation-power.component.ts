@@ -20,6 +20,7 @@ export class RepresentationPowerComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
+  public stakeholders: StakeholdersCompleteInformation[];
 
   public returned: string;
   public submissionId: string;
