@@ -912,7 +912,6 @@ export class ClientByIdComponent implements OnInit {
 
   GetCAEByCode() {
     var cae = this.form.value["CAE1"];
-
     //var caeResult = this.tableInfo.GetCAEByCode(cae);
   }
 
@@ -925,12 +924,6 @@ export class ClientByIdComponent implements OnInit {
       }
     });
     return legalNature.description;
-  }
-
-  checkForm() {
-    this.form.get("natJuridicaNIFNIPC").setValue("TESTING UHJSAIUDSHSUD");
-
-    this.form.updateValueAndValidity();
   }
 
   setCollectCRC(value: boolean) {

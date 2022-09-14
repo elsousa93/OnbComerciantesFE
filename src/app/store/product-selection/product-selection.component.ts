@@ -249,11 +249,11 @@ export class ProductSelectionComponent implements OnInit {
     }
   }
 
-  //Returns picked SubProduct by the User
+  //Returns picked SubProduct by the User --
   chooseSubSolutionAPI(subproduct: any) {
    //Add to store to be Submitted
 
-    this.store.product.subProducts = this.subProducts; //Todos
+  //  this.store.product.subProducts = this.subProducts; //Todos
 
   }
 
@@ -270,7 +270,7 @@ export class ProductSelectionComponent implements OnInit {
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
-      if (val == 'cardNotPresent')
+      if (val === ('cardNotPresent' || 'CARD NOT PRESENT'))
         this.formStores.get('url').setValidators([Validators.required]);
       else
         this.formStores.get('url').setValidators(null);
