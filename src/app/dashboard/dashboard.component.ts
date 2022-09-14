@@ -427,7 +427,7 @@ export class DashboardComponent implements OnInit {
         queueName: queue
       }
     };
-    this.router.navigate(["/app-consultas-ft"], navigationExtras);
+    this.router.navigate(["/queues-detail"], navigationExtras);
   }
 
   cancelProcess(processId: string) {

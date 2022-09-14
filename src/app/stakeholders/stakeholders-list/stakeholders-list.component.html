@@ -6,7 +6,7 @@
     </ng-container>
     <ng-container matColumnDef="fiscalId">
       <mat-header-cell *matHeaderCellDef mat-sort-header> NIF/NIPC </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.shortName}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.fiscalId}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="entityType">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.entityType'|translate|uppercase}} </mat-header-cell>
