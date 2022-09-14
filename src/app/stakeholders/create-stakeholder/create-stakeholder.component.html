@@ -27,7 +27,7 @@
     <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
       <div class="row ms-0 me-0">
         <div class="col-5 ms-0 me-0 ps-0 pe-0">
-          <p class="titulo-form-simples"(click)="test()">{{'stakeholder.type'|translate}}: *</p>
+          <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
           <select class="form-select campo-form-select"
                   (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
                   formControlName="type">
