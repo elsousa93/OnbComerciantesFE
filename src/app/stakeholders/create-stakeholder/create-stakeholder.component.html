@@ -40,8 +40,8 @@
             <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
                     id="documentType" formControlName="documentType">
 
-              <option *ngFor="let docType of ListDocTypeP" value={{docType.documentTypeOption}}>
-                {{docType.documentTypeOption}}
+              <option *ngFor="let docType of ListDocTypeP" value={{docType.code}}>
+                {{docType.description}}
               </option>
             </select>
           </div>
@@ -49,8 +49,8 @@
             <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
                     id="documentType" formControlName="documentType">
 
-              <option *ngFor="let docType of ListDocTypeE" value={{docType.documentTypeOption}}>
-                {{docType.documentTypeOption}}
+              <option *ngFor="let docType of ListDocTypeE" value={{docType.code}}>
+                {{docType.description}}
               </option>
             </select>
           </div>
@@ -194,7 +194,7 @@
           </div>
         </main>
       </ng-template>
-      <div *ngIf="!(okCC == null)">
+      <div *ngIf="okCC">
 
         <div class="row me-0">
           <div class="col">
