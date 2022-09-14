@@ -20,7 +20,7 @@
         </span>&nbsp;{{'client.identification'|translate|uppercase}}<br>
       </h2>
       <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
-
+      <form *ngIf="searchClientForm" [formGroup]="searchClientForm"  name="searchClientForm">
       <div class="row ms-0 me-0">
         <div class="col-9 ms-0 me-0 ps-0 pe-0">
           <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
@@ -29,7 +29,7 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio"
-                  [value]="true" id="clientTypology" (click)="activateButtons(true)"
+                  [value]="true" id="clientTypology" (click)="activateButtons(true)" formControlName="typology"
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio pe-5" for="radio3">{{'client.company'|translate|uppercase}}</label>
               </div>
@@ -37,7 +37,7 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio"
-                  [value]="false" id="clientTypology" (click)="activateButtons(false)"
+                  [value]="false" id="clientTypology" (click)="activateButtons(false)" formControlName="typology"
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio" for="radio3">ENI</label>
               </div>
@@ -50,7 +50,7 @@
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" id="docType"
+                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" id="docType" formControlName="docType"
                         [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
@@ -63,7 +63,7 @@
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" formControlName="docType"
                         id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocTypeENI" value={{docType.code}}>
                           {{docType.description}}
@@ -105,7 +105,7 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId"
+                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" formControlName="docNumber"
                         name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                   </div>
@@ -146,6 +146,7 @@
                   </span>
                 </nav>
               </div>
+            </form>
               <form *ngIf="newClientForm" [formGroup]="newClientForm"  name="newClientForm">
                 <div class="row me-0" *ngIf="showENI">
                   <div class="col">
@@ -258,7 +259,7 @@
                     {{'citizenCard.documentCountry'|translate}}:* <span>
                     </span>
                   </p>
-                  <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text"
+                  <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text" 
                     [disabled]="true">
                 </div>
               </div>

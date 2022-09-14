@@ -14,7 +14,7 @@
     "findProcessButton": "Consulta de Processo",
     "home": "Início",
     "processTreatment": "Tratamento de Processos",
-    "eligibility": "Pareceres de Eligibilidade",
+    "eligibility": "Pareceres de Elegibilidade",
     "multipleClients": "Múltiplos Clientes",
     "validation": "Validação",
     "negotiationAproval": "Aprovação de negociação de preçário",
@@ -25,7 +25,7 @@
     "MCCTreatment": "Tratamento MCC",
     "queues": {
       "title": "Filas de trabalho",
-      "eligibility": "Fila de Pareceres de Eligibilidade",
+      "eligibility": "Fila de Pareceres de Elegibilidade",
       "risk": "Fila de Pareceres de Risco",
       "compliance": "Fila de Dúvidas Compliance",
       "multipleClients": "Fila de Múltiplos Clientes",
@@ -372,7 +372,7 @@
     }
   },
   "queues": {
-    "attach": "Por favor anexe evidencia caso exista:",
+    "attach": "Por favor anexe evidência caso exista:",
     "completed": "Concluir parecer",
     "favorable": "Favorável",
     "unfavorable": "Não Favorável",

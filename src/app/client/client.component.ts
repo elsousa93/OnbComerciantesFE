@@ -52,6 +52,7 @@ export class ClientComponent implements OnInit {
 
   public clients: Client[] = [];
   public newClientForm: FormGroup;
+  public searchClientForm: FormGroup;
   public searchParameter: any;
   public result: any;
   public displayValueSearch: any;
@@ -351,6 +352,7 @@ export class ClientComponent implements OnInit {
     // }));
 
     this.ngOnInit();
+    this.initializeForm();
     
     this.logger.debug(this.baseUrl);
     this.data.updateData(false, 1);
@@ -533,6 +535,26 @@ export class ClientComponent implements OnInit {
       this.searchDone = true;
       this.createAdditionalInfoForm();
 
+    });
+  }
+
+  initializeForm() {
+    this.searchClientForm = new FormGroup({
+      typology: new FormControl('', Validators.required),
+      docType: new FormControl('', Validators.required),
+      docNumber: new FormControl('', Validators.required)
+    });
+
+    this.searchClientForm.get("docType").valueChanges.subscribe(data => {
+      if (data !== 'Cartão do Cidadão') {
+        this.searchClientForm.controls["docNumber"].setValidators([Validators.required]);
+        this.searchClientForm.removeControl("flagAutCol");
+      } else {
+        this.searchClientForm.controls["docNumber"].clearValidators();
+        this.searchClientForm.addControl("flagAutCol", new FormControl('', Validators.required));
+        this.searchClientForm.get("flagAutCol").updateValueAndValidity();
+      }
+      this.searchClientForm.controls["docNumber"].updateValueAndValidity();
     });
   }
 

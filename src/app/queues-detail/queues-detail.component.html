@@ -26,7 +26,7 @@
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 me-0 pt-4 ps-5 pe-5"
                 style="margin-left: 1px;">
-                <div *ngIf="queueName!=='compliance'" class="row">
+                <div class="row">
                   <div class="col bg-white">
                     <div class="row">
                       <div class="col bg-primary bg-opacity-10 mt-3 ms-3 pt-4 pb-3">
@@ -58,7 +58,7 @@
                 <h3 *ngIf="queueName === 'eligibility' || queueName === 'compliance'" class="text-primary mt-5 mb-0 ps-0">&nbsp;{{'stakeholder.title'|translate|uppercase}}</h3>
                 <h3 *ngIf="queueName === 'risk'" class="text-primary mt-5 mb-0 ps-0">&nbsp;{{'homepage.risk'|translate|uppercase}}</h3>
                 <h3 *ngIf="queueName === 'DOValidation'" class="text-primary mt-5 mb-0 ps-0">&nbsp;{{'acceptance.returnReasons'|translate|uppercase}}</h3>
-                <div class="row mt-0 ms-0 me-0 pt-0">
+                <div *ngIf="queueName!=='compliance'" class="row mt-0 ms-0 me-0 pt-0">
                   <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                     <div class="table-responsive mb-5 pb-4">
                       <table class="table">
@@ -142,6 +142,7 @@
                       </button>
 
                       <button id="btn5a2" *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
+                      [disabled]="!(fillComments?.length > 0) && queueName==='compliance'"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                         wappler-command="editContent">{{'queues.completed'|translate|uppercase}}&nbsp;
                         <img src="assets/images/queues/conclude_opinion.svg" style="height: 25px !important; vertical-align: sub;">
@@ -165,7 +166,7 @@
                   <img src="assets/images/queues/return_coff.svg" style="height: 25px !important; vertical-align: sub;">
                 </button>
 
-                      <button id="btn5a2" (click)="nextPage()" [disabled]="!(fillComments?.length > 0) && queueName==='compliance' || queueName!=='compliance'"
+                      <button id="btn5a2" (click)="nextPage()" 
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                         wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
                         <img src="assets/images/arrow_forward_ios.svg"
