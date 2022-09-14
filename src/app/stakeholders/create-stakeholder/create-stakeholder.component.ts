@@ -284,7 +284,7 @@ export class CreateStakeholderComponent implements OnInit {
   initializeNotFoundForm() {
     switch (this.isParticularSearched){
       case false:
-        let nipc = this.formStakeholderSearch.get("documentType").value === "Número de Identificação de Pessoa Colectiva" ? 
+        let nipc = this.formStakeholderSearch.get("documentType").value === "0502" ? 
             this.formStakeholderSearch.get("documentNumber").value : ''
         this.formNewStakeholder.get("nipc").setValue(nipc);
         if (nipc !== ''){
@@ -301,7 +301,7 @@ export class CreateStakeholderComponent implements OnInit {
         this.formNewStakeholder.updateValueAndValidity();
         break;
       case true:
-        let nif = this.formStakeholderSearch.get("documentType").value === "Número de Identificação Fiscal" ? 
+        let nif = this.formStakeholderSearch.get("documentType").value === "0501" ? 
             this.formStakeholderSearch.get("documentNumber").value : ''
         this.formNewStakeholder.get("nif").setValue(nif);
         if (nif !== ''){
