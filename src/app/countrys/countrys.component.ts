@@ -505,7 +505,7 @@ export class CountrysComponent implements OnInit {
 
           if (this.crc !== null && this.crc !== undefined) {
             this.newSubmission.documents.push({
-              documentType: 'crcPDF',
+              documentType: null, // alterar quando tivermos o enum do docType
               documentPurpose: 'CompanyIdentification',
               file: {
                 fileType: 'PDF',
@@ -517,7 +517,7 @@ export class CountrysComponent implements OnInit {
           }
           if (this.comprovativoCC !== null && this.comprovativoCC !== undefined) {
             this.newSubmission.documents.push({
-              documentType: 'comprovativoCC_PDF',
+              documentType: null, // alterar quando tivermos o enum do docType
               documentPurpose: 'Identification',
               file: {
                 fileType: 'PDF',
