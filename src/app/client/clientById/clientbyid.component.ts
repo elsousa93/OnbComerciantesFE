@@ -56,8 +56,8 @@ export class ClientByIdComponent implements OnInit {
     //"headquartersAddress": {
     //  "address": "",
     //  "postalCode": "",
-    //  "postalArea": "Póvoa de Santa Iria",
-    //  "country": "PT"
+    //  "postalArea": "",
+    //  "country": ""
     //},
     "context": null,
     "contextId": null,
