@@ -250,9 +250,9 @@ export class CreateStakeholderComponent implements OnInit {
     private submissionDocumentService: SubmissionDocumentService  ) {
 
       this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
-        this.ListDocTypeP = result;
-     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
         this.ListDocTypeE = result;
+     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
+        this.ListDocTypeP = result;
      })));
 
     this.submissionId = localStorage.getItem('submissionId');

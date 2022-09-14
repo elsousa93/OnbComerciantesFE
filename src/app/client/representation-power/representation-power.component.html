@@ -30,8 +30,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let stakeholder of stakeholders">
-                <td class="text-primary text-center">{{stakeholder.shortName}}</td>
-                <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
+                <td class="text-primary text-center">{{stakeholder.stakeholderAcquiring.shortName}}</td>
+                <td class="text-primary text-center">{{stakeholder.stakeholderAcquiring.fiscalId|uppercase}}</td>
                 <td class="text-primary text-center"> - </td>
                 <td class="text-primary text-center"> - </td>
               </tr>

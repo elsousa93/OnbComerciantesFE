@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
+import { SubmissionService } from 'src/app/submission/service/submission-service.service';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { IStakeholders, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { IStakeholders, StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
 import { Client } from '../Client.interface';
 
 @Component({
@@ -11,6 +13,9 @@ import { Client } from '../Client.interface';
   styleUrls: ['./representation-power.component.css']
 })
 export class RepresentationPowerComponent implements OnInit {
+
+  @Input() processNumber?: string;
+  submissionStakeholders: StakeholdersCompleteInformation[] = [];
 
   public map: Map<number, boolean>;
   public currentPage: number;
@@ -30,18 +35,18 @@ export class RepresentationPowerComponent implements OnInit {
   crc: any;
 
 
-  public stakeholders: IStakeholders[] = [
-    {
-      shortName: "Bijal de Canela",
-      fiscalId: "123456789",
-    },
-    {
-      shortName: "Maria Santos",
-      fiscalId: "987654321"
-    }
-  ];
+  // public stakeholders: IStakeholders[] = [
+  //   {
+  //     shortName: "Bijal de Canela",
+  //     fiscalId: "123456789",
+  //   },
+  //   {
+  //     shortName: "Maria Santos",
+  //     fiscalId: "987654321"
+  //   }
+  // ];
 
-  constructor(private route: ActivatedRoute, private router: Router, private data: DataService) {
+  constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
 
@@ -58,6 +63,65 @@ export class RepresentationPowerComponent implements OnInit {
       this.merchantInfo = this.router.getCurrentNavigation().extras.state["merchantInfo"];
       if (this.router.getCurrentNavigation().extras.state["crc"])
         this.crc = this.router.getCurrentNavigation().extras.state["crc"];
+    }
+  }
+
+  getSubmissionStakeholders() {
+    var context = this;
+    if (this.returned !== null) { 
+      this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+            res.forEach(function (value, index) {
+              context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                console.log("stakeholder: ", r);
+                context.submissionStakeholders.push({
+                  displayName: '',
+                  eligibility: false,
+                  stakeholderAcquiring: r,
+                  stakeholderOutbound: undefined
+                });
+                this.stakeholders.append(r);
+              }, error => {
+              });
+            }, error => {
+            });
+          });
+        });
+      });
+    }
+
+    if (this.submissionId !== null) {
+      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+        result.forEach(function (value, index) {
+          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+            var AcquiringStakeholder = result;
+            var stakeholderToInsert = {
+              displayName: '',
+              eligibility: false,
+              stakeholderAcquiring: AcquiringStakeholder,
+              stakeholderOutbound: undefined
+            }
+
+            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
+
+            context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+              stakeholderToInsert.stakeholderOutbound = outboundResult;
+              context.submissionStakeholders.push(stakeholderToInsert);
+              
+            })
+            //context.submissionStakeholders.push({
+            //  displayName: '',
+            //  eligibility: false,
+            //  stakeholderAcquiring: result,
+            //  stakeholderOutbound: undefined
+            //});
+            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
+          }, error => {
+          });
+        });
+      }, error => {
+      });
     }
   }
 
