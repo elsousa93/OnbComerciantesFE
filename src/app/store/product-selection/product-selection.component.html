@@ -1,8 +1,6 @@
 <app-nav-menu-interna *ngIf="!edit"></app-nav-menu-interna>
 <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0" [ngClass]="{'conteudo' : !edit}">
-
-  <!------------------------------------------------------------------------------------------------>
-  <!--<form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()">
+  <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()">
     <div class="row">
       <div class="offset-1 col-10 mt-0 mb-0 pt-0 pb-0 ps-0 pe-0" *ngIf="!edit">
         <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/add_card.svg" class="img_add">&nbsp;{{'stores.productSelection'|translate|uppercase}}</h2>
@@ -12,121 +10,70 @@
         <p class=" mt-0 mb-3 ms-0 ps-0 S" wappler-command="editContent">{{'stores.selectSolutionType'|translate}}&nbsp;</p>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
-          <span class="navbar-text text-primary">
-            <div class="form-check"><input (click)="chooseSolution(true, false, false)" formControlName="solutionType" class="form-check-input" type="radio" value="cardPresent" id="solutionType1" name="solutionType"><label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b>CARD PRESENT</b></label></div>
-            <div class="form-check"><label class="form-check-label" for="solutionType">{{'stores.presencialTransaction'|translate}}</label></div>
-          </span>
-          <span class="navbar-text ms-3">
+          <div *ngFor="let product of products">
             <span class="navbar-text text-primary">
-              <div class="form-check"><input (click)="chooseSolution(false, true, false)" class="form-check-input" formControlName="solutionType" type="radio" value="cardNotPresent" id="solutionType2" name="solutionType"><label class="form-check-label radio pe-5" for="solutionType"><b>CARD NOT PRESENT</b></label></div>
-              <div class="form-check"><label class="form-check-label" for="solutionType" wappler-command="editContent">{{'stores.noPresencialTransaction'|translate}}</label></div>
+              <div class="form-check">
+                <input formControlName="solutionType" class="form-check-input" type="radio" name="solutionType" (click)="chooseSolutionAPI(product.productDescription)" value={{product.productDescription}}>
+                <label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b> {{product.productDescription}}</b></label>
+              </div>
+              <div class="form-check"><label class="form-check-label" for="solutionType"> {{product.productDescription}}</label></div>
             </span>
-          </span>
-          <span class="navbar-text ms-3">
-            <span class="navbar-text text-primary">
-              <div class="form-check"><input (click)="chooseSolution(false, false, true)" class="form-check-input" formControlName="solutionType" type="radio" value="combinedOffer" id="solutionType3" name="solutionType"><label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b>{{'stores.combinedOffer'|translate}}</b></label></div>
-              <div class="form-check"><label class="form-check-label" for="solutionType"></label></div>
-            </span>
-          </span>
+          </div>
         </nav>
-      </div>-->
-
-      <!------------------------------------------------------------------------------------------------>
-
-      <form [formGroup]="formStores" name="formStores" (ngSubmit)="submit()">
-        <div class="row">
-          <div class="offset-1 col-10 mt-0 mb-0 pt-0 pb-0 ps-0 pe-0" *ngIf="!edit">
-            <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/add_card.svg" class="img_add">&nbsp;{{'stores.productSelection'|translate|uppercase}}</h2>
-          </div>
-          <div class="offset-1 col-10 pt-3 ps-0">
-            <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.solutionType'|translate}}</h5>
-            <p class=" mt-0 mb-3 ms-0 ps-0 S" wappler-command="editContent">{{'stores.selectSolutionType'|translate}}&nbsp;</p>
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
-
-              <div *ngFor="let product of products">
-                <span class="navbar-text text-primary">
-                  <div class="form-check">
-                  <input formControlName="solutionType" class="form-check-input" type="radio"  name="solutionType" (click)="chooseSolutionAPI(product.productDescription)" value={{product.productDescription}}>
-                  <label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b> {{product.productDescription}}</b></label></div>
-                  <div class="form-check"><label class="form-check-label" for="solutionType" > {{product.productDescription}}</label></div>
-                </span>
-
-                
-                </div>
-            </nav>
-          </div>
+        <div *ngIf="exists">
 
 
 
-          <!------------------------------------------------------------------------------------------------>
-
-
-          <div *ngIf="formStores.get('solutionType').value == 'cardPresent'" class="offset-1 col-10 pt-0 ps-0">
-            <!--SUB PRODUTO-->
-            <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.subProduct'|translate}}</h5>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
-              <span class="navbar-text text-primary">
-                <!--EASY-->
-                <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="easy" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct" wappler-command="editContent"><b>EASY</b></label></div>
-              </span><span class="navbar-text ms-3">
-                <span class="navbar-text text-primary">
-                  <!--NORMAL-->
-                  <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="normal" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct"><b>NORMAL</b></label></div>
-                </span>
-              </span><span class="navbar-text ms-3"></span>
-            </nav>
-          </div>
-          <div *ngIf="formStores.get('solutionType').value == 'cardNotPresent'" class="offset-1 col-10 pt-0 ps-0">
-            <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.subProduct'|translate}}</h5>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
-              <span class="navbar-text text-primary">
-                <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="keyOnHand" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct" wappler-command="editContent"><b>CHAVE NA MÃO</b></label></div>
-              </span><span class="navbar-text ms-3">
-                <span class="navbar-text text-primary">
-                  <div class="form-check"><input class="form-check-input" formControlName="subProduct" type="radio" value="e-commerce" id="subProduct" name="subProduct"><label class="form-check-label radio pe-5" for="subProduct"><b>E-COMMERCE</b></label></div>
-                </span>
-              </span><span class="navbar-text ms-3"></span>
-            </nav>
-          </div>
-          <div class="offset-1 col-5 pt-0 ps-0">
-            <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url" (change)="URLFilled(true)" id="text2" name="text2" type="text" class="form-control campo_form">
-            <nav *ngIf="!edit" class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-              <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-                <button type="submit" [disabled]="isCardNotPresent && !isURLFilled" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-                  {{'generalKeywords.add'|translate|uppercase}}&nbsp;
-                  <img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;">
-                </button>
-              </span>
-            </nav>
-          </div>
-          <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
-            <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-          </div>
-          <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0" *ngIf="!edit">
-            <div class="col ms-0 ps-0">
-              <hr>
-              <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                  <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                    {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                    <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-                  </button>
-                  <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                    {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
-                    <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-                  </button>
-                  <button id="btn5a1" [routerLink]="['/add-store']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
-                    <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
-                  </button>
-                  <button id="btn5a1" [routerLink]="['/comprovativos']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-                    {{'generalKeywords.next'|translate|uppercase}}&nbsp;
-                    <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
-                  </button>
-                </span>
-              </nav>
-            </div>
+          <!--EXISTE-->
+          <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.subProduct'|translate}}</h5>
+          <div *ngFor="let subProduct of subProducts">
+            <span class="navbar-text text-primary">
+              <div class="form-check">
+                <input class="form-check-input" formControlName="subProduct" type="radio" (click)="chooseSubSolutionAPI(subProduct.subProductDescription)" value="{{subProduct.subProductDescription}}" id="subProduct" name="subProduct">
+                <label class="form-check-label radio pe-5" for="subProduct" wappler-command="editContent"><b>{{subProduct.subProductDescription}}</b></label>
+              </div>
+            </span>
           </div>
         </div>
-      </form>
+      </div>
+      <div class="offset-1 col-5 pt-0 ps-0">
+        <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url" (change)="URLFilled(true)" id="text2" name="text2" type="text" class="form-control campo_form">
+        <nav *ngIf="!edit" class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+          <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
+            <button type="submit" [disabled]="isCardNotPresent && !isURLFilled" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
+              {{'generalKeywords.add'|translate|uppercase}}&nbsp;
+              <img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;">
+            </button>
+          </span>
+        </nav>
+      </div>
+      <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
+        <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+      </div>
+      <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0" *ngIf="!edit">
+        <div class="col ms-0 ps-0">
+          <hr>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+            <span class="navbar-text me-2 align-self-center ms-0 me-0">
+              <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+                {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              </button>
+              <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+                {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              </button>
+              <button id="btn5a1" [routerLink]="['/add-store']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
+                <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
+              </button>
+              <button id="btn5a1" [routerLink]="['/comprovativos']" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
+                {{'generalKeywords.next'|translate|uppercase}}&nbsp;
+                <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
+              </button>
+            </span>
+          </nav>
+        </div>
+      </div>
     </div>
+  </form>
+</div>

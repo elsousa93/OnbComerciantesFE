@@ -24,128 +24,128 @@ export class ProductSelectionComponent implements OnInit {
   public ProductPackKindEnum = ProductPackKindEnum;
 
   public store: ShopDetailsAcquiring = {
-      shopId: "",
-      name: "",
-      manager: "",
-      activity: "",
-      subActivity: "",
-      supportEntity: "",
-      registrationId: "",
+    shopId: "",
+    name: "",
+    manager: "",
+    activity: "",
+    subActivity: "",
+    supportEntity: "",
+    registrationId: "",
+    address: {
+      useMerchantAddress: true,
       address: {
-          useMerchantAddress: true,
-          address: {
-              address: "",
-              postalCode: "",
-              postalArea: "",
-              country: ""
-          },
-          isInsideShoppingCenter: false,
-          shoppingCenter: ""
+        address: "",
+        postalCode: "",
+        postalArea: "",
+        country: ""
       },
-      bank: {
-          userMerchantBank: true,
-          bank: {
-              bank: "",
-              iban: ""
-          }
-      },
-      website: "",
-      productCode: "",
-      subproductCode: "",
-      equipments: [
-          {
-              shopEquipmentId: "",
-              communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-              equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-              communicationType: "",
-              equipmentType: "",
-              quantity: 0,
-              pricing: {
-                  pricingId: "",
-                  attributes: [
-                      {
-                          id: "",
-                          description: "",
-                          value: 0,
-                          isReadOnly: true,
-                          isVisible: true
-                      }
-                  ]
-              }
-          }
-      ],
-      pack: {
-          packId: "",
-          packDetails: [
-              {
-                  id: "",
-                  description: "",
-                  kind: "",
-                  attributes: [
-                      {
-                          id: "",
-                          description: "",
-                          value: true,
-                          isReadOnly: true,
-                          isVisible: true,
-                          isSelected: true,
-                          order: 0,
-                          bundles: [
-                              {
-                                  id: "",
-                                  description: "",
-                                  kind: ProductPackKindEnum.SIMPLE,
-                                  attributes: [
-                                      {
-                                          id: "",
-                                          description: "",
-                                          value: true,
-                                          isReadOnly: true,
-                                          isVisible: true,
-                                          isSelected: true,
-                                          order: 0
-                                      }
-                                  ]
-                              }
-                          ]
-                      }
-                  ]
-              }
-          ],
-          commission: {
-              comissionId: "",
-              attributes: {
-                  id: "",
-                  description: "",
-                  fixedValue: {
-                      value: 0,
-                      isReadOnly: true,
-                      isVisible: true
-                  },
-                  maxValue: {
-                      value: 0,
-                      isReadOnly: true,
-                      isVisible: true
-                  },
-                  minValue: {
-                      value: 0,
-                      isReadOnly: true,
-                      isVisible: true
-                  },
-                  percentageValue: {
-                      value: 0,
-                      isReadOnly: true,
-                      isVisible: true
-                  }
-              }
-          }
+      isInsideShoppingCenter: false,
+      shoppingCenter: ""
     },
-      documents: {
-        href: "",
-        type: "",
-        id: ""
+    bank: {
+      userMerchantBank: true,
+      bank: {
+        bank: "",
+        iban: ""
       }
-  } as  ShopDetailsAcquiring
+    },
+    website: "",
+    productCode: "",
+    subproductCode: "",
+    equipments: [
+      {
+        shopEquipmentId: "",
+        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
+        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
+        communicationType: "",
+        equipmentType: "",
+        quantity: 0,
+        pricing: {
+          pricingId: "",
+          attributes: [
+            {
+              id: "",
+              description: "",
+              value: 0,
+              isReadOnly: true,
+              isVisible: true
+            }
+          ]
+        }
+      }
+    ],
+    pack: {
+      packId: "",
+      packDetails: [
+        {
+          id: "",
+          description: "",
+          kind: "",
+          attributes: [
+            {
+              id: "",
+              description: "",
+              value: true,
+              isReadOnly: true,
+              isVisible: true,
+              isSelected: true,
+              order: 0,
+              bundles: [
+                {
+                  id: "",
+                  description: "",
+                  kind: ProductPackKindEnum.SIMPLE,
+                  attributes: [
+                    {
+                      id: "",
+                      description: "",
+                      value: true,
+                      isReadOnly: true,
+                      isVisible: true,
+                      isSelected: true,
+                      order: 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      commission: {
+        comissionId: "",
+        attributes: {
+          id: "",
+          description: "",
+          fixedValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          },
+          maxValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          },
+          minValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          },
+          percentageValue: {
+            value: 0,
+            isReadOnly: true,
+            isVisible: true
+          }
+        }
+      }
+    },
+    documents: {
+      href: "",
+      type: "",
+      id: ""
+    }
+  } as ShopDetailsAcquiring
 
   public map: Map<number, boolean>;
   public currentPage: number;
@@ -161,7 +161,8 @@ export class ProductSelectionComponent implements OnInit {
   public isURLFilled: boolean = false;
 
   public products;
-  public subProducts: SubProduct[] = [];
+  public subProducts;
+  public exists = false;
 
   public cardPresent;
   public cardNotPresent;
@@ -196,69 +197,42 @@ export class ProductSelectionComponent implements OnInit {
 
 
     this.storeService.GetAllShopProducts().subscribe(result => {
-    this.logger.debug(result);
+      this.logger.debug(result);
       console.log("resultado getAllShopProducts: ", result);
-    
-      this.products = result; this.getProductDescriptions(this.products);
-      for (let i = 0; i < this.products.length; i++) {
-        console.log(`${i} Description:${this.products[i].productDescription}, code:${this.products[i].productCode}`)
-      }
-
-        }, error => {
-          this.logger.debug("Erro");
-        });
+      this.products = result;
+      this.getProductDescriptions(this.products);
+    }, error => {
+      this.logger.debug("Erro");
+    });
   }
 
-  //----------------------------
+  //Prints Product Descriptions - for debug purposes
   getProductDescriptions(products) {
     console.log("getProductDescriptions");
     var productsNames;
     for (let i = 0; i < products.length; i++) {
-
       console.log(`${i} Description:${products[i].productDescription}, code:${products[i].productCode}`)
     }
     return productsNames;
   }
-  getProductsubProducts(product) {
-  }
-   //----------------------------
-  /*
-      this.legalNatureList.forEach(legalNat => {
-      var legalNatureToSearch = this.form.get('natJuridicaN1').value;
-      if (legalNatureToSearch == legalNat.code) {
-       exists = true;
-        this.legalNatureList2 = legalNat.secondaryNatures;
-        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description> b.description? 1 : -1);
-      }
-    })
 
-    if (!exists) {
-      this.legalNatureList2 = [];
-
-    }
-
-   */
-  
-  chooseSolutionAPI(productDescription: any ) {
-
+  chooseSolutionAPI(productDescription: any) {
     console.log("recebido do front: " + productDescription);
-    var exists = false;
-
-    this.products.forEach(subProd => {
-      var subProductToSearch = this.formStores.get('solutionType').value;
-      if (subProductToSearch == subProd.productDescription) {
-        exists = true;
-        this.subProducts = subProd.secondaryNatures;
-        this.subProducts = this.subProducts.sort((a, b) => a.subProductDescription > b.subProductDescription ? 1 : -1);
+    this.products.forEach(Prod => {
+      console.log("This Subprod: ", Prod.subProducts);
+      var subProductToSearch = productDescription;
+      if (subProductToSearch == Prod.productDescription) {
+        console.log("entrou no if, subProd.productDescription: ", Prod.subProducts);
+        this.subProducts = Prod.subProducts;
+        this.exists = true;
         console.log("subProducts: ", this.subProducts);
+        //Add to store to be Submitted
+        // this.store.product = 
       }
     })
-
-    if (!exists) {
+    if (!this.exists) {
       this.subProducts = [];
-
     }
-
 
     if (productDescription == ("cardPresent" || "CARD PRESENT")) {
       this.isCardPresent = true;
@@ -275,29 +249,14 @@ export class ProductSelectionComponent implements OnInit {
     }
   }
 
-  chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean) {
+  //Returns picked SubProduct by the User
+  chooseSubSolutionAPI(subproduct: any) {
+   //Add to store to be Submitted
 
+    this.store.product.subProducts = this.subProducts; //Todos
 
-    this.logger.debug("cardPresent: " + cardPresent);
-    this.logger.debug("cardNotPresent: " + cardNotPresent);
-    this.logger.debug("combinedOffer: " + combinedOffer);
-   
-
-    if (cardPresent) {
-      this.isCardPresent = cardPresent;
-      this.isCardNotPresent = false;
-      this.isCombinedOffer = false;
-    } else if (cardNotPresent) {
-      this.isCardPresent = false;
-      this.isCardNotPresent = cardNotPresent;
-      this.isCombinedOffer = false;
-    } else if (combinedOffer) {
-      this.isCardPresent = false;
-      this.isCardNotPresent = false;
-      this.isCombinedOffer = combinedOffer;
-    }
   }
-//-----------------------------
+
   URLFilled(filled: boolean) {
     this.isURLFilled = filled;
   }
