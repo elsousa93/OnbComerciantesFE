@@ -15,6 +15,7 @@ import { error } from '@angular/compiler/src/util';
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
 import { LoggerService } from 'src/app/logger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -96,25 +97,28 @@ export class NewStakeholderComponent implements OnInit {
   ListaDocTypeENI = docTypeENI;
 
   loadCountries() {
-    this.tableData.GetAllCountries().subscribe(result => {
+    this.subs.push(this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
     }, error => {
       this.logger.error(error);
-    })
+    }))
   }
 
   loadStakeholdersRoles() {
-    this.tableData.GetAllStakeholderRoles().subscribe(result => {
+    this.subs.push(this.tableData.GetAllStakeholderRoles().subscribe(result => {
       this.stakeholdersRoles = result;
     }, error => {
       this.logger.error(error);
-    });
+    }));
   }
 
   loadTableInfoData() {
     this.loadCountries();
     this.loadStakeholdersRoles();
   }
+
+  public subs: Subscription[] = [];
+
 
   constructor(private logger : LoggerService, private router: ActivatedRoute,
     private http: HttpClient,
@@ -285,6 +289,10 @@ export class NewStakeholderComponent implements OnInit {
     if (this.showYesCC) {
       this.flagRecolhaEletronica = this.showYesCC;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   //@Output()  newStakeholderAdded = new EventEmitter<any>();
@@ -460,7 +468,7 @@ export class NewStakeholderComponent implements OnInit {
       if (zipcode.length >= 8) {
         var zipCode = zipcode.split('-');
 
-        this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+        this.subs.push(this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
 
           var addressToShow = address[0];
 
@@ -470,7 +478,7 @@ export class NewStakeholderComponent implements OnInit {
 
 
           this.formNewStakeholder.updateValueAndValidity();
-        });
+        }));
       }
     } else {
       this.lockLocality = false;

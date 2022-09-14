@@ -8,6 +8,7 @@ import { CountryInformation, PEPTypes, StakeholderRole } from '../table-info/ITa
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pep',
@@ -23,6 +24,8 @@ export class PepComponent implements OnInit {
   PEPTypes: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
   stakeholdersRoles: StakeholderRole[] = [];
+  public subs: Subscription[] = [];
+
 
   constructor(private logger : LoggerService, private router: ActivatedRoute, private data: DataService,
     private http: HttpClient,
@@ -31,17 +34,21 @@ export class PepComponent implements OnInit {
     private tableInfo: TableInfoService) {      
       this.baseUrl = configuration.baseUrl;
 
-      this.tableInfo.GetAllCountries().subscribe(result => {
+      this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
         this.Countries = result;
-      });
-
-      this.tableInfo.GetAllPEPTypes().subscribe(result => {
+      }),this.tableInfo.GetAllPEPTypes().subscribe(result => {
         this.PEPTypes = result;
-      });
-
-      this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
+      }),this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
         this.stakeholdersRoles = result;
-      });
+      }));
+
+      // this.tableInfo.GetAllPEPTypes().subscribe(result => {
+      //   this.PEPTypes = result;
+      // });
+
+      // this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
+      //   this.stakeholdersRoles = result;
+      // });
   }
 
   newPep: IPep = {
@@ -93,6 +100,10 @@ export class PepComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 3);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   form = new FormGroup({

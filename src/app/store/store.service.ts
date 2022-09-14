@@ -9,6 +9,7 @@ import { Product, Subproduct } from '../commercial-offer/ICommercialOffer.interf
 
 
 import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound } from './IStore.interface';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class StoreService {
   private mockacoUrl: string;
   private acquiringUrl: string;
 
+  currentLanguage: string;
+
+  languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
+
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private tableinfo: TableInfoService) {
@@ -27,6 +32,10 @@ export class StoreService {
     this.urlOutbound = configuration.outboundUrl;
     this.mockacoUrl = configuration.mockacoUrl;
     this.acquiringUrl = configuration.acquiringAPIUrl;
+
+    this.languageStream$.subscribe((val) => {
+      this.currentLanguage = val
+    });
   }
 
   ////////////
@@ -84,10 +93,22 @@ export class StoreService {
   //ACQUIRING//
   /////////////
   GetAllShopActivities(): any{
-    return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity');
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
   GetAllShopProducts() {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
     return this.http.get<Product[]>(this.acquiringUrl + 'product');
   }
 

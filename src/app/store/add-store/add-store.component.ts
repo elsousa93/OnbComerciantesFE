@@ -263,12 +263,12 @@ export class AddStoreComponent implements OnInit {
       this.updateForm();
     });
 
-    this.storeService.GetAllShopActivities().subscribe(result => {
+    this.subs.push(this.storeService.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       this.activities = result;
     }, error => {
       this.logger.debug("Deu erro");
-    });
+    }));
 
     this.storeService.GetAllShopProducts().subscribe(result => {
       this.logger.debug(result);
@@ -283,6 +283,8 @@ export class AddStoreComponent implements OnInit {
       this.countries = result;
     })
   }
+
+  public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
     private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
@@ -314,6 +316,10 @@ export class AddStoreComponent implements OnInit {
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   //When canceling the create new store feature the user must navigate back to store list

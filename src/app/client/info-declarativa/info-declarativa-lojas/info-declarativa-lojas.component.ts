@@ -15,6 +15,7 @@ import { ClientService } from '../../client.service';
 import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
+import { Subscription } from 'rxjs';
 
 const testValues: ShopDetailsAcquiring[] = [
   {
@@ -181,17 +182,20 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  public subs: Subscription[] = [];
+
+
     constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
     this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
     
-    this.tableInfo.GetAllCountries().subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
-    }, error => this.logger.debug(error));
+    }, error => this.logger.debug(error)));
 
-    this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
+    this.subs.push(this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
       this.client = result;
-    });
+    }));
 
 
     this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
@@ -247,6 +251,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.loadStores();
   }
 
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
+  }
   
 
   changeListElement(variavel: string, e: any) {

@@ -124,6 +124,12 @@ export class CountrysComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
   }
 
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
+  }
+
+  public subs: Subscription[] = [];
+
   constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
     private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService, private storeService: StoreService) {
@@ -173,9 +179,9 @@ export class CountrysComponent implements OnInit {
     }
 
     //Chamada à API para receber todos os Paises
-    this.tableInfo.GetAllCountries().subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
-    }, error => this.logger.debug(error));
+    }, error => this.logger.debug(error)));
 
     //this.logger.debug("por entrar no clientbyid");
     //this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
@@ -259,7 +265,7 @@ export class CountrysComponent implements OnInit {
     },
     "startedAt": new Date() + '',
     "state": "Incomplete",
-    "bank": null,
+    "bank": "0800", //no futuro e para usar o token
     "merchant": null,
     //"merchant": {
     //  "fiscalId": "585597856",
@@ -818,10 +824,10 @@ export class CountrysComponent implements OnInit {
 
   editCountries() {
     this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
-      this.tableInfo.GetCountryById(countryID).subscribe(result => {
+      this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
         this.contPais.push(result);
         this.inserirText(null);
-      });
+      }));
     });
   }
 

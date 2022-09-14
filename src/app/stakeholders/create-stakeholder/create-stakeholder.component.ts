@@ -26,6 +26,8 @@ import jsPDF from 'jspdf';
 import { BrowserModule } from '@angular/platform-browser';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
+import { TableInfoService } from 'src/app/table-info/table-info.service';
+import { UserTypes } from 'src/app/table-info/ITable-info.interface';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -193,8 +195,8 @@ export class CreateStakeholderComponent implements OnInit {
   stakeholderType?: string = "";
 
   //Field "doc type" for the search
-  ListDocTypeP = docTypeListP;
-  ListDocTypeE = docTypeListE;
+  // ListDocTypeP = docTypeListP;
+  // ListDocTypeE = docTypeListE;
   documentType?: string = "";
 
   stakeholdersToShow: any[] = [];
@@ -219,6 +221,9 @@ export class CreateStakeholderComponent implements OnInit {
   formStakeholderSearch: FormGroup;
   formNewStakeholder: FormGroup;
 
+  ListDocTypeP;
+  ListDocTypeE;
+
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
@@ -237,12 +242,18 @@ export class CreateStakeholderComponent implements OnInit {
   searchEvent: Subject<string> = new Subject<string>();
   testEvent = this.searchEvent.asObservable();
 
+  public subs: Subscription[] = [];
 
   constructor(private logger : LoggerService, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
-    private stakeholderService: StakeholderService, private submissionService: SubmissionService,
+    private stakeholderService: StakeholderService, private submissionService: SubmissionService, private tableInfo: TableInfoService,
     private submissionDocumentService: SubmissionDocumentService  ) {
 
+      this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
+        this.ListDocTypeP = result;
+     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
+        this.ListDocTypeE = result;
+     })));
 
     this.submissionId = localStorage.getItem('submissionId');
 
@@ -372,6 +383,10 @@ export class CreateStakeholderComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   onClickSearch() {

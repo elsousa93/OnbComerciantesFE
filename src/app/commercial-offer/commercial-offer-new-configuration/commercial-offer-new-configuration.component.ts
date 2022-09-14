@@ -51,14 +51,18 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   submissionId: string;
 
   loadReferenceData() {
-    this.tableInfo.GetTenantCommunications().subscribe(result => {
+    this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
       this.allCommunications = result;
-    });
-
-    this.tableInfo.GetTenantTerminals().subscribe(result => {
+    }), this.tableInfo.GetTenantTerminals().subscribe(result => {
       this.allTerminals = result;
-    });
+    }));
+
+    // this.tableInfo.GetTenantTerminals().subscribe(result => {
+    //   this.allTerminals = result;
+    // });
   }
+
+  public subs: Subscription[] = [];
 
     constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.baseUrl;
@@ -98,6 +102,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.submissionId = localStorage.getItem("submissionId");
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   initializeForm() {

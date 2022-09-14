@@ -113,6 +113,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
 
 
+  public subs: Subscription[] = [];
 
 
   constructor(private logger : LoggerService, private formBuilder: FormBuilder, 
@@ -120,9 +121,9 @@ export class InfoDeclarativaComponent implements OnInit {
     this.ngOnInit();
 
 
-    this.tableInfo.GetAllCountries().subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
-    });
+    }));
 
     
 
@@ -240,6 +241,9 @@ export class InfoDeclarativaComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
+  }
 
   changeListElement(variavel:string, e: any) {
     if (e.target.id == 'phone1CountryCode') {
