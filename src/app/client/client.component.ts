@@ -477,7 +477,7 @@ export class ClientComponent implements OnInit {
     }
 
     if(this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc")){
-      return this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc");
+      return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
   }
 
