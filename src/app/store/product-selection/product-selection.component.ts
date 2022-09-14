@@ -10,6 +10,7 @@ import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, Product } from '../../commercial-offer/ICommercialOffer.interface';
+import { SubProduct } from '../../table-info/ITable-info.interface';
 
 
 @Component({
@@ -160,6 +161,11 @@ export class ProductSelectionComponent implements OnInit {
   public isURLFilled: boolean = false;
 
   public products;
+  public subProducts: SubProduct[] = [];
+
+  public cardPresent;
+  public cardNotPresent;
+  public combinedOffer;
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService,
@@ -208,8 +214,7 @@ export class ProductSelectionComponent implements OnInit {
     console.log("getProductDescriptions");
     var productsNames;
     for (let i = 0; i < products.length; i++) {
-      productsNames = products.productDescription[i];
-      console.log("Funcao: ", productsNames)
+
       console.log(`${i} Description:${products[i].productDescription}, code:${products[i].productCode}`)
     }
     return productsNames;
@@ -217,6 +222,58 @@ export class ProductSelectionComponent implements OnInit {
   getProductsubProducts(product) {
   }
    //----------------------------
+  /*
+      this.legalNatureList.forEach(legalNat => {
+      var legalNatureToSearch = this.form.get('natJuridicaN1').value;
+      if (legalNatureToSearch == legalNat.code) {
+       exists = true;
+        this.legalNatureList2 = legalNat.secondaryNatures;
+        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description> b.description? 1 : -1);
+      }
+    })
+
+    if (!exists) {
+      this.legalNatureList2 = [];
+
+    }
+
+   */
+  
+  chooseSolutionAPI(productDescription: any ) {
+
+    console.log("recebido do front: " + productDescription);
+    var exists = false;
+
+    this.products.forEach(subProd => {
+      var subProductToSearch = this.formStores.get('solutionType').value;
+      if (subProductToSearch == subProd.productDescription) {
+        exists = true;
+        this.subProducts = subProd.secondaryNatures;
+        this.subProducts = this.subProducts.sort((a, b) => a.subProductDescription > b.subProductDescription ? 1 : -1);
+        console.log("subProducts: ", this.subProducts);
+      }
+    })
+
+    if (!exists) {
+      this.subProducts = [];
+
+    }
+
+
+    if (productDescription == ("cardPresent" || "CARD PRESENT")) {
+      this.isCardPresent = true;
+      this.isCardNotPresent = false;
+      this.isCombinedOffer = false;
+    } else if (productDescription == ("cardNotPresent" || "CARD NOT PRESENT")) {
+      this.isCardPresent = false;
+      this.isCardNotPresent = true;
+      this.isCombinedOffer = false;
+    } else if (productDescription == ("OFERTA COMBINADA")) {
+      this.isCardPresent = false;
+      this.isCardNotPresent = false;
+      this.isCombinedOffer = true;
+    }
+  }
 
   chooseSolution(cardPresent: boolean, cardNotPresent: boolean, combinedOffer: boolean) {
 
@@ -240,7 +297,7 @@ export class ProductSelectionComponent implements OnInit {
       this.isCombinedOffer = combinedOffer;
     }
   }
-
+//-----------------------------
   URLFilled(filled: boolean) {
     this.isURLFilled = filled;
   }
