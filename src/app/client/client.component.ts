@@ -477,14 +477,10 @@ export class ClientComponent implements OnInit {
     }
 
     if(this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc")){
-      return this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc");
+      return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
   }
 
-  test(){
-    console.log(this.newClientForm)
-    console.log(this.newClientForm.valid)
-  }
   searchClient() {
 
     //this.clientID || Definir com o valor do campo

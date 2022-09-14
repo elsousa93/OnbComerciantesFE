@@ -874,9 +874,6 @@ export class ClientByIdComponent implements OnInit {
 
 
     if(this.form.valid)
-    console.log(this.router.snapshot.paramMap.get('id'));
-    console.log(this.router.snapshot.paramMap);
-    console.log(navigationExtras);
       this.route.navigate(["/client-additional-info/", this.router.snapshot.paramMap.get('id')], navigationExtras);
   }
 

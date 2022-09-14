@@ -75,7 +75,7 @@ export class CreateStakeholderComponent implements OnInit {
   public postalCodeCC = null;
   public countryCC = null;
 
-  public okCC = null;
+  public okCC = false;
   public dadosCC: Array<string> = []; //apagar
   public addressReading = null;
   //---- Cartão de Cidadao - funcoes -----
@@ -423,6 +423,7 @@ export class CreateStakeholderComponent implements OnInit {
       this.isParticular = false;
     }
     this.stakeType = true;
+    this.okCC = false;
   }
   changeListElementDocType(docType: string, e: any) {
     this.documentType = e.target.value;
@@ -508,10 +509,6 @@ export class CreateStakeholderComponent implements OnInit {
       this.deactivateNotFoundForm();
 
     this.errorMsg = info.errorMsg;
-  }
-  test(){
-    console.log(this.formNewStakeholder);
-    console.log(this.formStakeholderSearch);
   }
   addStakeholder() {
     console.log("por adicionar: ", this.currentStakeholder);

@@ -27,7 +27,7 @@
     <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
       <div class="row ms-0 me-0">
         <div class="col-5 ms-0 me-0 ps-0 pe-0">
-          <p class="titulo-form-simples"(click)="test()">{{'stakeholder.type'|translate}}: *</p>
+          <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
           <select class="form-select campo-form-select"
                   (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
                   formControlName="type">
@@ -40,8 +40,8 @@
             <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
                     id="documentType" formControlName="documentType">
 
-              <option *ngFor="let docType of ListDocTypeP" value={{docType.documentTypeOption}}>
-                {{docType.documentTypeOption}}
+              <option *ngFor="let docType of ListDocTypeP" value={{docType.code}}>
+                {{docType.description}}
               </option>
             </select>
           </div>
@@ -49,8 +49,8 @@
             <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
                     id="documentType" formControlName="documentType">
 
-              <option *ngFor="let docType of ListDocTypeE" value={{docType.documentTypeOption}}>
-                {{docType.documentTypeOption}}
+              <option *ngFor="let docType of ListDocTypeE" value={{docType.code}}>
+                {{docType.description}}
               </option>
             </select>
           </div>
@@ -194,7 +194,7 @@
           </div>
         </main>
       </ng-template>
-      <div *ngIf="!(okCC == null)">
+      <div *ngIf="okCC">
 
         <div class="row me-0">
           <div class="col">
