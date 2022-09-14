@@ -2,11 +2,11 @@
   <mat-table [dataSource]="stakesMat" class=" table-success" matSort>
     <ng-container matColumnDef="shortName">
       <mat-header-cell *matHeaderCellDef mat-sort-header scope="col" class="text-center text-primary bg-light table-white"> {{'client.nameSocialDesignation'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" class="text-primary text-center"> {{stakeholder.stakeholderAcquiring.shortName|uppercase}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" class="text-primary text-center"> {{stakeholder.stakeholderAcquiring.shortName}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="fiscalId">
       <mat-header-cell *matHeaderCellDef mat-sort-header> NIF/NIPC </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.shortName|uppercase}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.shortName}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="entityType">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.entityType'|translate|uppercase}} </mat-header-cell>
@@ -18,11 +18,11 @@
     </ng-container>
     <ng-container matColumnDef="elegible">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.elegible'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.eligibility|uppercase}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> - </mat-cell>
     </ng-container>
     <ng-container matColumnDef="clientNumber">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.stakeholderId|uppercase}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder"> {{stakeholder.stakeholderAcquiring.stakeholderId}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="signature">
       <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white"> {{'stakeholder.signature'|translate|uppercase}} </mat-header-cell>

@@ -202,6 +202,8 @@ export class CreateStakeholderComponent implements OnInit {
   stakeholdersToShow: any[] = [];
 
   ngForm!: FormGroup;
+  docType?: string = "";
+
   public stakes: IStakeholders[] = [];
   public stakeShow: IStakeholders[] = [];
   public stakeType: boolean = false;
@@ -426,9 +428,8 @@ export class CreateStakeholderComponent implements OnInit {
     this.okCC = false;
   }
   changeListElementDocType(docType: string, e: any) {
-    this.documentType = e.target.value;
-
-    if (this.documentType === 'Cartão do Cidadão') {
+    this.docType = e.target.value;
+    if (this.docType === '1001') {
       this.isCC = true;
     } else {
       this.isCC = false;
