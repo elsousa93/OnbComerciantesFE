@@ -20,7 +20,6 @@
         </span>&nbsp;{{'client.identification'|translate|uppercase}}<br>
       </h2>
       <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
-      <form *ngIf="searchClientForm" [formGroup]="searchClientForm"  name="searchClientForm">
       <div class="row ms-0 me-0">
         <div class="col-9 ms-0 me-0 ps-0 pe-0">
           <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
@@ -29,7 +28,7 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio"
-                  [value]="true" id="clientTypology" (click)="activateButtons(true)" formControlName="typology"
+                  [value]="true" id="clientTypology" (click)="activateButtons(true)" 
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio pe-5" for="radio3">{{'client.company'|translate|uppercase}}</label>
               </div>
@@ -37,7 +36,7 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio"
-                  [value]="false" id="clientTypology" (click)="activateButtons(false)" formControlName="typology"
+                  [value]="false" id="clientTypology" (click)="activateButtons(false)" 
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio" for="radio3">ENI</label>
               </div>
@@ -45,12 +44,11 @@
           </nav>
           <div>
             <div *ngIf="showButtons">
-              <form>
                 <div class="row me-0" *ngIf="!showENI">
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" id="docType" formControlName="docType"
+                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" id="docType" 
                         [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
@@ -63,7 +61,7 @@
                   <div class="col">
                     <div class="me-0 ps-0 pe-0 col-7">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" formControlName="docType"
+                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" 
                         id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocTypeENI" value={{docType.code}}>
                           {{docType.description}}
@@ -79,7 +77,7 @@
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                       <span class="navbar-text">
                         <div class="form-check">
-                          <input class="form-check-input" required formControlName="flagAutCol" type="radio"
+                          <input class="form-check-input" required  type="radio"
                             [value]=true id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" />
                           <label class="form-check-label radio pe-5"
                             for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
@@ -87,7 +85,7 @@
                       </span>
                       <span class="navbar-text">
                         <div class="form-check">
-                          <input class="form-check-input" required formControlName="flagAutCol" type="radio"
+                          <input class="form-check-input" required type="radio"
                             [value]=false id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" />
                           <label class="form-check-label radio"
                             for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
@@ -105,13 +103,12 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" formControlName="docNumber"
+                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" 
                         name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                   </div>
                 </div>
                </div>
-              </form>
 
               <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
               <!--<div class="row me-0">
@@ -146,7 +143,7 @@
                   </span>
                 </nav>
               </div>
-            </form>
+            
               <form *ngIf="newClientForm" [formGroup]="newClientForm"  name="newClientForm">
                 <div class="row me-0" *ngIf="showENI">
                   <div class="col">
