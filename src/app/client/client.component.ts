@@ -481,10 +481,6 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  test(){
-    console.log(this.newClientForm)
-    console.log(this.newClientForm.valid)
-  }
   searchClient() {
 
     //this.clientID || Definir com o valor do campo
