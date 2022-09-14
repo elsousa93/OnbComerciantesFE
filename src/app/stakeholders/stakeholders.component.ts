@@ -159,33 +159,33 @@ export class StakeholdersComponent implements OnInit {
     this.ngOnInit();
     
     var context = this;
-    if (this.returned !== null) { 
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-            res.forEach(function (value, index) {
-              context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-                context.submissionStakeholders.push(r);
-              }, error => {
-              });
-            }, error => {
-            });
-          });
-        });
-      });
-    }
+    //if (this.returned !== null) { 
+    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+    //    this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+    //      this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+    //        res.forEach(function (value, index) {
+    //          context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+    //            context.submissionStakeholders.push(r);
+    //          }, error => {
+    //          });
+    //        }, error => {
+    //        });
+    //      });
+    //    });
+    //  });
+    //}
 
-    if (this.submissionId !== null) {
-      stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-        result.forEach(function (value, index) {
-          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            context.submissionStakeholders.push(result);
-          }, error => {
-          });
-        });
-      }, error => {
-      });
-    }
+    //if (this.submissionId !== null) {
+    //  stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+    //    result.forEach(function (value, index) {
+    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+    //        context.submissionStakeholders.push(result);
+    //      }, error => {
+    //      });
+    //    });
+    //  }, error => {
+    //  });
+    //}
   }
 
   redirectAddStakeholder() {

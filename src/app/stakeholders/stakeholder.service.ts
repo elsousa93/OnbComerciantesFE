@@ -1,8 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
 import { IStakeholders } from './IStakeholders.interface';
 import { LoggerService } from 'src/app/logger.service';
+import { HttpMethod } from '../enums/enum-data';
+import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +14,71 @@ export class StakeholderService {
   private baseUrl: string;
   private urlOutbound: string;
 
+  currentLanguage: string;
 
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
+
+
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+    this.languageStream$.subscribe((val) => {
+      this.currentLanguage = val
+    });
+
     this.baseUrl = configuration.acquiringAPIUrl;      
     this.urlOutbound = configuration.outboundUrl;
+  }
 
+  callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
+    var requestResponse: RequestResponse = {};
 
-   }
+    return new Promise<RequestResponse>((resolve, reject) => {
+      this.http[httpMethod](httpURL, body).subscribe({
+        next: (res: any) => {
+          requestResponse.result = res;
+          requestResponse.error = null;
+          resolve(requestResponse);
+        },
+        error: (err: any) => {
+          console.log("erro obj: ", err);
+          requestResponse.result = null;
+          requestResponse.error = {
+            code: err.status,
+            message: err.statusText
+          }
+          reject(requestResponse);
+        },
+        complete: () => {
+          console.log("pedido terminado!!");
+        }
+      });
+    });
+  }
 
   GetAllStakeholdersFromSubmission(submissionId: string): any {
     this.logger.info(`Getting all stakeholders for submission ${submissionId}`)
-    return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');
+    //return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');
+    var url = this.baseUrl + 'submission/' + submissionId + '/stakeholder';
+
+    var response: TreatedResponse<IStakeholders[]> = {};
+
+    return new Promise<TreatedResponse<IStakeholders[]>>((resolve, reject) => {
+      var HTTP_OPTIONS = {
+        headers: new HttpHeaders({
+          'Accept-Language': this.currentLanguage,
+
+        }),
+      }
+      this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        console.log("erro que deu: ", error);
+        response.result = null;
+        response.msg = "Sem stakeholders";
+        reject(response);
+      })
+    });
   }
 
   GetStakeholderFromSubmission(submissionId: string, stakeholderId: string): any {
