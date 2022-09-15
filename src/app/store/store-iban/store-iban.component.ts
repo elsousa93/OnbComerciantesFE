@@ -23,6 +23,7 @@ import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPack
 //1. Use the iban from the cient.
 //2. Insert a new iban for the store
 export class StoreIbanComponent implements OnInit {
+  @Input() parentFormGroup : FormGroup;
 
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;

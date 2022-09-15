@@ -205,7 +205,29 @@ export class StoreComponent implements AfterViewInit{
      
     this.ngOnInit();
 
-    this.editStores = this.formBuilder.group({});
+    this.editStores = this.formBuilder.group({
+      infoStores : this.formBuilder.group({
+        "storeName" : [''],
+        "activityStores" : [''],
+        "subZoneStore" : [''],
+        "contactPoint" : [''],
+        "subactivityStore" : [''],
+        "localeStore" : [''],
+        "addressStore" : [''],
+        "countryStore" : [''],
+        "zipCodeStore" : [''],
+        "commercialCenter" : [''],
+        "replicateAddress" : ['']
+      }),
+      bankStores : this.formBuilder.group({
+        "supportBank" : [''],
+        "bankInformation" : [''],
+      }),
+      productStores : this.formBuilder.group({
+        "solutionType" : [''],
+        "subProduct" : [''],
+      })
+    });
 
     this.data.updateData(false, 3, 1);
   }
@@ -228,29 +250,34 @@ export class StoreComponent implements AfterViewInit{
     setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
   }
 
+  addStore(){
+    this.currentStore = null;
+    this.currentIdx = -1; //-1 index means new store is being created
+  }
+
   setFormData() {
-    //var infoStores = this.editStores.controls["infoStores"];
-    //infoStores.get("storeName").setValue(this.currentStore.name);
-    //infoStores.get("activityStores").setValue(this.currentStore.activity);
-    //infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
-    //infoStores.get("contactPoint").setValue(this.currentStore.manager);
-    ////infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
-    //infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
-    //infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
-    //infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
-    //infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
-    //infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
-    //infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
+    var infoStores = this.editStores.get("infoStores");
+    infoStores.get("storeName").setValue(this.currentStore.name);
+    infoStores.get("activityStores").setValue(this.currentStore.activity);
+    infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
+    infoStores.get("contactPoint").setValue(this.currentStore.manager);
+    infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
+    infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
+    infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
+    infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
+    infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+    infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+    infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
 
-    //var bankStores = this.editStores.controls["bankStores"];
-    //bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
-    //bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
+    var bankStores = this.editStores.controls["bankStores"];
+    bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
+    bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
 
 
-    //var productStores = this.editStores.controls["productStores"];
-    //productStores.get("solutionType").setValue(this.currentStore.productCode);
-    //productStores.get("subProduct").setValue(this.currentStore.subproductCode);
-    //productStores.get("url").setValue(this.currentStore.website);
+    var productStores = this.editStores.controls["productStores"];
+    productStores.get("solutionType").setValue(this.currentStore.productCode);
+    productStores.get("subProduct").setValue(this.currentStore.subproductCode);
+    productStores.get("url").setValue(this.currentStore.website);
 
   }
 

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from 'src/app/logger.service';
@@ -19,6 +19,8 @@ import { SubProduct } from '../../table-info/ITable-info.interface';
   styleUrls: ['./product-selection.component.css']
 })
 export class ProductSelectionComponent implements OnInit {
+  @Input() parentFormGroup : FormGroup;
+
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;

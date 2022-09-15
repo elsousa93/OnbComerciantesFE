@@ -34,6 +34,7 @@ export class AddStoreComponent implements OnInit {
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
+  @Input() parentFormGroup : FormGroup;
 
   //Submissao
   submissionId: string;
