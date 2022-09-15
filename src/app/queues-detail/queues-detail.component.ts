@@ -85,7 +85,6 @@ ngOnInit(): void {
   }
 
   selectFile(event: any) {
-    this.type = "Evidência de Aprovação Elegibilidade" // to remove
     if (this.queueName === "eligibility") {
       this.type = "Evidência de Aprovação Elegibilidade" // to add translation 
     } else if (this.queueName === "compliance") {
