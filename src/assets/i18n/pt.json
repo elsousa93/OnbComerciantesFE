@@ -374,7 +374,14 @@
     }
   },
   "queues": {
-    "attach": "Por favor anexe evidência caso exista:",
+    "attach": {
+      "title": "Por favor anexe evidência caso exista:",
+      "eligibility": "Evidência de Aprovação Elegibilidade",
+      "compliance": "Evidência de Esclarecimento de Dúvidas Compliance",
+      "DOValidation": "Evidência de Esclarecimento de Dúvida DO",
+      "risk": "Evidência de Aprovação Risco",
+      "negotiationAproval": "Evidência de Aprovação Negocial"
+    } ,
     "completed": "Concluir parecer",
     "favorable": "Favorável",
     "unfavorable": "Não Favorável",

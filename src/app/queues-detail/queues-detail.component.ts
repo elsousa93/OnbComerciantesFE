@@ -86,15 +86,15 @@ ngOnInit(): void {
 
   selectFile(event: any) {
     if (this.queueName === "eligibility") {
-      this.type = "Evidência de Aprovação Elegibilidade" // to add translation 
+      this.type = "queues.attach.eligibility" // to add translation 
     } else if (this.queueName === "compliance") {
-      this.type = "Evidência de Esclarecimento de Dúvidas Compliance" // to add translation 
+      this.type = "queues.attach.compliance" // to add translation 
     } else if (this.queueName === "DOValidation") {
-      this.type = "Evidência de Esclarecimento de Dúvida DO" // to add translation 
+      this.type = "queues.attach.DOValidation" // to add translation 
     } else if (this.queueName === "risk") {
-      this.type = "Evidência de Aprovação Risco" // to add translation 
+      this.type = "queues.attach.risk" // to add translation 
     } else if (this.queueName === "negotiationAproval") {
-      this.type = "Evidência de Aprovação Negocial" // to add translation 
+      this.type = "queues.attach.negotiationApproval" // to add translation 
     } 
     this.attach = { tipo: this.type, dataDocumento:"01-08-2022" }
     const files = <File[]>event.target.files;

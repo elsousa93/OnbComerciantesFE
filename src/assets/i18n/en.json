@@ -373,7 +373,14 @@
     }
   },
   "queues": {
-    "attach": "Please attach evidence if any:",
+    "attach": {
+      "title": "Please attach evidence if any:",
+      "eligibility": "Evidence of Approval Eligibility",
+      "compliance": "Evidence of Clarification of Doubts Compliance",
+      "DOValidation": "Evidence of Clarification of Doubt DO",
+      "risk": "Evidence of Approval Risk",
+      "negotiationAproval": "Evidence of Business Approval"
+    } ,
     "completed": "Complete opinion",
     "favorable": "Favorable",
     "unfavorable": "Not Favorable",

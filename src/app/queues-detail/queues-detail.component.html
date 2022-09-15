@@ -75,6 +75,7 @@
                 <!-- Pesquisa da Fila Múltiplos Clientes -->
 
                 <div *ngIf="queueName === 'multipleClients'" class="offset-1 bg-white align-self-center col-10 ps-3" style="margin-top: 15px; margin-left: 0px;">
+                  <div class="row ms-0 me-0">
                     <div class="col-6 ms-0 me-0 ps-0 pe-5">
                       <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select id="select3"
                         class="form-select  campo_form">
@@ -87,6 +88,7 @@
                       <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p>
                       <input id="text3" name="text3" type="text" class="form-control campo_form">
                     </div>
+                  </div>
                   <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
                     wappler-command="editContent">{{'searches.search'|translate|uppercase}}
                     &nbsp;<img src="assets/images/search_white.svg"
@@ -270,7 +272,7 @@
                 <!-- Anexar -->
                 <div *ngIf="queueName !== 'multipleClients' && queueName!=='MCCTreatment'"
                   class="row mt-0 ms-0 me-0 pt-0">
-                  <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'queues.attach'|translate}}</p>
+                  <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'queues.attach.title'|translate}}</p>
                   <div class="table-responsive mb-2">
                     <table class="table">
                       <thead class="text-primary table-primary">
@@ -283,7 +285,7 @@
                       </thead>
                       <tbody *ngIf="attach !== undefined">
                         <tr>
-                          <td class="text-primary text-center">{{attach.tipo}}</td>
+                          <td class="text-primary text-center">{{attach.tipo|translate}}</td>
                           <td class="text-primary text-center">{{attach.dataDocumento}}</td>
                         </tr>
                         <tr></tr>
