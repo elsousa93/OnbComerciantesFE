@@ -12,12 +12,12 @@
        </span>
       </nav>
      </div>
-     <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0" *ngIf="!edit">
+     <div *ngIf="!edit">
       <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/account_balance.svg" class="img_add">&nbsp;{{'stores.bankAccount'|translate|uppercase}}<span class="material-symbols-rounded"></span></h2>
       </div>
-      <div class="offset-1 col-10">
-      <div class="row">
-        <div class="ms-0 me-0 ps-0 pe-0 col-7">
+      <div>
+      <div class="row ps-2">
+        <div class="col-5 ms-0 me-0 ps-5 pe-0">
         <p class="titulo-form-simples" wappler-command="editContent">{{'stores.supportBank'|translate}}</p><input formControlName="supportBank" name="supportBank" select="" id="select2" class="form-select  campo_form">
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
         <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.infoClientBank'|translate}}</p>
