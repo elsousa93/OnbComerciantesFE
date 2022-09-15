@@ -44,7 +44,7 @@
                             <p class="mb-0 text-primary text-start">-</p>
                             <p class="mb-0 text-primary text-start">-</p>
                             <p class="mb-0 text-primary text-start">{{ 'homepage.' +
-                              queueName|translate|uppercase }}</p>
+                              queueName|translate }}</p>
                             <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
                             <p class="mb-0 text-primary text-start"> User 1 </p>
                             <p class="mb-0 text-primary text-start">Queiram enviar CRC devidamente actualizada, visto
@@ -75,7 +75,6 @@
                 <!-- Pesquisa da Fila Múltiplos Clientes -->
 
                 <div *ngIf="queueName === 'multipleClients'" class="offset-1 bg-white align-self-center col-10 ps-3">
-                  <div class="row ms-0 me-0">
                     <div class="col-6 ms-0 me-0 ps-0 pe-5">
                       <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select id="select3"
                         class="form-select  campo_form">
@@ -88,7 +87,6 @@
                       <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p>
                       <input id="text3" name="text3" type="text" class="form-control campo_form">
                     </div>
-                  </div>
                   <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
                     wappler-command="editContent">{{'searches.search'|translate|uppercase}}
                     &nbsp;<img src="assets/images/search_white.svg"
@@ -185,7 +183,7 @@
                               {{'stores.name'|translate}}</th>
                             <th scope="col" class="text-center bg-light">{{'stores.requestNumber'|translate}}</th>
                             <th scope="col" class="text-center bg-white">{{'stores.activity'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'stores.subactivity'|translate}}</th>
+                            <th scope="col" class="text-center bg-white">{{'stores.subActivity'|translate}}</th>
                             <th scope="col" class="text-center bg-white">{{'queues.functionalityType'|translate}}</th>
                             <th scope="col" class="text-center bg-white">{{'queues.subFunctionality'|translate}}</th>
                             <th scope="col" class="text-center bg-white">MCC</th>
@@ -270,7 +268,7 @@
                   </div>
                 </div>
                 <!-- Anexar -->
-                <div *ngIf="queueName !== 'multipleClients' && queueName !== 'negotiationAproval' && queueName!=='MCCTreatment'"
+                <div *ngIf="queueName !== 'multipleClients' && queueName!=='MCCTreatment'"
                   class="row mt-0 ms-0 me-0 pt-0">
                   <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'queues.attach'|translate}}</p>
                   <div class="table-responsive mb-2">
@@ -306,14 +304,14 @@
                   </nav>
                 </div>
                 <!-- Observações -->
-                <p *ngIf="queueName!=='compliance' && queueName !== 'negotiationAproval' && queueName!=='MCCTreatment'"
+                <p *ngIf="queueName!=='compliance' && queueName!=='MCCTreatment'"
                   style="margin-top: 0px !important;" class="titulo-form-simples mt-5 pt-2">
                   {{'acceptance.comments'|translate}}:</p>
                 <p *ngIf="queueName==='compliance'" style="margin-top: 0px !important;"
                   class="titulo-form-simples mt-5 pt-2">
                   {{'acceptance.commentsCompliance'|translate}}:</p>
                 <div class="col pb-4" style="padding-left: 0px !important;">
-                  <textarea [(ngModel)]="fillComments" id="text1" class="form-control"></textarea>
+                  <textarea *ngIf="queueName!=='MCCTreatment'" [(ngModel)]="fillComments" id="text1" class="form-control"></textarea>
                   <!-- Botões Final de Página consoante as Filas de Trabalho -->
                   <div class="col mt-4 ms-0 ps-0">
                     <hr>
@@ -336,21 +334,22 @@
                             style="height: 25px !important; vertical-align: sub;">
                         </button>
 
-                        <button id="btn5a2" *ngIf="queueName==='DOValidation && !(fillComments?.length > 0)'"
+                        <button id="btn5a2" *ngIf="queueName==='DOValidation'"
+                        [disabled]="!(fillComments?.length > 0)"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.returnBackoffice'|translate|uppercase}}&nbsp;
                           <img src="assets/images/assignment_return_white.svg"
                             style="height: 25px !important; vertical-align: sub;">
                         </button>
 
-                        <button id="btn5a2" *ngIf="queueName==='DOValidation && !(fillComments?.length > 0)'"
+                        <button id="btn5a2" *ngIf="queueName==='DOValidation'" [disabled]="!(fillComments?.length > 0)"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.returnComercial'|translate|uppercase}}&nbsp;
                           <img src="assets/images/queues/return_comercial.svg"
                             style="height: 25px !important; vertical-align: sub;">
                         </button>
 
-                        <button id="btn5a2" *ngIf="queueName==='DOValidation && !(fillComments?.length > 0)'"
+                        <button id="btn5a2" *ngIf="queueName==='DOValidation'" [disabled]="!(fillComments?.length > 0)"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.returnCoff'|translate|uppercase}}&nbsp;
                           <img src="assets/images/queues/return_coff.svg"
@@ -367,7 +366,7 @@
                           wappler-command="editContent">{{'queues.approve'|translate|uppercase}}&nbsp;
                         </button>
 
-                        <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'"
+                        <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'" [disabled]="!(fillComments?.length > 0)"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.return'|translate|uppercase}}&nbsp;
                         </button>

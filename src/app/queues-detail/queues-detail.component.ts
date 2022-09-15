@@ -93,6 +93,8 @@ ngOnInit(): void {
       this.type = "Evidência de Esclarecimento de Dúvida DO" // to add translation 
     } else if (this.queueName === "risk") {
       this.type = "Evidência de Aprovação Risco" // to add translation 
+    } else if (this.queueName === "negotiationAproval") {
+      this.type = "Evidência de Aprovação Negocial" // to add translation 
     } 
     this.attach = { tipo: this.type, dataDocumento:"01-08-2022" }
     const files = <File[]>event.target.files;
