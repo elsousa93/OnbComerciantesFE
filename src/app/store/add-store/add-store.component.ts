@@ -545,7 +545,7 @@ export class AddStoreComponent implements OnInit {
       this.formStores.controls["subactivityStore"].updateValueAndValidity();
     });
 
-    this.formStores.get("productStores").valueChanges.subscribe(v => {
+    /*this.formStores.get("productStores").valueChanges.subscribe(v => {
       this.onProductsSelected();
       console.log("Já saiu do products selected")
       console.log("SubProducst length: " + this.subProducts.length);
@@ -554,7 +554,7 @@ export class AddStoreComponent implements OnInit {
       else
         this.formStores.controls["subProductsStore"].clearValidators();
       this.formStores.controls["subProductsStore"].updateValueAndValidity();
-    });
+    });*/
   }
 
   comercialCentre(isCentre: boolean) {
