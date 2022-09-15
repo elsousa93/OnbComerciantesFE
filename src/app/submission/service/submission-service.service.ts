@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { HttpMethod } from '../../enums/enum-data';
+import { RequestResponse } from '../../table-info/ITable-info.interface';
 import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, SubmissionGetTemplate, SubmissionGet } from '../ISubmission.interface'
 
 @Injectable({
@@ -30,4 +32,35 @@ export class SubmissionService {
     var treatedProcessNumber = encodeURIComponent(processNumber);
     return this.http.get<SubmissionGet[]>(this.baseUrl + 'submission?ProcessNumber=' + treatedProcessNumber);
   }
+
+
+  //PROVISORIO
+  callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
+    var requestResponse: RequestResponse = {};
+
+    return new Promise<RequestResponse>((resolve, reject) => {
+      this.http[httpMethod](httpURL, body).subscribe({
+        next: (res: any) => {
+          requestResponse.result = res;
+          requestResponse.error = null;
+          resolve(requestResponse);
+        },
+        error: (err: any) => {
+          console.log("erro obj: ", err);
+          requestResponse.result = null;
+          requestResponse.error = {
+            code: err.status,
+            message: err.statusText
+          }
+          reject(requestResponse);
+        },
+        complete: () => {
+          console.log("pedido terminado!!");
+        }
+      });
+    });
+  }
+
+
+
 }

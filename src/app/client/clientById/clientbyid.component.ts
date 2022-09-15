@@ -84,7 +84,7 @@ export class ClientByIdComponent implements OnInit {
     "merchantRegistrationId": null,
     "contacts": {},
     "billingEmail": null,
-    "documents": null
+    "documents": []
   };
 
   crcError: boolean = false;
