@@ -291,64 +291,64 @@ export class StoreComponent implements AfterViewInit{
   }
 
   submit() {
-    //if (this.editStores.valid /*&& testValues.length > 0*/) {
-      //var infoStores = this.editStores.controls["infoStores"];
+    if (this.editStores.valid /*&& testValues.length > 0*/) {
+      var infoStores = this.editStores.controls["infoStores"];
 
-      //if (infoStores.get("replicateAddress").value) {
-      //  this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
-      //  this.currentStore.address.address.address = infoStores.get("addressStore").value;
-      //  this.currentStore.address.address.country = infoStores.get("countryStore").value;
-      //  this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
-      //} else {
-      //  this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
-      //  this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
-      //  this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-      //  this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-      //  this.currentStore.address.useMerchantAddress = true;
-      //}
+      if (infoStores.get("replicateAddress").value) {
+       this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
+       this.currentStore.address.address.address = infoStores.get("addressStore").value;
+       this.currentStore.address.address.country = infoStores.get("countryStore").value;
+       this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+      } else {
+       this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
+       this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
+       this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+       this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+       this.currentStore.address.useMerchantAddress = true;
+      }
 
-      //if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {
-      //  this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
-      //} else {
-      //  this.currentStore.address.shoppingCenter = "";
-      //}
+      if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {
+       this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
+      } else {
+       this.currentStore.address.shoppingCenter = "";
+      }
 
-      //this.currentStore.name = infoStores.get("storeName").value;
-      //this.currentStore.activity = infoStores.get("activityStores").value;
-      //this.currentStore.subActivity = infoStores.get("subactivityStore").value;
-      //this.currentStore.manager = infoStores.get("contactPoint").value;
+      this.currentStore.name = infoStores.get("storeName").value;
+      this.currentStore.activity = infoStores.get("activityStores").value;
+      this.currentStore.subActivity = infoStores.get("subactivityStore").value;
+      this.currentStore.manager = infoStores.get("contactPoint").value;
 
-      //var bankStores = this.editStores.controls["bankStores"];
+      var bankStores = this.editStores.controls["bankStores"];
 
-      //this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
-      //this.currentStore.bank.userMerchantBank = bankStores.get("bankInformation").value;
+      this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
+      this.currentStore.bank.userMerchantBank = bankStores.get("bankInformation").value;
 
-      //var productStores = this.editStores.controls["productStores"];
+      var productStores = this.editStores.controls["productStores"];
 
-      //this.currentStore.productCode = productStores.get("solutionType").value;
-      //this.currentStore.subproductCode = productStores.get("subProduct").value;
-      //this.currentStore.website = productStores.get("url").value;
+      this.currentStore.productCode = productStores.get("solutionType").value;
+      this.currentStore.subproductCode = productStores.get("subProduct").value;
+      this.currentStore.website = productStores.get("url").value;
 
-      //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-      //  if (this.currentIdx < (this.storeList.length - 1)) {
-      //    this.currentIdx = this.currentIdx + 1;
-      //    this.selectStore(this.storeList[this.currentIdx], this.currentIdx);
-      //  } else {
-      //    this.route.navigate(['comprovativos']);
-      //  }
-      //});
-      //if (this.currentIdx < (testValues.length - 1)) {
+      this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId, this.currentStore).subscribe(result => {
+       if (this.currentIdx < (this.storeList.length - 1)) {
+         this.currentIdx = this.currentIdx + 1;
+         this.selectStore(this.storeList[this.currentIdx]);
+       } else {
+         this.route.navigate(['comprovativos']);
+       }
+      });
+      if (this.currentIdx < (testValues.length - 1)) {
 
-    //this.currentStore = testValues[this.currentIdx + 1];
-      this.currentIdx = this.currentIdx + 1;
+    this.currentStore = testValues[this.currentIdx + 1];
+      // this.currentIdx = this.currentIdx + 1;
    
       this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
       this.onActivate();
-      //} else {
-        //this.data.updateData(true, 3);
-        //this.route.navigate(['comprovativos']);
-      //}
-    //}
+      } else {
+        this.data.updateData(true, 3);
+        this.route.navigate(['comprovativos']);
+      }
+    }
 
   }
 
