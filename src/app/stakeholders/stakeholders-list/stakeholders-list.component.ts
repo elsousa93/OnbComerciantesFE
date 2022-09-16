@@ -85,7 +85,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
     if (this.submissionId !== null) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        console.log("ola: ", result);
         var results = result.result;
         results.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {

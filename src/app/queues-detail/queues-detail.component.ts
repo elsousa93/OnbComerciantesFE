@@ -56,9 +56,9 @@ export class QueuesDetailComponent implements OnInit{
 
     this.data.updateData(true, 0);
 
-    // this.processService.getProcessById(this.processId).subscribe(result => {
-    //   this.process = result;
-    // });
+    this.processService.getProcessById(this.processId).subscribe(result => {
+      this.process = result;
+    });
 
   }
 
