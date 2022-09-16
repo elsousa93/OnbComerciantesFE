@@ -361,21 +361,29 @@
                         <button id="btn5a2" *ngIf="queueName === 'multipleClients'"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.treated'|translate|uppercase}}&nbsp;
+                          <img src="assets/images/queues/tratado.svg"
+                            style="height: 25px !important; vertical-align: sub;">
                         </button>
 
                         <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.approve'|translate|uppercase}}&nbsp;
+                          <img src="assets/images/queues/aprovar.svg"
+                            style="height: 25px !important; vertical-align: sub;">
                         </button>
 
                         <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'" [disabled]="!(fillComments?.length > 0)"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.return'|translate|uppercase}}&nbsp;
+                          <img src="assets/images/queues/devolver.svg"
+                            style="height: 25px !important; vertical-align: sub;">
                         </button>
 
                         <button id="btn5a2" *ngIf="queueName === 'MCCTreatment'"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.concludeMCC'|translate|uppercase}}&nbsp;
+                          <img src="assets/images/queues/concluir-mcc.svg"
+                            style="height: 25px !important; vertical-align: sub;">
                         </button>
 
                         <button id="btn5a2" (click)="nextPage()" *ngIf="queueName !== 'multipleClients'"
