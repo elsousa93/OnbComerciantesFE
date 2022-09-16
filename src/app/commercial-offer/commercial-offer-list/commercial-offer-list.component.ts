@@ -828,30 +828,30 @@ export class CommercialOfferListComponent implements OnInit {
     }
 
     //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
-    //this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
-    //  result.forEach(value => {
-    //    this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-    //      this.storesList.push(res);
-    //    });
-    //  });
-    //  this.loadStores(this.storesList);
-    //});
+    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
+     result.forEach(value => {
+       this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+         this.storesList.push(res);
+       });
+     });
+     this.loadStores(this.storesList);
+    });
 
     //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
-    //if (this.returned !== null) {
-    //  this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
-    //    this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
-    //      resul.forEach(val => {
-    //        this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
-    //          var index = this.storesList.findIndex(store => store.id == res.id);
-    //          if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
-    //            this.storesList.push(res);
-    //        });
-    //      });
-    //      this.loadStores(this.storesList);
-    //    })
-    //  });
-    //}
+    if (this.returned !== null) {
+     this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
+       this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
+         resul.forEach(val => {
+           this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
+             var index = this.storesList.findIndex(store => store.shopId == res.shopId);
+             if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
+               this.storesList.push(res);
+           });
+         });
+         this.loadStores(this.storesList);
+       })
+     });
+    }
 
     this.data.updateData(false, 5, 1);
   }

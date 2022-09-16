@@ -122,7 +122,7 @@ export class StoreService {
 
   getSubmissionShopsList(submissionId: string) {
     //tentar alterar o url para o do Mockaco
-    return this.http.get<SimplifiedReference[]>(this.mockacoUrl + 'submission/' + submissionId + '/merchant/shop');
+    return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop');
   }
 
   addShopToSubmission(submissionId: string, newShop: ShopDetailsAcquiring) {
