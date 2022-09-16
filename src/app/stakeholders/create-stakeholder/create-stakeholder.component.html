@@ -121,25 +121,35 @@
               </tr>
             </tbody>
           </table>-->
-          <div *ngIf="foundStakeholders == false">
+          <div *ngIf="foundStakeholders == false">    <!--No Pessoa Colectiva e Denominacao Social-->
             <div *ngIf="isParticularSearched == false">
               <div>
-                <p class="titulo-form-simples">rm{{'client.nipc'|translate|uppercase}}:</p>
-                <input name="nipc" type="text" class="form-control campo_form" formControlName="nipc">
-              </div>
-              <div>
-                <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
-                <input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="titulo-form-simples">{{'client.nipc'|translate|uppercase}}:</p>
+                    <input name="nipc" type="text" class="form-control campo_form" formControlName="nipc">
+                  </div>
+                  <div class="col-md-6">
+                    <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
+                    <input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
+                  </div>
+                </div>
               </div>
             </div>
             <div *ngIf="isParticularSearched == true">
-              <div>
-                <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>
-                <input name="nif" type="text" class="form-control campo_form" formControlName="nif">
-              </div>
-              <div>
-                <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
-                <input name="name" type="text" class="form-control campo_form" formControlName="name">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>
+                  <input name="nif" type="text" class="form-control campo_form" formControlName="nif">
+
+                </div>
+                <div class="col-md-6">
+
+                  <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
+                  <input name="name" type="text" class="form-control campo_form" formControlName="name">
+                </div>
               </div>
             </div>
           </div>
