@@ -56,9 +56,9 @@ export class QueuesDetailComponent implements OnInit{
 
     this.data.updateData(true, 0);
 
-    this.processService.getProcessById(this.processId).subscribe(result => {
-      this.process = result;
-    });
+    // this.processService.getProcessById(this.processId).subscribe(result => {
+    //   this.process = result;
+    // });
 
   }
 
@@ -86,15 +86,15 @@ ngOnInit(): void {
 
   selectFile(event: any) {
     if (this.queueName === "eligibility") {
-      this.type = "queues.attach.eligibility" // to add translation 
+      this.type = "queues.attach.eligibility" 
     } else if (this.queueName === "compliance") {
-      this.type = "queues.attach.compliance" // to add translation 
+      this.type = "queues.attach.compliance" 
     } else if (this.queueName === "DOValidation") {
-      this.type = "queues.attach.DOValidation" // to add translation 
+      this.type = "queues.attach.DOValidation" 
     } else if (this.queueName === "risk") {
-      this.type = "queues.attach.risk" // to add translation 
+      this.type = "queues.attach.risk" 
     } else if (this.queueName === "negotiationAproval") {
-      this.type = "queues.attach.negotiationApproval" // to add translation 
+      this.type = "queues.attach.negotiationApproval" 
     } 
     this.attach = { tipo: this.type, dataDocumento:"01-08-2022" }
     const files = <File[]>event.target.files;
