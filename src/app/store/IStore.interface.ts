@@ -54,14 +54,14 @@ export interface ShopDetailsOutbound {
   supportingDocuments?: Document[]
 }
 
-export interface ShopDetailsAcquiring {
+export class ShopDetailsAcquiring {
   shopId?: string
   name?: string
   manager?: string
   activity?: string
   subActivity?: string
-  supportEntity?: string,
-  registrationId?: string,
+  supportEntity?: string
+  registrationId?: string
   address?: ShopAddressAcquiring
   bank?: ShopBank
   website?: string
@@ -94,7 +94,7 @@ interface ShopAddress {
   shoppingCenter?: string
 }
 
-interface ShopAddressAcquiring {
+class ShopAddressAcquiring {
   useMerchantAddress?: boolean
   address?: FiscalAddress
   isInsideShoppingCenter?: boolean

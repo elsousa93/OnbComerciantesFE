@@ -65,7 +65,7 @@ export interface OutboundDocument {
   archiveSource?: string,
 }
 
-export interface FiscalAddress {
+export class FiscalAddress {
   address?: string
   postalCode?: string
   postalArea?: string

@@ -362,7 +362,7 @@ export class CountrysComponent implements OnInit {
           //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
           this.newSubmission.merchant.bankInformation = this.client.bankInformation;
           this.newSubmission.merchant.byLaws = this.client.byLaws;
-          //this.newSubmission.merchant.clientId = this.client.clientId;
+          this.newSubmission.merchant.clientId = this.client.clientId;
           this.newSubmission.merchant.companyName = this.client.companyName;
           this.newSubmission.merchant.contacts = this.client.contacts;
           this.newSubmission.merchant.crc = this.client.crc;

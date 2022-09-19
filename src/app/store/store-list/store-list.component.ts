@@ -251,7 +251,7 @@ export class StoreComponent implements AfterViewInit{
   }
 
   addStore(){
-    this.currentStore = null;
+    this.currentStore = new ShopDetailsAcquiring();
     this.currentIdx = -1; //-1 index means new store is being created
   }
 
@@ -337,12 +337,12 @@ export class StoreComponent implements AfterViewInit{
          this.route.navigate(['comprovativos']);
        }
       });
-      if (this.currentIdx < (testValues.length - 1)) {
+      if (this.currentIdx < (this.storeList.length - 1)) {
 
-    this.currentStore = testValues[this.currentIdx + 1];
+    this.currentStore = this.storeList[this.currentIdx + 1];
       // this.currentIdx = this.currentIdx + 1;
    
-      this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
+      this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
       this.onActivate();
       } else {
         this.data.updateData(true, 3);
