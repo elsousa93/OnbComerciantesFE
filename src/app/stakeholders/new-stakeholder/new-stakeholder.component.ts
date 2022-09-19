@@ -120,10 +120,11 @@ export class NewStakeholderComponent implements OnInit {
   public subs: Subscription[] = [];
 
 
-  constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient,
-    @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private fb: FormBuilder, private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService, private submissionService: SubmissionService, private datePipe: DatePipe) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
+    @Inject(configurationToken) private configuration: Configuration, private route: Router, private fb: FormBuilder,
+    private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService,
+    private submissionService: SubmissionService, private datePipe: DatePipe) {
+
     this.loadTableInfoData();
     this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem('submissionId');
@@ -150,22 +151,9 @@ export class NewStakeholderComponent implements OnInit {
       });
     }
 
-    stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-      result.forEach(function (value, index) {
-        context.stakeService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          context.submissionStakeholders.push(result);
-          context.stakeService.getStakeholderByID(result.stakeholderId, 'por mudar', 'por mudar').subscribe(result => {
+    console.log("submissionId: ", this.submissionId);
 
-            var documents = result.documents;
-            context.allStakeholdersComprovativos[result.stakeholderId] = documents;
-            //context.stakeholdersComprovativos.push(result);
-            
-          });
-        }, error => {
-        });
-      });
-    }, error => {
-    });
+  
 
     
 
@@ -197,6 +185,29 @@ export class NewStakeholderComponent implements OnInit {
     //  this.stakeholderNumber = this.route.getCurrentNavigation().extras.state["stakeholderNumber"];
     //}
   }
+  getStakeFunction() {
+  this.stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+      result.forEach(function (value, index) {
+        this.stakeService.GetStakeholderFromSubmission(this.submissionId, value.id).subscribe(result => {
+          this.submissionStakeholders.push(result);
+          this.stakeService.getStakeholderByID(result.stakeholderId, 'faltarequestID', 'faltaAcquiringUserID').subscribe((result: { documents: any; stakeholderId: string | number; }) => {
+            var documents = result.documents;
+            this.allStakeholdersComprovativos[result.stakeholderId] = documents;
+            console.log("get stake by id resposnse: ", result);
+            //context.stakeholdersComprovativos.push(result);
+
+          }, error => {
+            console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
+          });
+        }, error => {
+          console.log("Erro em GetStakeholderFromSubmission: ", error);
+        });
+      });
+    }, error => {
+      console.log("Erro na Get All: ", error);
+    });
+ }
+
 
   isStakeholderFromCC(stakeholder) {
     this.selectedStakeholderIsFromCC = false;
@@ -486,6 +497,10 @@ export class NewStakeholderComponent implements OnInit {
     }
   }
 
+  goToStores() {
+    this.route.navigate(['/store-comp']);
+
+  }
   canEditLocality() {
     if (this.returned === 'consult')
       return false;

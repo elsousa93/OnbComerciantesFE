@@ -16,11 +16,14 @@
           </span>
         </nav>
       </div>
+      
+      <!--<button id="btn5a1" (click)="getStakeFunction()" class= "mat-mini-fab" wappler-command="editContent">Test&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>-->
+
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
         <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
           <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="updateForm($event)"></app-stakeholders-list>
         </div>
-        
+
         <div class="row ms-0 me-0" *ngIf="isSelected">
           <h2 class="text-primary mt-5 ps-0 center-align">
             <img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;{{'stakeholder.identification'|translate|uppercase}}
@@ -43,7 +46,8 @@
                 </div>
               </span>
             </nav>
-            <p class="titulo-form-simples mb-1"> <!--Pretende efetuar a atualização...-->
+            <p class="titulo-form-simples mb-1">
+              <!--Pretende efetuar a atualização...-->
               {{'citizenCard.updateData'|translate|uppercase}}*
             </p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -73,14 +77,14 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value='true' id="proxy" [attr.disabled]="returned === 'consult' ? true : null"/>
+                         value='true' id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
                   <label class="form-check-label radio pe-5" for="radio1">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span>
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="proxy" name="proxy" type="radio"
-                         value='false' id="proxy" [attr.disabled]="returned === 'consult' ? true : null"/>
+                         value='false' id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
                   <label class="form-check-label radio" for="radio1">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
@@ -90,17 +94,17 @@
 
           <!--Sem CC-->
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
-          <div *ngIf="showYesCC && !showNoCC">
-            
+            <div *ngIf="showYesCC && !showNoCC">
+
               <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
               <input readonly name="identificationDocumentType" formControlName="documentType" class="form-control campo_form">
               <p class="titulo-form-simples">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
               <select readonly name="documentCountry" formControlName="identificationDocumentCountry" class="form-control campo_form">
                 <option *ngFor="let country of countries" value={{country.code}} [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">{{country.description}}</option>
-              </select>            
-          </div>
-          <div *ngIf="!showYesCC && showNoCC">
-            
+              </select>
+            </div>
+            <div *ngIf="!showYesCC && showNoCC">
+
               <p class="titulo-form-simples mt-0">NIF</p>
               <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF" [readonly]="selectedStakeholderIsFromCRC">
               <p class="titulo-form-simples ">{{'stakeholder.country'|translate|uppercase}}</p>
@@ -111,74 +115,75 @@
               <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode" (keyup)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
               <p class="titulo-form-simples"></p>
             </div>
-            </div>
+          </div>
           <div class="col-6 ms-0 me-0 ps-5 pe-0">
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
-                 <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
-              <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false" >
+              <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
+              <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false">
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
-                  <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">  O parâmetro "Cargo" é obrigatório.</div>-->
+              <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">  O parâmetro "Cargo" é obrigatório.</div>-->
 
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality" [readonly]="canEditLocality() === false">
 
-                  <!--<div class="alert alert-danger" *ngIf="postalArea.touched && !postalArea.valid"> O parâmetro "Código postal" é obrigatório. </div>-->
+              <!--<div class="alert alert-danger" *ngIf="postalArea.touched && !postalArea.valid"> O parâmetro "Código postal" é obrigatório. </div>-->
 
               <p class="titulo-form-simples ">{{'stakeholder.address'|translate|uppercase}}</p>
               <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address" [readonly]="returned === 'consult'">
-                  <!--<div class="alert alert-danger" *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">  O parâmetro "Código postal" é obrigatório. </div>-->
+              <!--<div class="alert alert-danger" *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">  O parâmetro "Código postal" é obrigatório. </div>-->
               <p class="titulo-form-simples"></p>
+            </div>
+            <div *ngIf="showYesCC && !showNoCC">
+              <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
+              <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+                     class="form-control campo_form">
+              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
+              <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+                     cols="30" rows="10" class="form-control campo_form">
+              <p class="titulo-form-simples"></p>
+            </div>
           </div>
-          <div *ngIf="showYesCC && !showNoCC">
-          <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
-          <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
-                 class="form-control campo_form">
-          <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
-          <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
-                 cols="30" rows="10" class="form-control campo_form">
-                 <p class="titulo-form-simples"></p>
-          </div></div>
           <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
               <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span><span class="navbar-text"></span>
             </nav>
-          
+
           </div>
         </div>
 
 
         <!--<div *ngIf="showYesCC">
-               Parte feita pelo Filipe, ver consequencias de alterar
-              <div class="col-sm-6">
-                <div class="card">
-                  <div class="form-group" *ngIf="readcard" style="width:450px">
-                    Nome:<input ngModel #clientName="ngModel" name="clientName" type="text" id="clientName"
-                      class="form-control" [(ngModel)]="readcard[0]" readonly>
-                    Nr Doc:<input ngModel #nrDocumentoID="ngModel" name="nrDocumentoID" type="text" id="nrDocumentoID"
-                      class="form-control" [(ngModel)]="readcard[1]" readonly>
-                    Data Documento:<input ngModel #dateDocumentID="ngModel" name="dateDocumentID" type="text"
-                      id="dateDocumentID" class="form-control" [(ngModel)]="readcard[2]" readonly>
-                    Nif:<input ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif"
-                      class="form-control" [(ngModel)]="readcard[3]" readonly>
-                    Nacionalidade:<input ngModel #documentCountry="ngModel" name="documentCountry" type="text"
-                      id="documentCountry" class="form-control" [(ngModel)]="readcard[4]" readonly>
-                    Morada:<input ngModel #streetAdressStakeholder="ngModel" name="streetAdressStakeholder" type="text"
-                      id="streetAdressStakeholder" class="form-control" [(ngModel)]="readcard[8]" readonly>
-                    Morada:<input ngModel #postCodeAdressStakeholder="ngModel" name="postCodeAdressStakeholder" type="text"
-                      id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="readcard[9]" readonly>
-                    Área:<input ngModel #areaBillingAdressStakeholder="ngModel" name="areaBillingAdressStakeholder"
-                      type="text" id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="readcard[6]" readonly>
-                    País Morada Fiscal:<input ngModel #countryBillingAdressStakeholder="ngModel"
-                      name="countryBillingAdressStakeholder" type="text" id="countryBillingAdressStakeholder"
-                      class="form-control" [(ngModel)]="readcard[5]" readonly>
-                  </div>
-                </div>
-              </div>
-            </div>-->
-              <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+       Parte feita pelo Filipe, ver consequencias de alterar
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="form-group" *ngIf="readcard" style="width:450px">
+            Nome:<input ngModel #clientName="ngModel" name="clientName" type="text" id="clientName"
+              class="form-control" [(ngModel)]="readcard[0]" readonly>
+            Nr Doc:<input ngModel #nrDocumentoID="ngModel" name="nrDocumentoID" type="text" id="nrDocumentoID"
+              class="form-control" [(ngModel)]="readcard[1]" readonly>
+            Data Documento:<input ngModel #dateDocumentID="ngModel" name="dateDocumentID" type="text"
+              id="dateDocumentID" class="form-control" [(ngModel)]="readcard[2]" readonly>
+            Nif:<input ngModel #stakeholderNif="ngModel" name="stakeholderNif" type="text" id="stakeholderNif"
+              class="form-control" [(ngModel)]="readcard[3]" readonly>
+            Nacionalidade:<input ngModel #documentCountry="ngModel" name="documentCountry" type="text"
+              id="documentCountry" class="form-control" [(ngModel)]="readcard[4]" readonly>
+            Morada:<input ngModel #streetAdressStakeholder="ngModel" name="streetAdressStakeholder" type="text"
+              id="streetAdressStakeholder" class="form-control" [(ngModel)]="readcard[8]" readonly>
+            Morada:<input ngModel #postCodeAdressStakeholder="ngModel" name="postCodeAdressStakeholder" type="text"
+              id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="readcard[9]" readonly>
+            Área:<input ngModel #areaBillingAdressStakeholder="ngModel" name="areaBillingAdressStakeholder"
+              type="text" id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="readcard[6]" readonly>
+            País Morada Fiscal:<input ngModel #countryBillingAdressStakeholder="ngModel"
+              name="countryBillingAdressStakeholder" type="text" id="countryBillingAdressStakeholder"
+              class="form-control" [(ngModel)]="readcard[5]" readonly>
+          </div>
+        </div>
+      </div>
+    </div>-->
+        <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
           <div class="table-responsive me-2 ps-3 pe-3">
             <table class="table table-success">
               <thead class="text-primary table-primary">
@@ -205,14 +210,14 @@
             </table>
           </div>
         </div>
-        
+
         <div class="col ms-0 ps-0">
           <hr>
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
               <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
               <button id="btn5a4" [routerLink]="['/stakeholders']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-              <button id="btn5a2" type="submit" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              <button id="btn5a2" (click)="goToStores()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </span>
           </nav>
         </div>
