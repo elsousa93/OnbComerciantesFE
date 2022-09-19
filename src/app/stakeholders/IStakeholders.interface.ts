@@ -54,6 +54,7 @@ export interface IdentificationDocument {
   number?: string
   country?: string
   expirationDate?: string
+  checkDigit?: string
 }
 
 export interface OutboundDocument {

@@ -319,14 +319,11 @@ export class CreateStakeholderComponent implements OnInit {
         break;
 
     }
-
     this.foundStakeholders = false;
   }
 
   deactivateNotFoundForm() {
-
     this.foundStakeholders = true;
-
   }
 
   initializeForm() {
@@ -541,33 +538,32 @@ export class CreateStakeholderComponent implements OnInit {
   }
   /**
    * Add Stakeholder with CC: Only gets the Name and NIF from the stakeholder.
-   * waiting for enums for identificationDocument "type" and "number".
-   * date 23/08/22
+   *  identificationDocument "type" vai ser uma configuracao da plataforma em q cada documento tem um codigo especifico
+   *  ainda nao configurados. NULL por agora.
+   *  email de 14/09
    */
   addStakeholderWithCC() {
-    //Colocar comprovativo d CC na Submissao 
+    //Colocar comprovativo do CC na Submissao 
     this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
 
     var stakeholderToInsert: IStakeholders = {
       "fiscalId": this.dataCCcontents.nifCC,
-      "identificationDocument": {
-        "type": "CC",         //FIXME
-        "number": this.dataCCcontents.cardNumberCC, //FIXME
+      "fullName": this.dataCCcontents.nameCC,
+      "shortName": this.dataCCcontents.nameCC,
+       "identificationDocument": {
+        "type": "CC",           //FIXME
+         "number": this.dataCCcontents.cardNumberCC,
+         "country": this.dataCCcontents.countryCC,
+         "expirationDate": this.dataCCcontents.expiricyDateCC,
+         "checkDigit": null     //FIXME
       },
       "phone1": {},
-      "phone2": {},
-      "shortName": this.dataCCcontents.nameCC
+      "phone2": {}
     }
-
-
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
       this.route.navigate(['/stakeholders/']);
     }, error => {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });
-
-
   }
-  
-
 }
