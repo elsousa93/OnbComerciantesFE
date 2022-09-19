@@ -294,7 +294,7 @@ export class StoreComponent implements AfterViewInit{
     if (this.editStores.valid /*&& testValues.length > 0*/) {
       var infoStores = this.editStores.controls["infoStores"];
 
-      if (infoStores.get("replicateAddress").value) {
+      if (infoStores.get('replicateAddress')['controls'].value!=="") {
        this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
        this.currentStore.address.address.address = infoStores.get("addressStore").value;
        this.currentStore.address.address.country = infoStores.get("countryStore").value;
