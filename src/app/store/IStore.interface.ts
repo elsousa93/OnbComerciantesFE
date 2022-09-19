@@ -94,7 +94,7 @@ interface ShopAddress {
   shoppingCenter?: string
 }
 
-class ShopAddressAcquiring {
+export class ShopAddressAcquiring {
   useMerchantAddress?: boolean
   address?: FiscalAddress
   isInsideShoppingCenter?: boolean
