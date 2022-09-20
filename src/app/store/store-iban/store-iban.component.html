@@ -18,7 +18,11 @@
       <div>
       <div class="row ps-2">
         <div class="col-5 ms-0 me-0 ps-5 pe-0">
-        <p class="titulo-form-simples" wappler-command="editContent">{{'stores.supportBank'|translate}}</p><input formControlName="supportBank" name="supportBank" select="" id="select2" class="form-select  campo_form">
+        <p class="titulo-form-simples" wappler-command="editContent">{{'stores.supportBank'|translate}}</p>
+
+        <select class="form-select campo_form" #supportBank formControlName="supportBank" id="supportBank">
+          <option *ngFor="let bank of banks" [value]='bank.bank'>{{bank.bank}}</option>
+        </select>
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
         <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.infoClientBank'|translate}}</p>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text">

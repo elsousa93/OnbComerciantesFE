@@ -5,9 +5,7 @@ import { IStakeholders } from '../IStakeholders.interface'
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
-import { codes } from './indicativo';
 import { ViewChild, EventEmitter, Output } from '@angular/core';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
@@ -32,7 +30,6 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
 
   //----------Ecrã Comerciante-----------
-  ListaInd = codes;
   formContactos!: FormGroup;
   callingCodeStakeholder?: string = "";
 
@@ -92,6 +89,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       });
     }, error => {
     });
+    
 
     /* this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
       if (data !== '') {

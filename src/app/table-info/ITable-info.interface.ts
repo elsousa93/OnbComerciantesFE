@@ -53,6 +53,16 @@ export interface PEPTypes {
   description: string
 }
 
+export interface Kinship {
+  code: string
+  description: string
+}
+
+export interface CorporateRelations {
+  code: string
+  description: string
+}
+
 export interface POS {
   communicationTypes: POSTemplate[]
   pointsOfSaleTypes: string[]
@@ -90,9 +100,7 @@ export interface SubActivity {
 export interface StakeholderRole {
   code?: string
   description?: string
-  role?: string
-  isBeneficiary?: boolean
-  capitalHeldPercentage?: number
+  relationshipCode?: string
 }
 
 export interface Address {

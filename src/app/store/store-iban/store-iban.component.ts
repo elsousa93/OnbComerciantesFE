@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserPermissions } from '../../userPermissions/user-permissions';
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { BankInformation } from 'src/app/client/Client.interface';
 
 
 @Component({
@@ -82,6 +83,9 @@ export class StoreIbanComponent implements OnInit {
   public idisabled: boolean = false;
 
   files?: File[] = [];
+  supportBank?: string = "";
+
+  banks: BankInformation[];
 
   public store: ShopDetailsAcquiring = {
 
@@ -230,6 +234,11 @@ export class StoreIbanComponent implements OnInit {
         }
       });
     }
+
+    this.storeService.GetBanks().subscribe(result => {
+      this.banks = result;
+    });
+
   }
 
   ngOnInit(): void {

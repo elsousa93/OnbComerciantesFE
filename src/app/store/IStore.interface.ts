@@ -114,7 +114,7 @@ interface ShopPhone {
   phoneNumber?: string
 }
 
-interface ShopBankingInformation {
+export interface ShopBankingInformation {
   iban?: string,
   bank?: string
 }

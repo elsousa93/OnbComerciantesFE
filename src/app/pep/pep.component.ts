@@ -4,7 +4,7 @@ import { IPep } from './IPep.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
-import { CountryInformation, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
+import { CorporateRelations, CountryInformation, Kinship, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -24,6 +24,8 @@ export class PepComponent implements OnInit {
   PEPTypes: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
   stakeholdersRoles: StakeholderRole[] = [];
+  stakeholdersKinships: Kinship[] = [];
+  corporateRelations: CorporateRelations[] = [];
   public subs: Subscription[] = [];
 
 
@@ -40,6 +42,10 @@ export class PepComponent implements OnInit {
         this.PEPTypes = result;
       }),this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
         this.stakeholdersRoles = result;
+      }), this.tableInfo.GetAllKinships().subscribe(result => {
+        this.stakeholdersKinships = result;
+      }),this.tableInfo.GetAllCorporateRelations().subscribe(result => {
+        this.corporateRelations = result;
       }));
 
       // this.tableInfo.GetAllPEPTypes().subscribe(result => {

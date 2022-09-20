@@ -8,7 +8,7 @@ import { Product, Subproduct } from '../commercial-offer/ICommercialOffer.interf
 
 
 
-import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound } from './IStore.interface';
+import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound, ShopBankingInformation } from './IStore.interface';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -102,6 +102,16 @@ export class StoreService {
     return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
+  GetBanks(): any{
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShopBankingInformation>(this.acquiringUrl + 'bank', HTTP_OPTIONS);
+  }
+
   GetAllShopProducts() {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
@@ -109,7 +119,7 @@ export class StoreService {
 
       }),
     }
-    return this.http.get<Product[]>(this.acquiringUrl + 'product');
+    return this.http.get<Product[]>(this.acquiringUrl + 'product', HTTP_OPTIONS);
   }
 
   getProcessShopsList(processId: string) {
