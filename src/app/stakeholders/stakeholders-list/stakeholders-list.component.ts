@@ -161,6 +161,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     }, error => {
       console.log("error: ", error);
     });
+
+    window.location.reload();
   }
 
 }

@@ -255,6 +255,45 @@ export class AddStoreComponent implements OnInit {
     this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType === 'Entrepeneur') ? this.submissionClient.legalName : '', Validators.required);
   }
 
+  public subs: Subscription[] = [];
+
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
+    private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
+    private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
+    private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+
+    this.submissionId = localStorage.getItem("submissionId");
+    this.fetchStartingInfo();
+    this.loadTableInfo();
+    this.ngOnInit();
+    setTimeout(() => this.data.updateData(false, 3, 2), 0);
+  }
+
+  ngOnInit(): void {
+    this.initializeForm();
+    this.returned = localStorage.getItem("returned");
+
+    if (this.rootFormGroup.form != null) {
+      this.rootFormGroup.form.addControl('infoStores', this.formStores);
+      this.edit = true;
+
+      if (this.returned == 'consult') {
+        this.formStores.disable();
+      }
+    } else {
+      this.chooseAddressV = true;
+      this.appComp.updateNavBar("Adicionar Loja")
+      this.stroreId = Number(this.router.snapshot.params['stroreid']);
+      this.subscription = this.data.currentData.subscribe(map => this.map = map);
+      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
+  }
+
   fetchStartingInfo() {
     this.clientService.GetClientById(this.submissionId).subscribe(client => {
 
@@ -283,44 +322,6 @@ export class AddStoreComponent implements OnInit {
     this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
     })
-  }
-
-  public subs: Subscription[] = [];
-
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
-    private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
-    private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
-    private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
-
-    this.submissionId = localStorage.getItem("submissionId");
-    this.fetchStartingInfo();
-    this.loadTableInfo();
-    setTimeout(() => this.data.updateData(false, 3, 2), 0);
-  }
-
-  ngOnInit(): void {
-    this.initializeForm();
-    this.returned = localStorage.getItem("returned");
-
-    if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('infoStores', this.formStores);
-      this.edit = true;
-
-      if (this.returned == 'consult') {
-        this.formStores.disable();
-      }
-    } else {
-      this.chooseAddressV = true;
-      this.appComp.updateNavBar("Adicionar Loja")
-      this.stroreId = Number(this.router.snapshot.params['stroreid']);
-      this.subscription = this.data.currentData.subscribe(map => this.map = map);
-      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   //When canceling the create new store feature the user must navigate back to store list
