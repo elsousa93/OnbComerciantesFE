@@ -41,6 +41,9 @@ export class QueuesDetailComponent implements OnInit{
   public result: any;
 
   public fillComments: string;
+  public enrollmentMerchantNumber: string;
+  public enrollmentStoreNumber: string;
+  public enrollmentTerminalNumber: string;
 
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService,

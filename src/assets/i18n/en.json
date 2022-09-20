@@ -409,7 +409,13 @@
     "return": "Return",
     "functionalityType": "Functionality Type",
     "subFunctionality": "Sub-Functionality Type",
-    "concludeMCC": "Conclude MCC Association"
+    "concludeMCC": "Conclude MCC Association",
+    "merchantName": "Merchant's Name",
+    "enrollmentMerchantNumber": "Merchant's Enrollment Number",
+    "storeName": "Store's Name",
+    "enrollmentStoreNumber": "Store's Enrollment Number",
+    "enrollmentTerminalNumber": "Terminal's Enrollment Number",
+    "conclude": "Conclude"
   },
   "generalKeywords": {
     "yes": "Yes",

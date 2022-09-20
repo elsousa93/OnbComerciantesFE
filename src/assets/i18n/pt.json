@@ -410,7 +410,14 @@
     "return": "Devolver",
     "functionalityType": "Tipo de Funcionalidade",
     "subFunctionality": "Tipo de Sub - Funcionalidade",
-    "concludeMCC": "Concluir Associação MCC"
+    "concludeMCC": "Concluir Associação MCC",
+    "merchantName":"Nome do Comerciante",
+    "enrollmentMerchantNumber": "Nº de Matrícula Cliente Empresa",
+    "storeName": "Nome de Loja",
+    "enrollmentStoreNumber": "Nº Matrícula de Loja",
+    "enrollmentTerminalNumber": "Nº de Matricula do terminal",
+    "conclude": "Concluir"
+
   },
   "generalKeywords": {
     "yes": "Sim",
