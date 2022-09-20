@@ -3,7 +3,7 @@ import { Component, Host, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Istore, ShopActivities, ShopSubActivities, ShopDetailsAcquiring, ShopDetailsOutbound } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { CountryInformation, ShoppingCenter } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
@@ -231,6 +231,7 @@ export class AddStoreComponent implements OnInit {
   public idisabledContact: boolean = false;
 
   activities: ShopActivities[] = [];
+  subzonesShopping: ShoppingCenter[] = [];
 
   returned: string;
 
@@ -303,7 +304,7 @@ export class AddStoreComponent implements OnInit {
       this.updateForm();
     });
 
-    this.subs.push(this.storeService.GetAllShopActivities().subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       this.activities = result;
     }, error => {
@@ -562,6 +563,16 @@ export class AddStoreComponent implements OnInit {
     this.isComercialCentreStore = isCentre;
     if (isCentre)
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
+      if (this.chooseAddressV){
+        //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
+        this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore']).subscribe(result => {
+          this.logger.debug(result);
+          this.subzonesShopping = result;
+        }, error => {
+          this.logger.debug("Deu erro");
+        }));
+      }
+
     else
       this.formStores.get('subZoneStore').setValidators(null);
   }

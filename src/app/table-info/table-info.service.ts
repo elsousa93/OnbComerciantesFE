@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
+import { ShopBankingInformation } from '../store/IStore.interface';
 import { Address, CorporateRelations, CountryInformation, DocumentSearchType, EconomicActivityInformation, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
@@ -162,6 +163,16 @@ export class TableInfoService {
     return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
+    GetBanks(): any{
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShopBankingInformation>(this.acquiringUrl + 'bank', HTTP_OPTIONS);
+  }
+
   GetAllPEPTypes() {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
@@ -220,6 +231,16 @@ export class TableInfoService {
       }),
     }
     return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3, HTTP_OPTIONS);
+  }
+
+  GetShoppingByZipCode(cp: number) {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'address/' + cp + '/shoppingcenter', HTTP_OPTIONS);
   }
 
   GetAddressByZipCodeTeste(cp4: number, cp3: number): Promise<TreatedResponse<Address>> {

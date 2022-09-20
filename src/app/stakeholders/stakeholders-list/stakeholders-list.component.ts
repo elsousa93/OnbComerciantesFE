@@ -154,6 +154,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     this.stakesMat.sort = this.sort;
   }
 
+  reloadCurrentRoute() {
+    let currentRoute = [this.route.url];
+    this.route.navigate(currentRoute, {skipLocationChange: true}).then(() => {
+      this.route.navigate(currentRoute, {queryParamsHandling: "preserve", skipLocationChange: true});
+    });
+}
+
   removeStakeholder(stakeholder) {
     console.log("stakeholder a remover: ", stakeholder);
     this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
@@ -162,7 +169,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
       console.log("error: ", error);
     });
 
-    window.location.reload();
+    this.reloadCurrentRoute();
+    
   }
-
+  
 }

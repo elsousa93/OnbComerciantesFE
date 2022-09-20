@@ -102,16 +102,6 @@ export class StoreService {
     return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
-  GetBanks(): any{
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-    return this.http.get<ShopBankingInformation>(this.acquiringUrl + 'bank', HTTP_OPTIONS);
-  }
-
   GetAllShopProducts() {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
