@@ -93,7 +93,7 @@
                 </div>
 
                 <!-- Tabela semelhante nas filas Elegibilidade e Risco -->
-                <div *ngIf="queueName!=='compliance' && queueName !== 'multipleClients' && queueName !== 'negotiationAproval' && queueName !== 'MCCTreatment' && queueName !== 'DOValidation' "
+                <div *ngIf="queueName!=='compliance' && queueName !== 'multipleClients' && queueName !== 'negotiationAproval' && queueName !== 'MCCTreatment' && queueName !== 'DOValidation' && queueName!=='validationSIBS'"
                   class="row mt-0 ms-0 me-0 pt-0">
                   <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                     <div class="table-responsive mb-5 pb-4">
@@ -279,7 +279,7 @@
                               </thead>
                               <tbody>
                                   <tr>
-                                      <td class="text-primary text-center">SIM
+                                      <td class="text-primary text-center">EMPRESA TESTE UNIPESSOAL LDA
                                       </td>
                                       <td class="text-primary text-center" [(ngModel)]="enrollmentMerchantNumber">
                                         <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm"/>
@@ -468,7 +468,7 @@
                             style="height: 25px !important; vertical-align: sub;">
                         </button>
 
-                        <button id="btn5a2" *ngIf="queueName === 'validationSIBS'" [disabled]="(!(enrollmentMerchantNumber?.length > 0) && !(enrollmentStoreNumber?.length > 0) && !(enrollmentTerminalNumber?.length > 0))"
+                        <button id="btn5a2" *ngIf="queueName === 'validationSIBS'" [disabled]="(!(enrollmentMerchantNumber?.length > 0) || !(enrollmentStoreNumber?.length > 0) || !(enrollmentTerminalNumber?.length > 0))"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.conclude'|translate|uppercase}}&nbsp;
                         </button>
