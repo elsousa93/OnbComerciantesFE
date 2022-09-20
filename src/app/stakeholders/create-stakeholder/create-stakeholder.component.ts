@@ -17,6 +17,7 @@ import { Configuration, configurationToken } from '../../configuration';
 
 import { readCC } from '../../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../../citizencard/CitizenCardController.js';
+import { ClearCCFields } from '../../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../../citizencard/ICCInfo.interface';
 import { dataCC } from '../../citizencard/dataCC.interface';
 
@@ -61,6 +62,7 @@ export class CreateStakeholderComponent implements OnInit {
     signatureCC: null,
     addressCC: null,
     postalCodeCC: null,
+    localityCC: null, 
     countryCC: null
   };
   public prettyPDF: FileAndDetailsCC = null;
@@ -74,16 +76,19 @@ export class CreateStakeholderComponent implements OnInit {
   public addressCC = null;
   public postalCodeCC = null;
   public countryCC = null;
+  public localityCC = null;
 
   public okCC = false;
   public dadosCC: Array<string> = []; //apagar
   public addressReading = null;
   //---- Cartão de Cidadao - funcoes -----
   callreadCC() {
+    ClearCCFields();
     readCC(this.SetNewCCData.bind(this));
     this.setOkCC();
   }
   callreadCCAddress() {
+    ClearCCFields();
     readCCAddress(this.SetNewCCData.bind(this));
     this.setOkCC();
   }
@@ -105,7 +110,7 @@ export class CreateStakeholderComponent implements OnInit {
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
-    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, locality, country, countryIssuer) {
 
     console.log("Name: ", name);
 
@@ -114,6 +119,7 @@ export class CreateStakeholderComponent implements OnInit {
     // this.birthDateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
     this.dataCCcontents.nifCC = nif;
+    this.dataCCcontents.localityCC = locality;
     this.dataCCcontents.countryCC = country;
     this.countryCC = countryIssuer; //HTML
 
@@ -397,14 +403,7 @@ export class CreateStakeholderComponent implements OnInit {
     this.route.navigate(['stakeholders']);
   }
 
-  onClickNew() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        isCC: this.isCC
-      }
-    };
-    this.route.navigate(['/add-stakeholder'], navigationExtras);
-  }
+
 
   onClickEdit(fiscalId) {
     this.route.navigate(['/update-stakeholder/', fiscalId]);
@@ -545,23 +544,37 @@ export class CreateStakeholderComponent implements OnInit {
   addStakeholderWithCC() {
     //Colocar comprovativo do CC na Submissao 
     this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
+    this.isCC = true;
 
     var stakeholderToInsert: IStakeholders = {
       "fiscalId": this.dataCCcontents.nifCC,
       "fullName": this.dataCCcontents.nameCC,
       "shortName": this.dataCCcontents.nameCC,
        "identificationDocument": {
-        "type": "CC",           //FIXME
+         "type": null,           //FIXME "CC"
          "number": this.dataCCcontents.cardNumberCC,
          "country": this.dataCCcontents.countryCC,
          "expirationDate": this.dataCCcontents.expiricyDateCC,
          "checkDigit": null     //FIXME
       },
+      "fiscalAddress": {
+        "address": this.dataCCcontents.addressCC,
+        "postalCode": this.dataCCcontents.postalCodeCC,
+        "postalArea": this.dataCCcontents.localityCC,
+        "country": this.dataCCcontents.countryCC,
+      },
       "phone1": {},
       "phone2": {}
     }
+
+    let navigationExtras: NavigationExtras = {
+      state: {
+        isCC: this.isCC
+      }
+    };
+
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-      this.route.navigate(['/stakeholders/']);
+      this.route.navigate(['/stakeholders/']); //antes: stakeholders
     }, error => {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });

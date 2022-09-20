@@ -32,7 +32,7 @@ export class NewStakeholderComponent implements OnInit {
   private baseUrl: string;
   public foo = 0;
   public displayValueSearch = "";
-  isSelected = false;
+  isSelected = true; //changed
 
   allStakeholdersComprovativos = {};
 
@@ -73,9 +73,9 @@ export class NewStakeholderComponent implements OnInit {
     identificationDocument: {
       type: "",
       number: "",
-      country: {
-        code: ""
-      },
+      country: "",
+      code: ""
+      
     },
     fiscalAddress: {
       address: "",
@@ -119,7 +119,6 @@ export class NewStakeholderComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration, private route: Router, private fb: FormBuilder,
     private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService,
@@ -150,13 +149,8 @@ export class NewStakeholderComponent implements OnInit {
         });
       });
     }
-
+    this.updateForm(null); console.log("Update Form: Done");
     console.log("submissionId: ", this.submissionId);
-
-  
-
-    
-
     //this.currentStakeholder = {
     //  fiscalId: '162243839',
     //  id: '1032',
@@ -185,6 +179,7 @@ export class NewStakeholderComponent implements OnInit {
     //  this.stakeholderNumber = this.route.getCurrentNavigation().extras.state["stakeholderNumber"];
     //}
   }
+
   getStakeFunction() {
   this.stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
@@ -207,7 +202,6 @@ export class NewStakeholderComponent implements OnInit {
       console.log("Erro na Get All: ", error);
     });
  }
-
 
   isStakeholderFromCC(stakeholder) {
     this.selectedStakeholderIsFromCC = false;
@@ -244,20 +238,14 @@ export class NewStakeholderComponent implements OnInit {
     //this.initializeFormWithoutCC();
     if (this.returned !== null) {
       if (this.currentStakeholder.stakeholderAcquiring.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring.identificationDocument != null) {
-        //if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.number == '004') {
-        //  this.logger.debug('ENtrou cartão de cidadão');
-        //  this.createFormCC();// mudei a ordem
-        //  this.validateCC(true);
-        //} else {
-        //  this.initializeFormWithoutCC();
-        //  this.validateCC(false);
-        //}
-
-
-        //this.logger.debug('ENtrou cartão de cidadão');
-        //  this.createFormCC();// mudei a ordem
-        //  this.validateCC(true);
-
+        if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.number == '004') {
+          this.logger.debug('Entrou cartão de cidadão');
+          this.createFormCC();// mudei a ordem
+          this.validateCC(true);
+        } else {
+          this.initializeFormWithoutCC();
+          this.validateCC(false);
+        }
         this.initializeFormWithoutCC();
         this.validateCC(false);
       } else {
@@ -283,7 +271,6 @@ export class NewStakeholderComponent implements OnInit {
     this.GetCountryByZipCode();
   }
 
-
   ngOnInit(): void {
     this.data.updateData(false,2,2);
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
@@ -298,7 +285,7 @@ export class NewStakeholderComponent implements OnInit {
 
     //this.formNewStakeholder.get('flagRecolhaEletronica').setValue(this.showYesCC);
     if (this.showYesCC) {
-      this.flagRecolhaEletronica = this.showYesCC;
+      this.flagRecolhaEletronica = true;
     }
   }
 
@@ -315,7 +302,7 @@ export class NewStakeholderComponent implements OnInit {
       documentType: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.type : ''),
       identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.country : ''),
       identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate, 'dd-MM-yyyy') : ''),
-      identificationDocumentId: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.number : ''),
+      identificationDocumentId: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.number : 'THIS'),
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder.stakeholderAcquiring.isProxy !== undefined ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : false, Validators.required),
     });
@@ -409,8 +396,6 @@ export class NewStakeholderComponent implements OnInit {
       this.showYesCC = false;
       this.showNoCC = true;
     }
-
-
   }
 
   selectCC() {
@@ -425,7 +410,6 @@ export class NewStakeholderComponent implements OnInit {
       }
     }, error => console.error("error"));
   }
-
 
   getAll() {
     return this.tableData.GetAllCountries();
@@ -476,9 +460,9 @@ export class NewStakeholderComponent implements OnInit {
     if (currentCountry === 'PT') {
       this.lockLocality = true;
       
-      if (zipcode.length >= 8) {
+      if (zipcode != null && zipcode.length >= 8) {
         var zipCode = zipcode.split('-');
-
+                     
         this.subs.push(this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
 
           var addressToShow = address[0];

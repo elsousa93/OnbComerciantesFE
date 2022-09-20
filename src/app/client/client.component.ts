@@ -82,6 +82,7 @@ export class ClientComponent implements OnInit {
     signatureCC: null,
     addressCC: null,
     postalCodeCC: null,
+    localityCC: null,
     countryCC: null
   };
   public prettyPDF: FileAndDetailsCC = null;
@@ -95,6 +96,7 @@ export class ClientComponent implements OnInit {
   public addressCC = null;
   public postalCodeCC = null;
   public countryCC = null;
+  public localityCC = null;
 
   public okCC = false;
   public dadosCC: Array<string> = []; //apagar
@@ -125,7 +127,7 @@ export class ClientComponent implements OnInit {
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
-    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, locality, country, countryIssuer) {
 
 
     this.dataCCcontents.nameCC = name;
@@ -133,6 +135,7 @@ export class ClientComponent implements OnInit {
     // this.birthDateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
     this.dataCCcontents.nifCC = nif;
+    this.dataCCcontents.localityCC = locality;
     this.dataCCcontents.countryCC = country;
     this.countryCC = countryIssuer; //HTML
 
@@ -715,7 +718,7 @@ export class ClientComponent implements OnInit {
     this.BlockDocumentNumber = readable;
   }
 
-  //Modal que questiona se tem o PIN da Morada -- APAGAR
+  //Modal que questiona se tem o PIN da Morada 
   launchNewModal() {
     this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
     this.newModal.result.then(function (result: boolean): void {
