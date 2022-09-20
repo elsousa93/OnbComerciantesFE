@@ -109,7 +109,7 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   openProcess(process) {
-    if (process!==null) {
+    if (process!=="") {
           this.logger.debug("Opening process: " + process);
     var encodedCode = encodeURIComponent(process);
     localStorage.setItem("processNumber", process);

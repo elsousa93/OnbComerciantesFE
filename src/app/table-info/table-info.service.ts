@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
-import { ShopBankingInformation } from '../store/IStore.interface';
+import { Bank, ShopBankingInformation } from '../store/IStore.interface';
 import { Address, CorporateRelations, CountryInformation, DocumentSearchType, EconomicActivityInformation, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
@@ -170,7 +170,7 @@ export class TableInfoService {
 
       }),
     }
-    return this.http.get<ShopBankingInformation>(this.acquiringUrl + 'bank', HTTP_OPTIONS);
+    return this.http.get<Bank>(this.acquiringUrl + 'bank', HTTP_OPTIONS);
   }
 
   GetAllPEPTypes() {

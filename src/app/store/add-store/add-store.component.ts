@@ -565,7 +565,7 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
       if (this.chooseAddressV){
         //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
-        this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore']).subscribe(result => {
+        this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
           this.logger.debug(result);
           this.subzonesShopping = result;
         }, error => {

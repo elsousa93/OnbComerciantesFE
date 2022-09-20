@@ -124,6 +124,11 @@ interface ShopBank {
   bank?: ShopBankingInformation
 }
 
+export interface Bank {
+  code?: string
+  description?: string
+}
+
 interface ShopDocuments {
   id?: string
   type?: string
