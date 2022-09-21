@@ -32,7 +32,7 @@ export class NewStakeholderComponent implements OnInit {
   private baseUrl: string;
   public foo = 0;
   public displayValueSearch = "";
-  isSelected = true; //changed
+  isSelected = false; 
 
   allStakeholdersComprovativos = {};
 
