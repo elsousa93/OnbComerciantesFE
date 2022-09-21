@@ -120,7 +120,7 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.dataCCcontents.localityCC == null) {
       this.dataCCcontents.localityCC = '';
     }
-    this.dataCCcontents.countryCC = "PT";
+    this.dataCCcontents.countryCC = "República Portuguesa";
     this.countryCC = "República Portuguesa";
     console.log("Data CC Contents Simul: ", this.dataCCcontents);
   }
