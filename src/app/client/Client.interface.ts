@@ -61,6 +61,7 @@ export interface AcquiringClientPost {
 
 export interface Client {
   id?: string,
+  merchantId?: string
   fiscalId?: string,
   legalName?: string,
   shortName?: string,
