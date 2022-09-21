@@ -1,6 +1,6 @@
 import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Istore, ShopDetailsAcquiring, ShopsListOutbound } from '../IStore.interface';
+import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring, ShopsListOutbound } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { fromEvent, map, Observable, Subscription } from 'rxjs';
@@ -17,6 +17,7 @@ import { MatSort } from '@angular/material/sort';
 import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { StoreTableComponent } from '../store-table/store-table.component';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
 
 interface Stores {
   storeName: string;
@@ -164,7 +165,7 @@ const testValues: ShopDetailsAcquiring[] = [
   templateUrl: './store-list.component.html',
   styleUrls: ['./store-list.component.css']
 })
-export class StoreComponent implements AfterViewInit{
+export class StoreComponent implements AfterViewInit {
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
@@ -207,39 +208,38 @@ export class StoreComponent implements AfterViewInit{
     //this.storesMat.sort = this.sort;
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef)
-  {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
     this.baseUrl = configuration.baseUrl;
-     
+
     this.ngOnInit();
 
     this.editStores = this.formBuilder.group({
-      infoStores : this.formBuilder.group({
-        "storeName" : [''],
-        "activityStores" : [''],
-        "subZoneStore" : [''],
-        "contactPoint" : [''],
-        "subactivityStore" : [''],
-        "localeStore" : [''],
-        "addressStore" : [''],
-        "countryStore" : [''],
-        "zipCodeStore" : [''],
-        "commercialCenter" : [''],
-        "replicateAddress" : ['']
+      infoStores: this.formBuilder.group({
+        "storeName": [''],
+        "activityStores": [''],
+        "subZoneStore": [''],
+        "contactPoint": [''],
+        "subactivityStore": [''],
+        "localeStore": [''],
+        "addressStore": [''],
+        "countryStore": [''],
+        "zipCodeStore": [''],
+        "commercialCenter": [''],
+        "replicateAddress": ['']
       }),
-      bankStores : this.formBuilder.group({
-        "supportBank" : [''],
-        "bankInformation" : [''],
+      bankStores: this.formBuilder.group({
+        "supportBank": [''],
+        "bankInformation": [''],
       }),
-      productStores : this.formBuilder.group({
-        "solutionType" : [''],
-        "subProduct" : [''],
+      productStores: this.formBuilder.group({
+        "solutionType": [''],
+        "subProduct": [''],
       })
     });
 
     this.data.updateData(false, 3, 1);
   }
-  
+
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -253,13 +253,20 @@ export class StoreComponent implements AfterViewInit{
   }
 
   selectStore(info) {
-    this.currentStore = info.store;
-    this.currentIdx = info.idx;
-    setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
+    if (info !== null) {
+      this.currentStore = info.store;
+      this.currentIdx = info.idx;
+      setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
+    }
   }
 
-  addStore(){
+
+  addStore() {
     this.currentStore = new ShopDetailsAcquiring();
+    this.currentStore.address = new ShopAddressAcquiring();
+    this.currentStore.address.address = new FiscalAddress();
+    this.currentStore.bank = new ShopBank();
+    this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
   }
 
@@ -303,22 +310,22 @@ export class StoreComponent implements AfterViewInit{
       var infoStores = this.editStores.get("infoStores");
 
       if (infoStores.get("replicateAddress").value) {
-       this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
-       this.currentStore.address.address.address = infoStores.get("addressStore").value;
-       this.currentStore.address.address.country = infoStores.get("countryStore").value;
-       this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+        this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
+        this.currentStore.address.address.address = infoStores.get("addressStore").value;
+        this.currentStore.address.address.country = infoStores.get("countryStore").value;
+        this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
       } else {
-       this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
-       this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
-       this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-       this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-       this.currentStore.address.useMerchantAddress = true;
+        this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
+        this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
+        this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+        this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+        this.currentStore.address.useMerchantAddress = true;
       }
 
       if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {
-       this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
+        this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
       } else {
-       this.currentStore.address.shoppingCenter = "";
+        this.currentStore.address.shoppingCenter = "";
       }
 
       this.currentStore.name = infoStores.get("storeName").value;
