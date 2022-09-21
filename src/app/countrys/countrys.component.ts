@@ -536,9 +536,9 @@ export class CountrysComponent implements OnInit {
             localStorage.setItem("submissionId", result.id);
             this.processNrService.changeProcessNumber(result.processNumber);
 
-            this.storeService.getShopsListOutbound(this.newSubmission.merchant.clientId, "por mudar", "por mudar").subscribe(res => {
+            this.storeService.getShopsListOutbound(this.newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
              res.forEach(value => {
-               this.storeService.getShopInfoOutbound(context.newSubmission.merchant.clientId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+               this.storeService.getShopInfoOutbound(context.newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
                  var storeToAdd: ShopDetailsAcquiring = {
                    activity: r.activity,
                    subActivity: r.secondaryActivity,

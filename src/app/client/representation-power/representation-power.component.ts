@@ -104,9 +104,7 @@ export class RepresentationPowerComponent implements OnInit {
               stakeholderOutbound: undefined
             }
 
-            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
-
-            context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+            context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").subscribe(outboundResult => {
               stakeholderToInsert.stakeholderOutbound = outboundResult;
               context.submissionStakeholders.push(stakeholderToInsert);
               

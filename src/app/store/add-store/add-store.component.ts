@@ -470,6 +470,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   GetCountryByZipCodeTest() {
+    this.subzonesShopping = null;
     var currentCountry = this.formStores.get('countryStore').value;
     this.logger.debug("Pais escolhido atual");
 
