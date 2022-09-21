@@ -80,10 +80,11 @@ export interface ShopProductPack {
   packId?: string
   packDetails?: ProductPackRootAttributeProductPackKind[]
   commission?: ShopProductPackCommission
+  processorId: string
 }
 
 interface ShopProductPackCommission {
-  comissionId?: string
+  commissionId?: string
   attributes?: ProductPackCommissionAttribute
 }
 
@@ -146,8 +147,8 @@ export interface ShopEquipment {
 }
 
 interface ShopProductPackPricingViewModel {
-  pricingId?: string
-  attributes?: ProductPackPricingAttribute[]
+  id?: string
+  attribute?: ProductPackPricingAttribute[]
 }
 
 export enum CommunicationOwnershipTypeEnum {

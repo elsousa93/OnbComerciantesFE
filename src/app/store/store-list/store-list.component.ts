@@ -63,12 +63,13 @@ const testValues: ShopDetailsAcquiring[] = [
         equipmentType: "A",
         quantity: 0,
         pricing: {
-          pricingId: "123",
-          attributes: [
+          id: "123",
+          attribute: [
             {
               id: "A",
               description: "A",
-              value: 1,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             }
@@ -78,6 +79,7 @@ const testValues: ShopDetailsAcquiring[] = [
     ],
     pack: {
       packId: "123",
+      processorId: "345",
       packDetails: [
         {
           id: "1234",
@@ -87,7 +89,8 @@ const testValues: ShopDetailsAcquiring[] = [
             {
               id: "1234",
               description: "AAA",
-              value: true,
+              originalValue: true,
+              finalValue: true,
               isReadOnly: true,
               isVisible: true,
               isSelected: true,
@@ -101,7 +104,8 @@ const testValues: ShopDetailsAcquiring[] = [
                     {
                       id: "B123",
                       description: "B123456",
-                      value: true,
+                      originalValue: true,
+                      finalValue: true,
                       isReadOnly: true,
                       isVisible: true,
                       isSelected: true,
@@ -115,27 +119,31 @@ const testValues: ShopDetailsAcquiring[] = [
         }
       ],
       commission: {
-        comissionId: "1",
+        commissionId: "1",
         attributes: {
           id: "",
           description: "A1",
           fixedValue: {
-            value: 1,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           maxValue: {
-            value: 2,
+            originalValue: 2,
+            finalValue: 2,
             isReadOnly: true,
             isVisible: true
           },
           minValue: {
-            value: 0,
+            originalValue: 0,
+            finalValue: 0,
             isReadOnly: true,
             isVisible: true
           },
           percentageValue: {
-            value: 1,
+            originalValue: 4,
+            finalValue: 4,
             isReadOnly: true,
             isVisible: true
           }
@@ -290,7 +298,7 @@ export class StoreComponent implements AfterViewInit{
     }
   }
 
-  submit() {
+  submit(addStore: boolean) {
     if (this.editStores.valid /*&& testValues.length > 0*/) {
       var infoStores = this.editStores.get("infoStores");
 
@@ -329,17 +337,19 @@ export class StoreComponent implements AfterViewInit{
       this.currentStore.subproductCode = productStores.get("subProduct").value;
       this.currentStore.website = productStores.get("url").value;
 
-      this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId, this.currentStore).subscribe(result => {
-       if (this.currentIdx < (this.storeList.length - 1)) {
-         this.currentIdx = this.currentIdx + 1;
-         this.selectStore(this.storeList[this.currentIdx]);
-       } else {
-         this.route.navigate(['comprovativos']);
-       }
-      });
+      if (addStore) {
+        this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
+          console.log('LOJA ADICIONADA ', result);
+        });
+      } else {
+        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId, this.currentStore).subscribe(result => {
+          console.log('LOJA EDITADA', result);
+        });
+      }
+
       if (this.currentIdx < (this.storeList.length - 1)) {
         this.currentStore = this.storeList[this.currentIdx + 1];
-        // this.currentIdx = this.currentIdx + 1;
+        this.currentIdx = this.currentIdx + 1;
         this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
         this.onActivate();
       } else {
@@ -347,7 +357,6 @@ export class StoreComponent implements AfterViewInit{
         this.route.navigate(['comprovativos']);
       }
     }
-
   }
 
   fetchStartingInfo() {

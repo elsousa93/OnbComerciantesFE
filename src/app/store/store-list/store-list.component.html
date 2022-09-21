@@ -93,7 +93,7 @@
 
           </div>
           <div style="margin-top: 30px;">
-          <button id="btn5a"  (click)="submit()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
+          <button id="btn5a" [disabled]="!editStores.valid" (click)="submit(true)" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
             {{(currentIdx === -1 ? 'stores.insert' : 'stores.edit')|translate|uppercase}}&nbsp;
             <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
           </button></div>
@@ -111,7 +111,7 @@
                 <img src="assets/images/arrow_back_ios_white.svg"
                      style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
-              <button (click)="submit()" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
+              <button (click)="submit(false)" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </span>
           </nav>
         </div>
