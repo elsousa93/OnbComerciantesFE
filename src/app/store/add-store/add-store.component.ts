@@ -276,7 +276,7 @@ export class AddStoreComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('infoStores', this.formStores);
+      this.rootFormGroup.form.setControl('infoStores', this.formStores);
       this.edit = true;
 
       if (this.returned == 'consult') {

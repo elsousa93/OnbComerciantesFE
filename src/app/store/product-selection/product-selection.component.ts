@@ -187,7 +187,7 @@ export class ProductSelectionComponent implements OnInit {
 
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('productStores', this.formStores);
+      this.rootFormGroup.form.setControl('productStores', this.formStores);
       this.edit = true;
       if (this.returned == 'consult') {
         this.formStores.disable();
