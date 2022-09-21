@@ -90,7 +90,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.baseUrl = configuration.baseUrl;
 
     this.ngOnInit();
-    
+
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
       this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"];
@@ -236,15 +236,15 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   getPackDetails() {
-    this.productPack = {
-      productCode: this.products.productCode
-      subproductCode: string
-      merchant: MerchantCatalog
-      store: StoreCatalog
-    }
-    this.COService.OutboundGetPacks().then(result => {
+  //   this.productPack = {
+  //     productCode: this.products.productCode
+  //     subproductCode: string
+  //     merchant: MerchantCatalog
+  //     store: StoreCatalog
+  //   }
+  //   this.COService.OutboundGetPacks().then(result => {
       
-    });
+  //   });
   }
 
   get productPackAttributesBrands() {
