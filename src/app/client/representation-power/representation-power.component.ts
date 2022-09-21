@@ -52,6 +52,7 @@ export class RepresentationPowerComponent implements OnInit {
     this.returned = localStorage.getItem('returned');
 
     this.ngOnInit();
+    this.getSubmissionStakeholders();
 
     if (this.router.getCurrentNavigation().extras.state) {
       this.clientExists = this.router.getCurrentNavigation().extras.state["clientExists"];

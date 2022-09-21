@@ -106,23 +106,15 @@
                </h2>
                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                   data-bs-parent="#accordionFlushExample">
-                  <!-- *ngFor="let pack of packsToShow" na div debaixo -->
-                 <div class="row ps-2" >
+                 <div class="row ps-2"  *ngFor="let product of products">
                    <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
                      <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
                        <span class="navbar-text">
                          <div class="form-check">
-                           <input class="form-check-input" type="radio" value="simple" id="radio3" formControlName="productPackKind" name="productPackKind">
-                           <label class="form-check-label radio pe-5" for="radio3"
-                                  wappler-command="editContent">{{'commercialOffer.traditional'|translate|uppercase}}</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text">
-                         <div class="form-check">
-                           <input class="form-check-input" type="radio" value="advanced" id="radio3" formControlName="productPackKind" name="productPackKind">
-                           <label class="form-check-label radio" for="radio3"
-                                  wappler-command="editContent">SMART</label>
+                           <input class="form-check-input" type="radio" value="product.code" id="radio3" formControlName="productPackKind" name="productPackKind">
+                           <label class="form-check-label radio pe-5" for="radio3" (click)="getPackDetails()"
+                                  wappler-command="editContent">{{product.name}}</label>
                          </div>
                        </span>
                      </nav>

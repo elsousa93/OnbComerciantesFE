@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { Product, ProductPackAttribute, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { Product, ProductPackAttribute, ProductPackFilter, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
@@ -69,6 +69,8 @@ export class CommercialOfferListComponent implements OnInit {
   public showMore: boolean;
   storesList: ShopDetailsAcquiring[];
 
+  productPack: ProductPackFilter;
+
   submissionId: string;
   processNumber: string;
 
@@ -86,6 +88,9 @@ export class CommercialOfferListComponent implements OnInit {
 
   constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService) {
     this.baseUrl = configuration.baseUrl;
+
+    this.ngOnInit();
+
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
       this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"];
@@ -133,12 +138,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.COService.OutboundGetProductsAvailable().then(result => {
       this.products = result.result;
     });
-
-    // this.COService.OutboundGetPacks(this.products.forEach).then(result => {
-    //   this.products = result;
-    // });
-
-
 
     this.data.updateData(false, 5, 1);
   }
@@ -234,6 +233,18 @@ export class CommercialOfferListComponent implements OnInit {
     // });
 
     console.log("form com os checkboxes: ", this.form);
+  }
+
+  getPackDetails() {
+  //   this.productPack = {
+  //     productCode: this.products.productCode
+  //     subproductCode: string
+  //     merchant: MerchantCatalog
+  //     store: StoreCatalog
+  //   }
+  //   this.COService.OutboundGetPacks().then(result => {
+      
+  //   });
   }
 
   get productPackAttributesBrands() {
