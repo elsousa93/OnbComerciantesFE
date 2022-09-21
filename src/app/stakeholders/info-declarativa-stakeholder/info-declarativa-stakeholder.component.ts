@@ -80,7 +80,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
     var context = this;
 
-    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
       result.forEach(function (value, index) {
         context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
           context.submissionStakeholders.push(res);
