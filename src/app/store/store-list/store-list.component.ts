@@ -256,7 +256,7 @@ export class StoreComponent implements AfterViewInit{
   }
 
   setFormData() {
-    var infoStores = this.editStores.get("infoStores");
+    var infoStores = this.editStores.controls["infoStores"];
     infoStores.get("storeName").setValue(this.currentStore.name);
     infoStores.get("activityStores").setValue(this.currentStore.activity);
     infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
@@ -338,12 +338,10 @@ export class StoreComponent implements AfterViewInit{
        }
       });
       if (this.currentIdx < (this.storeList.length - 1)) {
-
-    this.currentStore = this.storeList[this.currentIdx + 1];
-      // this.currentIdx = this.currentIdx + 1;
-   
-      this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
-      this.onActivate();
+        this.currentStore = this.storeList[this.currentIdx + 1];
+        // this.currentIdx = this.currentIdx + 1;
+        this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
+        this.onActivate();
       } else {
         this.data.updateData(true, 3);
         this.route.navigate(['comprovativos']);

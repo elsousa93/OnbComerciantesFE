@@ -55,7 +55,7 @@
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                    data-bs-parent="#accordionFlushExample">
-                <app-add-store [parentFormGroup] = "editStores.get('infoStores')"></app-add-store>
+                <app-add-store [parentFormGroup] = "editStores.get['infoStores']"></app-add-store>
               </div>
             </div>
 
@@ -93,7 +93,7 @@
 
           </div>
           <div style="margin-top: 30px;">
-          <button id="btn5a" [disabled]="!editStores.valid" (click)="submit()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
+          <button id="btn5a"  (click)="submit()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
             {{(currentIdx === -1 ? 'stores.insert' : 'stores.edit')|translate|uppercase}}&nbsp;
             <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
           </button></div>

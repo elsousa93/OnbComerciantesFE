@@ -248,7 +248,7 @@ export class StoreIbanComponent implements OnInit {
 
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('bankStores', this.formStores);
+      this.rootFormGroup.form.setControl('bankStores', this.formStores);
       this.edit = true;
       if (this.returned == 'consult') {
         this.formStores.disable();
