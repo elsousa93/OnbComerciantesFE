@@ -291,7 +291,7 @@ export class CommercialOfferListComponent implements OnInit {
     }
   }
 
-  // submit() {
+  submit() {
   //   if (this.returned != 'consult') {
   //     if (this.currentIdx < (testValues.length - 1)) {
   //       this.currentIdx = this.currentIdx + 1;
@@ -302,7 +302,7 @@ export class CommercialOfferListComponent implements OnInit {
   //       this.route.navigate(['info-declarativa']);
   //     }
   //   }
-  // }
+  }
 
   changeShowMore() {
     this.showMore = !this.showMore;
