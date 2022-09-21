@@ -1,6 +1,6 @@
 import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Istore, ShopAddressAcquiring, ShopDetailsAcquiring, ShopsListOutbound } from '../IStore.interface';
+import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring, ShopsListOutbound } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { fromEvent, map, Observable, Subscription } from 'rxjs';
@@ -255,6 +255,8 @@ export class StoreComponent implements AfterViewInit{
     this.currentStore = new ShopDetailsAcquiring();
     this.currentStore.address = new ShopAddressAcquiring();
     this.currentStore.address.address = new FiscalAddress();
+    this.currentStore.bank = new ShopBank();
+    this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
   }
 

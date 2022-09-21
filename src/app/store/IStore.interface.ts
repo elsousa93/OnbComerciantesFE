@@ -114,17 +114,17 @@ interface ShopPhone {
   phoneNumber?: string
 }
 
-export interface ShopBankingInformation {
-  iban?: string,
+export class ShopBankingInformation {
+  iban?: string
   bank?: string
 }
 
-interface ShopBank {
+export class ShopBank {
   userMerchantBank?: boolean
   bank?: ShopBankingInformation
 }
 
-export interface Bank {
+export class Bank {
   code?: string
   description?: string
 }
