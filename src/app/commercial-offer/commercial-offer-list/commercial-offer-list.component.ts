@@ -247,7 +247,7 @@ export class CommercialOfferListComponent implements OnInit {
   addAttributeToFormArray(attribute: ProductPackAttribute, formArray: FormArray) {
     if (attribute.isVisible) {
       formArray.push(new FormControl({
-        value: attribute.value,
+        value: attribute.originalValue,
         disabled: attribute.isReadOnly,
       }));
     }

@@ -89,7 +89,6 @@ export class StoreIbanComponent implements OnInit {
   banks: BankInformation[];
 
   public store: ShopDetailsAcquiring = {
-
     shopId: "1",
     name: "ShopName",
     manager: "Manager1",
@@ -127,12 +126,13 @@ export class StoreIbanComponent implements OnInit {
         equipmentType: "A",
         quantity: 0,
         pricing: {
-          pricingId: "123",
-          attributes: [
+          id: "123",
+          attribute: [
             {
               id: "A",
               description: "A",
-              value: 1,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             }
@@ -151,7 +151,8 @@ export class StoreIbanComponent implements OnInit {
             {
               id: "1234",
               description: "AAA",
-              value: true,
+              originalValue: true,
+              finalValue: true,
               isReadOnly: true,
               isVisible: true,
               isSelected: true,
@@ -165,7 +166,8 @@ export class StoreIbanComponent implements OnInit {
                     {
                       id: "B123",
                       description: "B123456",
-                      value: true,
+                      originalValue: true,
+                      finalValue: true,
                       isReadOnly: true,
                       isVisible: true,
                       isSelected: true,
@@ -179,27 +181,31 @@ export class StoreIbanComponent implements OnInit {
         }
       ],
       commission: {
-        comissionId: "1",
+        commissionId: "1",
         attributes: {
           id: "",
           description: "A1",
           fixedValue: {
-            value: 1,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           maxValue: {
-            value: 2,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           minValue: {
-            value: 0,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           percentageValue: {
-            value: 1,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           }

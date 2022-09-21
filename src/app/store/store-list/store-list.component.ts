@@ -338,10 +338,12 @@ export class StoreComponent implements AfterViewInit{
       this.currentStore.website = productStores.get("url").value;
 
       if (addStore) {
+        console.log('ADD');
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
         });
       } else {
+        console.log('EDIT');
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
         });
