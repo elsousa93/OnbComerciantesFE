@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { ProductPackAttribute, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { Product, ProductPackAttribute, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
@@ -52,7 +52,7 @@ export class CommercialOfferListComponent implements OnInit {
   public currentStore: ShopDetailsAcquiring = null;
   public currentIdx: number = 0;
 
-  public products: any;
+  public products: Product[];
 
   public isUnicre: boolean;
   public geographyChecked: boolean = false;
@@ -131,8 +131,13 @@ export class CommercialOfferListComponent implements OnInit {
     }
 
     this.COService.OutboundGetProductsAvailable().then(result => {
-      this.products = result;
+      this.products = result.result;
     });
+
+    // this.COService.OutboundGetPacks(this.products.forEach).then(result => {
+    //   this.products = result;
+    // });
+
 
 
     this.data.updateData(false, 5, 1);
