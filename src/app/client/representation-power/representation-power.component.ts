@@ -73,7 +73,7 @@ export class RepresentationPowerComponent implements OnInit {
     if (this.returned !== null) { 
       this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
             res.forEach(function (value, index) {
               context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
                 console.log("stakeholder: ", r);
