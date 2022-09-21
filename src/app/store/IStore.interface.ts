@@ -72,6 +72,7 @@ export class ShopDetailsAcquiring {
   product?: Product
   subProduct?: Subproduct 
   documents?: ShopDocuments
+  processorId?: string
 }
 
 //Interfaces auxiliares
@@ -121,7 +122,7 @@ export class ShopBankingInformation {
 }
 
 export class ShopBank {
-  userMerchantBank?: boolean
+  useMerchantBank?: boolean
   bank?: ShopBankingInformation
 }
 

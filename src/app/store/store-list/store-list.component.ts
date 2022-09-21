@@ -46,7 +46,7 @@ const testValues: ShopDetailsAcquiring[] = [
       shoppingCenter: "Shopping1"
     },
     bank: {
-      userMerchantBank: true,
+      useMerchantBank: true,
       bank: {
         bank: "Bank",
         iban: "12345"
@@ -286,7 +286,7 @@ export class StoreComponent implements AfterViewInit {
 
     var bankStores = this.editStores.controls["bankStores"];
     bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
-    bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
+    bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
 
 
     var productStores = this.editStores.controls["productStores"];
@@ -314,6 +314,7 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.address.address.address = infoStores.get("addressStore").value;
         this.currentStore.address.address.country = infoStores.get("countryStore").value;
         this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+        this.currentStore.address.useMerchantAddress = false;
       } else {
         this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
         this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
@@ -322,10 +323,12 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.address.useMerchantAddress = true;
       }
 
-      if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {
+      if (infoStores.get("commercialCenter").value) {
         this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
+        this.currentStore.address.isInsideShoppingCenter = true;
       } else {
         this.currentStore.address.shoppingCenter = "";
+        this.currentStore.address.isInsideShoppingCenter = false;
       }
 
       this.currentStore.name = infoStores.get("storeName").value;
@@ -336,13 +339,16 @@ export class StoreComponent implements AfterViewInit {
       var bankStores = this.editStores.controls["bankStores"];
 
       this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
-      this.currentStore.bank.userMerchantBank = bankStores.get("bankInformation").value;
+      this.currentStore.bank.useMerchantBank = bankStores.get("bankInformation").value;
+      this.currentStore.bank.bank.iban = "";
 
       var productStores = this.editStores.controls["productStores"];
 
       this.currentStore.productCode = productStores.get("solutionType").value;
       this.currentStore.subproductCode = productStores.get("subProduct").value;
       this.currentStore.website = productStores.get("url").value;
+
+      this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER; //de momento vou deixar este valor, não sei qual a condição para ser este valor ou outro
 
       if (addStore) {
         console.log('ADD');
@@ -358,7 +364,7 @@ export class StoreComponent implements AfterViewInit {
 
       if (this.currentIdx < (this.storeList.length - 1)) {
         this.currentStore = this.storeList[this.currentIdx + 1];
-        this.currentIdx = this.currentIdx + 1;
+        //this.currentIdx = this.currentIdx + 1;
         this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
         this.onActivate();
       } else {
