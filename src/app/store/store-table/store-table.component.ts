@@ -212,7 +212,6 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getStoreList() {
-
     //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
     this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
      result.forEach(value => {
@@ -238,7 +237,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
        })
      });
     }
-    this.loadStores();
+    //this.loadStores(this.storesList);
   }
 
   emitSelectedStore(store, idx) {
@@ -249,7 +248,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     console.log('Index ', this.currentIdx);
   }
 
-  loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
+  loadStores(storesValues: ShopDetailsAcquiring[]) {
     this.storesMat = new MatTableDataSource(storesValues);
     this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;

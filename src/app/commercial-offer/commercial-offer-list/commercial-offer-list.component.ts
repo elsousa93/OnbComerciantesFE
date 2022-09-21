@@ -115,7 +115,7 @@ export class CommercialOfferListComponent implements OnInit {
     });
 
     //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
-    if (this.returned !== null) {
+    if (this.returned != null) {
      this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
        this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
          resul.forEach(val => {
