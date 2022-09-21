@@ -59,6 +59,7 @@ export class TableInfoService {
       headers: new HttpHeaders({
         'Request-Id': requestId,
         'X-Acquiring-UserId': AcquiringUserId,
+        'Accept-Language': this.currentLanguage,
       }),
     }
 

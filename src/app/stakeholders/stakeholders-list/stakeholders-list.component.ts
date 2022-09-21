@@ -155,10 +155,11 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   }
 
   reloadCurrentRoute() {
-    let currentRoute = [this.route.url];
-    this.route.navigate(currentRoute, {skipLocationChange: true}).then(() => {
-      this.route.navigate(currentRoute, {queryParamsHandling: "preserve", skipLocationChange: true});
+    let currentRoute = this.route.url;
+    this.route.navigateByUrl(currentRoute, {skipLocationChange: true}).then(() => {
+      this.route.navigate([currentRoute]);
     });
+
 }
 
   removeStakeholder(stakeholder) {

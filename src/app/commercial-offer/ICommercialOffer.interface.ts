@@ -24,14 +24,13 @@ export interface ICommercialOffer {
 
 export interface Product {
   productCode?: string
-  productDescription?: string
+  productName?: string
   subProducts?: Subproduct[]
 }
 
 export interface Subproduct{
   subProductCode?: string
-  subProductDescription?: string
-  fullCode: string
+  subProductName?: string
 }
 
 export interface ProductPackFilter {
@@ -44,6 +43,7 @@ export interface ProductPackFilter {
 export interface MerchantCatalog {
   fiscalIdentification?: FiscalIdentification
   context?: MerchantContextEnum
+  contextId?: string
 }
 
 interface StoreCatalog {
@@ -54,6 +54,14 @@ interface StoreCatalog {
   supportEntity?: TerminalSupportEntityEnum
 }
 
+interface EquipmentCatalog {
+  equipmentOwnership?: EquipmentOwnershipTypeEnum
+  communicationOwnership?: CommunicationOwnershipTypeEnum
+  equipmentType?: string
+  communicationType?: string
+  quantity?: number
+}
+
 interface FiscalIdentification {
   fiscalId?: string
   issuerCountry?: string
@@ -62,6 +70,7 @@ interface FiscalIdentification {
 export interface ProductPackEntry {
   id?: string
   description?: string
+  processors?: [string]
 }
 
 export interface ProductPack {
@@ -82,7 +91,7 @@ interface ProductPackRootAttribute {
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
- // aggregatorId?: string
+  aggregatorId?: string
   order?: number
   bundles?: ProductPackAttributeProductPackKind[]
 }
@@ -108,9 +117,10 @@ export interface ProductPackAttribute {
 export interface ProductPackPricingFilter {
   productCode?: string
   subproductCode?: string
+  processorId?: string
   merchant?: MerchantCatalog
   store?: StoreCatalog
-
+  equipment?: EquipmentCatalog
   packAttributes?: ProductPackRootAttributeProductPackKind[]
 }
 

@@ -522,7 +522,6 @@ export class AddStoreComponent implements OnInit {
   }
 
   initializeForm() {
-    var storename = '';
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
       activityStores: new FormControl((this.returned !== null) ? this.store.activity : '', [Validators.required]),
