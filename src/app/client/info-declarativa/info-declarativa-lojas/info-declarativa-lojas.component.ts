@@ -38,7 +38,7 @@ const testValues: ShopDetailsAcquiring[] = [
       shoppingCenter: "Shopping1"
     },
     bank: {
-      userMerchantBank: true,
+      useMerchantBank: true,
       bank: {
         bank: "Bank",
         iban: "12345"

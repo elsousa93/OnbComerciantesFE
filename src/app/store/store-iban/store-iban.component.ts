@@ -108,7 +108,7 @@ export class StoreIbanComponent implements OnInit {
       shoppingCenter: "Shopping1"
     },
     bank: {
-      userMerchantBank: true,
+      useMerchantBank: true,
       bank: {
         bank: "Bank",
         iban: "12345"
@@ -281,7 +281,7 @@ export class StoreIbanComponent implements OnInit {
   }
 
   submit() {
-    this.store.bank.userMerchantBank = this.formStores.get("bankInformation").value;
+    this.store.bank.useMerchantBank = this.formStores.get("bankInformation").value;
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
 
     var navigationExtras: NavigationExtras = {
@@ -329,7 +329,7 @@ export class StoreIbanComponent implements OnInit {
   initializeForm() {
     this.formStores = new FormGroup({
       supportBank: new FormControl((this.store.bank !== null && this.store.bank.bank) ? this.store.bank.bank.bank : '', Validators.required),
-      bankInformation: new FormControl((this.store.bank.userMerchantBank !== null) ? this.store.bank.userMerchantBank : '', Validators.required),
+      bankInformation: new FormControl((this.store.bank.useMerchantBank !== null) ? this.store.bank.useMerchantBank : '', Validators.required),
     });
   }
 
