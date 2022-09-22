@@ -454,5 +454,10 @@
     "cookies": "Política de Cookies",
     "privacy": "Política de Privacidade",
     "contacts": "Contactos de Suporte"
+  },
+  "errorMessages": {
+    "bothFieldsPhone": "Necessário preencher os dois campos",
+    "invalidPhone": "O número de telefone é inválido",
+    "isRequired": "Obrigatório"
   }
 }

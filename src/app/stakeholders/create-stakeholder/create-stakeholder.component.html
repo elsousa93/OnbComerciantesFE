@@ -21,7 +21,7 @@
       </app-stakeholders-list>
     </div>
 
-    <div class="offset-1 bg-white center-align col-10 ps-3">
+    <div class="offset-1 bg-white center-align col-10 ps-3 mt-0 ms-0">
       <h2 class="text-primary mt-5 ps-0 center-align">
         <span class="material-symbols-rounded icon-titulos m-align">
           <img src="assets/images/group_add_blue.svg" class="img_add">
@@ -105,7 +105,7 @@
         </div>
       </form>
       <form [formGroup]="formNewStakeholder">
-        <div *ngIf="isShown" class="row container-fluid" id="divshow">
+        <div *ngIf="isShown" class="row container-fluid" id="divshow" style="padding-left: 0px;">
           <app-search-stakeholders [clientID]="this.testEvent" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
           <!--<table class="table table-success" *ngIf="foundStakeholders">
             <thead class="text-primary table-primary">
