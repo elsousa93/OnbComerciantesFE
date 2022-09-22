@@ -13,10 +13,11 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { Product, ProductPackAttribute, ProductPackFilter, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { MerchantCatalog, MerchantContextEnum, Product, ProductPackAttribute, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackKindEnum, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
+import { ClientService } from '../../client/client.service';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -69,7 +70,12 @@ export class CommercialOfferListComponent implements OnInit {
   public showMore: boolean;
   storesList: ShopDetailsAcquiring[];
 
+  merchantCatalog: MerchantCatalog;
   productPack: ProductPackFilter;
+  groupsList: ProductPackRootAttributeProductPackKind[] = [];
+  commissionOptions: ProductPackPricingEntry[] = [];
+  commissionFilter: ProductPackCommissionFilter;
+  commissionAttributeList: ProductPackCommissionAttribute[] = [];
 
   submissionId: string;
   processNumber: string;
@@ -86,7 +92,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService) {
+  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.baseUrl = configuration.baseUrl;
 
     this.ngOnInit();
@@ -137,6 +143,17 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.COService.OutboundGetProductsAvailable().then(result => {
       this.products = result.result;
+    });
+
+    this.clientService.GetClientById(this.submissionId).subscribe(result => {
+      this.merchantCatalog = {
+        context: result.context,
+        contextId: result.contextId,
+        fiscalIdentification: {
+          fiscalId: result.fiscalIdentification.fiscalId,
+          issuerCountry: result.fiscalIdentification.issuerCountry
+        }
+      }
     });
 
     this.data.updateData(false, 5, 1);
@@ -190,86 +207,105 @@ export class CommercialOfferListComponent implements OnInit {
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
       terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
-      
-      //productPackAttributes: new FormGroup({
-      //  productPackAttributesBrands: new FormArray([]),
-      //  productPackAttributesBundles: new FormArray([]),
-      //  productPackAttributesAddInfo: new FormArray([])
-      //}),
-
     });
+  }
 
+  addFormGroups() {
     var context = this;
 
-    // pack.forEach(function (value, idx) {
-    //   console.log(value)
-    //   var group = new FormGroup({});
-    //   var attributes = value.attributes;
+    this.groupsList.forEach(function (value, idx) {
+      console.log(value)
+      var group = new FormGroup({});
+      var attributes = value.attributes;
 
-    //   attributes.forEach(function (value, idx) {
-    //     console.log(value);
-    //     group.addControl(("formControl" + value.id), new FormControl(value.value));
+      attributes.forEach(function (value, idx) {
+        console.log(value);
+        group.addControl(("formControl" + value.id), new FormControl(value.originalValue));
 
-    //     if (value.bundles !== [] && value.bundles !== undefined && value.bundles !== null) {
-    //       var attributeGroup = new FormGroup({});
+        if (value.bundles !== [] && value.bundles !== undefined && value.bundles !== null) {
+          var attributeGroup = new FormGroup({});
+          var bundle = value.bundles;
 
-    //       var bundle = value.bundles;
+          bundle.forEach(function (value, idx) {
+            console.log(value);
+            var bundleAttributes = value.attributes;
 
-    //       bundle.forEach(function (value, idx) {
-    //         console.log(value);
-    //         var bundleAttributes = value.attributes;
-
-    //         bundleAttributes.forEach(function (value, idx) {
-    //           console.log(value);
-    //           attributeGroup.addControl(("formControl" + value.id), new FormControl(value.value));
-    //         });
-    //         group.addControl("formGroup" + value.id, attributeGroup);
-    //       });
-    //     }
-
-    //   });
-    //   context.form.addControl("formGroup" + value.id, group);
-
-    // });
-
+            bundleAttributes.forEach(function (value, idx) {
+              console.log(value);
+              attributeGroup.addControl(("formControl" + value.id), new FormControl(value.originalValue));
+            });
+            group.addControl("formGroup" + value.id, attributeGroup);
+          });
+        }
+      });
+      context.form.addControl("formGroup" + value.id, group);
+    });
     console.log("form com os checkboxes: ", this.form);
   }
 
+  //utilizado para mostrar os valores no PACOTE COMERCIAL
   getPackDetails() {
-  //   this.productPack = {
-  //     productCode: this.products.productCode
-  //     subproductCode: string
-  //     merchant: MerchantCatalog
-  //     store: StoreCatalog
-  //   }
-  //   this.COService.OutboundGetPacks().then(result => {
-      
-  //   });
-  }
+    this.productPack.productCode = this.form.get("productPackKind").value;
+    this.productPack.subproductCode = this.form.get("").value;
 
-  get productPackAttributesBrands() {
-    return this.form.get("productPackAttributesBrands") as FormArray;
-  }
+    this.productPack.merchant = this.merchantCatalog;
 
-  get productPackAttributesBundles() {
-    return this.form.get("productPackAttributesBundles") as FormArray;
-  }
-
-  get productPackAttributesAddInfo() {
-    return this.form.get("productPackAttributesAddInfo") as FormArray;
-  }
-
-  //chamar este metodo no html quando estivermos a fazer o ngFor aos atributos do productPack
-  addAttributeToFormArray(attribute: ProductPackAttribute, formArray: FormArray) {
-    if (attribute.isVisible) {
-      formArray.push(new FormControl({
-        value: attribute.originalValue,
-        disabled: attribute.isReadOnly,
-      }));
+    this.productPack.store = {
+      activity: this.currentStore.activity,
+      subActivity: this.currentStore.subActivity,
+      supportEntity: TerminalSupportEntityEnum[this.currentStore.supportEntity] as TerminalSupportEntityEnum,
+      referenceStore: this.currentStore.shopId,
+      supportBank: this.currentStore.supportEntity
     }
+
+    console.log('Product pack enviado para a API ', this.productPack);
+
+    var context = this;
+
+    this.COService.OutboundGetPacks(this.productPack).then(result => {
+      result.result.forEach(pack => {
+        this.COService.OutboundGetPackDetails(pack.id, this.productPack).then(res => {
+          res.result.groups.forEach(group => {
+            context.groupsList.push(group);
+          });
+          this.addFormGroups();
+        });
+      });
+    });
   }
 
-  //fazer a lógica de atribuir os valores ao form aqui
+  //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
+  getCommissionsList() {
+    this.commissionFilter = {
+      productCode : this.form.get("productPackKind").value,
+      subproductCode: this.form.get("").value,
+      merchant: this.merchantCatalog,
+      store: {
+        activity: this.currentStore.activity,
+        subActivity: this.currentStore.subActivity,
+        supportEntity: TerminalSupportEntityEnum[this.currentStore.supportEntity] as TerminalSupportEntityEnum,
+        referenceStore: this.currentStore.shopId,
+        supportBank: this.currentStore.supportEntity
+      },
+      packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
+    }
+
+    this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
+      result.result.forEach(options => {
+        this.commissionOptions.push(options);
+      })
+    });
+  }
+
+  chooseCommission(commisionId: string) {
+    var productCode = this.form.get("productPackKind").value;
+    this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
+      res.result.attributes.forEach(attr => {
+        this.commissionAttributeList.push(attr);
+      });
+    });
+  }
+
   setFormData() {
     //setValue(null) - são valores que ainda não conseguimos ir buscar
     this.form.get("replicateProducts").setValue(null);
@@ -300,7 +336,10 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.currentStore != null) {
       let navigationExtras: NavigationExtras = {
         state: {
-          store: this.currentStore
+          store: this.currentStore,
+          packId: this.form.get("productPackKind").value,
+          merchantCatalog: this.merchantCatalog,
+          packAttributes: this.groupsList
         }
       }
       this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
@@ -339,7 +378,10 @@ export class CommercialOfferListComponent implements OnInit {
       let navigationExtras: NavigationExtras = {
         state: {
           store: this.currentStore,
-          storeEquip: shopEquipment
+          storeEquip: shopEquipment,
+          packId: this.form.get("productPackKind").value,
+          merchantCatalog: this.merchantCatalog,
+          packAttributes: this.groupsList
         }
       }
       this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
