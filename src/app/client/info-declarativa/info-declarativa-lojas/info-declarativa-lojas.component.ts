@@ -199,11 +199,12 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
+      this.internationalCallingCodes = this.internationalCallingCodes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
 
-    this.subs.push(this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
+    this.clientService.GetClientById(localStorage.getItem("submissionId")).subscribe(result => {
       this.client = result;
-    }));
+    });
 
 
     this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {

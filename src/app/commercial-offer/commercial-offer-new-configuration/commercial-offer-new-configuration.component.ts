@@ -61,8 +61,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
       this.allCommunications = result;
+      this.allCommunications = this.allCommunications.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }), this.tableInfo.GetTenantTerminals().subscribe(result => {
       this.allTerminals = result;
+      this.allTerminals = this.allTerminals.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }));
 
     // this.tableInfo.GetTenantTerminals().subscribe(result => {

@@ -120,7 +120,7 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.dataCCcontents.localityCC == null) {
       this.dataCCcontents.localityCC = '';
     }
-    this.dataCCcontents.countryCC = "PT";
+    this.dataCCcontents.countryCC = "República Portuguesa";
     this.countryCC = "República Portuguesa";
     console.log("Data CC Contents Simul: ", this.dataCCcontents);
   }
@@ -283,8 +283,10 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListDocTypeE = result;
+      this.ListDocTypeE = this.ListDocTypeE.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
       this.ListDocTypeP = result;
+      this.ListDocTypeP = this.ListDocTypeP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     })));
 
     this.submissionId = localStorage.getItem('submissionId');

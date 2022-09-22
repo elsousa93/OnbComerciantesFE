@@ -181,6 +181,7 @@ export class CountrysComponent implements OnInit {
     //Chamada à API para receber todos os Paises
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
+      this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
 
     //this.logger.debug("por entrar no clientbyid");
