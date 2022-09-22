@@ -61,7 +61,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   getSubmissionStakeholders() {
     var context = this;
-    if (this.returned !== null) { 
+    if (this.returned !== null) {
       this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
@@ -85,7 +85,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
     if (this.submissionId !== null) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        console.log("ola: ", result);
         var results = result.result;
         results.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
@@ -102,7 +101,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
             context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
               stakeholderToInsert.stakeholderOutbound = outboundResult;
               context.submissionStakeholders.push(stakeholderToInsert);
-              
+
             })
             //context.submissionStakeholders.push({
             //  displayName: '',
@@ -155,6 +154,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     this.stakesMat.sort = this.sort;
   }
 
+  reloadCurrentRoute() {
+    let currentRoute = this.route.url;
+    this.route.navigate([currentRoute], { skipLocationChange: true }).then(() => {
+      window.location.replace(currentRoute);
+    });
+
+  }
+
   removeStakeholder(stakeholder) {
     console.log("stakeholder a remover: ", stakeholder);
     this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
@@ -162,6 +169,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     }, error => {
       console.log("error: ", error);
     });
+
+    this.reloadCurrentRoute();
+
   }
 
 }

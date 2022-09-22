@@ -34,7 +34,7 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let store; let idx = index; columns: displayedColumns;"
                (click)="emitSelectedStore(store, idx)"
-               [ngClass]="{'row-selected': store === selectedStore}">
+               [ngClass]="{'row-selected': idx === currentIdx}">
       </mat-row>
   </mat-table>
 

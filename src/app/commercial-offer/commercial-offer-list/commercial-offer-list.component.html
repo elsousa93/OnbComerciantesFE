@@ -1,6 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <form [formGroup]="form" name="form" id="form" (ngSubmit)="submit()">
+  <form [formGroup]="form" name="form" id="form" >
    <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
@@ -16,9 +16,7 @@
         <h2 class="text-primary mt-5 pb-2 ps-0 m-align">       <!--ps-2-->
           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.title'|translate}}
         </h2>
-
             <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"></app-store-table>
- 
      </div>
 
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
@@ -108,45 +106,39 @@
                </h2>
                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                   data-bs-parent="#accordionFlushExample">
-                 <div class="row ps-2" *ngFor="let pack of packsToShow">
+                 <div class="row ps-2"  *ngFor="let product of products">
                    <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
                      <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
                        <span class="navbar-text">
                          <div class="form-check">
-                           <input class="form-check-input" type="radio" value="simple" id="radio3" formControlName="productPackKind" name="productPackKind">
-                           <label class="form-check-label radio pe-5" for="radio3"
-                                  wappler-command="editContent">{{'commercialOffer.traditional'|translate|uppercase}}</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text">
-                         <div class="form-check">
-                           <input class="form-check-input" type="radio" value="advanced" id="radio3" formControlName="productPackKind" name="productPackKind">
-                           <label class="form-check-label radio" for="radio3"
-                                  wappler-command="editContent">SMART</label>
+                           <input class="form-check-input" type="radio" value="product.code" id="radio3" formControlName="productPackKind" name="productPackKind">
+                           <label class="form-check-label radio pe-5" for="radio3" (click)="getPackDetails()"
+                                  wappler-command="editContent">{{product.name}}</label>
                          </div>
                        </span>
                      </nav>
                    </div>
                    <hr>
                    <!-- ATRIBUTOS DO PACOTE -->
-                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let packDetail of pack.packDetails" formGroupName="{{'formGroup' + packDetail.id}}">
+                   <!-- *ngFor="let packDetail of pack.packDetails" na div debaixo -->
+                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0"  ><!--formGroupName="{{'formGroup' + packDetail.id}}" -->
                      <div>
-                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{packDetail.description}}</p>
-                       <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of packDetail.attributes"> <!-- LISTAR OS ATRIBUTOS -->
+                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent"></p><!--{{packDetail.description}}-->
+                       <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" > <!-- LISTAR OS ATRIBUTOS *ngFor="let attribute of packDetail.attributes" [checked]="attribute.isSelected"-->
                          <span class="navbar-text text-start align-self-start">
-                           <div class="form-check" *ngIf="attribute.isVisible">
-                             <input class="form-check-input" type="checkbox" formControlName="{{'formControl'+ attribute.id}}" id="input1" name="input1" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
-                             <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
-                             <div *ngIf="attribute.isSelected">
-                               <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}">
+                            <div class="form-check" ><!--*ngIf="attribute.isVisible" -->
+                             <input class="form-check-input" type="checkbox"  id="input1" name="input1" > <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
+                             <label class="form-check-label texto_check_box" for="input1"></label> <!--{{attribute.description}}-->
+                             <div ><!--*ngIf="attribute.isSelected"-->
+                               <div > <!--*ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"-->
                                  <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
-                                 <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p>
-                                 <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let bundleAttribute of bundle.attributes">
+                                 <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent"></p><!--{{bundle.description}}-->
+                                 <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" > <!--*ngFor="let bundleAttribute of bundle.attributes"-->
                                    <span class="navbar-text text-start align-self-start">
-                                     <div class="form-check" *ngIf="bundleAttribute.isVisible">
-                                       <input class="form-check-input" type="checkbox" formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
-                                       <label class="form-check-label texto_check_box" for="input1">{{bundleAttribute.description}}</label>
+                                     <div class="form-check" > <!--*ngIf="bundleAttribute.isVisible"-->
+                                       <input class="form-check-input" type="checkbox" ><!--formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected"-->
+                                       <label class="form-check-label texto_check_box" for="input1"></label><!--{{bundleAttribute.description}}-->
                                      </div>
                                    </span>
                                  </nav>

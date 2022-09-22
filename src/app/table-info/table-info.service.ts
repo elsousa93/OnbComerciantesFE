@@ -4,7 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
-import { Address, CountryInformation, DocumentSearchType, EconomicActivityInformation, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
+import { Bank, ShopBankingInformation } from '../store/IStore.interface';
+import { Address, CorporateRelations, CountryInformation, DocumentSearchType, EconomicActivityInformation, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,7 @@ export class TableInfoService {
       headers: new HttpHeaders({
         'Request-Id': requestId,
         'X-Acquiring-UserId': AcquiringUserId,
+        'Accept-Language': this.currentLanguage,
       }),
     }
 
@@ -149,7 +151,7 @@ export class TableInfoService {
 
       }),
     }
-    return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'merchant/stakeholder/role', HTTP_OPTIONS);
+    return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'stakeholder/role', HTTP_OPTIONS);
   }
 
   GetAllShopActivities() {
@@ -162,6 +164,16 @@ export class TableInfoService {
     return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
+    GetBanks(): any{
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<Bank>(this.acquiringUrl + 'bank', HTTP_OPTIONS);
+  }
+
   GetAllPEPTypes() {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
@@ -170,6 +182,26 @@ export class TableInfoService {
       }),
     }
     return this.http.get<PEPTypes[]>(this.acquiringUrl + 'pep/types', HTTP_OPTIONS);
+  }
+
+  GetAllKinships() {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<Kinship[]>(this.acquiringUrl + 'stakeholder/kinship', HTTP_OPTIONS);
+  }
+
+  GetAllCorporateRelations() {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<CorporateRelations[]>(this.acquiringUrl + 'merchant/corporaterelations', HTTP_OPTIONS);
   }
 
   GetAllPOS() {
@@ -200,6 +232,16 @@ export class TableInfoService {
       }),
     }
     return this.http.get<Address[]>(this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3, HTTP_OPTIONS);
+  }
+
+  GetShoppingByZipCode(cp: number) {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'address/' + cp + '/shoppingcenter', HTTP_OPTIONS);
   }
 
   GetAddressByZipCodeTeste(cp4: number, cp3: number): Promise<TreatedResponse<Address>> {

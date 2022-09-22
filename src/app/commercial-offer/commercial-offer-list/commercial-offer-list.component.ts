@@ -13,723 +13,10 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { ProductPackAttribute, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { Product, ProductPackAttribute, ProductPackFilter, ProductPackKindEnum, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-
-const testValues: ShopDetailsAcquiring[] = [
-  {
-    shopId: "1",
-    name: "ShopName",
-    manager: "Manager1",
-    activity: "C",
-    subActivity: "C1",
-    supportEntity: "Entity1",
-    registrationId: "RegID",
-    address: {
-      useMerchantAddress: true,
-      address: {
-        address: "A",
-        postalCode: "B",
-        postalArea: "C",
-        country: "123"
-      },
-      isInsideShoppingCenter: true,
-      shoppingCenter: "Shopping1"
-    },
-    bank: {
-      userMerchantBank: true,
-      bank: {
-        bank: "Bank",
-        iban: "12345"
-      }
-    },
-    website: "www.google.com",
-    productCode: "345",
-    subproductCode: "324",
-    equipments: [
-      {
-        shopEquipmentId: "123",
-        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-        communicationType: "A",
-        equipmentType: "A",
-        quantity: 0,
-        pricing: {
-          pricingId: "123",
-          attributes: [
-            {
-              id: "A",
-              description: "A",
-              value: 1,
-              isReadOnly: true,
-              isVisible: true
-            }
-          ]
-        }
-      }
-    ],
-    pack: {
-      packId: "123",
-      packDetails: [
-        {
-          id: "1234",
-          description: "123",
-          kind: "1234",
-          attributes: [
-            {
-              id: "1234",
-              description: "AAA",
-              value: true,
-              isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 0,
-              bundles: [
-                {
-                  id: "B",
-                  description: "B",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "B123",
-                      description: "B123456",
-                      value: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 0
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      commission: {
-        comissionId: "1",
-        attributes: {
-          id: "",
-          description: "A1",
-          fixedValue: {
-            value: 1,
-            isReadOnly: true,
-            isVisible: true
-          },
-          maxValue: {
-            value: 2,
-            isReadOnly: true,
-            isVisible: true
-          },
-          minValue: {
-            value: 0,
-            isReadOnly: true,
-            isVisible: true
-          },
-          percentageValue: {
-            value: 1,
-            isReadOnly: true,
-            isVisible: true
-          }
-        }
-      }
-    },
-    documents: {
-      href: "",
-      type: "",
-      id: ""
-    }
-  }
-  
-]
-
-const commer: ShopProductPack[] = [
-  {
-    packId: "8981281",
-    packDetails: [
-      {
-        id: "111",
-        description: "Pacote 1",
-        kind: ProductPackKindEnum.SIMPLE,
-        attributes: [
-          {
-            id: "1",
-            description: "minimum value",
-            value: false,
-            isReadOnly: true,
-            isVisible: true,
-            isSelected: false,
-            order: 3,
-            bundles: [
-              {
-                id: "2212",
-                description: "teste",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "33333",
-                    description: "teste atributo",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "22222",
-                    description: "teste atributo2",
-                    value: false,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              },
-              {
-                id: "2212",
-                description: "teste2",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "8921",
-                    description: "teste atributo3",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 1
-                  },
-                  {
-                    id: "98211",
-                    description: "teste atributo4",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: false,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: "2",
-            description: "val",
-            value: true,
-            isReadOnly: true,
-            isVisible: true,
-            isSelected: true,
-            order: 3,
-            bundles: [
-              {
-                id: "2212",
-                description: "teste",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "33333",
-                    description: "teste atributo",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "22222",
-                    description: "teste atributo2",
-                    value: false,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              },
-              {
-                id: "982121",
-                description: "pacote comercial",
-                kind: ProductPackKindEnum.ADVANCED,
-                attributes: [
-                  {
-                    id: "873287",
-                    description: "bundle 2",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 2
-                  },
-                  {
-                    id: "4512521",
-                    description: "bundle 1",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: false,
-                    isSelected: false,
-                    order: 1
-                  }
-                ]
-              }
-            ]
-          },
-        ]
-      }, {
-        id: "900912",
-        description: "Pacote 2",
-        kind: ProductPackKindEnum.ADVANCED,
-        attributes: [
-          {
-            id: "923",
-            description: "visa",
-            value: true,
-            isReadOnly: false,
-            isVisible: true,
-            isSelected: true,
-            order: 1,
-            bundles: [
-              {
-                id: "7322378",
-                description: "visa bundle",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "9129821",
-                    description: "visa bundle attribute 1",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "81298219",
-                    description: "visa bundle attribute 2",
-                    value: false,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              },
-              {
-                id: "2212",
-                description: "bundle 2",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "893212",
-                    description: "bundle2 atributo1",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 1
-                  },
-                  {
-                    id: "721882",
-                    description: "blunde2 atributo2",
-                    value: false,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: "2",
-            description: "val",
-            value: true,
-            isReadOnly: true,
-            isVisible: true,
-            isSelected: true,
-            order: 3,
-            bundles: [
-              {
-                id: "2212",
-                description: "teste",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "51267328",
-                    description: "description",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "98239832",
-                    description: "wejkew",
-                    value: false,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 5
-                  }
-                ]
-              },
-              {
-                id: "982121",
-                description: "pacote comercial avançado",
-                kind: ProductPackKindEnum.ADVANCED,
-                attributes: [
-                  {
-                    id: "98219821897",
-                    description: "bundle 5312",
-                    value: false,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 2
-                  },
-                  {
-                    id: "643721",
-                    description: "bundle 5313",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 1
-                  }
-                ]
-              }
-            ]
-          },
-        ]
-      }
-    ]
-  },
-  {
-    packId: "98239832",
-    packDetails: [
-      {
-        id: "111",
-        description: "Pacote 95",
-        kind: ProductPackKindEnum.SIMPLE,
-        attributes: [
-          {
-            id: "1",
-            description: "minimum value",
-            value: true,
-            isReadOnly: true,
-            isVisible: true,
-            isSelected: true,
-            order: 3,
-            bundles: [
-              {
-                id: "2212",
-                description: "teste",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "33333",
-                    description: "teste atributo",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "22222",
-                    description: "teste atributo2",
-                    value: false,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              },
-              {
-                id: "2212",
-                description: "teste2",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "8921",
-                    description: "teste atributo3",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 1
-                  },
-                  {
-                    id: "98211",
-                    description: "teste atributo4",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: false,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: "2",
-            description: "val",
-            value: true,
-            isReadOnly: true,
-            isVisible: true,
-            isSelected: true,
-            order: 3,
-            bundles: [
-              {
-                id: "2212",
-                description: "teste",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "33333",
-                    description: "teste atributo",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "22222",
-                    description: "teste atributo2",
-                    value: false,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              },
-              {
-                id: "982121",
-                description: "pacote comercial",
-                kind: ProductPackKindEnum.ADVANCED,
-                attributes: [
-                  {
-                    id: "873287",
-                    description: "bundle 2",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 2
-                  },
-                  {
-                    id: "4512521",
-                    description: "bundle 1",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: false,
-                    isSelected: false,
-                    order: 1
-                  }
-                ]
-              }
-            ]
-          },
-        ]
-      }, {
-        id: "900912",
-        description: "Pacote 2",
-        kind: ProductPackKindEnum.ADVANCED,
-        attributes: [
-          {
-            id: "923",
-            description: "visa",
-            value: true,
-            isReadOnly: false,
-            isVisible: true,
-            isSelected: true,
-            order: 1,
-            bundles: [
-              {
-                id: "7322378",
-                description: "visa bundle",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "9129821",
-                    description: "visa bundle attribute 1",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "81298219",
-                    description: "visa bundle attribute 2",
-                    value: false,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              },
-              {
-                id: "2212",
-                description: "bundle 2",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "893212",
-                    description: "bundle2 atributo1",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 1
-                  },
-                  {
-                    id: "721882",
-                    description: "blunde2 atributo2",
-                    value: false,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 2
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: "2",
-            description: "val",
-            value: true,
-            isReadOnly: true,
-            isVisible: true,
-            isSelected: true,
-            order: 3,
-            bundles: [
-              {
-                id: "2212",
-                description: "teste",
-                kind: ProductPackKindEnum.SIMPLE,
-                attributes: [
-                  {
-                    id: "51267328",
-                    description: "description",
-                    value: true,
-                    isReadOnly: true,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 3
-                  },
-                  {
-                    id: "98239832",
-                    description: "wejkew",
-                    value: false,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 5
-                  }
-                ]
-              },
-              {
-                id: "982121",
-                description: "pacote comercial avançado",
-                kind: ProductPackKindEnum.ADVANCED,
-                attributes: [
-                  {
-                    id: "98219821897",
-                    description: "bundle 5312",
-                    value: false,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: true,
-                    order: 2
-                  },
-                  {
-                    id: "643721",
-                    description: "bundle 5313",
-                    value: true,
-                    isReadOnly: false,
-                    isVisible: true,
-                    isSelected: false,
-                    order: 1
-                  }
-                ]
-              }
-            ]
-          },
-        ]
-      }
-    ]
-  }
-]
-
-const storeEquipTest: ShopEquipment[] = [
-  {
-  communicationOwnership: CommunicationOwnershipTypeEnum.CLIENT,
-  communicationType: "2",
-  equipmentOwnership: EquipmentOwnershipTypeEnum.SELF,
-  equipmentType: "1",
-  quantity: 10,
-  pricing: {
-    attributes: 
-      [
-        {
-          id: "abc",
-          description: "description",
-          value: 100,
-          isReadOnly: true,
-          isVisible: false
-        },
-        {
-          id: "bde",
-          description: "description 2",
-          value: 500,
-          isReadOnly: false,
-          isVisible: true
-        },
-      ]
-    ,
-    pricingId: "id"
-    }
-  },
-  {
-    communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-    communicationType: "1",
-    equipmentOwnership: EquipmentOwnershipTypeEnum.CLIENT,
-    equipmentType: "4",
-    quantity: 200,
-    pricing: {
-      attributes:
-        [
-          {
-            id: "abc",
-            description: "description",
-            value: 100,
-            isReadOnly: true,
-            isVisible: false
-          },
-          {
-            id: "bde",
-            description: "description 2",
-            value: 500,
-            isReadOnly: false,
-            isVisible: true
-          },
-        ]
-      ,
-      pricingId: "id"
-    }
-  }
-]
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -737,10 +24,6 @@ const storeEquipTest: ShopEquipment[] = [
   styleUrls: ['./commercial-offer-list.component.css']
 })
 export class CommercialOfferListComponent implements OnInit {
-
-  lojaTest: ShopDetailsAcquiring = testValues[0];
-
-  packsToShow: ShopProductPack[] = commer;
 
   selectedPack: ShopProductPack = null;
 
@@ -757,7 +40,6 @@ export class CommercialOfferListComponent implements OnInit {
   @ViewChild('storeEquipSort') storeEquipSort: MatSort;
 
   public stores: Istore[] = [];
-  public clientID: number = 12345678;
 
   /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
@@ -769,6 +51,8 @@ export class CommercialOfferListComponent implements OnInit {
   public currentPage : number;
   public currentStore: ShopDetailsAcquiring = null;
   public currentIdx: number = 0;
+
+  public products: Product[];
 
   public isUnicre: boolean;
   public geographyChecked: boolean = false;
@@ -785,7 +69,7 @@ export class CommercialOfferListComponent implements OnInit {
   public showMore: boolean;
   storesList: ShopDetailsAcquiring[];
 
-  storeEquipTest = storeEquipTest;
+  productPack: ProductPackFilter;
 
   submissionId: string;
   processNumber: string;
@@ -793,8 +77,6 @@ export class CommercialOfferListComponent implements OnInit {
 
   getPacoteComercial() {
     console.log("loja selecionada: ", this.currentStore);
-
-
   }
 
   ngAfterViewInit() {
@@ -806,13 +88,13 @@ export class CommercialOfferListComponent implements OnInit {
 
   constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService) {
     this.baseUrl = configuration.baseUrl;
-    console.log("loja mock: ", this.lojaTest);
+
+    this.ngOnInit();
+
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
       this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"];
     }
-
-    console.log("packages: ", this.packsToShow);
 
     authService.currentUser.subscribe(user => this.currentUser = user);
 
@@ -828,30 +110,34 @@ export class CommercialOfferListComponent implements OnInit {
     }
 
     //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
-    //this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
-    //  result.forEach(value => {
-    //    this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-    //      this.storesList.push(res);
-    //    });
-    //  });
-    //  this.loadStores(this.storesList);
-    //});
+    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
+     result.forEach(value => {
+       this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+         this.storesList.push(res);
+       });
+     });
+     this.loadStores(this.storesList);
+    });
 
     //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
-    //if (this.returned !== null) {
-    //  this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
-    //    this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
-    //      resul.forEach(val => {
-    //        this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
-    //          var index = this.storesList.findIndex(store => store.id == res.id);
-    //          if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
-    //            this.storesList.push(res);
-    //        });
-    //      });
-    //      this.loadStores(this.storesList);
-    //    })
-    //  });
-    //}
+    if (this.returned != null) {
+     this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
+       this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
+         resul.forEach(val => {
+           this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
+             var index = this.storesList.findIndex(store => store.shopId == res.shopId);
+             if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
+               this.storesList.push(res);
+           });
+         });
+         this.loadStores(this.storesList);
+       })
+     });
+    }
+
+    this.COService.OutboundGetProductsAvailable().then(result => {
+      this.products = result.result;
+    });
 
     this.data.updateData(false, 5, 1);
   }
@@ -859,19 +145,17 @@ export class CommercialOfferListComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.loadStores();
-    this.loadStoreEquips();
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
   }
 
-  loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
+  loadStores(storesValues: ShopDetailsAcquiring[]) {
     this.storesOfferMat = new MatTableDataSource(storesValues);
     this.storesOfferMat.paginator = this.paginator;
   }
 
-  loadStoreEquips(storeEquipValues: ShopEquipment[] = storeEquipTest) {
+  loadStoreEquips(storeEquipValues: ShopEquipment[]) {
     this.storeEquipMat = new MatTableDataSource(storeEquipValues);
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
@@ -900,7 +184,6 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   initializeForm() {
-    var pack = this.packsToShow[0].packDetails;
     this.form = new FormGroup({
       replicateProducts: new FormControl(this.replicateProducts, [Validators.required]),
       store: new FormControl(''),
@@ -918,38 +201,50 @@ export class CommercialOfferListComponent implements OnInit {
 
     var context = this;
 
-    pack.forEach(function (value, idx) {
-      console.log(value)
-      var group = new FormGroup({});
-      var attributes = value.attributes;
+    // pack.forEach(function (value, idx) {
+    //   console.log(value)
+    //   var group = new FormGroup({});
+    //   var attributes = value.attributes;
 
-      attributes.forEach(function (value, idx) {
-        console.log(value);
-        group.addControl(("formControl" + value.id), new FormControl(value.value));
+    //   attributes.forEach(function (value, idx) {
+    //     console.log(value);
+    //     group.addControl(("formControl" + value.id), new FormControl(value.value));
 
-        if (value.bundles !== [] && value.bundles !== undefined && value.bundles !== null) {
-          var attributeGroup = new FormGroup({});
+    //     if (value.bundles !== [] && value.bundles !== undefined && value.bundles !== null) {
+    //       var attributeGroup = new FormGroup({});
 
-          var bundle = value.bundles;
+    //       var bundle = value.bundles;
 
-          bundle.forEach(function (value, idx) {
-            console.log(value);
-            var bundleAttributes = value.attributes;
+    //       bundle.forEach(function (value, idx) {
+    //         console.log(value);
+    //         var bundleAttributes = value.attributes;
 
-            bundleAttributes.forEach(function (value, idx) {
-              console.log(value);
-              attributeGroup.addControl(("formControl" + value.id), new FormControl(value.value));
-            });
-            group.addControl("formGroup" + value.id, attributeGroup);
-          });
-        }
+    //         bundleAttributes.forEach(function (value, idx) {
+    //           console.log(value);
+    //           attributeGroup.addControl(("formControl" + value.id), new FormControl(value.value));
+    //         });
+    //         group.addControl("formGroup" + value.id, attributeGroup);
+    //       });
+    //     }
 
-      });
-      context.form.addControl("formGroup" + value.id, group);
+    //   });
+    //   context.form.addControl("formGroup" + value.id, group);
 
-    });
+    // });
 
     console.log("form com os checkboxes: ", this.form);
+  }
+
+  getPackDetails() {
+  //   this.productPack = {
+  //     productCode: this.products.productCode
+  //     subproductCode: string
+  //     merchant: MerchantCatalog
+  //     store: StoreCatalog
+  //   }
+  //   this.COService.OutboundGetPacks().then(result => {
+      
+  //   });
   }
 
   get productPackAttributesBrands() {
@@ -968,7 +263,7 @@ export class CommercialOfferListComponent implements OnInit {
   addAttributeToFormArray(attribute: ProductPackAttribute, formArray: FormArray) {
     if (attribute.isVisible) {
       formArray.push(new FormControl({
-        value: attribute.value,
+        value: attribute.originalValue,
         disabled: attribute.isReadOnly,
       }));
     }
@@ -1013,16 +308,16 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
-    if (this.returned != 'consult') {
-      if (this.currentIdx < (testValues.length - 1)) {
-        this.currentIdx = this.currentIdx + 1;
-        this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
-        this.onActivate();
-      } else {
-        this.data.updateData(true, 5);
-        this.route.navigate(['info-declarativa']);
-      }
-    }
+  //   if (this.returned != 'consult') {
+  //     if (this.currentIdx < (testValues.length - 1)) {
+  //       this.currentIdx = this.currentIdx + 1;
+  //       this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
+  //       this.onActivate();
+  //     } else {
+  //       this.data.updateData(true, 5);
+  //       this.route.navigate(['info-declarativa']);
+  //     }
+  //   }
   }
 
   changeShowMore() {

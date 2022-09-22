@@ -263,10 +263,10 @@ export class SidenavPresencialComponent implements OnInit {
         "kind": "",
         "country": "",
         "sinceWhen": ""
-      }, 
+      },
     },
     "id": "",
-    "stakeholderId": "" 
+    "stakeholderId": ""
   }
 
   stakeholderPutTeste: IStakeholders = {
@@ -365,8 +365,8 @@ export class SidenavPresencialComponent implements OnInit {
     });
   }
 
-  hideHistoryTab(){
-    this.dataService.historyStream$.next(false); 
+  hideHistoryTab() {
+    this.dataService.historyStream$.next(false);
   }
 
   public toggleSideNav(toggled: boolean) {
@@ -377,13 +377,15 @@ export class SidenavPresencialComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  FTSearch(queue: string){
+  FTSearch(queue: string) {
     let navigationExtras: NavigationExtras = {
       state: {
         queueName: queue
       }
     };
-    this.router.navigate(["/app-consultas-ft"], navigationExtras);
+    this.router.navigate(["/"]).then(() => {
+      this.router.navigate(["/app-consultas-ft"], navigationExtras);
+    });
   }
 
   testeAuth() {

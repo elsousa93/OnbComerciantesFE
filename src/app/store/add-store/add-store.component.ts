@@ -3,7 +3,7 @@ import { Component, Host, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Istore, ShopActivities, ShopSubActivities, ShopDetailsAcquiring, ShopDetailsOutbound } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { CountryInformation, ShoppingCenter } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
@@ -34,6 +34,7 @@ export class AddStoreComponent implements OnInit {
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
+  @Input() parentFormGroup : FormGroup;
 
   //Submissao
   submissionId: string;
@@ -61,7 +62,7 @@ export class AddStoreComponent implements OnInit {
   /*Variable declaration*/
   public stroreId: number = 0;
   store: ShopDetailsAcquiring =
-  {
+    {
       shopId: "1",
       name: "ShopName",
       manager: "Manager1",
@@ -81,7 +82,7 @@ export class AddStoreComponent implements OnInit {
         shoppingCenter: "Shopping1"
       },
       bank: {
-        userMerchantBank: true,
+        useMerchantBank: true,
         bank: {
           bank: "Bank",
           iban: "12345"
@@ -99,12 +100,13 @@ export class AddStoreComponent implements OnInit {
           equipmentType: "A",
           quantity: 0,
           pricing: {
-            pricingId: "123",
-            attributes: [
+            id: "123",
+            attribute: [
               {
                 id: "A",
                 description: "A",
-                value: 1,
+                originalValue: 1,
+                finalValue: 1,
                 isReadOnly: true,
                 isVisible: true
               }
@@ -123,7 +125,8 @@ export class AddStoreComponent implements OnInit {
               {
                 id: "1234",
                 description: "AAA",
-                value: true,
+                originalValue: true,
+                finalValue: true,
                 isReadOnly: true,
                 isVisible: true,
                 isSelected: true,
@@ -137,7 +140,8 @@ export class AddStoreComponent implements OnInit {
                       {
                         id: "B123",
                         description: "B123456",
-                        value: true,
+                        originalValue: true,
+                        finalValue: true,
                         isReadOnly: true,
                         isVisible: true,
                         isSelected: true,
@@ -151,27 +155,31 @@ export class AddStoreComponent implements OnInit {
           }
         ],
         commission: {
-          comissionId: "1",
+          commissionId: "1",
           attributes: {
             id: "",
             description: "A1",
             fixedValue: {
-              value: 1,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             },
             maxValue: {
-              value: 2,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             },
             minValue: {
-              value: 0,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             },
             percentageValue: {
-              value: 1,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             }
@@ -183,9 +191,7 @@ export class AddStoreComponent implements OnInit {
         type: "",
         id: ""
       }
-
     } as ShopDetailsAcquiring
-
 
   public clientID: number = 12345678;
   public totalUrl: string = "";
@@ -230,6 +236,7 @@ export class AddStoreComponent implements OnInit {
   public idisabledContact: boolean = false;
 
   activities: ShopActivities[] = [];
+  subzonesShopping: ShoppingCenter[] = [];
 
   returned: string;
 
@@ -254,6 +261,45 @@ export class AddStoreComponent implements OnInit {
     this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType === 'Entrepeneur') ? this.submissionClient.legalName : '', Validators.required);
   }
 
+  public subs: Subscription[] = [];
+
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
+    private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
+    private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
+    private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+
+    this.submissionId = localStorage.getItem("submissionId");
+    this.fetchStartingInfo();
+    this.loadTableInfo();
+    this.ngOnInit();
+    setTimeout(() => this.data.updateData(false, 3, 2), 0);
+  }
+
+  ngOnInit(): void {
+    this.initializeForm();
+    this.returned = localStorage.getItem("returned");
+
+    if (this.rootFormGroup.form != null) {
+      this.rootFormGroup.form.setControl('infoStores', this.formStores);
+      this.edit = true;
+
+      if (this.returned == 'consult') {
+        this.formStores.disable();
+      }
+    } else {
+      this.chooseAddressV = true;
+      this.appComp.updateNavBar("Adicionar Loja")
+      this.stroreId = Number(this.router.snapshot.params['stroreid']);
+      this.subscription = this.data.currentData.subscribe(map => this.map = map);
+      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
+  }
+
   fetchStartingInfo() {
     this.clientService.GetClientById(this.submissionId).subscribe(client => {
 
@@ -263,7 +309,7 @@ export class AddStoreComponent implements OnInit {
       this.updateForm();
     });
 
-    this.subs.push(this.storeService.GetAllShopActivities().subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       this.activities = result;
     }, error => {
@@ -282,44 +328,6 @@ export class AddStoreComponent implements OnInit {
     this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
     })
-  }
-
-  public subs: Subscription[] = [];
-
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
-    private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
-    private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
-    private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
-
-    this.submissionId = localStorage.getItem("submissionId");
-    this.fetchStartingInfo();
-    this.loadTableInfo();
-    setTimeout(() => this.data.updateData(false, 3, 2), 0);
-  }
-
-  ngOnInit(): void {
-    this.initializeForm();
-    this.returned = localStorage.getItem("returned");
-
-    if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('infoStores', this.formStores);
-      this.edit = true;
-
-      if (this.returned == 'consult') {
-        this.formStores.disable();
-      }
-    } else {
-      this.chooseAddressV = true;
-      this.appComp.updateNavBar("Adicionar Loja")
-      this.stroreId = Number(this.router.snapshot.params['stroreid']);
-      this.subscription = this.data.currentData.subscribe(map => this.map = map);
-      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   //When canceling the create new store feature the user must navigate back to store list
@@ -462,6 +470,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   GetCountryByZipCodeTest() {
+    this.subzonesShopping = null;
     var currentCountry = this.formStores.get('countryStore').value;
     this.logger.debug("Pais escolhido atual");
 
@@ -519,7 +528,6 @@ export class AddStoreComponent implements OnInit {
   }
 
   initializeForm() {
-    var storename = '';
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
       activityStores: new FormControl((this.returned !== null) ? this.store.activity : '', [Validators.required]),
@@ -544,7 +552,7 @@ export class AddStoreComponent implements OnInit {
       this.formStores.controls["subactivityStore"].updateValueAndValidity();
     });
 
-    this.formStores.get("productStores").valueChanges.subscribe(v => {
+    /*this.formStores.get("productStores").valueChanges.subscribe(v => {
       this.onProductsSelected();
       console.log("Já saiu do products selected")
       console.log("SubProducst length: " + this.subProducts.length);
@@ -553,13 +561,23 @@ export class AddStoreComponent implements OnInit {
       else
         this.formStores.controls["subProductsStore"].clearValidators();
       this.formStores.controls["subProductsStore"].updateValueAndValidity();
-    });
+    });*/
   }
 
   comercialCentre(isCentre: boolean) {
     this.isComercialCentreStore = isCentre;
     if (isCentre)
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
+      if (this.chooseAddressV){
+        //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
+        this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
+          this.logger.debug(result);
+          this.subzonesShopping = result;
+        }, error => {
+          this.logger.debug("Deu erro");
+        }));
+      }
+
     else
       this.formStores.get('subZoneStore').setValidators(null);
   }

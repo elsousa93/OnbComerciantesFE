@@ -82,6 +82,7 @@ export class ClientComponent implements OnInit {
     signatureCC: null,
     addressCC: null,
     postalCodeCC: null,
+    localityCC: null,
     countryCC: null
   };
   public prettyPDF: FileAndDetailsCC = null;
@@ -95,6 +96,7 @@ export class ClientComponent implements OnInit {
   public addressCC = null;
   public postalCodeCC = null;
   public countryCC = null;
+  public localityCC = null;
 
   public okCC = false;
   public dadosCC: Array<string> = []; //apagar
@@ -133,6 +135,10 @@ export class ClientComponent implements OnInit {
     // this.birthDateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
     this.dataCCcontents.nifCC = nif;
+    this.dataCCcontents.localityCC = postalCode.split(" ").pop();
+    if (this.dataCCcontents.localityCC == null) {
+      this.dataCCcontents.localityCC = '';
+    }
     this.dataCCcontents.countryCC = country;
     this.countryCC = countryIssuer; //HTML
 
@@ -331,7 +337,7 @@ export class ClientComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, 
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService,
@@ -342,9 +348,9 @@ export class ClientComponent implements OnInit {
     this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
-       this.ListaDocType = result;
+      this.ListaDocType = result;
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
-       this.ListaDocTypeENI = result;
+      this.ListaDocTypeENI = result;
     })));
 
     // this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
@@ -353,7 +359,7 @@ export class ClientComponent implements OnInit {
 
     this.ngOnInit();
     this.initializeForm();
-    
+
     this.logger.debug(this.baseUrl);
     this.data.updateData(false, 1);
     // this.activateButtons(false);
@@ -463,7 +469,7 @@ export class ClientComponent implements OnInit {
       }
     }, error => this.logger.error(error));
   }
-  getNIFNIPC(){
+  getNIFNIPC() {
     if (this.newClient.documentationDeliveryMethod === '0502' || this.newClient.documentationDeliveryMethod === '0501') {
       return this.newClient.clientId;
     }
@@ -479,7 +485,7 @@ export class ClientComponent implements OnInit {
       return this.nifCC;
     }
 
-    if(this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc")){
+    if (this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc")) {
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
   }
@@ -526,8 +532,8 @@ export class ClientComponent implements OnInit {
         context.resultError = "Não existe Comerciante com esse número.";
         this.searchDone = true;
         this.createAdditionalInfoForm();
-        
-   
+
+
       }
     }, error => {
       context.showFoundClient = false;
@@ -558,18 +564,18 @@ export class ClientComponent implements OnInit {
     });
   }
 
-  createAdditionalInfoForm(){
+  createAdditionalInfoForm() {
     let NIFNIPC = this.getNIFNIPC();
-    switch(this.tipologia) {
+    switch (this.tipologia) {
       case "Company":
         this.newClientForm = this.formBuilder.group({
-          nipc: new FormControl({value: NIFNIPC, disabled:NIFNIPC}, Validators.required),
+          nipc: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
           denominacaoSocial: new FormControl('', Validators.required)
         });
         break;
       case "ENI":
         this.newClientForm = this.formBuilder.group({
-          nif: new FormControl({value: NIFNIPC, disabled:NIFNIPC}, Validators.required),
+          nif: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
           nome: new FormControl('', Validators.required)
         });
         break;
@@ -715,7 +721,7 @@ export class ClientComponent implements OnInit {
     this.BlockDocumentNumber = readable;
   }
 
-  //Modal que questiona se tem o PIN da Morada -- APAGAR
+  //Modal que questiona se tem o PIN da Morada 
   launchNewModal() {
     this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
     this.newModal.result.then(function (result: boolean): void {

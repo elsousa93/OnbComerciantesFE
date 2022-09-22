@@ -15,254 +15,275 @@
     </div>
   </div>
 
+  <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
+    <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+      <app-stakeholders-list [submissionId]="submissionId" [canSelect]=false>  <!--[processNumber]="processNumber"-->
+      </app-stakeholders-list>
+    </div>
 
-  <div class="offset-1 bg-white center-align col-10 ps-3">
-    <h2 class="text-primary mt-5 ps-0 center-align">
-      <span class="material-symbols-rounded icon-titulos m-align">
-        <img src="assets/images/group_add_blue.svg" class="img_add">
-      </span>&nbsp;{{'stakeholder.searchAdd'|translate|uppercase}}<br>
-    </h2>
-    <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
-    <!-------FORM------------->
-    <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
-      <div class="row ms-0 me-0">
-        <div class="col-5 ms-0 me-0 ps-0 pe-0">
-          <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
-          <select class="form-select campo-form-select"
-                  (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
-                  formControlName="type">
-            <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
-              {{stakeType.stakeTypeOption}}
-            </option>
-          </select>
-          <p class="titulo-form-simples">{{'searches.documentType'|translate}}: *</p>
-          <div *ngIf="isParticular">
-            <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
-                    id="documentType" formControlName="documentType">
-
-              <option *ngFor="let docType of ListDocTypeP" value={{docType.code}}>
-                {{docType.description}}
+    <div class="offset-1 bg-white center-align col-10 ps-3">
+      <h2 class="text-primary mt-5 ps-0 center-align">
+        <span class="material-symbols-rounded icon-titulos m-align">
+          <img src="assets/images/group_add_blue.svg" class="img_add">
+        </span>&nbsp;{{'stakeholder.searchAdd'|translate|uppercase}}<br>
+      </h2>
+      <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
+      <!-------FORM------------->
+      <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
+        <div class="row ms-0 me-0">
+          <div class="col-5 ms-0 me-0 ps-0 pe-0">
+            <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
+            <select class="form-select campo-form-select"
+                    (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
+                    formControlName="type">
+              <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
+                {{stakeType.stakeTypeOption}}
               </option>
             </select>
-          </div>
-          <div *ngIf="!isParticular">
-            <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
-                    id="documentType" formControlName="documentType">
+            <p class="titulo-form-simples">{{'searches.documentType'|translate}}: *</p>
+            <div *ngIf="isParticular">
+              <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
+                      id="documentType" formControlName="documentType">
 
-              <option *ngFor="let docType of ListDocTypeE" value={{docType.code}}>
-                {{docType.description}}
-              </option>
-            </select>
+                <option *ngFor="let docType of ListDocTypeP" value={{docType.code}}>
+                  {{docType.description}}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="!isParticular">
+              <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
+                      id="documentType" formControlName="documentType">
+
+                <option *ngFor="let docType of ListDocTypeE" value={{docType.code}}>
+                  {{docType.description}}
+                </option>
+              </select>
+            </div>
+            <p class="titulo-form-simples">{{'stakeholder.documentNumber'|translate}}:</p><input [readonly]="isCC && isNoDataReadable" [(ngModel)]="stakeholderNumber"
+                                                                                                 id="text1" name="text1" type="text" class="form-control campo_form" formControlName="documentNumber">
           </div>
-          <p class="titulo-form-simples">{{'stakeholder.documentNumber'|translate}}:</p><input [readonly]="isCC && isNoDataReadable" [(ngModel)]="stakeholderNumber"
-                                                                                               id="text1" name="text1" type="text" class="form-control campo_form" formControlName="documentNumber">
+          <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0" *ngIf="isCC">
+            <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
+            {{'citizenCard.process'|translate}}:*
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="flagAutCol" type="radio" value=true
+                         id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true" />
+                  <label class="form-check-label radio pe-5" for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                </div>
+              </span>
+              <span class="navbar-text">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="flagAutCol" type="radio" value=false
+                         id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false" />
+                  <label class="form-check-label radio" for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
+                </div>
+              </span>
+            </nav>
+          </div>
+        </div> <!--fecha row-->
+
+        <div *ngIf="isNoDataReadable && isCC" class="titulo-form-simples">
+          {{'citizenCard.readClick'|translate}} <br>
+          <button type="button" class="btn botao_azul_pesquisa" (click)="openModal(template)">{{'citizenCard.read'|translate}}</button>
         </div>
-        <div class="offset-1 col-5 ms-5 me-0 ps-5 pe-0" *ngIf="isCC">
-          <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
-          {{'citizenCard.process'|translate}}:*
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <span class="navbar-text">
-              <div class="form-check">
-                <input class="form-check-input" formControlName="flagAutCol" type="radio" value=true
-                       id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" [value]="true" />
-                <label class="form-check-label radio pe-5" for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
-              </div>
+        <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+            <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
+              <button [disabled]="!stakeType || !stakeDocType || !(stakeholderNumber?.length > 0)" id="btn5a2" class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="searchStakeholder()">
+                {{'stakeholder.search'|translate|uppercase}}&nbsp;&nbsp;  <img src="assets/images/person_search.svg" class="img_btn">
+              </button> <!--Pesquisar interveniente-->
             </span>
-            <span class="navbar-text">
-              <div class="form-check">
-                <input class="form-check-input" formControlName="flagAutCol" type="radio" value=false
-                       id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" [value]="false" />
-                <label class="form-check-label radio" for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
-              </div>
-            </span>
+            <!--<span class="navbar-text me-2">
+            <button *ngIf="newStake" id="btn5a2" (click)="addStakeholder()" class="btn botao_branco" wappler-command="editContent">  ADICIONAR INTERVENIENTE&nbsp;
+              <img src="assets/images/person_add_blue.svg" class="img_btn">
+            </button>
+            </span>-->
+
           </nav>
         </div>
-      </div> <!--fecha row-->
-
-      <div *ngIf="isNoDataReadable && isCC" class="titulo-form-simples">
-        {{'citizenCard.readClick'|translate}} <br>
-        <button type="button" class="btn botao_azul_pesquisa" (click)="openModal(template)">{{'citizenCard.read'|translate}}</button>
-      </div>
-      <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-          <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-            <button [disabled]="!stakeType || !stakeDocType || !(stakeholderNumber?.length > 0)" id="btn5a2" class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="searchStakeholder()">
-              {{'stakeholder.search'|translate|uppercase}}&nbsp;&nbsp;  <img src="assets/images/person_search.svg" class="img_btn">
-            </button> <!--Pesquisar interveniente--> 
-          </span>
-          <!--<span class="navbar-text me-2">
-      <button *ngIf="newStake" id="btn5a2" (click)="addStakeholder()" class="btn botao_branco" wappler-command="editContent">  ADICIONAR INTERVENIENTE&nbsp;
-        <img src="assets/images/person_add_blue.svg" class="img_btn">
-      </button>
-      </span>-->
-
-        </nav>
-      </div>
-    </form>
-    <form [formGroup]="formNewStakeholder">
-      <div *ngIf="isShown" class="row container-fluid" id="divshow">
-        <app-search-stakeholders [clientID]="this.testEvent" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
-        <!--<table class="table table-success" *ngIf="foundStakeholders">
-      <thead class="text-primary table-primary">
-        <tr class="text-center text-primary table-light">
-          <th scope="col" class="align-baseline text-primary table-white">{{'stakeholder.fiscalID'|translate}}</th>
-          <th scope="col" class="text-center bg-light">{{'stakeholder.name'|translate}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stake of stakeholdersToShow" (click)="selectStakeholder(stake)" [ngClass]="{'row-selected': stake.stakeholderNIF === newStake.fiscalId}">
-          <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
-          <td class="text-primary text-center">{{stake.stakeholderName}}</td>
-        </tr>
-      </tbody>
-    </table>-->
-        <div *ngIf="foundStakeholders == false">
-          <div *ngIf="isParticularSearched == false">
-            <div>
-              <p class="titulo-form-simples">{{'client.nipc'|translate|uppercase}}:</p>
-              <input name="nipc" type="text" class="form-control campo_form" formControlName="nipc">
-            </div>
-            <div>
-              <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
-              <input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
-            </div>
-          </div>
-          <div *ngIf="isParticularSearched == true">
-            <div>
-              <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>
-              <input name="nif" type="text" class="form-control campo_form" formControlName="nif">
-            </div>
-            <div>
-              <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
-              <input name="name" type="text" class="form-control campo_form" formControlName="name">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ng-template #template>
-        <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
-          <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
-            <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
-              <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
-                <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
-                  <span class="navbar-text ms-auto align-self-start">
-                    <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
-                        (click)="modalRef.hide()">
-                      x
-                    </h2>
-                  </span>
-                </nav>
+      </form>
+      <form [formGroup]="formNewStakeholder">
+        <div *ngIf="isShown" class="row container-fluid" id="divshow">
+          <app-search-stakeholders [clientID]="this.testEvent" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
+          <!--<table class="table table-success" *ngIf="foundStakeholders">
+            <thead class="text-primary table-primary">
+              <tr class="text-center text-primary table-light">
+                <th scope="col" class="align-baseline text-primary table-white">{{'stakeholder.fiscalID'|translate}}</th>
+                <th scope="col" class="text-center bg-light">{{'stakeholder.name'|translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stake of stakeholdersToShow" (click)="selectStakeholder(stake)" [ngClass]="{'row-selected': stake.stakeholderNIF === newStake.fiscalId}">
+                <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
+                <td class="text-primary text-center">{{stake.stakeholderName}}</td>
+              </tr>
+            </tbody>
+          </table>-->
+          <div *ngIf="foundStakeholders == false">    <!--No Pessoa Colectiva e Denominacao Social-->
+            <div *ngIf="isParticularSearched == false">
+              <div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="titulo-form-simples">{{'client.nipc'|translate|uppercase}}:</p>
+                    <input name="nipc" type="text" class="form-control campo_form" formControlName="nipc">
+                  </div>
+                  <div class="col-md-6">
+                    <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
+                    <input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
+                  </div>
+                </div>
               </div>
-              <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
-                <div class="mb-5 ps-0 pe-0 col-12">
-                  <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
-                    <span class="navbar-text"></span>
-                    <span class="material-symbols-rounded img_badge">
-                      <img src="assets/images/badge.svg" class="img_badge">
-                    </span>
-                  </nav>
-                  <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
-                    <span class="navbar-text">
-                      <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
-                        {{'citizenCard.addressPIN'|translate}}
-                      </h5>
-                    </span>
-                  </nav>
+            </div>
+            <div *ngIf="isParticularSearched == true">
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>
+                  <input name="nif" type="text" class="form-control campo_form" formControlName="nif">
 
-                  <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
-                    <span class="navbar-text"></span>
-                    <span class="navbar-text pb-0 pt-sm-0">
-                      <button id="btn5a"
-                              class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
-                              style="color: white;" wappler-command="editContent"
-                              data-bs-dismiss="modal" (click)="modalRef.hide(); callreadCCAddress()">
-                        {{'generalKeywords.yes'|translate|uppercase}}
-                      </button>
-                    </span>
-                    <span class="navbar-text pt-0 pb-0">
-                      <button id="btn5a1"
-                              class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
-                              style="color: white;" wappler-command="editContent" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
-                        {{'generalKeywords.no'|translate|uppercase}}
-                      </button>
-                    </span>
-                  </nav>
+                </div>
+                <div class="col-md-6">
+
+                  <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
+                  <input name="name" type="text" class="form-control campo_form" formControlName="name">
                 </div>
               </div>
             </div>
           </div>
-        </main>
-      </ng-template>
-      <div *ngIf="okCC">
-
-        <div class="row me-0">
-          <div class="col">
-            <div class="me-0 ps-0 pe-0 col-7 mb-5">
-              <p class="titulo-form-simples">
-                {{'citizenCard.documentCountry'|translate}}:* <span>
-                </span>
-              </p>
-              <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text" [disabled]="true">
-            </div>
-          </div>
         </div>
 
-        <table class="table table-sm table-light">
-          <thead>
-            <tr class="titulo-form-simples">
-              {{'citizenCard.readData'|translate|uppercase}}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row" class="titulo-form-simples">{{'citizenCard.name'|translate}}:</th>
-              <td>{{dataCCcontents.nameCC}}</td>
-            </tr>
-            <tr>
-              <th scope="row" class="titulo-form-simples">{{'citizenCard.ccNumber'|translate}}:</th>
-              <td>{{dataCCcontents.cardNumberCC}}</td>
-            </tr>
-            <tr>
-              <th scope="row" class="titulo-form-simples">NIF:</th>
-              <td>{{dataCCcontents.nifCC}}</td>
-            </tr>
-            <tr>
-              <th scope="row" class="titulo-form-simples">{{'citizenCard.address'|translate}}:</th>
-              <td>{{dataCCcontents.addressCC}}</td>
-            </tr>
-            <tr>
-              <th scope="row" class="titulo-form-simples">{{'citizenCard.postalCode'|translate}}:</th>
-              <td>{{dataCCcontents.postalCodeCC}}</td>
-            </tr>
-          </tbody>
-        </table>
+        <ng-template #template>
+          <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+            <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+              <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+                <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+                  <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                    <span class="navbar-text ms-auto align-self-start">
+                      <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
+                          (click)="modalRef.hide()">
+                        x
+                      </h2>
+                    </span>
+                  </nav>
+                </div>
+                <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+                  <div class="mb-5 ps-0 pe-0 col-12">
+                    <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                      <span class="navbar-text"></span>
+                      <span class="material-symbols-rounded img_badge">
+                        <img src="assets/images/badge.svg" class="img_badge">
+                      </span>
+                    </nav>
+                    <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                      <span class="navbar-text">
+                        <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
+                          {{'citizenCard.addressPIN'|translate}}
+                        </h5>
+                      </span>
+                    </nav>
 
-        <span class="navbar-text me-2">
-          <button id="btn5a2" (click)="addStakeholderWithCC()" routerLink="/add-stakeholder"
+                    <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+                      <span class="navbar-text"></span>
+                      <span class="navbar-text pb-0 pt-sm-0">
+                        <button id="btn5a"
+                                class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                                style="color: white;" wappler-command="editContent"
+                                data-bs-dismiss="modal" (click)="modalRef.hide(); callreadCCAddress()">
+                          {{'generalKeywords.yes'|translate|uppercase}}
+                        </button>
+                      </span>
+                      <span class="navbar-text pt-0 pb-0">
+                        <button id="btn5a1"
+                                class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                                style="color: white;" wappler-command="editContent" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
+                          {{'generalKeywords.no'|translate|uppercase}}
+                        </button>
+                      </span>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </ng-template>
+        <div *ngIf="okCC">
+
+          <div class="row me-0">
+            <div class="col">
+              <div class="me-0 ps-0 pe-0 col-7 mb-5">
+                <p class="titulo-form-simples">
+                  {{'citizenCard.documentCountry'|translate}}:* <span>
+                  </span>
+                </p>
+                <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text" [disabled]="true">
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-sm table-light">
+            <thead>
+              <tr class="titulo-form-simples">
+                {{'citizenCard.readData'|translate|uppercase}}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" class="titulo-form-simples">{{'citizenCard.name'|translate}}:</th>
+                <td>{{dataCCcontents.nameCC}}</td>
+              </tr>
+              <tr>
+                <th scope="row" class="titulo-form-simples">{{'citizenCard.ccNumber'|translate}}:</th>
+                <td>{{dataCCcontents.cardNumberCC}}</td>
+              </tr>
+              <tr>
+                <th scope="row" class="titulo-form-simples">NIF:</th>
+                <td>{{dataCCcontents.nifCC}}</td>
+              </tr>
+              <tr>
+                <th scope="row" class="titulo-form-simples">{{'citizenCard.address'|translate}}:</th>
+                <td>{{dataCCcontents.addressCC}}</td>
+              </tr>
+              <tr>
+                <th scope="row" class="titulo-form-simples">{{'citizenCard.postalCode'|translate}}:</th>
+                <td>{{dataCCcontents.postalCodeCC}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="navbar-text me-2">
+            <button id="btn5a2" (click)="addStakeholderWithCC()" routerLink="/add-stakeholder"
+                    class="btn botao_branco" wappler-command="editContent">
+              {{'generalKeywords.add'|translate}}&nbsp;
+              <img src="assets/images/person_add_blue.svg" class="img_btn">
+            </button>
+          </span>
+
+          <button id="btn5a2" (click)="callReadCCSimulation()" routerLink="/add-stakeholder"
                   class="btn botao_branco" wappler-command="editContent">
-            {{'generalKeywords.add'|translate}}&nbsp;
+            &nbsp;
+            &nbsp;Simulação&nbsp;
             <img src="assets/images/person_add_blue.svg" class="img_btn">
           </button>
-        </span>
-      </div>
+
+        </div>
 
 
 
-      <div class="col ms-0 ps-0">
-        <hr />
-        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-          <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" [routerLink]="['/stakeholders/']">
-            <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
-            {{'generalKeywords.back'|translate|uppercase}}&nbsp;
-          </button>
-          <button *ngIf="(currentStakeholder !== null && currentStakeholder !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()" [disabled]="(!this.formStakeholderSearch.valid || !this.formNewStakeholder.valid) && !this.foundStakeholders">
-            {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
-          </button>
-        </nav>
-      </div>
-    </form>
-    <!------------ fecha form ----------->
+        <div class="col ms-0 ps-0">
+          <hr />
+          <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+            <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" [routerLink]="['/stakeholders/']">
+              <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+              {{'generalKeywords.back'|translate|uppercase}}&nbsp;
+            </button>
+            <button *ngIf="(currentStakeholder !== null && currentStakeholder !== undefined) || formStakeholderSearch.valid" id="btn5a2" class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="addStakeholder()" [disabled]="(!this.formStakeholderSearch.valid || !this.formNewStakeholder.valid) && !this.foundStakeholders">
+              {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+            </button>
+          </nav>
+        </div>
+      </form>
+      <!------------ fecha form ----------->
 
-  </div> <!--fecha offset-1 bg-white center align-->
-</div>
+    </div> <!--fecha offset-1 bg-white center align-->
+  </div>

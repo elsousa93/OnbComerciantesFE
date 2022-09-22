@@ -27,7 +27,7 @@ export class ReadcardService {
       var dateHelper = pipe.transform(Date.now(), 'dd/MM/yyyy, h:mm:ss a zzzz');
 
       doc.setFontSize(10);
-      doc.text("Ficheiro gerado à data: " + dateHelper, 20, 820)
+      doc.text("Ficheiro gerado a: " + dateHelper, 20, 820)
 
 
       var config = {

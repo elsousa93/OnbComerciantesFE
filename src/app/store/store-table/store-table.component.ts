@@ -30,7 +30,7 @@ const testValues: ShopDetailsAcquiring[] = [
       shoppingCenter: "Shopping1"
     },
     bank: {
-      userMerchantBank: true,
+      useMerchantBank: true,
       bank: {
         bank: "Bank",
         iban: "12345"
@@ -48,12 +48,13 @@ const testValues: ShopDetailsAcquiring[] = [
         equipmentType: "A",
         quantity: 0,
         pricing: {
-          pricingId: "123",
-          attributes: [
+          id: "123",
+          attribute: [
             {
               id: "A",
               description: "A",
-              value: 1,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             }
@@ -63,6 +64,7 @@ const testValues: ShopDetailsAcquiring[] = [
     ],
     pack: {
       packId: "123",
+      processorId: "345",
       packDetails: [
         {
           id: "1234",
@@ -72,7 +74,8 @@ const testValues: ShopDetailsAcquiring[] = [
             {
               id: "1234",
               description: "AAA",
-              value: true,
+              originalValue: true,
+              finalValue: true,
               isReadOnly: true,
               isVisible: true,
               isSelected: true,
@@ -86,7 +89,8 @@ const testValues: ShopDetailsAcquiring[] = [
                     {
                       id: "B123",
                       description: "B123456",
-                      value: true,
+                      originalValue: true,
+                      finalValue: true,
                       isReadOnly: true,
                       isVisible: true,
                       isSelected: true,
@@ -100,27 +104,31 @@ const testValues: ShopDetailsAcquiring[] = [
         }
       ],
       commission: {
-        comissionId: "1",
+        commissionId: "1",
         attributes: {
           id: "",
           description: "A1",
           fixedValue: {
-            value: 1,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           maxValue: {
-            value: 2,
+            originalValue: 2,
+            finalValue: 2,
             isReadOnly: true,
             isVisible: true
           },
           minValue: {
-            value: 0,
+            originalValue: 0,
+            finalValue: 0,
             isReadOnly: true,
             isVisible: true
           },
           percentageValue: {
-            value: 1,
+            originalValue: 4,
+            finalValue: 4,
             isReadOnly: true,
             isVisible: true
           }
@@ -204,33 +212,32 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getStoreList() {
-
     //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
-    //this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
-    //  result.forEach(value => {
-    //    this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-    //      this.storesList.push(res);
-    //    });
-    //  });
-    //  this.loadStores(this.storesList);
-    //});
+    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
+     result.forEach(value => {
+       this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+         this.storesList.push(res);
+       });
+     });
+     this.loadStores(this.storesList);
+    });
 
     //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
-    //if (this.returned !== null) {
-    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-    //    this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
-    //      resul.forEach(val => {
-    //        this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
-    //          var index = this.storesList.findIndex(store => store.id == res.id);
-    //          if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
-    //            this.storesList.push(res);
-    //        });
-    //      });
-    //      this.loadStores(this.storesList);
-    //    })
-    //  });
-    //}
-    this.loadStores();
+    if (this.returned !== null) {
+     this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+       this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
+         resul.forEach(val => {
+           this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
+             var index = this.storesList.findIndex(store => store.shopId == res.shopId);
+             if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
+               this.storesList.push(res);
+           });
+         });
+         this.loadStores(this.storesList);
+       })
+     });
+    }
+    //this.loadStores(this.storesList);
   }
 
   emitSelectedStore(store, idx) {
@@ -241,7 +248,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     console.log('Index ', this.currentIdx);
   }
 
-  loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
+  loadStores(storesValues: ShopDetailsAcquiring[]) {
     this.storesMat = new MatTableDataSource(storesValues);
     this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;

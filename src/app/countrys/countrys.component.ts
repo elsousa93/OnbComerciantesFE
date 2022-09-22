@@ -362,7 +362,7 @@ export class CountrysComponent implements OnInit {
           //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
           this.newSubmission.merchant.bankInformation = this.client.bankInformation;
           this.newSubmission.merchant.byLaws = this.client.byLaws;
-          //this.newSubmission.merchant.clientId = this.client.clientId;
+          this.newSubmission.merchant.clientId = this.client.clientId;
           this.newSubmission.merchant.companyName = this.client.companyName;
           this.newSubmission.merchant.contacts = this.client.contacts;
           this.newSubmission.merchant.crc = this.client.crc;
@@ -536,33 +536,34 @@ export class CountrysComponent implements OnInit {
             localStorage.setItem("submissionId", result.id);
             this.processNrService.changeProcessNumber(result.processNumber);
 
-            //this.storeService.getShopsListOutbound(this.newSubmission.merchant.id, "por mudar", "por mudar").subscribe(res => {
-            //  res.forEach(value => {
-            //    this.storeService.getShopInfoOutbound(context.newSubmission.merchant.id, value.shopId, "por mudar", "por mudar").subscribe(r => {
-            //      var storeToAdd: ShopDetailsAcquiring = {
-            //        activity: r.activity,
-            //        subActivity: r.secondaryActivity,
-            //        address: {
-            //          address: r.address.address,
-            //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-            //          shoppingCenter: r.address.shoppingCenter,
-            //          useMerchantAddress: r.address.sameAsMerchantAddress
-            //        },
-            //        bank: {
-            //          bank: r.bankingInformation
-            //        },
-            //        name: r.name,
-            //        productCode: r.product,
-            //        subproductCode: r.subproduct,
-            //        website: r.url,
-            //      }
+            this.storeService.getShopsListOutbound(this.newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+             res.forEach(value => {
+               this.storeService.getShopInfoOutbound(context.newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+                 var storeToAdd: ShopDetailsAcquiring = {
+                   activity: r.activity,
+                   subActivity: r.secondaryActivity,
+                   address: {
+                     address: r.address.address,
+                     isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+                     shoppingCenter: r.address.shoppingCenter,
+                     useMerchantAddress: r.address.sameAsMerchantAddress
+                   },
+                   bank: {
+                     bank: r.bankingInformation
+                   },
+                   name: r.name,
+                   productCode: r.product,
+                   subproductCode: r.subproduct,
+                   website: r.url,
+                   equipments: []
+                 }
 
-            //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+                 context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
 
-            //      });
-            //    });
-            //  });
-            //});
+                 });
+               });
+             });
+            });
 
 
 
