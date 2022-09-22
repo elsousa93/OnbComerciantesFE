@@ -6,6 +6,7 @@ export interface IComprovativos {
 }
 
 export interface ComprovativosTemplate {
+  id?: string,
   type?: string,
   stakeholder?: string,
   expirationDate?: string,

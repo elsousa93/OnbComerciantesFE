@@ -30,7 +30,7 @@ export class TableInfoService {
     var requestResponse: RequestResponse = {};
 
     return new Promise<RequestResponse>((resolve, reject) => {
-      this.http[httpMethod]<TenantCommunication[]>(httpURL, body).subscribe({
+      this.http[httpMethod]<any>(httpURL, body).subscribe({
         next: (res: any) => {
           requestResponse.result = res;
           requestResponse.error = null;
@@ -51,6 +51,8 @@ export class TableInfoService {
       });
     });
   }
+
+  
 
   callAPIOutbound(httpMethod: HttpMethod, httpURL: string, searchId: string, searchType: string, requestId: string, AcquiringUserId: string, body?: any, countryId?: string, acceptLanguage?: string, AcquiringPartnerId?: string, AcquiringBranchId?: string, AcquiringProcessId?: string) {
     var requestResponse: RequestResponse = {};
@@ -268,8 +270,31 @@ export class TableInfoService {
         reject(response);
       })
     });
-
   }
+
+  ////////////////////////////////////////////////////////////
+  //delete (remover daqui)
+    deleteDocument(submissionID, documentID) {
+    var url = this.acquiringUrl + 'submission/' + submissionID + '/document/' + documentID;
+    var response: TreatedResponse<any> = {};
+
+
+    return new Promise<TreatedResponse<any>>((resolve, reject) => {
+      this.callAPIAcquiring(HttpMethod.DELETE, url).then(success => {
+        console.log("Apagou o documento");
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        console.log("Não apagou o documento (erro)");
+        response.result = null;
+        response.msg = "Não foi possível remover o documento";
+        reject(response);
+      });
+    })
+  }
+
+  ////////////////////////////////////////////////////////
 
   GetAllShoppingCenters(postalCode: string) {
     var HTTP_OPTIONS = {

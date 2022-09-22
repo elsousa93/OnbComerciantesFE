@@ -388,7 +388,7 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
           this.newSubmission.merchant.shareCapital = this.client.shareCapital;
           this.newSubmission.merchant.shortName = this.client.shortName;
-          this.newSubmission.stakeholders = this.stakeholdersToInsert;
+          //this.newSubmission.stakeholders = this.stakeholdersToInsert;
           var context = this;
 
           if (this.returned !== null) {
@@ -444,7 +444,7 @@ export class CountrysComponent implements OnInit {
           console.log("stakeholders a inserir: ", this.stakeholdersToInsert);
 
           stakeholdersLength = this.stakeholdersToInsert.length;
-
+          context.newSubmission.stakeholders = [];
           this.stakeholdersToInsert.forEach(function (value, idx) {
             console.log("stakeholder: ", value);
             var fiscalID = value.fiscalId;

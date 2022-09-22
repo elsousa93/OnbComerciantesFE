@@ -20,6 +20,7 @@ import { SubmissionService } from '../submission/service/submission-service.serv
 import { ComprovativosTemplate, IComprovativos } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
 import { LoggerService } from 'src/app/logger.service';
+import { TableInfoService } from '../table-info/table-info.service';
 
 
 @Component({
@@ -200,10 +201,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private logger: LoggerService, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
+    private modalService: BsModalService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
-    //this.submissionId = localStorage.getItem("submissionId");
+    this.submissionId = localStorage.getItem("submissionId");
     this.logger.debug("id:!!!!");
     this.logger.debug(this.submissionId);
     var context = this;
@@ -269,6 +270,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                 console.log("Value do purpose ", val);
 
                 context.compsToShow.push({
+                  id: document.id,
                   type: "pdf",
                   expirationDate: "2024-10-10",
                   stakeholder: "Manuel",
@@ -426,9 +428,17 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     link.click();
   }
 
-  onDelete(file: File) {
+  onDelete(file: File, documentID) {
+    this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
+      console.log("Sucesso: ", sucess.msg);
+    }, error => {
+      console.log("Erro: ", error.msg);
+    });
+
     this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
     this.fileToDelete = file;
+
+
   }
 
   obterOfertaComercial() {
@@ -497,7 +507,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
       this.readBase64(doc).then((data) => {
         var docToSend: PostDocument = {
-          "documentType": "string",
+          "documentType": "1001",
           "documentPurpose": "Identification",
           "file": {
             "fileType": "PDF",
