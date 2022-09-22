@@ -123,6 +123,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
+      this.internationalCallingCodes = this.internationalCallingCodes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }));
 
     

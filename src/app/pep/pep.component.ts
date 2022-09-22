@@ -38,14 +38,19 @@ export class PepComponent implements OnInit {
 
       this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
         this.Countries = result;
+        this.Countries = this.Countries.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }),this.tableInfo.GetAllPEPTypes().subscribe(result => {
         this.PEPTypes = result;
+        this.PEPTypes = this.PEPTypes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }),this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
         this.stakeholdersRoles = result;
+        this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }), this.tableInfo.GetAllKinships().subscribe(result => {
         this.stakeholdersKinships = result;
+        this.stakeholdersKinships = this.stakeholdersKinships.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }),this.tableInfo.GetAllCorporateRelations().subscribe(result => {
         this.corporateRelations = result;
+        this.corporateRelations = this.corporateRelations.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }));
 
       // this.tableInfo.GetAllPEPTypes().subscribe(result => {

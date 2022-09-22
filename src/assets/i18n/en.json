@@ -452,5 +452,10 @@
     "cookies": "Cookies Policy",
     "privacy": "Privacy Policy",
     "contacts": "Support Contacts"
+  },
+  "errorMessages": {
+    "bothFieldsPhone": "Both fields are required",
+    "invalidPhone": "Phone number is invalid",
+    "isRequired": "is required"
   }
 }

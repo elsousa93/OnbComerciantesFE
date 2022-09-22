@@ -314,8 +314,8 @@ export class CommercialOfferListComponent implements OnInit {
   //       this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
   //       this.onActivate();
   //     } else {
-  //       this.data.updateData(true, 5);
-  //       this.route.navigate(['info-declarativa']);
+        this.data.updateData(true, 5);
+        this.route.navigate(['info-declarativa']);
   //     }
   //   }
   }

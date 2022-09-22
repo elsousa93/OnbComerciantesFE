@@ -99,6 +99,7 @@ export class NewStakeholderComponent implements OnInit {
   loadCountries() {
     this.subs.push(this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
+      this.countries = this.countries.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => {
       this.logger.error(error);
     }))
@@ -107,6 +108,7 @@ export class NewStakeholderComponent implements OnInit {
   loadStakeholdersRoles() {
     this.subs.push(this.tableData.GetAllStakeholderRoles().subscribe(result => {
       this.stakeholdersRoles = result;
+      this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => {
       this.logger.error(error);
     }));
