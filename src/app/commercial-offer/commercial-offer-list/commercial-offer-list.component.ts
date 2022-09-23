@@ -166,7 +166,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
-    
   }
 
   getStoreEquipsFromSubmission() {
@@ -260,6 +259,13 @@ export class CommercialOfferListComponent implements OnInit {
     console.log("form com os checkboxes: ", this.form);
   }
 
+  addCommissionFormGroups() {
+    this.commissionAttributeList.forEach(function (value, idx) {
+      var group = new FormGroup({});
+      group.addControl(("commission" + value.id), new FormControl(value.id));
+    });
+  }
+
   //utilizado para mostrar os valores no PACOTE COMERCIAL
   getPackDetails() {
     this.productPack.productCode = this.form.get("productPackKind").value;
@@ -325,6 +331,7 @@ export class CommercialOfferListComponent implements OnInit {
       res.result.attributes.forEach(attr => {
         this.commissionAttributeList.push(attr);
       });
+      this.addCommissionFormGroups();
     });
   }
 
@@ -375,10 +382,51 @@ export class CommercialOfferListComponent implements OnInit {
   //       this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
   //       this.onActivate();
   //     } else {
-        this.data.updateData(true, 5);
-        this.route.navigate(['info-declarativa']);
+        //this.data.updateData(true, 5);
+        //this.route.navigate(['info-declarativa']);
   //     }
   //   }
+
+    this.commissionAttributeList.forEach(commission => {
+      var currentValue = this.form.controls["commission" + commission.id];
+      commission.minValue.finalValue = currentValue.get("commissionMin").value;
+      commission.maxValue.finalValue = currentValue.get("commissionMax").value;
+      commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
+      commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
+    });
+
+    this.groupsList.forEach(group => {
+      var groups = this.form.controls["formGroup" + group.id];
+      group.attributes.forEach(attr => {
+        if (attr.isVisible) {
+          attr.finalValue = groups.get("formControl" + attr.id).value;
+          if (attr.finalValue && attr.bundles.length > 0) { // se tiver sido selecionado
+            attr.bundles.forEach(bundle => {
+              var bundles = this.form.controls["formGroupBundle" + bundle.id];
+              bundle.attributes.forEach(bundleAttr => { 
+                if (bundleAttr.isVisible) {
+                  bundleAttr.finalValue = bundles.get("formControlBundle" + bundleAttr.id).value;
+                }
+              });
+            });
+          }
+        }
+      });
+    });
+
+    if (this.returned != 'consult') {
+      this.currentStore.equipments = this.storeEquipList;
+      this.currentStore.pack = {
+        commission: {
+          attributes: this.commissionAttributeList
+        },
+        packDetails: this.groupsList
+      }
+
+      this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.shopId, this.currentStore).subscribe(result => {
+        this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
+      });
+    }
   }
 
   changeShowMore() {

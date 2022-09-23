@@ -214,7 +214,19 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       this.storeEquip.equipmentType = this.form.get("terminalType").value;
       this.storeEquip.equipmentType = this.form.get("communicationType").value;
       this.storeEquip.quantity = this.form.get("terminalAmount").value;
-      //falta o campo para o preço
+
+      this.pricingAttributeList.forEach(attr => {
+        var group = this.form.controls["formGroupPricing" + attr.id];
+        if (!attr.isReadOnly && attr.isVisible) {
+          attr.originalValue = group.get("formControlPricingOriginal" + attr.id).value;
+          group.get("formControlPricingDiscount" + attr.id); //não existe variável para este valor
+          attr.finalValue = group.get("formControlPricingFinal" + attr.id).value;
+        }
+      });
+
+      this.storeEquip.pricing = {
+        attribute: this.pricingAttributeList
+      }
 
       let navigationExtras: NavigationExtras = {
         state: {

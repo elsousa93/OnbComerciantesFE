@@ -81,12 +81,12 @@ export interface ShopProductPack {
   packId?: string
   packDetails?: ProductPackRootAttributeProductPackKind[]
   commission?: ShopProductPackCommission
-  processorId: string
+  processorId?: string
 }
 
 interface ShopProductPackCommission {
   commissionId?: string
-  attributes?: ProductPackCommissionAttribute
+  attributes?: ProductPackCommissionAttribute[]
 }
 
 interface ShopAddress {

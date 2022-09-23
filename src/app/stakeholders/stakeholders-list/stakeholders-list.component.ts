@@ -86,39 +86,41 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
       });
     }
 
-    if (this.submissionId !== null) {
-      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        var results = result.result;
-        results.forEach(function (value, index) {
-          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            var AcquiringStakeholder = result;
-            var stakeholderToInsert = {
-              displayName: '',
-              eligibility: false,
-              stakeholderAcquiring: AcquiringStakeholder,
-              stakeholderOutbound: undefined
-            }
+    this.getSubmissionStakeholdersAux();
 
-            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
+    //if (this.submissionId !== null) {
+    //  this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+    //    var results = result.result;
+    //    results.forEach(function (value, index) {
+    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+    //        var AcquiringStakeholder = result;
+    //        var stakeholderToInsert = {
+    //          displayName: '',
+    //          eligibility: false,
+    //          stakeholderAcquiring: AcquiringStakeholder,
+    //          stakeholderOutbound: undefined
+    //        }
 
-            context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
-              stakeholderToInsert.stakeholderOutbound = outboundResult;
-              context.submissionStakeholders.push(stakeholderToInsert);
+    //        var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
 
-            })
-            //context.submissionStakeholders.push({
-            //  displayName: '',
-            //  eligibility: false,
-            //  stakeholderAcquiring: result,
-            //  stakeholderOutbound: undefined
-            //});
-            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
-          }, error => {
-          });
-        });
-      }, error => {
-      });
-    }
+    //        context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+    //          stakeholderToInsert.stakeholderOutbound = outboundResult;
+    //          context.submissionStakeholders.push(stakeholderToInsert);
+
+    //        })
+    //        //context.submissionStakeholders.push({
+    //        //  displayName: '',
+    //        //  eligibility: false,
+    //        //  stakeholderAcquiring: result,
+    //        //  stakeholderOutbound: undefined
+    //        //});
+    //        console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
+    //      }, error => {
+    //      });
+    //    });
+    //  }, error => {
+    //  });
+    //}
 
     //if (this.submissionId !== null) {
     //  console.log("submission: ", this.submissionId);
@@ -141,6 +143,50 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     //  })
     //}
 
+  }
+
+  getSubmissionStakeholdersAux() {
+    var context = this;
+
+    if (this.submissionId !== null) {
+      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+        var results = result.result;
+        results.forEach(function (value, index) {
+          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+            var AcquiringStakeholder = result;
+            var stakeholderToInsert = {
+              displayName: '',
+              eligibility: false,
+              stakeholderAcquiring: AcquiringStakeholder,
+              stakeholderOutbound: undefined
+            }
+
+            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
+
+            //context.submissionStakeholders.push(stakeholderToInsert);
+
+            //context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+            //  stakeholderToInsert.stakeholderOutbound = outboundResult;
+            //  context.submissionStakeholders.push(stakeholderToInsert);
+
+            //})
+
+            var stakeholderFunction = context.stakeholderService.getStakeholderByID(tempStakeholderID, "por mudar", "por mudar").toPromise();
+
+            stakeholderFunction.then(success => {
+              stakeholderToInsert.stakeholderOutbound = success;
+            }).then(success =>{
+              context.submissionStakeholders.push(stakeholderToInsert);
+            });
+            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
+          }, error => {
+          });
+        });
+      }, error => {
+      }).then(teste => {
+        context.loadStakeholders(context.submissionStakeholders);
+      });
+    }
   }
 
   emitSelectedStakeholder(stakeholder, idx) {
@@ -168,12 +214,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   removeStakeholder(stakeholder) {
     console.log("stakeholder a remover: ", stakeholder);
     this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
-      console.log("apagou: ", result);
+      const index = this.submissionStakeholders.indexOf(stakeholder);
+      this.submissionStakeholders.splice(index, 1);
+      this.loadStakeholders(this.submissionStakeholders);
     }, error => {
       console.log("error: ", error);
     });
 
-    this.reloadCurrentRoute();
+    //this.reloadCurrentRoute();
 
   }
 
