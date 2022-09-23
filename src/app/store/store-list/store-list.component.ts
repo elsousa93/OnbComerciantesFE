@@ -121,7 +121,7 @@ const testValues: ShopDetailsAcquiring[] = [
       ],
       commission: {
         commissionId: "1",
-        attributes: {
+        attributes: [{
           id: "",
           description: "A1",
           fixedValue: {
@@ -149,6 +149,7 @@ const testValues: ShopDetailsAcquiring[] = [
             isVisible: true
           }
         }
+          ]
       }
     },
     documents: {
