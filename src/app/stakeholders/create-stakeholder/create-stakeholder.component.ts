@@ -108,13 +108,11 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.dataCCcontents.nameCC = "Nome Nome2 Apelido";
     this.dataCCcontents.nationalityCC = "Portuguesa";
-    this.dataCCcontents.cardNumberCC = "12364785"; // Nº do CC
-    this.dataCCcontents.nifCC = "963524865";
-    console.log("With Address");
+    this.dataCCcontents.cardNumberCC = "00000000"; // Nº do CC
     this.dataCCcontents.addressCC = "Rua Primeira";
-    this.dataCCcontents.postalCodeCC = "2765-310 GALIZA";
+    this.dataCCcontents.postalCodeCC = "1000-010 LISBOA";
 
-    var postalCodeX = "2765-310 GALIZA";
+    var postalCodeX = "1000-010 LISBOA";
 
     this.dataCCcontents.localityCC = postalCodeX.split(" ").pop();
     if (this.dataCCcontents.localityCC == null) {
@@ -122,6 +120,32 @@ export class CreateStakeholderComponent implements OnInit {
     }
     this.dataCCcontents.countryCC = "República Portuguesa";
     this.countryCC = "República Portuguesa";
+
+    var stakeholderToInsert: IStakeholders = {
+      "fiscalId": this.dataCCcontents.nifCC,
+      "fullName": this.dataCCcontents.nameCC,
+      "shortName": this.dataCCcontents.nameCC,
+      "identificationDocument": {
+        "type": null,           //FIXME "CC"
+        "number": this.dataCCcontents.cardNumberCC,
+        "country": this.dataCCcontents.countryCC,
+        "expirationDate": this.dataCCcontents.expiricyDateCC,
+        "checkDigit": null     //FIXME
+      },
+      "fiscalAddress": {
+        "address": this.dataCCcontents.addressCC,
+        "postalCode": this.dataCCcontents.postalCodeCC,
+        "postalArea": this.dataCCcontents.localityCC,
+        "country": this.dataCCcontents.countryCC,
+      },
+      "phone1": {},
+      "phone2": {}
+    }
+    this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+      this.route.navigate(['/stakeholders/']); 
+    }, error => {
+      this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC Simulado");
+    });
     console.log("Data CC Contents Simul: ", this.dataCCcontents);
   }
   /**
@@ -380,6 +404,12 @@ export class CreateStakeholderComponent implements OnInit {
         this.formStakeholderSearch.controls["documentNumber"].clearValidators();
         this.formStakeholderSearch.addControl("flagAutCol", new FormControl('', Validators.required));
         this.formStakeholderSearch.get("flagAutCol").updateValueAndValidity();
+
+        let navigationExtras: NavigationExtras = {
+          state: {
+            flagAutCol: true,
+          }
+        };
       }
       this.formStakeholderSearch.controls["documentNumber"].updateValueAndValidity();
     });
@@ -392,10 +422,13 @@ export class CreateStakeholderComponent implements OnInit {
   redirectInfoStakeholder() {
     this.route.navigate(['/add-stakeholder/']);
   }
-
+  /**
+   * Recolha Automatica dos Dados do Cartão de Cidadão?
+   * @param readable
+   */
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
-    this.okCC = false;
+    this.okCC = readable; //W
   }
 
   //Modal que pergunta se tem o PIN da Morada
@@ -600,7 +633,7 @@ export class CreateStakeholderComponent implements OnInit {
     };
 
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-      this.route.navigate(['/stakeholders/']); //antes: stakeholders
+      this.route.navigate(['/stakeholders/']); 
     }, error => {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });
