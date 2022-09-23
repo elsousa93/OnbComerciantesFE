@@ -230,13 +230,30 @@ export class DashboardComponent implements OnInit {
   ongoingProcessess: ProcessGet;
   returnedProcessess: ProcessGet;
   contractAcceptanceProcessess: ProcessGet;
-  completeProcessess: ProcessGet;
+  pendingSentProcessess: ProcessGet;
+  acceptanceProcessess: ProcessGet;
+  pendingEligibilityProcessess: ProcessGet;
+  multipleClientesProcessess: ProcessGet;
+  DOValidationProcessess: ProcessGet;
+  negotiationAprovalProcessess: ProcessGet;
+  MCCTreatmentProcessess: ProcessGet;
+  validationSIBSProcessess: ProcessGet;
+  riskOpinionProcessess: ProcessGet;
+  complianceDoubtsProcessess: ProcessGet;
 
-  incompleteCount: number;
-  ongoingCount: number;
-  returnedCount: number;
-  contractAcceptanceCount: number;
-  completeCount: number;
+  incompleteCount: number = 0;
+  ongoingCount: number = 0;
+  returnedCount: number = 0;
+  contractAcceptanceCount: number = 0;
+  pendingSentCount: number = 0;
+  pendingEligibilityCount: number = 0;
+  multipleClientesCount: number = 0;
+  DOValidationCount: number = 0;
+  negotiationAprovalCount: number = 0;
+  MCCTreatmentCount: number = 0;
+  validationSIBSCount: number = 0;
+  riskOpinionCount: number = 0;
+  complianceDoubtsCount: number = 0;
 
   date: string;
 
@@ -265,14 +282,7 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendentes.paginator = this.paginator;
         this.dataSourcePendentes.sort = this.sort;
         this.incompleteCount = result.pagination.total;
-
-        this.logger.debug("--------------------------------------");
-        this.logger.debug(result.pagination);
-        this.logger.debug(this.incompleteCount);
-        this.logger.debug("--------------------------------------");
       });
-
-
     });
 
     //Tratamento BackOffice
@@ -307,12 +317,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourcePendingSent = new MatTableDataSource(this.completeProcessess.items);
+        this.pendingSentProcessess = resul;
+        this.dataSourcePendingSent = new MatTableDataSource(this.pendingSentProcessess.items);
 
         this.dataSourcePendingSent.paginator = this.paginatorPagePendingSent;
         this.dataSourcePendingSent.sort = this.empTbSortPendingSent;
-        this.completeCount = result.pagination.total;
+        this.pendingSentCount = result.pagination.total;
       });
     });
 
@@ -320,12 +330,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourcePendingEligibility = new MatTableDataSource(this.completeProcessess.items);
+        this.pendingEligibilityProcessess = resul;
+        this.dataSourcePendingEligibility = new MatTableDataSource(this.pendingEligibilityProcessess.items);
 
         this.dataSourcePendingEligibility.paginator = this.paginatorPagePendingEligibility;
         this.dataSourcePendingEligibility.sort = this.empTbSortPendingEligibility;
-        this.completeCount = result.pagination.total;
+        this.pendingEligibilityCount = result.pagination.total;
       });
     });
 
@@ -333,12 +343,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourceMultipleClients = new MatTableDataSource(this.completeProcessess.items);
+        this.multipleClientesProcessess = resul;
+        this.dataSourceMultipleClients = new MatTableDataSource(this.multipleClientesProcessess.items);
 
         this.dataSourceMultipleClients.paginator = this.paginatorPageMultipleClients;
         this.dataSourceMultipleClients.sort = this.empTbSortMultipleClients;
-        this.completeCount = result.pagination.total;
+        this.multipleClientesCount = result.pagination.total;
       });
     });
 
@@ -346,12 +356,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourceDOValidation = new MatTableDataSource(this.completeProcessess.items);
+        this.DOValidationProcessess = resul;
+        this.dataSourceDOValidation = new MatTableDataSource(this.DOValidationProcessess.items);
 
         this.dataSourceDOValidation.paginator = this.paginatorPageDOValidation;
         this.dataSourceDOValidation.sort = this.empTbSortDOValidation;
-        this.completeCount = result.pagination.total;
+        this.DOValidationCount = result.pagination.total;
       });
     });
 
@@ -359,12 +369,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourceNegotiationAproval = new MatTableDataSource(this.completeProcessess.items);
+        this.negotiationAprovalProcessess = resul;
+        this.dataSourceNegotiationAproval = new MatTableDataSource(this.negotiationAprovalProcessess.items);
 
         this.dataSourceNegotiationAproval.paginator = this.paginatorPageNegotiationAproval;
         this.dataSourceNegotiationAproval.sort = this.empTbSortNegotiationAproval;
-        this.completeCount = result.pagination.total;
+        this.negotiationAprovalCount = result.pagination.total;
       });
     });
 
@@ -372,12 +382,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourceMCCTreatment = new MatTableDataSource(this.completeProcessess.items);
+        this.MCCTreatmentProcessess = resul;
+        this.dataSourceMCCTreatment = new MatTableDataSource(this.MCCTreatmentProcessess.items);
 
         this.dataSourceMCCTreatment.paginator = this.paginatorPageMCCTreatment;
         this.dataSourceMCCTreatment.sort = this.empTbSortMCCTreatment;
-        this.completeCount = result.pagination.total;
+        this.MCCTreatmentCount = result.pagination.total;
       });
     });
 
@@ -385,12 +395,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourceValidationSIBS = new MatTableDataSource(this.completeProcessess.items);
+        this.validationSIBSProcessess = resul;
+        this.dataSourceValidationSIBS = new MatTableDataSource(this.validationSIBSProcessess.items);
 
         this.dataSourceValidationSIBS.paginator = this.paginatorPageValidationSIBS;
         this.dataSourceValidationSIBS.sort = this.empTbSortValidationSIBS;
-        this.completeCount = result.pagination.total;
+        this.validationSIBSCount = result.pagination.total;
       });
     });
 
@@ -398,12 +408,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourceRiskOpinion = new MatTableDataSource(this.completeProcessess.items);
+        this.riskOpinionProcessess = resul;
+        this.dataSourceRiskOpinion = new MatTableDataSource(this.riskOpinionProcessess.items);
 
         this.dataSourceRiskOpinion.paginator = this.paginatorPageRiskOpinion;
         this.dataSourceRiskOpinion.sort = this.empTbSortRiskOpinion;
-        this.completeCount = result.pagination.total;
+        this.riskOpinionCount = result.pagination.total;
       });
     });
 
@@ -411,12 +421,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourceComplianceDoubts = new MatTableDataSource(this.completeProcessess.items);
+        this.complianceDoubtsProcessess = resul;
+        this.dataSourceComplianceDoubts = new MatTableDataSource(this.complianceDoubtsProcessess.items);
 
         this.dataSourceComplianceDoubts.paginator = this.paginatorPageComplianceDoubts;
         this.dataSourceComplianceDoubts.sort = this.empTbSortComplianceDoubts;
-        this.completeCount = result.pagination.total;
+        this.complianceDoubtsCount = result.pagination.total;
       });
     });
   }

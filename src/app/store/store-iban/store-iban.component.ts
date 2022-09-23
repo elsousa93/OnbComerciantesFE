@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
-import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
+import { Bank, Istore, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { StoreService } from '../store.service';
@@ -86,7 +86,7 @@ export class StoreIbanComponent implements OnInit {
   files?: File[] = [];
   supportBank?: string = "";
 
-  banks: BankInformation[];
+  banks: Bank[];
 
   public store: ShopDetailsAcquiring = {
     shopId: "1",
@@ -244,6 +244,7 @@ export class StoreIbanComponent implements OnInit {
 
     this.tableInfo.GetBanks().subscribe(result => {
       this.banks = result;
+      this.banks = this.banks.sort((a, b) => a.description > b.description? 1 : -1); //ordenar resposta
     });
 
   }

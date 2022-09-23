@@ -42,7 +42,7 @@
                       <p class="titulo-form-simples mt-0">{{'declarativeInformation.client.name'|translate|uppercase}}*</p>
                       <input #contactName name="contactName" type="text" id="contactName" class="form-control" formControlName="comercialName" [readonly]="returned === 'consult'">
                       <div class="alert alert-danger" *ngIf="contactName.touched && !contactName.valid">
-                        {{'errorMessages.isRequired'| translate}}
+                        {{'errorMessages.isRequired'|translate}}
                       </div>
                     </div>
                   </div>
@@ -64,11 +64,11 @@
                         <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}} 1:</p>
                         <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('invalidNumber')">
-                          {{'errorMessages.invalidPhone'| translate}}
+                          {{'errorMessages.invalidPhone'|translate}}
                         </div>
                       </div>
                       <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('missingValue')">
-                        {{'errorMessages.bothFieldsPhone'| translate}}
+                        {{'errorMessages.bothFieldsPhone'|translate}}
                       </div>
                     </div>
 
@@ -86,11 +86,11 @@
                         <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}} 2:</p>
                         <input #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('invalidNumber')">
-                          {{'errorMessages.invalidPhone'| translate}}
+                          {{'errorMessages.invalidPhone'|translate}}
                         </div>
                       </div>
                       <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('missingValue')">
-                        {{'errorMessages.bothFieldsPhone'| translate}}
+                        {{'errorMessages.bothFieldsPhone'|translate}}
                       </div>
                     </div>
                     <div class="row">
@@ -98,7 +98,7 @@
                         <p class="titulo-form-simples mt-0">EMAIL*</p>
                         <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
-                          {{'errorMessages.isRequired'| translate}}
+                          {{'errorMessages.isRequired'|translate}}
                         </div>
                       </div>
                     </div>
