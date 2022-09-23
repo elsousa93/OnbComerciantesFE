@@ -153,14 +153,7 @@ const testValues: ShopDetailsAcquiring[] = [
 
 export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
-  storesMat: MatTableDataSource<ShopDetailsAcquiring>;
-  @ViewChild('paginatorStore') set paginatorStore(pager:MatPaginator) {
-    if (pager) {
-      this.storesMat.paginator = pager;
-      this.storesMat.paginator._intl = new MatPaginatorIntl();
-      this.storesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-    }
-  }
+ 
   @ViewChild(MatSort) sort: MatSort;
 
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
@@ -191,6 +184,15 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   storesList: ShopDetailsAcquiring[] = [];
 
   constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService) { }
+
+  storesMat = new MatTableDataSource<ShopDetailsAcquiring>();
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.storesMat.paginator = pager;
+      this.storesMat.paginator._intl = new MatPaginatorIntl();
+      this.storesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     //var store = {};
