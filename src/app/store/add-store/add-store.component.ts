@@ -156,7 +156,7 @@ export class AddStoreComponent implements OnInit {
         ],
         commission: {
           commissionId: "1",
-          attributes: {
+          attribute: {
             id: "",
             description: "A1",
             fixedValue: {
