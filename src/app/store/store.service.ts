@@ -146,8 +146,12 @@ export class StoreService {
     return this.http.get(this.mockacoUrl + 'v1/config/activities/' + code);
   }
 
-  subzonesNearby(zipCode1: string, zipCode2: string): any {
-    return this.http.get(this.mockacoUrl + 'v1/config/subzones/' + zipCode1 + '/' + zipCode2);
+  //subzonesNearby(zipCode1: string, zipCode2: string): any {
+  //  return this.http.get(this.mockacoUrl + 'v1/config/subzones/' + zipCode1 + '/' + zipCode2);
+  //}
+
+  subzonesNearby(zipCode: string): any {
+    return this.http.get(this.baseUrl + 'address/' + zipCode + '/shoppingcenter');
   }
 
   getShopEquipmentConfigurationsFromProcess(processId: string, shopId: string) {

@@ -128,16 +128,16 @@
                        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of group.attributes"> <!-- LISTAR OS ATRIBUTOS *ngFor="let attribute of packDetail.attributes" [checked]="attribute.isSelected"-->
                          <span class="navbar-text text-start align-self-start">
                             <div class="form-check" *ngIf="attribute.isVisible"><!--*ngIf="attribute.isVisible" -->
-                             <input class="form-check-input" type="checkbox" id="input1" value="{{attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected"> <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
+                             <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.finalValue" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected"> <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
                              <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label> <!--{{attribute.description}}-->
                              <div *ngIf="attribute.finalValue"><!--*ngIf="attribute.isSelected" -->
-                               <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"> <!--*ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"-->
+                               <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}"> <!--*ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"-->
                                  <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
                                  <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p><!--{{bundle.description}}-->
                                  <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let bundleAttr of bundle.attributes"> <!--*ngFor="let bundleAttribute of bundle.attributes"-->
                                    <span class="navbar-text text-start align-self-start">
                                      <div class="form-check" *ngIf="bundleAttr.isVisible && bundleAttr.kind == group.kind"> <!--*ngIf="bundleAttribute.isVisible"-->
-                                       <input class="form-check-input" type="checkbox" id="input1" formControlName="{{'formControl' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}"  [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected"><!--formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected"-->
+                                       <input class="form-check-input" type="checkbox" id="input1" [value]="bundleAttr.finalValue" formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}"  [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected"><!--formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected"-->
                                        <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label><!--{{bundleAttribute.description}}-->
                                      </div>
                                    </span>
@@ -421,15 +421,29 @@
                        </tr>
                      </thead>
                      <tbody>
-                       <tr *ngFor="let commission of commissionAttributeList">
+                       <tr *ngFor="let commission of commissionAttributeList" formGroupName="{{'commission' + commission.id}}">
                          <td class="text-primary text-center">Tarifa</td>
                          <td class="text-primary text-center">{{commission.description}}</td>
-                         <td class="text-primary text-center">{{commission.minValue.originalValue}}</td>
-                         <td class="text-primary text-center">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" value="{{commission.maxValue.originalValue}}"/>
+
+                         <td class="text-primary text-center" *ngIf="commission.minValue.isReadOnly">{{commission.minValue.originalValue}}</td>
+                         <td class="text-primary text-center" *ngIf="!commission.minValue.isReadOnly">
+                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMin" value="{{commission.minValue.originalValue}}" />
                          </td>
-                         <td class="text-primary text-center">{{commission.fixedValue.originalValue}}</td>
-                         <td class="text-primary text-center">{{commission.percentageValue.originalValue}}</td>
+
+                         <td class="text-primary text-center" *ngIf="commission.maxValue.isReadOnly">{{commission.maxValue.originalValue}}</td>
+                         <td class="text-primary text-center" *ngIf="!commission.maxValue.isReadOnly">
+                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMax" value="{{commission.maxValue.originalValue}}" />
+                         </td>
+
+                         <td class="text-primary text-center" *ngIf="commission.fixedValue.isReadOnly">{{commission.fixedValue.originalValue}}</td>
+                         <td class="text-primary text-center" *ngIf="!commission.fixedValue.isReadOnly">
+                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionFixed" value="{{commission.fixedValue.originalValue}}" />
+                         </td>
+
+                         <td class="text-primary text-center" *ngIf="commission.percentageValue.isReadOnly">{{commission.percentageValue.originalValue}}</td>
+                         <td class="text-primary text-center" *ngIf="!commission.percentageValue.isReadOnly">
+                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionPercentage" value="{{commission.percentageValue.originalValue}}" />
+                         </td>
                        </tr>
                      </tbody>
                    </table>

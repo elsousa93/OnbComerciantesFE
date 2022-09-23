@@ -782,7 +782,7 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        exists: false,
+        clientExists: false,
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents
       }

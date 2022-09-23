@@ -6,6 +6,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { HttpMethod } from '../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
 import { BehaviorSubject } from 'rxjs';
+import { TableInfoService } from '../table-info/table-info.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class StakeholderService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService) {
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
@@ -147,6 +148,31 @@ export class StakeholderService {
     }, null, 2)}`);
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
+
+  /////////////////////////////////////////////////////
+  //getStakeholderByIDNew(stakeholderID : string) {
+  //  var url = this.urlOutbound + "api/v1/stakeholder/" + stakeholderID;
+  //  var response: TreatedResponse<any> = {};
+  //  return new Promise<TreatedResponse<any>>((resolve, reject) => {
+  //    var HTTP_OPTIONS = {
+  //      headers: new HttpHeaders({
+  //        'Accept-Language': this.currentLanguage,
+
+  //      }),
+  //    }
+  //    this.tableInfo.callAPIOutboundNew(HttpMethod.GET, url, "pesquisa", "searchtype", "ola", "userID", this.currentLanguage).then(success => {
+  //      response.result = success.result;
+  //      response.msg = "Sucesso";
+  //      resolve(response);
+  //    }, error => {
+  //      console.log("erro que deu: ", error);
+  //      response.result = null;
+  //      response.msg = "Sem stakeholders";
+  //      reject(response);
+  //    })
+  //  })
+  //}
+  /////////////////////////////////////////////////////
 
   getStakeholderByID(StakeholderID: string, requestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
 

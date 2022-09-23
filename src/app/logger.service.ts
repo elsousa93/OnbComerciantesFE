@@ -29,19 +29,19 @@ export class LoggerService {
   }
 
   exception(exception:string, context:string, description: string){
-    this.logger.error(description, "app", exception, context);
+    this.logger.error(description ?? "", "app", exception, context);
   }
 
   trace(description: any, messageId: string = ""){
-    this.logger.trace(description, "app", "", this.getContext(), messageId);
+    this.logger.trace(description ?? "", "app", "", this.getContext(), messageId);
   }
 
   info(description: any, messageId: string = ""){
-    this.logger.info(description, "app", "", this.getContext(), messageId);
+    this.logger.info(description ?? "", "app", "", this.getContext(), messageId);
   }
 
   debug(description: any, messageId: string = ""){
-    this.logger.debug(description, "app", "", this.getContext(), messageId);
+    this.logger.debug(description ?? "", "app", "", this.getContext(), messageId);
   }
 
   error(error?: Error, messageId: string = "", description?: string){
