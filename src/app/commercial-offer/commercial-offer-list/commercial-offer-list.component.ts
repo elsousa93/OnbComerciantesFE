@@ -80,6 +80,7 @@ export class CommercialOfferListComponent implements OnInit {
   submissionId: string;
   processNumber: string;
 
+  storeEquipList : ShopEquipment[] = [];
 
   getPacoteComercial() {
     console.log("loja selecionada: ", this.currentStore);
@@ -165,6 +166,19 @@ export class CommercialOfferListComponent implements OnInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
+    
+  }
+
+  getStoreEquipsFromSubmission() {
+    this.storeEquipList = [];
+    if (this.returned != null) {
+      this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.shopId).subscribe(result => {
+        this.storeEquipList.push(result);
+      });
+    }
+    this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.shopId).subscribe(result => {
+      this.storeEquipList.push(result);
+    });
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[]) {
@@ -195,6 +209,9 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (this.returned != null)
       setTimeout(() => this.setFormData(), 500);
+
+    this.getStoreEquipsFromSubmission();
+    setTimeout(() => this.storeEquipMat.data = this.storeEquipList, 1000); //tomar em atenção se esta chamada está correta
 
     if (this.returned == 'consult')
       this.form.disable();
@@ -291,9 +308,14 @@ export class CommercialOfferListComponent implements OnInit {
     }
 
     this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
-      result.result.forEach(options => {
-        this.commissionOptions.push(options);
-      })
+      if (result.result.length == 1) {
+        this.commissionOptions.push(result.result[0]);
+        this.chooseCommission(result.result[0].id);
+      } else {
+        result.result.forEach(options => {
+          this.commissionOptions.push(options);
+        });
+      }
     });
   }
 
