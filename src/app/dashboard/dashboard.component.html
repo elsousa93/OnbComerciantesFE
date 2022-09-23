@@ -170,7 +170,7 @@
           data-bs-target="#flush-collapseMCCTreatment">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="MCCTreatmentCount">
+            <app-number-counter [number]="MCCTreatmentCount" *ngIf="MCCTreatmentCount !== undefined && MCCTreatmentCount !== null">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -187,7 +187,7 @@
           data-bs-target="#flush-collapseValidationSIBS">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="validationSIBSCount">
+            <app-number-counter [number]="validationSIBSCount" *ngIf="validationSIBSCount !== undefined && validationSIBSCount !== null">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -204,7 +204,7 @@
           data-bs-target="#flush-collapseRiskOpinion">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="riskOpinionCount">
+            <app-number-counter [number]="riskOpinionCount" *ngIf="riskOpinionCount !== undefined && riskOpinionCount !== null">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -221,7 +221,7 @@
           data-bs-target="#flush-collapseComplianceDoubts">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="complianceDoubtsCount">
+            <app-number-counter [number]="complianceDoubtsCount" *ngIf="complianceDoubtsCount !== undefined && complianceDoubtsCount !== null">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
