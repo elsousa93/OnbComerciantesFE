@@ -152,8 +152,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
 
   }
 
+  //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
-    //chamar a primeira tabela em que podemos selecionar o pacote comercial - quando tivermos Mocks ou APIs  :^)
     this.productPackPricingFilter = {
       processorId: this.store.processorId,
       productCode: this.packId,
@@ -177,26 +177,33 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
     }
 
     this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-      result.result.forEach(options => {
-        this.pricingOptions.push(options);
-      });
+      if (result.result.length == 1) {
+        this.pricingOptions.push(result.result[0]);
+        this.chooseMensalidade(result.result[0].id);
+      } else {
+        result.result.forEach(options => {
+          this.pricingOptions.push(options);
+        });
+      }
     });
+  }
+
+  //ao escolher uma mensalidade, é carregado os valors associados a essa mensalidade escolhida
+  chooseMensalidade(id: string) {
     if (this.form.valid) {
-      //carregamos a tabela
+      this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
+        res.result.attributes.forEach(attr => {
+          this.pricingAttributeList.push(attr);
+        });
+      });
       this.form.valueChanges.subscribe(value => {
-        if (value) { 
-          //se algum valor do form foi alterado, é necessário carregar as mensalidades novamente e as que já existiam são limpas
+        if (value) { //se algum valor do form for alterado, é preciso carregar as mensalidades novamente e as que já existiam são limpas
+          this.pricingOptions = [];
+          this.pricingAttributeList = [];
+          this.loadMensalidades();
         }
       });
     }
-  }
-
-  chooseMensalidade(id: string) {
-    this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
-      res.result.attributes.forEach(attr => {
-        this.pricingAttributeList.push(attr);
-      });
-    });
   }
 
   submit() {
@@ -218,15 +225,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       if (this.edit) {
         console.log("Editar ");
         //chamada à API para editar uma configuração
-        //this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.id, this.storeEquip).subscribe(result => {
-        //  this.logger.debug("Update Shop Equipment From Submission Response ", result);
-        //});
+        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
+          this.logger.debug("Update Shop Equipment From Submission Response ", result.id);
+        });
       } else {
         console.log("Criar ");
         //chamada à API para criar uma nova configuração
-        //this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.id, this.storeEquip).subscribe(result => {
-        //  this.logger.debug("Add Shop Equipment To Submission Response ", result);
-        //});
+        this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
+          this.logger.debug("Add Shop Equipment To Submission Response ", result.id);
+        });
       }
 
       this.route.navigate(['commercial-offert-list'], navigationExtras);
