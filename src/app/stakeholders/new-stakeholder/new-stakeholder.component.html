@@ -24,7 +24,7 @@
           <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="updateForm($event)"></app-stakeholders-list>
         </div>
 
-        <div class="row ms-0 me-0" *ngIf="isSelected">
+        <div class="row ms-0 me-0" *ngIf="isSelected" #selectedBlueDiv id="selectedBlueDiv">
           <h2 class="text-primary mt-5 ps-0 center-align">
             <img src="assets/images/group_add_blue.svg" class="img_add">&nbsp;{{'stakeholder.identification'|translate|uppercase}}
           </h2>
