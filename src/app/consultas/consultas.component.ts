@@ -1,23 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
-import { AfterViewInit, Renderer2 } from '@angular/core';
-import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { Client } from '../client/Client.interface';
 import { DataService } from '../nav-menu-interna/data.service';
-import { ProcessGet, ProcessService } from '../process/process.service';
+import { ProcessService } from '../process/process.service';
 import { TableInfoService } from '../table-info/table-info.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { ClientService } from '../client/client.service';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Process {
   processNumber: string;
@@ -36,7 +32,13 @@ export class ConsultasComponent implements OnInit{
   processes: MatTableDataSource<Process> = new MatTableDataSource();
 
   displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'abrirProcesso'];
-  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.processes.paginator = pager;
+      this.processes.paginator._intl = new MatPaginatorIntl();
+      this.processes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
   @ViewChild(MatSort) sort: MatSort;
 
 
@@ -51,19 +53,11 @@ export class ConsultasComponent implements OnInit{
   public subscription: Subscription;
 
   
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService,
-    private router: ActivatedRoute, private submissionService: SubmissionService, private clientService: ClientService) {
+  constructor(private logger : LoggerService, private route: Router, private data: DataService, private processService: ProcessService, private translate: TranslateService) {
 
     this.initializeForm();
-
-   
-      
-
-    //Initialize Form
-    
     this.ngOnInit();
-    //this.data.updateData(false, 0, 0);
+    
   }
 
   initializeForm() {

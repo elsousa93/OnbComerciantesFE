@@ -180,7 +180,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
 

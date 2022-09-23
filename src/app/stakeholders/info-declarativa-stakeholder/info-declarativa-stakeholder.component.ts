@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ViewChild, EventEmitter, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
@@ -48,14 +48,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   @Output() nameEmitter = new EventEmitter<string>();
 
-  // sendToParent() {
-  //   this.nameEmitter.emit(this.displayValueSearch);
-  // }
-
   stakeholders: IStakeholders[] = [];
   displayedColumns: string[] = ['fiscalId', 'shortName', 'identificationDocumentId', 'elegible', 'valid'];
-  dataSource = new MatTableDataSource<IStakeholders>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   selectedStakeholder = {
     
@@ -66,11 +60,11 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   currentIdx: number = 0;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   constructor(private logger : LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     this.baseUrl = configuration.baseUrl;
+
 
     this.ngOnInit();
 
@@ -89,25 +83,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       });
     }, error => {
     });
-    
 
-    /* this.formContactos.controls["countryCode"].valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.formContactos.controls["phoneNumber"].setValidators([Validators.required]);
-      } else {
-        this.formContactos.controls["phoneNumber"].clearValidators();
-      }
-      this.formContactos.controls["phoneNumber"].updateValueAndValidity();
-    });
-
-    this.formContactos.controls["phoneNumber"].valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.formContactos.controls["countryCode"].setValidators([Validators.required]);
-      } else {
-        this.formContactos.controls["countryCode"].clearValidators();
-      }
-      this.formContactos.controls["countryCode"].updateValueAndValidity();
-    }); */
   }
 
   ngOnInit(): void {

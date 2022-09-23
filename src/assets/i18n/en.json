@@ -278,7 +278,7 @@
     "cellPhone": "Cell Phone",
     "invoicingEmail": "Invoicing Email",
     "client": {
-      "name": "Comercial Name"
+      "name": "Merchant's Name"
     },
     "stakeholder":{
       "contacts": "contacts",
@@ -438,7 +438,8 @@
     "confirmDeleteProcess": "Delete Process",
     "save": "Save",
     "select": "Select",
-    "restrictions": "Restrictions"
+    "restrictions": "Restrictions",
+    "itemsPerPage": "Items Per Page: "
   },
   "generalButtons": {
     "continue": "Continue",

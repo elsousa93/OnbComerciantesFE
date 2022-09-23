@@ -60,11 +60,11 @@
                           <input #phoneNumber name="phoneNumber" type="text" id="phoneNumber"
                             class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                           <div class="alert alert-danger" *ngIf="(phone.touched || phone.dirty) && !phone.valid && phone.errors.hasOwnProperty('invalidNumber')">
-                            {{'errorMessages.invalidPhone'| translate}}
+                            {{'errorMessages.invalidPhone'|translate}}
                           </div>
                         </div>
                         <div class="alert alert-danger" *ngIf="(phone.touched || phone.dirty) && !phone.valid && phone.errors.hasOwnProperty('missingValue')">
-                          {{'errorMessages.bothFieldsPhone'| translate}}
+                          {{'errorMessages.bothFieldsPhone'|translate}}
                         </div>
                       </div>
                     </div>
@@ -74,7 +74,7 @@
                         <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
                           formControlName="email" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid">
-                          {{'errorMessages.isRequired'| translate}}
+                          {{'errorMessages.isRequired'|translate}}
                         </div>
                       </div>
                     </div>

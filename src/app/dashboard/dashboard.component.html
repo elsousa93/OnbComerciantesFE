@@ -70,10 +70,9 @@
           data-bs-target="#flush-collapseAcceptance">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]=0
+            <app-number-counter [number]="contractAcceptanceCount"
               *ngIf="contractAcceptanceCount !== undefined && contractAcceptanceCount !== null"></app-number-counter>
           </h1>
-          <!--FIX ME [number]=0 -- ANTES: contractAcceptanceCount-->
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash">
               <img src="assets/images/queues/assignment_turned_in_dash.svg">
@@ -97,7 +96,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.pendingSent'|translate|uppercase}}</h1>
+            {{'homepage.processes.pendingSent'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.pendingEligibility" type="button"
@@ -114,7 +113,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.pendingEligibility'|translate|uppercase}}</h1>
+            {{'homepage.processes.pendingEligibility'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.multipleClientes" type="button"
@@ -131,7 +130,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.multipleClients'|translate|uppercase}}</h1>
+            {{'homepage.processes.multipleClients'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.DOValidation" type="button"
@@ -148,7 +147,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.DOValidation'|translate|uppercase}}</h1>
+            {{'homepage.processes.DOValidation'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.negotiationAproval" type="button"
@@ -165,7 +164,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.negotiationAproval'|translate|uppercase}}</h1>
+            {{'homepage.processes.negotiationAproval'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.MCCTreatment" type="button"
@@ -182,7 +181,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.MCCTreatment'|translate|uppercase}}</h1>
+            {{'homepage.processes.MCCTreatment'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.validationSIBS" type="button"
@@ -199,7 +198,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.validationSIBS'|translate|uppercase}}</h1>
+            {{'homepage.processes.validationSIBS'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.riskOpinion" type="button"
@@ -216,7 +215,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.riskOpinion'|translate|uppercase}}</h1>
+            {{'homepage.processes.riskOpinion'|translate|uppercase}}<br><br></h1>
         </button>
 
         <button *ngIf="FTPermissions.complianceDoubts" type="button"
@@ -233,7 +232,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.complianceDoubts'|translate|uppercase}}</h1>
+            {{'homepage.processes.complianceDoubts'|translate|uppercase}}<br><br></h1>
         </button>
       </div>
     </div>
