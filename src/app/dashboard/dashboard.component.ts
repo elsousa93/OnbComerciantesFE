@@ -241,19 +241,19 @@ export class DashboardComponent implements OnInit {
   riskOpinionProcessess: ProcessGet;
   complianceDoubtsProcessess: ProcessGet;
 
-  incompleteCount: number = 0;
-  ongoingCount: number = 0;
-  returnedCount: number = 0;
-  contractAcceptanceCount: number = 0;
-  pendingSentCount: number = 0;
-  pendingEligibilityCount: number = 0;
-  multipleClientesCount: number = 0;
-  DOValidationCount: number = 0;
-  negotiationAprovalCount: number = 0;
-  MCCTreatmentCount: number = 0;
-  validationSIBSCount: number = 0;
-  riskOpinionCount: number = 0;
-  complianceDoubtsCount: number = 0;
+  incompleteCount: number;
+  ongoingCount: number;
+  returnedCount: number;
+  contractAcceptanceCount: number;
+  pendingSentCount: number;
+  pendingEligibilityCount: number;
+  multipleClientesCount: number;
+  DOValidationCount: number;
+  negotiationAprovalCount: number;
+  MCCTreatmentCount: number;
+  validationSIBSCount: number;
+  riskOpinionCount: number;
+  complianceDoubtsCount: number;
 
   date: string;
 
@@ -312,6 +312,19 @@ export class DashboardComponent implements OnInit {
         this.returnedCount = result.pagination.total;
       });
     });
+
+        //Pendentes de Aceitação
+        this.processService.searchProcessByState('contractAcceptance', 0, 1).subscribe(result => {
+          this.logger.debug('Pendentes de Aceitação' + result);
+          this.processService.searchProcessByState('contractAcceptance', 0, result.pagination.total).subscribe(resul => {
+            this.contractAcceptanceProcessess = resul;
+            this.dataSourceAceitacao = new MatTableDataSource(this.contractAcceptanceProcessess.items);
+    
+            this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
+            this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
+            this.contractAcceptanceCount = result.pagination.total;
+          });
+        });
     
     //Arquivo Fisico
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
