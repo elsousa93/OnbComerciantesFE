@@ -149,30 +149,30 @@ export class StakeholderService {
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
-  ///////////////////////////////////////////////////
-  getStakeholderByIDNew(stakeholderID : string) {
-    var url = this.urlOutbound + "api/v1/stakeholder" + stakeholderID;
-    var response: TreatedResponse<any> = {};
-    return new Promise<TreatedResponse<any>>((resolve, reject) => {
-      var HTTP_OPTIONS = {
-        headers: new HttpHeaders({
-          'Accept-Language': this.currentLanguage,
+  /////////////////////////////////////////////////////
+  //getStakeholderByIDNew(stakeholderID : string) {
+  //  var url = this.urlOutbound + "api/v1/stakeholder/" + stakeholderID;
+  //  var response: TreatedResponse<any> = {};
+  //  return new Promise<TreatedResponse<any>>((resolve, reject) => {
+  //    var HTTP_OPTIONS = {
+  //      headers: new HttpHeaders({
+  //        'Accept-Language': this.currentLanguage,
 
-        }),
-      }
-      this.tableInfo.callAPIOutboundNew(HttpMethod.GET, url, "pesquisa", "searchtype", "ola", "userID", this.currentLanguage).then(success => {
-        response.result = success.result;
-        response.msg = "Sucesso";
-        resolve(response);
-      }, error => {
-        console.log("erro que deu: ", error);
-        response.result = null;
-        response.msg = "Sem stakeholders";
-        reject(response);
-      })
-    })
-  }
-  ///////////////////////////////////////////////////
+  //      }),
+  //    }
+  //    this.tableInfo.callAPIOutboundNew(HttpMethod.GET, url, "pesquisa", "searchtype", "ola", "userID", this.currentLanguage).then(success => {
+  //      response.result = success.result;
+  //      response.msg = "Sucesso";
+  //      resolve(response);
+  //    }, error => {
+  //      console.log("erro que deu: ", error);
+  //      response.result = null;
+  //      response.msg = "Sem stakeholders";
+  //      reject(response);
+  //    })
+  //  })
+  //}
+  /////////////////////////////////////////////////////
 
   getStakeholderByID(StakeholderID: string, requestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
 

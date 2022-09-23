@@ -163,25 +163,21 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
             var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
 
-            context.submissionStakeholders.push(stakeholderToInsert);
-
-            context.stakeholderService.getStakeholderByIDNew("75c99155-f3a8-45e2-9bd3-56a39d8a68ae").then(success => {
-              console.log("Foi buscar o stakeholderbyidnew com sucesso: ", success);
-            }, error => {
-              console.log("Não conseguiu ir buscar o stakeholderbyidnew: ", error);
-            });
+            //context.submissionStakeholders.push(stakeholderToInsert);
 
             //context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
             //  stakeholderToInsert.stakeholderOutbound = outboundResult;
             //  context.submissionStakeholders.push(stakeholderToInsert);
 
             //})
-            //context.submissionStakeholders.push({
-            //  displayName: '',
-            //  eligibility: false,
-            //  stakeholderAcquiring: result,
-            //  stakeholderOutbound: undefined
-            //});
+
+            var stakeholderFunction = context.stakeholderService.getStakeholderByID(tempStakeholderID, "por mudar", "por mudar").toPromise();
+
+            stakeholderFunction.then(success => {
+              stakeholderToInsert.stakeholderOutbound = success;
+            }).then(success =>{
+              context.submissionStakeholders.push(stakeholderToInsert);
+            });
             console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
           }, error => {
           });
