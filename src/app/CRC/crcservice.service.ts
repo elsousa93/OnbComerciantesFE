@@ -42,7 +42,7 @@ export class CRCService {
     //});
   }
 
-  getCRC(code: string, requestReason: string, requestedBy?: string): any{
+  getCRC(code: string, requestReason: string, requestedBy?: string): Observable<any>{
 
     //http://localhost:11000/api/v1/company/registry/001?requestReason=001&requestedBy=001
 

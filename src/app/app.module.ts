@@ -72,6 +72,7 @@ import { ClientSearchComponent } from './client/client-search/client-search.comp
 import { SearchStakeholdersComponent } from './stakeholders/search-stakeholders/search-stakeholders.component';
 import { StoreTableComponent } from './store/store-table/store-table.component';
 import { LoggingInterceptor } from 'src/logger/loggerInterceptor';
+import { ClientCharacterizationComponent } from './client/clientCharacterization/clientcharacterization.component';
 
 registerLocaleData(localePT);
 
@@ -99,6 +100,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InfoDeclarativaStakeholderComponent,
     PepComponent,
     ClientByIdComponent,
+    ClientCharacterizationComponent,
     ReadcardComponent,
     DevolucaoComponent,
     QueuesDetailComponent,

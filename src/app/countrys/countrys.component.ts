@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, Injectable, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, Injectable, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -22,6 +22,7 @@ import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { AuthService } from '../services/auth.service';
+import { ClientContext } from '../client/clientById/clientById.model';
 
 @Component({
   selector: 'app-countrys',
@@ -29,6 +30,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class CountrysComponent implements OnInit {
   continente = '';
+  @Input() inline : boolean;
+  @Input() clientContext: ClientContext;
 
   lstCountry: CountryInformation[] = [];
   lstCountry1 : CountryInformation[] = [];
@@ -63,6 +66,7 @@ export class CountrysComponent implements OnInit {
   countryList: CountryInformation[] = [];
   continentsList: string[] = [];
   checkedContinents = [];
+
 
   tipologia: any;
   NIFNIPC: any;
@@ -114,44 +118,30 @@ export class CountrysComponent implements OnInit {
 
   countryError: boolean;
   errorMsg: string;
+  rootForm: any;
+
+  ngOnChanges(){
+    if (this.clientContext) {
+      this.clientExists = this.clientContext.clientExists;
+      this.tipologia = this.clientContext.tipologia;
+      // this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      this.NIFNIPC = this.clientContext.NIFNIPC;
+      this.client = this.clientContext.client;
+      this.newSubmission.merchant = this.client;
+      this.clientId = this.clientContext.clientId;
+      this.processId = this.clientContext.processId;
+      this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
+      this.merchantInfo = this.clientContext.merchantInfo;
+      this.comprovativoCC = this.clientContext.comprovativoCC;
+      this.crc = this.clientContext.crc;
+    }
+  }
 
   ngOnInit() {
-    this.initializeForm();
-    this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.data.updateData(false, 1, 3);
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => sub?.unsubscribe);
-  }
-
-  public subs: Subscription[] = [];
-
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService,
-    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
-    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService, private stakeholderService: StakeholderService, private storeService: StoreService) {
-    this.ngOnInit();
-    if (this.route.getCurrentNavigation().extras.state) {
-      var auth = authService.GetCurrentUser();
-      this.newSubmission.submissionUser.user = auth.userName;
-      this.newSubmission.submissionUser.branch = auth.bankName;
-      this.newSubmission.submissionUser.partner = "SIBS";
-      this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
-      this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
-      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
-      this.client = this.route.getCurrentNavigation().extras.state["client"];
-      this.newSubmission.merchant = this.client;
-      this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
-      this.processId = this.route.getCurrentNavigation().extras.state["processId"];
-      this.stakeholdersToInsert = this.route.getCurrentNavigation().extras.state["stakeholders"];
-      this.merchantInfo = this.route.getCurrentNavigation().extras.state["merchantInfo"];
-      this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
-      if (this.route.getCurrentNavigation().extras.state["crc"])
-        this.crc = this.route.getCurrentNavigation().extras.state["crc"];
-    }
+    
+    this.initializeForm();
 
     if (this.returned !== null) {
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
@@ -200,10 +190,34 @@ export class CountrysComponent implements OnInit {
     //});
   }
 
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
+  }
+
+  public subs: Subscription[] = [];
+
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService,
+    private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
+    private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
+    private stakeholderService: StakeholderService, private storeService: StoreService, private rootFormDirective: FormGroupDirective) {
+    
+    var auth = authService.GetCurrentUser();
+    this.newSubmission.submissionUser.user = auth.userName;
+    this.newSubmission.submissionUser.branch = auth.bankName;
+    this.newSubmission.submissionUser.partner = "SIBS";
+    this.rootForm = rootFormDirective.form;
+    this.form = this.rootForm.get("countrysForm");
+  }
+
+  changeFormStructure(newForm: FormGroup){
+    this.rootForm.setControl("countrysForm", newForm);
+    this.form = this.rootForm.get("countrysForm");
+  }
+
   initializeForm() {
     if (this.clientExists) {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
-      this.form = new FormGroup({
+      this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -216,9 +230,9 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      });
+      }));
     } else {
-      this.form = new FormGroup({
+      this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl('', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -231,7 +245,7 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      });
+      }));
     }
 
     this.form.get("franchiseName").valueChanges.subscribe(v => {
@@ -568,14 +582,14 @@ export class CountrysComponent implements OnInit {
 
             //localStorage.setItem("crcStakeholders", JSON.stringify());
 
-            this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
+            //this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
 
           });
         
         }
       }
-  } else {
-      this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
+    } else {
+      //this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
     }
   }
 

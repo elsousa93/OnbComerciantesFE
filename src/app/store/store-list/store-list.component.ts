@@ -251,7 +251,7 @@ export class StoreComponent implements AfterViewInit{
   }
 
   addStore(){
-    this.currentStore = null;
+    this.currentStore = new ShopDetailsAcquiring();
     this.currentIdx = -1; //-1 index means new store is being created
   }
 

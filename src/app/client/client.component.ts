@@ -201,11 +201,11 @@ export class ClientComponent implements OnInit {
   clientIdNew;
   ccInfo;
   newId;
-  // ListaDocType = docType;
-  // ListaDocTypeENI = docTypeENI;
+  ListaDocType = docType;
+  ListaDocTypeENI = docTypeENI;
 
-  ListaDocType;
-  ListaDocTypeENI;
+  // ListaDocType;
+  // ListaDocTypeENI;
   formDocType!: FormGroup;
   docType?: string = "";
 
@@ -342,9 +342,9 @@ export class ClientComponent implements OnInit {
     this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
-       this.ListaDocType = result;
+       // this.ListaDocType = result;
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
-       this.ListaDocTypeENI = result;
+       // this.ListaDocTypeENI = result;
     })));
 
     // this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
@@ -774,7 +774,7 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        exists: false,
+        clientExists: false,
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents
       }
