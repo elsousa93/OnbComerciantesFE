@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, Input, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StakeholdersComponent } from '../stakeholders.component';
@@ -29,10 +29,14 @@ import { Subscription } from 'rxjs';
 */
 
 export class NewStakeholderComponent implements OnInit {
+
+  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
+
   private baseUrl: string;
   public foo = 0;
   public displayValueSearch = "";
-  isSelected = false; //back to false
+  isSelected = false; 
+
 
   allStakeholdersComprovativos = {};
 
@@ -119,6 +123,12 @@ export class NewStakeholderComponent implements OnInit {
     this.loadStakeholdersRoles();
   }
 
+  triggerFalseClick() {
+    let el: HTMLElement = this.selectedBlueDiv.nativeElement;
+    el.click();
+  }
+
+
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
@@ -133,7 +143,7 @@ export class NewStakeholderComponent implements OnInit {
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
     this.ngOnInit();
-
+    this.triggerFalseClick();
     var context = this;
 
     if (this.returned != null) {
