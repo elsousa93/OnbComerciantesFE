@@ -260,7 +260,7 @@ export class NewStakeholderComponent implements OnInit {
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
-      flagRecolhaEletronica: new FormControl('true', Validators.required), //v
+      flagRecolhaEletronica: new FormControl('true'), //v
       proxy: new FormControl((this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined) ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : false, Validators.required),
       NIF: new FormControl((this.currentStakeholder !== {} && this.currentStakeholder.stakeholderAcquiring !== undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalId : '', Validators.required),
       Role: new FormControl(''),
@@ -299,7 +299,7 @@ export class NewStakeholderComponent implements OnInit {
 
   createFormCC() {
     this.formNewStakeholder = this.fb.group({
-      flagRecolhaEletronica: new FormControl('true', Validators.required), //v
+      flagRecolhaEletronica: new FormControl('true'), //v
       documentType: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.type : ''),
       identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.currentStakeholder.stakeholderAcquiring.identificationDocument.country : ''),
       identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder.stakeholderAcquiring.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate, 'dd-MM-yyyy') : ''),
