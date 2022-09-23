@@ -10,7 +10,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StoreService } from '../../store/store.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
-import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductPackPricingFilter, TerminalSupportEntityEnum, MerchantCatalog, ProductPackRootAttributeProductPackKind, ProductPackPricingEntry, ProductPackPricingAttribute } from '../../commercial-offer/ICommercialOffer.interface';
+import { CommercialOfferService } from '../commercial-offer.service';
 
 
 @Component({
@@ -50,11 +51,20 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   edit: boolean;
   submissionId: string;
 
+  packId: string;
+  productPackPricingFilter: ProductPackPricingFilter;
+  merchantCatalog: MerchantCatalog;
+  groupsList: ProductPackRootAttributeProductPackKind[] = [];
+  pricingOptions: ProductPackPricingEntry[] = [];
+  pricingAttributeList: ProductPackPricingAttribute[] = [];
+
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
       this.allCommunications = result;
+      this.allCommunications = this.allCommunications.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }), this.tableInfo.GetTenantTerminals().subscribe(result => {
       this.allTerminals = result;
+      this.allTerminals = this.allTerminals.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }));
 
     // this.tableInfo.GetTenantTerminals().subscribe(result => {
@@ -64,12 +74,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-    constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService) {
+  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService) {
     this.baseUrl = configuration.baseUrl;
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
       this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"]; //CASO SEJA PARA EDITAR UMA CONFIGURAÇÃO
+      this.packId = this.route.getCurrentNavigation().extras.state["packId"];
+      this.merchantCatalog = this.route.getCurrentNavigation().extras.state["merchantCatalog"];
+      this.groupsList = this.route.getCurrentNavigation().extras.state["groupsList"];
 
       if (this.storeEquip != undefined)
         this.edit = true;
@@ -139,13 +152,55 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
 
   }
 
+  //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
-    //chamar a primeira tabela em que podemos selecionar o pacote comercial - quando tivermos Mocks ou APIs  :^)
+    this.productPackPricingFilter = {
+      processorId: this.store.processorId,
+      productCode: this.packId,
+      subproductCode: "",
+      merchant: this.merchantCatalog,
+      packAttributes: this.groupsList,
+      store: {
+        activity: this.store.activity,
+        subActivity: this.store.subActivity,
+        supportEntity: TerminalSupportEntityEnum[this.store.supportEntity] as TerminalSupportEntityEnum,
+        referenceStore: this.store.shopId,
+        supportBank: this.store.supportEntity
+      },
+      equipment: {
+        communicationOwnership: CommunicationOwnershipTypeEnum[this.storeEquip.communicationOwnership] as CommunicationOwnershipTypeEnum,
+        communicationType: this.storeEquip.communicationType,
+        equipmentOwnership: EquipmentOwnershipTypeEnum[this.storeEquip.equipmentOwnership] as EquipmentOwnershipTypeEnum,
+        equipmentType: this.storeEquip.equipmentType,
+        quantity: this.storeEquip.quantity
+      }
+    }
+
+    this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
+      if (result.result.length == 1) {
+        this.pricingOptions.push(result.result[0]);
+        this.chooseMensalidade(result.result[0].id);
+      } else {
+        result.result.forEach(options => {
+          this.pricingOptions.push(options);
+        });
+      }
+    });
+  }
+
+  //ao escolher uma mensalidade, é carregado os valors associados a essa mensalidade escolhida
+  chooseMensalidade(id: string) {
     if (this.form.valid) {
-      //carregamos a tabela
+      this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
+        res.result.attributes.forEach(attr => {
+          this.pricingAttributeList.push(attr);
+        });
+      });
       this.form.valueChanges.subscribe(value => {
-        if (value) { 
-          //se algum valor do form foi alterado, é necessário carregar as mensalidades novamente e as que já existiam são limpas
+        if (value) { //se algum valor do form for alterado, é preciso carregar as mensalidades novamente e as que já existiam são limpas
+          this.pricingOptions = [];
+          this.pricingAttributeList = [];
+          this.loadMensalidades();
         }
       });
     }
@@ -170,15 +225,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       if (this.edit) {
         console.log("Editar ");
         //chamada à API para editar uma configuração
-        //this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.id, this.storeEquip).subscribe(result => {
-        //  this.logger.debug("Update Shop Equipment From Submission Response ", result);
-        //});
+        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
+          this.logger.debug("Update Shop Equipment From Submission Response ", result.id);
+        });
       } else {
         console.log("Criar ");
         //chamada à API para criar uma nova configuração
-        //this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.id, this.storeEquip).subscribe(result => {
-        //  this.logger.debug("Add Shop Equipment To Submission Response ", result);
-        //});
+        this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
+          this.logger.debug("Add Shop Equipment To Submission Response ", result.id);
+        });
       }
 
       this.route.navigate(['commercial-offert-list'], navigationExtras);

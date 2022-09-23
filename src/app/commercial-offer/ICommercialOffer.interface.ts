@@ -24,14 +24,13 @@ export interface ICommercialOffer {
 
 export interface Product {
   productCode?: string
-  productDescription?: string
+  productName?: string
   subProducts?: Subproduct[]
 }
 
 export interface Subproduct{
   subProductCode?: string
-  subProductDescription?: string
-  fullCode: string
+  subProductName?: string
 }
 
 export interface ProductPackFilter {
@@ -44,6 +43,7 @@ export interface ProductPackFilter {
 export interface MerchantCatalog {
   fiscalIdentification?: FiscalIdentification
   context?: MerchantContextEnum
+  contextId?: string
 }
 
 interface StoreCatalog {
@@ -54,6 +54,14 @@ interface StoreCatalog {
   supportEntity?: TerminalSupportEntityEnum
 }
 
+interface EquipmentCatalog {
+  equipmentOwnership?: EquipmentOwnershipTypeEnum
+  communicationOwnership?: CommunicationOwnershipTypeEnum
+  equipmentType?: string
+  communicationType?: string
+  quantity?: number
+}
+
 interface FiscalIdentification {
   fiscalId?: string
   issuerCountry?: string
@@ -62,6 +70,7 @@ interface FiscalIdentification {
 export interface ProductPackEntry {
   id?: string
   description?: string
+  processors?: [string]
 }
 
 export interface ProductPack {
@@ -78,11 +87,11 @@ export interface ProductPackRootAttributeProductPackKind {
 interface ProductPackRootAttribute {
   id?: string
   description?: string
-  value?: boolean
+  originalValue?: boolean
+  finalValue?: boolean
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
- // aggregatorId?: string
   order?: number
   bundles?: ProductPackAttributeProductPackKind[]
 }
@@ -97,20 +106,21 @@ interface ProductPackAttributeProductPackKind{
 export interface ProductPackAttribute {
   id?: string
   description?: string
-  value?: boolean
+  originalValue?: boolean
+  finalValue?: boolean
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
-  aggregatorId?: string
   order?: number
 }
 
 export interface ProductPackPricingFilter {
   productCode?: string
   subproductCode?: string
+  processorId?: string
   merchant?: MerchantCatalog
   store?: StoreCatalog
-
+  equipment?: EquipmentCatalog
   packAttributes?: ProductPackRootAttributeProductPackKind[]
 }
 
@@ -126,7 +136,8 @@ export interface ProductPackPricing {
 export interface ProductPackPricingAttribute {
   id?: string
   description?: string
-  value?: number
+  originalValue?: number
+  finalValue?: number
   isReadOnly?: boolean
   isVisible?: boolean
 }
@@ -158,7 +169,8 @@ export interface ProductPackCommissionAttribute {
 }
 
 interface ProductPackCommissionAttributeValue {
-  value?: number
+  originalValue?: number
+  finalValue?: number
   isReadOnly?: boolean
   isVisible?: boolean
 }

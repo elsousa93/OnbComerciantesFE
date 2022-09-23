@@ -410,7 +410,14 @@
     "return": "Devolver",
     "functionalityType": "Tipo de Funcionalidade",
     "subFunctionality": "Tipo de Sub - Funcionalidade",
-    "concludeMCC": "Concluir Associação MCC"
+    "concludeMCC": "Concluir Associação MCC",
+    "merchantName":"Nome do Comerciante",
+    "enrollmentMerchantNumber": "Nº de Matrícula Cliente Empresa",
+    "storeName": "Nome de Loja",
+    "enrollmentStoreNumber": "Nº Matrícula de Loja",
+    "enrollmentTerminalNumber": "Nº de Matricula do terminal",
+    "conclude": "Concluir"
+
   },
   "generalKeywords": {
     "yes": "Sim",
@@ -433,7 +440,8 @@
     "confirmDeleteProcess": "Apagar Processo",
     "save": "Gravar",
     "select": "Selecione",
-    "restrictions": "Restrições"
+    "restrictions": "Restrições",
+    "itemsPerPage": "Items por Página: "
   },
   "generalButtons": {
     "continue": "Continuar",
@@ -447,5 +455,10 @@
     "cookies": "Política de Cookies",
     "privacy": "Política de Privacidade",
     "contacts": "Contactos de Suporte"
+  },
+  "errorMessages": {
+    "bothFieldsPhone": "Necessário preencher os dois campos",
+    "invalidPhone": "O número de telefone é inválido",
+    "isRequired": "Obrigatório"
   }
 }

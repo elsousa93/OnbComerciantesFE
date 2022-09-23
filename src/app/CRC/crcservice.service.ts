@@ -20,7 +20,7 @@ export class CRCService {
   }
 
   async getAccessToken(): Promise<any> {
-    var secret = btoa("4bd86de7-5640-4048-887e-7ecb6cedb01d" + ":" + "SIBS123456");
+    var secret = btoa(this.configuration.clientID + ":" + this.configuration.clientSecret);
 
     const HTTP_OPTIONS_AUTH = {
       headers: new HttpHeaders({

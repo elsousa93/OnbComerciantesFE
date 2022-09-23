@@ -70,7 +70,6 @@
                         <p class="form-check-label titulo-form-simples mt-0" for="pepType">
                           {{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:*</p>
                           <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepType" name="pepType" id="pepType">
-                            <option>teste</option>
                             <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
                           </select>
                           <p (change)="checkSelectedPEP()" class="form-check-label titulo-form-simples" for="pepSinceWhen">
@@ -82,7 +81,6 @@
                         <p class="form-check-label titulo-form-simples mt-0 text-start" for="pepCountry">
                           {{'declarativeInformation.stakeholder.pep.country'|translate}}:*</p>
                           <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepCountry" name="pepCountry" id="pepCountry">
-                            <option>Portugal</option>
                             <option *ngFor="let country of Countries" value={{country.description}}>
                               {{country.description}} </option>
                           </select>
@@ -118,7 +116,7 @@
                           for="pepFamilyRelation">{{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*</p>
                         <select (change)="checkSelectedFamiliar()" class="form-select" formControlName="pepFamilyRelation" name="pepFamilyRelation"
                           id="pepFamilyRelation">
-                          <option>Filha</option>
+                          <option *ngFor="let kinship of stakeholdersKinships" value={{kinship.code}}>{{kinship.description}} </option>
                         </select>
                         </div></div>
                       </div>
@@ -154,7 +152,7 @@
                         <select (change)="checkSelectedRelations()" class="form-select" formControlName="pepTypeOfRelation" name="pepTypeOfRelation"
                           id="pepTypeOfRelation">
                           <option value="">{{'declarativeInformation.stakeholder.pep.relationType'|translate}}:</option>
-                          <option value="1">Sócio </option>
+                          <option *ngFor="let cr of corporateRelations" value={{cr.code}}>{{cr.description}} </option>
                         </select>
                       </div></div><p class="titulo-form-simples"></p>
                     </div>

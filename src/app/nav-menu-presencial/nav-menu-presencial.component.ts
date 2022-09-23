@@ -109,7 +109,8 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   openProcess(process) {
-    this.logger.debug("Opening process: " + process);
+    if (process!=="") {
+          this.logger.debug("Opening process: " + process);
     var encodedCode = encodeURIComponent(process);
     localStorage.setItem("processNumber", process);
     this.processNrService.changeProcessNumber(process);
@@ -125,6 +126,8 @@ export class NavMenuPresencialComponent implements OnInit {
     //    });
     //  });
     //});
+    }
+
 
   }
 

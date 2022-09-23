@@ -18,7 +18,7 @@ export interface dataCC {
   
   addressCC: any;
   postalCodeCC: any;
-
+  localityCC: any;
   countryCC: any; //Country issuer of the document
 }
  

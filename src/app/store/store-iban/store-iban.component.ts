@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
-import { Istore, ShopDetailsAcquiring } from '../IStore.interface';
+import { Bank, Istore, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { StoreService } from '../store.service';
@@ -11,6 +11,8 @@ import { AuthService } from '../../services/auth.service';
 import { UserPermissions } from '../../userPermissions/user-permissions';
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { BankInformation } from 'src/app/client/Client.interface';
+import { TableInfoService } from 'src/app/table-info/table-info.service';
 
 
 @Component({
@@ -82,9 +84,11 @@ export class StoreIbanComponent implements OnInit {
   public idisabled: boolean = false;
 
   files?: File[] = [];
+  supportBank?: string = "";
+
+  banks: Bank[];
 
   public store: ShopDetailsAcquiring = {
-
     shopId: "1",
     name: "ShopName",
     manager: "Manager1",
@@ -104,7 +108,7 @@ export class StoreIbanComponent implements OnInit {
       shoppingCenter: "Shopping1"
     },
     bank: {
-      userMerchantBank: true,
+      useMerchantBank: true,
       bank: {
         bank: "Bank",
         iban: "12345"
@@ -122,12 +126,13 @@ export class StoreIbanComponent implements OnInit {
         equipmentType: "A",
         quantity: 0,
         pricing: {
-          pricingId: "123",
-          attributes: [
+          id: "123",
+          attribute: [
             {
               id: "A",
               description: "A",
-              value: 1,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             }
@@ -146,7 +151,8 @@ export class StoreIbanComponent implements OnInit {
             {
               id: "1234",
               description: "AAA",
-              value: true,
+              originalValue: true,
+              finalValue: true,
               isReadOnly: true,
               isVisible: true,
               isSelected: true,
@@ -160,7 +166,8 @@ export class StoreIbanComponent implements OnInit {
                     {
                       id: "B123",
                       description: "B123456",
-                      value: true,
+                      originalValue: true,
+                      finalValue: true,
                       isReadOnly: true,
                       isVisible: true,
                       isSelected: true,
@@ -174,27 +181,31 @@ export class StoreIbanComponent implements OnInit {
         }
       ],
       commission: {
-        comissionId: "1",
+        commissionId: "1",
         attributes: {
           id: "",
           description: "A1",
           fixedValue: {
-            value: 1,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           maxValue: {
-            value: 2,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           minValue: {
-            value: 0,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           percentageValue: {
-            value: 1,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           }
@@ -212,7 +223,7 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(false, 3, 3), 0);
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
@@ -230,6 +241,12 @@ export class StoreIbanComponent implements OnInit {
         }
       });
     }
+
+    this.tableInfo.GetBanks().subscribe(result => {
+      this.banks = result;
+      this.banks = this.banks.sort((a, b) => a.description > b.description? 1 : -1); //ordenar resposta
+    });
+
   }
 
   ngOnInit(): void {
@@ -238,7 +255,7 @@ export class StoreIbanComponent implements OnInit {
 
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('bankStores', this.formStores);
+      this.rootFormGroup.form.setControl('bankStores', this.formStores);
       this.edit = true;
       if (this.returned == 'consult') {
         this.formStores.disable();
@@ -265,7 +282,7 @@ export class StoreIbanComponent implements OnInit {
   }
 
   submit() {
-    this.store.bank.userMerchantBank = this.formStores.get("bankInformation").value;
+    this.store.bank.useMerchantBank = this.formStores.get("bankInformation").value;
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
 
     var navigationExtras: NavigationExtras = {
@@ -313,7 +330,7 @@ export class StoreIbanComponent implements OnInit {
   initializeForm() {
     this.formStores = new FormGroup({
       supportBank: new FormControl((this.store.bank !== null && this.store.bank.bank) ? this.store.bank.bank.bank : '', Validators.required),
-      bankInformation: new FormControl((this.store.bank.userMerchantBank !== null) ? this.store.bank.userMerchantBank : '', Validators.required),
+      bankInformation: new FormControl((this.store.bank.useMerchantBank !== null) ? this.store.bank.useMerchantBank : '', Validators.required),
     });
   }
 

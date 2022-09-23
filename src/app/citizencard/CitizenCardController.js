@@ -36,7 +36,7 @@ export function FillWithCCdata() {
 }
 
 
-function ClearCCFields() {
+export function ClearCCFields() {
   var pName = document.getElementById("CCDivNome");
 
   // Verifica se consegue encontrar o elemento CCDivNome, quer dizer que o quadro está activo
@@ -207,7 +207,7 @@ function submit(data) {
         }
         SetNewCCData(reply.cCid.name + " " + reply.cCid.surname, reply.cCid.documentNumber, reply.cCid.taxNo, reply.cCid.dateOfBirth, reply.img64, reply.isExpired,
           reply.cCid.gender, reply.cCid.heigh, reply.cCid.nationality, reply.cCid.validityEndDate, reply.cCid.givenNameFather + " " + reply.cCid.surnameFather, reply.cCid.givenNameMother + " " + reply.cCid.surnameMother,
-          reply.cCid.socialSecurityNo, reply.cCid.healthNo, addr, postalCode, reply.cCid.accidentalIndications, reply.cCid.validityBeginDate, reply.cCid.localofRequest, reply.addressCountry, reply.cCid.issuingEntity );
+          reply.cCid.socialSecurityNo, reply.cCid.healthNo, addr, postalCode, reply.cCid.accidentalIndications, reply.cCid.locality ,reply.cCid.validityBeginDate, reply.cCid.localofRequest, reply.addressCountry, reply.cCid.issuingEntity );
         console.log(reply);
       
       }

@@ -56,7 +56,7 @@
                             <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode'>{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
                           <div class="alert alert-danger" *ngIf="phone1PhoneNumber.value && !phone1CountryCode.value">
-                            is required.
+                            {{'errorMessages.isRequired'|translate}}
                           </div>
                         </div>
                         <div class="col">
@@ -65,7 +65,7 @@
                                  class="form-control" formControlName="countryCode">
                           <div class="alert alert-danger"
                                *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
-                            is required.
+                               {{'errorMessages.isRequired'|translate}}
                           </div>
                         </div>
                       </div>
@@ -76,7 +76,7 @@
                           <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
                               formControlName="email">
                           <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
-                            is required.
+                            {{'errorMessages.isRequired'|translate}}
                           </div>
                         </div>
                       </div>
@@ -88,7 +88,7 @@
                             <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' >{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
                           <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
-                            is required.
+                            {{'errorMessages.isRequired'|translate}}
                           </div>
                         </div>
                         <div class="col">
@@ -97,7 +97,7 @@
                                  class="form-control" formControlName="countryCode">
                           <div class="alert alert-danger"
                                *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
-                            is required.
+                               {{'errorMessages.isRequired'|translate}}
                           </div>
                         </div>
                       </div>

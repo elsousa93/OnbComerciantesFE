@@ -47,11 +47,16 @@ export class RepresentationPowerComponent implements OnInit {
   //   }
   // ];
 
+  loadSubmissionStakeholders() {
+
+  }
+
   constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
 
     this.ngOnInit();
+    this.getSubmissionStakeholders();
 
     if (this.router.getCurrentNavigation().extras.state) {
       this.clientExists = this.router.getCurrentNavigation().extras.state["clientExists"];
@@ -73,7 +78,7 @@ export class RepresentationPowerComponent implements OnInit {
     if (this.returned !== null) { 
       this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
             res.forEach(function (value, index) {
               context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
                 console.log("stakeholder: ", r);
@@ -94,8 +99,8 @@ export class RepresentationPowerComponent implements OnInit {
     }
 
     if (this.submissionId !== null) {
-      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-        result.forEach(function (value, index) {
+      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+        result.result.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
             var AcquiringStakeholder = result;
             var stakeholderToInsert = {
@@ -105,9 +110,7 @@ export class RepresentationPowerComponent implements OnInit {
               stakeholderOutbound: undefined
             }
 
-            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
-
-            context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+            context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").subscribe(outboundResult => {
               stakeholderToInsert.stakeholderOutbound = outboundResult;
               context.submissionStakeholders.push(stakeholderToInsert);
               

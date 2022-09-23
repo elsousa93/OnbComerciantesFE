@@ -72,6 +72,7 @@ export class ShopDetailsAcquiring {
   product?: Product
   subProduct?: Subproduct 
   documents?: ShopDocuments
+  processorId?: string
 }
 
 //Interfaces auxiliares
@@ -80,10 +81,11 @@ export interface ShopProductPack {
   packId?: string
   packDetails?: ProductPackRootAttributeProductPackKind[]
   commission?: ShopProductPackCommission
+  processorId: string
 }
 
 interface ShopProductPackCommission {
-  comissionId?: string
+  commissionId?: string
   attributes?: ProductPackCommissionAttribute
 }
 
@@ -94,7 +96,7 @@ interface ShopAddress {
   shoppingCenter?: string
 }
 
-interface ShopAddressAcquiring {
+export class ShopAddressAcquiring {
   useMerchantAddress?: boolean
   address?: FiscalAddress
   isInsideShoppingCenter?: boolean
@@ -114,14 +116,19 @@ interface ShopPhone {
   phoneNumber?: string
 }
 
-interface ShopBankingInformation {
-  iban?: string,
+export class ShopBankingInformation {
+  iban?: string
   bank?: string
 }
 
-interface ShopBank {
-  userMerchantBank?: boolean
+export class ShopBank {
+  useMerchantBank?: boolean
   bank?: ShopBankingInformation
+}
+
+export class Bank {
+  code?: string
+  description?: string
 }
 
 interface ShopDocuments {
@@ -141,8 +148,8 @@ export interface ShopEquipment {
 }
 
 interface ShopProductPackPricingViewModel {
-  pricingId?: string
-  attributes?: ProductPackPricingAttribute[]
+  id?: string
+  attribute?: ProductPackPricingAttribute[]
 }
 
 export enum CommunicationOwnershipTypeEnum {

@@ -1,15 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { DataService } from '../../nav-menu-interna/data.service';
-import { ReadcardService } from '../../readcard/readcard.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { IStakeholders, StakeholderOutbound, StakeholdersCompleteInformation } from '../IStakeholders.interface';
+import { StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 
 @Component({
@@ -19,11 +16,17 @@ import { StakeholderService } from '../stakeholder.service';
 })
 export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
-  constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
 
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.stakesMat.paginator = pager;
+      this.stakesMat.paginator._intl = new MatPaginatorIntl();
+      this.stakesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+
   @ViewChild(MatSort) sort: MatSort;
 
   //Variáveis que podem ser preenchidas
@@ -61,7 +64,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   getSubmissionStakeholders() {
     var context = this;
-    if (this.returned !== null) { 
+    if (this.returned !== null) {
       this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
@@ -85,7 +88,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
     if (this.submissionId !== null) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        console.log("ola: ", result);
         var results = result.result;
         results.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
@@ -102,7 +104,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
             context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
               stakeholderToInsert.stakeholderOutbound = outboundResult;
               context.submissionStakeholders.push(stakeholderToInsert);
-              
+
             })
             //context.submissionStakeholders.push({
             //  displayName: '',
@@ -155,6 +157,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     this.stakesMat.sort = this.sort;
   }
 
+  reloadCurrentRoute() {
+    let currentRoute = this.route.url;
+    this.route.navigate([currentRoute], { skipLocationChange: true }).then(() => {
+      window.location.replace(currentRoute);
+    });
+
+  }
+
   removeStakeholder(stakeholder) {
     console.log("stakeholder a remover: ", stakeholder);
     this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
@@ -162,6 +172,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     }, error => {
       console.log("error: ", error);
     });
+
+    this.reloadCurrentRoute();
+
   }
 
 }

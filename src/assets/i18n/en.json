@@ -278,7 +278,7 @@
     "cellPhone": "Cell Phone",
     "invoicingEmail": "Invoicing Email",
     "client": {
-      "name": "Comercial Name"
+      "name": "Merchant's Name"
     },
     "stakeholder":{
       "contacts": "contacts",
@@ -409,7 +409,13 @@
     "return": "Return",
     "functionalityType": "Functionality Type",
     "subFunctionality": "Sub-Functionality Type",
-    "concludeMCC": "Conclude MCC Association"
+    "concludeMCC": "Conclude MCC Association",
+    "merchantName": "Merchant's Name",
+    "enrollmentMerchantNumber": "Merchant's Enrollment Number",
+    "storeName": "Store's Name",
+    "enrollmentStoreNumber": "Store's Enrollment Number",
+    "enrollmentTerminalNumber": "Terminal's Enrollment Number",
+    "conclude": "Conclude"
   },
   "generalKeywords": {
     "yes": "Yes",
@@ -432,7 +438,8 @@
     "confirmDeleteProcess": "Delete Process",
     "save": "Save",
     "select": "Select",
-    "restrictions": "Restrictions"
+    "restrictions": "Restrictions",
+    "itemsPerPage": "Items Per Page: "
   },
   "generalButtons": {
     "continue": "Continue",
@@ -446,5 +453,10 @@
     "cookies": "Cookies Policy",
     "privacy": "Privacy Policy",
     "contacts": "Support Contacts"
+  },
+  "errorMessages": {
+    "bothFieldsPhone": "Both fields are required",
+    "invalidPhone": "Phone number is invalid",
+    "isRequired": "is required"
   }
 }

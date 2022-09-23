@@ -171,6 +171,7 @@ export class CountrysComponent implements OnInit {
     //Chamada à API para receber todos os Paises
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
+      this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
 
     //this.logger.debug("por entrar no clientbyid");
@@ -376,7 +377,7 @@ export class CountrysComponent implements OnInit {
           //this.newSubmission.merchant.businessGroup = this.client.businessGroup;
           this.newSubmission.merchant.bankInformation = this.client.bankInformation;
           this.newSubmission.merchant.byLaws = this.client.byLaws;
-          //this.newSubmission.merchant.clientId = this.client.clientId;
+          this.newSubmission.merchant.clientId = this.client.clientId;
           this.newSubmission.merchant.companyName = this.client.companyName;
           this.newSubmission.merchant.contacts = this.client.contacts;
           this.newSubmission.merchant.crc = this.client.crc;
@@ -402,7 +403,7 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant.otherEconomicActivities = this.client.otherEconomicActivities;
           this.newSubmission.merchant.shareCapital = this.client.shareCapital;
           this.newSubmission.merchant.shortName = this.client.shortName;
-          this.newSubmission.stakeholders = this.stakeholdersToInsert;
+          //this.newSubmission.stakeholders = this.stakeholdersToInsert;
           var context = this;
 
           if (this.returned !== null) {
@@ -458,7 +459,7 @@ export class CountrysComponent implements OnInit {
           console.log("stakeholders a inserir: ", this.stakeholdersToInsert);
 
           stakeholdersLength = this.stakeholdersToInsert.length;
-
+          context.newSubmission.stakeholders = [];
           this.stakeholdersToInsert.forEach(function (value, idx) {
             console.log("stakeholder: ", value);
             var fiscalID = value.fiscalId;
@@ -550,33 +551,34 @@ export class CountrysComponent implements OnInit {
             localStorage.setItem("submissionId", result.id);
             this.processNrService.changeProcessNumber(result.processNumber);
 
-            //this.storeService.getShopsListOutbound(this.newSubmission.merchant.id, "por mudar", "por mudar").subscribe(res => {
-            //  res.forEach(value => {
-            //    this.storeService.getShopInfoOutbound(context.newSubmission.merchant.id, value.shopId, "por mudar", "por mudar").subscribe(r => {
-            //      var storeToAdd: ShopDetailsAcquiring = {
-            //        activity: r.activity,
-            //        subActivity: r.secondaryActivity,
-            //        address: {
-            //          address: r.address.address,
-            //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-            //          shoppingCenter: r.address.shoppingCenter,
-            //          useMerchantAddress: r.address.sameAsMerchantAddress
-            //        },
-            //        bank: {
-            //          bank: r.bankingInformation
-            //        },
-            //        name: r.name,
-            //        productCode: r.product,
-            //        subproductCode: r.subproduct,
-            //        website: r.url,
-            //      }
+            this.storeService.getShopsListOutbound(this.newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+             res.forEach(value => {
+               this.storeService.getShopInfoOutbound(context.newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+                 var storeToAdd: ShopDetailsAcquiring = {
+                   activity: r.activity,
+                   subActivity: r.secondaryActivity,
+                   address: {
+                     address: r.address.address,
+                     isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+                     shoppingCenter: r.address.shoppingCenter,
+                     useMerchantAddress: r.address.sameAsMerchantAddress
+                   },
+                   bank: {
+                     bank: r.bankingInformation
+                   },
+                   name: r.name,
+                   productCode: r.product,
+                   subproductCode: r.subproduct,
+                   website: r.url,
+                   equipments: []
+                 }
 
-            //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+                 context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
 
-            //      });
-            //    });
-            //  });
-            //});
+                 });
+               });
+             });
+            });
 
 
 

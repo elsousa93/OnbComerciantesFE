@@ -8,7 +8,7 @@ import { Product, Subproduct } from '../commercial-offer/ICommercialOffer.interf
 
 
 
-import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound } from './IStore.interface';
+import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound, ShopBankingInformation } from './IStore.interface';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -109,7 +109,7 @@ export class StoreService {
 
       }),
     }
-    return this.http.get<Product[]>(this.acquiringUrl + 'product');
+    return this.http.get<Product[]>(this.acquiringUrl + 'product', HTTP_OPTIONS);
   }
 
   getProcessShopsList(processId: string) {
@@ -122,7 +122,7 @@ export class StoreService {
 
   getSubmissionShopsList(submissionId: string) {
     //tentar alterar o url para o do Mockaco
-    return this.http.get<SimplifiedReference[]>(this.mockacoUrl + 'submission/' + submissionId + '/merchant/shop');
+    return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop');
   }
 
   addShopToSubmission(submissionId: string, newShop: ShopDetailsAcquiring) {
@@ -165,7 +165,5 @@ export class StoreService {
   updateShopEquipmentConfigurationsInSubmission(submissionId: string, shopId: string, newShopEquipment: ShopEquipment) {
     return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment', newShopEquipment);
   }
-
-
 
 }

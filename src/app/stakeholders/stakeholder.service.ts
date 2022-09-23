@@ -82,6 +82,11 @@ export class StakeholderService {
   }
 
   GetStakeholderFromSubmission(submissionId: string, stakeholderId: string): any {
+
+    console.log("GET STAKEHOLDER FROM SUBMISSIO");
+    console.log("submissionID: ", submissionId);
+    console.log("stakeholderID: ", stakeholderId);
+
     this.logger.info(`Getting stakeholder ${stakeholderId} for submission ${submissionId}`)
     return this.http.get<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
   }

@@ -21,7 +21,7 @@
       </app-stakeholders-list>
     </div>
 
-    <div class="offset-1 bg-white center-align col-10 ps-3">
+    <div class="offset-1 bg-white center-align col-10 ps-3 mt-0 ms-0">
       <h2 class="text-primary mt-5 ps-0 center-align">
         <span class="material-symbols-rounded icon-titulos m-align">
           <img src="assets/images/group_add_blue.svg" class="img_add">
@@ -105,7 +105,7 @@
         </div>
       </form>
       <form [formGroup]="formNewStakeholder">
-        <div *ngIf="isShown" class="row container-fluid" id="divshow">
+        <div *ngIf="isShown" class="row container-fluid" id="divshow" style="padding-left: 0px;">
           <app-search-stakeholders [clientID]="this.testEvent" (selectedStakeholderEmitter)="selectNewStakeholder($event)" (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
           <!--<table class="table table-success" *ngIf="foundStakeholders">
             <thead class="text-primary table-primary">
@@ -121,25 +121,33 @@
               </tr>
             </tbody>
           </table>-->
-          <div *ngIf="foundStakeholders == false">
+          <div *ngIf="foundStakeholders == false">    <!--No Pessoa Colectiva e Denominacao Social-->
             <div *ngIf="isParticularSearched == false">
               <div>
-                <p class="titulo-form-simples">rm{{'client.nipc'|translate|uppercase}}:</p>
-                <input name="nipc" type="text" class="form-control campo_form" formControlName="nipc">
-              </div>
-              <div>
-                <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
-                <input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="titulo-form-simples">{{'client.nipc'|translate|uppercase}}:</p>
+                    <input name="nipc" type="text" class="form-control campo_form" formControlName="nipc">
+                  </div>
+                  <div class="col-md-6">
+                    <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
+                    <input name="socialDenomination" type="text" class="form-control campo_form" formControlName="socialDenomination">
+                  </div>
+                </div>
               </div>
             </div>
             <div *ngIf="isParticularSearched == true">
-              <div>
-                <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>
-                <input name="nif" type="text" class="form-control campo_form" formControlName="nif">
-              </div>
-              <div>
-                <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
-                <input name="name" type="text" class="form-control campo_form" formControlName="name">
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>
+                  <input name="nif" type="text" class="form-control campo_form" formControlName="nif">
+
+                </div>
+                <div class="col-md-6">
+
+                  <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
+                  <input name="name" type="text" class="form-control campo_form" formControlName="name">
+                </div>
               </div>
             </div>
           </div>
@@ -250,6 +258,14 @@
               <img src="assets/images/person_add_blue.svg" class="img_btn">
             </button>
           </span>
+
+          <button id="btn5a2" (click)="callReadCCSimulation()" routerLink="/add-stakeholder"
+                  class="btn botao_branco" wappler-command="editContent">
+            &nbsp;
+            &nbsp;Simulação&nbsp;
+            <img src="assets/images/person_add_blue.svg" class="img_btn">
+          </button>
+
         </div>
 
 

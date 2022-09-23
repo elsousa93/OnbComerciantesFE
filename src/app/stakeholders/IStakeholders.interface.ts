@@ -54,6 +54,7 @@ export interface IdentificationDocument {
   number?: string
   country?: string
   expirationDate?: string
+  checkDigit?: string
 }
 
 export interface OutboundDocument {
@@ -65,7 +66,7 @@ export interface OutboundDocument {
   archiveSource?: string,
 }
 
-export interface FiscalAddress {
+export class FiscalAddress {
   address?: string
   postalCode?: string
   postalArea?: string

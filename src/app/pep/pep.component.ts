@@ -4,7 +4,7 @@ import { IPep } from './IPep.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
-import { CountryInformation, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
+import { CorporateRelations, CountryInformation, Kinship, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -24,6 +24,8 @@ export class PepComponent implements OnInit {
   PEPTypes: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
   stakeholdersRoles: StakeholderRole[] = [];
+  stakeholdersKinships: Kinship[] = [];
+  corporateRelations: CorporateRelations[] = [];
   public subs: Subscription[] = [];
 
 
@@ -36,10 +38,19 @@ export class PepComponent implements OnInit {
 
       this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
         this.Countries = result;
+        this.Countries = this.Countries.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }),this.tableInfo.GetAllPEPTypes().subscribe(result => {
         this.PEPTypes = result;
+        this.PEPTypes = this.PEPTypes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }),this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
         this.stakeholdersRoles = result;
+        this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      }), this.tableInfo.GetAllKinships().subscribe(result => {
+        this.stakeholdersKinships = result;
+        this.stakeholdersKinships = this.stakeholdersKinships.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      }),this.tableInfo.GetAllCorporateRelations().subscribe(result => {
+        this.corporateRelations = result;
+        this.corporateRelations = this.corporateRelations.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }));
 
       // this.tableInfo.GetAllPEPTypes().subscribe(result => {

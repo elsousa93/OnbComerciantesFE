@@ -41,6 +41,9 @@ export class QueuesDetailComponent implements OnInit{
   public result: any;
 
   public fillComments: string;
+  public enrollmentMerchantNumber: string;
+  public enrollmentStoreNumber: string;
+  public enrollmentTerminalNumber: string;
 
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService,
@@ -78,23 +81,21 @@ ngOnInit(): void {
       localStorage.setItem('returned', 'edit');
       this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
     }
-    localStorage.setItem('processNumber', this.process.processNumber);
-    this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
 
     this.route.navigate(['/client']);
   }
 
   selectFile(event: any) {
     if (this.queueName === "eligibility") {
-      this.type = "queues.attach.eligibility" // to add translation 
+      this.type = "queues.attach.eligibility" 
     } else if (this.queueName === "compliance") {
-      this.type = "queues.attach.compliance" // to add translation 
+      this.type = "queues.attach.compliance" 
     } else if (this.queueName === "DOValidation") {
-      this.type = "queues.attach.DOValidation" // to add translation 
+      this.type = "queues.attach.DOValidation" 
     } else if (this.queueName === "risk") {
-      this.type = "queues.attach.risk" // to add translation 
+      this.type = "queues.attach.risk" 
     } else if (this.queueName === "negotiationAproval") {
-      this.type = "queues.attach.negotiationApproval" // to add translation 
+      this.type = "queues.attach.negotiationApproval" 
     } 
     this.attach = { tipo: this.type, dataDocumento:"01-08-2022" }
     const files = <File[]>event.target.files;

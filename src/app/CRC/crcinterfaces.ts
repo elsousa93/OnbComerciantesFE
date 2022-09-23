@@ -1,4 +1,5 @@
 import { HeadquartersAddress, ShareCapital } from "../client/Client.interface";
+import { StakeholdersProcess } from "../stakeholders/IStakeholders.interface";
 import { StakeholderRole } from "../table-info/ITable-info.interface";
 
 export interface CRCProcess {
@@ -14,5 +15,5 @@ export interface CRCProcess {
   legalNature?: string
   pdf?: string
   requestId?: string
-  stakeholders?: StakeholderRole[]
+  stakeholders?: StakeholdersProcess[]
 }

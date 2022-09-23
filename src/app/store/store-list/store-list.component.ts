@@ -1,22 +1,23 @@
-import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Istore, ShopDetailsAcquiring, ShopsListOutbound } from '../IStore.interface';
+import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { fromEvent, map, Observable, Subscription } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Client } from '../../client/Client.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { ViewportScroller } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { StoreTableComponent } from '../store-table/store-table.component';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Stores {
   storeName: string;
@@ -45,7 +46,7 @@ const testValues: ShopDetailsAcquiring[] = [
       shoppingCenter: "Shopping1"
     },
     bank: {
-      userMerchantBank: true,
+      useMerchantBank: true,
       bank: {
         bank: "Bank",
         iban: "12345"
@@ -63,12 +64,13 @@ const testValues: ShopDetailsAcquiring[] = [
         equipmentType: "A",
         quantity: 0,
         pricing: {
-          pricingId: "123",
-          attributes: [
+          id: "123",
+          attribute: [
             {
               id: "A",
               description: "A",
-              value: 1,
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             }
@@ -78,6 +80,7 @@ const testValues: ShopDetailsAcquiring[] = [
     ],
     pack: {
       packId: "123",
+      processorId: "345",
       packDetails: [
         {
           id: "1234",
@@ -87,7 +90,8 @@ const testValues: ShopDetailsAcquiring[] = [
             {
               id: "1234",
               description: "AAA",
-              value: true,
+              originalValue: true,
+              finalValue: true,
               isReadOnly: true,
               isVisible: true,
               isSelected: true,
@@ -101,7 +105,8 @@ const testValues: ShopDetailsAcquiring[] = [
                     {
                       id: "B123",
                       description: "B123456",
-                      value: true,
+                      originalValue: true,
+                      finalValue: true,
                       isReadOnly: true,
                       isVisible: true,
                       isSelected: true,
@@ -115,27 +120,31 @@ const testValues: ShopDetailsAcquiring[] = [
         }
       ],
       commission: {
-        comissionId: "1",
+        commissionId: "1",
         attributes: {
           id: "",
           description: "A1",
           fixedValue: {
-            value: 1,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           maxValue: {
-            value: 2,
+            originalValue: 2,
+            finalValue: 2,
             isReadOnly: true,
             isVisible: true
           },
           minValue: {
-            value: 0,
+            originalValue: 0,
+            finalValue: 0,
             isReadOnly: true,
             isVisible: true
           },
           percentageValue: {
-            value: 1,
+            originalValue: 4,
+            finalValue: 4,
             isReadOnly: true,
             isVisible: true
           }
@@ -156,7 +165,7 @@ const testValues: ShopDetailsAcquiring[] = [
   templateUrl: './store-list.component.html',
   styleUrls: ['./store-list.component.css']
 })
-export class StoreComponent implements AfterViewInit{
+export class StoreComponent implements AfterViewInit {
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
@@ -177,7 +186,7 @@ export class StoreComponent implements AfterViewInit{
 
   displayedColumns: string[] = ['name', 'activity', 'subActivity', 'address'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(StoreTableComponent) viewChild!: StoreTableComponent;
 
@@ -199,39 +208,38 @@ export class StoreComponent implements AfterViewInit{
     //this.storesMat.sort = this.sort;
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef)
-  {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
     this.baseUrl = configuration.baseUrl;
-     
+
     this.ngOnInit();
 
     this.editStores = this.formBuilder.group({
-      infoStores : this.formBuilder.group({
-        "storeName" : [''],
-        "activityStores" : [''],
-        "subZoneStore" : [''],
-        "contactPoint" : [''],
-        "subactivityStore" : [''],
-        "localeStore" : [''],
-        "addressStore" : [''],
-        "countryStore" : [''],
-        "zipCodeStore" : [''],
-        "commercialCenter" : [''],
-        "replicateAddress" : ['']
+      infoStores: this.formBuilder.group({
+        "storeName": [''],
+        "activityStores": [''],
+        "subZoneStore": [''],
+        "contactPoint": [''],
+        "subactivityStore": [''],
+        "localeStore": [''],
+        "addressStore": [''],
+        "countryStore": [''],
+        "zipCodeStore": [''],
+        "commercialCenter": [''],
+        "replicateAddress": ['']
       }),
-      bankStores : this.formBuilder.group({
-        "supportBank" : [''],
-        "bankInformation" : [''],
+      bankStores: this.formBuilder.group({
+        "supportBank": [''],
+        "bankInformation": [''],
       }),
-      productStores : this.formBuilder.group({
-        "solutionType" : [''],
-        "subProduct" : [''],
+      productStores: this.formBuilder.group({
+        "solutionType": [''],
+        "subProduct": [''],
       })
     });
 
     this.data.updateData(false, 3, 1);
   }
-  
+
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -245,18 +253,25 @@ export class StoreComponent implements AfterViewInit{
   }
 
   selectStore(info) {
-    this.currentStore = info.store;
-    this.currentIdx = info.idx;
-    setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
+    if (info !== null) {
+      this.currentStore = info.store;
+      this.currentIdx = info.idx;
+      setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
+    }
   }
 
-  addStore(){
+
+  addStore() {
     this.currentStore = new ShopDetailsAcquiring();
+    this.currentStore.address = new ShopAddressAcquiring();
+    this.currentStore.address.address = new FiscalAddress();
+    this.currentStore.bank = new ShopBank();
+    this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
   }
 
   setFormData() {
-    var infoStores = this.editStores.get("infoStores");
+    var infoStores = this.editStores.controls["infoStores"];
     infoStores.get("storeName").setValue(this.currentStore.name);
     infoStores.get("activityStores").setValue(this.currentStore.activity);
     infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
@@ -271,7 +286,7 @@ export class StoreComponent implements AfterViewInit{
 
     var bankStores = this.editStores.controls["bankStores"];
     bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
-    bankStores.get("bankInformation").setValue(this.currentStore.bank.userMerchantBank);
+    bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
 
 
     var productStores = this.editStores.controls["productStores"];
@@ -290,66 +305,73 @@ export class StoreComponent implements AfterViewInit{
     }
   }
 
-  submit() {
-    //if (this.editStores.valid /*&& testValues.length > 0*/) {
-      //var infoStores = this.editStores.controls["infoStores"];
+  submit(addStore: boolean) {
+    if (this.editStores.valid /*&& testValues.length > 0*/) {
+      var infoStores = this.editStores.get("infoStores");
 
-      //if (infoStores.get("replicateAddress").value) {
-      //  this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
-      //  this.currentStore.address.address.address = infoStores.get("addressStore").value;
-      //  this.currentStore.address.address.country = infoStores.get("countryStore").value;
-      //  this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
-      //} else {
-      //  this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
-      //  this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
-      //  this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-      //  this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-      //  this.currentStore.address.useMerchantAddress = true;
-      //}
+      if (infoStores.get("replicateAddress").value) {
+        this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
+        this.currentStore.address.address.address = infoStores.get("addressStore").value;
+        this.currentStore.address.address.country = infoStores.get("countryStore").value;
+        this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+        this.currentStore.address.useMerchantAddress = false;
+      } else {
+        this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
+        this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
+        this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+        this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+        this.currentStore.address.useMerchantAddress = true;
+      }
 
-      //if (infoStores.get("subZoneStore").hasValidator(Validators.required)) {
-      //  this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
-      //} else {
-      //  this.currentStore.address.shoppingCenter = "";
-      //}
+      if (infoStores.get("commercialCenter").value) {
+        this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
+        this.currentStore.address.isInsideShoppingCenter = true;
+      } else {
+        this.currentStore.address.shoppingCenter = "";
+        this.currentStore.address.isInsideShoppingCenter = false;
+      }
 
-      //this.currentStore.name = infoStores.get("storeName").value;
-      //this.currentStore.activity = infoStores.get("activityStores").value;
-      //this.currentStore.subActivity = infoStores.get("subactivityStore").value;
-      //this.currentStore.manager = infoStores.get("contactPoint").value;
+      this.currentStore.name = infoStores.get("storeName").value;
+      this.currentStore.activity = infoStores.get("activityStores").value;
+      this.currentStore.subActivity = infoStores.get("subactivityStore").value;
+      this.currentStore.manager = infoStores.get("contactPoint").value;
 
-      //var bankStores = this.editStores.controls["bankStores"];
+      var bankStores = this.editStores.controls["bankStores"];
 
-      //this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
-      //this.currentStore.bank.userMerchantBank = bankStores.get("bankInformation").value;
+      this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
+      this.currentStore.bank.useMerchantBank = bankStores.get("bankInformation").value;
+      this.currentStore.bank.bank.iban = "";
 
-      //var productStores = this.editStores.controls["productStores"];
+      var productStores = this.editStores.controls["productStores"];
 
-      //this.currentStore.productCode = productStores.get("solutionType").value;
-      //this.currentStore.subproductCode = productStores.get("subProduct").value;
-      //this.currentStore.website = productStores.get("url").value;
+      this.currentStore.productCode = productStores.get("solutionType").value;
+      this.currentStore.subproductCode = productStores.get("subProduct").value;
+      this.currentStore.website = productStores.get("url").value;
 
-      //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-      //  if (this.currentIdx < (this.storeList.length - 1)) {
-      //    this.currentIdx = this.currentIdx + 1;
-      //    this.selectStore(this.storeList[this.currentIdx], this.currentIdx);
-      //  } else {
-      //    this.route.navigate(['comprovativos']);
-      //  }
-      //});
-      //if (this.currentIdx < (testValues.length - 1)) {
+      this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER; //de momento vou deixar este valor, não sei qual a condição para ser este valor ou outro
 
-    //this.currentStore = testValues[this.currentIdx + 1];
-      this.currentIdx = this.currentIdx + 1;
-   
-      this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
-      this.onActivate();
-      //} else {
-        //this.data.updateData(true, 3);
-        //this.route.navigate(['comprovativos']);
-      //}
-    //}
+      if (addStore) {
+        console.log('ADD');
+        this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
+          console.log('LOJA ADICIONADA ', result);
+        });
+      } else {
+        console.log('EDIT');
+        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId, this.currentStore).subscribe(result => {
+          console.log('LOJA EDITADA', result);
+        });
+      }
 
+      if (this.currentIdx < (this.storeList.length - 1)) {
+        this.currentStore = this.storeList[this.currentIdx + 1];
+        //this.currentIdx = this.currentIdx + 1;
+        this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
+        this.onActivate();
+      } else {
+        this.data.updateData(true, 3);
+        this.route.navigate(['comprovativos']);
+      }
+    }
   }
 
   fetchStartingInfo() {

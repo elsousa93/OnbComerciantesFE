@@ -26,49 +26,50 @@ export class ProductSelectionComponent implements OnInit {
   public ProductPackKindEnum = ProductPackKindEnum;
 
   public store: ShopDetailsAcquiring = {
-    shopId: "",
-    name: "",
-    manager: "",
-    activity: "",
-    subActivity: "",
-    supportEntity: "",
-    registrationId: "",
+    shopId: "1",
+    name: "ShopName",
+    manager: "Manager1",
+    activity: "C",
+    subActivity: "C1",
+    supportEntity: "Entity1",
+    registrationId: "RegID",
     address: {
       useMerchantAddress: true,
       address: {
-        address: "",
-        postalCode: "",
-        postalArea: "",
-        country: ""
+        address: "A",
+        postalCode: "B",
+        postalArea: "C",
+        country: "123"
       },
-      isInsideShoppingCenter: false,
-      shoppingCenter: ""
+      isInsideShoppingCenter: true,
+      shoppingCenter: "Shopping1"
     },
     bank: {
-      userMerchantBank: true,
+      useMerchantBank: true,
       bank: {
-        bank: "",
-        iban: ""
+        bank: "Bank",
+        iban: "12345"
       }
     },
-    website: "",
-    productCode: "",
-    subproductCode: "",
+    website: "www.google.com",
+    productCode: "345",
+    subproductCode: "324",
     equipments: [
       {
-        shopEquipmentId: "",
+        shopEquipmentId: "123",
         communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
         equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-        communicationType: "",
-        equipmentType: "",
+        communicationType: "A",
+        equipmentType: "A",
         quantity: 0,
         pricing: {
-          pricingId: "",
-          attributes: [
+          id: "123",
+          attribute: [
             {
-              id: "",
-              description: "",
-              value: 0,
+              id: "A",
+              description: "A",
+              originalValue: 1,
+              finalValue: 1,
               isReadOnly: true,
               isVisible: true
             }
@@ -77,31 +78,33 @@ export class ProductSelectionComponent implements OnInit {
       }
     ],
     pack: {
-      packId: "",
+      packId: "123",
       packDetails: [
         {
-          id: "",
-          description: "",
-          kind: "",
+          id: "1234",
+          description: "123",
+          kind: "1234",
           attributes: [
             {
-              id: "",
-              description: "",
-              value: true,
+              id: "1234",
+              description: "AAA",
+              originalValue: true,
+              finalValue: true,
               isReadOnly: true,
               isVisible: true,
               isSelected: true,
               order: 0,
               bundles: [
                 {
-                  id: "",
-                  description: "",
+                  id: "B",
+                  description: "B",
                   kind: ProductPackKindEnum.SIMPLE,
                   attributes: [
                     {
-                      id: "",
-                      description: "",
-                      value: true,
+                      id: "B123",
+                      description: "B123456",
+                      originalValue: true,
+                      finalValue: true,
                       isReadOnly: true,
                       isVisible: true,
                       isSelected: true,
@@ -115,27 +118,31 @@ export class ProductSelectionComponent implements OnInit {
         }
       ],
       commission: {
-        comissionId: "",
+        commissionId: "1",
         attributes: {
           id: "",
-          description: "",
+          description: "A1",
           fixedValue: {
-            value: 0,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           maxValue: {
-            value: 0,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           minValue: {
-            value: 0,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           },
           percentageValue: {
-            value: 0,
+            originalValue: 1,
+            finalValue: 1,
             isReadOnly: true,
             isVisible: true
           }
@@ -187,7 +194,7 @@ export class ProductSelectionComponent implements OnInit {
 
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('productStores', this.formStores);
+      this.rootFormGroup.form.setControl('productStores', this.formStores);
       this.edit = true;
       if (this.returned == 'consult') {
         this.formStores.disable();
