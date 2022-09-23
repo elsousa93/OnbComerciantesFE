@@ -1,8 +1,8 @@
-<app-nav-menu-interna></app-nav-menu-interna>
+<app-nav-menu-interna *ngIf="!inline"></app-nav-menu-interna>
 <form [formGroup]="form" name="form" id="form" (ngSubmit)="submit()">
-  <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
+  <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
     <div class="row">
-      <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <div *ngIf="!inline" class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
           <span class="navbar-text text-light">
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
@@ -15,10 +15,11 @@
         </nav>
       </div>
       <div class="offset-1 center-align bg-white col-10 ps-3">
-        <h4 class="text-primary mt-5 ps-0 ">
+        <h4 *ngIf="!inline" class="text-primary mt-5 ps-0 ">
           <img src="assets/images/manage_accounts.svg"
             class="img_add">&nbsp;{{'client.companyInformation'|translate|uppercase}}
         </h4>
+        <h2 class="text-primary mt-5 ps-3"> </h2>
         <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
 
         <div class="row ms-0 me-0">
@@ -217,7 +218,7 @@
               </table>
             </div>
           </div>
-          <div class="col ms-0 ps-0">
+          <div *ngIf="!inline" class="col ms-0 ps-0">
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
               <span class="navbar-text align-self-center ms-0 me-0">
                 <button id="btn5a1"

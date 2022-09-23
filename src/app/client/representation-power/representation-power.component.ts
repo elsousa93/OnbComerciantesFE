@@ -61,7 +61,8 @@ export class RepresentationPowerComponent implements OnInit {
     if (this.router.getCurrentNavigation().extras.state) {
       this.clientExists = this.router.getCurrentNavigation().extras.state["clientExists"];
       this.tipologia = this.router.getCurrentNavigation().extras.state["tipologia"];
-      this.NIFNIPC = this.router.getCurrentNavigation().extras.state["NIFNIPC"];
+      //this.NIFNIPC = this.router.getCurrentNavigation().extras.state["NIFNIPC"];
+      this.NIFNIPC = this.route.snapshot.params["id"];
       this.client = this.router.getCurrentNavigation().extras.state["client"];
       this.clientId = this.router.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.router.getCurrentNavigation().extras.state["processId"];
@@ -130,10 +131,6 @@ export class RepresentationPowerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-
-    this.data.updateData(false, 1, 4);
   }
 
   goToNextPage() {

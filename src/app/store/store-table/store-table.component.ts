@@ -154,7 +154,7 @@ const testValues: ShopDetailsAcquiring[] = [
 export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   storesMat: MatTableDataSource<ShopDetailsAcquiring>;
-  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+  @ViewChild('paginatorStore') set paginatorStore(pager:MatPaginator) {
     if (pager) {
       this.storesMat.paginator = pager;
       this.storesMat.paginator._intl = new MatPaginatorIntl();
