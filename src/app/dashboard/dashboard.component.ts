@@ -230,7 +230,7 @@ export class DashboardComponent implements OnInit {
   ongoingProcessess: ProcessGet;
   returnedProcessess: ProcessGet;
   contractAcceptanceProcessess: ProcessGet;
-  completeProcessess: ProcessGet;
+  pendingSentProcessess: ProcessGet;
   acceptanceProcessess: ProcessGet;
   pendingEligibilityProcessess: ProcessGet;
   multipleClientesProcessess: ProcessGet;
@@ -245,7 +245,7 @@ export class DashboardComponent implements OnInit {
   ongoingCount: number = 0;
   returnedCount: number = 0;
   contractAcceptanceCount: number = 0;
-  acceptanceCount: number = 0;
+  pendingSentCount: number = 0;
   pendingEligibilityCount: number = 0;
   multipleClientesCount: number = 0;
   DOValidationCount: number = 0;
@@ -317,12 +317,12 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-        this.completeProcessess = resul;
-        this.dataSourcePendingSent = new MatTableDataSource(this.completeProcessess.items);
+        this.pendingSentProcessess = resul;
+        this.dataSourcePendingSent = new MatTableDataSource(this.pendingSentProcessess.items);
 
         this.dataSourcePendingSent.paginator = this.paginatorPagePendingSent;
         this.dataSourcePendingSent.sort = this.empTbSortPendingSent;
-        this.acceptanceCount = result.pagination.total;
+        this.pendingSentCount = result.pagination.total;
       });
     });
 
