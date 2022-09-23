@@ -19,8 +19,7 @@
           data-bs-target="#flush-collapsePending">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="incompleteCount"
-              *ngIf="incompleteCount !== undefined && incompleteCount !== null"></app-number-counter>
+            <app-number-counter [number]="incompleteCount"></app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash ">
@@ -36,7 +35,7 @@
           data-bs-target="#flush-collapseBackOffice">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="ongoingCount" *ngIf="ongoingCount !== undefined && ongoingCount !== null">
+            <app-number-counter [number]="ongoingCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -53,7 +52,7 @@
           data-bs-target="#flush-collapseReturned">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="returnedCount" *ngIf="returnedCount !== undefined && returnedCount !== null">
+            <app-number-counter [number]="returnedCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -70,8 +69,7 @@
           data-bs-target="#flush-collapseAcceptance">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="contractAcceptanceCount"
-              *ngIf="contractAcceptanceCount !== undefined && contractAcceptanceCount !== null"></app-number-counter>
+            <app-number-counter [number]="contractAcceptanceCount"></app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
             <span class="material-symbols-outlined icon-dash">
@@ -87,7 +85,7 @@
           data-bs-target="#flush-collapsePendingSent">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="acceptanceCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -104,7 +102,7 @@
           data-bs-target="#flush-collapsePendingEligibility">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="pendingEligibilityCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -121,7 +119,7 @@
           data-bs-target="#flush-collapseMultipleClients">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="multipleClientesCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -138,7 +136,7 @@
           data-bs-target="#flush-collapseDOValidation">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="DOValidationCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -155,7 +153,7 @@
           data-bs-target="#flush-collapseNegotiationAproval">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="negotiationAprovalCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -164,7 +162,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.negotiationAproval'|translate|uppercase}}<br><br></h1>
+            {{'homepage.processes.negotiationAproval'|translate|uppercase}}</h1>
         </button>
 
         <button *ngIf="FTPermissions.MCCTreatment" type="button"
@@ -172,7 +170,7 @@
           data-bs-target="#flush-collapseMCCTreatment">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="MCCTreatmentCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -189,7 +187,7 @@
           data-bs-target="#flush-collapseValidationSIBS">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="validationSIBSCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -198,7 +196,7 @@
             </span>
           </h1>
           <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.validationSIBS'|translate|uppercase}}<br><br></h1>
+            {{'homepage.processes.validationSIBS'|translate|uppercase}}</h1>
         </button>
 
         <button *ngIf="FTPermissions.riskOpinion" type="button"
@@ -206,7 +204,7 @@
           data-bs-target="#flush-collapseRiskOpinion">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="riskOpinionCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
@@ -223,7 +221,7 @@
           data-bs-target="#flush-collapseComplianceDoubts">
           <h1
             class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="completeCount" *ngIf="completeCount !== undefined && completeCount !== null">
+            <app-number-counter [number]="complianceDoubtsCount">
             </app-number-counter>
           </h1>
           <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
