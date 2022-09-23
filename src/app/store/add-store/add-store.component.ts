@@ -489,11 +489,14 @@ export class AddStoreComponent implements OnInit {
           this.formStores.get('countryStore').setValue(addressToShow.country);
           this.formStores.get('localeStore').setValue(addressToShow.postalArea);
 
-          this.storeService.subzonesNearby(zipCode[0], zipCode[1]).subscribe(result => {
-            this.subzones = result;
+          this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
+            console.log("sucesso subzones nearby: ", result);
+            this.subzonesShopping = result;
+            this.formStores.updateValueAndValidity();
+          }, error => {
+            console.log("erro na subzone: ", error);
           })
 
-          this.formStores.updateValueAndValidity();
         }, error => {
           console.log("error no codigo postal: ", error);
         });
@@ -518,7 +521,7 @@ export class AddStoreComponent implements OnInit {
           this.formStores.get('countryStore').setValue(addressToShow.country);
           this.formStores.get('localeStore').setValue(addressToShow.postalArea);
 
-          this.storeService.subzonesNearby(zipCode[0], zipCode[1]).subscribe(result => {
+          this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
             this.subzones = result;
           })
 

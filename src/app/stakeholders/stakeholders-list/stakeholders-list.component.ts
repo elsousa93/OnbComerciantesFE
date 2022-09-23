@@ -1,15 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { DataService } from '../../nav-menu-interna/data.service';
-import { ReadcardService } from '../../readcard/readcard.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { IStakeholders, StakeholderOutbound, StakeholdersCompleteInformation } from '../IStakeholders.interface';
+import { StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 
 @Component({
@@ -19,11 +16,17 @@ import { StakeholderService } from '../stakeholder.service';
 })
 export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
-  constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
 
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.stakesMat.paginator = pager;
+      this.stakesMat.paginator._intl = new MatPaginatorIntl();
+      this.stakesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+
   @ViewChild(MatSort) sort: MatSort;
 
   //Variáveis que podem ser preenchidas
@@ -83,39 +86,41 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
       });
     }
 
-    if (this.submissionId !== null) {
-      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        var results = result.result;
-        results.forEach(function (value, index) {
-          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            var AcquiringStakeholder = result;
-            var stakeholderToInsert = {
-              displayName: '',
-              eligibility: false,
-              stakeholderAcquiring: AcquiringStakeholder,
-              stakeholderOutbound: undefined
-            }
+    this.getSubmissionStakeholdersAux();
 
-            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
+    //if (this.submissionId !== null) {
+    //  this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+    //    var results = result.result;
+    //    results.forEach(function (value, index) {
+    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+    //        var AcquiringStakeholder = result;
+    //        var stakeholderToInsert = {
+    //          displayName: '',
+    //          eligibility: false,
+    //          stakeholderAcquiring: AcquiringStakeholder,
+    //          stakeholderOutbound: undefined
+    //        }
 
-            context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
-              stakeholderToInsert.stakeholderOutbound = outboundResult;
-              context.submissionStakeholders.push(stakeholderToInsert);
+    //        var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
 
-            })
-            //context.submissionStakeholders.push({
-            //  displayName: '',
-            //  eligibility: false,
-            //  stakeholderAcquiring: result,
-            //  stakeholderOutbound: undefined
-            //});
-            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
-          }, error => {
-          });
-        });
-      }, error => {
-      });
-    }
+    //        context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+    //          stakeholderToInsert.stakeholderOutbound = outboundResult;
+    //          context.submissionStakeholders.push(stakeholderToInsert);
+
+    //        })
+    //        //context.submissionStakeholders.push({
+    //        //  displayName: '',
+    //        //  eligibility: false,
+    //        //  stakeholderAcquiring: result,
+    //        //  stakeholderOutbound: undefined
+    //        //});
+    //        console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
+    //      }, error => {
+    //      });
+    //    });
+    //  }, error => {
+    //  });
+    //}
 
     //if (this.submissionId !== null) {
     //  console.log("submission: ", this.submissionId);
@@ -138,6 +143,50 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     //  })
     //}
 
+  }
+
+  getSubmissionStakeholdersAux() {
+    var context = this;
+
+    if (this.submissionId !== null) {
+      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+        var results = result.result;
+        results.forEach(function (value, index) {
+          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+            var AcquiringStakeholder = result;
+            var stakeholderToInsert = {
+              displayName: '',
+              eligibility: false,
+              stakeholderAcquiring: AcquiringStakeholder,
+              stakeholderOutbound: undefined
+            }
+
+            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
+
+            //context.submissionStakeholders.push(stakeholderToInsert);
+
+            //context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
+            //  stakeholderToInsert.stakeholderOutbound = outboundResult;
+            //  context.submissionStakeholders.push(stakeholderToInsert);
+
+            //})
+
+            var stakeholderFunction = context.stakeholderService.getStakeholderByID(tempStakeholderID, "por mudar", "por mudar").toPromise();
+
+            stakeholderFunction.then(success => {
+              stakeholderToInsert.stakeholderOutbound = success;
+            }).then(success =>{
+              context.submissionStakeholders.push(stakeholderToInsert);
+            });
+            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
+          }, error => {
+          });
+        });
+      }, error => {
+      }).then(teste => {
+        context.loadStakeholders(context.submissionStakeholders);
+      });
+    }
   }
 
   emitSelectedStakeholder(stakeholder, idx) {
@@ -165,12 +214,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   removeStakeholder(stakeholder) {
     console.log("stakeholder a remover: ", stakeholder);
     this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
-      console.log("apagou: ", result);
+      const index = this.submissionStakeholders.indexOf(stakeholder);
+      this.submissionStakeholders.splice(index, 1);
+      this.loadStakeholders(this.submissionStakeholders);
     }, error => {
       console.log("error: ", error);
     });
 
-    this.reloadCurrentRoute();
+    //this.reloadCurrentRoute();
 
   }
 

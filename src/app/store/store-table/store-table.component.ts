@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
@@ -8,6 +8,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 const testValues: ShopDetailsAcquiring[] = [
   {
@@ -154,7 +155,13 @@ const testValues: ShopDetailsAcquiring[] = [
 export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   storesMat: MatTableDataSource<ShopDetailsAcquiring>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginatorStore') set paginatorStore(pager:MatPaginator) {
+    if (pager) {
+      this.storesMat.paginator = pager;
+      this.storesMat.paginator._intl = new MatPaginatorIntl();
+      this.storesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
   @ViewChild(MatSort) sort: MatSort;
 
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
@@ -184,7 +191,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   returned: string;
   storesList: ShopDetailsAcquiring[] = [];
 
-  constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef) { }
+  constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     //var store = {};
@@ -207,7 +214,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    this.storesMat.paginator = this.paginator;
+    // this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;
     
   }
@@ -251,7 +258,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   loadStores(storesValues: ShopDetailsAcquiring[]) {
     this.storesMat = new MatTableDataSource(storesValues);
-    this.storesMat.paginator = this.paginator;
+    // this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;
   }
 }

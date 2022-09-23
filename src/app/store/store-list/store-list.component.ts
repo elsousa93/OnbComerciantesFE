@@ -1,23 +1,23 @@
-import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring, ShopsListOutbound } from '../IStore.interface';
+import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { fromEvent, map, Observable, Subscription } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Client } from '../../client/Client.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { ViewportScroller } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { StoreTableComponent } from '../store-table/store-table.component';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Stores {
   storeName: string;
@@ -187,7 +187,7 @@ export class StoreComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['name', 'activity', 'subActivity', 'address'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(StoreTableComponent) viewChild!: StoreTableComponent;
 
