@@ -312,6 +312,7 @@ export class AddStoreComponent implements OnInit {
     this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       this.activities = result;
+      this.activities = this.activities.sort((a, b) => a.activityDescription> b.activityDescription? 1 : -1); //ordenar resposta
     }, error => {
       this.logger.debug("Deu erro");
     }));
@@ -573,6 +574,7 @@ export class AddStoreComponent implements OnInit {
         this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
           this.logger.debug(result);
           this.subzonesShopping = result;
+          this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
         }, error => {
           this.logger.debug("Deu erro");
         }));

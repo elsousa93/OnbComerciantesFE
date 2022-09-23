@@ -42,7 +42,7 @@
                            <td class="text-center text-primary">
                               <span *ngIf="!(comp.documentPurpose === 'CompanyIdentification' || comp.documentPurpose === 'Identification')">
                                  <img src="assets/images/delete_blue.svg"
-                                    (click)="onDelete(comp.file)"
+                                    (click)="onDelete(comp.file, comp.id)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                               </span>
                               <span>

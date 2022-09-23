@@ -349,8 +349,10 @@ export class ClientComponent implements OnInit {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListaDocType = result;
+      this.ListaDocType = this.ListaDocType.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
       this.ListaDocTypeENI = result;
+      this.ListaDocTypeENI = this.ListaDocTypeENI.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     })));
 
     // this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {

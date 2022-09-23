@@ -47,6 +47,10 @@ export class RepresentationPowerComponent implements OnInit {
   //   }
   // ];
 
+  loadSubmissionStakeholders() {
+
+  }
+
   constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');

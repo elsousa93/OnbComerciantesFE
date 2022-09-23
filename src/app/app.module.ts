@@ -72,6 +72,7 @@ import { ClientSearchComponent } from './client/client-search/client-search.comp
 import { SearchStakeholdersComponent } from './stakeholders/search-stakeholders/search-stakeholders.component';
 import { StoreTableComponent } from './store/store-table/store-table.component';
 import { LoggingInterceptor } from 'src/logger/loggerInterceptor';
+import { RepresentationPowerListComponent } from './client/representation-power/representation-power-list/representation-power-list.component';
 
 registerLocaleData(localePT);
 
@@ -125,7 +126,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     StakeholdersListComponent,
     ClientSearchComponent,
     SearchStakeholdersComponent,
-    StoreTableComponent
+    StoreTableComponent,
+    RepresentationPowerListComponent
   ],
   imports: [
     ReactiveFormsModule,

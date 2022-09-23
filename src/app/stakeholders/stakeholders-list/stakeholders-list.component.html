@@ -2,35 +2,35 @@
   <mat-table [dataSource]="stakesMat" class=" table-success" matSort>
     <ng-container matColumnDef="shortName">
       <mat-header-cell *matHeaderCellDef mat-sort-header scope="col" class="text-center text-primary bg-light table-white"> {{'client.nameSocialDesignation'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" class="text-primary text-center"> {{stakeholder.stakeholderAcquiring.fullName}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" class="text-primary text-center" style="display: inline-grid;"> {{stakeholder.stakeholderAcquiring.fullName}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="fiscalId">
       <mat-header-cell *matHeaderCellDef mat-sort-header> NIF/NIPC </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" align="center"> {{stakeholder.stakeholderAcquiring.fiscalId}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{stakeholder.stakeholderAcquiring.fiscalId}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="entityType">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.entityType'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" align="center"> - </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> - </mat-cell>
     </ng-container>
     <ng-container matColumnDef="relationType">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.relationType'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" align="center"> - </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> - </mat-cell>
     </ng-container>
     <ng-container matColumnDef="elegible">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.elegible'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" align="center"> - </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> - </mat-cell>
     </ng-container>
     <ng-container matColumnDef="clientNumber">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" align="center"> -{{stakeholder.stakeholderAcquiring.stakeholderId}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> -{{stakeholder.stakeholderAcquiring.stakeholderId}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="signature">
       <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white"> {{'stakeholder.signature'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" align="center"> {{stakeholder.stakeholderAcquiring.isProxy}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{stakeholder.stakeholderAcquiring.isProxy}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="delete" class="small-cell"> 
       <mat-header-cell *matHeaderCellDef [hidden]="canDelete == false" class="small-cell">  </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" class="small-cell" [hidden]="canDelete == false" (click)="removeStakeholder(stakeholder)">
+      <mat-cell *matCellDef="let stakeholder" class="small-cell" [hidden]="canDelete == false" (click)="removeStakeholder(stakeholder)" style="display: inline-grid;">
         <span>
           <img src="assets/images/delete_blue.svg" style="height: 25px !important; vertical-align: sub; cursor: pointer;">
         </span>

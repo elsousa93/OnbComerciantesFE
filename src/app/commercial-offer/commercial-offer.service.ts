@@ -90,9 +90,9 @@ export class CommercialOfferService {
   ListProductCommercialPackPricing(packId: string, productPackPricingFilter: ProductPackPricingFilter) {
     var URI = this.urlOutbound + "api/v1/product/pack/" + packId + "/pricing";
 
-    var treatedResponse: TreatedResponse<ProductPackPricingEntry> = {};
+    var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
-    return new Promise<TreatedResponse<ProductPackPricingEntry>>((resolve, reject) => {
+    return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
           this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
             console.log("success: ", success);
 
@@ -113,9 +113,9 @@ export class CommercialOfferService {
   GetProductCommercialPackPricing(packId: string, pricingId: string, productPackPricingFilter: ProductPackPricingFilter) {
     var URI = this.urlOutbound + "api/v1/product/pack/" + packId + "/pricing/" + pricingId;
 
-    var treatedResponse: TreatedResponse<ProductPackPricingAttribute> = {};
+    var treatedResponse: TreatedResponse<ProductPackPricing> = {};
 
-    return new Promise<TreatedResponse<ProductPackPricingAttribute>>((resolve, reject) => {
+    return new Promise<TreatedResponse<ProductPackPricing>>((resolve, reject) => {
           this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
             console.log("success: ", success);
 
@@ -135,9 +135,9 @@ export class CommercialOfferService {
   ListProductCommercialPackCommission(packId: string, productPackCommissionFilter: ProductPackCommissionFilter) {
     var URI = this.urlOutbound + "api/v1/product/pack/" + packId + "/commission";
 
-    var treatedResponse: TreatedResponse<ProductPackPricingEntry> = {};
+    var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
-    return new Promise<TreatedResponse<ProductPackPricingEntry>>((resolve, reject) => {
+    return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
           this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
             console.log("success: ", success);
 
@@ -156,9 +156,9 @@ export class CommercialOfferService {
   GetProductCommercialPackCommission(packId: string, commissionId: string, productPackCommissionFilter: ProductPackCommissionFilter) {
     var URI = this.urlOutbound + "api/v1/product/pack/" + packId + "/commission/" + commissionId;
 
-    var treatedResponse: TreatedResponse<ProductPackCommissionAttribute> = {};
+    var treatedResponse: TreatedResponse<ProductPackCommission> = {};
 
-    return new Promise<TreatedResponse<ProductPackCommissionAttribute>>((resolve, reject) => {
+    return new Promise<TreatedResponse<ProductPackCommission>>((resolve, reject) => {
       this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
         console.log("success: ", success);
 

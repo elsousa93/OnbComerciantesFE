@@ -122,23 +122,23 @@
                    <hr>
                    <!-- ATRIBUTOS DO PACOTE -->
                    <!-- *ngFor="let packDetail of pack.packDetails" na div debaixo -->
-                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0"  ><!--formGroupName="{{'formGroup' + packDetail.id}}" -->
+                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}"><!--formGroupName="{{'formGroup' + packDetail.id}}" -->
                      <div>
-                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent"></p><!--{{packDetail.description}}-->
-                       <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" > <!-- LISTAR OS ATRIBUTOS *ngFor="let attribute of packDetail.attributes" [checked]="attribute.isSelected"-->
+                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{group.description}}</p><!--{{packDetail.description}}-->
+                       <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of group.attributes"> <!-- LISTAR OS ATRIBUTOS *ngFor="let attribute of packDetail.attributes" [checked]="attribute.isSelected"-->
                          <span class="navbar-text text-start align-self-start">
-                            <div class="form-check" ><!--*ngIf="attribute.isVisible" -->
-                             <input class="form-check-input" type="checkbox"  id="input1" name="input1" > <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
-                             <label class="form-check-label texto_check_box" for="input1"></label> <!--{{attribute.description}}-->
-                             <div ><!--*ngIf="attribute.isSelected"-->
-                               <div > <!--*ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"-->
+                            <div class="form-check" *ngIf="attribute.isVisible"><!--*ngIf="attribute.isVisible" -->
+                             <input class="form-check-input" type="checkbox" id="input1" value="{{attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected"> <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
+                             <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label> <!--{{attribute.description}}-->
+                             <div *ngIf="attribute.finalValue"><!--*ngIf="attribute.isSelected" -->
+                               <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"> <!--*ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"-->
                                  <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
-                                 <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent"></p><!--{{bundle.description}}-->
-                                 <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" > <!--*ngFor="let bundleAttribute of bundle.attributes"-->
+                                 <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p><!--{{bundle.description}}-->
+                                 <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let bundleAttr of bundle.attributes"> <!--*ngFor="let bundleAttribute of bundle.attributes"-->
                                    <span class="navbar-text text-start align-self-start">
-                                     <div class="form-check" > <!--*ngIf="bundleAttribute.isVisible"-->
-                                       <input class="form-check-input" type="checkbox" ><!--formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected"-->
-                                       <label class="form-check-label texto_check_box" for="input1"></label><!--{{bundleAttribute.description}}-->
+                                     <div class="form-check" *ngIf="bundleAttr.isVisible && bundleAttr.kind == group.kind"> <!--*ngIf="bundleAttribute.isVisible"-->
+                                       <input class="form-check-input" type="checkbox" id="input1" formControlName="{{'formControl' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}"  [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected"><!--formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected"-->
+                                       <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label><!--{{bundleAttribute.description}}-->
                                      </div>
                                    </span>
                                  </nav>
@@ -387,40 +387,28 @@
                <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
                   data-bs-parent="#accordionFlushExample">
 
-                 <div class="table-responsive mb-2 ps-2 pe-3">
-                   <!--<table class="table table-success">
-                     <thead class="text-primary table-primary">
-                       <tr class="table-white text-primary">
-                         <th scope="col" class="text-center text-primary table-light">{{'commercialOffer.name'|translate|uppercase}}</th>
-                         <th scope="col" class="text-center bg-white">{{'commercialOffer.typology'|translate|uppercase}}</th>
-                         <th scope="col" class="text-center bg-white">{{'commercialOffer.selection'|translate|uppercase}}</th>
-                       </tr>
-                     </thead>
-                     <tbody>
-                       <tr>
-                         <td class="text-primary text-center">Pacote Comercial 1</td>
-                         <td class="text-primary text-center">Standard</td>
-                         <td class="text-primary text-center">
-                           <input class="form-check-input" type="checkbox" value="" id="input1" name="input1">
-                         </td>
+                 <div class="table-responsive mb-2 ps-2 pe-3" *ngIf="commissionOptions.length > 1 && commissionAttributeList.length == 0">
+                   <table class="table table-success">
+                      <thead class="text-primary table-primary">
+                        <tr class="table-white text-primary">
+                          <th scope="col" class="text-center text-primary table-light">{{'commercialOffer.name'|translate|uppercase}}</th>
+                          <th scope="col" class="text-center bg-white">{{'commercialOffer.typology'|translate|uppercase}}</th>
+                          <th scope="col" class="text-center bg-white">{{'commercialOffer.selection'|translate|uppercase}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let options of commissionOptions">
+                          <td class="text-primary text-center">{{options.id}}</td>
+                          <td class="text-primary text-center">{{options.description}}</td>
+                          <td class="text-primary text-center">
+                            <input class="form-check-input" type="checkbox" value="" id="input1" name="input1" (click)="chooseCommission(options.id)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                 </div>
 
-                       </tr>
-                       <tr>
-                         <td class="text-primary text-center">Pacote Comercial 2</td>
-                         <td class="text-primary text-center">Campanha em vigor</td>
-                         <td class="text-primary text-center">
-                           <input class="form-check-input" type="checkbox" value="" id="input2" name="input2">
-                         </td>
-
-                       </tr>
-                       <tr>
-                       </tr>
-                       <tr>
-                       </tr>
-                       <tr>
-                       </tr>
-                     </tbody>
-                   </table>-->
+                 <div class="table-responsive mb-2 ps-2 pe-3" *ngIf="commissionAttributeList.length > 0">
                    <table class="table table-success">
                      <thead class="text-primary table-primary">
                        <tr class="table-white text-primary">
@@ -433,35 +421,15 @@
                        </tr>
                      </thead>
                      <tbody>
-                       <tr>
+                       <tr *ngFor="let commission of commissionAttributeList">
                          <td class="text-primary text-center">Tarifa</td>
-                         <td class="text-primary text-center">Visa Electron Domestico</td>
-                         <td class="text-primary text-center">0.05</td>
+                         <td class="text-primary text-center">{{commission.description}}</td>
+                         <td class="text-primary text-center">{{commission.minValue.originalValue}}</td>
                          <td class="text-primary text-center">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" />
+                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" value="{{commission.maxValue.originalValue}}"/>
                          </td>
-                         <td class="text-primary text-center">0.35€</td>
-                         <td class="text-primary text-center">0.8%</td>
-                       </tr>
-                       <tr>
-                         <td class="text-primary text-center">Tarifa</td>
-                         <td class="text-primary text-center">Visa Electron EEA</td>
-                         <td class="text-primary text-center">0.05</td>
-                         <td class="text-primary text-center">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="9.9" />
-                         </td>
-                         <td class="text-primary text-center">0.35€</td>
-                         <td class="text-primary text-center">0.9%</td>
-                       </tr>
-                       <tr>
-                         <td class="text-primary text-center">Tarifa</td>
-                         <td class="text-primary text-center">Visa Electron NEEA</td>
-                         <td class="text-primary text-center">0.05</td>
-                         <td class="text-primary text-center">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="9.9" />
-                         </td>
-                         <td class="text-primary text-center">0.35€</td>
-                         <td class="text-primary text-center">1.0%</td>
+                         <td class="text-primary text-center">{{commission.fixedValue.originalValue}}</td>
+                         <td class="text-primary text-center">{{commission.percentageValue.originalValue}}</td>
                        </tr>
                      </tbody>
                    </table>
