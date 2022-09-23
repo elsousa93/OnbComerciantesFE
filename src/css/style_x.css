@@ -1202,7 +1202,6 @@ mat-cell {
   font-family: 'roboto';
   font-size: 16px !important;
   color: #1e66b0 !important;
-  border-bottom: 1px solid #e6eef7 !important;
   text-align: center !important;
 }
 
@@ -1248,7 +1247,8 @@ mat-row {
   min-height: 48px !important;
   border-width: 0 !important;
   width: auto !important;
-  border-bottom-width: 0px !important;
+  border-bottom: 1px solid #e6eef7 !important;
+ /* border-bottom-width: 0px !important; */
   border-style: solid !important;
   align-items: center !important;
   box-sizing: border-box !important;
