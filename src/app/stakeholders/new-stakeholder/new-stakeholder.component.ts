@@ -143,7 +143,7 @@ export class NewStakeholderComponent implements OnInit {
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
     this.ngOnInit();
-
+    this.triggerFalseClick();
     var context = this;
 
     if (this.returned != null) {
