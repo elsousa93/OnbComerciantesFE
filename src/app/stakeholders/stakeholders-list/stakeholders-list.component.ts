@@ -15,14 +15,17 @@ import { StakeholderService } from '../stakeholder.service';
   styleUrls: ['./stakeholders-list.component.css']
 })
 export class StakeholdersListComponent implements OnInit, AfterViewInit {
+ @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
   triggerFalseClick() {
     let el: HTMLElement = this.selectedBlueDiv.nativeElement;
     el.click();
   }
 
-  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
-
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+      this.triggerFalseClick();
+  }
+ 
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
   @ViewChild('paginator') set paginator(pager:MatPaginator) {
     if (pager) {
@@ -33,13 +36,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild(MatSort) sort: MatSort;
-   this.triggerFalseClick();
+  
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;
   @Input() processNumber?: string;
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
-  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
+ 
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
