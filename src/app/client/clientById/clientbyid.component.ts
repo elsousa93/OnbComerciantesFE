@@ -581,12 +581,12 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
 
       this.clientContext = new ClientContext(
-          this.route.getCurrentNavigation().extras.state["tipologia"],
-          this.route.getCurrentNavigation().extras.state["clientExists"],
-          this.route.getCurrentNavigation().extras.state["comprovativoCC"],
-          this.router.snapshot.params["id"],
-          this.route.getCurrentNavigation().extras.state["clientId"],
-          this.route.getCurrentNavigation().extras.state["dataCC"],
+        this.route.getCurrentNavigation().extras.state["tipologia"],
+        this.route.getCurrentNavigation().extras.state["clientExists"],
+        this.route.getCurrentNavigation().extras.state["comprovativoCC"],
+        this.router.snapshot.params["id"],
+        this.route.getCurrentNavigation().extras.state["clientId"],
+        this.route.getCurrentNavigation().extras.state["dataCC"],
       );
 
       this.logger.debug("------------");
@@ -620,8 +620,9 @@ export class ClientByIdComponent implements OnInit {
       this.clientService.getClientById(this.clientId).then(result => {
         console.log("pesquisa do cliente: ", result);
         this.clientContext.clientExists = true;
-        this.clientContext.client = result;
+        //this.clientContext.setClient(result);
         this.clientContext.NIFNIPC = this.client.fiscalIdentification.fiscalId;
+        this.clientContext.setMerchantInfo(result.result);
         this.updateBasicForm();
       });
 
