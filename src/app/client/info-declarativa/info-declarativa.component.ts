@@ -84,6 +84,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   setForm(client : Client){
     this.newClient = client;
+    console.log('this.newClient ', this.newClient?.contacts?.phone1?.countryCode);
     this.listValue.get("comercialName").setValue(client.commercialName);
     this.listValue.get("phone1").get("countryCode").setValue(client.contacts.phone1.countryCode)
     this.listValue.get("phone1").get("phoneNumber").setValue(client.contacts.phone1.phoneNumber);
@@ -132,7 +133,8 @@ export class InfoDeclarativaComponent implements OnInit {
     this.phone1 = this.listValue.get("phone1");
     this.phone2 = this.listValue.get("phone2");
 
-    if (!this.newClient){
+    if (!this.newClient) {
+      console.log("O cliente n existe");
       if (this.returned != null) {
         this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
           this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
@@ -150,6 +152,7 @@ export class InfoDeclarativaComponent implements OnInit {
           });
         }
     } else {
+      console.log('o cliente existe');
       this.logger.debug("Fui buscar o merchant da localStorage " + this.newClient);
     }
 

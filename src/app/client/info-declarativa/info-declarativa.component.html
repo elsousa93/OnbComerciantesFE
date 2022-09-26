@@ -54,7 +54,7 @@
                       <div class="col-4">
                         <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate|uppercase}}:</p>
                         <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
-                          <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
+                          <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone1?.countryCode != null && merchantInfo.contacts?.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <!-- <div class="alert alert-danger" *ngIf="phone1CountryCode.value && !phone1CountryCode.value">
                           is required.
