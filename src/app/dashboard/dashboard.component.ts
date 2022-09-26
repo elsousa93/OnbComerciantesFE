@@ -211,7 +211,7 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Pendentes de envio ' + result.items);
       this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
         this.incompleteProcessess = resul;
-        this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
+        // this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
         this.dataSourcePendentes.paginator = this.paginatorPage;
         this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
         this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
