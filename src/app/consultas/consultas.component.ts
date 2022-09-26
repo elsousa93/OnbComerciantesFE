@@ -92,7 +92,12 @@ export class ConsultasComponent implements OnInit{
   searchProcess() {
     this.logger.debug(this.form);
     this.loadProcesses([]);
+      var processStateToSearch = this.form.get("state").value;
       var processNumber = this.form.get('processNumber').value;
+      var processDocType = this.form.get('documentType').value;
+      var processDocNumber = this.form.get('documentNumber').value;
+      var processDateStart = this.form.get('processDateStart').value;
+      var processDateUntil = this.form.get('processDateEnd').value;
       if (processNumber !== '') {
         this.logger.debug(processNumber);
         var encodedCode = encodeURIComponent(processNumber);
@@ -114,10 +119,45 @@ export class ConsultasComponent implements OnInit{
           });
           });
           
-      } else {
-        var processStateToSearch = this.form.get("state").value;
+      } else if (processStateToSearch!=''){  
         this.processService.searchProcessByState(processStateToSearch, 0, 1).subscribe(result => {
           this.processService.searchProcessByState(processStateToSearch, 0, result.pagination.total).subscribe(resul => {
+            let processesArray: Process[] = resul.items.map<Process>((process) => {
+              return {
+                processNumber: process.processNumber,
+                nipc: 529463466,
+                nome: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state
+              };
+            })
+            this.loadProcesses(processesArray);
+          }, error => {
+            this.logger.debug(error);
+            this.loadProcesses([]);
+          });
+          });
+      } else if (processDocNumber != '' && processDocType != '') {
+       
+      } else if (processDateStart != '') {
+        this.processService.searchProcessByStartedDate(processDateStart, 0, 1).subscribe(result => {
+          this.processService.searchProcessByStartedDate(processDateStart, 0, result.pagination.total).subscribe(resul => {
+            let processesArray: Process[] = resul.items.map<Process>((process) => {
+              return {
+                processNumber: process.processNumber,
+                nipc: 529463466,
+                nome: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state
+              };
+            })
+            this.loadProcesses(processesArray);
+          }, error => {
+            this.logger.debug(error);
+            this.loadProcesses([]);
+          });
+          });
+      } else if (processDateUntil != '') {
+        this.processService.searchProcessByUntilDate(processDateUntil, 0, 1).subscribe(result => {
+          this.processService.searchProcessByUntilDate(processDateUntil, 0, result.pagination.total).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
                 processNumber: process.processNumber,
