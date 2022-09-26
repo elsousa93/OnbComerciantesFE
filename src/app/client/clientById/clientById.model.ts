@@ -7,33 +7,36 @@ export class ClientContext{
     tipologia: string;
     clientExists: boolean;
     comprovativoCC: FileAndDetailsCC;
-    NIFNIPC: string;
+    //NIFNIPC: string;
     clientId: string;
     dataCC: string;
-  crc?: any;
-  client: BehaviorSubject<any>;
-
-  currentClient: Observable<any>;
-
+    crc?: any;
     processId?: string;
+
+    
   stakeholdersToInsert?: StakeholdersProcess[];
 
   merchantInfo: BehaviorSubject<any>;
-
   currentMerchantInfo: Observable<any>;
 
+  client: BehaviorSubject<any>;
+  currentClient: Observable<any>;
+
+  NIFNIPC: BehaviorSubject<any>;
+  currentNIFNIPC: Observable<any>;
 
     constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: string, client?: any){
         this.tipologia = tipologia;
         this.clientExists = clientExists;
         this.comprovativoCC = comprovativoCC;
-        this.NIFNIPC = NIFNIPC;
+        this.NIFNIPC = new BehaviorSubject(NIFNIPC);
       this.clientId = clientId;
       this.client = new BehaviorSubject(client);
       this.merchantInfo = new BehaviorSubject(null);
 
       this.currentClient = this.client.asObservable();
       this.currentMerchantInfo = this.merchantInfo.asObservable();
+      this.currentNIFNIPC = this.NIFNIPC.asObservable();
     }
 
   isValidForCountries(): boolean{
@@ -59,6 +62,14 @@ export class ClientContext{
 
   setMerchantInfo(merchantInfo) {
     this.merchantInfo.next(merchantInfo);
+  }
+
+  getNIFNIPC() {
+    return this.NIFNIPC.getValue();
+  }
+
+  setNIFNIPC(NIFNIPC) {
+    this.NIFNIPC.next(NIFNIPC);
   }
 
 
