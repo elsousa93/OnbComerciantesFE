@@ -139,7 +139,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       storedForm.stakeholder = this.newStakeholder
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
-      this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder.id, this.newStakeholder).subscribe(result => {
+      this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder["stakeholderAcquiring"]["id"], this.newStakeholder).subscribe(result => {
         if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
           this.currentIdx = this.currentIdx + 1;
           this.selectStakeholder({ stakeholder: this.submissionStakeholders[this.currentIdx], info: this.currentIdx });
