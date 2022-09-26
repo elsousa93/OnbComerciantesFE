@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IPep } from './IPep.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
 import { CorporateRelations, CountryInformation, Kinship, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
@@ -31,7 +31,6 @@ export class PepComponent implements OnInit {
 
   constructor(private logger : LoggerService, private router: ActivatedRoute, private data: DataService,
     private http: HttpClient,
-    private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private route: Router,
     private tableInfo: TableInfoService) {      
       this.baseUrl = configuration.baseUrl;
@@ -52,14 +51,6 @@ export class PepComponent implements OnInit {
         this.corporateRelations = result;
         this.corporateRelations = this.corporateRelations.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }));
-
-      // this.tableInfo.GetAllPEPTypes().subscribe(result => {
-      //   this.PEPTypes = result;
-      // });
-
-      // this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
-      //   this.stakeholdersRoles = result;
-      // });
   }
 
   newPep: IPep = {
@@ -118,7 +109,8 @@ export class PepComponent implements OnInit {
   }
 
   form = new FormGroup({
-    id: new FormControl('')
+    id: new FormControl(''),
+    pep12months: new FormControl('', [Validators.required])
   });
 
   submit() {

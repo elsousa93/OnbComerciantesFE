@@ -441,7 +441,8 @@
     "save": "Gravar",
     "select": "Selecione",
     "restrictions": "Restrições",
-    "itemsPerPage": "Items por Página: "
+    "itemsPerPage": "Items por Página: ",
+    "performSearch": "Efetuar pesquisa"
   },
   "generalButtons": {
     "continue": "Continuar",
