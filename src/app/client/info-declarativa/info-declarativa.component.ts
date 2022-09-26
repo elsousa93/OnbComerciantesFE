@@ -40,46 +40,27 @@ export class InfoDeclarativaComponent implements OnInit {
 
   displayValueSearch = '';
 
-  public teste: Client = {
-    id: 0,
-    newClientNr: 4,
-    docType: "",
-    docNr: 1,
-    flagAutCol: true,
-    crcCode: "",
-    socialDenomination: "",
-    nameClient: "EMPRESA PARTICIPANTE UNIP LDA",
-    callingCodeLandClient: "315",
-    phoneLandClient: 20000,
-    callingCodeMobileClient: "1",
-    mobilePhoneClient: 10000,
-    emailClient: "empresa@participante.com",
-    callingCodeFaxClient: "376",
-    faxClient: 54000,
-    billingEmail: "empresa@participante.com",
-  } as unknown as Client;
-
   //Informação de campos/tabelas
   internationalCallingCodes: CountryInformation[];
 
-
-  public newClient: Client = {
-    clientId: '0',
-    commercialName: "",
-    contactName: "EMPRESA PARTICIPANTE UNIP LDA",
-    billingEmail: "empresa@participante.com",
-    contacts: {
-      email: "empresa@participante.com",
-      phone1: {
-        countryCode: "",
-        phoneNumber: ""
-      },
-      phone2: {
-        countryCode: "",
-        phoneNumber: ""
-      },
-    },
-  } as unknown as Client;
+  public newClient: Client = null;
+  //public newClient: Client = {
+  //  clientId: '0',
+  //  commercialName: "",
+  //  contactName: "EMPRESA PARTICIPANTE UNIP LDA",
+  //  billingEmail: "empresa@participante.com",
+  //  contacts: {
+  //    email: "empresa@participante.com",
+  //    phone1: {
+  //      countryCode: "",
+  //      phoneNumber: ""
+  //    },
+  //    phone2: {
+  //      countryCode: "",
+  //      phoneNumber: ""
+  //    },
+  //  },
+  //} as unknown as Client;
 
   @Output() nameEmitter = new EventEmitter<string>();
 
@@ -104,7 +85,9 @@ export class InfoDeclarativaComponent implements OnInit {
   setForm(client : Client){
     this.newClient = client;
     this.listValue.get("comercialName").setValue(client.commercialName);
+    this.listValue.get("phone1").get("countryCode").setValue(client.contacts.phone1.countryCode)
     this.listValue.get("phone1").get("phoneNumber").setValue(client.contacts.phone1.phoneNumber);
+    this.listValue.get("phone2").get("countryCode").setValue(client.contacts.phone2.countryCode);
     this.listValue.get("phone2").get("phoneNumber").setValue(client.contacts.phone2.phoneNumber);
     this.listValue.get("email").setValue(client.contacts.email);
     this.listValue.get("billingEmail").setValue(client.billingEmail);
@@ -131,19 +114,19 @@ export class InfoDeclarativaComponent implements OnInit {
     //this.internationalCallingCodes = [{code:'POR', continent:"Europe", description:"thing", internationalCallingCode:"+351"}];
 
     this.listValue = this.formBuilder.group({
-      comercialName: new FormControl(this.newClient.commercialName, Validators.required),
+      comercialName: new FormControl(this.newClient?.commercialName, Validators.required),
       phone1: this.formBuilder.group({
-        countryCode: new FormControl(this.newClient.contacts?.phone1?.countryCode),
-        phoneNumber: new FormControl(this.newClient.contacts?.phone1?.phoneNumber),
+        countryCode: new FormControl(this.newClient?.contacts?.phone1?.countryCode),
+        phoneNumber: new FormControl(this.newClient?.contacts?.phone1?.phoneNumber),
       },{validators: [validPhoneNumber]}),
       phone2: this.formBuilder.group({
-        countryCode: new FormControl(this.newClient.contacts?.phone2?.countryCode),
-        phoneNumber: new FormControl(this.newClient.contacts?.phone2?.phoneNumber),
+        countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
+        phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
       },{validators: [validPhoneNumber]}),
-      faxCountryCode: new FormControl(this.newClient.contacts?.fax?.countryCode),
-      faxPhoneNumber: new FormControl(this.newClient.contacts?.fax?.phoneNumber),
-      email: new FormControl(this.newClient.contacts?.email, Validators.required),
-      billingEmail: new FormControl(this.newClient.billingEmail)
+      faxCountryCode: new FormControl(this.newClient?.contacts?.fax?.countryCode),
+      faxPhoneNumber: new FormControl(this.newClient?.contacts?.fax?.phoneNumber),
+      email: new FormControl(this.newClient?.contacts?.email, Validators.required),
+      billingEmail: new FormControl(this.newClient?.billingEmail)
     });
     
     this.phone1 = this.listValue.get("phone1");
