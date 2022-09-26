@@ -1,17 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, take } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessService } from '../process/process.service';
-import { TableInfoService } from '../table-info/table-info.service';
-import { SubmissionService } from '../submission/service/submission-service.service';
-import { ClientService } from '../client/client.service';
-import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 

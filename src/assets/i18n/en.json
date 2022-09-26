@@ -439,7 +439,8 @@
     "save": "Save",
     "select": "Select",
     "restrictions": "Restrictions",
-    "itemsPerPage": "Items Per Page: "
+    "itemsPerPage": "Items Per Page: ",
+    "performSearch": "Perform Search"
   },
   "generalButtons": {
     "continue": "Continue",
