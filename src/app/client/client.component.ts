@@ -379,10 +379,12 @@ export class ClientComponent implements OnInit {
             this.logger.debug("MERCHANT QUE FOMOS BUSCAR " + this.merchantInfo);
             if (this.merchantInfo.merchantType == 'Corporate') {
               this.logger.debug("O tipo é empresa");
+              this.tipologia = 'Corporate';
               this.activateButtons(true); // se for Empresa
               this.clientTypology = "true";
             } else {
               this.logger.debug("O tipo é ENI");
+              this.tipologia = 'ENI';
               this.activateButtons(false); // se for ENI
               this.clientTypology = "false";
             }
