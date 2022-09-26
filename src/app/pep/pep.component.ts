@@ -109,7 +109,8 @@ export class PepComponent implements OnInit {
   }
 
   form = new FormGroup({
-    id: new FormControl('')
+    id: new FormControl(''),
+    pep12months: new FormControl('')
   });
 
   submit() {
@@ -183,7 +184,6 @@ export class PepComponent implements OnInit {
   onChangeValues(event: any) {  
     var stringToBool = (event.target.value === 'true' ? true : false);
     if (event.target.name == 'pep12months') {
-      this.form.addControl('pep12months', new FormControl('', [Validators.required]));
       this.isVisiblePep12months = stringToBool;
       if (stringToBool) {
         //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos

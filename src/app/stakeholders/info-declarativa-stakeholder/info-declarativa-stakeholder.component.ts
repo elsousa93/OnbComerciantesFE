@@ -74,11 +74,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
     var context = this;
 
-    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-      result.forEach(function (value, index) {
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
+    this.stakeholderService.GetAllStakeholdersFromSubmissionTest(this.submissionId).then(result => {
+
+      var stakeholders = result.result;
+
+      stakeholders.forEach(function (value, index) {
+        context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, value.id).then(res => {
+          console.log("stakeholder adicionado com sucesso");
           context.submissionStakeholders.push(res);
         }, error => {
+          console.log("deu erro");
         });
       });
     }, error => {
@@ -139,7 +144,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       storedForm.stakeholder = this.newStakeholder
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
-      this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder.id, this.newStakeholder).subscribe(result => {
+      this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder["stakeholderAcquiring"]["id"], this.newStakeholder).subscribe(result => {
         if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
           this.currentIdx = this.currentIdx + 1;
           this.selectStakeholder({ stakeholder: this.submissionStakeholders[this.currentIdx], info: this.currentIdx });

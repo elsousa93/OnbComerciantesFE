@@ -5,7 +5,7 @@ import { IStakeholders } from './IStakeholders.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { HttpMethod } from '../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TableInfoService } from '../table-info/table-info.service';
 
 @Injectable({
@@ -275,7 +275,53 @@ export class StakeholderService {
 
     return this.http.put<any>(URI, stakeholder, HTTP_OPTIONS);
   }
+
+
+
+  ///////////////////////////////////
+  //TESTAR ESTA CHAMADA SEM PROMISE//
+  ///////////////////////////////////
+
+  callAPIAcquiringTest(httpMethod: HttpMethod, httpURL: string, body?: any) {
+    var requestResponse: RequestResponse = {};
+    return new Promise<RequestResponse>((resolve, reject) => {
+      this.http[httpMethod](httpURL, body).subscribe(result => {
+        requestResponse.result = result;
+        requestResponse.error = null;
+        resolve(requestResponse);
+      }, error => {
+        console.log("error que deu: ", error);
+        requestResponse.result = null;
+        requestResponse.error = error;
+        reject(requestResponse);
+      });
+    });
+  }
+
+  GetAllStakeholdersFromSubmissionTest(submissionId: string): any {
+    this.logger.info(`Getting all stakeholders for submission ${submissionId}`)
+    //return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');
+    var url = this.baseUrl + 'submission/' + submissionId + '/stakeholder';
+
+    return this.callAPIAcquiringTest(HttpMethod.GET, url);
+  }
+
+  GetStakeholderFromSubmissionTest(submissionId: string, stakeholderId: string): any {
+
+    console.log("GET STAKEHOLDER FROM SUBMISSIO");
+    console.log("submissionID: ", submissionId);
+    console.log("stakeholderID: ", stakeholderId);
+
+    this.logger.info(`Getting stakeholder ${stakeholderId} for submission ${submissionId}`)
+
+    var url = this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId;
+
+    return this.callAPIAcquiringTest(HttpMethod.GET, url);
+  }
 }
+
+//TESTAR ESTA CHAMADA
+
 
 
 //OLD VERSION
