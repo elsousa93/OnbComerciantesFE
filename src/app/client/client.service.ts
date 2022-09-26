@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Configuration, configurationToken } from '../configuration';
 import { Client } from './Client.interface';
 import { LoggerService } from 'src/app/logger.service';
+import { APIRequestsService } from '../apirequests.service';
+import { HttpMethod } from '../enums/enum-data';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class ClientService {
   private urlOutbound: string;
 
   constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private API: APIRequestsService) {
       this.baseUrl = configuration.baseUrl;
       this.urlOutbound = configuration.outboundUrl;
 
@@ -145,5 +147,15 @@ export class ClientService {
 
 
     return this.http.put<any>(URI, client, HTTP_OPTIONS);
+  }
+
+  /////////////////////
+  /// A ALTERAR    ///
+  ////////////////////
+
+  getClientById(clientID: string) {
+    var url = this.urlOutbound + "api/v1/merchant/" + clientID;
+
+    return this.API.callAPIOutboundTest(HttpMethod.GET, url, "por mudar", "por mudar", "por mudar", "por mudar");
   }
 }

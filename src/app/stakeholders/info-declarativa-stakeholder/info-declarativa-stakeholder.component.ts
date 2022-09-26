@@ -74,11 +74,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
     var context = this;
 
-    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-      result.forEach(function (value, index) {
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
+    this.stakeholderService.GetAllStakeholdersFromSubmissionTest(this.submissionId).then(result => {
+
+      var stakeholders = result.result;
+
+      stakeholders.forEach(function (value, index) {
+        context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, value.id).then(res => {
+          console.log("stakeholder adicionado com sucesso");
           context.submissionStakeholders.push(res);
         }, error => {
+          console.log("deu erro");
         });
       });
     }, error => {
@@ -108,10 +113,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.formContactos = this.formBuilder.group({
       listF: [''],
       phone: this.formBuilder.group({
-        countryCode: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.phone1?.countryCode : this.newStakeholder.phone1?.countryCode),
-        phoneNumber: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.phone1?.phoneNumber : this.newStakeholder.phone1?.phoneNumber)
+        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : this.newStakeholder.phone1?.countryCode),
+        phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : this.newStakeholder.phone1?.phoneNumber)
       }, { validators: [validPhoneNumber] }),
-      email: new FormControl((this.currentStakeholder !== null) ? this.currentStakeholder.email : this.newStakeholder.email, Validators.required),
+      email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : this.newStakeholder.email, Validators.required),
     })
   }
 
@@ -139,7 +144,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       storedForm.stakeholder = this.newStakeholder
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
-      this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder.id, this.newStakeholder).subscribe(result => {
+      this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder["stakeholderAcquiring"]["id"], this.newStakeholder).subscribe(result => {
         if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
           this.currentIdx = this.currentIdx + 1;
           this.selectStakeholder({ stakeholder: this.submissionStakeholders[this.currentIdx], info: this.currentIdx });
