@@ -81,7 +81,7 @@
                         <p class="form-check-label titulo-form-simples mt-0 text-start" for="pepCountry">
                           {{'declarativeInformation.stakeholder.pep.country'|translate}}:*</p>
                           <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepCountry" name="pepCountry" id="pepCountry">
-                            <option *ngFor="let country of Countries" value={{country.description}}>
+                            <option *ngFor="let country of Countries" value={{country.code}}>
                               {{country.description}} </option>
                           </select>
                           <p class="titulo-form-simples"></p>
