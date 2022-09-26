@@ -180,7 +180,7 @@ export class ProductSelectionComponent implements OnInit {
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService,
     private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
-    setTimeout(() => this.data.updateData(false, 3, 3), 0);
+    setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
 
     if (this.route.getCurrentNavigation()?.extras?.state) {

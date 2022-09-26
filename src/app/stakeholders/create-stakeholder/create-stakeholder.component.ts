@@ -313,7 +313,7 @@ export class CreateStakeholderComponent implements OnInit {
       this.ListDocTypeP = this.ListDocTypeP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     })));
 
-    this.submissionId = localStorage.getItem('submissionId');
+    
 
     //this.logger.debug("foi buscar bem ao localstorage?");
     //this.logger.debug(this.submissionId);
@@ -447,6 +447,8 @@ export class CreateStakeholderComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.submissionId = localStorage.getItem('submissionId');
+    this.data.updateData(false, 2);
   }
 
   ngOnDestroy(): void {

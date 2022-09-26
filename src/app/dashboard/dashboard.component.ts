@@ -190,6 +190,7 @@ export class DashboardComponent implements OnInit {
   complianceDoubtsCount: number;
 
   date: string;
+  
 
   constructor(private logger: LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
@@ -414,6 +415,8 @@ export class DashboardComponent implements OnInit {
       this.FTPermissions = getFTPermissions(a);
 
     });
+    this.dataService.changeData(new Map());
+    this.dataService.updateData(null, null, null);
   }
 
   public toggleSideNav(toggled: boolean) {

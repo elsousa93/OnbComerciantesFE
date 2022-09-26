@@ -430,7 +430,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
-    this.data.updateData(false, 4, 1);
+    this.data.updateData(true, 4, 1);
   }
 
 
