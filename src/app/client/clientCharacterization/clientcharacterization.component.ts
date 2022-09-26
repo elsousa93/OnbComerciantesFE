@@ -154,7 +154,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.rootForm.setControl("clientCharacterizationForm", newForm);
     this.form = this.rootForm.get("clientCharacterizationForm");
 
-    this.form.updateValueAndValidity();
+    //this.form.updateValueAndValidity();
   }
 
   initializeTableInfo() {
@@ -183,7 +183,6 @@ export class ClientCharacterizationComponent implements OnInit {
   updateBasicForm() {
     this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
 
-    this.form.updateValueAndValidity();
   }
 
   //updateFormControls() {
@@ -253,12 +252,23 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-    this.changeFormStructure(new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
+
+    console.log("NIFNIPC: ", this.NIFNIPC);
+    this.form = new FormGroup({
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC , [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC, [Validators.required])
       //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-    }));
+    });
+
+    //this.changeFormStructure(new FormGroup({
+    //  natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC }, [Validators.required]), //sim
+    //  commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+    //  collectCRC: new FormControl(this.collectCRC, [Validators.required])
+    //  //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+    //}));
+
+    this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
     if (this.tipologia === 'ENI') {
       this.setCommercialSociety(false);
@@ -317,34 +327,24 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("data formatada");
     var separated = b.split('-');
     var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
-    this.logger.debug(formatedDate);
+    //this.logger.debug(formatedDate);
     //var date = formatDate(this.processClient.capitalStock.date, 'MM-dd-yyyy', 'en-US');
     var branch1 = '';
 
-    this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
-      .then((data) => {
-        this.form.get("CAE1Branch").setValue(data.description);
-      });
+    
 
-    if (this.processClient.secondaryEconomicActivity !== null) {
-      this.searchBranch(this.processClient.secondaryEconomicActivity[0].split("-")[0])
-        .then((data) => {
-          this.form.get("CAESecondary1Branch").setValue(data.description);
-        });
-    }
-
-    this.logger.debug("-------- NIFNIPC --------");
-    this.logger.debug(this.NIFNIPC);
-    this.logger.debug(this.form.get("natJuridicaNIFNIPC").value);
+    //this.logger.debug("-------- NIFNIPC --------");
+    //this.logger.debug(this.NIFNIPC);
+    //this.logger.debug(this.form.get("natJuridicaNIFNIPC").value);
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
-
+    //console.log("form: ", this.form);
     this.changeFormStructure(new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */}, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: true/*, disabled: this.clientExists*/ }), //sim
+      natJuridicaN2: new FormControl({ value: '', disabled: true/*, disabled: this.clientExists*/ }), //sim
       socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
       CAE1Branch: new FormControl(branch1), //talvez
@@ -364,7 +364,7 @@ export class ClientCharacterizationComponent implements OnInit {
     }));
       
 
-    this.logger.debug(this.form);
+    //this.logger.debug(this.form);
     this.form.get("CAE1").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.get("CAE1Branch").setValidators([Validators.required]);
@@ -373,7 +373,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       this.form.get("CAE1Branch").updateValueAndValidity();
     });
-    this.logger.debug("c");
+    //this.logger.debug("c");
     this.form.get("CAESecondary1").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.get("CAESecondary1Branch").setValidators([Validators.required]);
@@ -382,7 +382,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       this.form.get("CAESecondary1Branch").updateValueAndValidity();
     });
-    this.logger.debug("d");
+    //this.logger.debug("d");
     this.form.get("CAESecondary2").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.get("CAESecondary2Branch").setValidators([Validators.required]);
@@ -391,7 +391,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       this.form.get("CAESecondary2Branch").updateValueAndValidity();
     });
-    this.logger.debug("e");
+    //this.logger.debug("e");
     this.form.get("CAESecondary3").valueChanges.subscribe(data => {
       if (data !== '') {
         this.form.get("CAESecondary3Branch").setValidators([Validators.required]);
@@ -401,6 +401,21 @@ export class ClientCharacterizationComponent implements OnInit {
       this.form.get("CAESecondary3Branch").updateValueAndValidity();
     });
 
+    this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
+      .then((data) => {
+        console.log("procurou o branch: ", data);
+        console.log(this.form);
+        this.form.get("CAE1Branch").setValue(data.description);
+      });
+
+    if (this.processClient.secondaryEconomicActivity !== null) {
+      this.searchBranch(this.processClient.secondaryEconomicActivity[0].split("-")[0])
+        .then((data) => {
+          console.log("procurou o branch2: ", data);
+          console.log(this.form);
+          this.form.get("CAESecondary1Branch").setValue(data.description);
+        });
+    }
   }
 
   initializeFormControls() {
@@ -580,9 +595,16 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.clientContext.currentNIFNIPC.subscribe(result => {
       this.NIFNIPC = result;
-    })
+      console.log("resultado: ", result);
 
-    this.initializeBasicFormControl();
+      this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC + '');
+      this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
+
+      console.log("form depois de encontrar o nif: ", this.form);
+      this.initializeBasicFormControl();
+
+    });
+
 
 
     //this.NIFNIPC = this.clientContext.NIFNIPC;
@@ -602,8 +624,8 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("------------");
     this.logger.debug("c");
 
-    this.initializeBasicFormControl();
-    this.updateBasicForm();
+    //this.initializeBasicFormControl();
+    //this.updateBasicForm();
 
     this.initializeTableInfo();
 
@@ -654,7 +676,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.currentMerchantInfo.subscribe(result => {
       console.log("CLIENTE CONTEXT merchant info: ", result);
       context.merchantInfo = result;
-      this.updateBasicForm();
+      //this.updateBasicForm();
 
       console.log("MERCHANT INFO ATUALIZOU: ", context.merchantInfo);
       
@@ -733,7 +755,6 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       
 
-      this.initializeFormControlCRC();
       this.crcFound = true;
       this.crcNotExists = false;
       this.errorMsg = '';
@@ -764,7 +785,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.processClient.requestId = clientByCRC.requestId;
 
       this.logger.debug("o crc chamou o initialize");
-      //this.initializeFormControlCRC();
+      this.initializeFormControlCRC();
     }, error: (error)=>{
         this.crcNotExists = true;
         this.crcFound = false;
