@@ -28,7 +28,7 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="tipologia" name="tipologia" type="radio"
-                  [value]="Corporate" id="tipologia" (click)="activateButtons(true)" 
+                  value="Corporate" id="tipologia" (click)="activateButtons(true)" 
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio pe-5" for="radio3">{{'client.company'|translate|uppercase}}</label>
               </div>
@@ -36,7 +36,7 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="tipologia" name="tipologia" type="radio"
-                  [value]="ENI" id="tipologia" (click)="activateButtons(false)" 
+                  value="ENI" id="tipologia" (click)="activateButtons(false)" 
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio" for="radio3">ENI</label>
               </div>
