@@ -556,8 +556,12 @@ export class ClientCharacterizationComponent implements OnInit {
   constructor(private logger : LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private rootFormDirective: FormGroupDirective,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
       this.rootForm = this.rootFormDirective.form;
-      this.form = this.rootForm.get("clientCharacterizationForm")
-  
+    this.form = this.rootForm.get("clientCharacterizationForm");
+
+    
+
+    
+     
   }
 
    //fim do construtor
@@ -625,7 +629,24 @@ export class ClientCharacterizationComponent implements OnInit {
       });
     }
     this.returned = localStorage.getItem("returned");
-    console.log("Cliente characterization: ", this.clientContext);
+    var context = this;
+
+    this.clientContext.currentClient.subscribe(result => {
+      console.log("CLIENTE CONTEXT current cliente: ", result);
+      context.client = result;
+      //this.updateBasicForm();
+
+      console.log("CLIENTE INFO ATUALIZOU: ", context.client);
+    });
+
+    this.clientContext.currentMerchantInfo.subscribe(result => {
+      console.log("CLIENTE CONTEXT merchant info: ", result);
+      context.merchantInfo = result;
+      this.updateBasicForm();
+
+      console.log("MERCHANT INFO ATUALIZOU: ", context.merchantInfo);
+      
+    });
   }
 
   ngOnDestroy(): void {
@@ -832,7 +853,8 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.clientExists = this.clientExists;
     this.clientContext.tipologia = this.tipologia;
     this.clientContext.NIFNIPC = this.NIFNIPC;
-    this.clientContext.client = this.client;
+    //this.clientContext.client = this.client;
+    this.clientContext.setClient(this.client);
     this.clientContext.clientId = this.clientId;
     this.clientContext.processId = this.processId;
     this.clientContext.stakeholdersToInsert = this.processClient.stakeholders;

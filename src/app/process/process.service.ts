@@ -129,6 +129,18 @@ export class ProcessService {
     return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?state=' + state + "&from=" + from + '&count=' + count);
   }
 
+  searchProcessByStartedDate(startedDate: Date, from: number, count: number) {
+    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?fromStartedAt=' + startedDate + "&from=" + from + '&count=' + count);
+  }
+
+  searchProcessByUntilDate(untilDate: Date, from: number, count: number) {
+    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?untilStartedAt=' + untilDate + "&from=" + from + '&count=' + count);
+  }
+
+  searchProcessByDoc(docType: string, docNumber: string, from: number, count: number) {
+    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?documentType=' + docType + '&documentNumber=' + docNumber + "&from=" + from + '&count=' + count);
+  }
+
   getProcessById(processId: string) {
     return this.http.get<ProcessList>(this.baseUrl + 'process/' + processId);
   }
