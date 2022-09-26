@@ -59,85 +59,61 @@ export class DashboardComponent implements OnInit {
   @ViewChild('paginatorPageSize') set paginatorPageSize(pager:MatPaginator) {
     if (pager) {
       this.dataSourceTratamento.paginator = pager;
-      this.dataSourceTratamento.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceTratamento.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageDevolvidos') set paginatorPageDevolvidos(pager:MatPaginator) {
     if (pager) {
       this.dataSourceDevolvidos.paginator = pager;
-      this.dataSourceDevolvidos.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceDevolvidos.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageAceitacao') set paginatorPageAceitacao(pager:MatPaginator) {
     if (pager) {
       this.dataSourceAceitacao.paginator = pager;
-      this.dataSourceAceitacao.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceAceitacao.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPagePendingSent') set paginatorPagePendingSent(pager:MatPaginator) {
     if (pager) {
       this.dataSourcePendingSent.paginator = pager;
-      this.dataSourcePendingSent.paginator._intl = new MatPaginatorIntl();
-      this.dataSourcePendingSent.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPagePendingEligibility') set paginatorPagePendingEligibility(pager:MatPaginator) {
     if (pager) {
       this.dataSourcePendingEligibility.paginator = pager;
-      this.dataSourcePendingEligibility.paginator._intl = new MatPaginatorIntl();
-      this.dataSourcePendingEligibility.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageMultipleClients') set paginatorPageMultipleClients(pager:MatPaginator) {
     if (pager) {
       this.dataSourceMultipleClients.paginator = pager;
-      this.dataSourceMultipleClients.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceMultipleClients.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageDOValidation') set paginatorPageDOValidation(pager:MatPaginator) {
     if (pager) {
       this.dataSourceDOValidation.paginator = pager;
-      this.dataSourceDOValidation.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceDOValidation.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageNegotiationAproval') set paginatorPageNegotiationAproval(pager:MatPaginator) {
     if (pager) {
       this.dataSourceNegotiationAproval.paginator = pager;
-      this.dataSourceNegotiationAproval.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceNegotiationAproval.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageMCCTreatment') set paginatorPageMCCTreatment(pager:MatPaginator) {
     if (pager) {
       this.dataSourceMCCTreatment.paginator = pager;
-      this.dataSourceMCCTreatment.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceMCCTreatment.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageValidationSIBS') set paginatorPageValidationSIBS(pager:MatPaginator) {
     if (pager) {
       this.dataSourceValidationSIBS.paginator = pager;
-      this.dataSourceValidationSIBS.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceValidationSIBS.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageRiskOpinion') set paginatorPageRiskOpinion(pager:MatPaginator) {
     if (pager) {
       this.dataSourceRiskOpinion.paginator = pager;
-      this.dataSourceRiskOpinion.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceRiskOpinion.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
   @ViewChild('paginatorPageComplianceDoubts') set paginatorPageComplianceDoubts(pager:MatPaginator) {
     if (pager) {
       this.dataSourceComplianceDoubts.paginator = pager;
-      this.dataSourceComplianceDoubts.paginator._intl = new MatPaginatorIntl();
-      this.dataSourceComplianceDoubts.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
 
@@ -212,13 +188,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Pendentes de envio ' + result.items);
       this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
         this.incompleteProcessess = resul;
-        // this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
-        // this.dataSourcePendentes.paginator = this.paginatorPage;
         this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
         this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
         
-        // this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
-        this.dataSourcePendentes.paginator = this.paginatorPage;
+        this.dataSourcePendentes.data = this.incompleteProcessess.items;
         this.dataSourcePendentes.sort = this.empTbSort;
         this.incompleteCount = result.pagination.total;
       });
@@ -229,11 +202,11 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Tratamento BackOffice ' + result);
       this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
         this.ongoingProcessess = resul;
-        this.dataSourceTratamento = new MatTableDataSource(this.ongoingProcessess.items);
+        this.dataSourceTratamento.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceTratamento.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        // this.empTbSortWithObject.disableClear = true;
+        this.dataSourceTratamento.data = this.ongoingProcessess.items;
         this.dataSourceTratamento.sort = this.empTbSortWithObject;
-        this.dataSourceTratamento.paginator = this.paginatorPageSize;
         this.ongoingCount = result.pagination.total;
       });
     });
@@ -244,9 +217,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Devolvidos BackOffice ' + result);
       this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
         this.returnedProcessess = resul;
-        this.dataSourceDevolvidos = new MatTableDataSource(this.returnedProcessess.items);
+        this.dataSourceDevolvidos.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceDevolvidos.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
+        this.dataSourceDevolvidos.data = this.returnedProcessess.items;
         this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
         this.returnedCount = result.pagination.total;
       });
@@ -257,9 +231,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Pendentes de Aceitação' + result);
       this.processService.searchProcessByState('contractAcceptance', 0, result.pagination.total).subscribe(resul => {
         this.contractAcceptanceProcessess = resul;
-        this.dataSourceAceitacao = new MatTableDataSource(this.contractAcceptanceProcessess.items);
+        this.dataSourceAceitacao.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceAceitacao.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
+        this.dataSourceAceitacao.data = this.contractAcceptanceProcessess.items;
         this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
         this.contractAcceptanceCount = result.pagination.total;
       });
@@ -270,9 +245,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.pendingSentProcessess = resul;
-        this.dataSourcePendingSent = new MatTableDataSource(this.pendingSentProcessess.items);
+        this.dataSourcePendingSent.paginator._intl = new MatPaginatorIntl();
+        this.dataSourcePendingSent.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourcePendingSent.paginator = this.paginatorPagePendingSent;
+        this.dataSourcePendingSent.data = this.pendingSentProcessess.items;
         this.dataSourcePendingSent.sort = this.empTbSortPendingSent;
         this.pendingSentCount = result.pagination.total;
       });
@@ -283,9 +259,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.pendingEligibilityProcessess = resul;
-        this.dataSourcePendingEligibility = new MatTableDataSource(this.pendingEligibilityProcessess.items);
+        this.dataSourcePendingEligibility.paginator._intl = new MatPaginatorIntl();
+        this.dataSourcePendingEligibility.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourcePendingEligibility.paginator = this.paginatorPagePendingEligibility;
+        this.dataSourcePendingEligibility.data = this.pendingEligibilityProcessess.items;
         this.dataSourcePendingEligibility.sort = this.empTbSortPendingEligibility;
         this.pendingEligibilityCount = result.pagination.total;
       });
@@ -296,9 +273,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.multipleClientesProcessess = resul;
-        this.dataSourceMultipleClients = new MatTableDataSource(this.multipleClientesProcessess.items);
+        this.dataSourceMultipleClients.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceMultipleClients.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceMultipleClients.paginator = this.paginatorPageMultipleClients;
+        this.dataSourceMultipleClients.data = this.multipleClientesProcessess.items;
         this.dataSourceMultipleClients.sort = this.empTbSortMultipleClients;
         this.multipleClientesCount = result.pagination.total;
       });
@@ -309,9 +287,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.DOValidationProcessess = resul;
-        this.dataSourceDOValidation = new MatTableDataSource(this.DOValidationProcessess.items);
+        this.dataSourceDOValidation.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceDOValidation.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceDOValidation.paginator = this.paginatorPageDOValidation;
+        this.dataSourceDOValidation.data = this.DOValidationProcessess.items;
         this.dataSourceDOValidation.sort = this.empTbSortDOValidation;
         this.DOValidationCount = result.pagination.total;
       });
@@ -322,9 +301,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.negotiationAprovalProcessess = resul;
-        this.dataSourceNegotiationAproval = new MatTableDataSource(this.negotiationAprovalProcessess.items);
+        this.dataSourceNegotiationAproval.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceNegotiationAproval.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceNegotiationAproval.paginator = this.paginatorPageNegotiationAproval;
+        this.dataSourceNegotiationAproval.data = this.negotiationAprovalProcessess.items;
         this.dataSourceNegotiationAproval.sort = this.empTbSortNegotiationAproval;
         this.negotiationAprovalCount = result.pagination.total;
       });
@@ -335,9 +315,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.MCCTreatmentProcessess = resul;
-        this.dataSourceMCCTreatment = new MatTableDataSource(this.MCCTreatmentProcessess.items);
+        this.dataSourceMCCTreatment.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceMCCTreatment.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceMCCTreatment.paginator = this.paginatorPageMCCTreatment;
+        this.dataSourceMCCTreatment.data = this.MCCTreatmentProcessess.items;
         this.dataSourceMCCTreatment.sort = this.empTbSortMCCTreatment;
         this.MCCTreatmentCount = result.pagination.total;
       });
@@ -348,9 +329,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.validationSIBSProcessess = resul;
-        this.dataSourceValidationSIBS = new MatTableDataSource(this.validationSIBSProcessess.items);
+        this.dataSourceValidationSIBS.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceValidationSIBS.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceValidationSIBS.paginator = this.paginatorPageValidationSIBS;
+        this.dataSourceValidationSIBS.data = this.validationSIBSProcessess.items;
         this.dataSourceValidationSIBS.sort = this.empTbSortValidationSIBS;
         this.validationSIBSCount = result.pagination.total;
       });
@@ -361,9 +343,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.riskOpinionProcessess = resul;
-        this.dataSourceRiskOpinion = new MatTableDataSource(this.riskOpinionProcessess.items);
+        this.dataSourceRiskOpinion.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceRiskOpinion.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceRiskOpinion.paginator = this.paginatorPageRiskOpinion;
+        this.dataSourceRiskOpinion.data = this.riskOpinionProcessess.items;
         this.dataSourceRiskOpinion.sort = this.empTbSortRiskOpinion;
         this.riskOpinionCount = result.pagination.total;
       });
@@ -374,9 +357,10 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.complianceDoubtsProcessess = resul;
-        this.dataSourceComplianceDoubts = new MatTableDataSource(this.complianceDoubtsProcessess.items);
+        this.dataSourceComplianceDoubts.paginator._intl = new MatPaginatorIntl();
+        this.dataSourceComplianceDoubts.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-        this.dataSourceComplianceDoubts.paginator = this.paginatorPageComplianceDoubts;
+        this.dataSourceComplianceDoubts.data = this.complianceDoubtsProcessess.items;
         this.dataSourceComplianceDoubts.sort = this.empTbSortComplianceDoubts;
         this.complianceDoubtsCount = result.pagination.total;
       });

@@ -153,6 +153,8 @@ export class ClientCharacterizationComponent implements OnInit {
   changeFormStructure(newForm: FormGroup){
     this.rootForm.setControl("clientCharacterizationForm", newForm);
     this.form = this.rootForm.get("clientCharacterizationForm");
+
+    this.form.updateValueAndValidity();
   }
 
   initializeTableInfo() {
@@ -180,6 +182,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
   updateBasicForm() {
     this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
+
+    this.form.updateValueAndValidity();
   }
 
   //updateFormControls() {
@@ -573,7 +577,15 @@ export class ClientCharacterizationComponent implements OnInit {
     this.tipologia = this.clientContext.tipologia;
     this.clientExists = this.clientContext.clientExists;
     this.comprovativoCC = this.clientContext.comprovativoCC;
-    this.NIFNIPC = this.clientContext.NIFNIPC;
+
+    this.clientContext.currentNIFNIPC.subscribe(result => {
+      this.NIFNIPC = result;
+    })
+
+    this.initializeBasicFormControl();
+
+
+    //this.NIFNIPC = this.clientContext.NIFNIPC;
     if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
       this.DisableNIFNIPC = true;
     }
@@ -721,7 +733,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       
 
-
+      this.initializeFormControlCRC();
       this.crcFound = true;
       this.crcNotExists = false;
       this.errorMsg = '';
@@ -752,7 +764,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.processClient.requestId = clientByCRC.requestId;
 
       this.logger.debug("o crc chamou o initialize");
-      this.initializeFormControlCRC();
+      //this.initializeFormControlCRC();
     }, error: (error)=>{
         this.crcNotExists = true;
         this.crcFound = false;

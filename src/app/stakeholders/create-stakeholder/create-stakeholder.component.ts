@@ -428,7 +428,10 @@ export class CreateStakeholderComponent implements OnInit {
    */
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
-    this.okCC = readable; //W
+    if (readable === false) {
+      this.okCC = readable; //W
+    }
+    
   }
 
   //Modal que pergunta se tem o PIN da Morada
