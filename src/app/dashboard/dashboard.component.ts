@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostBinding, Input, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CookieService } from 'ngx-cookie-service'
 import { MediaMatcher } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, HostBinding, Input, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
@@ -15,6 +14,7 @@ import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../proce
 import { DatePipe } from '@angular/common';
 import { LoggerService } from 'src/app/logger.service';
 import { User } from '../userPermissions/user';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,32 +23,20 @@ import { User } from '../userPermissions/user';
   animations: [onSideNavChange, AutoHideSidenavAdjust]
 })
 export class DashboardComponent implements OnInit {
-  displayedColumns1: string[] = ['id', 'name', 'progress', 'color', 'teste']
 
-  displayedColumnsWithObject: string[] = [
-    'id',
-    'firstname',
-    'lastname',
-    'email',
-    'gender',
-    'jobtitle',
-    'department',
-    'project.name',
-  ];
-
-  dataSourcePendentes: MatTableDataSource<ProcessList>;
-  dataSourceTratamento: MatTableDataSource<ProcessList>;
-  dataSourceDevolvidos: MatTableDataSource<ProcessList>;
-  dataSourceAceitacao: MatTableDataSource<ProcessList>;
-  dataSourcePendingSent: MatTableDataSource<ProcessList>;
-  dataSourcePendingEligibility: MatTableDataSource<ProcessList>;
-  dataSourceMultipleClients: MatTableDataSource<ProcessList>;
-  dataSourceDOValidation: MatTableDataSource<ProcessList>;
-  dataSourceNegotiationAproval: MatTableDataSource<ProcessList>;
-  dataSourceMCCTreatment: MatTableDataSource<ProcessList>;
-  dataSourceValidationSIBS: MatTableDataSource<ProcessList>;
-  dataSourceRiskOpinion: MatTableDataSource<ProcessList>;
-  dataSourceComplianceDoubts: MatTableDataSource<ProcessList>;
+  dataSourcePendentes: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceTratamento: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceDevolvidos: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceAceitacao: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourcePendingSent: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourcePendingEligibility: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceMultipleClients: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceDOValidation: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceNegotiationAproval: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceMCCTreatment: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceValidationSIBS: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceRiskOpinion: MatTableDataSource<ProcessList> = new MatTableDataSource();
+  dataSourceComplianceDoubts: MatTableDataSource<ProcessList> = new MatTableDataSource();
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
   @ViewChild('empTbSortWithObject') empTbSortWithObject = new MatSort();
@@ -63,19 +51,95 @@ export class DashboardComponent implements OnInit {
   @ViewChild('empTbSortValidationSIBS') empTbSortValidationSIBS = new MatSort();
   @ViewChild('empTbSortRiskOpinion') empTbSortRiskOpinion = new MatSort();
   @ViewChild('empTbSortComplianceDoubts') empTbSortComplianceDoubts = new MatSort();
-  @ViewChild('paginatorPage') paginatorPage: MatPaginator;
-  @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
-  @ViewChild('paginatorPageDevolvidos') paginatorPageDevolvidos: MatPaginator;
-  @ViewChild('paginatorPageAceitacao') paginatorPageAceitacao: MatPaginator;
-  @ViewChild('paginatorPagePendingSent') paginatorPagePendingSent: MatPaginator;
-  @ViewChild('paginatorPagePendingEligibility') paginatorPagePendingEligibility: MatPaginator;
-  @ViewChild('paginatorPageMultipleClients') paginatorPageMultipleClients: MatPaginator;
-  @ViewChild('paginatorPageDOValidation') paginatorPageDOValidation: MatPaginator;
-  @ViewChild('paginatorPageNegotiationAproval') paginatorPageNegotiationAproval: MatPaginator;
-  @ViewChild('paginatorPageMCCTreatment') paginatorPageMCCTreatment: MatPaginator;
-  @ViewChild('paginatorPageValidationSIBS') paginatorPageValidationSIBS: MatPaginator;
-  @ViewChild('paginatorPageRiskOpinion') paginatorPageRiskOpinion: MatPaginator;
-  @ViewChild('paginatorPageComplianceDoubts') paginatorPageComplianceDoubts: MatPaginator;
+  @ViewChild('paginatorPage') set paginatorPage(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourcePendentes.paginator = pager;
+    }
+  }
+  @ViewChild('paginatorPageSize') set paginatorPageSize(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceTratamento.paginator = pager;
+      this.dataSourceTratamento.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceTratamento.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageDevolvidos') set paginatorPageDevolvidos(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceDevolvidos.paginator = pager;
+      this.dataSourceDevolvidos.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceDevolvidos.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageAceitacao') set paginatorPageAceitacao(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceAceitacao.paginator = pager;
+      this.dataSourceAceitacao.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceAceitacao.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPagePendingSent') set paginatorPagePendingSent(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourcePendingSent.paginator = pager;
+      this.dataSourcePendingSent.paginator._intl = new MatPaginatorIntl();
+      this.dataSourcePendingSent.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPagePendingEligibility') set paginatorPagePendingEligibility(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourcePendingEligibility.paginator = pager;
+      this.dataSourcePendingEligibility.paginator._intl = new MatPaginatorIntl();
+      this.dataSourcePendingEligibility.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageMultipleClients') set paginatorPageMultipleClients(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceMultipleClients.paginator = pager;
+      this.dataSourceMultipleClients.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceMultipleClients.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageDOValidation') set paginatorPageDOValidation(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceDOValidation.paginator = pager;
+      this.dataSourceDOValidation.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceDOValidation.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageNegotiationAproval') set paginatorPageNegotiationAproval(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceNegotiationAproval.paginator = pager;
+      this.dataSourceNegotiationAproval.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceNegotiationAproval.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageMCCTreatment') set paginatorPageMCCTreatment(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceMCCTreatment.paginator = pager;
+      this.dataSourceMCCTreatment.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceMCCTreatment.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageValidationSIBS') set paginatorPageValidationSIBS(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceValidationSIBS.paginator = pager;
+      this.dataSourceValidationSIBS.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceValidationSIBS.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageRiskOpinion') set paginatorPageRiskOpinion(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceRiskOpinion.paginator = pager;
+      this.dataSourceRiskOpinion.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceRiskOpinion.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  @ViewChild('paginatorPageComplianceDoubts') set paginatorPageComplianceDoubts(pager:MatPaginator) {
+    if (pager) {
+      this.dataSourceComplianceDoubts.paginator = pager;
+      this.dataSourceComplianceDoubts.paginator._intl = new MatPaginatorIntl();
+      this.dataSourceComplianceDoubts.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
 
   //---------------------------
 
@@ -84,8 +148,8 @@ export class DashboardComponent implements OnInit {
 
   displayedColumns = ['processNumber', 'contractNumber', 'requestDate', 'clientName', 'user', 'buttons'];
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
 
   pageSizes = [10, 25, 100];
 
@@ -129,7 +193,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private logger: LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe, private authService: AuthService) {
+    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -148,9 +212,10 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
         this.incompleteProcessess = resul;
         this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
-
-        this.dataSourcePendentes.paginator = this.paginator;
-        this.dataSourcePendentes.sort = this.sort;
+        this.dataSourcePendentes.paginator = this.paginatorPage;
+        this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
+        this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+        this.dataSourcePendentes.sort = this.empTbSort;
         this.incompleteCount = result.pagination.total;
       });
     });
@@ -361,6 +426,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+  //   this.dataSourcePendentes = new MatTableDataSource();
+  //   this.dataSourcePendentes.paginator = this.paginatorPage;
+
     //this.dataSourcePendentes.paginator = this.paginator;
     //this.dataSourcePendentes.sort = this.sort;
 
