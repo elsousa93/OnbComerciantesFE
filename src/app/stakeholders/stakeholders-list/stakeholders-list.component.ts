@@ -23,7 +23,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
-      this.triggerFalseClick();
+     // this.triggerFalseClick();
   }
  
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
