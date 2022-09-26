@@ -204,50 +204,50 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     private modalService: BsModalService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
-    this.submissionId = localStorage.getItem("submissionId");
-    this.logger.debug("id:!!!!");
-    this.logger.debug(this.submissionId);
+    this.ngOnInit();
     var context = this;
-    this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
-      this.submission = result;
-      this.logger.debug('Submission ' + result);
 
-      //this.crcService.getCRC('001', '001').subscribe(result => {
+    if (this.returned == null) {
+      this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
+        this.submission = result;
+        this.logger.debug('Submission ' + result);
 
-      //  this.logger.debug("--------- CRC SERVICE ---------");
-      //  var crcResult = result;
-      //  var crcFile = this.b64toBlob(crcResult.pdf, "application/pdf", 512);
+        //this.crcService.getCRC('001', '001').subscribe(result => {
 
-      //  crcFile["lastModifiedDate"] = new Date();
-      //  crcFile["name"] = "crc pdf";
+        //  this.logger.debug("--------- CRC SERVICE ---------");
+        //  var crcResult = result;
+        //  var crcFile = this.b64toBlob(crcResult.pdf, "application/pdf", 512);
 
-      //  this.logger.debug("!!! crc file !!!");
-      //  this.logger.debug(crcFile);
+        //  crcFile["lastModifiedDate"] = new Date();
+        //  crcFile["name"] = "crc pdf";
 
-      //  this.compsToShow.push({
-      //    type: "pdf",
-      //    expirationDate: "2024-10-10",
-      //    stakeholder: "Manuel",
-      //    status: "não definido",
-      //    uploadDate: "2020-10-10",
-      //    file: <File>crcFile
-      //  });
+        //  this.logger.debug("!!! crc file !!!");
+        //  this.logger.debug(crcFile);
 
-      //  this.logger.debug(this.compsToShow);
-      //});
+        //  this.compsToShow.push({
+        //    type: "pdf",
+        //    expirationDate: "2024-10-10",
+        //    stakeholder: "Manuel",
+        //    status: "não definido",
+        //    uploadDate: "2020-10-10",
+        //    file: <File>crcFile
+        //  });
 
-      this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
-        var documents = res;
-        console.log("Lista inicial ", res);
+        //  this.logger.debug(this.compsToShow);
+        //});
 
-        documents.forEach(function (value, index) {
-          var document = value;
-          console.log("Cada documento ", document);
-          //context.logger.debug("Documento do for");
-          //context.logger.debug(document);
+        this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
+          var documents = res;
+          console.log("Lista inicial ", res);
 
-          //if (document.documentPurpose === 'crcPDF') {
-          //context.logger.debug("encontrou!!!!");
+          documents.forEach(function (value, index) {
+            var document = value;
+            console.log("Cada documento ", document);
+            //context.logger.debug("Documento do for");
+            //context.logger.debug(document);
+
+            //if (document.documentPurpose === 'crcPDF') {
+            //context.logger.debug("encontrou!!!!");
             context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
               //context.logger.debug("entrou no document get image!!!");
               //context.logger.debug(res)
@@ -278,85 +278,133 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   uploadDate: "2020-10-10",
                   file: context.file,
                   documentPurpose: val.documentPurpose
-                })
+                });
                 console.log("Lista de comprovativos ", context.compsToShow);
               });
             });
-          //}
+            //}
+          });
+        });
+
+
+
+        this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
+          this.submissionClient = c;
+          this.logger.debug('Cliente ' + c);
+        });
+
+        this.submission.stakeholders.forEach(stake => {
+          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+            this.logger.debug('Stakeholder ' + result);
+            this.stakeholdersList.push(result);
+          });
+        });
+
+        //this.submission.documents.forEach(document => {
+        //  this.logger.debug("entrou aqui1!!!");
+        //  var document = document;
+        //  var promise = documentService.GetSubmissionDocumentById(this.submissionId, document.id).toPromise();
+
+        //  promise.then((success) => {
+        //    this.logger.debug("entrou aqui2!!!!")
+        //    var currentDocument = success;
+        //    var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
+
+        //    this.logger.debug(this.submissionId);
+        //    this.logger.debug(currentDocument.id);
+        //    this.logger.debug("----------------");
+        //    this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
+        //      this.logger.debug("entrou aqui3!!!!!!!");
+        //    });
+
+        //    //fileImage.then((success) => {
+        //    //  this.logger.debug("entrou aqui3!!!!");
+        //    //  var teste = success.arraybuffer();
+        //    //  this.logger.debug(teste);
+        //    //  //var file = success;
+        //    //  //this.logger.debug("FICHEIRO PDF");
+        //    //  //this.logger.debug(file);
+        //    //  //this.files.push(file);
+        //    //  //this.compsToShow.push({
+        //    //  //  type: currentDocument.documentType,
+        //    //  //  stakeholder: '',
+        //    //  //  expirationDate: currentDocument.validUntil,
+        //    //  //  uploadDate: '',
+        //    //  //  status: '',
+        //    //  //  file: file
+        //    //  //});
+        //    //  //this.logger.debug("comps a mostrar");
+        //    //  //this.logger.debug(this.compsToShow);
+
+        //    //}, error => {
+        //    //  this.logger.debug("deu erro!!!");
+        //    //  this.logger.debug(error);
+        //    //});
+        //  });
+
+        //  var blob = this.b64toBlob(document, 'application/pdf', 512);
+
+        //  var file = new File([blob], "crcTeste");
+        //  this.logger.debug("blob para ficheiro");
+        //  this.logger.debug(file);
+        //  this.files.push(file);
+        //});
+      });
+    } else {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          this.documentService.GetSubmissionDocuments(resul.id).subscribe(res => {
+            var documents = res;
+            console.log("Lista inicial ", res);
+
+            documents.forEach(function (value, index) {
+              var document = value;
+              console.log("Cada documento ", document);
+              //context.logger.debug("Documento do for");
+              //context.logger.debug(document);
+
+              //if (document.documentPurpose === 'crcPDF') {
+              //context.logger.debug("encontrou!!!!");
+              context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
+                //context.logger.debug("entrou no document get image!!!");
+                //context.logger.debug(res)
+                console.log("imagem de um documento ", res);
+                var teste = await res.blob();
+                //context.logger.debug(teste);
+                console.log('teste ', teste);
+
+                teste.lastModifiedDate = new Date();
+                teste.name = "nome";
+
+                context.file = <File>teste;
+
+                //context.logger.debug("ficheiro tratado");
+                //context.logger.debug(context.file);
+                console.log("Ficheiro encontrado ", context.file);
+
+                context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+
+                  console.log("Value do purpose ", val);
+
+                  context.compsToShow.push({
+                    id: document.id,
+                    type: "pdf",
+                    expirationDate: "2024-10-10",
+                    stakeholder: "Manuel",
+                    status: "não definido",
+                    uploadDate: "2020-10-10",
+                    file: context.file,
+                    documentPurpose: val.documentPurpose
+                  })
+                  console.log("Lista de comprovativos ", context.compsToShow);
+                });
+              });
+
+            });
+          });
         });
       });
-
-
-
-      this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
-        this.submissionClient = c;
-        this.logger.debug('Cliente ' + c);
-      });
-
-      this.submission.stakeholders.forEach(stake => {
-        this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-          this.logger.debug('Stakeholder ' + result);
-          this.stakeholdersList.push(result);
-        });
-      });
-
-      //this.submission.documents.forEach(document => {
-      //  this.logger.debug("entrou aqui1!!!");
-      //  var document = document;
-      //  var promise = documentService.GetSubmissionDocumentById(this.submissionId, document.id).toPromise();
-
-      //  promise.then((success) => {
-      //    this.logger.debug("entrou aqui2!!!!")
-      //    var currentDocument = success;
-      //    var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
-
-      //    this.logger.debug(this.submissionId);
-      //    this.logger.debug(currentDocument.id);
-      //    this.logger.debug("----------------");
-      //    this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
-      //      this.logger.debug("entrou aqui3!!!!!!!");
-      //    });
-
-      //    //fileImage.then((success) => {
-      //    //  this.logger.debug("entrou aqui3!!!!");
-      //    //  var teste = success.arraybuffer();
-      //    //  this.logger.debug(teste);
-      //    //  //var file = success;
-      //    //  //this.logger.debug("FICHEIRO PDF");
-      //    //  //this.logger.debug(file);
-      //    //  //this.files.push(file);
-      //    //  //this.compsToShow.push({
-      //    //  //  type: currentDocument.documentType,
-      //    //  //  stakeholder: '',
-      //    //  //  expirationDate: currentDocument.validUntil,
-      //    //  //  uploadDate: '',
-      //    //  //  status: '',
-      //    //  //  file: file
-      //    //  //});
-      //    //  //this.logger.debug("comps a mostrar");
-      //    //  //this.logger.debug(this.compsToShow);
-
-      //    //}, error => {
-      //    //  this.logger.debug("deu erro!!!");
-      //    //  this.logger.debug(error);
-      //    //});
-      //  });
-
-      //  var blob = this.b64toBlob(document, 'application/pdf', 512);
-
-      //  var file = new File([blob], "crcTeste");
-      //  this.logger.debug("blob para ficheiro");
-      //  this.logger.debug(file);
-      //  this.files.push(file);
-      //});
-    });
-
-    this.logger.debug('Submission ' + this.submission);
-    this.logger.debug('Client ' + this.client);
-    this.logger.debug('stakeholders list ' + this.stakeholdersList);
-    this.logger.debug('Submission id ' + localStorage.getItem("submissionId"));
-    this.ngOnInit();
-
+    }
   }
 
   ngOnInit(): void {
@@ -365,7 +413,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.returned = localStorage.getItem("returned");
-
+    this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(false, 4, 1);
   }
 
