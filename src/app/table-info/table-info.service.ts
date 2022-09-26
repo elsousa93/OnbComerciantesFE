@@ -92,45 +92,45 @@ export class TableInfoService {
     });
   }
 
-  callAPIOutboundNew(httpMethod: HttpMethod, httpURL: string, searchId: string, searchType: string, requestId: string, AcquiringUserId: string, acceptLanguage: string, body?: any, countryId?: string, AcquiringPartnerId?: string, AcquiringBranchId?: string, AcquiringProcessId?: string) {
-    var requestResponse: RequestResponse = {};
+  //callAPIOutboundNew(httpMethod: HttpMethod, httpURL: string, searchId: string, searchType: string, requestId: string, AcquiringUserId: string, acceptLanguage: string, body?: any, countryId?: string, AcquiringPartnerId?: string, AcquiringBranchId?: string, AcquiringProcessId?: string) {
+  //  var requestResponse: RequestResponse = {};
 
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Request-Id': requestId,
-        'X-Acquiring-UserId': AcquiringUserId,
-        'Accept-Language': this.currentLanguage,
-      }),
-    }
+  //  var HTTP_OPTIONS = {
+  //    headers: new HttpHeaders({
+  //      'Request-Id': requestId,
+  //      'X-Acquiring-UserId': AcquiringUserId,
+  //      'Accept-Language': this.currentLanguage,
+  //    }),
+  //  }
 
-    if (AcquiringPartnerId !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerId);
-    if (AcquiringBranchId !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchId);
-    if (AcquiringProcessId !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessId);
+  //  if (AcquiringPartnerId !== null)
+  //    HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerId);
+  //  if (AcquiringBranchId !== null)
+  //    HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchId);
+  //  if (AcquiringProcessId !== null)
+  //    HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessId);
 
-    return new Promise<RequestResponse>((resolve, reject) => {
-      this.http[httpMethod]<RequestResponse[]>(httpURL, body, HTTP_OPTIONS).subscribe({
-        next: (res: any) => {
-          requestResponse.result = res;
-          requestResponse.error = null;
-          resolve(requestResponse);
-        },
-        error: (err: any) => {
-          requestResponse.result = null;
-          requestResponse.error = {
-            code: err.status,
-            message: err.statusText
-          }
-          reject(requestResponse);
-        },
-        complete: () => {
-          console.log("pedido terminado!!");
-        }
-      });
-    });
-  }
+  //  return new Promise<RequestResponse>((resolve, reject) => {
+  //    this.http[httpMethod]<RequestResponse[]>(httpURL, body, HTTP_OPTIONS).subscribe({
+  //      next: (res: any) => {
+  //        requestResponse.result = res;
+  //        requestResponse.error = null;
+  //        resolve(requestResponse);
+  //      },
+  //      error: (err: any) => {
+  //        requestResponse.result = null;
+  //        requestResponse.error = {
+  //          code: err.status,
+  //          message: err.statusText
+  //        }
+  //        reject(requestResponse);
+  //      },
+  //      complete: () => {
+  //        console.log("pedido terminado!!");
+  //      }
+  //    });
+  //  });
+  //}
 
 
   GetAllCountries(): any {

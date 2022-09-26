@@ -577,6 +577,7 @@ export class ClientByIdComponent implements OnInit {
       this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
       this.NIFNIPC = this.router.snapshot.params["id"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
+
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
 
       this.clientContext = new ClientContext(
@@ -586,7 +587,6 @@ export class ClientByIdComponent implements OnInit {
           this.router.snapshot.params["id"],
           this.route.getCurrentNavigation().extras.state["clientId"],
           this.route.getCurrentNavigation().extras.state["dataCC"],
-          this.client
       );
 
       this.logger.debug("------------");
@@ -608,7 +608,17 @@ export class ClientByIdComponent implements OnInit {
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
-      this.clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
+      //this.clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
+
+      //  this.clientContext.clientExists = true;
+      //  this.clientContext.client = result;
+      //  this.clientContext.NIFNIPC = this.client.fiscalIdentification.fiscalId;
+      //  this.updateBasicForm();
+      //});
+
+      console.log("antes da pesquisa");
+      this.clientService.getClientById(this.clientId).then(result => {
+        console.log("pesquisa do cliente: ", result);
         this.clientContext.clientExists = true;
         this.clientContext.client = result;
         this.clientContext.NIFNIPC = this.client.fiscalIdentification.fiscalId;
