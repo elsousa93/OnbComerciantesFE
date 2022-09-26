@@ -72,9 +72,9 @@
                           <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepType" name="pepType" id="pepType">
                             <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
                           </select>
-                          <p (change)="checkSelectedPEP()" class="form-check-label titulo-form-simples" for="pepSinceWhen">
+                          <p class="form-check-label titulo-form-simples" for="pepSinceWhen">
                             {{'declarativeInformation.stakeholder.pep.since'|translate}}:</p>
-                            <input formControlName="pepSinceWhen" name="pepSinceWhen" id="pepSinceWhen" type="date"
+                            <input (change)="checkSelectedPEP()" formControlName="pepSinceWhen" name="pepSinceWhen" id="pepSinceWhen" type="date"
                               class="form-control campo_form" value="">
                           </div>
                         <div class="col-6 ms-0 me-0 ps-0 pe-5">
