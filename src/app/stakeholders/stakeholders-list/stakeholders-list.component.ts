@@ -67,7 +67,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     //this.stakesMat.data = this.submissionStakeholders;
-    this.stakesMat.paginator = this.paginator;
+    // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
 
@@ -207,8 +207,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   }
 
   loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {
-    this.stakesMat = new MatTableDataSource(stakesList);
-    this.stakesMat.paginator = this.paginator;
+    this.stakesMat.data = stakesList;
+    // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
 

@@ -259,7 +259,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[]) {
-    this.storesMat = new MatTableDataSource(storesValues);
+    this.storesMat.data = storesValues;
     // this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;
   }

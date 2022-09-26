@@ -178,13 +178,13 @@ export class ConsultasFTComponent implements OnInit{
     var context = this;
   }
   ngAfterViewInit(){
-    this.processes = new MatTableDataSource();
-    this.processes.paginator = this.paginator;
+    // this.processes = new MatTableDataSource();
+    // this.processes.paginator = this.paginator;
   }
 
   loadProcesses(processValues: ProcessFT[]){
-    this.processes = new MatTableDataSource(processValues);
-    this.processes.paginator = this.paginator;
+    this.processes.data = processValues;
+    // this.processes.paginator = this.paginator;
   }
 
 }
