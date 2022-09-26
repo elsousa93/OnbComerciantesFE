@@ -216,9 +216,9 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
         this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
         
-        this.dataSourcePendentes = new MatTableDataSource(this.incompleteProcessess.items);
-        // this.dataSourcePendentes.paginator = this.paginatorPage;
-        this.dataSourcePendentes.sort = this.empTbSort;
+        var dataSourcePendentes2: MatTableDataSource<ProcessList> = new MatTableDataSource(this.incompleteProcessess.items);
+        dataSourcePendentes2.paginator = this.paginatorPage;
+        dataSourcePendentes2.sort = this.empTbSort;
         this.incompleteCount = result.pagination.total;
       });
     });
