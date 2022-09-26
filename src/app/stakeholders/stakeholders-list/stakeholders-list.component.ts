@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,9 +15,17 @@ import { StakeholderService } from '../stakeholder.service';
   styleUrls: ['./stakeholders-list.component.css']
 })
 export class StakeholdersListComponent implements OnInit, AfterViewInit {
+ @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
-  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) { }
+  triggerFalseClick() {
+    let el: HTMLElement = this.selectedBlueDiv.nativeElement;
+    el.click();
+  }
 
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+      this.triggerFalseClick();
+  }
+ 
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
   @ViewChild('paginator') set paginator(pager:MatPaginator) {
     if (pager) {
@@ -28,12 +36,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild(MatSort) sort: MatSort;
-
+  
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;
   @Input() processNumber?: string;
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
+ 
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
