@@ -361,7 +361,6 @@ export class ClientComponent implements OnInit {
 
     this.ngOnInit();
     this.initializeForm();
-
     this.logger.debug(this.baseUrl);
     this.data.updateData(false, 1);
     // this.activateButtons(false);
