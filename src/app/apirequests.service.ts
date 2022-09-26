@@ -17,7 +17,12 @@ export class APIRequestsService {
 
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, public translate: TranslateService) { }
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, public translate: TranslateService) {
+    this.languageStream$.subscribe((val) => {
+      this.currentLanguage = val
+    });
+
+  }
 
   callAPIAcquiringTest(httpMethod: HttpMethod, httpURL: string, body?: any) {
     var requestResponse: RequestResponse = {};

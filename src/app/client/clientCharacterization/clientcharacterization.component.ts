@@ -625,7 +625,7 @@ export class ClientCharacterizationComponent implements OnInit {
       });
     }
     this.returned = localStorage.getItem("returned");
-    console.log("Cliente antes: ", this.client);
+    console.log("Cliente characterization: ", this.clientContext);
   }
 
   ngOnDestroy(): void {
