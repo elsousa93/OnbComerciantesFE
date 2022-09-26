@@ -573,9 +573,9 @@ export class ClientByIdComponent implements OnInit {
       //this.tipologia = "ENI";
       //this.tipologia = "Company";
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
-      //this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+      this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
-      this.NIFNIPC = this.router.snapshot.params["id"];
+      //this.NIFNIPC = this.router.snapshot.params["id"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
 
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
@@ -621,7 +621,7 @@ export class ClientByIdComponent implements OnInit {
         console.log("pesquisa do cliente: ", result);
         this.clientContext.clientExists = true;
         //this.clientContext.setClient(result);
-        this.clientContext.NIFNIPC = this.client.fiscalIdentification.fiscalId;
+        this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
         this.clientContext.setMerchantInfo(result.result);
         this.updateBasicForm();
       });
