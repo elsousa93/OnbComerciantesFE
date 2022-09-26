@@ -397,7 +397,7 @@ export class CreateStakeholderComponent implements OnInit {
     });
 
     this.formStakeholderSearch.get("documentType").valueChanges.subscribe(data => {
-      if (data !== 'Cartão do Cidadão') {
+      if (data !== '1001') { // Cartão do Cidadão
         this.formStakeholderSearch.controls["documentNumber"].setValidators([Validators.required]);
         this.formStakeholderSearch.removeControl("flagAutCol");
       } else {

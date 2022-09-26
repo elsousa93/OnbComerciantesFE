@@ -30,6 +30,7 @@ export class ConsultasComponent implements OnInit{
   @ViewChild('paginator') set paginator(pager:MatPaginator) {
     if (pager) {
       this.processes.paginator = pager;
+      this.processes.paginator.pageSizeOptions = [5, 10, 25];
       this.processes.paginator._intl = new MatPaginatorIntl();
       this.processes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
