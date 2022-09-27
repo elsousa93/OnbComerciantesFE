@@ -71,7 +71,7 @@ export class NavMenuPresencialComponent implements OnInit {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
-    this.changeLanguage(this.translate.getDefaultLang());
+    this.chooseLanguage(this.translate.getDefaultLang());
   }
 
   ngOnInit(): void {
@@ -180,6 +180,13 @@ export class NavMenuPresencialComponent implements OnInit {
     //   this.route.navigate([decodeURI(this._location.path())], {state: currentState});
     //   });
   }
+
+  chooseLanguage(language) {
+    this.translate.use(language);
+    this.getLanguageInfo(language);
+    this.tableInfo.languageStream$.next(language);
+  }
+
 
   getLanguageInfo(language: string) {
     this.translationLanguages.forEach(value => {
