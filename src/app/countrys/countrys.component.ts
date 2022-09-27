@@ -220,7 +220,7 @@ export class CountrysComponent implements OnInit {
         
         console.log("form: ", this.form);
 
-        context.insertValues();
+        //context.insertValues();
       }
     })
 
@@ -228,7 +228,7 @@ export class CountrysComponent implements OnInit {
       console.log("entrou no currentclient: ", result);
       console.log(this.form);
       this.client = result;
-      context.insertValues();
+      //context.insertValues();
     })
     //this.insertValues();
 
@@ -621,46 +621,48 @@ export class CountrysComponent implements OnInit {
           else
             this.newSubmission.merchant.merchantType = 'Entrepeneur';
 
-          this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
-            localStorage.setItem("submissionId", result.id);
-            this.processNrService.changeProcessNumber(result.processNumber);
+          this.clientContext.newSubmission = this.newSubmission;
 
-            this.storeService.getShopsListOutbound(this.newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
-             res.forEach(value => {
-               this.storeService.getShopInfoOutbound(context.newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-                 var storeToAdd: ShopDetailsAcquiring = {
-                   activity: r.activity,
-                   subActivity: r.secondaryActivity,
-                   address: {
-                     address: r.address.address,
-                     isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-                     shoppingCenter: r.address.shoppingCenter,
-                     useMerchantAddress: r.address.sameAsMerchantAddress
-                   },
-                   bank: {
-                     bank: r.bankingInformation
-                   },
-                   name: r.name,
-                   productCode: r.product,
-                   subproductCode: r.subproduct,
-                   website: r.url,
-                   equipments: []
-                 }
+          //this.submissionService.InsertSubmission(this.newSubmission).subscribe(result => {
+          //  localStorage.setItem("submissionId", result.id);
+          //  this.processNrService.changeProcessNumber(result.processNumber);
 
-                 context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+          //  this.storeService.getShopsListOutbound(this.newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+          //   res.forEach(value => {
+          //     this.storeService.getShopInfoOutbound(context.newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+          //       var storeToAdd: ShopDetailsAcquiring = {
+          //         activity: r.activity,
+          //         subActivity: r.secondaryActivity,
+          //         address: {
+          //           address: r.address.address,
+          //           isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+          //           shoppingCenter: r.address.shoppingCenter,
+          //           useMerchantAddress: r.address.sameAsMerchantAddress
+          //         },
+          //         bank: {
+          //           bank: r.bankingInformation
+          //         },
+          //         name: r.name,
+          //         productCode: r.product,
+          //         subproductCode: r.subproduct,
+          //         website: r.url,
+          //         equipments: []
+          //       }
 
-                 });
-               });
-             });
-            });
+          //       context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+
+          //       });
+          //     });
+          //   });
+          //  });
 
 
 
-            //localStorage.setItem("crcStakeholders", JSON.stringify());
+          //  //localStorage.setItem("crcStakeholders", JSON.stringify());
 
-            //this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
+          //  //this.route.navigate(['client-power-representation/', this.router.snapshot.paramMap.get('id')], navigationExtras);
 
-          });
+          //});
         
         }
       }
