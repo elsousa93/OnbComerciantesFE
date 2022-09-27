@@ -244,7 +244,7 @@ export class CountrysComponent implements OnInit {
   insertValues() {
     if (this.clientExists && this.merchantInfo !== null && this.merchantInfo !== undefined) {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
-      this.changeFormStructure(new FormGroup({
+      this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -257,9 +257,9 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      }));
+      });
     } else {
-      this.changeFormStructure(new FormGroup({
+      this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl('', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -272,12 +272,12 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      }));
+      });
     }
   }
 
   initializeForm() {
-    this.changeFormStructure(new FormGroup({
+    this.form = new FormGroup({
       expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
       services: new FormControl('', Validators.required),
       transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -290,7 +290,7 @@ export class CountrysComponent implements OnInit {
       inputAsia: new FormControl(this.inputTypeAsia),
       franchiseName: new FormControl(''),
       NIPCGroup: new FormControl('')
-    }));
+    });
 
     
 
