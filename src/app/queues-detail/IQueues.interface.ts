@@ -22,6 +22,20 @@ export interface RiskAssessment {
     stakeholderAssessment?: StakeholderRiskAssessment
 }
 
+export class RiskAssessmentPost{
+    hasRisk: boolean
+    riskLevel: number
+    hits: Hits
+}
+export interface Hits {
+    code: string,
+    value: string
+}
+
+export interface Risk {
+    code: string,
+    value: string
+}
 export interface MerchantRiskAssessment {
     stakeholderId?: string,
     accepted: boolean
