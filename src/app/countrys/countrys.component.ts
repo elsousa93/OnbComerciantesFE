@@ -138,8 +138,6 @@ export class CountrysComponent implements OnInit {
       this.crc = this.clientContext.crc;
 
     }
-
-    
   }
 
   ngOnInit() {
@@ -179,6 +177,8 @@ export class CountrysComponent implements OnInit {
       this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
 
+    this.updateValues();
+
     //this.logger.debug("por entrar no clientbyid");
     //this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
     //  this.logger.debug("entrou no getclientbyid");
@@ -194,6 +194,19 @@ export class CountrysComponent implements OnInit {
     //    this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
     //  });
     //});
+
+   
+  }
+
+  updateValues() {
+    console.log("update values");
+    this.clientContext.currentMerchantInfo.subscribe(result => {
+      if (result !== undefined && result !== null) {
+        this.merchantInfo = result;
+        this.insertValues();
+        console.log("form: ", this.form);
+      }
+     })
   }
 
   ngOnDestroy(): void {
