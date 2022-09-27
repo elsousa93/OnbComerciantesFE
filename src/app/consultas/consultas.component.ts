@@ -9,6 +9,7 @@ import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TableInfoService } from '../table-info/table-info.service';
 
 interface Process {
   processNumber: string;
@@ -32,6 +33,8 @@ export class ConsultasComponent implements OnInit{
       this.processes.paginator = pager;
       this.processes.paginator._intl = new MatPaginatorIntl();
       this.processes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+      this.processes.paginator.pageSizeOptions = [10, 25, 100];
+      this.processes.paginator.length = 10;
     }
   }
   @ViewChild(MatSort) sort: MatSort;
@@ -46,9 +49,19 @@ export class ConsultasComponent implements OnInit{
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
+  public subs: Subscription[] = [];
+
+  ListaDocType;
 
   
-  constructor(private logger : LoggerService, private route: Router, private data: DataService, private processService: ProcessService, private translate: TranslateService) {
+  constructor(private logger : LoggerService, private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService) {
+
+
+    this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
+      this.ListaDocType = result;
+      this.ListaDocType = this.ListaDocType.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+    }));
+
 
     this.initializeForm();
     this.ngOnInit();
@@ -101,8 +114,7 @@ export class ConsultasComponent implements OnInit{
       if (processNumber !== '') {
         this.logger.debug(processNumber);
         var encodedCode = encodeURIComponent(processNumber);
-        this.processService.searchProcessByNumber(encodedCode, 0, 1).subscribe(result => {
-          this.processService.searchProcessByNumber(encodedCode, 0, result.pagination.total).subscribe(resul => {
+          this.processService.searchProcessByNumber(encodedCode, 0, this.processes.paginator.pageSize).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
                 processNumber: process.processNumber,
@@ -116,7 +128,6 @@ export class ConsultasComponent implements OnInit{
             this.logger.debug("deu erro");
             this.logger.debug(error);
             this.loadProcesses([]);
-          });
           });
           
       } else if (processStateToSearch!=''){  

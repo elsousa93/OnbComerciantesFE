@@ -1,18 +1,14 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Client } from './Client.interface';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators,FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { docType, docTypeENI } from './docType'
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
 import { ClientService } from './client.service';
-import { ProcessService } from '../process/process.service';
-import { Process } from '../process/process.interface';
 import { TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 
 import { readCC } from '../citizencard/CitizenCardController.js';
@@ -21,10 +17,8 @@ import { ICCInfo } from '../citizencard/ICCInfo.interface';
 import { dataCC } from '../citizencard/dataCC.interface';
 import { ReadcardService } from '../readcard/readcard.service';
 
-import { BrowserModule } from '@angular/platform-browser';
 import { SubmissionService } from '../submission/service/submission-service.service';
 import { LoggerService } from 'src/app/logger.service';
-import jsPDF from 'jspdf';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import { UserTypes } from '../table-info/ITable-info.interface';
@@ -340,8 +334,7 @@ export class ClientComponent implements OnInit {
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private clientService: ClientService,
-    private tableInfo: TableInfoService,
-    private processService: ProcessService, public modalService: BsModalService,
+    private tableInfo: TableInfoService, public modalService: BsModalService,
     private submissionService: SubmissionService, private readCardService: ReadcardService) {
 
     this.baseUrl = configuration.baseUrl;

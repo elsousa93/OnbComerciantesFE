@@ -171,8 +171,8 @@ export class NavMenuPresencialComponent implements OnInit {
     // this.route.navigate(['/']);
     // let currentRoute = [this.route.url];
     // let currentState = this.route.getCurrentNavigation()?.extras.state;
-    this.route.navigate(['/'], {skipLocationChange: true}).then(() => {
-      this.route.navigate(['/'], {queryParamsHandling: "preserve", skipLocationChange: true});
+    this.route.navigate(['/']).then(() => {
+      this.route.navigate(['/']);
     });
 
     // this.route.navigateByUrl("/", { skipLocationChange: true, state: currentState }).then(() => {

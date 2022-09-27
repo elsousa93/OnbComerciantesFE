@@ -31,9 +31,12 @@
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
-            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p>
-            <input id="text3" name="text3"
-              type="text" class="form-control campo_form" formControlName="documentType">            
+            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p>     
+              <select class="form-select campo-form-select" id="documentType">      
+              <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
+                {{docType.description}}
+              </option>
+              </select>
             <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p><input id="text3" name="text3"
               type="text" class="form-control campo_form" formControlName="documentNumber">
             <p class="titulo-form-simples mb-1">{{'searches.orderDateUntil'|translate|uppercase}}</p><input id="text2"
@@ -84,7 +87,7 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
             </mat-table>
-            <mat-paginator #paginator [length]="10" [pageSizeOptions]="[10, 25, 100]">
+            <mat-paginator #paginator>
             </mat-paginator>
           </div>
         </div>
