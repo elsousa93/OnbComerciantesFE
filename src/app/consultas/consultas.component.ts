@@ -131,8 +131,7 @@ export class ConsultasComponent implements OnInit{
           });
           
       } else if (processStateToSearch!=''){  
-        this.processService.searchProcessByState(processStateToSearch, 0, 1).subscribe(result => {
-          this.processService.searchProcessByState(processStateToSearch, 0, result.pagination.total).subscribe(resul => {
+          this.processService.searchProcessByState(processStateToSearch, 0, this.processes.paginator.pageSize).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
                 processNumber: process.processNumber,
@@ -145,12 +144,10 @@ export class ConsultasComponent implements OnInit{
           }, error => {
             this.logger.debug(error);
             this.loadProcesses([]);
-          });
           });
       } else if (processDocNumber != '' && processDocType != '') {
 
-        this.processService.searchProcessByDoc(processDocType, processDocNumber, 0, 1).subscribe(result => {
-          this.processService.searchProcessByDoc(processDocType,processDocNumber, 0, result.pagination.total).subscribe(resul => {
+          this.processService.searchProcessByDoc(processDocType,processDocNumber, 0, this.processes.paginator.pageSize).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
                 processNumber: process.processNumber,
@@ -163,12 +160,10 @@ export class ConsultasComponent implements OnInit{
           }, error => {
             this.logger.debug(error);
             this.loadProcesses([]);
-          });
           });
        
       } else if (processDateStart != '') {
-        this.processService.searchProcessByStartedDate(processDateStart, 0, 1).subscribe(result => {
-          this.processService.searchProcessByStartedDate(processDateStart, 0, result.pagination.total).subscribe(resul => {
+          this.processService.searchProcessByStartedDate(processDateStart, 0, this.processes.paginator.pageSize).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
                 processNumber: process.processNumber,
@@ -181,11 +176,9 @@ export class ConsultasComponent implements OnInit{
           }, error => {
             this.logger.debug(error);
             this.loadProcesses([]);
-          });
           });
       } else if (processDateUntil != '') {
-        this.processService.searchProcessByUntilDate(processDateUntil, 0, 1).subscribe(result => {
-          this.processService.searchProcessByUntilDate(processDateUntil, 0, result.pagination.total).subscribe(resul => {
+          this.processService.searchProcessByUntilDate(processDateUntil, 0, this.processes.paginator.pageSize).subscribe(resul => {
             let processesArray: Process[] = resul.items.map<Process>((process) => {
               return {
                 processNumber: process.processNumber,
@@ -198,7 +191,6 @@ export class ConsultasComponent implements OnInit{
           }, error => {
             this.logger.debug(error);
             this.loadProcesses([]);
-          });
           });
       }
   }
