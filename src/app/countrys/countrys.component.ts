@@ -128,8 +128,8 @@ export class CountrysComponent implements OnInit {
       this.tipologia = this.clientContext.tipologia;
       // this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.NIFNIPC = this.clientContext.NIFNIPC;
-      this.client = this.clientContext.client;
-      this.newSubmission.merchant = this.client;
+      this.client = this.clientContext.getClient();
+      this.newSubmission.merchant = this.clientContext.getClient();
       this.clientId = this.clientContext.clientId;
       this.processId = this.clientContext.processId;
       this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;

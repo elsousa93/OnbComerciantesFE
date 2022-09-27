@@ -576,11 +576,6 @@ export class ClientCharacterizationComponent implements OnInit {
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
       this.rootForm = this.rootFormDirective.form;
     this.form = this.rootForm.get("clientCharacterizationForm");
-
-    
-
-    
-     
   }
 
    //fim do construtor
@@ -901,6 +896,7 @@ export class ClientCharacterizationComponent implements OnInit {
     //  this.logger.debug(error);
     //});
 
+    console.log("Submeteu o clientCharacterization: ", this.clientContext);
   }
 
   redirectBeginningClient() {
