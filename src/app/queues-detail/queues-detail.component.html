@@ -119,7 +119,7 @@
                             <td class="text-primary text-center">BIJAL DE CANELA</td>
                             <td class="text-primary text-center">1245</td>
                             <td class="text-primary text-center">2142424</td>
-                            <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
+                            <td *ngIf="queueName === 'risk'" class="text-primary text-center">{{risk.riskLevel}}</td>
                             <td class="text-primary text-center"><input class="form-check-input" type="radio" value=""
                                 id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;"><label
                                 class="form-check-label radio"
@@ -317,46 +317,46 @@
                           </table>
                       </div>
                   </div>
-              </div>
-              <div class="row ms-0 me-0">
-                  <div class="col-9 mt-4 mb-0 pt-0 pb-0 ps-0 pe-0">
-                      <div class="table-responsive mb-5">
-                          <table class="table">
-                              <thead class="text-primary table-primary">
-                                  <tr class="table-white text-primary">
-                                      <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.storeName'|translate}}</th>
-                                      <th scope="col" class="text-center bg-light">{{'commercialOffer.terminal'|translate}}</th>
-                                      <th scope="col" class="text-center bg-white">{{'queues.enrollmentTerminalNumber'|translate}}</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="text-primary text-center bg-primary bg-opacity-10">Teste 1, LDA</td>
-                                      <td class="text-primary text-center bg-primary bg-opacity-10">01</td>
-                                      <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
-                                        <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td class="text-primary text-center bg-primary bg-opacity-10">Teste 2, LDA</td>
-                                      <td class="text-primary text-center bg-primary bg-opacity-10">02</td>
-                                      <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
-                                        <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td class="text-primary text-center bg-primary bg-opacity-10">Teste 3, LDA</td>
-                                      <td class="text-primary text-center bg-primary bg-opacity-10">03</td>
-                                      <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
-                                        <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
+                  <div class="row ms-0 me-0">
+                    <div class="col-9 mt-4 mb-0 pt-0 pb-0 ps-0 pe-0">
+                        <div class="table-responsive mb-5">
+                            <table class="table">
+                                <thead class="text-primary table-primary">
+                                    <tr class="table-white text-primary">
+                                        <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.storeName'|translate}}</th>
+                                        <th scope="col" class="text-center bg-light">{{'commercialOffer.terminal'|translate}}</th>
+                                        <th scope="col" class="text-center bg-white">{{'queues.enrollmentTerminalNumber'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-primary text-center bg-primary bg-opacity-10">Teste 1, LDA</td>
+                                        <td class="text-primary text-center bg-primary bg-opacity-10">01</td>
+                                        <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
+                                          <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary text-center bg-primary bg-opacity-10">Teste 2, LDA</td>
+                                        <td class="text-primary text-center bg-primary bg-opacity-10">02</td>
+                                        <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
+                                          <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-primary text-center bg-primary bg-opacity-10">Teste 3, LDA</td>
+                                        <td class="text-primary text-center bg-primary bg-opacity-10">03</td>
+                                        <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
+                                          <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
               </div>
                 <!-- Anexar -->
                 <div *ngIf="queueName !== 'multipleClients' && queueName!=='MCCTreatment' && queueName!=='validationSIBS'"
