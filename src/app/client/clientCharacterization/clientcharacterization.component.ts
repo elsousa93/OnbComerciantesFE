@@ -886,7 +886,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.clientId = this.clientId;
     this.clientContext.processId = this.processId;
     this.clientContext.stakeholdersToInsert = this.processClient.stakeholders;
-    //this.clientContext.merchantInfo = this.merchantInfo;
+    this.clientContext.setMerchantInfo(this.merchantInfo);
     this.clientContext.crc =(this.crcFound) ? this.processClient : null;
     this.clientContext.comprovativoCC = this.comprovativoCC;
       
