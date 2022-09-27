@@ -25,13 +25,58 @@ export class ClientContext{
   NIFNIPC: BehaviorSubject<any>;
   currentNIFNIPC: Observable<any>;
 
-    constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: string, client?: any){
+
+  //Client predefinido
+  clientOutbound = {
+  "merchantId": null,
+  "legalName": null,
+  "commercialName": null,
+  "shortName": null,
+  "headquartersAddress": {},
+  //"headquartersAddress": {
+  //  "address": "",
+  //  "postalCode": "",
+  //  "postalArea": "",
+  //  "country": ""
+  //},
+  "context": null,
+  "contextId": null,
+  "fiscalIdentification": {},
+  "merchantType": "corporation",
+  "legalNature": null,
+  "legalNature2": null,
+  "incorporationStatement": {},
+  "incorporationDate": null,
+  "shareCapital": null,
+  "bylaws": null,
+  "principalTaxCode": null,
+  "otherTaxCodes": [],
+  "principalEconomicActivity": null,
+  "otherEconomicActivities": [],
+  "sales": {
+    "annualEstimatedRevenue": null,
+    "productsOrServicesSold": [],
+    "productsOrServicesCountries": [],
+    "transactionsAverage": null
+  },
+  "documentationDeliveryMethod": null,
+  "bankingInformation": {},
+  "merchantRegistrationId": null,
+  "contacts": {},
+  "billingEmail": null,
+  "documents": []
+};
+
+    constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: string){
         this.tipologia = tipologia;
         this.clientExists = clientExists;
         this.comprovativoCC = comprovativoCC;
         this.NIFNIPC = new BehaviorSubject(NIFNIPC);
       this.clientId = clientId;
-      this.client = new BehaviorSubject(client);
+
+      
+
+      this.client = new BehaviorSubject(this.clientOutbound);
       this.merchantInfo = new BehaviorSubject(null);
 
       this.currentClient = this.client.asObservable();

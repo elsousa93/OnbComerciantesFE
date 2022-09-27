@@ -120,7 +120,9 @@ export class CountrysComponent implements OnInit {
   errorMsg: string;
   rootForm: any;
 
-  ngOnChanges(){
+  ngOnChanges() {
+    console.log("ola");
+    console.log(this.clientContext);
     if (this.clientContext) {
       this.clientExists = this.clientContext.clientExists;
       this.tipologia = this.clientContext.tipologia;
@@ -131,10 +133,13 @@ export class CountrysComponent implements OnInit {
       this.clientId = this.clientContext.clientId;
       this.processId = this.clientContext.processId;
       this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
-      this.merchantInfo = this.clientContext.merchantInfo;
+      this.merchantInfo = this.clientContext.getMerchantInfo();
       this.comprovativoCC = this.clientContext.comprovativoCC;
       this.crc = this.clientContext.crc;
+
     }
+
+    
   }
 
   ngOnInit() {
@@ -215,8 +220,8 @@ export class CountrysComponent implements OnInit {
     this.form = this.rootForm.get("countrysForm");
   }
 
-  initializeForm() {
-    if (this.clientExists) {
+  insertValues() {
+    if (this.clientExists && this.merchantInfo !== null && this.merchantInfo !== undefined) {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
       this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
@@ -248,6 +253,25 @@ export class CountrysComponent implements OnInit {
         NIPCGroup: new FormControl('')
       }));
     }
+  }
+
+  initializeForm() {
+    this.changeFormStructure(new FormGroup({
+      expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+      services: new FormControl('', Validators.required),
+      transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+      associatedWithGroupOrFranchise: new FormControl('', Validators.required),
+      preferenceDocuments: new FormControl(''),
+      inputEuropa: new FormControl(this.inputEuropa),
+      inputAfrica: new FormControl(this.inputAfrica),
+      inputAmerica: new FormControl(this.inputAmericas),
+      inputOceania: new FormControl(this.inputOceania),
+      inputAsia: new FormControl(this.inputTypeAsia),
+      franchiseName: new FormControl(''),
+      NIPCGroup: new FormControl('')
+    }));
+
+    
 
     this.form.get("franchiseName").valueChanges.subscribe(v => {
       if (v !== '') {
