@@ -169,11 +169,15 @@ export class NavMenuPresencialComponent implements OnInit {
     this.tableInfo.languageStream$.next(language);
 
     // this.route.navigate(['/']);
-    // let currentRoute = [this.route.url];
+    let currentRoute = [this.route.url];
     // let currentState = this.route.getCurrentNavigation()?.extras.state;
     this.route.navigate(['/']).then(() => {
       this.route.navigate(['/']);
     });
+
+    // if (currentRoute === ['/']) {
+    //   window.location.reload();
+    // }
 
     // this.route.navigateByUrl("/", { skipLocationChange: true, state: currentState }).then(() => {
     //   this.route.navigate([decodeURI(this._location.path())], {state: currentState});

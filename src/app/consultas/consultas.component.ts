@@ -33,7 +33,7 @@ export class ConsultasComponent implements OnInit{
       this.processes.paginator = pager;
       this.processes.paginator._intl = new MatPaginatorIntl();
       this.processes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-      this.processes.paginator.pageSizeOptions = [10, 25, 100];
+      this.processes.paginator.pageSizeOptions = [10, 25, 50, 100];
       this.processes.paginator.length = 10;
     }
   }
