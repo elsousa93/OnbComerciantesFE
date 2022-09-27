@@ -814,7 +814,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
   submit() {
     var formValues = this.form.value;
-
+    console.log("cliente a submeter: ", this.client);
     if (this.isCommercialSociety) {
       this.client.headquartersAddress = {
         address: this.form.value["address"],
@@ -847,12 +847,15 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
     } else {
+      
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
 
       if (this.tipologia === 'Company') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
 
         var natJuridicaN2 = this.form.value["natJuridicaN2"];
+
+        this.client.merchantType = 'Corporate';
 
         if (natJuridicaN2 !== null)
           this.client.legalNature2 = this.form.value["natJuridicaN2"];
@@ -861,6 +864,7 @@ export class ClientCharacterizationComponent implements OnInit {
     }
     if (this.tipologia === 'ENI') {
       this.client.legalName = this.form.value["socialDenomination"];
+      this.client.merchantType = 'Entrepeneur';
       if (this.dataCC !== {}) {
         this.client.shortName = this.dataCC.nameCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
@@ -872,6 +876,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
 
     }
+
 
     ////Social Denomination
 
@@ -890,7 +895,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.setClient(this.client);
     this.clientContext.clientId = this.clientId;
     this.clientContext.processId = this.processId;
-    this.clientContext.stakeholdersToInsert = this.processClient.stakeholders;
+    this.clientContext.stakeholdersToInsert = (this.processClient.stakeholders === undefined || this.processClient.stakeholders === null || this.processClient.stakeholders.length < 1) ? this.processClient.stakeholders : [];
     this.clientContext.setMerchantInfo(this.merchantInfo);
     this.clientContext.crc =(this.crcFound) ? this.processClient : null;
     this.clientContext.comprovativoCC = this.comprovativoCC;

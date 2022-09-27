@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
@@ -6,13 +6,16 @@ import { SubmissionService } from 'src/app/submission/service/submission-service
 import { DataService } from '../../nav-menu-interna/data.service';
 import { IStakeholders, StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
 import { Client } from '../Client.interface';
+import { ClientContext } from '../clientById/clientById.model';
 
 @Component({
   selector: 'app-representation-power',
   templateUrl: './representation-power.component.html',
   styleUrls: ['./representation-power.component.css']
 })
-export class RepresentationPowerComponent implements OnInit {
+export class RepresentationPowerComponent implements OnInit, OnChanges{
+
+  @Input() clientContext: ClientContext;
 
   @Input() processNumber?: string;
   submissionStakeholders: StakeholdersCompleteInformation[] = [];
@@ -36,6 +39,7 @@ export class RepresentationPowerComponent implements OnInit {
   crc: any;
 
 
+
   // public stakeholders: IStakeholders[] = [
   //   {
   //     shortName: "Bijal de Canela",
@@ -47,8 +51,8 @@ export class RepresentationPowerComponent implements OnInit {
   //   }
   // ];
 
-  loadSubmissionStakeholders() {
-
+  loadStakeholders() {
+    
   }
 
   constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
@@ -56,8 +60,12 @@ export class RepresentationPowerComponent implements OnInit {
     this.returned = localStorage.getItem('returned');
 
     this.ngOnInit();
-    this.getSubmissionStakeholders();
 
+
+    //this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
+    //this.getSubmissionStakeholders();
+
+    
     if (this.router.getCurrentNavigation().extras.state) {
       this.clientExists = this.router.getCurrentNavigation().extras.state["clientExists"];
       this.tipologia = this.router.getCurrentNavigation().extras.state["tipologia"];
@@ -72,65 +80,70 @@ export class RepresentationPowerComponent implements OnInit {
         this.crc = this.router.getCurrentNavigation().extras.state["crc"];
     }
   }
+    ngOnChanges(changes: SimpleChanges): void {
+      this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
 
-  getSubmissionStakeholders() {
-    var context = this;
-    if (this.returned !== null) { 
-      this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
-            res.forEach(function (value, index) {
-              context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-                console.log("stakeholder: ", r);
-                context.submissionStakeholders.push({
-                  displayName: '',
-                  eligibility: false,
-                  stakeholderAcquiring: r,
-                  stakeholderOutbound: undefined
-                });
-                this.stakeholders.append(r);
-              }, error => {
-              });
-            }, error => {
-            });
-          });
-        });
-      });
     }
 
-    if (this.submissionId !== null) {
-      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        result.result.forEach(function (value, index) {
-          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-            var AcquiringStakeholder = result;
-            var stakeholderToInsert = {
-              displayName: '',
-              eligibility: false,
-              stakeholderAcquiring: AcquiringStakeholder,
-              stakeholderOutbound: undefined
-            }
+  //getSubmissionStakeholders() {
+  //  var context = this;
+  //  if (this.returned !== null) { 
+  //    this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
+  //      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+  //        this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
+  //          res.forEach(function (value, index) {
+  //            context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+  //              console.log("stakeholder: ", r);
+  //              context.submissionStakeholders.push({
+  //                displayName: '',
+  //                eligibility: false,
+  //                stakeholderAcquiring: r,
+  //                stakeholderOutbound: undefined
+  //              });
+  //              this.stakeholders.append(r);
+  //            }, error => {
+  //            });
+  //          }, error => {
+  //          });
+  //        });
+  //      });
+  //    });
+  //  }
 
-            context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").subscribe(outboundResult => {
-              stakeholderToInsert.stakeholderOutbound = outboundResult;
-              context.submissionStakeholders.push(stakeholderToInsert);
+  //  if (this.submissionId !== null) {
+  //    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+  //      result.result.forEach(function (value, index) {
+  //        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+  //          var AcquiringStakeholder = result;
+  //          var stakeholderToInsert = {
+  //            displayName: '',
+  //            eligibility: false,
+  //            stakeholderAcquiring: AcquiringStakeholder,
+  //            stakeholderOutbound: undefined
+  //          }
+
+  //          context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").subscribe(outboundResult => {
+  //            stakeholderToInsert.stakeholderOutbound = outboundResult;
+  //            context.submissionStakeholders.push(stakeholderToInsert);
               
-            })
-            //context.submissionStakeholders.push({
-            //  displayName: '',
-            //  eligibility: false,
-            //  stakeholderAcquiring: result,
-            //  stakeholderOutbound: undefined
-            //});
-            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
-          }, error => {
-          });
-        });
-      }, error => {
-      });
-    }
-  }
+  //          })
+  //          //context.submissionStakeholders.push({
+  //          //  displayName: '',
+  //          //  eligibility: false,
+  //          //  stakeholderAcquiring: result,
+  //          //  stakeholderOutbound: undefined
+  //          //});
+  //          console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
+  //        }, error => {
+  //        });
+  //      });
+  //    }, error => {
+  //    });
+  //  }
+  //}
 
   ngOnInit(): void {
+    console.log("contexto dentro do representation: ", this.clientContext);
   }
 
   goToNextPage() {
@@ -153,5 +166,65 @@ export class RepresentationPowerComponent implements OnInit {
       }
     }
     this.router.navigate(['client-additional-info', this.route.snapshot.paramMap.get('id')], navigationExtras);
+  }
+
+  submit() {
+    var stakeholdersLength = this.stakeholdersToInsert.length;
+
+    var newSubmission = this.clientContext.newSubmission;
+
+    newSubmission.stakeholders = [];
+    this.stakeholdersToInsert.forEach(function (value, idx) {
+      console.log("stakeholder: ", value);
+      var fiscalID = value.fiscalId;
+
+      var stakeholderToInsert = {
+        "fiscalId": (fiscalID !== null && fiscalID !== undefined) ? fiscalID : '',
+        "shortName": value.name,
+        "fiscalAddress": {
+          "postalCode": "",
+          "postalArea": "",
+          "country": "",
+          "address": ""
+        }
+      } as IStakeholders;
+
+      newSubmission.stakeholders.push(stakeholderToInsert);
+
+    });
+
+    newSubmission.documents = [];
+
+    if (this.crc !== null && this.crc !== undefined) {
+      newSubmission.documents.push({
+        documentType: null, // alterar quando tivermos o enum do docType
+        documentPurpose: 'CompanyIdentification',
+        file: {
+          fileType: 'PDF',
+          binary: this.crc.pdf
+        },
+        validUntil: this.crc.expirationDate,
+        data: null
+      })
+    }
+
+    var comprovativoCC = this.clientContext.comprovativoCC;
+
+    if (comprovativoCC !== null && comprovativoCC !== undefined) {
+      newSubmission.documents.push({
+        documentType: null, // alterar quando tivermos o enum do docType
+        documentPurpose: 'Identification',
+        file: {
+          fileType: 'PDF',
+          binary: comprovativoCC.file
+        },
+        validUntil: "2022-07-13T11:10:13.420Z", //FIXME
+        data: null
+      })
+    }
+
+    this.clientContext.newSubmission = newSubmission;
+
+
   }
 }

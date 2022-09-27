@@ -129,7 +129,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientSearchComponent,
     SearchStakeholdersComponent,
     StoreTableComponent,
-    RepresentationPowerListComponent
+    RepresentationPowerListComponent,
   ],
   imports: [
     ReactiveFormsModule,

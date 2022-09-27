@@ -33,41 +33,6 @@ export class RepresentationPowerListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getStakeholdersFromSubmission();
-  }
-
-  getStakeholdersFromSubmission() {
-    var context = this;
-    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionID).then(success => {
-      console.log("successo: ", success.result);
-
-      var allStakeholders = success.result;
-
-      allStakeholders.forEach(function (value, idx) {
-        console.log("stakeholders: ", value);
-        console.log("stakeholder id: ", value.id);
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionID, value.id).subscribe(success => {
-          var AcquiringStakeholder = success;
-          var stakeholderToInsert = {
-            displayName: '',
-            eligibility: false,
-            stakeholderAcquiring: AcquiringStakeholder,
-            stakeholderOutbound: undefined
-          }
-
-          context.stakeholdersToShow.push(stakeholderToInsert);
-          console.log("Stakeholders a mostrar: ", context.stakeholdersToShow);
-
-          //context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "por mudar", "por mudar").subscribe(outboundResult => {
-          //  stakeholderToInsert.stakeholderOutbound = outboundResult;
-          //  context.stakeholdersToShow.push(stakeholderToInsert);
-          //  console.log("Stakeholders a mostrar: ", context.stakeholdersToShow);
-          //});
-        })
-      });
-    }, error => {
-      console.log("error: ", error.msg);
-    });
   }
 
 }
