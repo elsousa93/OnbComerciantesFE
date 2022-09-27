@@ -206,7 +206,13 @@ export class CountrysComponent implements OnInit {
         this.insertValues();
         console.log("form: ", this.form);
       }
-     })
+    })
+
+    this.clientContext.currentClient.subscribe(result => {
+      this.client = result;
+      this.insertValues();
+      console.log("form cliente: ", this.form);
+    })
   }
 
   ngOnDestroy(): void {
@@ -386,6 +392,10 @@ export class CountrysComponent implements OnInit {
     var context = this;
     var stakeholdersLength = 0;
     var stakeholdersidx = 0;
+
+    console.log("MERCHANTINFO: ", this.merchantInfo);
+    console.log("CLIENTE: ", this.client);
+    console.log("CLIENTE CONTEXT: ", this.clientContext);
 
     var navigationExtras: NavigationExtras = {
       state: {
