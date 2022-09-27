@@ -120,25 +120,25 @@ export class CountrysComponent implements OnInit {
   errorMsg: string;
   rootForm: any;
 
-  ngOnChanges() {
-    console.log("ola");
-    console.log(this.clientContext);
-    if (this.clientContext) {
-      this.clientExists = this.clientContext.clientExists;
-      this.tipologia = this.clientContext.tipologia;
-      // this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
-      this.NIFNIPC = this.clientContext.NIFNIPC;
-      this.client = this.clientContext.getClient();
-      this.newSubmission.merchant = this.clientContext.getMerchantInfo();
-      this.clientId = this.clientContext.clientId;
-      this.processId = this.clientContext.processId;
-      this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
-      this.merchantInfo = this.clientContext.getMerchantInfo();
-      this.comprovativoCC = this.clientContext.comprovativoCC;
-      this.crc = this.clientContext.crc;
+  //ngOnChanges() {
+  //  console.log("ola");
+  //  console.log(this.clientContext);
+  //  if (this.clientContext) {
+  //    this.clientExists = this.clientContext.clientExists;
+  //    this.tipologia = this.clientContext.tipologia;
+  //    // this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+  //    this.NIFNIPC = this.clientContext.NIFNIPC;
+  //    this.client = this.clientContext.getClient();
+  //    this.newSubmission.merchant = this.clientContext.getMerchantInfo();
+  //    this.clientId = this.clientContext.clientId;
+  //    this.processId = this.clientContext.processId;
+  //    this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
+  //    this.merchantInfo = this.clientContext.getMerchantInfo();
+  //    this.comprovativoCC = this.clientContext.comprovativoCC;
+  //    this.crc = this.clientContext.crc;
 
-    }
-  }
+  //  }
+  //}
 
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
@@ -202,17 +202,19 @@ export class CountrysComponent implements OnInit {
     console.log("update values");
     this.clientContext.currentMerchantInfo.subscribe(result => {
       if (result !== undefined && result !== null) {
+        this.newSubmission.merchant = result;
         this.merchantInfo = result;
+        this.client = result;
         this.insertValues();
         console.log("form: ", this.form);
       }
     })
 
-    this.clientContext.currentClient.subscribe(result => {
-      this.client = result;
-      this.insertValues();
-      console.log("form cliente: ", this.form);
-    })
+    //this.clientContext.currentClient.subscribe(result => {
+    //  this.client = result;
+    //  this.insertValues();
+    //  console.log("form cliente: ", this.form);
+    //})
   }
 
   ngOnDestroy(): void {
