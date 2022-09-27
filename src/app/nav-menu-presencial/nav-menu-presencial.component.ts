@@ -173,7 +173,8 @@ export class NavMenuPresencialComponent implements OnInit {
     // let currentState = this.route.getCurrentNavigation()?.extras.state;
 
     if (currentRoute === '/') {
-      window.location.reload();
+      this.route.navigate(['/']);
+      this.chooseLanguage(language);
     }
 
     // this.route.navigateByUrl("/", { skipLocationChange: true, state: currentState }).then(() => {
