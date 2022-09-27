@@ -825,9 +825,15 @@ export class ClientByIdComponent implements OnInit {
 
   submit() {
     this.clientCharacterizationComponent.submit();
-    this.countriesComponent.submit();
-    this.representationPowerComponent.submit();
+    //this.countriesComponent.submit();
+    //this.representationPowerComponent.submit();
+
+    
     this.route.navigate(["/stakeholders/"]);
+  }
+
+  createSubmission() {
+
   }
 
   redirectBeginningClient() {

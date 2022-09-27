@@ -1,4 +1,5 @@
 import { EventEmitter, Output } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 import { BehaviorSubject, Observable } from "rxjs";
 import { FileAndDetailsCC } from "src/app/readcard/fileAndDetailsCC.interface";
 import { StakeholdersProcess } from "src/app/stakeholders/IStakeholders.interface";
@@ -24,6 +25,11 @@ export class ClientContext{
 
   NIFNIPC: BehaviorSubject<any>;
   currentNIFNIPC: Observable<any>;
+
+  newSubmission: any;
+
+  formClientCharacterization: FormGroup;
+  formCountrys: FormGroup;
 
 
   //Client predefinido
@@ -117,5 +123,10 @@ export class ClientContext{
     this.NIFNIPC.next(NIFNIPC);
   }
 
+  submit() {
+    //Caracterizacao Social
+
+    
+  }
 
 }

@@ -53,7 +53,7 @@
                 </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                     data-bs-parent="#accordionFlushExample">
-                  <div *ngIf="clientContext?.client">
+                  <div *ngIf="clientContext?.clientExists">
                     <app-countrys [clientContext]="clientContext" [inline]="true"></app-countrys>
                   </div>
                 </div>
