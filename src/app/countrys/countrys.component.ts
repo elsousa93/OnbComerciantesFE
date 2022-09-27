@@ -199,16 +199,38 @@ export class CountrysComponent implements OnInit {
   }
 
   updateValues() {
+    var context = this;
+
+    this.clientExists = this.clientContext.clientExists;
+    this.tipologia = this.clientContext.tipologia;
+    this.NIFNIPC = this.clientContext.getNIFNIPC();
+    this.clientId = this.clientContext.clientId;
+    this.processId = this.clientContext.processId;
+    this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
+    this.comprovativoCC = this.clientContext.comprovativoCC;
+    this.crc = this.clientContext.crc;
+
     console.log("update values");
     this.clientContext.currentMerchantInfo.subscribe(result => {
+      console.log("entrou no currentMerchantinfo: ", result);
+      console.log(this.form);
       if (result !== undefined && result !== null) {
         this.newSubmission.merchant = result;
         this.merchantInfo = result;
-        this.client = result;
-        this.insertValues();
+        
         console.log("form: ", this.form);
+
+        context.insertValues();
       }
     })
+
+    this.clientContext.currentClient.subscribe(result => {
+      console.log("entrou no currentclient: ", result);
+      console.log(this.form);
+      this.client = result;
+      context.insertValues();
+    })
+    //this.insertValues();
 
     //this.clientContext.currentClient.subscribe(result => {
     //  this.client = result;
@@ -233,7 +255,7 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.submissionUser.branch = auth.bankName;
     this.newSubmission.submissionUser.partner = "SIBS";
     this.rootForm = rootFormDirective.form;
-    this.form = this.rootForm.get("countrysForm");
+    //this.form = this.rootForm.get("countrysForm");
   }
 
   changeFormStructure(newForm: FormGroup){
@@ -242,7 +264,9 @@ export class CountrysComponent implements OnInit {
   }
 
   insertValues() {
-    if (this.clientExists && this.merchantInfo !== null && this.merchantInfo !== undefined) {
+
+    console.log("---- INSERT VALUES ----");
+    if (this.clientExists) {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
@@ -277,6 +301,7 @@ export class CountrysComponent implements OnInit {
   }
 
   initializeForm() {
+    console.log("form inicializado");
     this.form = new FormGroup({
       expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
       services: new FormControl('', Validators.required),

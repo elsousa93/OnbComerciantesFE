@@ -252,8 +252,9 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-
+    console.log("Cliente Contexto: ", this.clientContext);
     console.log("NIFNIPC: ", this.NIFNIPC);
+    
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC , [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
@@ -597,7 +598,6 @@ export class ClientCharacterizationComponent implements OnInit {
 
       console.log("form depois de encontrar o nif: ", this.form);
       this.initializeBasicFormControl();
-
     });
 
 
@@ -625,39 +625,44 @@ export class ClientCharacterizationComponent implements OnInit {
     this.initializeTableInfo();
 
 
-    if (this.returned !== null) {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        if (result[0] !== undefined) {
-          this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.clientService.GetClientById(resul.id).subscribe(res => {
-              this.merchantInfo = res;
-              if (this.NIFNIPC === undefined) {
-                this.NIFNIPC = this.merchantInfo.fiscalId;
-              }
-              if (this.merchantInfo.incorporationStatement !== null) {
-                this.isCommercialSociety = true;
-                this.collectCRC = true;
-                this.initializeBasicCRCFormControl();
-                this.searchByCRC();
-              } else {
-                if (this.merchantInfo.legalNature !== "") {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia = 'Company'; //FIXME dead code
-                  this.initializeFormControlOther();
-                } else {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false; //FIXME dead code
-                  this.tipologia = 'ENI';
-                  this.initializeENI();
-                }
-              }
-            });
-          });
-        }
-      });
-    }
+    //if (this.returned !== null) {
+    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+    //    if (result[0] !== undefined) {
+    //      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+    //        this.clientService.GetClientById(resul.id).subscribe(res => {
+    //          this.merchantInfo = res;
+    //          if (this.NIFNIPC === undefined) {
+    //            this.NIFNIPC = this.merchantInfo.fiscalId;
+    //          }
+    //          if (this.merchantInfo.incorporationStatement !== null) {
+    //            this.isCommercialSociety = true;
+    //            this.collectCRC = true;
+    //            this.initializeBasicCRCFormControl();
+    //            this.searchByCRC();
+    //          } else {
+    //            if (this.merchantInfo.legalNature !== "") {
+    //              this.isCommercialSociety = false;
+    //              this.collectCRC = false;
+    //              this.tipologia = 'Company'; //FIXME dead code
+    //              this.initializeFormControlOther();
+    //            } else {
+    //              this.isCommercialSociety = false;
+    //              this.collectCRC = false; //FIXME dead code
+    //              this.tipologia = 'ENI';
+    //              this.initializeENI();
+    //            }
+    //          }
+    //        });
+    //      });
+    //    }
+    //  });
+    //}
     this.returned = localStorage.getItem("returned");
+
+    this.getClientContextValues();
+  }
+
+  getClientContextValues() {
     var context = this;
 
     this.clientContext.currentClient.subscribe(result => {
@@ -674,7 +679,7 @@ export class ClientCharacterizationComponent implements OnInit {
       //this.updateBasicForm();
 
       console.log("MERCHANT INFO ATUALIZOU: ", context.merchantInfo);
-      
+
     });
   }
 
