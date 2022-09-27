@@ -120,25 +120,25 @@ export class CountrysComponent implements OnInit {
   errorMsg: string;
   rootForm: any;
 
-  ngOnChanges() {
-    console.log("ola");
-    console.log(this.clientContext);
-    if (this.clientContext) {
-      this.clientExists = this.clientContext.clientExists;
-      this.tipologia = this.clientContext.tipologia;
-      // this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
-      this.NIFNIPC = this.clientContext.NIFNIPC;
-      this.client = this.clientContext.getClient();
-      this.newSubmission.merchant = this.clientContext.getMerchantInfo();
-      this.clientId = this.clientContext.clientId;
-      this.processId = this.clientContext.processId;
-      this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
-      this.merchantInfo = this.clientContext.getMerchantInfo();
-      this.comprovativoCC = this.clientContext.comprovativoCC;
-      this.crc = this.clientContext.crc;
+  //ngOnChanges() {
+  //  console.log("ola");
+  //  console.log(this.clientContext);
+  //  if (this.clientContext) {
+  //    this.clientExists = this.clientContext.clientExists;
+  //    this.tipologia = this.clientContext.tipologia;
+  //    // this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+  //    this.NIFNIPC = this.clientContext.NIFNIPC;
+  //    this.client = this.clientContext.getClient();
+  //    this.newSubmission.merchant = this.clientContext.getMerchantInfo();
+  //    this.clientId = this.clientContext.clientId;
+  //    this.processId = this.clientContext.processId;
+  //    this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
+  //    this.merchantInfo = this.clientContext.getMerchantInfo();
+  //    this.comprovativoCC = this.clientContext.comprovativoCC;
+  //    this.crc = this.clientContext.crc;
 
-    }
-  }
+  //  }
+  //}
 
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
@@ -199,20 +199,44 @@ export class CountrysComponent implements OnInit {
   }
 
   updateValues() {
+    var context = this;
+
+    this.clientExists = this.clientContext.clientExists;
+    this.tipologia = this.clientContext.tipologia;
+    this.NIFNIPC = this.clientContext.getNIFNIPC();
+    this.clientId = this.clientContext.clientId;
+    this.processId = this.clientContext.processId;
+    this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
+    this.comprovativoCC = this.clientContext.comprovativoCC;
+    this.crc = this.clientContext.crc;
+
     console.log("update values");
     this.clientContext.currentMerchantInfo.subscribe(result => {
+      console.log("entrou no currentMerchantinfo: ", result);
+      console.log(this.form);
       if (result !== undefined && result !== null) {
+        this.newSubmission.merchant = result;
         this.merchantInfo = result;
-        this.insertValues();
+        
         console.log("form: ", this.form);
+
+        context.insertValues();
       }
     })
 
     this.clientContext.currentClient.subscribe(result => {
+      console.log("entrou no currentclient: ", result);
+      console.log(this.form);
       this.client = result;
-      this.insertValues();
-      console.log("form cliente: ", this.form);
+      context.insertValues();
     })
+    //this.insertValues();
+
+    //this.clientContext.currentClient.subscribe(result => {
+    //  this.client = result;
+    //  this.insertValues();
+    //  console.log("form cliente: ", this.form);
+    //})
   }
 
   ngOnDestroy(): void {
@@ -231,7 +255,7 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.submissionUser.branch = auth.bankName;
     this.newSubmission.submissionUser.partner = "SIBS";
     this.rootForm = rootFormDirective.form;
-    this.form = this.rootForm.get("countrysForm");
+    //this.form = this.rootForm.get("countrysForm");
   }
 
   changeFormStructure(newForm: FormGroup){
@@ -240,9 +264,11 @@ export class CountrysComponent implements OnInit {
   }
 
   insertValues() {
-    if (this.clientExists && this.merchantInfo !== null && this.merchantInfo !== undefined) {
+
+    console.log("---- INSERT VALUES ----");
+    if (this.clientExists) {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
-      this.changeFormStructure(new FormGroup({
+      this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -255,9 +281,9 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      }));
+      });
     } else {
-      this.changeFormStructure(new FormGroup({
+      this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl('', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -270,12 +296,13 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      }));
+      });
     }
   }
 
   initializeForm() {
-    this.changeFormStructure(new FormGroup({
+    console.log("form inicializado");
+    this.form = new FormGroup({
       expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
       services: new FormControl('', Validators.required),
       transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -288,7 +315,7 @@ export class CountrysComponent implements OnInit {
       inputAsia: new FormControl(this.inputTypeAsia),
       franchiseName: new FormControl(''),
       NIPCGroup: new FormControl('')
-    }));
+    });
 
     
 

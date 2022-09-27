@@ -620,9 +620,9 @@ export class ClientByIdComponent implements OnInit {
       this.clientService.getClientById(this.clientId).then(result => {
         console.log("pesquisa do cliente: ", result);
         this.clientContext.clientExists = true;
-        //this.clientContext.setClient(result);
+        this.clientContext.setClient(result);
         this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
-        this.clientContext.setMerchantInfo(result.result);
+        //this.clientContext.setMerchantInfo(result.result);
         this.updateBasicForm();
       });
 
@@ -641,8 +641,10 @@ export class ClientByIdComponent implements OnInit {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
             this.clientService.GetClientById(resul.id).subscribe(res => {
               this.merchantInfo = res;
+              this.clientContext.setMerchantInfo(res);
               if (this.NIFNIPC === undefined) {
                 this.NIFNIPC = this.merchantInfo.fiscalId;
+                this.clientContext.setNIFNIPC(this.NIFNIPC);
               }
               if (this.merchantInfo.incorporationStatement !== null) {
                 this.isCommercialSociety = true;
@@ -654,11 +656,13 @@ export class ClientByIdComponent implements OnInit {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'Company';
+                  this.clientContext.tipologia = this.tipologia;
                   this.initializeFormControlOther();
                 } else {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'ENI';
+                  this.clientContext.tipologia = this.tipologia;
                   this.initializeENI();
                 }
               }
