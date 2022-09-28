@@ -195,7 +195,6 @@ export class StakeholdersComponent implements OnInit {
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
   }
-
   ngOnInit(): void {
     //Get Id from the store
    // this.clientNr = Number(this.router.snapshot.params['nif']);

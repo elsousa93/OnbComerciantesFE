@@ -4,7 +4,6 @@ import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDet
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
@@ -17,149 +16,6 @@ import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOff
 import { StoreTableComponent } from '../store-table/store-table.component';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
-import { TranslateService } from '@ngx-translate/core';
-
-interface Stores {
-  storeName: string;
-  activity: string;
-  subactivity: string;
-  zone: string;
-}
-const testValues: ShopDetailsAcquiring[] = [
-  {
-    shopId: "1",
-    name: "ShopName",
-    manager: "Manager1",
-    activity: "C",
-    subActivity: "C1",
-    supportEntity: "Entity1",
-    registrationId: "RegID",
-    address: {
-      useMerchantAddress: true,
-      address: {
-        address: "A",
-        postalCode: "B",
-        postalArea: "C",
-        country: "123"
-      },
-      isInsideShoppingCenter: true,
-      shoppingCenter: "Shopping1"
-    },
-    bank: {
-      useMerchantBank: true,
-      bank: {
-        bank: "Bank",
-        iban: "12345"
-      }
-    },
-    website: "www.google.com",
-    productCode: "345",
-    subproductCode: "324",
-    equipments: [
-      {
-        shopEquipmentId: "123",
-        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-        communicationType: "A",
-        equipmentType: "A",
-        quantity: 0,
-        pricing: {
-          id: "123",
-          attribute: [
-            {
-              id: "A",
-              description: "A",
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            }
-          ]
-        }
-      }
-    ],
-    pack: {
-      packId: "123",
-      processorId: "345",
-      packDetails: [
-        {
-          id: "1234",
-          description: "123",
-          kind: "1234",
-          attributes: [
-            {
-              id: "1234",
-              description: "AAA",
-              originalValue: true,
-              finalValue: true,
-              isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 0,
-              bundles: [
-                {
-                  id: "B",
-                  description: "B",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "B123",
-                      description: "B123456",
-                      originalValue: true,
-                      finalValue: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 0
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      commission: {
-        commissionId: "1",
-        attributes: [{
-          id: "",
-          description: "A1",
-          fixedValue: {
-            originalValue: 1,
-            finalValue: 1,
-            isReadOnly: true,
-            isVisible: true
-          },
-          maxValue: {
-            originalValue: 2,
-            finalValue: 2,
-            isReadOnly: true,
-            isVisible: true
-          },
-          minValue: {
-            originalValue: 0,
-            finalValue: 0,
-            isReadOnly: true,
-            isVisible: true
-          },
-          percentageValue: {
-            originalValue: 4,
-            finalValue: 4,
-            isReadOnly: true,
-            isVisible: true
-          }
-        }
-          ]
-      }
-    },
-    documents: {
-      href: "",
-      type: "",
-      id: ""
-    }
-  }
-]
-//This component displays the list of the existing stores
 
 @Component({
   selector: 'app-store-list',
@@ -307,7 +163,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   submit(addStore: boolean) {
-    if (this.editStores.valid /*&& testValues.length > 0*/) {
+    if (this.editStores.valid) {
       var infoStores = this.editStores.get("infoStores");
 
       if (infoStores.get("replicateAddress").value) {

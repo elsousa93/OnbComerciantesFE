@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from '../configuration';
 import { IStakeholders } from './IStakeholders.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { HttpMethod } from '../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { TableInfoService } from '../table-info/table-info.service';
 
 @Injectable({
@@ -207,40 +207,6 @@ export class StakeholderService {
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
-
-  createStakeholder(Stakeholder: IStakeholders, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
-
-    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/stakeholder";
-
-    var data = new Date();
-
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Request-Id': requestID,
-        'X-Acquiring-UserId': AcquiringUserID
-      }),
-    }
-
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
-    this.logger.info(`[Outbound] Creating stakeholder with id ${Stakeholder}`);
-    this.logger.debug(`[Outbound] URI used is ${URI}`);
-    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
-      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
-      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
-      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
-      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
-      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
-    }, null, 2)}`);
-
-    return this.http.post<any>(URI, Stakeholder, HTTP_OPTIONS);
-  }
-
   updateStakeholder(stakeholder: IStakeholders, processReferenceID: string, StakeholderID: string, RequestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 
     var treatedProcessNumber = encodeURIComponent(AcquiringProcessID);
@@ -319,30 +285,3 @@ export class StakeholderService {
     return this.callAPIAcquiringTest(HttpMethod.GET, url);
   }
 }
-
-//TESTAR ESTA CHAMADA
-
-
-
-//OLD VERSION
-
-
-//GetAllStakeholdersFromSubmission(submissionId: string): any {
-//  return this.http.get<IStakeholders[]>(this.baseUrl + 'BEStakeholders/GetStakeholdersFromSubmission/' + submissionId);
-//}
-
-//GetStakeholderFromSubmission(submissionId: string, stakeholderId): any {
-//  return this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/GetStakeholder/' + submissionId + '/' + stakeholderId);
-//}
-
-//CreateNewStakeholder(submissionId: string, newStake: IStakeholders) {
-//  return this.http.post<IStakeholders>(this.baseUrl + 'BEStakeholders/CreateNewStakeholder/' + submissionId, newStake);
-//}
-
-//UpdateStakeholder(submissionId: string, stakeholderId: string, newStake: IStakeholders) {
-//  return this.http.put<IStakeholders>(this.baseUrl + 'BEStakeholders/UpdateStakeholder/' + submissionId + '/' + stakeholderId, newStake);
-//}
-
-//DeleteStakeholder(submissionId: string, stakeholderId: string) {
-//  return this.http.delete(this.baseUrl + 'BEStakeholders/DeleteStakeholder/' + submissionId + '/' + stakeholderId);
-//}

@@ -1,36 +1,37 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
-     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+    <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
         <span class="navbar-text text-light">
           <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
         </span>
         <span class="navbar-text">
-          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'declarativeInformation.title'|translate|uppercase}}</h5>
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+            {{'declarativeInformation.title'|translate|uppercase}}</h5>
         </span>
       </nav>
     </div>
     <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
       <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link disabled btn-outline-primary activo_tabs activo-tabd"
-            id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab"
-            aria-controls="navTabs1_1" aria-selected="true">{{'client.title'|translate}}</a>
+          <a class="nav-link disabled btn-outline-primary activo_tabs activo-tabd" id="navTabs1_1_tab"
+            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1"
+            aria-selected="true">{{'client.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-          <a class="nav-link disabled active btn-primary" id="navTabs1_2_tab"
-            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
+          <a class="nav-link disabled active btn-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
             aria-selected="false">{{'stakeholder.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab"
-            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
             aria-selected="false">{{'stores.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1"
-            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
             aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
         </li>
       </ul>
@@ -39,81 +40,73 @@
           <div class="container-fluid mt-0 ps-3 pe-3">
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="selectStakeholder($event)"></app-stakeholders-list>
+                <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false
+                  (selectedStakeholderEmitter)="selectStakeholder($event)"></app-stakeholders-list>
               </div>
-              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;{{'declarativeInformation.stakeholder.contacts'|translate|uppercase}}
-                </h2>
-                <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
-                <div class="row ms-0 me-0" style="margin-bottom: 50px;">
-                  <form [formGroup]="formContactos">
-                    <div class="ms-0 me-0 ps-0 pe-0 col-7">
-                      <div class="row" formGroupName = "phone">
-                        <div class="col-4">
-                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate}}:</p>
-                          <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="countryCode"  [attr.disabled]="returned === 'consult' ? true : null">
-                            <option *ngFor="let country of internationalCallingCodes" value={{country.internationalCallingCode}} [attr.selected]="(country.internationalCallingCode != '' && currentStakeholder != null && currentStakeholder.phone1 != null && currentStakeholder.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
-                          </select>
-                        </div>
-                        <div class="col">
-                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.cellPhone'|translate|uppercase}}/{{'declarativeInformation.phone'|translate|uppercase}}:*</p>
-                          <input #phoneNumber name="phoneNumber" type="text" id="phoneNumber"
-                            class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
-                          <div class="alert alert-danger" *ngIf="(phone.touched || phone.dirty) && !phone.valid && phone.errors.hasOwnProperty('invalidNumber')">
-                            {{'errorMessages.invalidPhone'|translate}}
-                          </div>
-                        </div>
-                        <div class="alert alert-danger" *ngIf="(phone.touched || phone.dirty) && !phone.valid && phone.errors.hasOwnProperty('missingValue')">
-                          {{'errorMessages.bothFieldsPhone'|translate}}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <p class="titulo-form-simples mt-0">EMAIL*</p>
-                        <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
-                          formControlName="email" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid">
-                          {{'errorMessages.isRequired'|translate}}
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
 
-                    <p class="titulo-form-simples"></p>
-                  </div>
-                  <div class="col ms-0 ps-0">
-                    <hr>
-                    <nav
-                      class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                      <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                        <button id="btn5a1" [routerLink]="['/']"
-                          class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                          wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
-                            style="height: 25px !important; vertical-align: sub;"></button>
-                      <button id="btn5a3" [routerLink]="['/']"
-                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                        wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg"
-                          style="height: 25px !important; vertical-align: sub;"></button>
-                      <button id="btn5a4" [routerLink]="['/info-declarativa']"
-                        class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
-                        wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                          style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-                      <button id="btn5a2" (click)="submit()" [disabled]="!formContactos.valid"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                        wappler-command="editContent" >{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
-                          style="height: 25px !important; vertical-align: sub;"></button>
+                <div class="accordion1 accordion-flush" id="accordionFlushExample">
+                  <div class="accordion1-item">
+                    <h2 class="accordion1-header" id="flush-headingOne">
+                      <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <span class="material-symbols-outlined icon-accordion">
+                          <img src="assets/images/add_call.svg" />
                         </span>
-                    </nav>
-                    
+                        &nbsp;&nbsp;{{'declarativeInformation.stakeholder.contacts'|translate|uppercase}}
+                      </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                      data-bs-parent="#accordionFlushExample">
+                      <app-info-stakeholder></app-info-stakeholder>
+                    </div>
+                  </div>
+                  <div class="accordion1-item">
+                    <h2 class="accordion1-header" id="flush-headingTwo">
+                      <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        <span class="material-symbols-outlined icon-accordion">
+                          <img src="assets/images/frame_person.svg" />
+                        </span>
+                        &nbsp;&nbsp;{{'declarativeInformation.stakeholder.pep.title'|translate|uppercase}}
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                      data-bs-parent="#accordionFlushExample">
+                      <app-pep></app-pep>
+                    </div>
                   </div>
                 </div>
-
+                <p class="titulo-form-simples"></p>
+              
+              <div class="col ms-0 ps-0">
+                <hr>
+                <nav
+                  class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                  <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                    <button id="btn5a1" [routerLink]="['/']"
+                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                      wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img
+                        src="assets/images/exit_to_app.svg"
+                        style="height: 25px !important; vertical-align: sub;"></button>
+                    <button id="btn5a3" [routerLink]="['/']"
+                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                      wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
+                        src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                    <button id="btn5a4" [routerLink]="['/info-declarativa']"
+                      class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                      wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+                        style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
+                    <button id="btn5a2" (click)="submit()" 
+                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                      wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
+                        src="assets/images/arrow_forward_ios.svg"
+                        style="height: 25px !important; vertical-align: sub;"></button>
+                  </span>
+                </nav>
               </div>
             </div>
-            <!-- </form> -->
+            </div>
           </div>
         </div>
       </div>
-
-      
