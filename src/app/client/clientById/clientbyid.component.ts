@@ -854,7 +854,7 @@ export class ClientByIdComponent implements OnInit {
 
     this.createSubmission();
     
-    this.route.navigate(["/stakeholders/"]);
+//    this.route.navigate(["/stakeholders/"]);
   }
 
 
@@ -973,7 +973,7 @@ export class ClientByIdComponent implements OnInit {
         //  });
         //});
 
-      });
-    }
+    });
+    this.route.navigate["/stakeholders/"];
   }
 }

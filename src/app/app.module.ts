@@ -117,7 +117,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FooterPresencialComponent,
     SidenavPresencialComponent,
     InfoDeclarativaAssinaturaComponent,
-
+    InfoStakeholderComponent,
     NumberCounterComponent,
     InfoDeclarativaLojasComponent,
     CountrysComponent,
@@ -154,7 +154,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'add-stakeholder/:nif', component: NewStakeholderComponent },
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
-      { path: 'info-stakeholders', component: InfoStakeholderComponent },
+      { path: 'app-info-stakeholder', component: InfoStakeholderComponent },
       { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
       { path: 'app-pep', component: PepComponent },
       { path: 'app-aceitacao', component: AceitacaoComponent },
