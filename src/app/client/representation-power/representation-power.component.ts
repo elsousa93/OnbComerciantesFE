@@ -13,7 +13,7 @@ import { ClientContext } from '../clientById/clientById.model';
   templateUrl: './representation-power.component.html',
   styleUrls: ['./representation-power.component.css']
 })
-export class RepresentationPowerComponent implements OnInit, OnChanges{
+export class RepresentationPowerComponent implements OnInit{
 
   @Input() clientContext: ClientContext;
 
@@ -52,7 +52,10 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
   // ];
 
   loadStakeholders() {
-    
+    this.clientContext.currentStakeholdersToInsert.subscribe(result => {
+      console.log("Atualizou os stakeholders a serem inseridos: ", result);
+      this.stakeholdersToInsert = result;
+    });
   }
 
   constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
@@ -74,16 +77,11 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
       this.client = this.router.getCurrentNavigation().extras.state["client"];
       this.clientId = this.router.getCurrentNavigation().extras.state["clientId"];
       this.processId = this.router.getCurrentNavigation().extras.state["processId"];
-      this.stakeholdersToInsert = this.router.getCurrentNavigation().extras.state["stakeholders"];
       this.merchantInfo = this.router.getCurrentNavigation().extras.state["merchantInfo"];
       if (this.router.getCurrentNavigation().extras.state["crc"])
         this.crc = this.router.getCurrentNavigation().extras.state["crc"];
     }
   }
-    ngOnChanges(changes: SimpleChanges): void {
-      this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
-
-    }
 
   //getSubmissionStakeholders() {
   //  var context = this;
@@ -144,6 +142,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
   ngOnInit(): void {
     console.log("contexto dentro do representation: ", this.clientContext);
+    this.loadStakeholders();
   }
 
   goToNextPage() {

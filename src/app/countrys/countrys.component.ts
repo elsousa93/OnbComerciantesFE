@@ -206,7 +206,7 @@ export class CountrysComponent implements OnInit {
     this.NIFNIPC = this.clientContext.getNIFNIPC();
     this.clientId = this.clientContext.clientId;
     this.processId = this.clientContext.processId;
-    this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
+    //this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
     this.comprovativoCC = this.clientContext.comprovativoCC;
     this.crc = this.clientContext.crc;
 
