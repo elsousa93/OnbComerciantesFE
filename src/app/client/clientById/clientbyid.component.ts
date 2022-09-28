@@ -759,22 +759,21 @@ export class ClientByIdComponent implements OnInit {
     //this.logger.debug(crcInserted);
     //this.crcFound = true;
 
-
-    var crcInserted = this.form.get('crcCode').value;
-    var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
-    if (!crcFormat.test(crcInserted)) {
-      this.crcIncorrect = true;
-      this.crcFound = false;
-      //this.errorMsg = 'CRC inserido não está com o formato correto'
-      return;
-    }
-    this.crcIncorrect = false;
-    this.crcService.getCRC(crcInserted, '001').subscribe(o => {
-      if (o === {} || o === undefined || o === null) {
-        this.crcNotExists = true;
-        this.crcFound = false;
-        //this.errorMsg = 'CRC inserido não foi encontrado';
-      }
+     var crcInserted = this.form.get('crcCode').value;
+     var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
+     if (!crcFormat.test(crcInserted)) {
+       this.crcIncorrect = true;
+       this.crcFound = false;
+       //this.errorMsg = 'CRC inserido não está com o formato correto'
+       return;
+     }
+     this.crcIncorrect = false;
+     this.crcService.getCRC(crcInserted, '001').subscribe(o => {
+       if (o === undefined || o === null) {
+         this.crcNotExists = true;
+         this.crcFound = false;
+         //this.errorMsg = 'CRC inserido não foi encontrado';
+       }
 
       var clientByCRC = o;
 

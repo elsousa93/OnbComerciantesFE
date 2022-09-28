@@ -155,7 +155,7 @@ export class StoreComponent implements AfterViewInit {
 
   deleteStore() {
     if (this.currentStore !== null) {
-      this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId).subscribe(result => {
+      this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
         this.route.navigateByUrl('store-comp/');
       });
