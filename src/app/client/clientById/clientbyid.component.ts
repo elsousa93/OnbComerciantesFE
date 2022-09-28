@@ -934,6 +934,20 @@ export class ClientByIdComponent implements OnInit {
     //newSubmission.startedAt = new Date().toISOString();
     newSubmission.merchant = this.clientContext.getClient();
 
+    var documentDelivery = newSubmission.merchant.documentationDeliveryMethod;
+    var merchantType = newSubmission.merchant.merchantType;
+
+    if (documentDelivery === 'viaDigital')
+      newSubmission.merchant.documentationDeliveryMethod = 'Portal';
+    else
+      newSubmission.merchant.documentationDeliveryMethod = 'Mail';
+
+    if (merchantType === 'corporation')
+      newSubmission.merchant.merchantType = 'Corporate';
+    else
+      newSubmission.merchant.merchantType = 'Entrepeneur';
+
+
     this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
       context.clientContext.submissionID = result.id;
         localStorage.setItem("submissionId", result.id);
@@ -978,7 +992,12 @@ export class ClientByIdComponent implements OnInit {
 
     this.submissionService.EditSubmission(submissionID, this.clientContext.newSubmission).subscribe(result => {
       console.log("atualizou a submissão: ", result);
-      this.route.navigate["/stakeholders/"];
+
+      try {
+        context.route.navigate["/stakeholders/"];
+      } catch (e){
+        console.log("ERROR: ", e);
+    }
     });
   }
   

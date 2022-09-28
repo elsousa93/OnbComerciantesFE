@@ -116,8 +116,8 @@ export class ClientContext{
     //  "documentationDeliveryMethod": "",
     //  "billingEmail": "joao@silvestre.pt"
     //},
-    "stakeholders": null,
-    "documents": null
+    "stakeholders": [],
+    "documents": []
   };
 
   formClientCharacterization: FormGroup;
