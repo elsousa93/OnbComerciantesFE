@@ -39,7 +39,7 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion1-item">
+              <div class="accordion1-item" *ngIf="!clientContext?.clientExists">
                 <h2 class="accordion-header" id="flush-headingTwo">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" 
                           data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
@@ -53,7 +53,7 @@
                 </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                     data-bs-parent="#accordionFlushExample">
-                  <div *ngIf="clientContext?.clientExists">
+                  <div>
                     <app-countrys [clientContext]="clientContext" [inline]="true"></app-countrys>
                   </div>
                 </div>
@@ -84,30 +84,28 @@
         <div class="col-10">
           <div class="row">
             <div class="col">
-              <nav
-                class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+              <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                 <span class="navbar-text align-self-center ms-0 me-0">
                   <button id="btn5a1"
-                    class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
-                    wappler-command="editContent">
-                    {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span
-                      class="material-symbols-rounded m-align">
+                          class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
+                          wappler-command="editContent">
+                    {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                       <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
                     </span>
                   </button>
                 </span>
                 <button id="btn5a3"
-                  class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
-                  wappler-command="editContent" (click)="redirectBeginningClient()">
+                        class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
+                        wappler-command="editContent" (click)="redirectBeginningClient()">
                   <span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
                   </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
                 </button>
-                <button id="btn5a2" [disabled]="!form.valid"
-                  class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                  wappler-command="editContent" (click)="submit()">
-                  {{'generalButtons.continue'|translate|uppercase}}&nbsp;<span
-                    class="material-symbols-rounded m-align">
+                <!-- [disabled]="!form.valid" -->
+                <button id="btn5a2"
+                        class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                        wappler-command="editContent" (click)="submit()">
+                  {{'generalButtons.continue'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                   </span>
                 </button>
