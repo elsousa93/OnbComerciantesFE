@@ -188,12 +188,14 @@
             <p class="titulo-form-simples"></p>
           </div>
           <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
+            <p class="titulo-form-simples" *ngIf="client.documents.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
             <div class="table-responsive mt-5 mb-5 pb-5">
-              <table class="table">
+              <table class="table" *ngIf="client.documents.length > 0">
                 <thead class="text-primary table-primary">
                   <tr class="table-white text-primary">
                     <th scope="col" class="text-center text-primary bg-light table-white">
-                      {{'supportingDocuments.type'|translate}}</th>
+                      {{'supportingDocuments.type'|translate}}
+                    </th>
                     <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
                     <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
                   </tr>
@@ -207,8 +209,8 @@
                     <td>
                       <span>
                         <img src="assets/images/search_blue.svg"
-                          (click)="b64toBlob(docum.uniqueReference, 'application/pdf', 512)"
-                          style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                             (click)="b64toBlob(docum.uniqueReference, 'application/pdf', 512)"
+                             style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                       </span>
                     </td>
                   </tr>
