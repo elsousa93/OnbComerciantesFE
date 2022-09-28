@@ -815,6 +815,13 @@ export class ClientCharacterizationComponent implements OnInit {
   submit() {
     var formValues = this.form.value;
     console.log("cliente a submeter: ", this.client);
+
+    var delivery = this.client.documentationDeliveryMethod;
+
+    if (delivery === 'viaDigital')
+      this.client.documentationDeliveryMethod = 'Portal';
+    else
+      this.client.documentationDeliveryMethod = 'Mail';
     if (this.isCommercialSociety) {
       this.client.headquartersAddress = {
         address: this.form.value["address"],
@@ -846,6 +853,11 @@ export class ClientCharacterizationComponent implements OnInit {
 
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
+
+      if (this.client.merchantType === 'corporation')
+        this.client.merchantType = 'Corporate';
+      else
+        this.client.merchantType = 'Entrepeneur';
     } else {
       
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];

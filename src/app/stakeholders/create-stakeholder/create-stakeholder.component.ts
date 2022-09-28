@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, EventEmitter, Input } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
@@ -37,6 +37,8 @@ import { UserTypes } from 'src/app/table-info/ITable-info.interface';
 })
 export class CreateStakeholderComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
+
+  @Input() parentFormGroup: FormGroup;
 
   modalRef: BsModalRef;
 
@@ -299,11 +301,12 @@ export class CreateStakeholderComponent implements OnInit {
   testEvent = this.searchEvent.asObservable();
 
   public subs: Subscription[] = [];
+  returned: string;
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
     private stakeholderService: StakeholderService, private submissionService: SubmissionService, private tableInfo: TableInfoService,
-    private submissionDocumentService: SubmissionDocumentService) {
+    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective) {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListDocTypeE = result;
@@ -313,14 +316,15 @@ export class CreateStakeholderComponent implements OnInit {
       this.ListDocTypeP = this.ListDocTypeP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     })));
 
-    
+    this.initializeForm();
 
     //this.logger.debug("foi buscar bem ao localstorage?");
     //this.logger.debug(this.submissionId);
+
     this.ngOnInit();
 
     var context = this;
-    this.initializeForm();
+/*    this.initializeForm();*/
     //stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
     //  result.forEach(function (value, index) {
     //    this.logger.debug(value);
@@ -451,7 +455,17 @@ export class CreateStakeholderComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.submissionId = localStorage.getItem('submissionId');
+    this.returned = localStorage.getItem("returned");
     this.data.updateData(false, 2);
+
+    if (this.rootFormGroup.form != null) {
+      this.rootFormGroup.form.setControl('searchStakes', this.formStakeholderSearch);
+      this.rootFormGroup.form.setControl('newStakes', this.formNewStakeholder);
+      if (this.returned == 'consult') {
+        this.formStakeholderSearch.disable();
+        this.formNewStakeholder.disable();
+      }
+    } 
   }
 
   ngOnDestroy(): void {
