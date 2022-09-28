@@ -841,15 +841,20 @@ export class ClientByIdComponent implements OnInit {
 
 
   submit() {
+
+    console.log("form valido: ", this.form);
     this.clientCharacterizationComponent.submit();
-    this.countriesComponent.submit();
+
+    if (!this.clientContext.clientExists)
+      this.countriesComponent.submit();
+
     this.representationPowerComponent.submit();
 
     console.log("submit| clientContext final: ", this.clientContext);
 
     this.createSubmission();
     
-    //this.route.navigate(["/stakeholders/"]);
+    this.route.navigate(["/stakeholders/"]);
   }
 
 

@@ -1,20 +1,16 @@
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { IStakeholders } from '../IStakeholders.interface'
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
-import { ViewChild, EventEmitter, Output } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { EventEmitter, Output } from '@angular/core';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholder.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
-import { ConstantPool } from '@angular/compiler';
 import { LoggerService } from 'src/app/logger.service';
 
 @Component({
