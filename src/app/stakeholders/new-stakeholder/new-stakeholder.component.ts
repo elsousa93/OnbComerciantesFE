@@ -1,7 +1,6 @@
-import { Component, OnInit, Inject, Output, EventEmitter, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup, FormControl, FormGroupDirective } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { StakeholdersComponent } from '../stakeholders.component';
+import { Component, OnInit, Inject, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormControl, FormGroupDirective } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IReadCard } from './IReadCard.interface';
@@ -11,7 +10,6 @@ import { StakeholderService } from '../stakeholder.service';
 import { CountryInformation, StakeholderRole } from '../../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { error } from '@angular/compiler/src/util';
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
 import { LoggerService } from 'src/app/logger.service';
@@ -368,39 +366,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }
   }
 
-  //submit(formNewStakeholder) {
-
-  //  //fazer isto para todos os campos --------------- TO DO
-  //  this.newStake.fullName = formNewStakeholder.fullName;
-
-
-  //  this.logger.debug(formNewStakeholder);
-  //  this.logger.debug(typeof this.newStake);
-
-  //  //Nao esta a ser usado
-  //  this.stringJson = JSON.stringify(this.newStake);
-  //  this.logger.debug("String json object :", this.stringJson);
-  //  this.logger.debug("Type :", typeof this.stringJson);
-
-  //  const httpOptions = {
-  //    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  //  }
-
-  //  this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/PostNewStakeholder/'
-  //    + this.newStake.fiscalId, this.newStake).subscribe(result => {
-  //      this.logger.debug(result);
-  //    }, error => console.error(error));
-
-  //  //Edit EditStakeholderById
-  //  this.http.post<IStakeholders>(this.baseUrl + 'bestakeholders/EditStakeholderById/'
-  //    + this.newStake.fiscalId + '/edit', this.newStake).subscribe(result => {
-  //      this.logger.debug("EditStakeholderById");
-  //      this.logger.debug(result);
-  //    }, error => console.error(error));
-
-
-  //}//Fim do submit
-
   onClickDelete(nif, clientNr) {
     this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
       +this.newStake.fiscalId + '/' + this.newStake.fiscalId + '/delete').subscribe(result => {
@@ -437,32 +402,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   getAll() {
     return this.tableData.GetAllCountries();
   }
-
-  //b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
-  //  const byteCharacters = atob(b64Data);
-  //  const byteArrays = [];
-
-  //  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-  //    const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-  //    const byteNumbers = new Array(slice.length);
-  //    for (let i = 0; i < slice.length; i++) {
-  //      byteNumbers[i] = slice.charCodeAt(i);
-  //    }
-
-  //    const byteArray = new Uint8Array(byteNumbers);
-  //    byteArrays.push(byteArray);
-  //  }
-
-  //  const blob = new Blob(byteArrays, { type: contentType });
-  //  const blobUrl = window.URL.createObjectURL(blob);
-  //  window.open(blobUrl, '_blank',
-  //    `margin: auto;
-  //    width: 50%;
-  //    padding: 10px;
-  //    text-align: center;
-  //    border: 3px solid green;` );
-  //}
 
   chooseStakeholder(stake: any) {
     this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {

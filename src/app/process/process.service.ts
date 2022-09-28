@@ -1,10 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, Sales, ShareCapital } from '../client/Client.interface';
+import { ActivatedRoute } from '@angular/router';
+import { BankInformation, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { Configuration, configurationToken } from '../configuration';
-import { CRCProcess } from '../CRC/crcinterfaces';
-import { FiscalAddress, IdentificationDocument } from '../stakeholders/IStakeholders.interface';
 import { ISubmission } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
@@ -17,7 +15,7 @@ export class ProcessService {
 
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router) {
+    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
       this.baseUrl = configuration.baseUrl;
       this.urlOutbound = configuration.outboundUrl;
 
@@ -37,53 +35,6 @@ export class ProcessService {
 
     getSubmissionByID(id): any {
       return this.http.get<ISubmission>(this.baseUrl + 'BEProcess/GetSubmissionByID/' + id);
-  }
-
-
-  //OUTBOUND API
-
-  startProcess(process: Process, RequestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any
-  {
-
-    var URI = this.urlOutbound + "api/v1/process/";
-
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Request-Id': RequestID,
-        'X-Acquiring-UserId': AcquiringUserID
-      }),
-    }
-
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
-    return this.http.post<any>(URI, process, HTTP_OPTIONS);
-  }
-
-
-  createMerchant(client: ClientForProcess, processReferenceID: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
-    
-    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/merchant";
-
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Request-Id': requestID,
-        'X-Acquiring-UserId': AcquiringUserID
-      }),
-    }
-
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
-    return this.http.post<any>(URI, client, HTTP_OPTIONS);
   }
 
   UpdateProcess(processId: string, processUpdate: UpdateProcess, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string) {

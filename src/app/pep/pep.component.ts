@@ -1,10 +1,8 @@
-import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
 import { IPep, KindPep } from './IPep.interface';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
-import { CorporateRelations, CountryInformation, Kinship, PEPTypes, StakeholderRole } from '../table-info/ITable-info.interface';
+import { CorporateRelations, CountryInformation, Kinship, PEPTypes } from '../table-info/ITable-info.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -17,6 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class PepComponent implements OnInit {
   private baseUrl: string;
+  private submissionId: string;
 
   //REACTIVE FORM
 
@@ -24,16 +23,16 @@ export class PepComponent implements OnInit {
   PEPTypesP: PEPTypes[] = [];
   PEPTypesC: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
-  stakeholdersRoles: StakeholderRole[] = [];
   stakeholdersKinships: Kinship[] = [];
   corporateRelations: CorporateRelations[] = [];
   public subs: Subscription[] = [];
 
-  constructor(private logger : LoggerService, private router: ActivatedRoute, private data: DataService,
-    private http: HttpClient,
-    @Inject(configurationToken) private configuration: Configuration, private route: Router,
-    private tableInfo: TableInfoService) {      
+  constructor(private logger : LoggerService, private data: DataService,
+    @Inject(configurationToken) private configuration: Configuration, 
+    private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {      
       this.baseUrl = configuration.baseUrl;
+
+      this.ngOnInit();
 
       this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
         this.Countries = result;
@@ -46,12 +45,11 @@ export class PepComponent implements OnInit {
             this.PEPTypesC.push(element);
           }
         });
-        
         this.PEPTypesP = this.PEPTypesP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
         this.PEPTypesC = this.PEPTypesC.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-      }),this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
-        this.stakeholdersRoles = result;
-        this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      }),this.tableInfo.GetAllCorporateRelations().subscribe(result => {
+        this.corporateRelations = result;
+        this.corporateRelations = this.corporateRelations.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }), this.tableInfo.GetAllKinships().subscribe(result => {
         this.stakeholdersKinships = result;
         this.stakeholdersKinships = this.stakeholdersKinships.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
@@ -80,54 +78,35 @@ export class PepComponent implements OnInit {
   isPEPFamilyRelationSelected: boolean = false;
   isPEPRelationSelected: boolean = false;
 
-
-  ngOnInit(): void {
-    this.data.updateData(false, 6, 3);
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => sub?.unsubscribe);
-  }
+  edit: boolean = false;
+  public subscription: Subscription;
+  public map: Map<number, boolean>;
+  public currentPage: number;
+  returned: string;
 
   form = new FormGroup({
     id: new FormControl(''),
     pep12months: new FormControl('')
   });
 
-  submit() {
-    if (this.isVisiblePep12months) {
-      this.newPep.kind = KindPep.PEP,
-      this.newPep.pepType = this.form.value.pepType;
-      this.newPep.pepCountry = this.form.value.pepCountry;
-      this.newPep.pepSince = this.form.value.pepSinceWhen;
+  ngOnInit(): void {
+    this.submissionId = localStorage.getItem("submissionId");
+    this.data.updateData(false, 6, 3);
+
+    if (this.rootFormGroup.form != null) {
+      this.rootFormGroup.form.setControl('contacts', this.form);
+      this.edit = true;
+      if (this.returned == 'consult') {
+        this.form.disable();
+      }
+    } else {
+      this.subscription = this.data.currentData.subscribe(map => this.map = map);
+      this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
+  }
 
-    if (this.isVisiblePepFamiliarOf) {
-      this.newPep.kind = KindPep.FAMILY;
-      this.newPep.degreeOfRelatedness = this.form.value.pepFamilyRelation;
-    }
-
-    if (this.isVisiblePepRelations) {
-      this.newPep.kind = KindPep.BUSINESS;
-
-      this.newPep.businessPartnership = this.form.value.pepTypeOfRelation;
-    }
-
-    if (this.isVisiblePepPoliticalPublicJobs) {
-      this.newPep.kind = KindPep.PEP,
-      this.newPep.pepType = this.form.value.pepType;
-    }
-
-    this.logger.debug(this.newPep);
-    //Post a Pep
-    // por enquanto deixei o id com o valor de 1, porque o newPep.id já n existe
-    this.http.post<IPep>(this.baseUrl + 'BEPep/AddPep/'
-      + 1, this.newPep).subscribe(result => {
-        this.logger.debug("Enviado Pep");
-        this.logger.debug(result);
-      }, error => console.error(error));
-
-    this.route.navigate(['/info-declarativa-lojas']);
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
   //Altera os valores das variaveis de acordo com o que é selecionado em cada checkbox
@@ -172,9 +151,6 @@ export class PepComponent implements OnInit {
     if (event.target.name == 'pepFamiliarOf') {
       this.isVisiblePepFamiliarOf = stringToBool;
       if (stringToBool) {
-        //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
-        //alguma das opções anteriores como "Sim",
-        //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
 
         this.isPEPFamilyRelationSelected = false;
         this.isPEPRelationSelected = false;
@@ -202,14 +178,10 @@ export class PepComponent implements OnInit {
       this.isVisiblePepRelations = stringToBool;
       if (stringToBool) {
 
-        //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
-        //alguma das opções anteriores como "Sim",
-        //temos de garantir que removemos os forms que foram criados e que já não vão ser utilizados
-
         this.isPEPRelationSelected = false;
 
         if (this.isVisiblePepPoliticalPublicJobs) {
-          this.form.removeControl('pepPoliticalPublicJobDesignation');
+          this.form.removeControl('pepType');
         }
 
         this.isVisiblePepPoliticalPublicJobs = undefined;
@@ -224,9 +196,9 @@ export class PepComponent implements OnInit {
     if (event.target.name == 'pepPoliticalPublicJobs') {
       this.isVisiblePepPoliticalPublicJobs = stringToBool;
       if (stringToBool) {
-        this.form.addControl('pepPoliticalPublicJobDesignation', new FormControl('', [Validators.required]));
+        this.form.addControl('pepType', new FormControl('', [Validators.required]));
       } else {
-        this.form.removeControl('pepPoliticalPublicJobDesignation');
+        this.form.removeControl('pepType');
       }
     }
     this.logger.debug(this.form);
