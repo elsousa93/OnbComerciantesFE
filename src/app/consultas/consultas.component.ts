@@ -200,7 +200,7 @@ export class ConsultasComponent implements OnInit{
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("returned", 'consult');
 
-    this.route.navigate(['/client']);
+    this.route.navigate(['/clientbyid']);
     //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
     //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
     //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {

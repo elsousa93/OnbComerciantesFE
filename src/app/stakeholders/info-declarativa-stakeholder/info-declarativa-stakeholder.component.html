@@ -41,73 +41,78 @@
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
                 <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false
-                  (selectedStakeholderEmitter)="selectStakeholder($event)"></app-stakeholders-list>
+                                       (selectedStakeholderEmitter)="selectStakeholder($event)"></app-stakeholders-list>
               </div>
-              <ng-container  *ngIf="currentStakeholder !== null || currentIdx === -1" [formGroup]="infoStakeholders">
-              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-
-                <div class="accordion1 accordion-flush" id="accordionFlushExample">
-                  <div class="accordion1-item">
-                    <h2 class="accordion1-header" id="flush-headingOne">
-                      <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        <span class="material-symbols-outlined icon-accordion">
-                          <img src="assets/images/add_call.svg" />
-                        </span>
-                        &nbsp;&nbsp;{{'declarativeInformation.stakeholder.contacts'|translate|uppercase}}
-                      </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordionFlushExample">
-                      <app-info-stakeholder></app-info-stakeholder>
-                    </div>
-                  </div>
-                  <div class="accordion1-item">
-                    <h2 class="accordion1-header" id="flush-headingTwo">
-                      <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        <span class="material-symbols-outlined icon-accordion">
-                          <img src="assets/images/frame_person.svg" />
-                        </span>
-                        &nbsp;&nbsp;{{'declarativeInformation.stakeholder.pep.title'|translate|uppercase}}
-                      </button>
-                    </h2>
-                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                      data-bs-parent="#accordionFlushExample">
-                      <app-pep></app-pep>
-                    </div>
-                  </div>
-                </div>
-                <p class="titulo-form-simples"></p>
-              </ng-container>
               
-              <div class="col ms-0 ps-0">
-                <hr>
-                <nav
-                  class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                  <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                    <button id="btn5a1" [routerLink]="['/']"
-                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                      wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img
-                        src="assets/images/exit_to_app.svg"
-                        style="height: 25px !important; vertical-align: sub;"></button>
-                    <button id="btn5a3" [routerLink]="['/']"
-                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                      wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
-                        src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
-                    <button id="btn5a4" [routerLink]="['/info-declarativa']"
-                      class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
-                      wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                        style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-                    <button id="btn5a2" (click)="submit()" 
-                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                      wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
-                        src="assets/images/arrow_forward_ios.svg"
-                        style="height: 25px !important; vertical-align: sub;"></button>
-                  </span>
-                </nav>
+              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+                <ng-container *ngIf="currentStakeholder !== null || currentIdx === -1" [formGroup]="infoStakeholders">
+                  <div class="accordion1 accordion-flush" id="accordionFlushExample">
+                    <div class="accordion1-item">
+                      <h2 class="accordion1-header" id="flush-headingOne">
+                        <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                          <span class="material-symbols-outlined icon-accordion">
+                            <img src="assets/images/add_call.svg" />
+                          </span>
+                          &nbsp;&nbsp;{{'declarativeInformation.stakeholder.contacts'|translate|uppercase}}
+                        </button>
+                      </h2>
+                      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                           data-bs-parent="#accordionFlushExample">
+                        <app-info-stakeholder></app-info-stakeholder>
+                      </div>
+                    </div>
+                    <div class="accordion1-item">
+                      <h2 class="accordion1-header" id="flush-headingTwo">
+                        <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                          <span class="material-symbols-outlined icon-accordion">
+                            <img src="assets/images/frame_person.svg" />
+                          </span>
+                          &nbsp;&nbsp;{{'declarativeInformation.stakeholder.pep.title'|translate|uppercase}}
+                        </button>
+                      </h2>
+                      <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                           data-bs-parent="#accordionFlushExample">
+                        <app-pep></app-pep>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <p class="titulo-form-simples"></p>
+
+
+                <div class="col ms-0 ps-0">
+                  <hr>
+                  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                    <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                      <button id="btn5a1" [routerLink]="['/']"
+                              class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                              wappler-command="editContent">
+                        {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
+                                                                                 style="height: 25px !important; vertical-align: sub;">
+                      </button>
+                      <button id="btn5a3" [routerLink]="['/']"
+                              class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                              wappler-command="editContent">
+                        {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">
+                      </button>
+                      <button id="btn5a4" [routerLink]="['/info-declarativa']"
+                              class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                              wappler-command="editContent">
+                        <img src="assets/images/arrow_back_ios_white.svg"
+                             style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
+                      </button>
+                      <button id="btn5a2" (click)="submit()"
+                              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                              wappler-command="editContent">
+                        {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
+                                                                                 style="height: 25px !important; vertical-align: sub;">
+                      </button>
+                    </span>
+                  </nav>
+                </div>
               </div>
-            </div>
             </div>
           </div>
         </div>
