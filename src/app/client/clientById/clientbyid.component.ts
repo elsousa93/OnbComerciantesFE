@@ -964,7 +964,8 @@ export class ClientByIdComponent implements OnInit {
       //    });
       //  });
       //});
-        this.route.navigate["/stakeholders/"];
+
     });
+    this.route.navigate["/stakeholders/"];
   }
 }
