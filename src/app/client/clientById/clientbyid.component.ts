@@ -768,7 +768,7 @@ export class ClientByIdComponent implements OnInit {
      }
      this.crcIncorrect = false;
      this.crcService.getCRC(crcInserted, '001').subscribe(o => {
-       if (o === {} || o === undefined || o === null) {
+       if (o === undefined || o === null) {
          this.crcNotExists = true;
          this.crcFound = false;
          //this.errorMsg = 'CRC inserido não foi encontrado';

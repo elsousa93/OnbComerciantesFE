@@ -73,6 +73,7 @@ export class ShopDetailsAcquiring {
   subProduct?: Subproduct 
   documents?: ShopDocuments
   processorId?: string
+  id?: string
 }
 
 //Interfaces auxiliares
