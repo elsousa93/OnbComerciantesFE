@@ -69,7 +69,7 @@ export interface SubmissionPutTemplate {
   id?: string
   bank?: string
   startedAt?: string
-  state: string
+  state?: string
 }
 
 export interface SubmissionGetTemplate {

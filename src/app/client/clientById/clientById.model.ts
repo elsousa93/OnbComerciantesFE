@@ -23,7 +23,9 @@ export class ClientContext{
     clientId: string;
     dataCC: string;
     crc?: any;
-    processId?: string;
+  processId?: string;
+
+  submissionID: string;
 
     
   stakeholdersToInsert: BehaviorSubject<StakeholdersProcess[]>;

@@ -426,7 +426,7 @@ export class CountrysComponent implements OnInit {
 
     var client = this.clientContext.getClient();
 
-    client["sales"]["annualEstimatedRevenue"] = this.form.get("expectableAnualInvoicing").value + 10;
+    client["sales"]["annualEstimatedRevenue"] = this.form.get("expectableAnualInvoicing").value;
     client["sales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
     client["sales"]["productsOrServicesSold"].push(this.form.get("services").value); //
     client["sales"]["productsOrServicesCountries"] = this.lstPaisPreenchido.map(country => country.code);
