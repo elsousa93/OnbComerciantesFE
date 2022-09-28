@@ -25,7 +25,8 @@ export class ClientContext{
     processId?: string;
 
     
-  stakeholdersToInsert?: StakeholdersProcess[] = [];
+  stakeholdersToInsert: BehaviorSubject<StakeholdersProcess[]>;
+  currentStakeholdersToInsert: Observable<any>;
 
   merchantInfo: BehaviorSubject<any>;
   currentMerchantInfo: Observable<any>;
@@ -172,7 +173,10 @@ export class ClientContext{
 
       this.currentClient = this.client.asObservable();
       this.currentMerchantInfo = this.merchantInfo.asObservable();
-      this.currentNIFNIPC = this.NIFNIPC.asObservable();
+    this.currentNIFNIPC = this.NIFNIPC.asObservable();
+
+    this.stakeholdersToInsert.next([]);
+    this.currentStakeholdersToInsert = this.stakeholdersToInsert.asObservable();
   }
 
 
@@ -208,6 +212,14 @@ export class ClientContext{
 
   setNIFNIPC(NIFNIPC) {
     this.NIFNIPC.next(NIFNIPC);
+  }
+
+  getStakeholdersToInsert() {
+    return this.stakeholdersToInsert.getValue();
+  }
+
+  setStakeholdersToInsert(stakeholdersToInsert) {
+    this.stakeholdersToInsert.next(stakeholdersToInsert);
   }
 
   

@@ -779,6 +779,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
       this.processClient.stakeholders = clientByCRC.stakeholders;
 
+      this.clientContext.setStakeholdersToInsert(clientByCRC.stakeholders);
+
       this.processClient.pdf = clientByCRC.pdf;
 
       this.processClient.code = clientByCRC.code;
@@ -786,6 +788,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
       this.logger.debug("o crc chamou o initialize");
       this.initializeFormControlCRC();
+
+      
     }, error: (error)=>{
         this.crcNotExists = true;
         this.crcFound = false;
@@ -907,7 +911,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.setClient(this.client);
     this.clientContext.clientId = this.clientId;
     this.clientContext.processId = this.processId;
-    this.clientContext.stakeholdersToInsert = (this.processClient.stakeholders === undefined || this.processClient.stakeholders === null || this.processClient.stakeholders.length < 1) ? this.processClient.stakeholders : [];
+    //this.clientContext.stakeholdersToInsert = (this.processClient.stakeholders === undefined || this.processClient.stakeholders === null || this.processClient.stakeholders.length < 1) ? this.processClient.stakeholders : [];
     this.clientContext.setMerchantInfo(this.merchantInfo);
     this.clientContext.crc =(this.crcFound) ? this.processClient : null;
     this.clientContext.comprovativoCC = this.comprovativoCC;
