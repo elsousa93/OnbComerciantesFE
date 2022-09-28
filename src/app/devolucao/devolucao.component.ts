@@ -63,7 +63,7 @@ ngOnInit(): void {
     localStorage.setItem('processNumber', this.process.processNumber);
     this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
 
-    this.route.navigate(['/client']);
+    this.route.navigate(['/clientbyid']);
   }
 
 }
