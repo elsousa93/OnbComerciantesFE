@@ -854,7 +854,7 @@ export class ClientByIdComponent implements OnInit {
 
     console.log("submit| clientContext final: ", this.clientContext);
 
-    this.createSubmission();
+    this.updateSubmission();
 
     //    this.route.navigate(["/stakeholders/"]);
   }
