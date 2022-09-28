@@ -177,15 +177,17 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
             //  context.submissionStakeholders.push(stakeholderToInsert);
 
             //})
+            if (AcquiringStakeholder.stakeholderId != null) { 
+              var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").toPromise();
 
-            var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").toPromise();
+              stakeholderFunction.then(success => {
+                stakeholderToInsert.stakeholderOutbound = success;
+              }).then(success =>{
+                context.submissionStakeholders.push(stakeholderToInsert);
+              });
+              console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
+            }
 
-            stakeholderFunction.then(success => {
-              stakeholderToInsert.stakeholderOutbound = success;
-            }).then(success =>{
-              context.submissionStakeholders.push(stakeholderToInsert);
-            });
-            console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
           }, error => {
           });
         });

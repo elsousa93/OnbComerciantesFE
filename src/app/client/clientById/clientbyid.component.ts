@@ -936,34 +936,34 @@ export class ClientByIdComponent implements OnInit {
       localStorage.setItem("submissionId", result.id);
       this.processNrService.changeProcessNumber(result.processNumber);
 
-      this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
-        res.forEach(value => {
-          this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-            var storeToAdd: ShopDetailsAcquiring = {
-              activity: r.activity,
-              subActivity: r.secondaryActivity,
-              address: {
-                address: r.address.address,
-                isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-                shoppingCenter: r.address.shoppingCenter,
-                useMerchantAddress: r.address.sameAsMerchantAddress
-              },
-              bank: {
-                bank: r.bankingInformation
-              },
-              name: r.name,
-              productCode: r.product,
-              subproductCode: r.subproduct,
-              website: r.url,
-              equipments: []
-            }
+      //this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+      //  res.forEach(value => {
+      //    this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+      //      var storeToAdd: ShopDetailsAcquiring = {
+      //        activity: r.activity,
+      //        subActivity: r.secondaryActivity,
+      //        address: {
+      //          address: r.address.address,
+      //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+      //          shoppingCenter: r.address.shoppingCenter,
+      //          useMerchantAddress: r.address.sameAsMerchantAddress
+      //        },
+      //        bank: {
+      //          bank: r.bankingInformation
+      //        },
+      //        name: r.name,
+      //        productCode: r.product,
+      //        subproductCode: r.subproduct,
+      //        website: r.url,
+      //        equipments: []
+      //      }
 
-            context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+      //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
 
-            });
-          });
-        });
-      });
+      //      });
+      //    });
+      //  });
+      //});
 
     });
   }

@@ -18,8 +18,9 @@
         <img src="assets/images/manage_accounts.svg" class="img_add">&nbsp;{{'client.companyPower'|translate|uppercase}}
       </h4> -->
       <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+        <p class="titulo-form-simples" *ngIf="submissionStakeholders.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
         <div class="table-responsive me-2 ps-3 pe-3">
-          <table class="table table-success">
+          <table class="table table-success" *ngIf="submissionStakeholders.length > 0">
             <thead class="text-primary table-primary">
               <tr class="text-center text-primary table-light">
                 <th scope="col" class="align-baseline text-primary table-white">{{'client.name'|translate}}</th>
@@ -30,8 +31,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let stakeholder of stakeholdersToInsert">
-                <td class="text-primary text-center">{{stakeholder.stakeholderAcquiring.name}}</td>
-                <td class="text-primary text-center">{{stakeholder.stakeholderAcquiring.fiscalId}}</td>
+                <td class="text-primary text-center">{{stakeholder.name}}</td>
+                <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
                 <td class="text-primary text-center"> - </td>
                 <td class="text-primary text-center"> - </td>
               </tr>
