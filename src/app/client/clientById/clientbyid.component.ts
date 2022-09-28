@@ -938,12 +938,13 @@ export class ClientByIdComponent implements OnInit {
       this.submissionService.EditSubmission(this.clientContext.submissionID, newSubmission).subscribe(result => {
         localStorage.setItem("submissionId", result.id);
         this.processNrService.changeProcessNumber(result.processNumber);
+        this.route.navigate["/stakeholders/"];
       });
     } else {
       this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
         localStorage.setItem("submissionId", result.id);
         this.processNrService.changeProcessNumber(result.processNumber);
-
+        this.route.navigate["/stakeholders/"];
         //this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
         //  res.forEach(value => {
         //    this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
@@ -973,7 +974,8 @@ export class ClientByIdComponent implements OnInit {
         //  });
         //});
 
-    });
-    this.route.navigate["/stakeholders/"];
+      });
+
+    }
   }
 }
