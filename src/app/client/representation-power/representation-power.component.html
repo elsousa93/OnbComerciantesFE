@@ -29,8 +29,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let stakeholder of submissionStakeholders">
-                <td class="text-primary text-center">{{stakeholder.stakeholderAcquiring.shortName}}</td>
+              <tr *ngFor="let stakeholder of stakeholdersToInsert">
+                <td class="text-primary text-center">{{stakeholder.stakeholderAcquiring.name}}</td>
                 <td class="text-primary text-center">{{stakeholder.stakeholderAcquiring.fiscalId}}</td>
                 <td class="text-primary text-center"> - </td>
                 <td class="text-primary text-center"> - </td>
