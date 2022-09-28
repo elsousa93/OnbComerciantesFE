@@ -158,12 +158,6 @@ export class StakeholdersComponent implements OnInit {
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
       private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
 
-    this.submissionId = localStorage.getItem('submissionId');
-    this.processNumber = localStorage.getItem("processNumber");
-    this.returned = localStorage.getItem('returned');
-
-    this.ngOnInit();
-
     this.editStakes = this.fb.group({
       searchAddStakes: this.fb.group({
         searchStakes: this.fb.group({
@@ -213,7 +207,10 @@ export class StakeholdersComponent implements OnInit {
     //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.data.updateData(false,2,1);
+    this.data.updateData(false, 2, 1);
+    this.submissionId = localStorage.getItem('submissionId');
+    this.processNumber = localStorage.getItem("processNumber");
+    this.returned = localStorage.getItem('returned');
   }
 
   //Modal que pergunta se tem o PIN da Morada
