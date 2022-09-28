@@ -13,7 +13,7 @@ import { ClientContext } from '../clientById/clientById.model';
   templateUrl: './representation-power.component.html',
   styleUrls: ['./representation-power.component.css']
 })
-export class RepresentationPowerComponent implements OnInit{
+export class RepresentationPowerComponent implements OnInit, OnChanges{
 
   @Input() clientContext: ClientContext;
 
@@ -58,6 +58,7 @@ export class RepresentationPowerComponent implements OnInit{
     });
   }
 
+
   constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
@@ -69,19 +70,32 @@ export class RepresentationPowerComponent implements OnInit{
     //this.getSubmissionStakeholders();
 
     
-    if (this.router.getCurrentNavigation().extras.state) {
-      this.clientExists = this.router.getCurrentNavigation().extras.state["clientExists"];
-      this.tipologia = this.router.getCurrentNavigation().extras.state["tipologia"];
-      //this.NIFNIPC = this.router.getCurrentNavigation().extras.state["NIFNIPC"];
-      this.NIFNIPC = this.route.snapshot.params["id"];
-      this.client = this.router.getCurrentNavigation().extras.state["client"];
-      this.clientId = this.router.getCurrentNavigation().extras.state["clientId"];
-      this.processId = this.router.getCurrentNavigation().extras.state["processId"];
-      this.merchantInfo = this.router.getCurrentNavigation().extras.state["merchantInfo"];
-      if (this.router.getCurrentNavigation().extras.state["crc"])
-        this.crc = this.router.getCurrentNavigation().extras.state["crc"];
-    }
+    //if (this.router.getCurrentNavigation().extras.state) {
+    //  this.clientExists = this.router.getCurrentNavigation().extras.state["clientExists"];
+    //  this.tipologia = this.router.getCurrentNavigation().extras.state["tipologia"];
+    //  //this.NIFNIPC = this.router.getCurrentNavigation().extras.state["NIFNIPC"];
+    //  this.NIFNIPC = this.route.snapshot.params["id"];
+    //  this.client = this.router.getCurrentNavigation().extras.state["client"];
+    //  this.clientId = this.router.getCurrentNavigation().extras.state["clientId"];
+    //  this.processId = this.router.getCurrentNavigation().extras.state["processId"];
+    //  this.merchantInfo = this.router.getCurrentNavigation().extras.state["merchantInfo"];
+    //  if (this.router.getCurrentNavigation().extras.state["crc"])
+    //    this.crc = this.router.getCurrentNavigation().extras.state["crc"];
+    //}
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.loadStakeholders();
+
+    this.clientExists = this.clientContext.clientExists;
+    this.tipologia = this.clientContext.tipologia;
+    //this.NIFNIPC = this.router.getCurrentNavigation().extras.state["NIFNIPC"];
+    this.NIFNIPC = this.clientContext.getNIFNIPC();
+    this.client = this.clientContext.getClient();
+    this.clientId = this.clientContext.clientId;
+    this.processId = this.clientContext.processId;
+    this.merchantInfo = this.clientContext.getMerchantInfo();
+    this.crc = this.clientContext.crc;
+    }
 
   //getSubmissionStakeholders() {
   //  var context = this;
@@ -142,7 +156,6 @@ export class RepresentationPowerComponent implements OnInit{
 
   ngOnInit(): void {
     console.log("contexto dentro do representation: ", this.clientContext);
-    this.loadStakeholders();
   }
 
   goToNextPage() {
@@ -193,6 +206,8 @@ export class RepresentationPowerComponent implements OnInit{
     });
 
     newSubmission.documents = [];
+
+    this.crc = this.clientContext.crc;
 
     if (this.crc !== null && this.crc !== undefined) {
       newSubmission.documents.push({

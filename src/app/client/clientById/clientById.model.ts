@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { FormGroup, FormGroupDirective } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
+import { Behavior } from "popper.js";
 import { BehaviorSubject, Observable } from "rxjs";
 import { FileAndDetailsCC } from "src/app/readcard/fileAndDetailsCC.interface";
 import { StakeholdersProcess } from "src/app/stakeholders/IStakeholders.interface";
@@ -10,7 +11,7 @@ import { StakeholderService } from "../../stakeholders/stakeholder.service";
 import { ShopDetailsAcquiring } from "../../store/IStore.interface";
 import { StoreService } from "../../store/store.service";
 import { SubmissionDocumentService } from "../../submission/document/submission-document.service";
-import { SubmissionPostTemplate } from "../../submission/ISubmission.interface";
+import { SubmissionPostDocumentTemplate, SubmissionPostTemplate } from "../../submission/ISubmission.interface";
 import { SubmissionService } from "../../submission/service/submission-service.service";
 import { ClientService } from "../client.service";
 
@@ -36,6 +37,9 @@ export class ClientContext{
 
   NIFNIPC: BehaviorSubject<any>;
   currentNIFNIPC: Observable<any>;
+
+  documents: BehaviorSubject<SubmissionPostDocumentTemplate[]>;
+  currentDocuments: Observable<any>;
 
   newSubmission: SubmissionPostTemplate = {
     "submissionType": "DigitalComplete",
@@ -175,8 +179,11 @@ export class ClientContext{
       this.currentMerchantInfo = this.merchantInfo.asObservable();
     this.currentNIFNIPC = this.NIFNIPC.asObservable();
 
-    this.stakeholdersToInsert.next([]);
+    this.stakeholdersToInsert = new BehaviorSubject([]);
     this.currentStakeholdersToInsert = this.stakeholdersToInsert.asObservable();
+
+    this.documents = new BehaviorSubject([]);
+    this.currentDocuments = this.documents.asObservable();
   }
 
 
@@ -220,6 +227,14 @@ export class ClientContext{
 
   setStakeholdersToInsert(stakeholdersToInsert) {
     this.stakeholdersToInsert.next(stakeholdersToInsert);
+  }
+
+  getDocuments() {
+    return this.documents;
+  }
+
+  setDocuments(documents) {
+    this.documents.next(documents);
   }
 
   
