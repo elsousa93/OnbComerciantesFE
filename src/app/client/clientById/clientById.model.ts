@@ -53,7 +53,7 @@ export class ClientContext{
       "branch": "branch01",
       "partner": "SIBS"
     },
-    "startedAt": new Date() + '',
+    "startedAt": new Date().toISOString(),
     "state": "Incomplete",
     "bank": "0800", //no futuro e para usar o token
     "merchant": null,
