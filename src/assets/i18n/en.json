@@ -157,7 +157,8 @@
     "clientName": "Client Name",
     "identification2": "Stakeholder Identification II",
     "area": "Area",
-    "documents": "Stakeholder's Documents"
+    "documents": "Stakeholder's Documents",
+    "emptyList": "There are no stakeholders"
   },
   "stores": {
     "title": "Stores",
@@ -223,7 +224,8 @@
         "noArchive": "Does not exist in file",
         "archive": "Already exists in file"
       }
-    }
+    },
+    "documentsListEmpty": "There are no documents"
   },
   "commercialOffer": {
     "title": "Commercial Offer",

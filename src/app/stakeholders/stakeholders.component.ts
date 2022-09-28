@@ -194,6 +194,10 @@ export class StakeholdersComponent implements OnInit {
     //this.route.navigate(['/add-stakeholder/']);
   }
 
+  refreshPage() {
+    this.editStakeInfo = null;
+  }
+
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
   }
@@ -424,6 +428,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   submit() {
+    console.log("Chamada do submit principal ", this.editStakes.valid);
     if (this.returned !== 'consult') {
       if (this.editStakes.valid) {
         var stakeForm = this.editStakes.get("stake");

@@ -157,7 +157,8 @@
     "clientName": "Nome do Cliente",
     "identification2": "Identificação do Interveniente II",
     "area": "Área",
-    "documents": "Documentos do Interveniente"
+    "documents": "Documentos do Interveniente",
+    "emptyList": "Não existem intervenientes"
   },
   "stores": {
     "title": "Lojas",
@@ -224,7 +225,8 @@
         "noArchive": "Não existe em arquivo",
         "archive": "Já existe em arquivo"
       }
-    }
+    },
+    "documentsListEmpty": "Não existem documentos"
   },
   "commercialOffer": {
     "title": "Oferta Comercial",

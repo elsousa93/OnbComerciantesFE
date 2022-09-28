@@ -84,8 +84,9 @@
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
                    data-bs-parent="#accordionFlushExample">
                 <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+                  <p class="titulo-form-simples" *ngIf="selectedStakeholderComprovativos.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
                   <div class="table-responsive me-2 ps-3 pe-3">
-                    <table class="table table-success">
+                    <table class="table table-success" *ngIf="selectedStakeholderComprovativos.length > 0">
                       <thead class="text-primary table-primary">
                         <tr class="table-light text-center text-primary">
                           <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.type'|translate}}</th>
@@ -116,7 +117,7 @@
       </ng-container>
 
       <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4" *ngIf="!editStakeInfo">
           <span class="navbar-text me-2">
             <button id="btn5a2" (click)="redirectAddStakeholder()"
                     class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
@@ -129,6 +130,24 @@
             <button id="btn5a3"
                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                     wappler-command="editContent" (click)="redirectInfoStakeholder(); ">
+              {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
+                <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">
+              </span>
+            </button>
+          </span>
+        </nav>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4" *ngIf="editStakeInfo == true">
+          <span class="navbar-text me-2">
+            <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="refreshPage()">
+              <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
+              {{'generalKeywords.back'|translate|uppercase}}&nbsp;
+            </button>
+          </span>
+          <span class="navbar-text me-2">
+            <button id="btn5a3"
+                    class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                    wappler-command="editContent" (click)="submit()">
               {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                 <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">
               </span>
