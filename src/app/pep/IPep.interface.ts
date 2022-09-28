@@ -1,27 +1,13 @@
 import { Country, IdentificationDocument } from "../stakeholders/IStakeholders.interface";
 
 export interface IPep {
-  isPep: boolean
-  hasFamilyRelationship: boolean
-  familyRelationshipKind: number
-  hasBusinessRelationship: boolean
-  businessRelationshipKind: number
-  relatedPep: RelatedPep
-  pepDetails: PepDetails
+  kind: KindPep
+  pepType?: string
+  pepCountry?: string
+  pepSince: string
+  degreeOfRelatedness?: string
+  businessPartnership?: string
 }
-
-export interface PepDetails {
-  fiscalId: string
-  identificationDocument: IdentificationDocument
-  fullName: string
-  contactName: string
-  shortName: string
-  fiscalAddress: Address
-  kind: string
-  sinceWhen: string
-  country: string
-}
-
 export interface Address {
   address?: string
   postalCode?: string
@@ -30,7 +16,8 @@ export interface Address {
   country?: string
 }
 
-export interface RelatedPep {
-  id: string
-  url: string
+export enum KindPep {
+  PEP = "pep",
+  FAMILY = "family",
+  BUSINESS = "business"
 }

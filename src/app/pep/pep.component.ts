@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IPep } from './IPep.interface';
+import { IPep, KindPep } from './IPep.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -21,13 +21,13 @@ export class PepComponent implements OnInit {
   //REACTIVE FORM
 
   //Informação de campos/tabelas
-  PEPTypes: PEPTypes[] = [];
+  PEPTypesP: PEPTypes[] = [];
+  PEPTypesC: PEPTypes[] = [];
   Countries: CountryInformation[] = [];
   stakeholdersRoles: StakeholderRole[] = [];
   stakeholdersKinships: Kinship[] = [];
   corporateRelations: CorporateRelations[] = [];
   public subs: Subscription[] = [];
-
 
   constructor(private logger : LoggerService, private router: ActivatedRoute, private data: DataService,
     private http: HttpClient,
@@ -39,52 +39,33 @@ export class PepComponent implements OnInit {
         this.Countries = result;
         this.Countries = this.Countries.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }),this.tableInfo.GetAllPEPTypes().subscribe(result => {
-        this.PEPTypes = result;
-        this.PEPTypes = this.PEPTypes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+        result.forEach(element => {
+          if (element.code.startsWith('P')){
+            this.PEPTypesP.push(element);
+          } else if (element.code.startsWith('C')){
+            this.PEPTypesC.push(element);
+          }
+        });
+        
+        this.PEPTypesP = this.PEPTypesP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+        this.PEPTypesC = this.PEPTypesC.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }),this.tableInfo.GetAllStakeholderRoles().subscribe(result => {
         this.stakeholdersRoles = result;
         this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }), this.tableInfo.GetAllKinships().subscribe(result => {
         this.stakeholdersKinships = result;
         this.stakeholdersKinships = this.stakeholdersKinships.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-      }),this.tableInfo.GetAllCorporateRelations().subscribe(result => {
-        this.corporateRelations = result;
-        this.corporateRelations = this.corporateRelations.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
       }));
   }
 
   newPep: IPep = {
-    isPep: undefined,
-    hasFamilyRelationship: undefined,
-    familyRelationshipKind: 0,
-    hasBusinessRelationship: undefined,
-    businessRelationshipKind: 0,
-    relatedPep: {
-      id: "",
-      url: ""
-    },
-    pepDetails: {
-      fiscalId: "",
-      identificationDocument: {
-        type: "",
-        number: "",
-        country: "",
-        expirationDate: ""
-      },
-      fullName: "",
-      contactName: "",
-      shortName: "",
-      fiscalAddress: {
-        address: "",
-        postalCode: "",
-        postalArea: "",
-        locality: "",
-        country: "",
-      },
-      sinceWhen: "",
-      kind: ""
-    }
-  } as IPep; //CRIAR UM PEPDETAILS E RELATEDPEP
+    kind: KindPep.PEP,
+    pepType: "",
+    pepCountry: "",
+    pepSince: "",
+    degreeOfRelatedness: "",
+    businessPartnership: ""
+  } as IPep; 
 
   //Varibales for divs in HTML, when selected 
   isVisiblePep12months: any;
@@ -115,58 +96,27 @@ export class PepComponent implements OnInit {
 
   submit() {
     if (this.isVisiblePep12months) {
-      this.newPep.isPep = (this.form.value.pep12months === 'true' ? true : false); //Transforming string into boolean
-      this.newPep.pepDetails.kind = this.form.value.pepType;
-      this.newPep.pepDetails.fiscalAddress.country = this.form.value.pepCountry;
-      this.newPep.pepDetails.sinceWhen = this.form.value.pepSinceWhen;
+      this.newPep.kind = KindPep.PEP,
+      this.newPep.pepType = this.form.value.pepType;
+      this.newPep.pepCountry = this.form.value.pepCountry;
+      this.newPep.pepSince = this.form.value.pepSinceWhen;
     }
 
     if (this.isVisiblePepFamiliarOf) {
-      this.newPep.hasFamilyRelationship = (this.form.value.pepFamiliarOf === 'true' ? true : false);
-
-      this.newPep.familyRelationshipKind = Number(this.form.value.pepFamilyRelation);
-
-      this.newPep.pepDetails.kind = this.form.value.relatedPep_type;
-      this.newPep.pepDetails.fiscalAddress.country = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
-      this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
-      this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
-      this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
-      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
-      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
-      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
-      this.newPep.pepDetails.identificationDocument.country = this.form.value.relatedPep_idDocumentCountry;
-      this.newPep.pepDetails.fiscalAddress.address = this.form.value.relatedPep_address;
-      this.newPep.pepDetails.fiscalAddress.locality = this.form.value.relatedPep_addressLocation;
-      this.newPep.pepDetails.fiscalAddress.postalCode = this.form.value.relatedPep_postalCode;
-      this.newPep.pepDetails.fiscalAddress.country = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
+      this.newPep.kind = KindPep.FAMILY;
+      this.newPep.degreeOfRelatedness = this.form.value.pepFamilyRelation;
     }
 
     if (this.isVisiblePepRelations) {
-      this.newPep.hasBusinessRelationship = (this.form.value.pepRelations === 'true' ? true : false);
+      this.newPep.kind = KindPep.BUSINESS;
 
-      this.newPep.businessRelationshipKind = Number(this.form.value.pepTypeOfRelation);
-
-      this.newPep.pepDetails.kind = this.form.value.relatedPep_type;
-      this.newPep.pepDetails.fiscalAddress.country = this.form.value.relatedPep_country; // são iguais e n sei qual corresponde a qual
-      this.newPep.pepDetails.sinceWhen = this.form.value.relatedPep_sinceWhen;
-      this.newPep.pepDetails.fiscalId = this.form.value.relatedPep_nif;
-      this.newPep.pepDetails.fullName = this.form.value.relatedPep_name;
-      this.newPep.pepDetails.identificationDocument.number = this.form.value.relatedPep_idNumber;
-      this.newPep.pepDetails.identificationDocument.type = this.form.value.relatedPep_idDocumentType;
-      this.newPep.pepDetails.identificationDocument.expirationDate = this.form.value.relatedPep_idDocumentValidity;
-      this.newPep.pepDetails.identificationDocument.country = this.form.value.relatedPep_idDocumentCountry;
-      this.newPep.pepDetails.fiscalAddress.address = this.form.value.relatedPep_address;
-      this.newPep.pepDetails.fiscalAddress.locality = this.form.value.relatedPep_addressLocation;
-      this.newPep.pepDetails.fiscalAddress.postalCode = this.form.value.relatedPep_postalCode;
-      this.newPep.pepDetails.fiscalAddress.country = this.form.value.relatedPep_addressCountry; // são iguais e n sei qual corresponde a qual
+      this.newPep.businessPartnership = this.form.value.pepTypeOfRelation;
     }
 
     if (this.isVisiblePepPoliticalPublicJobs) {
-      //this.newPep.pepPoliticalPublicJobs = (this.form.value.pepPoliticalPublicJobs === 'true' ? true : false);
-      //this.newPep.pepPoliticalPublicJobDesignation = this.form.value.pepPoliticalPublicJobDesignation;
+      this.newPep.kind = KindPep.PEP,
+      this.newPep.pepType = this.form.value.pepType;
     }
-
-   
 
     this.logger.debug(this.newPep);
     //Post a Pep
@@ -217,9 +167,6 @@ export class PepComponent implements OnInit {
         this.form.addControl('pepSinceWhen', new FormControl('', [Validators.required]));
       } else {
         this.form.addControl('pepFamiliarOf', new FormControl('', [Validators.required]));
-        this.form.removeControl('pepType');
-        this.form.removeControl('pepCountry');
-        this.form.removeControl('pepSinceWhen');
       }
     }
     if (event.target.name == 'pepFamiliarOf') {
@@ -249,8 +196,6 @@ export class PepComponent implements OnInit {
       } else {
         this.form.addControl('pepRelations', new FormControl('', [Validators.required]));
         this.form.removeControl('pepFamilyRelation');
-
-
       }
     }
     if (event.target.name == 'pepRelations') {
@@ -307,8 +252,6 @@ export class PepComponent implements OnInit {
     if (pepSince != "") {
       this.isPEPSinceSelected = true;
     }
-
-    this.form.addControl('pepFamiliarOf', new FormControl('', [Validators.required]));
   }
   checkSelectedFamiliar() {
     this.isPEPFamilyRelationSelected = false;
@@ -318,9 +261,6 @@ export class PepComponent implements OnInit {
     if (pepFamilyRelation != "") {
       this.isPEPFamilyRelationSelected = true;
     }
-
-    this.form.addControl('pepRelations', new FormControl('', [Validators.required]));
-
   }
   checkSelectedRelations() {
     this.isPEPRelationSelected = false;
@@ -328,9 +268,6 @@ export class PepComponent implements OnInit {
 
     if (pepRelationType != "") {
       this.isPEPRelationSelected = true;
-    }
-
-    this.form.addControl('pepPoliticalPublicJobs', new FormControl('', [Validators.required]));
-    
+    }    
   }
 }

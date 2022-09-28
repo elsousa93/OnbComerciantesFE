@@ -70,7 +70,7 @@
                         <p class="form-check-label titulo-form-simples mt-0" for="pepType">
                           {{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:*</p>
                           <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepType" name="pepType" id="pepType">
-                            <option *ngFor="let pep of PEPTypes" value={{pep.code}}>{{pep.description}} </option>
+                            <option *ngFor="let pep of PEPTypesP" value={{pep.code}}>{{pep.description}} </option>
                           </select>
                           <p class="form-check-label titulo-form-simples" for="pepSinceWhen">
                             {{'declarativeInformation.stakeholder.pep.since'|translate}}:</p>
@@ -89,7 +89,7 @@
                         </div>
                         <p class="titulo-form-simples"></p>
                       </div><!-- fecha form do pep12months-->
-                    <div class="form-group" *ngIf="isVisiblePep12months == false || isVisiblePep12months == true && isPEPTypeSelected == true && isPEPCountrySelected && isPEPSinceSelected == true">
+                    <div class="form-group" *ngIf="isVisiblePep12months == false">
 
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.isFamiliar'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -123,7 +123,7 @@
                     </div>
                     <!--Fecha é familiar de uma PEP-->
 
-                    <div class="form-group" *ngIf="isVisiblePepFamiliarOf == false || isVisiblePepFamiliarOf == true && isPEPFamilyRelationSelected == true">
+                    <div class="form-group" *ngIf="isVisiblePepFamiliarOf == false">
                       
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.relations'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -151,12 +151,11 @@
                         </p>
                         <select (change)="checkSelectedRelations()" class="form-select" formControlName="pepTypeOfRelation" name="pepTypeOfRelation"
                           id="pepTypeOfRelation">
-                          <option value="">{{'declarativeInformation.stakeholder.pep.relationType'|translate}}:</option>
                           <option *ngFor="let cr of corporateRelations" value={{cr.code}}>{{cr.description}} </option>
                         </select>
                       </div></div><p class="titulo-form-simples"></p>
                     </div>
-                    <div class="form-group" *ngIf="isVisiblePepRelations == false || isVisiblePepRelations == true && isPEPRelationSelected == true">
+                    <div class="form-group" *ngIf="isVisiblePepRelations == false">
                       
                       <p class="titulo-form-simples mb-1">{{'declarativeInformation.stakeholder.pep.politicJobs'|translate}}:</p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -183,7 +182,7 @@
                           for="pepPoliticalPublicJobDesignation">{{'declarativeInformation.stakeholder.pep.role'|translate}}:*</p>
                         <select class="form-select" formControlName="pepPoliticalPublicJobDesignation"
                           name="pepPoliticalPublicJobDesignation" id="pepPoliticalPublicJobDesignation">
-                          <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
+                          <option *ngFor="let pep of PEPTypesC" value={{pep.code}}>{{pep.description}} </option>
                         </select>
                       </div>
                     </div><p class="titulo-form-simples"></p></div>
