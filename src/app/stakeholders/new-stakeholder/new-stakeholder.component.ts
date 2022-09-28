@@ -224,7 +224,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   isStakeholderFromCC(stakeholder) {
     this.selectedStakeholderIsFromCC = false;
     var context = this;
-    this.ccStakeholders.forEach(function (value, idx) {
+    this.ccStakeholders?.forEach(function (value, idx) {
       var stakeholderFromCC = value;
       if (stakeholder.fiscalId === stakeholderFromCC.fiscalId) {
         context.selectedStakeholderIsFromCC = true;
@@ -235,7 +235,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   isStakeholderFromCRC(stakeholder) {
     this.selectedStakeholderIsFromCRC = false;
     var context = this;
-    this.crcStakeholders.forEach(function (value, idx) {
+    this.crcStakeholders?.forEach(function (value, idx) {
       var stakeholderFromCRC = value;
       if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
         context.selectedStakeholderIsFromCRC = true;

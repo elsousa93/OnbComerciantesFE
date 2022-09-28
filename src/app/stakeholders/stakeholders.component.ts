@@ -413,6 +413,7 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("identificationDocumentValidUntil").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate);
       stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
     }
+    console.log('Form dos stakes depois de selecionar um stake ', stakeForm);
   }
 
   selectStake(info) {

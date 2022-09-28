@@ -585,6 +585,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.errorMsg = info.errorMsg;
   }
+
   addStakeholder() {
     console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders) {
