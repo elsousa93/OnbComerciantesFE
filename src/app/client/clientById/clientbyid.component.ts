@@ -986,18 +986,16 @@ export class ClientByIdComponent implements OnInit {
   }
 
   updateSubmission() {
+    console.log(".");
+
     var context = this;
     var submissionID = this.clientContext.submissionID;
 
     this.submissionService.EditSubmission(submissionID, this.clientContext.newSubmission).subscribe(result => {
-      console.log("atualizou a submissão: ", result);
-
-      try {
-        context.route.navigate["/stakeholders/"];
-      } catch (e){
-        console.log("ERROR: ", e);
-    }
+      this.route.navigateByUrl('/stakeholders');
     });
+
+   
   }
   
 }
