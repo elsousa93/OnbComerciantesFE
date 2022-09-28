@@ -156,7 +156,8 @@
     "clientNumber": "Nº Cliente",
     "clientName": "Nome do Cliente",
     "identification2": "Identificação do Interveniente II",
-    "area": "Área"
+    "area": "Área",
+    "documents": "Documentos do Interveniente"
   },
   "stores": {
     "title": "Lojas",

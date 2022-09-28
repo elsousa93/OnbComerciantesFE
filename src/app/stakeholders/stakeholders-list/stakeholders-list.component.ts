@@ -73,7 +73,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   getSubmissionStakeholders() {
     var context = this;
-    if (this.returned !== null) {
+    if (this.returned != null) {
       this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
@@ -157,7 +157,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   getSubmissionStakeholdersAux() {
     var context = this;
 
-    if (this.submissionId !== null) {
+    if (this.submissionId != null) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
         var results = result.result;
         results.forEach(function (value, index) {
@@ -170,8 +170,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
               stakeholderOutbound: undefined
             }
 
-            var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
-
             //context.submissionStakeholders.push(stakeholderToInsert);
 
             //context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
@@ -180,7 +178,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
             //})
 
-            var stakeholderFunction = context.stakeholderService.getStakeholderByID(tempStakeholderID, "por mudar", "por mudar").toPromise();
+            var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").toPromise();
 
             stakeholderFunction.then(success => {
               stakeholderToInsert.stakeholderOutbound = success;

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IStakeholders } from './IStakeholders.interface';
+import { IStakeholders, StakeholdersCompleteInformation } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
 import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
@@ -97,7 +97,9 @@ export class StakeholdersComponent implements OnInit {
   //  "shortName": ""
   //} as IStakeholders;
 
-  currentStakeholder: IStakeholders = null;
+  currentStakeholder: StakeholdersCompleteInformation = {};
+  currentIdx: number;
+  allStakeholdersComprovativos = {}; 
 
   submissionId: string;
 
@@ -148,6 +150,10 @@ export class StakeholdersComponent implements OnInit {
 
   public returned: string;
 
+  editStakes: FormGroup;
+  editStakeInfo: boolean;
+
+  selectedStakeholderComprovativos = [];
 
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
       private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
@@ -157,43 +163,35 @@ export class StakeholdersComponent implements OnInit {
     this.returned = localStorage.getItem('returned');
 
     this.ngOnInit();
-    
-    var context = this;
-    //if (this.returned !== null) { 
-    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-    //    this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-    //      this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-    //        res.forEach(function (value, index) {
-    //          context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-    //            context.submissionStakeholders.push(r);
-    //          }, error => {
-    //          });
-    //        }, error => {
-    //        });
-    //      });
-    //    });
-    //  });
-    //}
 
-    //if (this.submissionId !== null) {
-    //  stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-    //    result.forEach(function (value, index) {
-    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-    //        context.submissionStakeholders.push(result);
-    //      }, error => {
-    //      });
-    //    });
-    //  }, error => {
-    //  });
-    //}
+    this.editStakes = this.fb.group({
+      searchAddStakes: this.fb.group({
+        searchStakes: this.fb.group({
+          "type": [''],
+          "documentType": [''],
+          "documentNumber": [''],
+        }),
+        newStakes: this.fb.group({
+          "nipc": [''],
+          "socialDenomination": [''],
+          "nif": [''],
+          "name": ['']
+        }),
+      })
+    });
+
   }
 
   redirectAddStakeholder() {
-    this.route.navigate(['/create-stakeholder/']);
+    this.editStakeInfo = false;
+    console.log(this.editStakes);
+    //this.route.navigate(['/create-stakeholder/']);
   }
 
   redirectInfoStakeholder() {
-    this.route.navigate(['/add-stakeholder/']);
+    this.editStakeInfo = true;
+    console.log(this.editStakes.get("stake"));
+    //this.route.navigate(['/add-stakeholder/']);
   }
 
   changeDataReadable(readable: boolean) {
@@ -373,6 +371,124 @@ export class StakeholdersComponent implements OnInit {
     }
   }
 
+  getStakeFunction() {
+    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
+      result.forEach(function (value, index) {
+        this.stakeService.GetStakeholderFromSubmission(this.submissionId, value.id).subscribe(result => {
+          this.submissionStakeholders.push(result);
+          this.stakeService.getStakeholderByID(result.stakeholderId, 'faltarequestID', 'faltaAcquiringUserID').subscribe((result: { documents: any; stakeholderId: string | number; }) => {
+            var documents = result.documents;
+            this.allStakeholdersComprovativos[result.stakeholderId] = documents;
+            console.log("get stake by id resposnse: ", result);
+            //context.stakeholdersComprovativos.push(result);
+
+          }, error => {
+            console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
+          });
+        }, error => {
+          console.log("Erro em GetStakeholderFromSubmission: ", error);
+        });
+      });
+    }, error => {
+      console.log("Erro na Get All: ", error);
+    });
   }
+
+  setFormData() {
+    var stakeForm = this.editStakes.get("stake");
+    stakeForm.get("contractAssociation").setValue('false');
+    stakeForm.get("flagRecolhaEletronica").setValue('true');
+    stakeForm.get("proxy").setValue(this.currentStakeholder.stakeholderAcquiring.isProxy + '');
+
+    if (stakeForm.get("documentType") == null) {
+      stakeForm.get("NIF").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalId);
+      stakeForm.get("Role").setValue("");
+      stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country);
+      stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode);
+      stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality);
+      stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address);
+    } else {
+      stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
+      stakeForm.get("identificationDocumentCountry").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.country);
+      stakeForm.get("identificationDocumentValidUntil").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate);
+      stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
+    }
+  }
+
+  selectStake(info) {
+    this.currentStakeholder = info.stakeholder;
+    this.currentIdx = info.idx;
+    this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
+    setTimeout(() => this.setFormData(), 500);
+  }
+
+  submit() {
+    if (this.returned !== 'consult') {
+      if (this.editStakes.valid) {
+        var stakeForm = this.editStakes.get("stake");
+
+        this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
+
+        if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
+
+        if (stakeForm.get("documentType") == null) { 
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = stakeForm.get("Address").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = stakeForm.get("Country").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality = stakeForm.get("Locality").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = stakeForm.get("ZIPCode").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = stakeForm.get("Locality").value;
+        }
+
+        if (stakeForm.get("Country") == null) {
+          if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = stakeForm.get("documentType").value;
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = stakeForm.get("identificationDocumentId").value;
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = stakeForm.get("identificationDocumentCountry").value;
+          this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = stakeForm.get("documentCountry").value;
+        }
+
+        this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+          if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
+            this.currentIdx = this.currentIdx + 1;
+            this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
+          } else {
+            this.data.updateData(true, 2);
+            this.route.navigate(['/store-comp']);
+          }
+
+        }, error => {
+        });
+      }
+    }
+  }
+
+  b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    const blobUrl = window.URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank',
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;` );
+  }
+}
 
 

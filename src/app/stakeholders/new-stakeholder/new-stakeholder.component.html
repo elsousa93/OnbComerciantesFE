@@ -1,10 +1,10 @@
-<app-nav-menu-interna></app-nav-menu-interna>
+<!--<app-nav-menu-interna></app-nav-menu-interna>-->
 <form [formGroup]="formNewStakeholder" (ngSubmit)="submit()">
 
   <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
     <!--<form [formGroup]="formNewStakeholder" (ngSubmit)="submit(formNewStakeholder.value)">-->
     <div class="row">
-      <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
+      <!--<div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
           <span class="navbar-text text-light">
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70" />
@@ -15,14 +15,14 @@
             </h5>
           </span>
         </nav>
-      </div>
+      </div>-->
 
       <!--<button id="btn5a1" (click)="getStakeFunction()" class= "mat-mini-fab" wappler-command="editContent">Test&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>-->
 
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-        <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+        <!--<div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
           <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="updateForm($event)"></app-stakeholders-list>
-        </div>
+        </div>-->
 
         <div class="row ms-0 me-0" *ngIf="isSelected" #selectedBlueDiv id="selectedBlueDiv">
           <h2 class="text-primary mt-5 ps-0 center-align">
@@ -120,7 +120,7 @@
             <div *ngIf="!showYesCC && showNoCC">
               <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
               <!--<input id="roleStakeholder" class="form-control campo_form" type="text" formControlName="Role" [readonly]="returned === 'consult'">-->
-              <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false">
+              <select id="roleStakeholder" class="form-select" formControlName="Role" [attr.disabled]="canEditRole() === false ? true : null">
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
               <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">  O parâmetro "Cargo" é obrigatório.</div>-->
@@ -154,7 +154,7 @@
           </div>
         </div>
 
-        <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+        <!--<div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
           <div class="table-responsive me-2 ps-3 pe-3">
             <table class="table table-success">
               <thead class="text-primary table-primary">
@@ -178,7 +178,7 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div>-->
 
         <div class="col ms-0 ps-0">
           <hr>

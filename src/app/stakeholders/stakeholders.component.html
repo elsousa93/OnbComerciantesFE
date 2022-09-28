@@ -14,24 +14,121 @@
       </nav>
     </div>
     <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-      <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
-        <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false>
-        </app-stakeholders-list>
+      <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5" *ngIf="!editStakeInfo">
+        <div class="accordion1 accordion-flush" id="accordionFlushExample1">
+          <div class="accordion1-item">
+            <h2 class="accordion1-header" id="flush-headingFour">
+              <button class="accordion1-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseFour" aria-expanded="true" aria-controls="flush-collapseFour">
+                <span class="material-symbols-outlined icon-accordion">
+                  <img src="assets/images/group_add_blue.svg" class="img_add" />
+                </span>&nbsp;&nbsp;{{'stakeholder.title'|translate|uppercase}}
+              </button>
+            </h2>
+            <div id="flush-collapseFour" class="accordion-collapse collapse show" aria-labelledby="flush-headingFour"
+                 data-bs-parent="#accordionFlushExample1">
+              <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false>
+              </app-stakeholders-list>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+
+
+      <ng-container *ngIf="editStakeInfo == true" [formGroup]="editStakes">
+        <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
+          <div class="accordion1 accordion-flush" id="accordionFlushExample">
+
+            <div class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingOne">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  <span class="material-symbols-outlined icon-accordion">
+                    <img src="assets/images/group_add_blue.svg" class="img_add" />
+                  </span>&nbsp;&nbsp;{{'stakeholder.title'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                   data-bs-parent="#accordionFlushExample">
+                <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="selectStake($event)">
+                </app-stakeholders-list>
+              </div>
+            </div>
+
+            <div class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingTwo">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  <span class="material-symbols-outlined icon-accordion">
+                    <img src="assets/images/group_add_blue.svg" class="img_add">
+                  </span>&nbsp;&nbsp;{{'stakeholder.identification'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                   data-bs-parent="#accordionFlushExample">
+                <app-new-stakeholder [currentStakeholder]="currentStakeholder"></app-new-stakeholder>
+              </div>
+            </div>
+
+            <div class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingThree">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  <span class="material-symbols-outlined icon-accordion">
+                    <img src="assets/images/group_add_blue.svg" class="img_add" />
+                  </span>&nbsp;&nbsp;{{'stakeholder.documents'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                   data-bs-parent="#accordionFlushExample">
+                <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5">
+                  <div class="table-responsive me-2 ps-3 pe-3">
+                    <table class="table table-success">
+                      <thead class="text-primary table-primary">
+                        <tr class="table-light text-center text-primary">
+                          <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.type'|translate}}</th>
+                          <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
+                          <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let doc of selectedStakeholderComprovativos">
+                          <td class="text-primary text-center">{{doc.documentType}}</td>
+                          <td class="text-primary text-center">{{doc.receivedAt}}</td>
+                          <td class="text-primary text-center">{{doc.validUntil}}</td>
+                          <td>
+                            <span>
+                              <img src="assets/images/search_blue.svg" (click)="b64toBlob(doc.uniqueReference, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;" />
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </ng-container>
+
       <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <span class="navbar-text me-2">
             <button id="btn5a2" (click)="redirectAddStakeholder()"
-              class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-              wappler-command="editContent" [disabled]="returned === 'consult'">
+                    class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                    wappler-command="editContent" [disabled]="returned === 'consult'">
               {{'stakeholder.add'|translate|uppercase}}&nbsp;
               <img src="assets/images/person_add_blue.svg" class="img_btn">
             </button>
           </span>
           <span class="navbar-text me-2">
             <button id="btn5a3"
-              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-              wappler-command="editContent" (click)="redirectInfoStakeholder(); ">
+                    class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                    wappler-command="editContent" (click)="redirectInfoStakeholder(); ">
               {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                 <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">
               </span>
@@ -40,5 +137,8 @@
         </nav>
       </div>
     </div>
+    <ng-container [formGroup]="editStakes">
+      <app-create-stakeholder *ngIf="editStakeInfo == false" [parentFormGroup]="editStakes.get['searchAddStakes']"></app-create-stakeholder>
+    </ng-container>
   </div>
 </div>

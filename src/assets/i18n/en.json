@@ -156,7 +156,8 @@
     "clientNumber": "Client Number",
     "clientName": "Client Name",
     "identification2": "Stakeholder Identification II",
-    "area": "Area"
+    "area": "Area",
+    "documents": "Stakeholder's Documents"
   },
   "stores": {
     "title": "Stores",
