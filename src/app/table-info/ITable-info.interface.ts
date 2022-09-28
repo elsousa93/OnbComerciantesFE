@@ -58,6 +58,11 @@ export interface Kinship {
   description: string
 }
 
+export interface DocTypes {
+  code: string
+  description: string
+}
+
 export interface CorporateRelations {
   code: string
   description: string

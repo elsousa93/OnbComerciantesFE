@@ -21,7 +21,7 @@
             <div class="accordion1 accordion-flush mb-3" id="accordionFlushExample">
               <div class="accordion1-item">
                 <h2 class="accordion1-header" id="flush-headingOne">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" (click)="onExpand(0)"
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                           data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                     <span class="material-symbols-outlined icon-accordion">
                       <img src="assets/images/filter.svg" class="img_add"
@@ -41,7 +41,7 @@
               </div>
               <div class="accordion1-item">
                 <h2 class="accordion-header" id="flush-headingTwo">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" (click)="onExpand(1)"
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" 
                           data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                     <span class="material-symbols-outlined icon-accordion">
                       <img src="assets/images/manage_accounts.svg" />
@@ -53,15 +53,15 @@
                 </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                     data-bs-parent="#accordionFlushExample">
-                  <div *ngIf="clientContext?.client">
-                    <!--<app-countrys [clientContext]="clientContext" [inline]="true"></app-countrys>-->
+                  <div *ngIf="clientContext?.clientExists">
+                    <app-countrys [clientContext]="clientContext" [inline]="true"></app-countrys>
                   </div>
                 </div>
               </div>
 
               <div class="accordion1-item">
                 <h2 class="accordion-header" id="flush-headingThree">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" (click)="onExpand(2)"
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                           data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                     <span class="material-symbols-outlined icon-accordion">
                       <img src="assets/images/manage_accounts.svg" />
@@ -73,7 +73,7 @@
                 </h2>
                 <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
                     data-bs-parent="#accordionFlushExample">
-                  <app-representation-power></app-representation-power>
+                  <app-representation-power [clientContext]="clientContext" ></app-representation-power>
                 </div>
               </div>
             </div>

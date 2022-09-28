@@ -14,10 +14,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 interface ProcessFT {
   processNumber: string;
-  contractNumber: string;
-  processDate: string;
+  nipc: number;
   nome: string;
-  user: string;
+  estado: string;
 }
 
 @Component({
@@ -35,6 +34,8 @@ export class ConsultasFTComponent implements OnInit{
       this.processes.paginator = pager;
       this.processes.paginator._intl = new MatPaginatorIntl();
       this.processes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+      this.processes.paginator.pageSizeOptions = [10, 25, 50, 100];
+      this.processes.paginator.length = 10;
     }
   }
   @ViewChild(MatSort) sort: MatSort;
@@ -101,19 +102,22 @@ export class ConsultasFTComponent implements OnInit{
   searchProcess() {
     this.logger.debug(this.form);
     this.loadProcesses([]);
+      var processStateToSearch = this.form.get("state").value;
       var processNumber = this.form.get('processNumber').value;
+      var processDocType = this.form.get('documentType').value;
+      var processDocNumber = this.form.get('documentNumber').value;
+      var processDateStart = this.form.get('processDateStart').value;
+      var processDateUntil = this.form.get('processDateEnd').value;
       if (processNumber !== '') {
         this.logger.debug(processNumber);
         var encodedCode = encodeURIComponent(processNumber);
-        this.processService.searchProcessByNumber(encodedCode, 0, 1).subscribe(result => {
-          this.processService.searchProcessByNumber(encodedCode, 0, result.pagination.total).subscribe(resul => {
+          this.processService.searchProcessByNumber(encodedCode, 0, this.processes.paginator.pageSize).subscribe(resul => {
             let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
               return {
                 processNumber: process.processNumber,
-                contractNumber: "123",
-                processDate: "12-02-2022",
+                nipc: 529463466,
                 nome: "EMPRESA UNIPESSOAL TESTES",
-                user: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state
               };
             })
             this.loadProcesses(processesArray);
@@ -122,19 +126,15 @@ export class ConsultasFTComponent implements OnInit{
             this.logger.debug(error);
             this.loadProcesses([]);
           });
-          });
           
-      } else {
-        var processStateToSearch = this.form.get("state").value;
-        this.processService.searchProcessByState(processStateToSearch, 0, 1).subscribe(result => {
-          this.processService.searchProcessByState(processStateToSearch, 0, result.pagination.total).subscribe(resul => {
+      } else if (processStateToSearch!=''){  
+          this.processService.searchProcessByState(processStateToSearch, 0, this.processes.paginator.pageSize).subscribe(resul => {
             let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
               return {
                 processNumber: process.processNumber,
-                contractNumber: "123",
-                processDate: "12-02-2022",
+                nipc: 529463466,
                 nome: "EMPRESA UNIPESSOAL TESTES",
-                user: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state
               };
             })
             this.loadProcesses(processesArray);
@@ -142,6 +142,52 @@ export class ConsultasFTComponent implements OnInit{
             this.logger.debug(error);
             this.loadProcesses([]);
           });
+      } else if (processDocNumber != '' && processDocType != '') {
+
+          this.processService.searchProcessByDoc(processDocType,processDocNumber, 0, this.processes.paginator.pageSize).subscribe(resul => {
+            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+              return {
+                processNumber: process.processNumber,
+                nipc: 529463466,
+                nome: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state
+              };
+            })
+            this.loadProcesses(processesArray);
+          }, error => {
+            this.logger.debug(error);
+            this.loadProcesses([]);
+          });
+       
+      } else if (processDateStart != '') {
+          this.processService.searchProcessByStartedDate(processDateStart, 0, this.processes.paginator.pageSize).subscribe(resul => {
+            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+              return {
+                processNumber: process.processNumber,
+                nipc: 529463466,
+                nome: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state
+              };
+            })
+            this.loadProcesses(processesArray);
+          }, error => {
+            this.logger.debug(error);
+            this.loadProcesses([]);
+          });
+      } else if (processDateUntil != '') {
+          this.processService.searchProcessByUntilDate(processDateUntil, 0, this.processes.paginator.pageSize).subscribe(resul => {
+            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+              return {
+                processNumber: process.processNumber,
+                nipc: 529463466,
+                nome: "EMPRESA UNIPESSOAL TESTES",
+                estado: process.state
+              };
+            })
+            this.loadProcesses(processesArray);
+          }, error => {
+            this.logger.debug(error);
+            this.loadProcesses([]);
           });
       }
   }

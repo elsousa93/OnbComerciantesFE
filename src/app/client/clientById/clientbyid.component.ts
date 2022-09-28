@@ -7,7 +7,7 @@ import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, of, OperatorFunction, pipe, fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { Country } from '../../stakeholders/IStakeholders.interface';
@@ -26,6 +26,11 @@ import { ClientContext } from './clientById.model';
 import { ClientCharacterizationComponent } from '../clientCharacterization/clientcharacterization.component';
 import { CountrysComponent } from 'src/app/countrys/countrys.component';
 import { RepresentationPowerComponent } from '../representation-power/representation-power.component';
+import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
+import { StakeholderService } from '../../stakeholders/stakeholder.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { StoreService } from '../../store/store.service';
+import { ShopDetailsAcquiring } from '../../store/IStore.interface';
 
 
 @Component({
@@ -563,8 +568,11 @@ export class ClientByIdComponent implements OnInit {
 
 
   constructor(private logger : LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
-    private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
-    
+    private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService,
+    private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
+    private stakeholderService: StakeholderService, private storeService: StoreService, private rootFormDirective: FormGroupDirective  ) {
+
+
     
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -580,14 +588,12 @@ export class ClientByIdComponent implements OnInit {
 
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
 
-      this.clientContext = new ClientContext(
-        this.route.getCurrentNavigation().extras.state["tipologia"],
-        this.route.getCurrentNavigation().extras.state["clientExists"],
-        this.route.getCurrentNavigation().extras.state["comprovativoCC"],
-        this.router.snapshot.params["id"],
-        this.route.getCurrentNavigation().extras.state["clientId"],
-        this.route.getCurrentNavigation().extras.state["dataCC"],
-      );
+      
+
+      
+      
+
+      console.log("Contexto acabado de ser criado: ", this.clientContext);
 
       this.logger.debug("------------");
       this.logger.debug(this.processId);
@@ -616,15 +622,7 @@ export class ClientByIdComponent implements OnInit {
       //  this.updateBasicForm();
       //});
 
-      console.log("antes da pesquisa");
-      this.clientService.getClientById(this.clientId).then(result => {
-        console.log("pesquisa do cliente: ", result);
-        this.clientContext.clientExists = true;
-        //this.clientContext.setClient(result);
-        this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
-        this.clientContext.setMerchantInfo(result.result);
-        this.updateBasicForm();
-      });
+      
 
       //this.initializeBasicFormControl();
 
@@ -641,8 +639,10 @@ export class ClientByIdComponent implements OnInit {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
             this.clientService.GetClientById(resul.id).subscribe(res => {
               this.merchantInfo = res;
+              this.clientContext.setMerchantInfo(res);
               if (this.NIFNIPC === undefined) {
                 this.NIFNIPC = this.merchantInfo.fiscalId;
+                this.clientContext.setNIFNIPC(this.NIFNIPC);
               }
               if (this.merchantInfo.incorporationStatement !== null) {
                 this.isCommercialSociety = true;
@@ -654,11 +654,13 @@ export class ClientByIdComponent implements OnInit {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'Company';
+                  this.clientContext.tipologia = this.tipologia;
                   this.initializeFormControlOther();
                 } else {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'ENI';
+                  this.clientContext.tipologia = this.tipologia;
                   this.initializeENI();
                 }
               }
@@ -680,6 +682,25 @@ export class ClientByIdComponent implements OnInit {
     this.data.updateData(false, 1, 2);
 
     this.returned = localStorage.getItem("returned");
+
+    this.clientContext = new ClientContext(
+      this.route.getCurrentNavigation().extras.state["tipologia"],
+      this.route.getCurrentNavigation().extras.state["clientExists"],
+      this.route.getCurrentNavigation().extras.state["comprovativoCC"],
+      this.router.snapshot.params["id"],
+      this.route.getCurrentNavigation().extras.state["clientId"],
+      this.route.getCurrentNavigation().extras.state["dataCC"],
+    );
+
+    console.log("antes da pesquisa");
+    this.clientService.getClientById(this.clientId).then(result => {
+      console.log("pesquisa do cliente: ", result);
+      this.clientContext.clientExists = true;
+      this.clientContext.setClient(result.result);
+      this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
+      //this.clientContext.setMerchantInfo(result.result);
+      this.updateBasicForm();
+    });
   }
 
   ngOnDestroy(): void {
@@ -823,8 +844,14 @@ export class ClientByIdComponent implements OnInit {
     this.clientCharacterizationComponent.submit();
     this.countriesComponent.submit();
     this.representationPowerComponent.submit();
-    this.route.navigate(["/stakeholders/"]);
+
+    console.log("submit| clientContext final: ", this.clientContext);
+
+    this.createSubmission();
+    
+    //this.route.navigate(["/stakeholders/"]);
   }
+
 
   redirectBeginningClient() {
     this.route.navigate(["/client"]);
@@ -892,5 +919,47 @@ export class ClientByIdComponent implements OnInit {
       return false;
 
     return true;
+  }
+
+  createSubmission() {
+    var context = this;
+    var newSubmission = this.clientContext.newSubmission;
+    newSubmission.startedAt = new Date().toISOString();
+    newSubmission.merchant = this.clientContext.getClient();
+
+    this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
+      localStorage.setItem("submissionId", result.id);
+      this.processNrService.changeProcessNumber(result.processNumber);
+
+      this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+        res.forEach(value => {
+          this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+            var storeToAdd: ShopDetailsAcquiring = {
+              activity: r.activity,
+              subActivity: r.secondaryActivity,
+              address: {
+                address: r.address.address,
+                isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+                shoppingCenter: r.address.shoppingCenter,
+                useMerchantAddress: r.address.sameAsMerchantAddress
+              },
+              bank: {
+                bank: r.bankingInformation
+              },
+              name: r.name,
+              productCode: r.product,
+              subproductCode: r.subproduct,
+              website: r.url,
+              equipments: []
+            }
+
+            context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+
+            });
+          });
+        });
+      });
+
+    });
   }
 }

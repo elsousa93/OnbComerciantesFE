@@ -129,7 +129,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ClientSearchComponent,
     SearchStakeholdersComponent,
     StoreTableComponent,
-    RepresentationPowerListComponent
+    RepresentationPowerListComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -181,7 +181,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'login', component: LoginComponent },
       { path: 'login/:tokenid', component: LoginComponent },
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'dashboard', component: DashboardComponent},
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
 

@@ -12,6 +12,8 @@ import { DataService } from '../nav-menu-interna/data.service';
 import { Process } from '../process/process.interface';
 import { ProcessGet, ProcessList, ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
+import { QueuesService } from './queues.service';
+import { Risk, RiskAssessmentPost } from './IQueues.interface';
 
 
 @Component({
@@ -45,14 +47,30 @@ export class QueuesDetailComponent implements OnInit{
   public enrollmentStoreNumber: string;
   public enrollmentTerminalNumber: string;
 
+  public elegibilityStatus: string;
+  public risk = new RiskAssessmentPost();
+
+  public subs: Subscription[] = [];
+
+  public riskRequest;
+
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private data: DataService,
-    private router: ActivatedRoute, private processService: ProcessService) {
+    private route: Router, private data: DataService, private queuesInfo: QueuesService, private router: ActivatedRoute, private processService: ProcessService) {
 
     //Gets Queue Name from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
       this.queueName = this.route.getCurrentNavigation().extras.state["queueName"];
     }
+
+    //chamada à API para obter os dados da eligibilidade
+    this.queuesInfo.postEligibilityAssessment("this.fiscalId", "this.clientType").subscribe(result => { //TODO: Alterar
+      this.elegibilityStatus = result;
+    });
+
+    //chamada à API para obter os dados do risco
+    this.queuesInfo.postRiskAssessment("this.fiscalId", this.riskRequest, "this.clientType").subscribe(result => { //TODO: Alterar
+      this.risk = result;
+    });
 
     this.ngOnInit();
     this.logger.debug('Process Id ' + this.processId);
