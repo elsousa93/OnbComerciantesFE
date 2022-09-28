@@ -932,39 +932,48 @@ export class ClientByIdComponent implements OnInit {
     newSubmission.startedAt = new Date().toISOString();
     newSubmission.merchant = this.clientContext.getClient();
 
-    this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
-      localStorage.setItem("submissionId", result.id);
-      this.processNrService.changeProcessNumber(result.processNumber);
+    var crc = this.clientContext.crc;
 
-      //this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
-      //  res.forEach(value => {
-      //    this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-      //      var storeToAdd: ShopDetailsAcquiring = {
-      //        activity: r.activity,
-      //        subActivity: r.secondaryActivity,
-      //        address: {
-      //          address: r.address.address,
-      //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-      //          shoppingCenter: r.address.shoppingCenter,
-      //          useMerchantAddress: r.address.sameAsMerchantAddress
-      //        },
-      //        bank: {
-      //          bank: r.bankingInformation
-      //        },
-      //        name: r.name,
-      //        productCode: r.product,
-      //        subproductCode: r.subproduct,
-      //        website: r.url,
-      //        equipments: []
-      //      }
+    if (crc !== undefined && crc !== null) {
+      this.submissionService.EditSubmission(this.clientContext.submissionID, newSubmission).subscribe(result => {
+        localStorage.setItem("submissionId", result.id);
+        this.processNrService.changeProcessNumber(result.processNumber);
+      });
+    } else {
+      this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
+        localStorage.setItem("submissionId", result.id);
+        this.processNrService.changeProcessNumber(result.processNumber);
 
-      //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
+        //this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+        //  res.forEach(value => {
+        //    this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+        //      var storeToAdd: ShopDetailsAcquiring = {
+        //        activity: r.activity,
+        //        subActivity: r.secondaryActivity,
+        //        address: {
+        //          address: r.address.address,
+        //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+        //          shoppingCenter: r.address.shoppingCenter,
+        //          useMerchantAddress: r.address.sameAsMerchantAddress
+        //        },
+        //        bank: {
+        //          bank: r.bankingInformation
+        //        },
+        //        name: r.name,
+        //        productCode: r.product,
+        //        subproductCode: r.subproduct,
+        //        website: r.url,
+        //        equipments: []
+        //      }
 
-      //      });
-      //    });
-      //  });
-      //});
+        //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
 
-    });
+        //      });
+        //    });
+        //  });
+        //});
+
+      });
+    }
   }
 }
