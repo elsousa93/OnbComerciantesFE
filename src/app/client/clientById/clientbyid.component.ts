@@ -57,9 +57,9 @@ export class ClientByIdComponent implements OnInit {
   errorMsg: string = "";
 
   public clientId: string;
-  
+
   //client: Client = {} as Client;
-  
+
   public client: OutboundClient = {
     "merchantId": null,
     "legalName": null,
@@ -148,7 +148,7 @@ export class ClientByIdComponent implements OnInit {
   public subscription: Subscription;
   public subs: Subscription[] = [];
 
-    
+
 
   returned: string; //variável para saber se estamos a editar um processo
   merchantInfo: any;
@@ -157,13 +157,13 @@ export class ClientByIdComponent implements OnInit {
   isAssociatedWithFranchise: boolean;
   NIFNIPC: any;
   idClient: string;
-  comprovativoCC: FileAndDetailsCC; 
+  comprovativoCC: FileAndDetailsCC;
 
   DisableNIFNIPC = null;
   collectCRC: boolean;
   lastExpandedTab: number;
   touchedTabs: boolean[] = new Array<boolean>(3).fill(false);
-  
+
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -172,7 +172,7 @@ export class ClientByIdComponent implements OnInit {
       this.logger.debug("FETCH LEGAL NATURES");
       this.logger.debug(result);
       this.logger.debug(this.legalNatureList);
-      this.legalNatureList = this.legalNatureList.sort((a, b) => a.description> b.description? 1 : -1);
+      this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
     }, error => this.logger.error(error)));
 
 
@@ -190,7 +190,7 @@ export class ClientByIdComponent implements OnInit {
 
   updateBasicForm() {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
-    
+
   }
 
   //updateFormControls() {
@@ -237,7 +237,7 @@ export class ClientByIdComponent implements OnInit {
   //}
 
   initializeENI() {
-    
+
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
     console.log("now NIFNIPC is " + this.NIFNIPC)
@@ -262,17 +262,17 @@ export class ClientByIdComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-      this.form = new FormGroup({
-        natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-        commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-        collectCRC: new FormControl(this.collectCRC, [Validators.required])
-        //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-      });
+    this.form = new FormGroup({
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
+      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+      collectCRC: new FormControl(this.collectCRC, [Validators.required])
+      //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+    });
 
     if (this.tipologia === 'ENI') {
       this.setCommercialSociety(false);
     }
-      
+
     //this.form.get("commercialSociety").valueChanges.subscribe(data => {
     //  this.logger.debug("valor mudou commercial society");
     //  this.logger.debug(data);
@@ -300,13 +300,13 @@ export class ClientByIdComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl({value:(this.returned !== null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled:localStorage.getItem("clientName")!==null}, Validators.required), //sim
+      socialDenomination: new FormControl({ value: (this.returned !== null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
-      
+
       this.onLegalNatureSelected();
 
       if (this.legalNatureList2.length > 0)
@@ -351,7 +351,7 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       //commercialSociety: new FormControl('true', [Validators.required]), //sim
       crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
-      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */}, [Validators.required]), //sim
+      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: true/*, disabled: this.clientExists*/ }), //sim
       socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
@@ -371,7 +371,7 @@ export class ClientByIdComponent implements OnInit {
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC, [Validators.required])
     });
-      
+
 
     this.logger.debug(this.form);
     this.form.get("CAE1").valueChanges.subscribe(data => {
@@ -567,13 +567,13 @@ export class ClientByIdComponent implements OnInit {
   }
 
 
-  constructor(private logger : LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
+  constructor(private logger: LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private rootFormDirective: FormGroupDirective  ) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private rootFormDirective: FormGroupDirective) {
 
 
-    
+
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
       //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
@@ -588,10 +588,10 @@ export class ClientByIdComponent implements OnInit {
 
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
 
-      
 
-      
-      
+
+
+
 
       console.log("Contexto acabado de ser criado: ", this.clientContext);
 
@@ -622,7 +622,7 @@ export class ClientByIdComponent implements OnInit {
       //  this.updateBasicForm();
       //});
 
-      
+
 
       //this.initializeBasicFormControl();
 
@@ -669,10 +669,10 @@ export class ClientByIdComponent implements OnInit {
         }
       });
     }
-    this.ngOnInit();  
+    this.ngOnInit();
   }
 
-   //fim do construtor
+  //fim do construtor
 
   ngOnInit(): void {
     // this.clientId = String(this.router.snapshot.params['id']);
@@ -700,6 +700,8 @@ export class ClientByIdComponent implements OnInit {
       this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
       //this.clientContext.setMerchantInfo(result.result);
       this.updateBasicForm();
+    }).then(result => {
+      this.createSubmission();
     });
   }
 
@@ -731,7 +733,7 @@ export class ClientByIdComponent implements OnInit {
   getCommercialSociety() {
     return this.isCommercialSociety;
   }
- 
+
   onLegalNatureSelected() {
     var exists = false;
     this.logger.debug("entrou no legalnatureselected");
@@ -742,7 +744,7 @@ export class ClientByIdComponent implements OnInit {
       if (legalNatureToSearch == legalNat.code) {
         exists = true;
         this.legalNatureList2 = legalNat.secondaryNatures;
-        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description> b.description? 1 : -1);
+        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description > b.description ? 1 : -1);
       }
     })
     if (!exists) {
@@ -751,12 +753,11 @@ export class ClientByIdComponent implements OnInit {
   }
 
 
-   searchByCRC() {
+  searchByCRC() {
     //var crcInserted = this.form.get('crcCode');
     //this.logger.debug("codigo CRC:" , this.form.get('crcCode').value);
     //this.logger.debug(crcInserted);
     //this.crcFound = true;
-    
 
      var crcInserted = this.form.get('crcCode').value;
      var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
@@ -774,41 +775,41 @@ export class ClientByIdComponent implements OnInit {
          //this.errorMsg = 'CRC inserido não foi encontrado';
        }
 
-        var clientByCRC = o;
+      var clientByCRC = o;
 
-       this.crcFound = true;
-       this.crcNotExists = false;
-       this.errorMsg = '';
-        this.processClient.legalNature = clientByCRC.legalNature;
-        this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
-        this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
+      this.crcFound = true;
+      this.crcNotExists = false;
+      this.errorMsg = '';
+      this.processClient.legalNature = clientByCRC.legalNature;
+      this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
+      this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
 
-        this.processClient.fiscalId = clientByCRC.fiscalId;
-        this.processClient.companyName = clientByCRC.companyName;
+      this.processClient.fiscalId = clientByCRC.fiscalId;
+      this.processClient.companyName = clientByCRC.companyName;
 
-        this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
-        this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
+      this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
+      this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
 
-        this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
-        this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
-        this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
-        this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
+      this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
+      this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
+      this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
+      this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
+      this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
 
-        this.processClient.expirationDate = clientByCRC.expirationDate;
-        this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
+      this.processClient.expirationDate = clientByCRC.expirationDate;
+      this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
 
-        this.processClient.stakeholders = clientByCRC.stakeholders;
+      this.processClient.stakeholders = clientByCRC.stakeholders;
 
-        this.processClient.pdf = clientByCRC.pdf;
+      this.processClient.pdf = clientByCRC.pdf;
 
-        this.processClient.code = clientByCRC.code;
-        this.processClient.requestId = clientByCRC.requestId;
+      this.processClient.code = clientByCRC.code;
+      this.processClient.requestId = clientByCRC.requestId;
 
-        this.logger.debug("o crc chamou o initialize");
-        this.initializeFormControlCRC();
-      });
-    
+      this.logger.debug("o crc chamou o initialize");
+      this.initializeFormControlCRC();
+    });
+
 
     //if (crcInserted === '123') {
     //  this.crcFound = true;
@@ -822,9 +823,9 @@ export class ClientByIdComponent implements OnInit {
     return this.form.get('crcCode').value;
   }
 
-  onExpand(index: number){
+  onExpand(index: number) {
     this.data.updateData(false, 1, index + 2);
-    if(this.lastExpandedTab !== undefined){
+    if (this.lastExpandedTab !== undefined) {
       this.touchedTabs[this.lastExpandedTab] = true;
       if (this.lastExpandedTab === 0)
         this.clientCharacterizationComponent.submit(); //updates the client context when leaving the first tab
@@ -852,9 +853,9 @@ export class ClientByIdComponent implements OnInit {
 
     console.log("submit| clientContext final: ", this.clientContext);
 
-    this.createSubmission();
-    
-//    this.route.navigate(["/stakeholders/"]);
+    this.updateSubmission();
+
+    //    this.route.navigate(["/stakeholders/"]);
   }
 
 
@@ -881,7 +882,7 @@ export class ClientByIdComponent implements OnInit {
       var zipCode = zipcode.split('-');
 
       this.subs.push(this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
-        
+
         var addressToShow = address[0];
 
         this.form.get('address').setValue(addressToShow.address);
@@ -929,22 +930,14 @@ export class ClientByIdComponent implements OnInit {
   createSubmission() {
     var context = this;
     var newSubmission = this.clientContext.newSubmission;
-    newSubmission.startedAt = new Date().toISOString();
+    //newSubmission.startedAt = new Date().toISOString();
     newSubmission.merchant = this.clientContext.getClient();
 
-    var crc = this.clientContext.crc;
+    this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
+      context.clientContext.submissionID = result.id;
+        localStorage.setItem("submissionId", result.id);
+        context.processNrService.changeProcessNumber(result.processNumber);
 
-    if (crc !== undefined && crc !== null) {
-      this.submissionService.EditSubmission(this.clientContext.submissionID, newSubmission).subscribe(result => {
-        localStorage.setItem("submissionId", result.id);
-        this.processNrService.changeProcessNumber(result.processNumber);
-        this.route.navigate["/stakeholders/"];
-      });
-    } else {
-      this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
-        localStorage.setItem("submissionId", result.id);
-        this.processNrService.changeProcessNumber(result.processNumber);
-        this.route.navigate["/stakeholders/"];
         //this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
         //  res.forEach(value => {
         //    this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
@@ -975,7 +968,17 @@ export class ClientByIdComponent implements OnInit {
         //});
 
       });
-
-    }
+      //this.route.navigate["/stakeholders/"];
   }
+
+  updateSubmission() {
+    var context = this;
+    var submissionID = this.clientContext.submissionID;
+
+    this.submissionService.EditSubmission(submissionID, this.clientContext.newSubmission).subscribe(result => {
+      console.log("atualizou a submissão: ", result);
+      this.route.navigate["/stakeholders/"];
+    });
+  }
+  
 }
