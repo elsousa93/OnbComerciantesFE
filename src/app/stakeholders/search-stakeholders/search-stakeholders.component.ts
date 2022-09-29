@@ -56,6 +56,7 @@ export class SearchStakeholdersComponent implements OnInit {
   }
 
   searchStakeholders(clientID) {
+    console.log("entrou na pesquisa de um stakeholder");
     var context = this;
 
     /*this.onSearchSimulation(22181900000011);*/
@@ -102,6 +103,8 @@ export class SearchStakeholdersComponent implements OnInit {
       //context.resultError = "Não existe Comerciante com esse número.";
       //this.searchDone = true;
     });
+
+    console.log('passou pela pesquisa e o valor encontrado foi ', this.stakeholdersToShow);
   }
 
   selectStakeholder(stakeholder, index) {
