@@ -58,7 +58,7 @@ export class SearchStakeholdersComponent implements OnInit {
   searchStakeholders(clientID) {
     console.log("entrou na pesquisa de um stakeholder");
     var context = this;
-
+    var stakeholder = null;
     /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery(clientID, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
@@ -73,19 +73,36 @@ export class SearchStakeholdersComponent implements OnInit {
         });
         context.stakeholdersToShow = [];
         clients.forEach(function (value, index) {
-          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-            var stakeholder = {
-              "stakeholderNumber": c.stakeholderId,
-              "stakeholderName": c.shortName,
-              "stakeholderNIF": c.fiscalIdentification.fiscalId,
+          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").then(success => {
+            var stake = success.result;
+            stakeholder = {
+              "stakeholderNumber": stake.stakeholderId,
+              "stakeholderName": stake.shortName,
+              "stakeholderNIF": stake.fiscalIdentification.fiscalId,
               "elegible": "elegivel",
               "associated": "SIM"
             } as IStakeholders;
             console.log('Dentro do forEach, valor de um stake ', stakeholder);
             console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
+          }, error => {
+            console.log("Ocorreu um erro ", error);
+          }).then(success => {
             context.stakeholdersToShow.push(stakeholder);
             console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
-          });
+          })
+          //context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+          //  var stakeholder = {
+          //    "stakeholderNumber": c.stakeholderId,
+          //    "stakeholderName": c.shortName,
+          //    "stakeholderNIF": c.fiscalIdentification.fiscalId,
+          //    "elegible": "elegivel",
+          //    "associated": "SIM"
+          //  } as IStakeholders;
+          //  console.log('Dentro do forEach, valor de um stake ', stakeholder);
+          //  console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
+          //  context.stakeholdersToShow.push(stakeholder);
+          //  console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
+          //});
         })
       } else {
         //context.initializeNotFoundForm();
