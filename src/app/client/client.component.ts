@@ -781,8 +781,12 @@ export class ClientComponent implements OnInit {
         dataCC: this.dataCCcontents
       }
     };
-    let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? ''
-    localStorage.setItem("clientName", clientName);
+
+    if (this.dataCCcontents) {
+      let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? '';
+      localStorage.setItem("clientName", clientName);
+    }
+
     if (NIFNIPC !== null && NIFNIPC !== undefined)
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
     else

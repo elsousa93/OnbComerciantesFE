@@ -103,7 +103,7 @@
                         <img src="assets/images/arrow_back_ios_white.svg"
                              style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
                       </button>
-                      <button id="btn5a2" [disabled] = "infoStakeholders.valid" (click)="submit()"
+                      <button id="btn5a2" [disabled] = "!infoStakeholders.valid" (click)="submit()"
                               class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                               wappler-command="editContent">
                         {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
