@@ -21,7 +21,7 @@ export class ClientContext{
     comprovativoCC: FileAndDetailsCC;
     //NIFNIPC: string;
     clientId: string;
-    dataCC: string;
+    dataCC: any;
     crc?: any;
   processId?: string;
 
@@ -165,7 +165,8 @@ export class ClientContext{
   "documents": []
 };
 
-  constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: string) {
+  constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: any) {
+    this.dataCC = dataCC;
         this.tipologia = tipologia;
         this.clientExists = clientExists;
         this.comprovativoCC = comprovativoCC;
