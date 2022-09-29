@@ -6,9 +6,9 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let stake of stakeholdersToShow; let idx = index" (click)="selectStakeholder(stake, idx)" [ngClass]="{'row-selected': stake?.stakeholderNIF === currentStakeholder.fiscalId}">
-      <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
-      <td class="text-primary text-center">{{stake.stakeholderName}}</td>
+    <tr *ngFor="let stake of stakeholdersToShow; let idx = index" (click)="selectStakeholder(stake, idx)" [ngClass]="{'row-selected': stake['stakeholderNIF'] === currentStakeholder['stakeholderNIF']}">
+      <th scope="row" class="text-primary text-center">{{stake['stakeholderNIF']}}</th>
+      <td class="text-primary text-center">{{stake['stakeholderName']}}</td>
     </tr>
   </tbody>
 </table>
