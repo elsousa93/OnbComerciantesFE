@@ -122,21 +122,21 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
     var pep = this.infoStakeholders.controls["pep"];
     if (pep.get("pep12months").value) {
-      pep.get("pep12months").get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
-      pep.get("pep12months").get("pepCountry").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepCountry);
-      pep.get("pep12months").get("pepSinceWhen").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepSince);
-      pep.get("pep12months").get("kind").setValue(KindPep.PEP);
+      pep.get("pep12months")?.get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
+      pep.get("pep12months")?.get("pepCountry").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepCountry);
+      pep.get("pep12months")?.get("pepSinceWhen").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepSince);
+      pep.get("pep12months")?.get("kind").setValue(KindPep.PEP);
     } else if (pep.get("pepFamiliarOf").value) {
-      pep.get("pepRelations").get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta
-      pep.get("pepFamiliarOf").get("pepFamilyRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.degreeOfRelatedness);
-      pep.get("pepFamiliarOf").get("kind").setValue(KindPep.FAMILY);
+      pep.get("pepRelations")?.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta
+      pep.get("pepFamiliarOf")?.get("pepFamilyRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.degreeOfRelatedness);
+      pep.get("pepFamiliarOf")?.get("kind").setValue(KindPep.FAMILY);
     } else if (pep.get("pepRelations").value) {
-      pep.get("pepRelations").get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
-      pep.get("pepRelations").get("pepTypeOfRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.businessPartnership);
-      pep.get("pepRelations").get("kind").setValue(KindPep.BUSINESS);
+      pep.get("pepRelations")?.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
+      pep.get("pepRelations")?.get("pepTypeOfRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.businessPartnership);
+      pep.get("pepRelations")?.get("kind").setValue(KindPep.BUSINESS);
     } else if (pep.get("pepPoliticalPublicJobs").value) {
-      pep.get("pepPoliticalPublicJobs").get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
-      pep.get("pepPoliticalPublicJobs").get("kind").setValue(KindPep.PEP);
+      pep.get("pepPoliticalPublicJobs")?.get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
+      pep.get("pepPoliticalPublicJobs")?.get("kind").setValue(KindPep.PEP);
     } else {
       pep.get("pepType").setValue("R000"); // O Cliente não exerce qualquer cargo público em território nacional e paralelamente não é uma pessoa politicamente exposta
     }
