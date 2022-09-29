@@ -9,7 +9,7 @@ export class LoggerService {
   constructor(private logger : NGXLogger) {}
 
   requestObj(request: HttpRequest<any>) {
-    this.request(request.method, request.urlWithParams, this.serializeHeaders(request.headers), request.body, "");
+    this.request(request.method, request.urlWithParams, this.serializeHeaders(request.headers), JSON.stringify(request.body), "");
   }
 
   request(method:string, url: string, header: string, body:string, messageId: string ){

@@ -29,7 +29,7 @@
       </h2>
       <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
       <!-------FORM------------->
-      <form [formGroup]="formStakeholderSearch" (ngSubmit)="searchStakeholder()">
+      <form [formGroup]="formStakeholderSearch"> <!-- (ngSubmit)="searchStakeholder()" -->
         <div class="row ms-0 me-0">
           <div class="col-5 ms-0 me-0 ps-0 pe-0">
             <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
@@ -96,10 +96,10 @@
               </button> <!--Pesquisar interveniente-->
             </span>
             <!--<span class="navbar-text me-2">
-            <button *ngIf="newStake" id="btn5a2" (click)="addStakeholder()" class="btn botao_branco" wappler-command="editContent">  ADICIONAR INTERVENIENTE&nbsp;
-              <img src="assets/images/person_add_blue.svg" class="img_btn">
-            </button>
-            </span>-->
+      <button *ngIf="newStake" id="btn5a2" (click)="addStakeholder()" class="btn botao_branco" wappler-command="editContent">  ADICIONAR INTERVENIENTE&nbsp;
+        <img src="assets/images/person_add_blue.svg" class="img_btn">
+      </button>
+      </span>-->
 
           </nav>
         </div>

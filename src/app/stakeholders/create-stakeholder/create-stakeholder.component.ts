@@ -342,6 +342,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   initializeNotFoundForm() {
+    console.log('Não encontrou um stake ');
     switch (this.isParticularSearched) {
       case false:
         let nipc = this.formStakeholderSearch.get("documentType").value === "0502" ?
@@ -383,6 +384,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   deactivateNotFoundForm() {
+    console.log('Encontrou um stake ');
     this.foundStakeholders = true;
   }
 
