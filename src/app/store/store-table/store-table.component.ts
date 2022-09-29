@@ -9,6 +9,7 @@ import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 const testValues: ShopDetailsAcquiring[] = [
   {
@@ -184,6 +185,10 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   returned: string;
   storesList: ShopDetailsAcquiring[] = [];
 
+  @Input() deleteStoreEvent: Observable<ShopDetailsAcquiring>;
+  @Input() insertStoreEvent: Observable<ShopDetailsAcquiring>;
+
+
   constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService) { }
 
   storesMat = new MatTableDataSource<ShopDetailsAcquiring>();
@@ -213,6 +218,24 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
     this.getStoreList();
+
+    this.deleteStoreEvent.subscribe(result => {
+      var storeToRemove = result;
+
+      var idx = this.storesList.indexOf(storeToRemove);
+
+      this.storesList.splice(idx, 1);
+
+      this.loadStores(this.storesList);
+    });
+
+    this.insertStoreEvent.subscribe(result => {
+      var storeToInsert = result;
+
+      this.storesList.push(storeToInsert);
+
+      this.loadStores(this.storesList);
+    });
   }
 
   ngAfterViewInit(): void {
