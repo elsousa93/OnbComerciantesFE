@@ -31,13 +31,13 @@ export class QueuesService {
   }
 
   postExternalState(processId: string, state: State, externalState: ExternalState) {
-    var URI = this.acquiringUrl + "api/v1/process/" + processId + state;
+    var URI = this.acquiringUrl + "process/" + processId + state;
     return this.http.post(URI, externalState);
   }
 
   // Stakeholders List
   getProcessStakeholdersList(processId: string) {
-    return this.http.get<SimplifiedReference[]>(this.acquiringUrl + "api/v1/process/" + processId + '/stakeholder');
+    return this.http.get<SimplifiedReference[]>(this.acquiringUrl + "process/" + processId + '/stakeholder');
   }
 
   // Stakeholder Details
@@ -47,7 +47,7 @@ export class QueuesService {
 
   // Shops List
   getProcessShopsList(processId: string) {
-    return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'process/' + processId + '/shop');
+    return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'process/' + processId + '/merchant/shop');
   }
 
   // Shop Details

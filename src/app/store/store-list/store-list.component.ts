@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
@@ -63,6 +63,18 @@ export class StoreComponent implements AfterViewInit {
     //this.storesMat = new MatTableDataSource();
     //this.storesMat.paginator = this.paginator;
     //this.storesMat.sort = this.sort;
+  }
+
+  removedStoreSubject: Subject<ShopDetailsAcquiring> = new Subject<ShopDetailsAcquiring>();
+
+  insertedStoreSubject: Subject<ShopDetailsAcquiring> = new Subject<ShopDetailsAcquiring>();
+
+  emitRemovedStore(store) {
+    this.removedStoreSubject.next(store);
+  }
+
+  emitInsertedStore(store) {
+    this.removedStoreSubject.next(store);
   }
 
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
@@ -157,7 +169,8 @@ export class StoreComponent implements AfterViewInit {
     if (this.currentStore !== null) {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
-        this.route.navigateByUrl('store-comp/');
+        this.emitRemovedStore(this.currentStore);
+        //this.route.navigateByUrl('store-comp/');
       });
     }
   }
@@ -211,6 +224,7 @@ export class StoreComponent implements AfterViewInit {
         console.log('ADD');
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
+          this.emitInsertedStore(result);
         });
       } else {
         console.log('EDIT');
