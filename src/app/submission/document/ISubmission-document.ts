@@ -21,6 +21,6 @@ export interface PostDocument{
 }
 
 interface FileDocument {
-  fileType: string
-  binary: string
+  fileType?: string
+  binary?: string
 }
