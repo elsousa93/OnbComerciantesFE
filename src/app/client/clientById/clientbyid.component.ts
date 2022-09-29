@@ -994,8 +994,6 @@ export class ClientByIdComponent implements OnInit {
     this.submissionService.EditSubmission(submissionID, this.clientContext.newSubmission).subscribe(result => {
       this.route.navigateByUrl('/stakeholders');
     });
-
-   
   }
   
 }

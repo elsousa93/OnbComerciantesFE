@@ -223,30 +223,37 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   getStoreList() {
     //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
-    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
-     result.forEach(value => {
-       this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-         this.storesList.push(res);
+    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
+      var shops = result.result;
+
+     shops.forEach(value => {
+       this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).then(res => {
+         var shop = res.result;
+         this.storesList.push(shop);
        });
      });
-     this.loadStores(this.storesList);
+     //this.loadStores(this.storesList);
+    }).then(next => {
+      //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
+      if (this.returned !== null) {
+        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+          this.storeService.getSubmissionShopsList(result[0].submissionId).then(resul => {
+            var shops = result.result;
+            shops.forEach(val => {
+              this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).then(res => {
+                var shop = res.result;
+                var index = this.storesList.findIndex(store => store.shopId == shop.shopId);
+                if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
+                  this.storesList.push(shop);
+              });
+            });
+            //this.loadStores(this.storesList);
+          })
+        });
+      }
+    }).then(next => {
+      this.loadStores(this.storesList);
     });
-
-    //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
-    if (this.returned !== null) {
-     this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-       this.storeService.getSubmissionShopsList(result[0].submissionId).subscribe(resul => {
-         resul.forEach(val => {
-           this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).subscribe(res => {
-             var index = this.storesList.findIndex(store => store.shopId == res.shopId);
-             if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
-               this.storesList.push(res);
-           });
-         });
-         this.loadStores(this.storesList);
-       })
-     });
-    }
     //this.loadStores(this.storesList);
   }
 

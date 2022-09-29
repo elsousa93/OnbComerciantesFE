@@ -207,10 +207,12 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     });
 
 
-    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).subscribe(result => {
-      result.forEach(value => {
-        this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-          this.stores.push(res);
+      this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
+        var shops = result.result;
+      shops.forEach(value => {
+        this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).then(res => {
+          var shop = res.result;
+          this.stores.push(shop);
         });
       });
       this.loadStores(this.stores);

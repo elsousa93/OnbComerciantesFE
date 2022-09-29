@@ -102,6 +102,6 @@ export class ClientService {
   getClientById(clientID: string) {
     var url = this.urlOutbound + "api/v1/merchant/" + clientID;
 
-    return this.API.callAPIOutboundTest(HttpMethod.GET, url, "por mudar", "por mudar", "por mudar", "por mudar");
+    return this.API.callAPIOutbound(HttpMethod.GET, url, "por mudar", "por mudar", "por mudar", "por mudar");
   }
 }

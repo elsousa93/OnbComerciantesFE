@@ -10,6 +10,8 @@ import { Product, Subproduct } from '../commercial-offer/ICommercialOffer.interf
 
 import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound, ShopBankingInformation } from './IStore.interface';
 import { BehaviorSubject } from 'rxjs';
+import { APIRequestsService } from '../apirequests.service';
+import { HttpMethod } from '../enums/enum-data';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +29,7 @@ export class StoreService {
 
   constructor(private router: ActivatedRoute,
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private tableinfo: TableInfoService) {
+    private route: Router, private tableinfo: TableInfoService, private APIService: APIRequestsService) {
     this.baseUrl = configuration.baseUrl;
     this.urlOutbound = configuration.outboundUrl;
     this.mockacoUrl = configuration.mockacoUrl;
@@ -122,7 +124,12 @@ export class StoreService {
 
   getSubmissionShopsList(submissionId: string) {
     //tentar alterar o url para o do Mockaco
-    return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop');
+    //return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop');
+    var url = this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop';
+
+
+    return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
+
   }
 
   addShopToSubmission(submissionId: string, newShop: ShopDetailsAcquiring) {
@@ -131,7 +138,10 @@ export class StoreService {
 
   getSubmissionShopDetails(submissionId: string, shopId: string) {
     //tentar alterar o url para o do Mockaco
-    return this.http.get<ShopDetailsAcquiring>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId);
+    //return this.http.get<ShopDetailsAcquiring>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId);
+    var url = this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId;
+
+    return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
 
   updateSubmissionShop(submissionId: string, shopId: string, newShop: ShopDetailsAcquiring) {

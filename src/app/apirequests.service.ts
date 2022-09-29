@@ -24,7 +24,7 @@ export class APIRequestsService {
 
   }
 
-  callAPIAcquiringTest(httpMethod: HttpMethod, httpURL: string, body?: any) {
+  callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
     var requestResponse: RequestResponse = {};
     return new Promise<RequestResponse>((resolve, reject) => {
       this.http[httpMethod](httpURL, body).subscribe(result => {
@@ -40,7 +40,7 @@ export class APIRequestsService {
     });
   }
 
-  callAPIOutboundTest(httpMethod: HttpMethod, httpURL: string, searchId: string, searchType: string, requestId: string, AcquiringUserId: string, body?: any, countryId?: string, acceptLanguage?: string, AcquiringPartnerId?: string, AcquiringBranchId?: string, AcquiringProcessId?: string) {
+  callAPIOutbound(httpMethod: HttpMethod, httpURL: string, searchId: string, searchType: string, requestId: string, AcquiringUserId: string, body?: any, countryId?: string, acceptLanguage?: string, AcquiringPartnerId?: string, AcquiringBranchId?: string, AcquiringProcessId?: string) {
     var requestResponse: RequestResponse = {};
 
     var HTTP_OPTIONS = {

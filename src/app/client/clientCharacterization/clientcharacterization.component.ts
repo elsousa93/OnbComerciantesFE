@@ -788,17 +788,6 @@ export class ClientCharacterizationComponent implements OnInit {
 
       this.logger.debug("o crc chamou o initialize");
       this.initializeFormControlCRC();
-
-      this.submit();
-
-      var newSubmission = this.clientContext.newSubmission;
-
-      newSubmission.merchant = this.clientContext.getClient();
-      this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
-        console.log("submeteu a submissao do crc corretamente", result);
-        this.clientContext.newSubmission = newSubmission;
-        this.clientContext.submissionID = result.id;
-      })
       
     }, error: (error)=>{
         this.crcNotExists = true;
