@@ -74,7 +74,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   emitInsertedStore(store) {
-    this.removedStoreSubject.next(store);
+    this.insertedStoreSubject.next(store);
   }
 
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
@@ -224,11 +224,12 @@ export class StoreComponent implements AfterViewInit {
         console.log('ADD');
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
-          this.emitInsertedStore(result);
+          this.currentStore.id = result["id"];
+          this.emitInsertedStore(this.currentStore);
         });
       } else {
         console.log('EDIT');
-        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.shopId, this.currentStore).subscribe(result => {
+        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
         });
       }
