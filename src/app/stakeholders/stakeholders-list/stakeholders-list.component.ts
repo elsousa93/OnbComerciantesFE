@@ -187,8 +187,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
             //  context.submissionStakeholders.push(stakeholderToInsert);
 
             //})
-            if (AcquiringStakeholder.stakeholderId != null) { 
-              var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").toPromise();
+            if (AcquiringStakeholder.id != null) { 
+              var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "por mudar", "por mudar").toPromise();
 
               stakeholderFunction.then(success => {
                 stakeholderToInsert.stakeholderOutbound = success;
