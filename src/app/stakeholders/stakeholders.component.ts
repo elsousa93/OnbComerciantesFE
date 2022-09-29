@@ -421,6 +421,7 @@ export class StakeholdersComponent implements OnInit {
     this.currentStakeholder = info.stakeholder;
     this.currentIdx = info.idx;
     this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
+
     setTimeout(() => this.setFormData(), 500);
   }
 

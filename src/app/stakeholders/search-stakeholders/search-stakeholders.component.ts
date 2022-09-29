@@ -114,6 +114,7 @@ export class SearchStakeholdersComponent implements OnInit {
     });
 
     this.currentStakeholder = stakeholder;
+    console.log(this.currentStakeholder);
   }
   
   ngOnChanges(){

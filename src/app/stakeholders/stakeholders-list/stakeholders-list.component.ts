@@ -68,6 +68,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
+    this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);
     this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
   }
 
