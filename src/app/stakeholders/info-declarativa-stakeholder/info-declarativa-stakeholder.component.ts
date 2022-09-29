@@ -40,7 +40,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   displayedColumns: string[] = ['fiscalId', 'shortName', 'identificationDocumentId', 'elegible', 'valid'];
 
   selectedStakeholder = {
-    
+
   } as IStakeholders;
 
 
@@ -51,7 +51,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private logger : LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     this.baseUrl = configuration.baseUrl;
 
 
@@ -107,11 +107,15 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }
   }
 
-  setFormData(){
+  setFormData() {
     var contacts = this.infoStakeholders.controls["contacts"];
-    contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.phone1.countryCode);
-    contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.phone1.phoneNumber);
-    contacts.get("email").setValue(this.currentStakeholder.email);
+    if (contacts.get("phone").value) {
+      contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.phone1.countryCode);
+      contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.phone1.phoneNumber);
+    }
+    if (contacts.get("email").value) {
+      contacts.get("email").setValue(this.currentStakeholder.email);
+    }
 
     var pep = this.infoStakeholders.controls["pep"];
     if (pep.get("pep12months").value) {
@@ -119,83 +123,56 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       pep.get("pep12months").get("pepCountry").setValue(this.currentStakeholder.pep.pepCountry);
       pep.get("pep12months").get("pepSinceWhen").setValue(this.currentStakeholder.pep.pepSince);
       pep.get("pep12months").get("kind").setValue(KindPep.PEP);
-    } else if (pep.get("pepFamiliarOf").value){
+    } else if (pep.get("pepFamiliarOf").value) {
       pep.get("pepRelations").get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta
       pep.get("pepFamiliarOf").get("pepFamilyRelation").setValue(this.currentStakeholder.pep.degreeOfRelatedness);
-      pep.get("pepFamiliarOf").get("kind").setValue(KindPep.FAMILY); 
-    } else if (pep.get("pepRelations").value){
+      pep.get("pepFamiliarOf").get("kind").setValue(KindPep.FAMILY);
+    } else if (pep.get("pepRelations").value) {
       pep.get("pepRelations").get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
       pep.get("pepRelations").get("pepTypeOfRelation").setValue(this.currentStakeholder.pep.businessPartnership);
-      pep.get("pepRelations").get("kind").setValue(KindPep.BUSINESS); 
-    } else if (pep.get("pepPoliticalPublicJobs").value){
+      pep.get("pepRelations").get("kind").setValue(KindPep.BUSINESS);
+    } else if (pep.get("pepPoliticalPublicJobs").value) {
       pep.get("pepPoliticalPublicJobs").get("pepType").setValue(this.currentStakeholder.pep.pepType);
-      pep.get("pepPoliticalPublicJobs").get("kind").setValue(KindPep.PEP); 
+      pep.get("pepPoliticalPublicJobs").get("kind").setValue(KindPep.PEP);
     } else {
       pep.get("pepType").setValue("R000"); // O Cliente não exerce qualquer cargo público em território nacional e paralelamente não é uma pessoa politicamente exposta
     }
   }
 
-  submit(){
-    if (this.infoStakeholders.valid){
-      var contacts = this.infoStakeholders.get("contacts");
+  submit() {
+    var contacts = this.infoStakeholders.get("contacts");
 
+    if (contacts.get("phone").value) {
       this.currentStakeholder.phone1.countryCode = contacts.get("phone").get("countryCode").value;
       this.currentStakeholder.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
-      this.currentStakeholder.email = contacts.get("email").value;
-
-      var pep = this.infoStakeholders.get("pep");
-
-      if (pep.get("pep12months").value) {
-        this.currentStakeholder.pep.kind = pep.get("pep12months").get("kind").value;
-        this.currentStakeholder.pep.pepType = pep.get("pep12months").get("pepType").value;
-        this.currentStakeholder.pep.pepCountry = pep.get("pep12months").get("pepCountry").value;
-        this.currentStakeholder.pep.pepSince = pep.get("pep12months").get("pepSince").value;
-      } else if (pep.get("pepFamiliarOf").value) {
-        this.currentStakeholder.pep.kind = pep.get("pepFamiliarOf").get("kind").value;
-        this.currentStakeholder.pep.pepType = pep.get("pepFamiliarOf").get("pepType").value;
-        this.currentStakeholder.pep.degreeOfRelatedness = pep.get("pepFamiliarOf").get("pepFamilyRelation").value;
-      } else if (pep.get("pepRelations").value) {
-        this.currentStakeholder.pep.kind = pep.get("pepRelations").get("kind").value;
-        this.currentStakeholder.pep.pepType = pep.get("pepRelations").get("pepType").value;
-        this.currentStakeholder.pep.businessPartnership = pep.get("pepRelations").get("pepTypeOfRelation").value;
-      } else if (pep.get("pepPoliticalPublicJobs").value) {
-        this.currentStakeholder.pep.kind = pep.get("pepPoliticalPublicJobs").get("kind").value;
-        this.currentStakeholder.pep.pepType = pep.get("pepPoliticalPublicJobs").get("pepType").value;
-      } else {
-        this.currentStakeholder.pep.pepType = pep.get("pepType").value;
-      }
-
     }
 
- }
+    if (contacts.get("email").value) {
+      this.currentStakeholder.email = contacts.get("email").value;
+    }
 
-//  submit() { PEP
-//   if (this.isVisiblePep12months) {
-//     this.newPep.kind = KindPep.PEP,
-//     this.newPep.pepType = this.form.value.pepType;
-//     this.newPep.pepCountry = this.form.value.pepCountry;
-//     this.newPep.pepSince = this.form.value.pepSinceWhen;
-//   } else if (this.isVisiblePepFamiliarOf) {
-//     this.newPep.kind = KindPep.FAMILY;
-//     this.newPep.pepType = "RFAM"; // O Cliente é familiar de uma pessoa politicamente exposta
-//     this.newPep.degreeOfRelatedness = this.form.value.pepFamilyRelation;
-//   } else if (this.isVisiblePepRelations) {
-//     this.newPep.kind = KindPep.BUSINESS;
-//     this.newPep.pepType = "RSOC";  // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
-//     this.newPep.businessPartnership = this.form.value.pepTypeOfRelation;
-//   } else if (this.isVisiblePepPoliticalPublicJobs) {
-//     this.newPep.kind = KindPep.PEP,
-//     this.newPep.pepType = this.form.value.pepType;
-//   } else {
-//     this.newPep.pepType = "R000"; // O Cliente não exerce qualquer cargo público em território nacional e paralelamente não é uma pessoa politicamente exposta
-//   }
+    var pep = this.infoStakeholders.get("pep");
 
-//   this.logger.debug(this.newPep);
+    if (pep.get("pep12months").value) {
+      this.currentStakeholder.pep.kind = pep.get("pep12months").get("kind").value;
+      this.currentStakeholder.pep.pepType = pep.get("pep12months").get("pepType").value;
+      this.currentStakeholder.pep.pepCountry = pep.get("pep12months").get("pepCountry").value;
+      this.currentStakeholder.pep.pepSince = pep.get("pep12months").get("pepSince").value;
+    } else if (pep.get("pepFamiliarOf").value) {
+      this.currentStakeholder.pep.kind = pep.get("pepFamiliarOf").get("kind").value;
+      this.currentStakeholder.pep.pepType = pep.get("pepFamiliarOf").get("pepType").value;
+      this.currentStakeholder.pep.degreeOfRelatedness = pep.get("pepFamiliarOf").get("pepFamilyRelation").value;
+    } else if (pep.get("pepRelations").value) {
+      this.currentStakeholder.pep.kind = pep.get("pepRelations").get("kind").value;
+      this.currentStakeholder.pep.pepType = pep.get("pepRelations").get("pepType").value;
+      this.currentStakeholder.pep.businessPartnership = pep.get("pepRelations").get("pepTypeOfRelation").value;
+    } else if (pep.get("pepPoliticalPublicJobs").value) {
+      this.currentStakeholder.pep.kind = pep.get("pepPoliticalPublicJobs").get("kind").value;
+      this.currentStakeholder.pep.pepType = pep.get("pepPoliticalPublicJobs").get("pepType").value;
+    } else {
+      this.currentStakeholder.pep.pepType = pep.get("pepType").value;
+    }
 
-//   // this.stakeholderService.UpdateStakeholder(this.submissionId, this.newStakeholder["stakeholderAcquiring"]["id"], this.newStakeholder).subscribe(result => {
-//   //     this.route.navigate(['/info-declarativa-lojas']);
-//   // }, error => {
-//   // });
-// }
 
+  }
 }
