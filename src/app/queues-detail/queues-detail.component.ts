@@ -11,6 +11,7 @@ import { QueuesService } from './queues.service';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
+import { State } from './IQueues.interface';
 
 
 @Component({
@@ -48,6 +49,8 @@ export class QueuesDetailComponent implements OnInit {
   public subs: Subscription[] = [];
 
   public riskRequest;
+
+  public checkButton:boolean = false;
 
   stakesList: IStakeholders[] = [];
   shopsList: ShopDetailsAcquiring[] = [];
@@ -165,5 +168,13 @@ export class QueuesDetailComponent implements OnInit {
     }
     this.logger.debug(this.files);
   }
+
+  check(){
+    this.checkButton = true;
+  }
+
+  // concludeOpinion() {
+  //   this.queuesInfo.postExternalState(this.processId, State, )
+  // }
 
 }
