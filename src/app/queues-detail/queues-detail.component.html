@@ -115,11 +115,11 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="text-primary text-center">BIJAL DE CANELA</td>
-                            <td class="text-primary text-center">1245</td>
-                            <td class="text-primary text-center">2142424</td>
-                            <td *ngIf="queueName === 'risk'" class="text-primary text-center">{{risk.riskLevel}}</td>
+                          <tr *ngFor="let stake of stakesList">
+                            <td class="text-primary text-center">{{stake.shortName}}</td>
+                            <td class="text-primary text-center">{{stake.fiscalId}}</td>
+                            <td class="text-primary text-center">{{stake.clientId}}</td>
+                            <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
                             <td class="text-primary text-center"><input class="form-check-input" type="radio" value=""
                                 id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;"><label
                                 class="form-check-label radio"
@@ -156,10 +156,10 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="text-primary text-center">43566</td>
-                            <td class="text-primary text-center">Rui Miguel</td>
-                            <td class="text-primary text-center">200659987</td>
+                          <tr *ngFor="let stake of stakesList">
+                            <td class="text-primary text-center">{{stake.clientId}}</td>
+                            <td class="text-primary text-center">{{stake.shortName}}</td>
+                            <td class="text-primary text-center">{{stake.fiscalId}}</td>
                             <td class="text-primary text-center">Cartão de Cidadão</td>
                             <td class="text-primary text-center">212151</td>
                           </tr>
@@ -188,11 +188,11 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="text-primary text-center">TESTE 1</td>
+                          <tr *ngFor="let shop of shopsList">
+                            <td class="text-primary text-center">{{shop.name}}</td>
                             <td class="text-primary text-center">2525161</td>
-                            <td class="text-primary text-center">Restauração</td>
-                            <td class="text-primary text-center">Restauração</td>
+                            <td class="text-primary text-center">{{shop.activity}}</td>
+                            <td class="text-primary text-center">{{shop.subActivity}}</td>
                             <td class="text-primary text-center">JCB</td>
                             <td class="text-primary text-center">-</td>
                             <td class="text-primary text-center"></td>
@@ -301,14 +301,8 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr>
-                                      <td class="text-primary text-center">Teste 1, LDA</td>
-                                      <td class="text-primary text-center" [(ngModel)]="enrollmentStoreNumber">
-                                        <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td class="text-primary text-center">Teste 2, LDA</td>
+                                  <tr *ngFor="let shop of shopsList">
+                                      <td class="text-primary text-center">{{shop.name}}</td>
                                       <td class="text-primary text-center" [(ngModel)]="enrollmentStoreNumber">
                                         <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
                                       </td>

@@ -1,19 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Renderer2 } from '@angular/core';
-import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription, take } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { Client } from '../client/Client.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
-import { Process } from '../process/process.interface';
-import { ProcessGet, ProcessList, ProcessService } from '../process/process.service';
+import { ProcessList, ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { QueuesService } from './queues.service';
-import { Risk, RiskAssessmentPost } from './IQueues.interface';
+import { SimplifiedReference } from '../submission/ISubmission.interface';
+import { IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
 
 
 @Component({
@@ -21,10 +18,11 @@ import { Risk, RiskAssessmentPost } from './IQueues.interface';
   templateUrl: './queues-detail.component.html'
 })
 
-export class QueuesDetailComponent implements OnInit{
+export class QueuesDetailComponent implements OnInit {
   form: FormGroup;
 
   @Input() queueName: string;
+  @Input() processId: string;
 
   private baseUrl;
   localUrl: any;
@@ -32,14 +30,12 @@ export class QueuesDetailComponent implements OnInit{
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
-
-  public processId: string;
   public process: ProcessList;
   public type: string;
 
   files?: File[] = [];
 
-  public attach: {tipo:string, dataDocumento: string};
+  public attach: { tipo: string, dataDocumento: string };
   public result: any;
 
   public fillComments: string;
@@ -48,50 +44,79 @@ export class QueuesDetailComponent implements OnInit{
   public enrollmentTerminalNumber: string;
 
   public elegibilityStatus: string;
-  public risk = new RiskAssessmentPost();
 
   public subs: Subscription[] = [];
 
   public riskRequest;
 
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private data: DataService, private queuesInfo: QueuesService, private router: ActivatedRoute, private processService: ProcessService) {
+  stakesList: IStakeholders[] = [];
+  shopsList: ShopDetailsAcquiring[] = [];
+  equipmentList: ShopEquipment[] = [];
 
-    //Gets Queue Name from the Dashboard component 
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+    private route: Router, private data: DataService, private queuesInfo: QueuesService) {
+
+    //Gets Queue Name and processId from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
       this.queueName = this.route.getCurrentNavigation().extras.state["queueName"];
+      this.processId = this.route.getCurrentNavigation().extras.state["processId"];
     }
-
-    //chamada à API para obter os dados da eligibilidade
-    this.queuesInfo.postEligibilityAssessment("this.fiscalId", "this.clientType").subscribe(result => { //TODO: Alterar
-      this.elegibilityStatus = result;
-    });
-
-    //chamada à API para obter os dados do risco
-    this.queuesInfo.postRiskAssessment("this.fiscalId", this.riskRequest, "this.clientType").subscribe(result => { //TODO: Alterar
-      this.risk = result;
-    });
 
     this.ngOnInit();
     this.logger.debug('Process Id ' + this.processId);
 
-    this.data.updateData(true, 0);
+    // Preencher os dados da fila de trabalho consoante o processId recebido
+    this.fetchStartingInfo();
 
-    this.processService.getProcessById(this.processId).subscribe(result => {
-      this.process = result;
-    });
+    this.data.updateData(true, 0);
 
   }
 
-ngOnInit(): void {
-  this.subscription = this.data.currentData.subscribe(map => this.map = map);
-  this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-  this.data.historyStream$.next(true);
-  this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
-  console.log('Process id ', this.processId);
-  var context = this;
-}
+  ngOnInit(): void {
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.historyStream$.next(true);
+  }
 
+  fetchStartingInfo() {
+    //Listar os stakeholders do processo
+    this.queuesInfo.getProcessStakeholdersList(this.processId).subscribe(result => {
+      var stakeholders = result;
+      stakeholders.forEach(value => {
+        // Obter o detalhe dos stakeholders
+        this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).subscribe(res => {
+          var stakeholder = res;
+          this.stakesList.push(stakeholder);
+        });
+      });
+      this.logger.debug("stakeholders do processo: " + stakeholders);
+    });
+
+    //Listar as lojas do processo
+    this.queuesInfo.getProcessShopsList(this.processId).subscribe(result => {
+      var shops = result;
+      shops.forEach(value => {
+        // Obter o detalhe das lojas
+        this.queuesInfo.getProcessShopDetails(this.processId, value.id).subscribe(res => {
+          var shop = res;
+          this.shopsList.push(shop);
+          // Obter os equipamentos das lojas
+          this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).subscribe(eq => {
+            var equipments = eq;
+            equipments.forEach(val => {
+              // Obter o detalhe dos equipamentos das lojas
+              this.queuesInfo.getProcessShopEquipmentDetails(this.processId, shop.id, val.id).subscribe(r => {
+                var equipment = r;
+                this.equipmentList.push(equipment);
+              })
+            })
+          })
+        });
+      });
+      this.logger.debug("lojas do processo: " + shops);
+      this.logger.debug("equipamentos das lojas do processo: " + this.equipmentList);
+    });
+  }
 
   nextPage() {
     this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
@@ -105,17 +130,17 @@ ngOnInit(): void {
 
   selectFile(event: any) {
     if (this.queueName === "eligibility") {
-      this.type = "queues.attach.eligibility" 
+      this.type = "queues.attach.eligibility"
     } else if (this.queueName === "compliance") {
-      this.type = "queues.attach.compliance" 
+      this.type = "queues.attach.compliance"
     } else if (this.queueName === "DOValidation") {
-      this.type = "queues.attach.DOValidation" 
+      this.type = "queues.attach.DOValidation"
     } else if (this.queueName === "risk") {
-      this.type = "queues.attach.risk" 
+      this.type = "queues.attach.risk"
     } else if (this.queueName === "negotiationAproval") {
-      this.type = "queues.attach.negotiationApproval" 
-    } 
-    this.attach = { tipo: this.type, dataDocumento:"01-08-2022" }
+      this.type = "queues.attach.negotiationApproval"
+    }
+    this.attach = { tipo: this.type, dataDocumento: "01-08-2022" }
     const files = <File[]>event.target.files;
     for (var i = 0; i < files.length; i++) {
       var file = files[i];

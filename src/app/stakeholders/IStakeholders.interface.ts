@@ -1,7 +1,5 @@
-import { addresstranformed } from "../citizencard/addresstranformed.interface"
 import { Contacts } from "../client/Client.interface"
 import { Address, IPep } from "../pep/IPep.interface"
-import { Document } from "../submission/ISubmission.interface"
 
 export interface StakeholdersProcess {
   fiscalId?: string,
@@ -26,7 +24,6 @@ export interface IStakeholders {
   shortName?: string
   //address?: Address
   fiscalAddress?: Address
-  foreignFiscalInformation?: ForeignFiscalInformation
   isProxy?: boolean
   phone1?: Phone
   phone2?: Phone
@@ -35,13 +32,13 @@ export interface IStakeholders {
   pep?: IPep
   id?: string
   stakeholderId?: string
+  clientId?: string
 }
 
 export interface StakeholderOutbound {
   stakeholderId?: string,
   fullName?: string,
   shortName?: string,
-  fiscalIdentification?: ForeignFiscalInformation,
   address?: FiscalAddress,
   contacts?: Contacts,
   identificationDocument?: IdentificationDocument,
@@ -72,14 +69,6 @@ export class FiscalAddress {
   postalArea?: string
   country?: string
 }
-
-export interface ForeignFiscalInformation {
-  issuerCountry?: string
-  issuanceIndicator?: string
-  fiscalId?: string
-  issuanceReason?: string
-}
-
 export interface Phone {
   countryCode?: string
   phoneNumber?: string

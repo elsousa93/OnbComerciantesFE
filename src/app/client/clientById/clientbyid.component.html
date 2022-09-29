@@ -1,6 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 
-<form [formGroup]="form" name="form" (ngSubmit)="submit()">
+<form [formGroup]="form" name="form" >
   <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
     <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
@@ -67,7 +67,7 @@
                       <img src="assets/images/manage_accounts.svg" />
                     </span>
                     &nbsp;&nbsp;{{'client.companyPower'|translate|uppercase}}&nbsp;&nbsp;
-                      <img src="assets/images/triangle-exclamation-solid.svg" *ngIf="touchedTabs[2] && !form.get('powerRepresentationForm').valid" class="img_add"
+                      <img src="assets/images/supervisor_account.svg" *ngIf="touchedTabs[2] && !form.get('powerRepresentationForm').valid" class="img_add"
               style="height: 33px;">
                   </button>
                 </h2>
