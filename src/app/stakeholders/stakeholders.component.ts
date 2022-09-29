@@ -6,7 +6,7 @@ import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
@@ -34,8 +34,7 @@ import { dataCC } from '../citizencard/dataCC.interface';
 })
 export class StakeholdersComponent implements OnInit {
 
-  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
-
+  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
 
   newStake: IStakeholders = {
     "fiscalId": "",
@@ -47,6 +46,12 @@ export class StakeholdersComponent implements OnInit {
     }
   }
   @ViewChild('newModal') newModal;
+
+  insertStakeholderEvent: Subject<StakeholdersCompleteInformation>;
+
+  emitInsertedStake(stake) {
+    this.insertStakeholderEvent = stake;
+  }
 
   //newStake: IStakeholders = {
 

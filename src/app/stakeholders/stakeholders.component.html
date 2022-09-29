@@ -52,7 +52,7 @@
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                    data-bs-parent="#accordionFlushExample">
-                <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=true (selectedStakeholderEmitter)="selectStake($event)" (listLengthEmitter)="getStakesListLength($event)" [insertStakeholderEvent]="">
+                <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=true (selectedStakeholderEmitter)="selectStake($event)" (listLengthEmitter)="getStakesListLength($event)" [insertStakeholderEvent]="insertStakeholderEvent">
                 </app-stakeholders-list>
               </div>
             </div>
@@ -157,7 +157,7 @@
       </div>
     </div>
     <ng-container [formGroup]="editStakes">
-      <app-create-stakeholder *ngIf="editStakeInfo == false" [parentFormGroup]="editStakes.get['searchAddStakes']"></app-create-stakeholder>
+      <app-create-stakeholder *ngIf="editStakeInfo == false" [parentFormGroup]="editStakes.get['searchAddStakes']" (insertedStakeSubject)="emitInsertedStake($event)"></app-create-stakeholder>
     </ng-container>
   </div>
 </div>

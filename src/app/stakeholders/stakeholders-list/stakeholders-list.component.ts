@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
@@ -44,7 +44,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
 
-  @Input() insertStakeholderEvent: Observable<StakeholdersCompleteInformation>;
+  @Input() insertStakeholderEvent: Subject<StakeholdersCompleteInformation>;
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
