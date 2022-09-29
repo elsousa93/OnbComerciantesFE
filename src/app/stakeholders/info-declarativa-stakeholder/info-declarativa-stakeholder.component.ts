@@ -146,6 +146,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     var contacts = this.infoStakeholders.get("contacts");
 
     if (contacts.get("phone").value) {
+      if (this.currentStakeholder.stakeholderAcquiring.phone1 === null){
+        this.currentStakeholder.stakeholderAcquiring.phone1 = {};
+      }
       this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
       this.currentStakeholder.stakeholderAcquiring.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
     }
