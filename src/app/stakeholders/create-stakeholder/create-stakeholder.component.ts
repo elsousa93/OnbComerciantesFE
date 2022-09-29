@@ -7,7 +7,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
 import { docTypeListE, docTypeListP } from '../docType';
-import { IStakeholders } from '../IStakeholders.interface';
+import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 import { stakeTypeList } from '../stakeholderType';
 import { TemplateRef, ViewChild } from '@angular/core';
@@ -37,6 +37,13 @@ import { UserTypes } from 'src/app/table-info/ITable-info.interface';
 })
 export class CreateStakeholderComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
+
+  insertedStakeSubject: Subject<StakeholdersCompleteInformation> = new Subject<StakeholdersCompleteInformation>();
+
+  emitInsertedStake(stake) {
+    this.insertedStakeSubject.next(stake);
+  }
+
 
   @Input() parentFormGroup: FormGroup;
 
