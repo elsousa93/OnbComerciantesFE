@@ -31,6 +31,7 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
+import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
 
 
 @Component({
@@ -46,8 +47,8 @@ export class ClientByIdComponent implements OnInit {
 
   @ViewChild('searchInput') input: ElementRef;
   @ViewChild(ClientCharacterizationComponent) clientCharacterizationComponent: ClientCharacterizationComponent;
-  @ViewChild(CountrysComponent) countriesComponent: ClientCharacterizationComponent;
-  @ViewChild(RepresentationPowerComponent) representationPowerComponent: ClientCharacterizationComponent;
+  @ViewChild(CountrysComponent) countriesComponent: CountrysComponent;
+  @ViewChild(RepresentationPowerComponent) representationPowerComponent: RepresentationPowerComponent;
 
   /*Variable declaration*/
   form: FormGroup;
@@ -991,9 +992,59 @@ export class ClientByIdComponent implements OnInit {
     var context = this;
     var submissionID = this.clientContext.submissionID;
 
+    var newSubmission = this.clientContext.newSubmission;
+
     this.submissionService.EditSubmission(submissionID, this.clientContext.newSubmission).subscribe(result => {
       this.route.navigateByUrl('/stakeholders');
     });
+
+    var stakeholders = this.clientContext.newSubmission.stakeholders;
+
+    stakeholders.forEach(function (value, idx) {
+      context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+        console.log("adicionou: ", result);
+      });
+    });
+
+    var documents = this.clientContext.newSubmission.documents;
+    documents.forEach(function (value, idx) {
+      context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
+        console.log("adicionou documento: ", result);
+      });
+    });
+
+
+
+    this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+          res.forEach(value => {
+            this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+              var storeToAdd: ShopDetailsAcquiring = {
+                activity: r.activity,
+                subActivity: r.secondaryActivity,
+                address: {
+                  address: r.address.address,
+                  isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+                  shoppingCenter: r.address.shoppingCenter,
+                  useMerchantAddress: r.address.sameAsMerchantAddress
+                },
+                bank: {
+                  bank: r.bankingInformation
+                },
+                name: r.name,
+                productCode: r.product,
+                subproductCode: r.subproduct,
+                website: r.url,
+                equipments: []
+              }
+
+              context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
+
+              });
+            });
+          });
+        });
+
+
   }
   
 }

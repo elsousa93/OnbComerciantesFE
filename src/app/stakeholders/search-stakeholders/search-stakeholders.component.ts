@@ -71,7 +71,7 @@ export class SearchStakeholdersComponent implements OnInit {
           found: true,
           errorMsg: ''
         });
-        context.stakeholdersToShow = [];
+        context.stakeholdersToShow = [null];
         clients.forEach(function (value, index) {
           context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
             var stakeholder = {
@@ -87,7 +87,7 @@ export class SearchStakeholdersComponent implements OnInit {
         })
       } else {
         //context.initializeNotFoundForm();
-        context.stakeholdersToShow = [];
+        context.stakeholdersToShow = [null];
         context.searchAditionalInfoEmitter.emit({
           found: false,
           errorMsg: "Sem resultados"
@@ -114,6 +114,7 @@ export class SearchStakeholdersComponent implements OnInit {
     });
 
     this.currentStakeholder = stakeholder;
+    console.log(this.currentStakeholder);
   }
   
   ngOnChanges(){
