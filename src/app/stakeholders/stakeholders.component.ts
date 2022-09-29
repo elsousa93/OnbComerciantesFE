@@ -154,6 +154,7 @@ export class StakeholdersComponent implements OnInit {
   editStakeInfo: boolean;
 
   selectedStakeholderComprovativos = [];
+  stakesLength: number;
 
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
       private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
@@ -464,6 +465,11 @@ export class StakeholdersComponent implements OnInit {
         });
       }
     }
+  }
+
+  getStakesListLength(value) {
+    console.log('Tamanho da lista dos stakeholders ', value.length);
+    this.stakesLength = value.length;
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
