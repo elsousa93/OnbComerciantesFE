@@ -47,8 +47,8 @@ export class ClientByIdComponent implements OnInit {
 
   @ViewChild('searchInput') input: ElementRef;
   @ViewChild(ClientCharacterizationComponent) clientCharacterizationComponent: ClientCharacterizationComponent;
-  @ViewChild(CountrysComponent) countriesComponent: ClientCharacterizationComponent;
-  @ViewChild(RepresentationPowerComponent) representationPowerComponent: ClientCharacterizationComponent;
+  @ViewChild(CountrysComponent) countriesComponent: CountrysComponent;
+  @ViewChild(RepresentationPowerComponent) representationPowerComponent: RepresentationPowerComponent;
 
   /*Variable declaration*/
   form: FormGroup;
