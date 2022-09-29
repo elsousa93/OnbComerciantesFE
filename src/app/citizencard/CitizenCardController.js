@@ -180,9 +180,9 @@ function uuid() {
 }
 
 function submit(data) {
-  //if (data.hasOwnProperty('notify') || data.hasOwnProperty('estado')) {
-  //  console.log('problema na leitura dos dados: ' + data.notify || data.estado);
-  //} else {
+  if (data.hasOwnProperty('notify') || data.hasOwnProperty('estado')) {
+    console.log('problema na leitura dos dados: ' + data.notify || data.estado);
+  } else {
     let json = JSON.stringify(data);
 
     var xhr = new XMLHttpRequest();
@@ -213,7 +213,7 @@ function submit(data) {
       }
     };
     xhr.send(json);
-  //}
+  }
 }
 
 export function readCCAddress(componentCallback) {
