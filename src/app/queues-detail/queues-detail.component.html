@@ -412,7 +412,7 @@
 
                         <button id="btn5a2"
                           *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
-                          [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !checkButton)" (click)="concludeOpinion()"
+                          [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !checkButton)"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.completed'|translate|uppercase}}&nbsp;
                           <img src="assets/images/queues/conclude_opinion.svg"
