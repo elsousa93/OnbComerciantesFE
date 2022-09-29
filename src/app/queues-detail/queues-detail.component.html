@@ -121,7 +121,7 @@
                             <td class="text-primary text-center">{{stake.clientId}}</td>
                             <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
                             <td class="text-primary text-center"><input class="form-check-input" type="radio" value=""
-                                id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" (click)="checkEligibility()"><label
+                                id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" (click)="check()"><label
                                 class="form-check-label radio"
                                 for="radio8">{{'queues.favorable'|translate}}&nbsp;</label>
 
@@ -412,7 +412,7 @@
 
                         <button id="btn5a2"
                           *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
-                          [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || (queueName==='eligibility' && !checkEligibilityButton)" (click)="concludeOpinion()"
+                          [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !checkButton)" (click)="concludeOpinion()"
                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                           wappler-command="editContent">{{'queues.completed'|translate|uppercase}}&nbsp;
                           <img src="assets/images/queues/conclude_opinion.svg"

@@ -50,7 +50,7 @@ export class QueuesDetailComponent implements OnInit {
 
   public riskRequest;
 
-  public checkEligibilityButton:boolean = false;
+  public checkButton:boolean = false;
 
   stakesList: IStakeholders[] = [];
   shopsList: ShopDetailsAcquiring[] = [];
@@ -169,8 +169,8 @@ export class QueuesDetailComponent implements OnInit {
     this.logger.debug(this.files);
   }
 
-  checkEligibility(){
-    this.checkEligibilityButton = true;
+  check(){
+    this.checkButton = true;
   }
 
   // concludeOpinion() {
