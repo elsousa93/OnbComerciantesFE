@@ -58,7 +58,7 @@ export class SearchStakeholdersComponent implements OnInit {
   searchStakeholders(clientID) {
     console.log("entrou na pesquisa de um stakeholder");
     var context = this;
-
+    var stakeholder = null;
     /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery(clientID, "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
@@ -75,7 +75,7 @@ export class SearchStakeholdersComponent implements OnInit {
         clients.forEach(function (value, index) {
           context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").then(success => {
             var stake = success.result;
-            var stakeholder = {
+            stakeholder = {
               "stakeholderNumber": stake.stakeholderId,
               "stakeholderName": stake.shortName,
               "stakeholderNIF": stake.fiscalIdentification.fiscalId,
@@ -84,10 +84,11 @@ export class SearchStakeholdersComponent implements OnInit {
             } as IStakeholders;
             console.log('Dentro do forEach, valor de um stake ', stakeholder);
             console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
-            context.stakeholdersToShow.push(stakeholder);
-            console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
           }, error => {
             console.log("Ocorreu um erro ", error);
+          }).then(success => {
+            context.stakeholdersToShow.push(stakeholder);
+            console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
           })
           //context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
           //  var stakeholder = {
