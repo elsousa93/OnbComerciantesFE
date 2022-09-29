@@ -109,13 +109,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   setFormData() {
     var contacts = this.infoStakeholders.controls["contacts"];
-    if (contacts.get("phone").value) {
-      contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.phone1.countryCode);
-      contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.phone1.phoneNumber);
+    if (contacts !== undefined) {
+      if (contacts.get("phone").value) {
+        contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.phone1.countryCode);
+        contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.phone1.phoneNumber);
+      }
+      if (contacts.get("email").value) {
+        contacts.get("email").setValue(this.currentStakeholder.email);
+      }
     }
-    if (contacts.get("email").value) {
-      contacts.get("email").setValue(this.currentStakeholder.email);
-    }
+
 
     var pep = this.infoStakeholders.controls["pep"];
     if (pep.get("pep12months").value) {
