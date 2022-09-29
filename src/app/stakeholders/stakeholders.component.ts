@@ -373,13 +373,14 @@ export class StakeholdersComponent implements OnInit {
   }
 
   getStakeFunction() {
+    var context = this;
     this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
       result.forEach(function (value, index) {
-        this.stakeService.GetStakeholderFromSubmission(this.submissionId, value.id).subscribe(result => {
-          this.submissionStakeholders.push(result);
+        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
+          context.submissionStakeholders.push(result);
           this.stakeService.getStakeholderByID(result.stakeholderId, 'faltarequestID', 'faltaAcquiringUserID').subscribe((result: { documents: any; stakeholderId: string | number; }) => {
             var documents = result.documents;
-            this.allStakeholdersComprovativos[result.stakeholderId] = documents;
+            context.allStakeholdersComprovativos[result.stakeholderId] = documents;
             console.log("get stake by id resposnse: ", result);
             //context.stakeholdersComprovativos.push(result);
 
