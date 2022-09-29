@@ -194,6 +194,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
               context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(success => {
                 stakeholderToInsert.stakeholderOutbound = success.result;
+              }, error => {
+                console.log("Foi rejeitado: ", error);
               }).then(success => {
                 console.log("vai adicionar: ", context.submissionStakeholders);
                 console.log("stakeholder a adicionar: ", stakeholderToInsert);

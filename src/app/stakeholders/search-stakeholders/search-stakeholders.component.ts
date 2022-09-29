@@ -73,11 +73,12 @@ export class SearchStakeholdersComponent implements OnInit {
         });
         context.stakeholdersToShow = [];
         clients.forEach(function (value, index) {
-          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").then(success => {
+            var stake = success.result;
             var stakeholder = {
-              "stakeholderNumber": c.stakeholderId,
-              "stakeholderName": c.shortName,
-              "stakeholderNIF": c.fiscalIdentification.fiscalId,
+              "stakeholderNumber": stake.stakeholderId,
+              "stakeholderName": stake.shortName,
+              "stakeholderNIF": stake.fiscalIdentification.fiscalId,
               "elegible": "elegivel",
               "associated": "SIM"
             } as IStakeholders;
@@ -85,7 +86,22 @@ export class SearchStakeholdersComponent implements OnInit {
             console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
             context.stakeholdersToShow.push(stakeholder);
             console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
-          });
+          }, error => {
+            console.log("Ocorreu um erro ", error);
+          })
+          //context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+          //  var stakeholder = {
+          //    "stakeholderNumber": c.stakeholderId,
+          //    "stakeholderName": c.shortName,
+          //    "stakeholderNIF": c.fiscalIdentification.fiscalId,
+          //    "elegible": "elegivel",
+          //    "associated": "SIM"
+          //  } as IStakeholders;
+          //  console.log('Dentro do forEach, valor de um stake ', stakeholder);
+          //  console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
+          //  context.stakeholdersToShow.push(stakeholder);
+          //  console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
+          //});
         })
       } else {
         //context.initializeNotFoundForm();
