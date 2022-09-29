@@ -101,7 +101,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   selectStakeholder(info) {
     if (info !== null) {
-      this.currentStakeholder = info.store;
+      this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
     }
