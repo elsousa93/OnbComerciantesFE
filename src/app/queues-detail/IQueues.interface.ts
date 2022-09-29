@@ -21,21 +21,6 @@ export interface RiskAssessment {
     merchantAssessment : MerchantRiskAssessment,
     stakeholderAssessment?: StakeholderRiskAssessment
 }
-
-export class RiskAssessmentPost{
-    hasRisk: boolean
-    riskLevel: number
-    hits: Hits
-}
-export interface Hits {
-    code: string,
-    value: string
-}
-
-export interface Risk {
-    code: string,
-    value: string
-}
 export interface MerchantRiskAssessment {
     stakeholderId?: string,
     accepted: boolean
@@ -68,10 +53,24 @@ export interface PaymentSchemaClassification{
     classification?:string
 }
 
+export interface ExternalState {
+    contractAcceptance?: ContractAcceptance,
+    standardIndustryClassificationChoice?: StandardIndustryClassificationChoice,
+    eligibilityAssessment?: EligibilityAssessment,
+    riskAssessment?: RiskAssessment
+}
+
+export enum State {
+    CONTRACT_ACCEPTANCE = "ContractAcceptance",
+    STANDARD_INDUSTRY_CLASSIFICATION_CHOICE = "StandardIndustryClassificationChoice",
+    RISK_ASSESSMENT = "RiskAssessment",
+    ELIGIBILITY_ASSESSMENT = "ElegibilityAssessment"
+}
+
 export enum StateResultDiscriminatorEnum {
-    UNDEFINED = "undefined",
-    CONTRACT_ACCEPTANCE_MODEL = "contract acceptance model",
-    STANDARD_INDUSTRY_CLASSIFICATION_MODEL = "standard industry classification model",
-    RISK_ASSESSMENT = "risk assessment",
-    ELIGIBILITY_ASSESSMENT = "eligibility assessment"
+    UNDEFINED = "Undefined",
+    CONTRACT_ACCEPTANCE_MODEL = "ContractAcceptanceModel",
+    STANDARD_INDUSTRY_CLASSIFICATION_MODEL = "StandardIndustryClassificationModel",
+    RISK_ASSESSMENT = "RiskAssessment",
+    ELIGIBILITY_ASSESSMENT = "ElegibilityAssessment"
   }

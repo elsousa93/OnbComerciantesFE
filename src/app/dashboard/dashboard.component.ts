@@ -367,10 +367,11 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  FTSearch(queue: string) {
+  FTSearch(queue: string, processId: string) {
     let navigationExtras: NavigationExtras = {
       state: {
-        queueName: queue
+        queueName: queue,
+        processId: processId
       }
     };
     this.router.navigate(["/queues-detail"], navigationExtras);
