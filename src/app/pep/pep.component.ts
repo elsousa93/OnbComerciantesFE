@@ -94,7 +94,7 @@ export class PepComponent implements OnInit {
     this.data.updateData(false, 6, 3);
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.setControl('contacts', this.form);
+      this.rootFormGroup.form.setControl('pep', this.form);
       this.edit = true;
       if (this.returned == 'consult') {
         this.form.disable();
