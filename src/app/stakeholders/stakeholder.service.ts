@@ -7,6 +7,7 @@ import { HttpMethod } from '../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
 import { BehaviorSubject } from 'rxjs';
 import { TableInfoService } from '../table-info/table-info.service';
+import { APIRequestsService } from '../apirequests.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class StakeholderService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService) {
+  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService, private APIService: APIRequestsService) {
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
@@ -205,7 +206,11 @@ export class StakeholderService {
     }, null, 2)}`);
 
 
-    return this.http.get<any>(URI, HTTP_OPTIONS);
+    var url = this.urlOutbound + "api/v1/stakeholder/" + StakeholderID;
+
+    return this.APIService.callAPIOutbound(HttpMethod.GET, url, "searchId", "searchType", "requestID", "AcquiringUserID");
+
+    //return this.http.get<any>(URI, HTTP_OPTIONS);
   }
   updateStakeholder(stakeholder: IStakeholders, processReferenceID: string, StakeholderID: string, RequestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 

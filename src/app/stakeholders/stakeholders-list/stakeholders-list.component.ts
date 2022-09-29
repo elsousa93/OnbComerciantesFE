@@ -187,13 +187,19 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
             //  context.submissionStakeholders.push(stakeholderToInsert);
 
             //})
-            if (AcquiringStakeholder.id != null) { 
-              var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "por mudar", "por mudar").toPromise();
 
-              stakeholderFunction.then(success => {
-                stakeholderToInsert.stakeholderOutbound = success;
-              }).then(success =>{
+            console.log("stakeholder acquiring: ", AcquiringStakeholder);
+            if (AcquiringStakeholder.id != null) { 
+              //var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "por mudar", "por mudar").toPromise();
+
+              context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(success => {
+                stakeholderToInsert.stakeholderOutbound = success.result;
+              }).then(success => {
+                console.log("vai adicionar: ", context.submissionStakeholders);
+                console.log("stakeholder a adicionar: ", stakeholderToInsert);
                 context.submissionStakeholders.push(stakeholderToInsert);
+
+                console.log("adicionou a lista?: ", context.submissionStakeholders);
               });
               console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
             }

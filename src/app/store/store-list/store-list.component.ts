@@ -240,7 +240,7 @@ export class StoreComponent implements AfterViewInit {
         this.onActivate();
       } else {
         this.data.updateData(true, 3);
-        this.route.navigate(['comprovativos']);
+        //this.route.navigate(['comprovativos']);
       }
     }
   }
