@@ -11,7 +11,7 @@ import { QueuesService } from './queues.service';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
-import { State } from './IQueues.interface';
+import { ExternalState, State } from './IQueues.interface';
 
 
 @Component({
@@ -55,6 +55,9 @@ export class QueuesDetailComponent implements OnInit {
   stakesList: IStakeholders[] = [];
   shopsList: ShopDetailsAcquiring[] = [];
   equipmentList: ShopEquipment[] = [];
+
+  public state: State;
+  public externalState: ExternalState;
 
   constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private queuesInfo: QueuesService) {
@@ -173,8 +176,10 @@ export class QueuesDetailComponent implements OnInit {
     this.checkButton = true;
   }
 
-  // concludeOpinion() {
-  //   this.queuesInfo.postExternalState(this.processId, State, )
-  // }
+  concludeOpinion(state, externalState) {
+    this.queuesInfo.postExternalState(this.processId, state, externalState).subscribe(result => {
+      this.logger.debug("Send external state - Eligibility");
+    })
+  }
 
 }
