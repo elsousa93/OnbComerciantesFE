@@ -81,8 +81,10 @@ export class SearchStakeholdersComponent implements OnInit {
               "elegible": "elegivel",
               "associated": "SIM"
             } as IStakeholders;
-
+            console.log('Dentro do forEach, valor de um stake ', stakeholder);
+            console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
             context.stakeholdersToShow.push(stakeholder);
+            console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
           });
         })
       } else {
