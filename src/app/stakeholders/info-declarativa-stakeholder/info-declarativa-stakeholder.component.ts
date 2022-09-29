@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { IStakeholders } from '../IStakeholders.interface'
+import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface'
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
@@ -32,7 +32,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   submissionStakeholders: IStakeholders[] = [];
   submissionId: string;
   processNumber: string;
-  currentStakeholder: IStakeholders = null;
+  currentStakeholder: StakeholdersCompleteInformation;
 
   @Output() nameEmitter = new EventEmitter<string>();
 
@@ -111,31 +111,31 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     var contacts = this.infoStakeholders.controls["contacts"];
     if (contacts !== undefined) {
       if (contacts.get("phone").value) {
-        contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.phone1.countryCode);
-        contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.phone1.phoneNumber);
+        contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.stakeholderAcquiring.phone1.countryCode);
+        contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.stakeholderAcquiring.phone1.phoneNumber);
       }
       if (contacts.get("email").value) {
-        contacts.get("email").setValue(this.currentStakeholder.email);
+        contacts.get("email").setValue(this.currentStakeholder.stakeholderAcquiring.email);
       }
     }
 
 
     var pep = this.infoStakeholders.controls["pep"];
     if (pep.get("pep12months").value) {
-      pep.get("pep12months").get("pepType").setValue(this.currentStakeholder.pep.pepType);
-      pep.get("pep12months").get("pepCountry").setValue(this.currentStakeholder.pep.pepCountry);
-      pep.get("pep12months").get("pepSinceWhen").setValue(this.currentStakeholder.pep.pepSince);
+      pep.get("pep12months").get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep.pepType);
+      pep.get("pep12months").get("pepCountry").setValue(this.currentStakeholder.stakeholderAcquiring.pep.pepCountry);
+      pep.get("pep12months").get("pepSinceWhen").setValue(this.currentStakeholder.stakeholderAcquiring.pep.pepSince);
       pep.get("pep12months").get("kind").setValue(KindPep.PEP);
     } else if (pep.get("pepFamiliarOf").value) {
       pep.get("pepRelations").get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta
-      pep.get("pepFamiliarOf").get("pepFamilyRelation").setValue(this.currentStakeholder.pep.degreeOfRelatedness);
+      pep.get("pepFamiliarOf").get("pepFamilyRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness);
       pep.get("pepFamiliarOf").get("kind").setValue(KindPep.FAMILY);
     } else if (pep.get("pepRelations").value) {
       pep.get("pepRelations").get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
-      pep.get("pepRelations").get("pepTypeOfRelation").setValue(this.currentStakeholder.pep.businessPartnership);
+      pep.get("pepRelations").get("pepTypeOfRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership);
       pep.get("pepRelations").get("kind").setValue(KindPep.BUSINESS);
     } else if (pep.get("pepPoliticalPublicJobs").value) {
-      pep.get("pepPoliticalPublicJobs").get("pepType").setValue(this.currentStakeholder.pep.pepType);
+      pep.get("pepPoliticalPublicJobs").get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep.pepType);
       pep.get("pepPoliticalPublicJobs").get("kind").setValue(KindPep.PEP);
     } else {
       pep.get("pepType").setValue("R000"); // O Cliente não exerce qualquer cargo público em território nacional e paralelamente não é uma pessoa politicamente exposta
@@ -146,34 +146,34 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     var contacts = this.infoStakeholders.get("contacts");
 
     if (contacts.get("phone").value) {
-      this.currentStakeholder.phone1.countryCode = contacts.get("phone").get("countryCode").value;
-      this.currentStakeholder.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
+      this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
+      this.currentStakeholder.stakeholderAcquiring.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
     }
 
     if (contacts.get("email").value) {
-      this.currentStakeholder.email = contacts.get("email").value;
+      this.currentStakeholder.stakeholderAcquiring.email = contacts.get("email").value;
     }
 
     var pep = this.infoStakeholders.get("pep");
 
     if (pep.get("pep12months").value) {
-      this.currentStakeholder.pep.kind = pep.get("pep12months").get("kind").value;
-      this.currentStakeholder.pep.pepType = pep.get("pep12months").get("pepType").value;
-      this.currentStakeholder.pep.pepCountry = pep.get("pep12months").get("pepCountry").value;
-      this.currentStakeholder.pep.pepSince = pep.get("pep12months").get("pepSince").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pep12months").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pep12months").get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pep12months").get("pepCountry").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pep12months").get("pepSince").value;
     } else if (pep.get("pepFamiliarOf").value) {
-      this.currentStakeholder.pep.kind = pep.get("pepFamiliarOf").get("kind").value;
-      this.currentStakeholder.pep.pepType = pep.get("pepFamiliarOf").get("pepType").value;
-      this.currentStakeholder.pep.degreeOfRelatedness = pep.get("pepFamiliarOf").get("pepFamilyRelation").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pepFamiliarOf").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepFamiliarOf").get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamiliarOf").get("pepFamilyRelation").value;
     } else if (pep.get("pepRelations").value) {
-      this.currentStakeholder.pep.kind = pep.get("pepRelations").get("kind").value;
-      this.currentStakeholder.pep.pepType = pep.get("pepRelations").get("pepType").value;
-      this.currentStakeholder.pep.businessPartnership = pep.get("pepRelations").get("pepTypeOfRelation").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pepRelations").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepRelations").get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepRelations").get("pepTypeOfRelation").value;
     } else if (pep.get("pepPoliticalPublicJobs").value) {
-      this.currentStakeholder.pep.kind = pep.get("pepPoliticalPublicJobs").get("kind").value;
-      this.currentStakeholder.pep.pepType = pep.get("pepPoliticalPublicJobs").get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pepPoliticalPublicJobs").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepPoliticalPublicJobs").get("pepType").value;
     } else {
-      this.currentStakeholder.pep.pepType = pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
     }
 
 
