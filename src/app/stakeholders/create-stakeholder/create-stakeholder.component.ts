@@ -594,6 +594,12 @@ export class CreateStakeholderComponent implements OnInit {
     this.errorMsg = info.errorMsg;
   }
 
+  clearForm() {
+    this.formNewStakeholder.reset();
+    this.formStakeholderSearch.reset();
+    this.initializeForm();
+  }
+
   addStakeholder() {
     console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders) {
@@ -602,6 +608,7 @@ export class CreateStakeholderComponent implements OnInit {
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           this.currentStakeholder.id = result["id"];
           this.emitInsertedStake(of(this.currentStakeholder));
+          this.clearForm();
           this.route.navigate(['/stakeholders/']);
         }, error => {
         });
@@ -621,6 +628,7 @@ export class CreateStakeholderComponent implements OnInit {
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
         stakeholderToInsert.id = result["id"];
         this.emitInsertedStake(of(stakeholderToInsert));
+        this.clearForm();
         this.route.navigate(['/stakeholders/']);
       });
     }

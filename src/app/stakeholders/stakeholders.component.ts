@@ -189,7 +189,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectInfoStakeholder() {
-    this.selectStake({ stakeholder: null, currentIdx: 0 });
+    //this.selectStake({ stakeholder: null, currentIdx: 0 });
     this.editStakeInfo = true;
     console.log(this.editStakes.get("stake"));
     //this.route.navigate(['/add-stakeholder/']);
