@@ -56,6 +56,7 @@ export class InfoStakeholderComponent implements OnInit {
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
 
+    this.formContactos.reset();
     this.initializeForm();
 
     this.returned = localStorage.getItem("returned");
