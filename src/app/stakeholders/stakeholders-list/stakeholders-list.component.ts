@@ -84,7 +84,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     this.returned = localStorage.getItem("returned");
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
-    setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000); //acho que esta chamada não está a fazer nada
+    setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
     //this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
     //this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
   }
@@ -229,8 +229,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
       }).then(teste => {
         context.loadStakeholders(context.submissionStakeholders);
-        context.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
-        //context.selectedStakeholder = context.submissionStakeholders[0];
+        context.selectedStakeholder = context.submissionStakeholders[0];
         console.log('Dentro do getSubmissionStakeholders, o current stake é ', context.selectedStakeholder);
       });
     }
