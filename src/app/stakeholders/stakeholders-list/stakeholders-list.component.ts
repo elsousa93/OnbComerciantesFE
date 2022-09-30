@@ -227,10 +227,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           });
         });
       }, error => {
-      }).then(teste => {
+      }).then(success => {
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
         console.log('o current stake é ', context.selectedStakeholder);
+      }, error => {
+        console.log('Foi rejeitado ', error);
       });
     }
   }
