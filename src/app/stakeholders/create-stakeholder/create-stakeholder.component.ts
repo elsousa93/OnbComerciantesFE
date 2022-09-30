@@ -600,6 +600,7 @@ export class CreateStakeholderComponent implements OnInit {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+          this.currentStakeholder.id = result["id"];
           this.emitInsertedStake(of(this.currentStakeholder));
           this.route.navigate(['/stakeholders/']);
         }, error => {
@@ -615,9 +616,10 @@ export class CreateStakeholderComponent implements OnInit {
         },
         "phone1": {},
         "phone2": {},
-        "shortName": this.formNewStakeholder.get("socialDenomination")?.value ?? this.formNewStakeholder.get("nome")?.value
+        "shortName": this.formNewStakeholder.get("name")?.value ?? this.formNewStakeholder.get("socialDenomination")?.value
       }
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+        stakeholderToInsert.id = result["id"];
         this.emitInsertedStake(of(stakeholderToInsert));
         this.route.navigate(['/stakeholders/']);
       });

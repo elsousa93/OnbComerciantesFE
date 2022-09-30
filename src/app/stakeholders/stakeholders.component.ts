@@ -427,11 +427,12 @@ export class StakeholdersComponent implements OnInit {
   }
 
   selectStake(info) {
-    this.currentStakeholder = info.stakeholder;
-    this.currentIdx = info.idx;
-    this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
-
-    setTimeout(() => this.setFormData(), 500);
+    if(info.stakeholder != null) {
+      this.currentStakeholder = info.stakeholder;
+      this.currentIdx = info.idx;
+      this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
+      setTimeout(() => this.setFormData(), 500);
+    }
   }
 
   submit() {
