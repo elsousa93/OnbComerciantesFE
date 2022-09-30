@@ -47,7 +47,7 @@ export class StakeholdersComponent implements OnInit {
   }
   @ViewChild('newModal') newModal;
 
-  insertStakeholderEvent: Observable<StakeholdersCompleteInformation>;
+  insertStakeholderEvent: Observable<IStakeholders>;
 
   emitInsertedStake(stake) {
     this.insertStakeholderEvent = stake;
@@ -189,6 +189,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectInfoStakeholder() {
+    this.selectStake({ stakeholder: null, currentIdx: 0 });
     this.editStakeInfo = true;
     console.log(this.editStakes.get("stake"));
     //this.route.navigate(['/add-stakeholder/']);
@@ -216,6 +217,8 @@ export class StakeholdersComponent implements OnInit {
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
+
+
   }
 
   //Modal que pergunta se tem o PIN da Morada
