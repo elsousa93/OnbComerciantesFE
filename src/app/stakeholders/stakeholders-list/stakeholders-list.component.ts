@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subject } from 'rxjs';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { StakeholdersCompleteInformation } from '../IStakeholders.interface';
+import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 
 @Component({
@@ -30,7 +30,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["insertStakeholderEvent"]) {
       this.insertStakeholderEvent.subscribe(result => {
-        var stakeToInsert = result;
+        var stakeToInsert = {
+          stakeholderAcquiring: result
+        } as StakeholdersCompleteInformation;
         this.submissionStakeholders.push(stakeToInsert);
         this.loadStakeholders(this.submissionStakeholders);
       });
@@ -54,7 +56,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
 
-  @Input() insertStakeholderEvent?: Observable<StakeholdersCompleteInformation>;
+  @Input() insertStakeholderEvent?: Observable<IStakeholders>;
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
@@ -231,9 +233,15 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   emitSelectedStakeholder(stakeholder, idx) {
     if (!this.canSelect)
       return;
+
     console.log("stakeholder escolhido: ", stakeholder);
-    this.selectedStakeholderEmitter.emit({ stakeholder: stakeholder, idx: idx });
-    this.selectedStakeholder = stakeholder;
+    if (stakeholder == null && idx == 0) {
+      this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
+      this.selectedStakeholder = this.submissionStakeholders[0];
+    } else { 
+      this.selectedStakeholderEmitter.emit({ stakeholder: stakeholder, idx: idx });
+      this.selectedStakeholder = stakeholder;
+    }
   }
 
   loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {

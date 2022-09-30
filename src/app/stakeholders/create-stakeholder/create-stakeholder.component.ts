@@ -38,7 +38,7 @@ import { UserTypes } from 'src/app/table-info/ITable-info.interface';
 export class CreateStakeholderComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
-  @Output() insertedStakeSubject = new EventEmitter<Subject<StakeholdersCompleteInformation>>();
+  @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
 
   emitInsertedStake(stake) {
     this.insertedStakeSubject.emit(stake);
