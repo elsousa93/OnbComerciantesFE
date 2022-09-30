@@ -47,7 +47,7 @@ export class StakeholdersComponent implements OnInit {
   }
   @ViewChild('newModal') newModal;
 
-  insertStakeholderEvent: Subject<StakeholdersCompleteInformation>;
+  insertStakeholderEvent: Observable<StakeholdersCompleteInformation>;
 
   emitInsertedStake(stake) {
     this.insertStakeholderEvent = stake;
