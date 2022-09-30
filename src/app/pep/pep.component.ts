@@ -83,15 +83,17 @@ export class PepComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   returned: string;
+  form: FormGroup;
 
-  form = new FormGroup({
-    id: new FormControl(''),
-    pep12months: new FormControl('')
-  });
 
   ngOnInit(): void {
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(false, 6, 3);
+
+    this.form = new FormGroup({
+      id: new FormControl(''),
+      pep12months: new FormControl('')
+    });
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('pep', this.form);
