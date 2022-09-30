@@ -146,14 +146,14 @@ export class CountrysComponent implements OnInit {
     
     this.initializeForm();
 
-    if (this.returned !== null) {
+    if (this.returned != null) {
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
         this.form.get("preferenceDocuments").setValue("viaDigital");
       } else {
         this.form.get("preferenceDocuments").setValue("Mail");
       }
 
-      if (this.merchantInfo.businessGroup !== null) {
+      if (this.merchantInfo.businessGroup != null) {
         if (this.merchantInfo.businessGroup.type === 'Franchise') {
           this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
           this.setAssociatedWith(true);
@@ -269,9 +269,9 @@ export class CountrysComponent implements OnInit {
     if (this.clientExists) {
       console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl({ value: (this.returned != null && this.merchantInfo !== undefined && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+        services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
+        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
         inputEuropa: new FormControl(this.inputEuropa),
@@ -284,9 +284,9 @@ export class CountrysComponent implements OnInit {
       });
     } else {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl('', Validators.required),
-        transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales !== undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
         inputEuropa: new FormControl(this.inputEuropa),
