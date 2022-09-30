@@ -88,6 +88,17 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
+  updateForm() {
+    var stakeholdersEligibility: FormGroup = this.form.get("stakeholdersEligibility").value;
+    this.stakesList.forEach(function (value, idx) {
+      stakeholdersEligibility.addControl(value.id, new FormControl('', Validators.required));
+    });
+
+    this.form.get("stakeholdersEligiblity").setValue(stakeholdersEligibility);
+  }
+
+
+
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -157,7 +168,9 @@ export class QueuesDetailComponent implements OnInit {
   fetchStartingInfo() {
 
     this.loadStakeholdersFromProcess().then(success => {
-      console.log("start");
+      this.loadShopsFromProcess().then(next => {
+        this.updateForm();
+      });
     })
     //Listar as lojas do processo
     
