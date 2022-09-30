@@ -224,6 +224,7 @@ export class PepComponent implements OnInit {
     if (pepSince != "") {
       this.isPEPSinceSelected = true;
     }
+    this.logger.debug(this.form);
   }
   checkSelectedFamiliar() {
     this.isPEPFamilyRelationSelected = false;
@@ -233,6 +234,7 @@ export class PepComponent implements OnInit {
     if (pepFamilyRelation != "") {
       this.isPEPFamilyRelationSelected = true;
     }
+    this.logger.debug(this.form);
   }
   checkSelectedRelations() {
     this.isPEPRelationSelected = false;
@@ -240,6 +242,7 @@ export class PepComponent implements OnInit {
 
     if (pepRelationType != "") {
       this.isPEPRelationSelected = true;
-    }    
+    }
+    this.logger.debug(this.form);    
   }
 }
