@@ -92,7 +92,7 @@ export class PepComponent implements OnInit {
 
     this.form = new FormGroup({
       id: new FormControl(''),
-      pep12months: new FormControl('')
+      pep12months: new FormControl('', [Validators.required])
     });
 
     if (this.rootFormGroup.form != null) {
