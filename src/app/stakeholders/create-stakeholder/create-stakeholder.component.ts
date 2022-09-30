@@ -38,7 +38,7 @@ import { UserTypes } from 'src/app/table-info/ITable-info.interface';
 export class CreateStakeholderComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
-  @Output() insertedStakeSubject = new EventEmitter<Subject<StakeholdersCompleteInformation>>();
+  @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
 
   emitInsertedStake(stake) {
     this.insertedStakeSubject.emit(stake);
@@ -594,13 +594,21 @@ export class CreateStakeholderComponent implements OnInit {
     this.errorMsg = info.errorMsg;
   }
 
+  clearForm() {
+    this.formNewStakeholder.reset();
+    this.formStakeholderSearch.reset();
+    this.initializeForm();
+  }
+
   addStakeholder() {
     console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+          this.currentStakeholder.id = result["id"];
           this.emitInsertedStake(of(this.currentStakeholder));
+          this.clearForm();
           this.route.navigate(['/stakeholders/']);
         }, error => {
         });
@@ -615,10 +623,12 @@ export class CreateStakeholderComponent implements OnInit {
         },
         "phone1": {},
         "phone2": {},
-        "shortName": this.formNewStakeholder.get("socialDenomination")?.value ?? this.formNewStakeholder.get("nome")?.value
+        "shortName": this.formNewStakeholder.get("name")?.value ?? this.formNewStakeholder.get("socialDenomination")?.value
       }
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+        stakeholderToInsert.id = result["id"];
         this.emitInsertedStake(of(stakeholderToInsert));
+        this.clearForm();
         this.route.navigate(['/stakeholders/']);
       });
     }

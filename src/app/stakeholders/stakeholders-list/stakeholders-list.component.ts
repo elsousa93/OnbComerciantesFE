@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subject } from 'rxjs';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { StakeholdersCompleteInformation } from '../IStakeholders.interface';
+import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { StakeholderService } from '../stakeholder.service';
   templateUrl: './stakeholders-list.component.html',
   styleUrls: ['./stakeholders-list.component.css']
 })
-export class StakeholdersListComponent implements OnInit, AfterViewInit {
+export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChanges {
  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
   triggerFalseClick() {
@@ -25,6 +25,21 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
      // this.triggerFalseClick();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["insertStakeholderEvent"]) {
+      this.insertStakeholderEvent.subscribe(result => {
+        var stakeToInsert = {
+          stakeholderAcquiring: result,
+          stakeholderOutbound: undefined,
+          displayName: "",
+          eligibility: false
+        } as StakeholdersCompleteInformation;
+        this.submissionStakeholders.push(stakeToInsert);
+        this.loadStakeholders(this.submissionStakeholders);
+      });
+    }
   }
  
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
@@ -44,7 +59,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
 
-  @Input() insertStakeholderEvent?: Observable<StakeholdersCompleteInformation>;
+  @Input() insertStakeholderEvent?: Observable<IStakeholders>;
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
@@ -69,17 +84,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     this.returned = localStorage.getItem("returned");
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
-    setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
-    this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);
-    this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
-
-    this.insertStakeholderEvent.subscribe(result => {
-      var stakeToInsert = result;
-
-      this.submissionStakeholders.push(stakeToInsert);
-
-      this.loadStakeholders(this.submissionStakeholders);
-    });
+    setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000); //acho que esta chamada não está a fazer nada
+    //this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
+    //this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
   }
 
   ngAfterViewInit(): void {
@@ -222,6 +229,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
       }, error => {
       }).then(teste => {
         context.loadStakeholders(context.submissionStakeholders);
+        context.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+        //context.selectedStakeholder = context.submissionStakeholders[0];
+        console.log('Dentro do getSubmissionStakeholders, o current stake é ', context.selectedStakeholder);
       });
     }
   }

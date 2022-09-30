@@ -83,15 +83,17 @@ export class PepComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   returned: string;
+  form: FormGroup;
 
-  form = new FormGroup({
-    id: new FormControl(''),
-    pep12months: new FormControl('')
-  });
 
   ngOnInit(): void {
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(false, 6, 3);
+
+    this.form = new FormGroup({
+      id: new FormControl(''),
+      pep12months: new FormControl('', [Validators.required])
+    });
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('pep', this.form);
@@ -224,6 +226,7 @@ export class PepComponent implements OnInit {
     if (pepSince != "") {
       this.isPEPSinceSelected = true;
     }
+    this.logger.debug(this.form);
   }
   checkSelectedFamiliar() {
     this.isPEPFamilyRelationSelected = false;
@@ -233,6 +236,7 @@ export class PepComponent implements OnInit {
     if (pepFamilyRelation != "") {
       this.isPEPFamilyRelationSelected = true;
     }
+    this.logger.debug(this.form);
   }
   checkSelectedRelations() {
     this.isPEPRelationSelected = false;
@@ -240,6 +244,7 @@ export class PepComponent implements OnInit {
 
     if (pepRelationType != "") {
       this.isPEPRelationSelected = true;
-    }    
+    }
+    this.logger.debug(this.form);    
   }
 }
