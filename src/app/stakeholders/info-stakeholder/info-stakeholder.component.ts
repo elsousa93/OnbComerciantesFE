@@ -60,24 +60,14 @@ export class InfoStakeholderComponent implements OnInit {
 
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
-    this.newStakeholder = JSON.parse(localStorage.getItem("info-declarativa"))?.stakeholder ?? this.newStakeholder
-    this.formContactos = this.formBuilder.group({
-      listF: [''],
-      phone: this.formBuilder.group({
-        countryCode: new FormControl(this.newStakeholder.phone1?.countryCode),
-        phoneNumber: new FormControl(this.newStakeholder.phone1?.phoneNumber)
-      },{validators: [validPhoneNumber]}),
-      email: new FormControl(this.newStakeholder.email, Validators.required),
-    })
-    this.phone = this.formContactos.get("phone");
+    this.newStakeholder = JSON.parse(localStorage.getItem("info-declarativa"))?.stakeholder ?? this.newStakeholder;
   }
 
   initializeForm() {
     this.formContactos = this.formBuilder.group({
-      listF: [''],
       phone: this.formBuilder.group({
-        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : this.newStakeholder.phone1?.countryCode),
-        phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : this.newStakeholder.phone1?.phoneNumber)
+        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : this.newStakeholder.phone1?.countryCode, [Validators.required]),
+        phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : this.newStakeholder.phone1?.phoneNumber, [Validators.required])
       }, { validators: [validPhoneNumber] }),
       email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : this.newStakeholder.email, Validators.required),
     })
@@ -85,8 +75,5 @@ export class InfoStakeholderComponent implements OnInit {
 
   changeListElement(string:string,e: any) {
     this.formContactos.get("phone").get("countryCode").setValue(e.target.value);
-    //update ao newStakeholder aqui?
-    // this.newStakeholder.callingCodeStakeholder =  this.callingCodeStakeholder;
   }
-
 }
