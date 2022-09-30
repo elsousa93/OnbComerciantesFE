@@ -52,7 +52,7 @@
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne"
                   ><!-- data-bs-parent="#accordionFlushExample" -->
-                <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" (selectedStakeholderEmitter)="selectStake($event)" (listLengthEmitter)="getStakesListLength($event)"> <!-- [canDelete]=true -->
+                <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="selectStake($event)" (listLengthEmitter)="getStakesListLength($event)"> <!-- [canDelete]=true -->
                 </app-stakeholders-list>
               </div>
             </div>
