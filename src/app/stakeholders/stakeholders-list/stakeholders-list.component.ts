@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { StakeholderService } from '../stakeholder.service';
   templateUrl: './stakeholders-list.component.html',
   styleUrls: ['./stakeholders-list.component.css']
 })
-export class StakeholdersListComponent implements OnInit, AfterViewInit {
+export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChanges {
  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
   triggerFalseClick() {
@@ -25,6 +25,16 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
 
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
      // this.triggerFalseClick();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["insertStakeholderEvent"]) {
+      this.insertStakeholderEvent.subscribe(result => {
+        var stakeToInsert = result;
+        this.submissionStakeholders.push(stakeToInsert);
+        this.loadStakeholders(this.submissionStakeholders);
+      });
+    }
   }
  
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
@@ -70,16 +80,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
-    this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);
-    this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
-
-    this.insertStakeholderEvent.subscribe(result => {
-      var stakeToInsert = result;
-
-      this.submissionStakeholders.push(stakeToInsert);
-
-      this.loadStakeholders(this.submissionStakeholders);
-    });
+    //this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);
+    //this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
   }
 
   ngAfterViewInit(): void {
