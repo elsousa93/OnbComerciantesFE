@@ -201,7 +201,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private logger: LoggerService, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
+    private modalService: BsModalService, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
@@ -569,7 +569,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.firstSubmissionModalRef?.hide();
     this.files.forEach(doc => {
 
-      this.readBase64(doc).then((data) => {
+      this.comprovativoService.readBase64(doc).then((data) => {
         var docToSend: PostDocument = {
           "documentType": "1001",
           "documentPurpose": "Identification",

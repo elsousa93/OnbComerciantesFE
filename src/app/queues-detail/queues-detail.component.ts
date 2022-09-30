@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
@@ -11,7 +11,10 @@ import { QueuesService } from './queues.service';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
-import { ExternalState, State } from './IQueues.interface';
+import { EligibilityAssessment, ExternalState, State, StateResultDiscriminatorEnum } from './IQueues.interface';
+import { PostDocument } from '../submission/document/ISubmission-document';
+import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
+import { queue } from 'jquery';
 
 
 @Component({
@@ -60,7 +63,7 @@ export class QueuesDetailComponent implements OnInit {
   public externalState: ExternalState;
 
   constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private data: DataService, private queuesInfo: QueuesService) {
+    private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService) {
 
     //Gets Queue Name and processId from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -78,50 +81,86 @@ export class QueuesDetailComponent implements OnInit {
 
   }
 
+  initializeElegibilityForm() {
+    this.form = new FormGroup({
+      observation: new FormControl(''),
+      stakeholdersEligibility: new FormGroup({})
+    });
+  }
+
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
   }
 
-  fetchStartingInfo() {
+  loadStakeholdersFromProcess() {
     //Listar os stakeholders do processo
-    this.queuesInfo.getProcessStakeholdersList(this.processId).subscribe(result => {
-      var stakeholders = result;
-      stakeholders.forEach(value => {
-        // Obter o detalhe dos stakeholders
-        this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).subscribe(res => {
-          var stakeholder = res;
-          this.stakesList.push(stakeholder);
-        });
-      });
-      this.logger.debug("stakeholders do processo: " + stakeholders);
-    });
+    var currentLength = 0;
+    return new Promise(async (resolve, reject) => {
+      await this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
+        console.log("stakeholders");
+        var stakeholders = result.result;
+        var totalLength = stakeholders.length;
 
-    //Listar as lojas do processo
-    this.queuesInfo.getProcessShopsList(this.processId).subscribe(result => {
-      var shops = result;
-      shops.forEach(value => {
-        // Obter o detalhe das lojas
-        this.queuesInfo.getProcessShopDetails(this.processId, value.id).subscribe(res => {
-          var shop = res;
-          this.shopsList.push(shop);
-          // Obter os equipamentos das lojas
-          this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).subscribe(eq => {
-            var equipments = eq;
-            equipments.forEach(val => {
-              // Obter o detalhe dos equipamentos das lojas
-              this.queuesInfo.getProcessShopEquipmentDetails(this.processId, shop.id, val.id).subscribe(r => {
-                var equipment = r;
-                this.equipmentList.push(equipment);
+        stakeholders.forEach(value => {
+          console.log("stakeholder");
+          // Obter o detalhe dos stakeholders
+          this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).then(res => {
+            console.log("stakeholder iter");
+            var stakeholder = res.result;
+            this.stakesList.push(stakeholder);
+
+            //if (++currentLength == totalLength)
+            //  resolve(null);
+          });
+        });
+        this.logger.debug("stakeholders do processo: " + stakeholders);
+      }).then(next => {
+        console.log("acabou");
+        resolve(null);
+      });
+    });
+  }
+
+  loadShopsFromProcess() {
+    return new Promise((resolve, reject) => {
+      this.queuesInfo.getProcessShopsList(this.processId).then(result => {
+        console.log("Loja");
+        var shops = result.result;
+        shops.forEach(value => {
+          // Obter o detalhe das lojas
+          this.queuesInfo.getProcessShopDetails(this.processId, value.id).then(res => {
+            var shop = res.result;
+            this.shopsList.push(shop);
+            // Obter os equipamentos das lojas
+            this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).then(eq => {
+              var equipments = eq.result;
+              equipments.forEach(val => {
+                // Obter o detalhe dos equipamentos das lojas
+                this.queuesInfo.getProcessShopEquipmentDetails(this.processId, shop.id, val.id).then(r => {
+                  var equipment = r.result;
+                  this.equipmentList.push(equipment);
+                })
               })
             })
-          })
+          });
         });
+        this.logger.debug("lojas do processo: " + shops);
+        this.logger.debug("equipamentos das lojas do processo: " + this.equipmentList);
+      }).then(after => {
+        console.log("Ja acabou");
       });
-      this.logger.debug("lojas do processo: " + shops);
-      this.logger.debug("equipamentos das lojas do processo: " + this.equipmentList);
-    });
+    })
+  }
+
+  fetchStartingInfo() {
+
+    this.loadStakeholdersFromProcess().then(success => {
+      console.log("start");
+    })
+    //Listar as lojas do processo
+    
   }
 
   nextPage() {
@@ -176,10 +215,36 @@ export class QueuesDetailComponent implements OnInit {
     this.checkButton = true;
   }
 
-  concludeOpinion(state, externalState) {
-    this.queuesInfo.postExternalState(this.processId, state, externalState).subscribe(result => {
-      this.logger.debug("Send external state - Eligibility");
+  concludeOpinion(/*state, externalState*/) {
+    var context = this;
+
+    this.files.forEach(function (value, idx) {
+      context.documentService.readBase64(value).then(data => {
+        var document: PostDocument = {
+          documentType: "",
+          file: {
+            fileType: "PDF",
+            binary: ""
+          },
+          validUntil: new Date().toISOString(),
+          data: {}
+        }
+
+        context.queuesInfo.postProcessDocuments(document, context.processId, context.queueName);
+      });
     })
+    var queueModel = {} as EligibilityAssessment;
+    if (this.state === State.ELIGIBILITY_ASSESSMENT) {
+      var observation = this.form.get('observation').value();
+      queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
+      queueModel.userObservations = observation;
+      //queueModel.merchantAssessment = ;
+      
+    }
+
+    //this.queuesInfo.postExternalState(this.processId, this.state, this.externalState).subscribe(result => {
+    //  //this.logger.debug("Send external state - Eligibility");
+    //})
   }
 
 }
