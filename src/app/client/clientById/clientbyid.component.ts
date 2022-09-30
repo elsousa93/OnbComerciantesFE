@@ -244,7 +244,7 @@ export class ClientByIdComponent implements OnInit {
     console.log("now NIFNIPC is " + this.NIFNIPC)
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned !== null && this.returned !== undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -257,7 +257,7 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
   }
@@ -299,9 +299,9 @@ export class ClientByIdComponent implements OnInit {
     this.form = new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
-      natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl({ value: (this.returned !== null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
+      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
+      natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : ''), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -605,7 +605,7 @@ export class ClientByIdComponent implements OnInit {
       clientCharacterizationForm: new FormGroup({
         natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
         commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
         collectCRC: new FormControl(this.collectCRC)
       }),
       countrysForm: formBuilder.group({}),
@@ -634,7 +634,7 @@ export class ClientByIdComponent implements OnInit {
     this.initializeTableInfo();
 
 
-    if (this.returned !== null) {
+    if (this.returned != null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         if (result[0] !== undefined) {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {

@@ -233,7 +233,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("intializeeniform");
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned !== null && this.returned !== undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
@@ -246,7 +246,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
   }
@@ -259,14 +259,14 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC , [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC, [Validators.required])
-      //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+      //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     });
 
     //this.changeFormStructure(new FormGroup({
     //  natJuridicaNIFNIPC: new FormControl({ value: this.NIFNIPC }, [Validators.required]), //sim
     //  commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
     //  collectCRC: new FormControl(this.collectCRC, [Validators.required])
-    //  //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+    //  //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
     //}));
 
     this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
@@ -300,9 +300,9 @@ export class ClientCharacterizationComponent implements OnInit {
     this.changeFormStructure(new FormGroup({
       //commercialSociety: new FormControl('false', [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      natJuridicaN1: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature : ''), //sim
-      natJuridicaN2: new FormControl((this.returned !== null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl({value:(this.returned !== null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled:localStorage.getItem("clientName")!==null}, Validators.required), //sim
+      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : ''), //sim
+      natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : ''), //sim
+      socialDenomination: new FormControl({value:(this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled:localStorage.getItem("clientName")!==null}, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
