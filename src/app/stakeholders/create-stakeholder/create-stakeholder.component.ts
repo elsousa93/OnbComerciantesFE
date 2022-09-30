@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
@@ -600,7 +600,7 @@ export class CreateStakeholderComponent implements OnInit {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').subscribe(stakeholder => {
         var stakeholderToInsert = stakeholder;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.emitInsertedStake(this.currentStakeholder);
+          this.emitInsertedStake(of(this.currentStakeholder));
           this.route.navigate(['/stakeholders/']);
         }, error => {
         });
@@ -618,7 +618,7 @@ export class CreateStakeholderComponent implements OnInit {
         "shortName": this.formNewStakeholder.get("socialDenomination")?.value ?? this.formNewStakeholder.get("nome")?.value
       }
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-        this.emitInsertedStake(stakeholderToInsert);
+        this.emitInsertedStake(of(stakeholderToInsert));
         this.route.navigate(['/stakeholders/']);
       });
     }
