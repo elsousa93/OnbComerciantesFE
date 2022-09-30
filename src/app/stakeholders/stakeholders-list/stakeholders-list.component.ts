@@ -32,7 +32,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       this.insertStakeholderEvent.subscribe(result => {
         var stakeToInsert = {
           stakeholderAcquiring: result,
-          displayName: ""
+          stakeholderOutbound: undefined,
+          displayName: "",
+          eligibility: false
         } as StakeholdersCompleteInformation;
         this.submissionStakeholders.push(stakeToInsert);
         this.loadStakeholders(this.submissionStakeholders);
@@ -83,7 +85,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
-    //this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);
+    //this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
     //this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
   }
 
@@ -227,6 +229,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
       }).then(teste => {
         context.loadStakeholders(context.submissionStakeholders);
+        context.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0 });
+        context.listLengthEmitter.emit({ length: context.submissionStakeholders.length });
       });
     }
   }
