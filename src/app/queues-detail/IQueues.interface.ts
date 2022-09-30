@@ -2,7 +2,7 @@ export interface EligibilityAssessment {
     type: StateResultDiscriminatorEnum,
     userObservations?: string,
     merchantAssessment : MerchantEligibilityAssessment,
-    stakeholderAssessment?: StakeholderEligibilityAssessment
+    stakeholderAssessment?: StakeholderEligibilityAssessment[]
 }
 
 export interface MerchantEligibilityAssessment {

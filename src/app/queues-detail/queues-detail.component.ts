@@ -89,12 +89,12 @@ export class QueuesDetailComponent implements OnInit {
   }
 
   updateForm() {
-    var stakeholdersEligibility: FormGroup = this.form.get("stakeholdersEligibility").value;
+    var formGroupStakeholdersEligibility = new FormGroup({});
     this.stakesList.forEach(function (value, idx) {
-      stakeholdersEligibility.addControl(value.id, new FormControl('', Validators.required));
+      formGroupStakeholdersEligibility.addControl(value.id, new FormControl('', Validators.required));
     });
 
-    this.form.get("stakeholdersEligiblity").setValue(stakeholdersEligibility);
+    this.form.get("stakeholdersEligiblity").setValue(formGroupStakeholdersEligibility);
   }
 
 
@@ -110,7 +110,7 @@ export class QueuesDetailComponent implements OnInit {
     //Listar os stakeholders do processo
     var currentLength = 0;
     return new Promise(async (resolve, reject) => {
-      await this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
+      this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
         console.log("stakeholders");
         var stakeholders = result.result;
         var totalLength = stakeholders.length;
@@ -123,8 +123,8 @@ export class QueuesDetailComponent implements OnInit {
             var stakeholder = res.result;
             this.stakesList.push(stakeholder);
 
-            //if (++currentLength == totalLength)
-            //  resolve(null);
+            if (++currentLength == totalLength)
+              resolve(null);
           });
         });
         this.logger.debug("stakeholders do processo: " + stakeholders);
@@ -253,9 +253,24 @@ export class QueuesDetailComponent implements OnInit {
     })
     var queueModel = {} as EligibilityAssessment;
     if (this.state === State.ELIGIBILITY_ASSESSMENT) {
+
       var observation = this.form.get('observation').value();
       queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
       queueModel.userObservations = observation;
+
+      var stakeholders: FormGroup = this.form.get("stakeholdersEligibility").value;
+      queueModel.stakeholderAssessment = [];
+
+      for (const cont in stakeholders.value.controls) {
+        console.log("Control dentro do group: ", cont);
+        const control = this.form.get(cont);
+        console.log("valor do control: ", control.value);
+        queueModel.stakeholderAssessment.push({
+          stakeholderId: cont,
+          accepted: control.value
+        });
+      }
+      console.log("Queue model final: ", queueModel);
       //queueModel.merchantAssessment = ;
       
     }
