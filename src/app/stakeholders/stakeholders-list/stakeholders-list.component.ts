@@ -85,8 +85,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
-    this.selectedStakeholder = this.submissionStakeholders[0];
-    console.log('o current stake é ', this.selectedStakeholder);
+    //this.selectedStakeholder = this.submissionStakeholders[0];
+    //console.log('o current stake é ', this.selectedStakeholder);
   }
 
   ngAfterViewInit(): void {
@@ -178,12 +178,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   }
 
-  getSubmissionStakeholdersAux() {
+  async getSubmissionStakeholdersAux() {
     var context = this;
     console.log('Valor do submission id dentro da chamada do getSubmissionStakeholdersAux', this.submissionId);
     console.log('Valor do localStorage ', localStorage.getItem("submissionId"));
     if (this.submissionId != null) {
-      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+      await this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
         var results = result.result;
         console.log('Get All stakes from submission ', results);
         results.forEach(function (value, index) {
@@ -229,6 +229,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
       }).then(teste => {
         context.loadStakeholders(context.submissionStakeholders);
+        context.selectedStakeholder = context.submissionStakeholders[0];
+        console.log('o current stake é ', context.selectedStakeholder);
       });
     }
   }

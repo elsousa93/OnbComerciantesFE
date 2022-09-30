@@ -102,9 +102,27 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (info !== null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.infoStakeholders.reset();
+      this.resetContacts();
+      this.resetPepForm();
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
     }
+  }
+
+  resetPepForm() {
+    this.infoStakeholders.setControl('pep', new FormGroup({
+      id: new FormControl(''),
+      pep12months: new FormControl('', [Validators.required])
+    }));
+  }
+
+  resetContacts(){
+    this.infoStakeholders.setControl('contacts', new FormGroup({
+      phone: new FormGroup({
+        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.countryCode : '', Validators.required),
+        phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.phoneNumber : '', Validators.required)
+      }, { validators: [validPhoneNumber] }),
+      email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.email : '', Validators.required),
+    }));
   }
 
   setFormData() {
@@ -119,8 +137,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       }
     }
 
+    var pep = this.infoStakeholders.controls["pep"];
     if (pep !== undefined) {
-      var pep = this.infoStakeholders.controls["pep"];
       if (pep.get("pep12months").value) {
         pep.get("pep12months")?.get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
         pep.get("pep12months")?.get("pepCountry").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepCountry);

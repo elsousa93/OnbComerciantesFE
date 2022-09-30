@@ -685,12 +685,12 @@ export class ClientByIdComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
 
     this.clientContext = new ClientContext(
-      this.route.getCurrentNavigation().extras.state["tipologia"],
-      this.route.getCurrentNavigation().extras.state["clientExists"],
-      this.route.getCurrentNavigation().extras.state["comprovativoCC"],
-      this.router.snapshot.params["id"],
-      this.route.getCurrentNavigation().extras.state["clientId"],
-      this.route.getCurrentNavigation().extras.state["dataCC"],
+      this.tipologia,
+      this.clientExists,
+      this.comprovativoCC,
+      this.idClient,
+      this.clientId,
+      this.dataCC,
     );
 
     console.log("antes da pesquisa");
