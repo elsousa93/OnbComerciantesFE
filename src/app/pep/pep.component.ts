@@ -90,8 +90,6 @@ export class PepComponent implements OnInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(false, 6, 3);
 
-    this.form.reset();
-
     this.form = new FormGroup({
       id: new FormControl(''),
       pep12months: new FormControl('')

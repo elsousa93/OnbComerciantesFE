@@ -44,7 +44,7 @@ export class InfoStakeholderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('contacts', this.formContactos);
       this.edit = true;
@@ -56,7 +56,7 @@ export class InfoStakeholderComponent implements OnInit {
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
 
-    this.formContactos.reset();
+    
     this.initializeForm();
 
     this.returned = localStorage.getItem("returned");
