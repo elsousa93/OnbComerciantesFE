@@ -169,6 +169,9 @@ export class QueuesDetailComponent implements OnInit {
 
     this.loadStakeholdersFromProcess().then(success => {
       this.loadShopsFromProcess().then(next => {
+      }, reject => {
+
+      }).then(res => {
         this.updateForm();
       });
     })
