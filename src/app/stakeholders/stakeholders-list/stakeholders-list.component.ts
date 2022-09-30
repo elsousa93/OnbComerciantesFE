@@ -85,8 +85,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
-    //this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
-    //this.listLengthEmitter.emit({ length: this.submissionStakeholders.length });
+    this.selectedStakeholder = this.submissionStakeholders[0];
+    console.log('o current stake é ', this.selectedStakeholder);
   }
 
   ngAfterViewInit(): void {
@@ -229,8 +229,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
       }).then(teste => {
         context.loadStakeholders(context.submissionStakeholders);
-        context.selectedStakeholder = context.submissionStakeholders[0];
-        console.log('Dentro do getSubmissionStakeholders, o current stake é ', context.selectedStakeholder);
       });
     }
   }
