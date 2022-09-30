@@ -94,7 +94,7 @@ export class QueuesDetailComponent implements OnInit {
       formGroupStakeholdersEligibility.addControl(value.id, new FormControl('', Validators.required));
     });
 
-    this.form.get("stakeholdersEligiblity").setValue(formGroupStakeholdersEligibility);
+    this.form.setControl("stakeholdersEligibility", formGroupStakeholdersEligibility);
   }
 
 
