@@ -44,7 +44,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit {
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
 
-  @Input() insertStakeholderEvent: Subject<StakeholdersCompleteInformation>;
+  @Input() insertStakeholderEvent?: Subject<StakeholdersCompleteInformation>;
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
