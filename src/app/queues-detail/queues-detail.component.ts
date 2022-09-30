@@ -103,6 +103,7 @@ export class QueuesDetailComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
+    this.initializeElegibilityForm();
   }
 
   loadStakeholdersFromProcess() {
@@ -135,8 +136,8 @@ export class QueuesDetailComponent implements OnInit {
   }
 
   loadShopsFromProcess() {
-    return new Promise((resolve, reject) => {
-      this.queuesInfo.getProcessShopsList(this.processId).then(result => {
+    return new Promise(async (resolve, reject) => {
+      await this.queuesInfo.getProcessShopsList(this.processId).then(result => {
         console.log("Loja");
         var shops = result.result;
         shops.forEach(value => {
@@ -161,6 +162,7 @@ export class QueuesDetailComponent implements OnInit {
         this.logger.debug("equipamentos das lojas do processo: " + this.equipmentList);
       }).then(after => {
         console.log("Ja acabou");
+        resolve(null);
       });
     })
   }
