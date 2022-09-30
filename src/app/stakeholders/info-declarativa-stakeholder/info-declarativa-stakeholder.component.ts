@@ -56,6 +56,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
 
     this.ngOnInit();
+    if (this.infoStakeholders.contains('pep')) {
+      this.infoStakeholders.removeControl("pep");
+    }
 
     this.infoStakeholders = this.formBuilder.group({
       contacts: this.formBuilder.group({
