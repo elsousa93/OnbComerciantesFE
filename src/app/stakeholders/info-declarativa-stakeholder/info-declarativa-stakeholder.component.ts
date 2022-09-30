@@ -56,9 +56,6 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
 
     this.ngOnInit();
-    console.log(this.infoStakeholders);
-    this.infoStakeholders?.removeControl("pep");
-
     this.infoStakeholders = this.formBuilder.group({
       contacts: this.formBuilder.group({
       }),
@@ -106,6 +103,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
       this.infoStakeholders.reset();
+      console.log(this.infoStakeholders);
+      this.infoStakeholders?.removeControl("pep");  
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
     }
   }
