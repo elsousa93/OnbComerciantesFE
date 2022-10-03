@@ -121,6 +121,9 @@ export class QueuesDetailComponent implements OnInit {
           this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).then(res => {
             console.log("stakeholder iter");
             var stakeholder = res.result;
+            var stakeholderGroup = this.form.get('stakeholdersEligibility') as FormGroup;
+
+            stakeholderGroup.addControl(value.id, new FormControl('', Validators.required));
             this.stakesList.push(stakeholder);
 
             if (++currentLength == totalLength)
@@ -173,9 +176,7 @@ export class QueuesDetailComponent implements OnInit {
       this.loadShopsFromProcess().then(next => {
       }, reject => {
 
-      }).then(res => {
-        this.updateForm();
-      });
+      })
     })
     //Listar as lojas do processo
     
@@ -259,7 +260,7 @@ export class QueuesDetailComponent implements OnInit {
       queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
       queueModel.userObservations = observation;
 
-      var stakeholders: FormGroup = this.form.get("stakeholdersEligibility").value;
+      var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
       queueModel.stakeholderAssessment = [];
 
       for (const cont in stakeholders.value.controls) {

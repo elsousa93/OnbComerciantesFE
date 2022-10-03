@@ -151,10 +151,10 @@
                               <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
                               <td class="text-primary text-center">
                                 <input class="form-check-input" type="radio" value="true"
-                                       id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" formControlName="stake.id" (click)="check()"><label class="form-check-label radio"
+                                       id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" [formControlName]="stake.id" (click)="check()"><label class="form-check-label radio"
                                                                                                                                        for="radio8">{{'queues.favorable'|translate}}&nbsp;</label>
 
-                                <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;" formControlName="stake.id" type="radio"
+                                <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;" [formControlName]="stake.id" type="radio"
                                        value="false" id="radio8" name="radio8"><label class="form-check-label radio pe-5"
                                                                                  for="radio8">{{'queues.unfavorable'|translate}}&nbsp;</label>
                               </td>
