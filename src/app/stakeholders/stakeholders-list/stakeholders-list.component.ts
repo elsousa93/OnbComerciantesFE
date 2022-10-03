@@ -46,7 +46,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }
   }
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('sort') sort = new MatSort();
   
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;
@@ -81,7 +81,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
     //this.selectedStakeholder = this.submissionStakeholders[0];
-    this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
     //console.log('o current stake é ', this.selectedStakeholder);
   }
 
@@ -89,6 +88,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     //this.stakesMat.data = this.submissionStakeholders;
     // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
+    this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
   }
 
   getSubmissionStakeholders() {
