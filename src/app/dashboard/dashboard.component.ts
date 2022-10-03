@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { LoggerService } from 'src/app/logger.service';
 import { User } from '../userPermissions/user';
 import { TranslateService } from '@ngx-translate/core';
+import { State } from '../queues-detail/IQueues.interface';
 
 @Component({
   selector: 'app-dashboard',
@@ -118,6 +119,8 @@ export class DashboardComponent implements OnInit {
   }
 
   //---------------------------
+
+  state = State;
 
   @Input() isToggle: boolean = false;
   @Input() isAutoHide: boolean = false;
