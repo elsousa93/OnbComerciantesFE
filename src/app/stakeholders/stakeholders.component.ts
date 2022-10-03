@@ -218,7 +218,7 @@ export class StakeholdersComponent implements OnInit {
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
-
+    this.getStakesListLength(this.submissionStakeholders);
 
   }
 
@@ -389,7 +389,6 @@ export class StakeholdersComponent implements OnInit {
       result.forEach(function (value, index) {
         context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
           context.submissionStakeholders.push(result);
-          // this.getStakesListLength(context.submissionStakeholders);
           this.stakeService.getStakeholderByID(result.stakeholderId, 'faltarequestID', 'faltaAcquiringUserID').subscribe((result: { documents: any; stakeholderId: string | number; }) => {
             var documents = result.documents;
             context.allStakeholdersComprovativos[result.stakeholderId] = documents;

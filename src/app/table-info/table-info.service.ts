@@ -46,7 +46,7 @@ export class TableInfoService {
           reject(requestResponse);
         },
         complete: () => {
-          console.log("pedido terminado!!");
+          console.log("pedido efetuado");
         }
       });
     });
@@ -86,7 +86,7 @@ export class TableInfoService {
           reject(requestResponse);
         },
         complete: () => {
-          console.log("pedido terminado!!");
+          console.log("pedido efetuado");
         }
       });
     });
