@@ -212,6 +212,8 @@ export class StakeholderService {
 
     //return this.http.get<any>(URI, HTTP_OPTIONS);
   }
+
+
   updateStakeholder(stakeholder: IStakeholders, processReferenceID: string, StakeholderID: string, RequestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
 
     var treatedProcessNumber = encodeURIComponent(AcquiringProcessID);
@@ -278,10 +280,6 @@ export class StakeholderService {
   }
 
   GetStakeholderFromSubmissionTest(submissionId: string, stakeholderId: string): any {
-
-    console.log("GET STAKEHOLDER FROM SUBMISSIO");
-    console.log("submissionID: ", submissionId);
-    console.log("stakeholderID: ", stakeholderId);
 
     this.logger.info(`Getting stakeholder ${stakeholderId} for submission ${submissionId}`)
 
