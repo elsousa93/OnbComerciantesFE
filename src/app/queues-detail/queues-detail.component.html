@@ -1,7 +1,7 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
-    <form >
+    <form [formGroup]="form" name="form">
       <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
           <span class="navbar-text text-light">
@@ -143,19 +143,19 @@
                               </th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody formGroupName="stakeholdersEligibility">
                             <tr *ngFor="let stake of stakesList">
                               <td class="text-primary text-center">{{stake.shortName}}</td>
                               <td class="text-primary text-center">{{stake.fiscalId}}</td>
                               <td class="text-primary text-center">{{stake.clientId}}</td>
                               <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
                               <td class="text-primary text-center">
-                                <input class="form-check-input" type="radio" value=""
-                                       id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" (click)="check()"><label class="form-check-label radio"
+                                <input class="form-check-input" type="radio" value="true"
+                                       id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" formControlName="stake.id" (click)="check()"><label class="form-check-label radio"
                                                                                                                                        for="radio8">{{'queues.favorable'|translate}}&nbsp;</label>
 
-                                <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;" type="radio"
-                                       value="" id="radio8" name="radio8"><label class="form-check-label radio pe-5"
+                                <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;" formControlName="stake.id" type="radio"
+                                       value="false" id="radio8" name="radio8"><label class="form-check-label radio pe-5"
                                                                                  for="radio8">{{'queues.unfavorable'|translate}}&nbsp;</label>
                               </td>
                               <td *ngIf="queueName === 'eligibility'" class="text-primary text-center">
@@ -435,7 +435,8 @@
                     {{'acceptance.commentsCompliance'|translate}}:
                   </p>
                   <div class="col pb-4" style="padding-left: 0px !important;">
-                    <textarea *ngIf="queueName!=='MCCTreatment'" [(ngModel)]="fillComments" id="text1" class="form-control"></textarea>
+                    <!-- [(ngModel)]="fillComments" -->
+                    <textarea *ngIf="queueName!=='MCCTreatment'" formControlName="observation" id="text1" class="form-control"></textarea>
                     <!-- Botões Final de Página consoante as Filas de Trabalho -->
                     <div class="col mt-4 ms-0 ps-0">
                       <hr>

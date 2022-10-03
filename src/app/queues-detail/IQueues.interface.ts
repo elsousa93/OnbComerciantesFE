@@ -73,4 +73,4 @@ export enum StateResultDiscriminatorEnum {
     STANDARD_INDUSTRY_CLASSIFICATION_MODEL = "StandardIndustryClassificationModel",
     RISK_ASSESSMENT = "RiskAssessment",
     ELIGIBILITY_ASSESSMENT = "ElegibilityAssessment"
-  }
+}
