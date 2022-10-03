@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
+import { Component, Inject, OnInit, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IStakeholders, StakeholdersCompleteInformation } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
@@ -37,6 +37,12 @@ export class StakeholdersComponent implements OnInit {
 
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
 
+    //Variáveis que vão retornar informação
+    @Output() selectedStakeholderEmitter = new EventEmitter<{
+      stakeholder: StakeholdersCompleteInformation,
+      idx: number
+    }>();
+
   newStake: IStakeholders = {
     "fiscalId": "",
     "identificationDocument": {
@@ -54,55 +60,6 @@ export class StakeholdersComponent implements OnInit {
     this.insertStakeholderEvent = stake;
   }
 
-  //newStake: IStakeholders = {
-
-  //  "id": "22199900000051",
-  //  "merchantType": null,
-  //  "commercialName": "CAFE CENTRAL",
-  //  "legalNature": "35",
-  //  "legalNature2": null,
-  //  "incorporationStatement": {
-  //    "code": "0000-0000-0001",
-  //    "validUntil": "2023-06-29T18:52:08.336+01:00"
-  //  },
-  //  "shareCapital": {
-  //    "capital": 50000.2,
-  //    "date": "2028-06-29T18:52:08.336+01:00"
-  //  },
-  //  "byLaws": "O Joao pode assinar tudo, like a boss",
-  //  "mainEconomicActivity": "90010",
-  //  "otherEconomicActivities": [
-  //    "055111"
-  //  ],
-  //  "incorporationDate": "2020-03-01T17:52:08.336+00:00",
-  //  "businessGroup": null,
-  //  "knowYourSales": {
-  //    "estimatedAnualRevenue": 1000000,
-  //    "transactionsAverage": 30000,
-  //    "servicesOrProductsSold": [
-  //      "Cafe"
-  //    ],
-  //    "servicesOrProductsDestinations": [
-  //      "PT"
-  //    ]
-  //  },
-  //  "bankInformation": {
-  //    "bank": "0033",
-  //    "iban": "PT00333506518874499677629"
-  //  },
-  //  "contacts": {
-  //    "email": "joao@silvestre.pt",
-  //    "phone1": {
-  //      "countryCode": "+351",
-  //      "phoneNumber": "919654422"
-  //    },
-  //    "phone2": null
-  //  },
-  //  "fullName": "",
-  //  "contactName": "",
-  //  "shortName": ""
-  //} as IStakeholders;
-
   currentStakeholder: StakeholdersCompleteInformation = {};
   currentIdx: number;
   allStakeholdersComprovativos = {}; 
@@ -110,9 +67,6 @@ export class StakeholdersComponent implements OnInit {
   submissionId: string;
 
   processNumber: string;
-
-//  submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
-
   submissionStakeholders: IStakeholders[] = [];
   
   //Field "stakeholder type" for the search
@@ -435,6 +389,8 @@ export class StakeholdersComponent implements OnInit {
       this.currentIdx = info.idx;
       this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
       setTimeout(() => this.setFormData(), 500);
+    } else {
+      this.selectedStakeholderEmitter.emit({ stakeholder: this.currentStakeholder[0], idx: 0 });
     }
   }
 
