@@ -253,9 +253,9 @@ export class QueuesDetailComponent implements OnInit {
     })
     var queueModel = {} as EligibilityAssessment;
     this.state = State.ELIGIBILITY_ASSESSMENT;
-    if (this.state === State.ELIGIBILITY_ASSESSMENT) {
+    if (this.queueName === 'eligibility') {
 
-      var observation = this.form.get('observation').value();
+      var observation = this.form.get('observation').value;
       queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
       queueModel.userObservations = observation;
 
