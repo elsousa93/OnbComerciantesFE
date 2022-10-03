@@ -34,7 +34,7 @@ export class QueuesService {
   }
 
   postExternalState(processId: string, state: State, externalState) {
-    var URI = this.acquiringUrl + "process/" + processId + state;
+    var URI = this.acquiringUrl + "process/" + processId + "/" + state;
     return this.http.post(URI, externalState);
   }
 

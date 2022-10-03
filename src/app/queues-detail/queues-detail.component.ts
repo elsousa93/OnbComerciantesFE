@@ -273,7 +273,10 @@ export class QueuesDetailComponent implements OnInit {
         });
       }
       console.log("Queue model final: ", queueModel);
-      //queueModel.merchantAssessment = ;
+      queueModel.merchantAssessment = {
+        accepted: true,
+        merchantId: null
+      };
       
     }
 

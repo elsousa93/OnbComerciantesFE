@@ -6,7 +6,7 @@ export interface EligibilityAssessment {
 }
 
 export interface MerchantEligibilityAssessment {
-    stakeholderId?: string,
+    merchantId?: string,
     accepted: boolean
 }
 
