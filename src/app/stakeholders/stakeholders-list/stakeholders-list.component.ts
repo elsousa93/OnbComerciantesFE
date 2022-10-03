@@ -63,9 +63,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     idx: number
   }>();
 
-  @Output() listLengthEmitter = new EventEmitter<{
-    length: number
-  }>();
+  @Output() listLengthEmitter = new EventEmitter<number>();
 
   submissionStakeholders: StakeholdersCompleteInformation[] = [];
 
@@ -227,6 +225,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         });
       }, error => {
       }).then(success => {
+        context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
         console.log('o current stake é ', context.selectedStakeholder);
