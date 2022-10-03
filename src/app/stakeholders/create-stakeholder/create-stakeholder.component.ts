@@ -612,6 +612,8 @@ export class CreateStakeholderComponent implements OnInit {
           this.route.navigate(['/stakeholders/']);
         }, error => {
         });
+      }, error => {
+        this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
       });
     } else {
       console.log("formstakeholder: ", this.formStakeholderSearch);

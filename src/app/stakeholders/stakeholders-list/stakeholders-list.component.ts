@@ -18,11 +18,6 @@ import { StakeholderService } from '../stakeholder.service';
 export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChanges {
  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
-  triggerFalseClick() {
-    let el: HTMLElement = this.selectedBlueDiv.nativeElement;
-    el.click();
-  }
-
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
      // this.triggerFalseClick();
   }
@@ -86,6 +81,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
     //this.selectedStakeholder = this.submissionStakeholders[0];
+    this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
     //console.log('o current stake é ', this.selectedStakeholder);
   }
 

@@ -343,6 +343,8 @@ export class StakeholdersComponent implements OnInit {
           }
 
           context.stakeholdersToShow.push(stakeholder);
+        }, error => {
+          this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
         });
       })
     }, error => {

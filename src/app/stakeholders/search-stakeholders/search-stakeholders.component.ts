@@ -85,7 +85,7 @@ export class SearchStakeholdersComponent implements OnInit {
             console.log('Dentro do forEach, valor de um stake ', stakeholder);
             console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
           }, error => {
-            console.log("Ocorreu um erro ", error);
+            this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
           }).then(success => {
             context.stakeholdersToShow.push(stakeholder);
             console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
