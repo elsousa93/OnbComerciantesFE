@@ -246,7 +246,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {
     this.stakesMat.data = stakesList;
-    this.selectedStakeholderEmitter.emit({ stakeholder: stakesList[0], idx: 0 });
     // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
