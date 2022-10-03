@@ -11,7 +11,7 @@ import { QueuesService } from './queues.service';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
-import { EligibilityAssessment, ExternalState, State, StateResultDiscriminatorEnum } from './IQueues.interface';
+import { EligibilityAssessment, ExternalState, RiskAssessment, State, StateResultDiscriminatorEnum } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { queue } from 'jquery';
@@ -237,24 +237,35 @@ export class QueuesDetailComponent implements OnInit {
   concludeOpinion(/*state, externalState*/) {
     var context = this;
 
-    this.files.forEach(function (value, idx) {
-      context.documentService.readBase64(value).then(data => {
-        var document: PostDocument = {
-          documentType: "",
-          file: {
-            fileType: "PDF",
-            binary: ""
-          },
-          validUntil: new Date().toISOString(),
-          data: {}
-        }
-
-        context.queuesInfo.postProcessDocuments(document, context.processId, context.queueName);
-      });
-    })
-    var queueModel = {} as EligibilityAssessment;
-    this.state = State.ELIGIBILITY_ASSESSMENT;
+    var queueModel;
     if (this.queueName === 'eligibility') {
+      this.state = State.ELIGIBILITY_ASSESSMENT;
+
+      queueModel = {} as EligibilityAssessment;
+      var observation = this.form.get('observation').value;
+      queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
+      queueModel.userObservations = observation;
+
+      var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
+      queueModel.stakeholderAssessment = [];
+
+      for (const cont in stakeholders.controls) {
+        console.log("Control dentro do group: ", cont);
+        const control = this.form.get("stakeholdersEligibility").get(cont);
+        console.log("valor do control: ", control.value);
+        queueModel.stakeholderAssessment.push({
+          stakeholderId: cont,
+          accepted: control.value
+        });
+      }
+      console.log("Queue model final: ", queueModel);
+      queueModel.merchantAssessment = {
+        accepted: true,
+        merchantId: null
+      };
+    } else if (this.queueName === 'risk') {
+      this.state = State.RISK_ASSESSMENT;
+      queueModel = {} as RiskAssessment;
 
       var observation = this.form.get('observation').value;
       queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
@@ -277,10 +288,25 @@ export class QueuesDetailComponent implements OnInit {
         accepted: true,
         merchantId: null
       };
-      
     }
 
-    this.queuesInfo.postExternalState(this.processId, State.ELIGIBILITY_ASSESSMENT, queueModel).subscribe(result => {
+    this.files.forEach(function (value, idx) {
+      context.documentService.readBase64(value).then(data => {
+        var document: PostDocument = {
+          documentType: null,
+          file: {
+            fileType: "PDF",
+            binary: data.split(',')[1]
+          },
+          validUntil: new Date().toISOString(),
+          data: {}
+        }
+
+        context.queuesInfo.postProcessDocuments(document, context.processId, context.state);
+      });
+    })
+
+    this.queuesInfo.postExternalState(this.processId, this.state, queueModel).subscribe(result => {
       console.log("resultado do post external state: ", queueModel);
       //this.logger.debug("Send external state - Eligibility");
     })
