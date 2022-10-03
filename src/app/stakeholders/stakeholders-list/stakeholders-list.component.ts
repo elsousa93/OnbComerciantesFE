@@ -88,8 +88,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   ngAfterViewInit(): void {
     //this.stakesMat.data = this.submissionStakeholders;
     // this.stakesMat.paginator = this.paginator;
-    this.stakesMat.sort = this.sort;
-    this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
+    // this.stakesMat.sort = this.sort;
+    
   }
 
   getSubmissionStakeholders() {
@@ -194,6 +194,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
               stakeholderOutbound: undefined
             }
 
+            
+
             //context.submissionStakeholders.push(stakeholderToInsert);
 
             //context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
@@ -227,6 +229,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }).then(success => {
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
+        this.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0 });
         console.log('o current stake é ', context.selectedStakeholder);
       }, error => {
         console.log('Foi rejeitado ', error);
