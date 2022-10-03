@@ -182,7 +182,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     if (this.submissionId != null) {
       await this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
         var results = result.result;
-        console.log('Get All stakes from submission ', results);
+        console.log('Get all stakes from submission ', results);
         results.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
             console.log('Stake especifico ', res);
@@ -229,7 +229,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }).then(success => {
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
-        this.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0 });
         console.log('o current stake é ', context.selectedStakeholder);
       }, error => {
         console.log('Foi rejeitado ', error);
@@ -247,6 +246,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {
     this.stakesMat.data = stakesList;
+    this.selectedStakeholderEmitter.emit({ stakeholder: stakesList[0], idx: 0 });
     // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
