@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subject } from 'rxjs';
+import { LoggerService } from 'src/app/logger.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
@@ -18,7 +19,7 @@ import { StakeholderService } from '../stakeholder.service';
 export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChanges {
  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
-  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private logger: LoggerService, private submissionService: SubmissionService) {
      // this.triggerFalseClick();
   }
 
@@ -46,7 +47,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }
   }
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('sort') sort = new MatSort();
   
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;
@@ -81,7 +82,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     this.getSubmissionStakeholders();
     setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
     //this.selectedStakeholder = this.submissionStakeholders[0];
-    this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
     //console.log('o current stake é ', this.selectedStakeholder);
   }
 
@@ -89,6 +89,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     //this.stakesMat.data = this.submissionStakeholders;
     // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
+    this.selectedStakeholderEmitter.emit({ stakeholder: this.submissionStakeholders[0], idx: 0 });
   }
 
   getSubmissionStakeholders() {

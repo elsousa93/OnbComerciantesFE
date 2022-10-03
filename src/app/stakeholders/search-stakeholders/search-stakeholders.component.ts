@@ -43,7 +43,7 @@ export class SearchStakeholdersComponent implements OnInit {
   currentStakeholder: IStakeholders = {};
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
-    @Inject(configurationToken) private configuration: Configuration,
+    @Inject(configurationToken) private configuration: Configuration, 
     private route: Router, private stakeholderService: StakeholderService, private authService: AuthService) {
     
   }
@@ -85,7 +85,7 @@ export class SearchStakeholdersComponent implements OnInit {
             console.log('Dentro do forEach, valor de um stake ', stakeholder);
             console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
           }, error => {
-            this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
+            console.log("Erro ao obter informação de um stakeholder");
           }).then(success => {
             context.stakeholdersToShow.push(stakeholder);
             console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
