@@ -173,12 +173,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   }
 
-  async getSubmissionStakeholdersAux() {
+   getSubmissionStakeholdersAux() {
     var context = this;
     console.log('Valor do submission id dentro da chamada do getSubmissionStakeholdersAux', this.submissionId);
     console.log('Valor do localStorage ', localStorage.getItem("submissionId"));
     if (this.submissionId != null) {
-      await this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
         var results = result.result;
         console.log('Get all stakes from submission ', results);
         results.forEach(function (value, index) {

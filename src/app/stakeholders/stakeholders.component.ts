@@ -37,12 +37,6 @@ export class StakeholdersComponent implements OnInit {
 
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
 
-    //Variáveis que vão retornar informação
-    @Output() selectedStakeholderEmitter = new EventEmitter<{
-      stakeholder: StakeholdersCompleteInformation,
-      idx: number
-    }>();
-
   newStake: IStakeholders = {
     "fiscalId": "",
     "identificationDocument": {
@@ -172,7 +166,7 @@ export class StakeholdersComponent implements OnInit {
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
-    this.getStakesListLength(this.submissionStakeholders);
+    // this.getStakesListLength(this.submissionStakeholders);
 
   }
 
@@ -389,8 +383,6 @@ export class StakeholdersComponent implements OnInit {
       this.currentIdx = info.idx;
       this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
       setTimeout(() => this.setFormData(), 500);
-    } else {
-      this.selectedStakeholderEmitter.emit({ stakeholder: this.currentStakeholder[0], idx: 0 });
     }
   }
 
@@ -438,8 +430,8 @@ export class StakeholdersComponent implements OnInit {
   }
 
   getStakesListLength(value) {
-    console.log('Tamanho da lista dos stakeholders ', value.length);
-    this.stakesLength = value.length;
+    console.log('Tamanho da lista dos stakeholders ', value);
+    this.stakesLength = value;
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
