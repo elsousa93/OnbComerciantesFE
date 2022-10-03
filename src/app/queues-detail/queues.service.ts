@@ -33,9 +33,9 @@ export class QueuesService {
     });
   }
 
-  postExternalState(processId: string, state: State, externalState: ExternalState, queueModel: any) {
+  postExternalState(processId: string, state: State, externalState) {
     var URI = this.acquiringUrl + "process/" + processId + state;
-    return this.http.post(URI, externalState, queueModel);
+    return this.http.post(URI, externalState);
   }
 
   postProcessDocuments(file: PostDocument, processID: string, state: string) {

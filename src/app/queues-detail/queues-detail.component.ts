@@ -60,7 +60,7 @@ export class QueuesDetailComponent implements OnInit {
   equipmentList: ShopEquipment[] = [];
 
   public state: State;
-  public externalState: ExternalState;
+  //public externalState: ExternalState;
 
   constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService) {
@@ -263,9 +263,9 @@ export class QueuesDetailComponent implements OnInit {
       var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
       queueModel.stakeholderAssessment = [];
 
-      for (const cont in stakeholders.value.controls) {
+      for (const cont in stakeholders.controls) {
         console.log("Control dentro do group: ", cont);
-        const control = this.form.get(cont);
+        const control = this.form.get("stakeholdersEligibility").get(cont);
         console.log("valor do control: ", control.value);
         queueModel.stakeholderAssessment.push({
           stakeholderId: cont,
@@ -277,9 +277,10 @@ export class QueuesDetailComponent implements OnInit {
       
     }
 
-    //this.queuesInfo.postExternalState(this.processId, this.state, this.externalState).subscribe(result => {
-    //  //this.logger.debug("Send external state - Eligibility");
-    //})
+    this.queuesInfo.postExternalState(this.processId, State.ELIGIBILITY_ASSESSMENT, queueModel).subscribe(result => {
+      console.log("resultado do post external state: ", queueModel);
+      //this.logger.debug("Send external state - Eligibility");
+    })
   }
 
 }
