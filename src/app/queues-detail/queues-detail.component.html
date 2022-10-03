@@ -1,488 +1,655 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
-    <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
-      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span
-          class="navbar-text text-light"><img src="assets/images/monograma_2.svg" class="img-fluid ms-0"
-            width="70"></span><span class="navbar-text">
-          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{
-            'homepage.queues.' + queueName|translate|uppercase }}&nbsp;</h5>
-        </span></nav>
-    </div>
-    <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
-      <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
-        <li class="nav-item"><a class="nav-link active activo_tabs activo-tabd" id="navTabs1_1_tab" data-bs-toggle="tab"
-            href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1"
-            aria-selected="true">{{'acceptance.detail'|translate}}</a></li>
-        <li class="nav-item_x"><a class="nav-link" id="navTabs1_2_tab" data-bs-toggle="tab" href="#"
-            data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
-            aria-selected="false">{{'acceptance.historic'|translate}}</a></li>
-        <li class="nav-item_x"></li>
-        <li class="nav-item_x"></li>
-      </ul>
-      <div class="tab-content" id="navTabs1_content">
-        <div class="tab-pane fade show active" id="navTabs1_1" role="tabpanel">
-          <div class="container-fluid mt-0 ps-3 pe-3">
-            <div class="row">
-              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 me-0 pt-4 ps-5 pe-5"
-                style="margin-left: 1px;">
-                <!-- Detalhe - Igual para todas as filas de trabalho -->
-                <div class="row">
-                  <div class="col bg-white">
-                    <div class="row">
-                      <div class="col bg-primary bg-opacity-10 mt-3 ms-3 pt-4 pb-3">
-                        <div class="row ms-0 me-0 pe-0">
-                          <div class="col-3 ms-3 pt-3 pb-3 ps-3 pe-0">
-                            <p class="mb-0 text-end text-primary">{{'acceptance.processNumber'|translate}}</p>
-                            <p class="mb-0 text-end text-primary">{{'acceptance.contractNumber'|translate}}</p>
-                            <p class="mb-0 text-end text-primary">{{'acceptance.actualState'|translate}}</p>
-                            <p class="mb-0 text-end text-primary">{{'acceptance.date'|translate}}</p>
-                            <p class="mb-0 text-end text-primary">{{'acceptance.user'|translate}}</p>
-                            <p class="mb-0 text-end text-primary">{{'acceptance.comments'|translate}}</p>
-                          </div>
-                          <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2">
-                            <p class="mb-0 text-primary text-start">-</p>
-                            <p class="mb-0 text-primary text-start">-</p>
-                            <p class="mb-0 text-primary text-start">{{ 'homepage.' +
-                              queueName|translate }}</p>
-                            <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
-                            <p class="mb-0 text-primary text-start"> User 1 </p>
-                            <p class="mb-0 text-primary text-start">Queiram enviar CRC devidamente actualizada, visto
-                              que na inscrição nº3 verifica-se que a nomeação do gerente Bual de Canela é provisória.
-                            </p>
+    <form >
+      <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+          <span class="navbar-text text-light">
+            <img src="assets/images/monograma_2.svg" class="img-fluid ms-0"
+                 width="70">
+          </span><span class="navbar-text">
+            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+              {{
+            'homepage.queues.' + queueName|translate|uppercase
+              }}&nbsp;
+            </h5>
+          </span>
+        </nav>
+      </div>
+      <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
+        <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active activo_tabs activo-tabd" id="navTabs1_1_tab" data-bs-toggle="tab"
+               href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1"
+               aria-selected="true">{{'acceptance.detail'|translate}}</a>
+          </li>
+          <li class="nav-item_x">
+            <a class="nav-link" id="navTabs1_2_tab" data-bs-toggle="tab" href="#"
+               data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
+               aria-selected="false">{{'acceptance.historic'|translate}}</a>
+          </li>
+          <li class="nav-item_x"></li>
+          <li class="nav-item_x"></li>
+        </ul>
+        <div class="tab-content" id="navTabs1_content">
+          <div class="tab-pane fade show active" id="navTabs1_1" role="tabpanel">
+            <div class="container-fluid mt-0 ps-3 pe-3">
+              <div class="row">
+                <div class="bg-white align-self-center col-12 laterais_tabs mt-0 me-0 pt-4 ps-5 pe-5"
+                     style="margin-left: 1px;">
+                  <!-- Detalhe - Igual para todas as filas de trabalho -->
+                  <div class="row">
+                    <div class="col bg-white">
+                      <div class="row">
+                        <div class="col bg-primary bg-opacity-10 mt-3 ms-3 pt-4 pb-3">
+                          <div class="row ms-0 me-0 pe-0">
+                            <div class="col-3 ms-3 pt-3 pb-3 ps-3 pe-0">
+                              <p class="mb-0 text-end text-primary">{{'acceptance.processNumber'|translate}}</p>
+                              <p class="mb-0 text-end text-primary">{{'acceptance.contractNumber'|translate}}</p>
+                              <p class="mb-0 text-end text-primary">{{'acceptance.actualState'|translate}}</p>
+                              <p class="mb-0 text-end text-primary">{{'acceptance.date'|translate}}</p>
+                              <p class="mb-0 text-end text-primary">{{'acceptance.user'|translate}}</p>
+                              <p class="mb-0 text-end text-primary">{{'acceptance.comments'|translate}}</p>
+                            </div>
+                            <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2">
+                              <p class="mb-0 text-primary text-start">-</p>
+                              <p class="mb-0 text-primary text-start">-</p>
+                              <p class="mb-0 text-primary text-start">
+                                {{
+ 'homepage.' +
+                              queueName|translate
+                                }}
+                              </p>
+                              <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
+                              <p class="mb-0 text-primary text-start"> User 1 </p>
+                              <p class="mb-0 text-primary text-start">
+                                Queiram enviar CRC devidamente actualizada, visto
+                                que na inscrição nº3 verifica-se que a nomeação do gerente Bual de Canela é provisória.
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Títulos - consoante a fila de trabalho -->
+                  <!-- Títulos - consoante a fila de trabalho -->
 
-                <h3 *ngIf="queueName === 'eligibility' || queueName === 'compliance'"
-                  class="text-primary mt-5 mb-0 ps-0">&nbsp;{{'stakeholder.title'|translate|uppercase}}</h3>
-                <h3 *ngIf="queueName === 'risk'" class="text-primary mt-5 mb-0 ps-0">
-                  &nbsp;{{'homepage.risk'|translate|uppercase}}</h3>
-                <h3 *ngIf="queueName === 'DOValidation'" class="text-primary mt-5 mb-0 ps-0">
-                  &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}</h3>
-                <h3 *ngIf="queueName === 'multipleClients'" class="text-primary mt-5 mb-0 ps-0">
-                  &nbsp;{{'queues.clientStake'|translate|uppercase}}</h3>
-                <h3 *ngIf="queueName === 'negotiationAproval'" class="text-primary mt-5 mb-0 ps-0">
-                  &nbsp;{{'queues.precarious'|translate|uppercase}}</h3>
-                <h3 *ngIf="queueName === 'MCCTreatment'" class="text-primary mt-5 mb-0 ps-0">
-                  &nbsp;MCC</h3>
+                  <h3 *ngIf="queueName === 'eligibility' || queueName === 'compliance'"
+                      class="text-primary mt-5 mb-0 ps-0">
+                    &nbsp;{{'stakeholder.title'|translate|uppercase}}
+                  </h3>
+                  <h3 *ngIf="queueName === 'risk'" class="text-primary mt-5 mb-0 ps-0">
+                    &nbsp;{{'homepage.risk'|translate|uppercase}}
+                  </h3>
+                  <h3 *ngIf="queueName === 'DOValidation'" class="text-primary mt-5 mb-0 ps-0">
+                    &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
+                  </h3>
+                  <h3 *ngIf="queueName === 'multipleClients'" class="text-primary mt-5 mb-0 ps-0">
+                    &nbsp;{{'queues.clientStake'|translate|uppercase}}
+                  </h3>
+                  <h3 *ngIf="queueName === 'negotiationAproval'" class="text-primary mt-5 mb-0 ps-0">
+                    &nbsp;{{'queues.precarious'|translate|uppercase}}
+                  </h3>
+                  <h3 *ngIf="queueName === 'MCCTreatment'" class="text-primary mt-5 mb-0 ps-0">
+                    &nbsp;MCC
+                  </h3>
 
-                <!-- Pesquisa da Fila Múltiplos Clientes -->
-                <div *ngIf="queueName === 'multipleClients'" class="offset-1 bg-white align-self-center col-10 ps-3" style="margin-top: 15px; margin-left: 0px;">
-                  <div class="row ms-0 me-0">
-                    <div class="col-6 ms-0 me-0 ps-0 pe-5">
-                      <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select id="select3" disabled
-                        class="form-select  campo_form">
-                      </select>
-                    </div>
-                    <div class="col-6 ms-0 me-0 ps-0 pe-5">
-                      <p class="titulo-form-simples" style="margin-top: 0px;">{{'searches.documentNumber'|translate}}</p>
-                      <input id="text3" name="text3" type="text" class="form-control campo_form" disabled>
-                    </div>
-                  </div>
-                  <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
-                    wappler-command="editContent">{{'searches.search'|translate|uppercase}}
-                    &nbsp;<img src="assets/images/search_white.svg"
-                      style="height: 30px; vertical-align: bottom;">
-                  </button>
-                </div>
-
-                <!-- Tabela semelhante nas filas Elegibilidade e Risco -->
-                <div *ngIf="queueName!=='compliance' && queueName !== 'multipleClients' && queueName !== 'negotiationAproval' && queueName !== 'MCCTreatment' && queueName !== 'DOValidation' && queueName!=='validationSIBS'"
-                  class="row mt-0 ms-0 me-0 pt-0">
-                  <div class="col-12 mt-4 pt-0 ps-0 pe-0">
-                    <div class="table-responsive mb-5 pb-4">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'stakeholder.name'|translate}}</th>
-                            <th scope="col" class="text-center bg-light">NIF</th>
-                            <th scope="col" class="text-center bg-white">{{'stakeholder.clientNumber'|translate}}</th>
-                            <th scope="col" *ngIf="queueName === 'eligibility'" class="text-center bg-white">
-                              {{'acceptance.eligibility'|translate}}</th>
-                            <th scope="col" *ngIf="queueName === 'risk'" class="text-center bg-white">
-                              {{'queues.amlLevel'|translate}}</th>
-                            <th scope="col" *ngIf="queueName === 'risk'" class="text-center bg-white">
-                              {{'queues.risk'|translate}}</th>
-                            <th scope="col" *ngIf="queueName === 'eligibility'" class="text-center bg-white">
-                              {{'generalKeywords.restrictions'|translate}}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let stake of stakesList">
-                            <td class="text-primary text-center">{{stake.shortName}}</td>
-                            <td class="text-primary text-center">{{stake.fiscalId}}</td>
-                            <td class="text-primary text-center">{{stake.clientId}}</td>
-                            <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
-                            <td class="text-primary text-center"><input class="form-check-input" type="radio" value=""
-                                id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" (click)="check()"><label
-                                class="form-check-label radio"
-                                for="radio8">{{'queues.favorable'|translate}}&nbsp;</label>
-
-                              <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;" type="radio"
-                                value="" id="radio8" name="radio8"><label class="form-check-label radio pe-5"
-                                for="radio8">{{'queues.unfavorable'|translate}}&nbsp;</label>
-                            </td>
-                            <td *ngIf="queueName === 'eligibility'" class="text-primary text-center"><img
-                                src="assets/images/description.svg"
-                                style="height: 25px !important; vertical-align: sub; cursor: pointer;">
-                            </td>
-                          </tr>
-                          <tr></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <!-- Tabela da fila de Múltiplos Clientes -->
-                <div *ngIf="queueName === 'multipleClients'" class="row mt-0 ms-0 me-0 pt-0">
-                  <div class="col-12 mt-4 pt-0 ps-0 pe-0">
-                    <div class="table-responsive mb-5 pb-4">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'stakeholder.clientNumber'|translate}}</th>
-                            <th scope="col" class="text-center bg-light">{{'queues.stakeName'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">NIF</th>
-                            <th scope="col" class="text-center bg-white">{{'searches.documentType'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.documentNumber'|translate}}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let stake of stakesList">
-                            <td class="text-primary text-center">{{stake.clientId}}</td>
-                            <td class="text-primary text-center">{{stake.shortName}}</td>
-                            <td class="text-primary text-center">{{stake.fiscalId}}</td>
-                            <td class="text-primary text-center">Cartão de Cidadão</td>
-                            <td class="text-primary text-center">212151</td>
-                          </tr>
-                          <tr></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Tabela da fila de MCC -->
-                <div *ngIf="queueName === 'MCCTreatment'" class="row mt-0 ms-0 me-0 pt-0">
-                  <div class="col-12 mt-4 pt-0 ps-0 pe-0">
-                    <div class="table-responsive mb-5 pb-4">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'stores.name'|translate}}</th>
-                            <th scope="col" class="text-center bg-light">{{'stores.requestNumber'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'stores.activity'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'stores.subActivity'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.functionalityType'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.subFunctionality'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">MCC</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let shop of shopsList">
-                            <td class="text-primary text-center">{{shop.name}}</td>
-                            <td class="text-primary text-center">{{processId}}</td>
-                            <td class="text-primary text-center">{{shop.activity}}</td>
-                            <td class="text-primary text-center">{{shop.subActivity}}</td>
-                            <td class="text-primary text-center">JCB</td>
-                            <td class="text-primary text-center">-</td>
-                            <td class="text-primary text-center"></td>
-                          </tr>
-                          <tr></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Tabela da Fila de Negociação -->
-                <div *ngIf="queueName === 'negotiationAproval'" class="row mt-0 ms-0 me-0 pt-0">
-                  <div class="col-12 mt-4 pt-0 ps-0 pe-0">
-                    <div class="table-responsive mb-5 pb-4">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'queues.pack'|translate}}</th>
-                            <th scope="col" class="text-center bg-light">{{'queues.denomination'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.minInitialValue'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.minFinalValue'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.maxInitialValue'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.maxFinalValue'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.initialValue'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.finalValue'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.initialTSC'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.finalTSC'|translate}}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-primary text-center">Tarifa</td>
-                            <td class="text-primary text-center">VISA Electron Domestico</td>
-                            <td class="text-primary text-center">0,05</td>
-                            <td class="text-primary text-center">0,05</td>
-                            <td class="text-primary text-center">9,99€</td>
-                            <td class="text-primary text-center">9,99€</td>
-                            <td class="text-primary text-center">0,35€</td>
-                            <td class="text-primary text-center">0,11€</td>
-                            <td class="text-primary text-center">0,8%</td>
-                            <td class="text-primary text-center">0,8%</td>
-                          </tr>
-                          <tr></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="table-responsive mb-5 pb-4">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'queues.terminals'|translate}}</th>
-                            <th scope="col" class="text-center bg-light">{{'queues.denomination'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.initialValue'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'queues.finalValue'|translate}}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-primary text-center">TPA</td>
-                            <td class="text-primary text-center">Mensalidade 1</td>
-                            <td class="text-primary text-center">10€</td>
-                            <td class="text-primary text-center">10€</td>
-                          </tr>
-                          <tr></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Tabela de Fila Validação Matrícula SIBS -->
-                <div *ngIf="queueName === 'validationSIBS'" class="row ms-0 me-0">
-                  <div class="mt-4 pt-0 ps-0 pe-4 col-6">
-                      <div class="table-responsive mb-5">
-                          <table class="table">
-                              <thead class="text-primary table-primary">
-                                  <tr class="table-white text-primary">
-                                      <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.merchantName'|translate}}</th>
-                                      <th scope="col" class="text-center bg-light">{{'queues.enrollmentMerchantNumber'|translate}}</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="text-primary text-center">EMPRESA TESTE UNIPESSOAL LDA
-                                      </td>
-                                      <td class="text-primary text-center" [(ngModel)]="enrollmentMerchantNumber">
-                                        <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm"/>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                  </tr>
-                              </tbody>
-                          </table>
+                  <!-- Pesquisa da Fila Múltiplos Clientes -->
+                  <div *ngIf="queueName === 'multipleClients'" class="offset-1 bg-white align-self-center col-10 ps-3" style="margin-top: 15px; margin-left: 0px;">
+                    <div class="row ms-0 me-0">
+                      <div class="col-6 ms-0 me-0 ps-0 pe-5">
+                        <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select id="select3" disabled
+                                                                                                             class="form-select  campo_form">
+                        </select>
                       </div>
-                  </div>
-                  <div class="col mt-4 ps-4 pe-0">
-                      <div class="table-responsive mb-5">
-                          <table class="table">
-                              <thead class="text-primary table-primary">
-                                  <tr class="table-white text-primary">
-                                      <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.storeName'|translate}}</th>
-                                      <th scope="col" class="text-center bg-light">{{'queues.enrollmentStoreNumber'|translate}}</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr *ngFor="let shop of shopsList">
-                                      <td class="text-primary text-center">{{shop.name}}</td>
-                                      <td class="text-primary text-center" [(ngModel)]="enrollmentStoreNumber">
-                                        <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
+                      <div class="col-6 ms-0 me-0 ps-0 pe-5">
+                        <p class="titulo-form-simples" style="margin-top: 0px;">{{'searches.documentNumber'|translate}}</p>
+                        <input id="text3" name="text3" type="text" class="form-control campo_form" disabled>
                       </div>
+                    </div>
+                    <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
+                            wappler-command="editContent">
+                      {{'searches.search'|translate|uppercase}}
+                      &nbsp;<img src="assets/images/search_white.svg"
+                                 style="height: 30px; vertical-align: bottom;">
+                    </button>
                   </div>
-                  <div class="row ms-0 me-0">
-                    <div class="col-9 mt-4 mb-0 pt-0 pb-0 ps-0 pe-0">
+
+                  <!-- Tabela semelhante nas filas Elegibilidade e Risco -->
+                  <div *ngIf="queueName!=='compliance' && queueName !== 'multipleClients' && queueName !== 'negotiationAproval' && queueName !== 'MCCTreatment' && queueName !== 'DOValidation' && queueName!=='validationSIBS'"
+                       class="row mt-0 ms-0 me-0 pt-0">
+                    <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+                      <div class="table-responsive mb-5 pb-4">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">
+                                {{'stakeholder.name'|translate}}
+                              </th>
+                              <th scope="col" class="text-center bg-light">NIF</th>
+                              <th scope="col" class="text-center bg-white">{{'stakeholder.clientNumber'|translate}}</th>
+                              <th scope="col" *ngIf="queueName === 'eligibility'" class="text-center bg-white">
+                                {{'acceptance.eligibility'|translate}}
+                              </th>
+                              <th scope="col" *ngIf="queueName === 'risk'" class="text-center bg-white">
+                                {{'queues.amlLevel'|translate}}
+                              </th>
+                              <th scope="col" *ngIf="queueName === 'risk'" class="text-center bg-white">
+                                {{'queues.risk'|translate}}
+                              </th>
+                              <th scope="col" *ngIf="queueName === 'eligibility'" class="text-center bg-white">
+                                {{'generalKeywords.restrictions'|translate}}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let stake of stakesList">
+                              <td class="text-primary text-center">{{stake.shortName}}</td>
+                              <td class="text-primary text-center">{{stake.fiscalId}}</td>
+                              <td class="text-primary text-center">{{stake.clientId}}</td>
+                              <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
+                              <td class="text-primary text-center">
+                                <input class="form-check-input" type="radio" value=""
+                                       id="radio8" name="radio8" style="margin-left: 5px; margin-right: 5px;" (click)="check()"><label class="form-check-label radio"
+                                                                                                                                       for="radio8">{{'queues.favorable'|translate}}&nbsp;</label>
+
+                                <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;" type="radio"
+                                       value="" id="radio8" name="radio8"><label class="form-check-label radio pe-5"
+                                                                                 for="radio8">{{'queues.unfavorable'|translate}}&nbsp;</label>
+                              </td>
+                              <td *ngIf="queueName === 'eligibility'" class="text-primary text-center">
+                                <img src="assets/images/description.svg"
+                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                              </td>
+                            </tr>
+                            <tr></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Tabela da fila de Múltiplos Clientes -->
+                  <div *ngIf="queueName === 'multipleClients'" class="row mt-0 ms-0 me-0 pt-0">
+                    <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+                      <div class="table-responsive mb-5 pb-4">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">
+                                {{'stakeholder.clientNumber'|translate}}
+                              </th>
+                              <th scope="col" class="text-center bg-light">{{'queues.stakeName'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">NIF</th>
+                              <th scope="col" class="text-center bg-white">{{'searches.documentType'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.documentNumber'|translate}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let stake of stakesList">
+                              <td class="text-primary text-center">{{stake.clientId}}</td>
+                              <td class="text-primary text-center">{{stake.shortName}}</td>
+                              <td class="text-primary text-center">{{stake.fiscalId}}</td>
+                              <td class="text-primary text-center">Cartão de Cidadão</td>
+                              <td class="text-primary text-center">212151</td>
+                            </tr>
+                            <tr></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tabela da fila de MCC -->
+                  <div *ngIf="queueName === 'MCCTreatment'" class="row mt-0 ms-0 me-0 pt-0">
+                    <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+                      <div class="table-responsive mb-5 pb-4">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">
+                                {{'stores.name'|translate}}
+                              </th>
+                              <th scope="col" class="text-center bg-light">{{'stores.requestNumber'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'stores.activity'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'stores.subActivity'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.functionalityType'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.subFunctionality'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">MCC</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let shop of shopsList">
+                              <td class="text-primary text-center">{{shop.name}}</td>
+                              <td class="text-primary text-center">{{processId}}</td>
+                              <td class="text-primary text-center">{{shop.activity}}</td>
+                              <td class="text-primary text-center">{{shop.subActivity}}</td>
+                              <td class="text-primary text-center">JCB</td>
+                              <td class="text-primary text-center">-</td>
+                              <td class="text-primary text-center"></td>
+                            </tr>
+                            <tr></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tabela da Fila de Negociação -->
+                  <div *ngIf="queueName === 'negotiationAproval'" class="row mt-0 ms-0 me-0 pt-0">
+                    <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+                      <div class="table-responsive mb-5 pb-4">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">
+                                {{'queues.pack'|translate}}
+                              </th>
+                              <th scope="col" class="text-center bg-light">{{'queues.denomination'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.minInitialValue'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.minFinalValue'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.maxInitialValue'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.maxFinalValue'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.initialValue'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.finalValue'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.initialTSC'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.finalTSC'|translate}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-primary text-center">Tarifa</td>
+                              <td class="text-primary text-center">VISA Electron Domestico</td>
+                              <td class="text-primary text-center">0,05</td>
+                              <td class="text-primary text-center">0,05</td>
+                              <td class="text-primary text-center">9,99€</td>
+                              <td class="text-primary text-center">9,99€</td>
+                              <td class="text-primary text-center">0,35€</td>
+                              <td class="text-primary text-center">0,11€</td>
+                              <td class="text-primary text-center">0,8%</td>
+                              <td class="text-primary text-center">0,8%</td>
+                            </tr>
+                            <tr></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="table-responsive mb-5 pb-4">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">
+                                {{'queues.terminals'|translate}}
+                              </th>
+                              <th scope="col" class="text-center bg-light">{{'queues.denomination'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.initialValue'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.finalValue'|translate}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-primary text-center">TPA</td>
+                              <td class="text-primary text-center">Mensalidade 1</td>
+                              <td class="text-primary text-center">10€</td>
+                              <td class="text-primary text-center">10€</td>
+                            </tr>
+                            <tr></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tabela de Fila Validação Matrícula SIBS -->
+                  <div *ngIf="queueName === 'validationSIBS'" class="row ms-0 me-0">
+                    <div class="mt-4 pt-0 ps-0 pe-4 col-6">
+                      <div class="table-responsive mb-5">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.merchantName'|translate}}</th>
+                              <th scope="col" class="text-center bg-light">{{'queues.enrollmentMerchantNumber'|translate}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-primary text-center">
+                                EMPRESA TESTE UNIPESSOAL LDA
+                              </td>
+                              <td class="text-primary text-center" [(ngModel)]="enrollmentMerchantNumber">
+                                <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                              </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col mt-4 ps-4 pe-0">
+                      <div class="table-responsive mb-5">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.storeName'|translate}}</th>
+                              <th scope="col" class="text-center bg-light">{{'queues.enrollmentStoreNumber'|translate}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let shop of shopsList">
+                              <td class="text-primary text-center">{{shop.name}}</td>
+                              <td class="text-primary text-center" [(ngModel)]="enrollmentStoreNumber">
+                                <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="row ms-0 me-0">
+                      <div class="col-9 mt-4 mb-0 pt-0 pb-0 ps-0 pe-0">
                         <div class="table-responsive mb-5">
-                            <table class="table">
-                                <thead class="text-primary table-primary">
-                                    <tr class="table-white text-primary">
-                                        <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.storeName'|translate}}</th>
-                                        <th scope="col" class="text-center bg-light">{{'commercialOffer.terminal'|translate}}</th>
-                                        <th scope="col" class="text-center bg-white">{{'queues.enrollmentTerminalNumber'|translate}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-primary text-center bg-primary bg-opacity-10">Teste 1, LDA</td>
-                                        <td class="text-primary text-center bg-primary bg-opacity-10">01</td>
-                                        <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
-                                          <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-primary text-center bg-primary bg-opacity-10">Teste 2, LDA</td>
-                                        <td class="text-primary text-center bg-primary bg-opacity-10">02</td>
-                                        <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
-                                          <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-primary text-center bg-primary bg-opacity-10">Teste 3, LDA</td>
-                                        <td class="text-primary text-center bg-primary bg-opacity-10">03</td>
-                                        <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
-                                          <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                    </tr>
-                                </tbody>
-                            </table>
+                          <table class="table">
+                            <thead class="text-primary table-primary">
+                              <tr class="table-white text-primary">
+                                <th scope="col" class="text-center text-primary bg-light table-white">{{'queues.storeName'|translate}}</th>
+                                <th scope="col" class="text-center bg-light">{{'commercialOffer.terminal'|translate}}</th>
+                                <th scope="col" class="text-center bg-white">{{'queues.enrollmentTerminalNumber'|translate}}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="text-primary text-center bg-primary bg-opacity-10">Teste 1, LDA</td>
+                                <td class="text-primary text-center bg-primary bg-opacity-10">01</td>
+                                <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
+                                  <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="text-primary text-center bg-primary bg-opacity-10">Teste 2, LDA</td>
+                                <td class="text-primary text-center bg-primary bg-opacity-10">02</td>
+                                <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
+                                  <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="text-primary text-center bg-primary bg-opacity-10">Teste 3, LDA</td>
+                                <td class="text-primary text-center bg-primary bg-opacity-10">03</td>
+                                <td class="text-center text-primary bg-opacity-10 bg-light" [(ngModel)]="enrollmentTerminalNumber">
+                                  <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                </td>
+                              </tr>
+                              <tr>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
+                      </div>
                     </div>
+                  </div>
+                  <!-- Anexar -->
+                  <div *ngIf="queueName !== 'multipleClients' && queueName!=='MCCTreatment' && queueName!=='validationSIBS'"
+                       class="row mt-0 ms-0 me-0 pt-0">
+                    <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'queues.attach.title'|translate}}</p>
+                    <div class="table-responsive mb-2">
+                      <table class="table">
+                        <thead class="text-primary table-primary">
+                          <tr class="table-white text-primary">
+                            <th scope="col" class="text-center text-primary bg-light table-white">
+                              {{'generalKeywords.type'|translate|uppercase}}
+                            </th>
+                            <th scope="col" class="text-center bg-light">
+                              {{'generalKeywords.documentDate'|translate|uppercase}}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="attach !== undefined">
+                          <tr>
+                            <td class="text-primary text-center">{{attach.tipo|translate}}</td>
+                            <td class="text-primary text-center">{{attach.dataDocumento}}</td>
+                          </tr>
+                          <tr></tr>
+                          <tr></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                      <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
+                        <label for="arquivo" id="btn5a5"
+                               class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
+                               wappler-command="editContent">
+                          {{'generalKeywords.attach'|translate}}&nbsp;
+                          <img src="assets/images/attach_file_white.svg"
+                               style="height: 25px !important; vertical-align: sub;">
+                        </label><input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)"
+                                       style="display: none" accept=".pdf" required>
+                      </span>
+                    </nav>
+                  </div>
+                  <!-- Observações -->
+                  <p *ngIf="queueName!=='compliance' && queueName!=='MCCTreatment'"
+                     style="margin-top: 0px !important;" class="titulo-form-simples mt-5 pt-2">
+                    {{'acceptance.comments'|translate}}:
+                  </p>
+                  <p *ngIf="queueName==='compliance'" style="margin-top: 0px !important;"
+                     class="titulo-form-simples mt-5 pt-2">
+                    {{'acceptance.commentsCompliance'|translate}}:
+                  </p>
+                  <div class="col pb-4" style="padding-left: 0px !important;">
+                    <textarea *ngIf="queueName!=='MCCTreatment'" [(ngModel)]="fillComments" id="text1" class="form-control"></textarea>
+                    <!-- Botões Final de Página consoante as Filas de Trabalho -->
+                    <div class="col mt-4 ms-0 ps-0">
+                      <hr>
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                        <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                          <button id="btn5a1" [routerLink]="['/']"
+                                  class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                                  wappler-command="editContent">
+                            {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/exit_to_app.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2"
+                                  *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
+                                  [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !checkButton)"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  (click)="concludeOpinion()"
+                                  wappler-command="editContent">
+                            {{'queues.completed'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/conclude_opinion.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName==='DOValidation'"
+                                  [disabled]="!(fillComments?.length > 0)"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.returnBackoffice'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/assignment_return_white.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName==='DOValidation'" [disabled]="!(fillComments?.length > 0)"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.returnComercial'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/return_comercial.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName==='DOValidation'" [disabled]="!(fillComments?.length > 0)"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.returnCoff'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/return_coff.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.treated'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/tratado.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.approve'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/aprovar.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName === 'negotiationAproval' || queueName === 'validationSIBS'" [disabled]="!(fillComments?.length > 0)"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.return'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/devolver.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName === 'validationSIBS'" [disabled]="(!(enrollmentMerchantNumber?.length > 0) || !(enrollmentStoreNumber?.length > 0) || !(enrollmentTerminalNumber?.length > 0))"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.conclude'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/concluir.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName === 'MCCTreatment'"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.concludeMCC'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/concluir-mcc.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" (click)="nextPage()" *ngIf="queueName !== 'multipleClients'"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'generalKeywords.next'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/arrow_forward_ios.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
                 </div>
               </div>
-                <!-- Anexar -->
-                <div *ngIf="queueName !== 'multipleClients' && queueName!=='MCCTreatment' && queueName!=='validationSIBS'"
-                  class="row mt-0 ms-0 me-0 pt-0">
-                  <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'queues.attach.title'|translate}}</p>
-                  <div class="table-responsive mb-2">
+            </div>
+          </div>
+          <!-- Histórico -->
+          <div class="tab-pane fade" id="navTabs1_2" role="tabpanel">
+            <div class="container-fluid mt-0 ps-3 pe-3">
+              <div class="row">
+                <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+                  <div class="table-responsive mb-5">
                     <table class="table">
                       <thead class="text-primary table-primary">
                         <tr class="table-white text-primary">
-                          <th scope="col" class="text-center text-primary bg-light table-white">
-                            {{'generalKeywords.type'|translate|uppercase}}</th>
-                          <th scope="col" class="text-center bg-light">
-                            {{'generalKeywords.documentDate'|translate|uppercase}}</th>
+                          <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.requestNumber'|translate}}</th>
+                          <th scope="col" class="text-center bg-light">{{'acceptance.state'|translate}}</th>
+                          <th scope="col" class="text-center bg-white">{{'acceptance.stateDate'|translate}}</th>
+                          <th scope="col" class="text-center bg-white">{{'acceptance.user'|translate}}</th>
+                          <th scope="col" class="text-center bg-white">{{'acceptance.comments'|translate}}</th>
                         </tr>
                       </thead>
-                      <tbody *ngIf="attach !== undefined">
+                      <tbody>
                         <tr>
-                          <td class="text-primary text-center">{{attach.tipo|translate}}</td>
-                          <td class="text-primary text-center">{{attach.dataDocumento}}</td>
+                          <td class="text-primary text-center">228060 </td>
+                          <td class="text-primary text-center">Envio para o Backoffice</td>
+                          <td class="text-primary text-center">29-12-2021 07:50:21</td>
+                          <td class="text-primary text-center">UNICRE</td>
+                          <td class="text-primary text-center"></td>
                         </tr>
-                        <tr></tr>
-                        <tr></tr>
+                        <tr>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">228060 </td>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">29-12-2021 09:50:21</td>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
+                          <td class="text-primary text-center bg-primary bg-opacity-10"></td>
+                        </tr>
+                        <tr>
+                          <td class="text-primary text-center">228060 </td>
+                          <td class="text-primary text-center">Validação DO</td>
+                          <td class="text-primary text-center">30-12-2021 11:50:21</td>
+                          <td class="text-primary text-center">UNICRE</td>
+                          <td class="text-primary text-start">
+                            Apesar do gerente&nbsp; Bujal de Canela constar na CRC como
+                            Gerente, na inscrição 3 verifica-se que a sua nomeação é provisória, podemos aceitar o
+                            documento?
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">228060 </td>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">31-12-2021 12:50:21</td>
+                          <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
+                          <td class="text-primary bg-primary bg-opacity-10 text-start">
+                            Devolver a solicitar a CRC
+                            devidamente atualizada com a nomeação do gerente defenitiva.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-primary text-center bg-primary bg-opacity-25">228060 </td>
+                          <td class="text-primary text-center bg-primary bg-opacity-25">Devolvido do Backoffice</td>
+                          <td class="text-primary text-center bg-primary bg-opacity-25">29-12-2021 10:50:21</td>
+                          <td class="text-primary text-center bg-primary bg-opacity-25">UNICRE</td>
+                          <td class="text-primary bg-primary bg-opacity-25 text-start">
+                            Queiram enviar CRC
+                            devidamente&nbsp; atualizada visto que na inscrição nº3 verifica-se que a nomeação de gerente
+                            Bukjal de Canela&nbsp; é provisória.&nbsp;
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
-                  <nav
-                    class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                    <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-                      <label for="arquivo" id="btn5a5"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
-                        wappler-command="editContent">{{'generalKeywords.attach'|translate}}&nbsp;
-                        <img src="assets/images/attach_file_white.svg"
-                          style="height: 25px !important; vertical-align: sub;">
-                      </label><input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)"
-                        style="display: none" accept=".pdf" required></span>
-                  </nav>
                 </div>
-                <!-- Observações -->
-                <p *ngIf="queueName!=='compliance' && queueName!=='MCCTreatment'"
-                  style="margin-top: 0px !important;" class="titulo-form-simples mt-5 pt-2">
-                  {{'acceptance.comments'|translate}}:</p>
-                <p *ngIf="queueName==='compliance'" style="margin-top: 0px !important;"
-                  class="titulo-form-simples mt-5 pt-2">
-                  {{'acceptance.commentsCompliance'|translate}}:</p>
-                <div class="col pb-4" style="padding-left: 0px !important;">
-                  <textarea *ngIf="queueName!=='MCCTreatment'" [(ngModel)]="fillComments" id="text1" class="form-control"></textarea>
-                  <!-- Botões Final de Página consoante as Filas de Trabalho -->
+                <div class="bg-white align-self-center col-12 laterais_tabs4 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
+                  <h3 class="text-primary mt-5 mb-0 ps-0">
+                    <img src="assets/images/assignment_returned.svg"
+                         style="height: 30px; vertical-align: bottom;">&nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
+                  </h3>
+                  <div class="table-responsive mb-5">
+                    <table class="table">
+                      <thead class="text-primary table-primary">
+                        <tr class="table-white text-primary">
+                          <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.returnReason0'|translate|uppercase}}</th>
+                          <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate|uppercase}}</th>
+                          <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate|uppercase}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td scope="row" class="text-primary text-center">228060 </td>
+                          <td class="text-primary text-center">Certidão do Registo Comercial</td>
+                          <td class="text-primary text-start">
+                            Os intervenientes associados ao processo não estão de acordo
+                            com os comprovativos de Sociedade. Queiram enviar documentos que sustentem a sua intervenção.
+                          </td>
+                          <td class="text-primary text-center"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <div class="col mt-4 ms-0 ps-0">
                     <hr>
-                    <nav
-                      class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-2 mb-4 pt-0">
                       <span class="navbar-text me-2 align-self-center ms-0 me-0">
                         <button id="btn5a1" [routerLink]="['/']"
-                          class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                          wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/exit_to_app.svg"
-                            style="height: 25px !important; vertical-align: sub;">
+                                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                                wappler-command="editContent">
+                          {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                          <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
                         </button>
-
-                        <button id="btn5a2"
-                          *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
-                          [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !checkButton)"
-                          
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          (click)="concludeOpinion()"
-                          wappler-command="editContent">{{'queues.completed'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/conclude_opinion.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName==='DOValidation'"
-                        [disabled]="!(fillComments?.length > 0)"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.returnBackoffice'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/assignment_return_white.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName==='DOValidation'" [disabled]="!(fillComments?.length > 0)"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.returnComercial'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/return_comercial.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName==='DOValidation'" [disabled]="!(fillComments?.length > 0)"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.returnCoff'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/return_coff.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName === 'multipleClients'"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.treated'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/tratado.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.approve'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/aprovar.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName === 'negotiationAproval' || queueName === 'validationSIBS'" [disabled]="!(fillComments?.length > 0)"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.return'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/devolver.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName === 'validationSIBS'" [disabled]="(!(enrollmentMerchantNumber?.length > 0) || !(enrollmentStoreNumber?.length > 0) || !(enrollmentTerminalNumber?.length > 0))"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.conclude'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/concluir.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" *ngIf="queueName === 'MCCTreatment'"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'queues.concludeMCC'|translate|uppercase}}&nbsp;
-                          <img src="assets/images/queues/concluir-mcc.svg"
-                            style="height: 25px !important; vertical-align: sub;">
-                        </button>
-
-                        <button id="btn5a2" (click)="nextPage()" *ngIf="queueName !== 'multipleClients'"
-                          class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                          wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
+                        <button id="btn5a2" [routerLink]="['/app-pack-contratual']"
+                                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                wappler-command="editContent">
+                          {{'generalKeywords.next'|translate|uppercase}}&nbsp;
                           <img src="assets/images/arrow_forward_ios.svg"
-                            style="height: 25px !important; vertical-align: sub;">
+                               style="height: 25px !important; vertical-align: sub;">
                         </button>
                       </span>
                     </nav>
@@ -492,114 +659,7 @@
             </div>
           </div>
         </div>
-        <!-- Histórico -->
-        <div class="tab-pane fade" id="navTabs1_2" role="tabpanel">
-          <div class="container-fluid mt-0 ps-3 pe-3">
-            <div class="row">
-              <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <div class="table-responsive mb-5">
-                  <table class="table">
-                    <thead class="text-primary table-primary">
-                      <tr class="table-white text-primary">
-                        <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.requestNumber'|translate}}</th>
-                        <th scope="col" class="text-center bg-light">{{'acceptance.state'|translate}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.stateDate'|translate}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.user'|translate}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.comments'|translate}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="text-primary text-center">228060 </td>
-                        <td class="text-primary text-center">Envio para o Backoffice</td>
-                        <td class="text-primary text-center">29-12-2021 07:50:21</td>
-                        <td class="text-primary text-center">UNICRE</td>
-                        <td class="text-primary text-center"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">228060 </td>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">29-12-2021 09:50:21</td>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
-                        <td class="text-primary text-center bg-primary bg-opacity-10"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary text-center">228060 </td>
-                        <td class="text-primary text-center">Validação DO</td>
-                        <td class="text-primary text-center">30-12-2021 11:50:21</td>
-                        <td class="text-primary text-center">UNICRE</td>
-                        <td class="text-primary text-start">Apesar do gerente&nbsp; Bujal de Canela constar na CRC como
-                          Gerente, na inscrição 3 verifica-se que a sua nomeação é provisória, podemos aceitar o
-                          documento?</td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">228060 </td>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">31-12-2021 12:50:21</td>
-                        <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
-                        <td class="text-primary bg-primary bg-opacity-10 text-start">Devolver a solicitar a CRC
-                          devidamente atualizada com a nomeação do gerente defenitiva.</td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary text-center bg-primary bg-opacity-25">228060 </td>
-                        <td class="text-primary text-center bg-primary bg-opacity-25">Devolvido do Backoffice</td>
-                        <td class="text-primary text-center bg-primary bg-opacity-25">29-12-2021 10:50:21</td>
-                        <td class="text-primary text-center bg-primary bg-opacity-25">UNICRE</td>
-                        <td class="text-primary bg-primary bg-opacity-25 text-start">Queiram enviar CRC
-                          devidamente&nbsp; atualizada visto que na inscrição nº3 verifica-se que a nomeação de gerente
-                          Bukjal de Canela&nbsp; é provisória.&nbsp;</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="bg-white align-self-center col-12 laterais_tabs4 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <h3 class="text-primary mt-5 mb-0 ps-0"><img src="assets/images/assignment_returned.svg"
-                    style="height: 30px; vertical-align: bottom;">&nbsp;{{'acceptance.returnReasons'|translate|uppercase}}</h3>
-                <div class="table-responsive mb-5">
-                  <table class="table">
-                    <thead class="text-primary table-primary">
-                      <tr class="table-white text-primary">
-                        <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.returnReason0'|translate|uppercase}}</th>
-                        <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate|uppercase}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate|uppercase}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td scope="row" class="text-primary text-center">228060 </td>
-                        <td class="text-primary text-center">Certidão do Registo Comercial</td>
-                        <td class="text-primary text-start">Os intervenientes associados ao processo não estão de acordo
-                          com os comprovativos de Sociedade. Queiram enviar documentos que sustentem a sua intervenção.
-                        </td>
-                        <td class="text-primary text-center"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col mt-4 ms-0 ps-0">
-                  <hr>
-                  <nav
-                    class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-2 mb-4 pt-0">
-                    <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                      <button id="btn5a1" [routerLink]="['/']"
-                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                        wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                        <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-                      </button>
-                      <button id="btn5a2" [routerLink]="['/app-pack-contratual']"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                        wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
-                        <img src="assets/images/arrow_forward_ios.svg"
-                          style="height: 25px !important; vertical-align: sub;">
-                      </button>
-                    </span>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
+    </form>
   </div>
+</div>
