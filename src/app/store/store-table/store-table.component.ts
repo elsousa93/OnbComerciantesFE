@@ -2,8 +2,6 @@ import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnCha
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
-import { IStakeholders } from '../../stakeholders/IStakeholders.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators,FormGroup, FormControl } from '@angular/forms';
@@ -22,6 +22,10 @@ import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import { UserTypes } from '../table-info/ITable-info.interface';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-client',
@@ -305,10 +309,19 @@ export class ClientComponent implements OnInit {
 
   tipologia: string;
 
-  tempClient: any;
-
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.clientsMat.paginator = pager;
+      this.clientsMat.paginator._intl = new MatPaginatorIntl();
+      this.clientsMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+
+  displayedColumns: string[] = ['clientNumber', 'commercialName', 'address' ,'ZIPCode', 'locale', 'country'];
 
   selectedClient: {
     client?: Client,
@@ -317,6 +330,7 @@ export class ClientComponent implements OnInit {
 
   clientID: string = '';
 
+  @Input() currentIdx?: number;
 
   emit(url: string) {
     this.urlEmitter.emit(url);
@@ -330,12 +344,16 @@ export class ClientComponent implements OnInit {
   public merchantInfo: any;
 
   public subs: Subscription[] = [];
+  clientsMat = new MatTableDataSource<Client>();
+  
+
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
-    @Inject(configurationToken) private configuration: Configuration,
+    @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
     private submissionService: SubmissionService, private readCardService: ReadcardService) {
+
 
     this.baseUrl = configuration.baseUrl;
     this.neyondBackUrl = configuration.neyondBackUrl;
@@ -353,13 +371,13 @@ export class ClientComponent implements OnInit {
     // }));
 
     this.ngOnInit();
+    this.clientsMat.sort = this.sort;
     this.initializeForm();
     this.logger.debug(this.baseUrl);
     this.data.updateData(false, 1);
     // this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
 
-    this.initializeDefaultClient();
     if (this.returned !== null) { // && this.returned !== undefined
       this.logger.debug("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
@@ -384,68 +402,6 @@ export class ClientComponent implements OnInit {
         });
       });
     }
-  }
-
-  //TEMPORARIO
-  initializeDefaultClient() {
-    this.tempClient = {
-      "id": "",
-      "merchantId": "",
-      "fiscalId": "",
-      "companyName": "",
-      "commercialName": "",
-      "shortName": "",
-      "headquartersAddress": {
-        "address": "",
-        "postalCode": "",
-        "postalArea": "",
-        "locality": "",
-        "country": ""
-      },
-      "merchantType": "",
-      "legalNature": "",
-      "crc": {
-        "code": "",
-        "validUntil": ""
-      },
-      "shareCapital": {
-        "capital": 0,
-        "date": ""
-      },
-      "byLaws": "",
-      "mainEconomicActivity": "",
-      "otherEconomicActivities": [""],
-      "mainOfficeAddress": {
-        "address": "",
-        "postalCode": "",
-        "postalArea": "",
-        "locality": "",
-        "country": ""
-      },
-      "establishmentDate": "",
-      "knowYourSales": {
-        "estimatedAnualRevenue": 1000000,
-        "averageTransactions": 30000,
-        "servicesOrProductsSold": [""],
-        "servicesOrProductsDestinations": [""]
-      },
-      "bankInformation": {
-        "bank": "",
-        "branch": "",
-        "iban": "",
-        "accountOpenedAt": ""
-      },
-      "contacts": {
-        "email": "",
-        "phone1": {
-          "countryCode": "",
-          "phoneNumber": ""
-        }
-      },
-      "documentationDeliveryMethod": "",
-      "billingEmail": ""
-    }
-
   }
 
   receiveSearchValue(box: string) {
@@ -701,7 +657,7 @@ export class ClientComponent implements OnInit {
       }
     };
     this.logger.debug("a passar para a proxima pagina");
-    this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
+    // this.route.navigate(['/clientbyid', this.tempClient.fiscalId], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }

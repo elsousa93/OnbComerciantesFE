@@ -28,15 +28,14 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio"
-                  value="true" id="clientTypology" (click)="activateButtons(true)" 
-                  [disabled]="returned == 'consult'" />
+                  value="true" id="clientTypology" (click)="activateButtons(true)" [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio pe-5" for="radio3">{{'client.company'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio"
-                  value="false" id="clientTypology" (click)="activateButtons(false)" 
+                  value="false" id="clientTypology" (click)="activateButtons(false)"
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio" for="radio3">ENI</label>
               </div>
@@ -44,29 +43,54 @@
           </nav>
           <div>
             <div *ngIf="showButtons">
-                <div class="row me-0" *ngIf="!showENI">
-                  <div class="col">
-                    <div class="me-0 ps-0 pe-0 col-7">
+              <div class="row" *ngIf="!showENI">
+                <div class="col-12 ms-0 me-0 pe-0">
+                  <div class="row">
+                    <div class="col-5">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" id="docType" 
-                        [(ngModel)]="newClient.documentationDeliveryMethod">
+                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+                        id="docType" [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
                         </option>
                       </select>
                     </div>
+                    <div class="col-5">
+                      <p class="titulo-form-simples">
+                        <!--Nº de documento-->
+                        {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
+                          class="titulo-form-simples-erro">
+                          {{resultError}}
+                        </span>
+                      </p>
+                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                        #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+                    </div>
                   </div>
                 </div>
-                <div class="row me-0" *ngIf="showENI">
-                  <div class="col">
-                    <div class="me-0 ps-0 pe-0 col-7">
+              </div>
+              <div class="row" *ngIf="showENI">
+                <div class="col-12 ms-0 me-0 pe-0">
+                  <div class="row">
+                    <div class="col-5">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)" 
+                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
                         id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod">
                         <option *ngFor="let docType of ListaDocTypeENI" value={{docType.code}}>
                           {{docType.description}}
                         </option>
                       </select>
+                    </div>
+                    <div class="col-5">
+                      <p class="titulo-form-simples">
+                        {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
+                          class="titulo-form-simples-erro">
+                          {{resultError}}
+                        </span>
+                      </p>
+                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                        #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+
                     </div>
                   </div>
                   <div *ngIf="isCC" class="offset-1 col-5 ms-5 me-0 ps-5 pe-0">
@@ -77,16 +101,16 @@
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                       <span class="navbar-text">
                         <div class="form-check">
-                          <input class="form-check-input" required  type="radio"
-                            [value]=true id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(true)" />
+                          <input class="form-check-input" required type="radio" [value]=true id="flagAutCol"
+                            name="flagAutCol" (click)="changeDataReadable(true)" />
                           <label class="form-check-label radio pe-5"
                             for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
                         </div>
                       </span>
                       <span class="navbar-text">
                         <div class="form-check">
-                          <input class="form-check-input" required type="radio"
-                            [value]=false id="flagAutCol" name="flagAutCol" (click)="changeDataReadable(false)" />
+                          <input class="form-check-input" required type="radio" [value]=false id="flagAutCol"
+                            name="flagAutCol" (click)="changeDataReadable(false)" />
                           <label class="form-check-label radio"
                             for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
                         </div>
@@ -94,82 +118,58 @@
                     </nav>
                   </div>
                 </div>
-                <div class="row me-0">
-                  <div class="col">
-                    <div class="me-0 ps-0 pe-0 col-7" >
-                      <p class="titulo-form-simples"> <!--Nº de documento-->
-                        {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
-                          class="titulo-form-simples-erro">
-                          {{resultError}}
-                        </span>
-                      </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" 
-                        name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
-
+                </div>
+                <div *ngIf="isNoDataReadable && isCC" class="pt-2">
+                  <div class="titulo-form-simples">
+                    {{'citizenCard.readClick'|translate}}:
                   </div>
+                  <button class="btn botao_azul_pesquisa" (click)="openModal(template)"
+                    type="submit">{{'citizenCard.read'|translate}}</button>
                 </div>
-               </div>
 
-              <!--<button class="btn botao_azul" type="button" (click)="createNewClient()">Adicionar</button> Adicionar cliente removido-->
-              <!--<div class="row me-0">
-      <div class="col">
-         <p class="titulo-form-simples" >
-          Número do Documento:* <span [class]="errorMsg" >
-            {{
-            resultError
-            }}
-          </span>
-        </p>
-  <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId" [readonly]="isCC && isNoDataReadable"
-         #clientId="ngModel" [class]="errorInput"></div></div>-->
-              <div *ngIf="isNoDataReadable && isCC" class="pt-2">
-                <!--  && toShowReadCC  -->
-                <div class="titulo-form-simples">
-                  {{'citizenCard.readClick'|translate}}:
+                <div class="align-self-center col-12 mt-4 ms-0 me-0 pe-0">
+                  <nav
+                    class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                    <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
+                      <button
+                        [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0"
+                        id="btn5a2" class="btn botao_azul" (click)="searchClient()" wappler-command="editContent">
+                        {{'client.search'|translate|uppercase}}&nbsp;&nbsp;
+                        <img src="assets/images/person_search.svg" class="img_btn">
+                      </button>
+                    </span>
+                  </nav>
                 </div>
-                <button class="btn botao_azul_pesquisa" (click)="openModal(template)"
-                  type="submit">{{'citizenCard.read'|translate}}</button>
-              </div>
+              
 
-              <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
-                <nav
-                  class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                  <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                    <button [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0" id="btn5a2" class="btn botao_azul" (click)="searchClient()"
-                      wappler-command="editContent">
-                      {{'client.search'|translate|uppercase}}&nbsp;&nbsp;
-                      <img src="assets/images/person_search.svg" class="img_btn">
-                    </button>
-                  </span>
-                </nav>
-              </div>
-            
-              <form *ngIf="newClientForm" [formGroup]="newClientForm"  name="newClientForm">
-                <div class="row me-0" *ngIf="showENI">
+              <form *ngIf="newClientForm" [formGroup]="newClientForm" name="newClientForm">
+                <div class="row" *ngIf="showENI">
                   <div class="col">
-                    <div class="me-0 ps-0 pe-0 col-7">
-                      <div class="col">
+                    <div class="row">
+                      <div class="col-7">
                         <p class="titulo-form-simples">{{'client.nif'|translate}}:*</p>
                         <input name="nif" type="text" id="nif" class="form-control" formControlName="nif">
                       </div>
-                      <div class="col">
+                      <div class="col-7">
                         <p class="titulo-form-simples mt-0">{{'client.name'|translate|uppercase}}:*</p>
                         <input name="nome" type="text" id="nome" class="form-control" formControlName="nome">
                       </div>
                     </div>
                   </div>
                 </div>
- 
-                <div class="row me-0" *ngIf="!showENI">
+
+                <div class="row" *ngIf="!showENI">
                   <div class="col">
-                    <div class="me-0 ps-0 pe-0 col-7">
-                      <div class="col">
+                    <div class="row">
+                      <div class="col-7">
+
                         <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
                         <input name="nipc" type="text" id="nipc" class="form-control" formControlName="nipc">
                       </div>
-                      <div class="col">
+                      <div class="col-7">
                         <p class="titulo-form-simples mt-0">{{'client.socialDenomination'|translate|uppercase}}:*</p>
-                        <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control" formControlName="denominacaoSocial">
+                        <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control"
+                          formControlName="denominacaoSocial">
                       </div>
                     </div>
                   </div>
@@ -193,10 +193,11 @@
                   <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
                     <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
                       <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
-                        <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+                        <nav
+                          class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
                           <span class="navbar-text ms-auto align-self-start">
                             <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
-                                (click)="modalRef.hide()">
+                              (click)="modalRef.hide()">
                               x
                             </h2>
                           </span>
@@ -204,13 +205,15 @@
                       </div>
                       <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
                         <div class="mb-5 ps-0 pe-0 col-12">
-                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+                          <nav
+                            class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
                             <span class="navbar-text"></span>
                             <span class="material-symbols-rounded img_badge">
                               <img src="assets/images/badge.svg" class="img_badge">
                             </span>
                           </nav>
-                          <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+                          <nav
+                            class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
                             <span class="navbar-text">
                               <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
                                 {{'citizenCard.addressPIN'|translate}}
@@ -222,16 +225,17 @@
                             <span class="navbar-text"></span>
                             <span class="navbar-text pb-0 pt-sm-0">
                               <button id="btn5a"
-                                      class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
-                                      style="color: white;" wappler-command="editContent"
-                                      data-bs-dismiss="modal" (click)="modalRef.hide(); callreadCCAddress()">
+                                class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                                style="color: white;" wappler-command="editContent" data-bs-dismiss="modal"
+                                (click)="modalRef.hide(); callreadCCAddress()">
                                 {{'generalKeywords.yes'|translate|uppercase}}
                               </button>
                             </span>
                             <span class="navbar-text pt-0 pb-0">
                               <button id="btn5a1"
-                                      class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
-                                      style="color: white;" wappler-command="editContent" (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
+                                class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                                style="color: white;" wappler-command="editContent"
+                                (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
                                 {{'generalKeywords.no'|translate|uppercase}}
                               </button>
                             </span>
@@ -256,7 +260,7 @@
                     {{'citizenCard.documentCountry'|translate}}:* <span>
                     </span>
                   </p>
-                  <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text" 
+                  <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text"
                     [disabled]="true">
                 </div>
               </div>
@@ -271,39 +275,40 @@
               <tbody>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.name'|translate}}:</th>
-                   <td>{{dataCCcontents.nameCC}}</td>
+                  <td>{{dataCCcontents.nameCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.ccNumber'|translate}}:</th>
-                   <td>{{dataCCcontents.cardNumberCC}}</td>
+                  <td>{{dataCCcontents.cardNumberCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">NIF:</th>
-                      <td>{{dataCCcontents.nifCC}}</td>
+                  <td>{{dataCCcontents.nifCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.address'|translate}}:</th>
-                   <td>{{dataCCcontents.addressCC}}</td>
+                  <td>{{dataCCcontents.addressCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.postalCode'|translate}}:</th>
-                    <td>{{dataCCcontents.postalCodeCC}}</td>
+                  <td>{{dataCCcontents.postalCodeCC}}</td>
                 </tr>
               </tbody>
             </table>
             <span class="navbar-text me-2">
-              <button  id="btn5a2" (click)="createNewClient()"
-                      class="btn botao_branco" wappler-command="editContent">
+              <button id="btn5a2" (click)="createNewClient()" class="btn botao_branco" wappler-command="editContent">
                 {{'client.add'|translate|uppercase}}&nbsp;
                 <img src="assets/images/person_add_blue.svg" class="img_btn">
               </button>
             </span>
           </div>
         </div>
-        </div>
       </div>
-    </div> <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
-  </div> <!--row ends-->
+    </div>
+  </div>
+  <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
+</div>
+<!--row ends-->
 
 
 <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="showFoundClient == true">
@@ -312,9 +317,44 @@
       <h4 class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h4>
       <div class="table-responsive mb-5">
         <form #contactForm="ngForm">
+            <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
+             
+                <ng-container matColumnDef="clientNumber">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.number'|translate}} </mat-header-cell>
+                  <mat-cell *matCellDef="let client"> {{client.clientId}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="commercialName">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.nameSocialDesignation'|translate}} </mat-header-cell>
+                  <mat-cell *matCellDef="let client"> {{client.commercialName}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="address">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.address'|translate}} </mat-header-cell>
+                  <mat-cell *matCellDef="let client"> {{client.address}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="ZIPCode">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.postalCode'|translate}} </mat-header-cell>
+                  <mat-cell *matCellDef="let client"> {{client.ZIPCode}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="locale">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.locale'|translate}} </mat-header-cell>
+                  <mat-cell *matCellDef="let client"> {{client.locality}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="country">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.country'|translate}} </mat-header-cell>
+                  <mat-cell *matCellDef="let client"> {{client.country}} </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let client; let idx = index; columns: displayedColumns;"
+                         [ngClass]="{'row-selected': idx === currentIdx}">
+                </mat-row>
+            </mat-table>
+          
+            <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
+                           showFirstLastButtons>
+            </mat-paginator>
 
           <!--<app-client-search [clientID]="clientID" (selectedClientEmitter)="selectClient($event)"></app-client-search>-->
-          <table class="table">
+          <!-- <table class="table">
             <thead class="text-primary table-primary">
               <tr class="table-white text-primary">
                 <th scope="col" class="text-center text-primary bg-light table-white"></th>
@@ -341,7 +381,7 @@
                 <td class="text-primary text-center">{{client.country}}</td>
               </tr>
             </tbody>
-          </table>
+          </table> -->
 
         </form>
       </div>
@@ -388,4 +428,3 @@
   </div>
 
 </div>
-
