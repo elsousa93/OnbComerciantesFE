@@ -235,6 +235,7 @@ export class ClientComponent implements OnInit {
   toSearch: boolean = false;
   resultError: string = "";
   clientTypology: string = "";
+  clientNr: boolean = false;
 
   clientsToShow: Client[] = [];
 
@@ -444,20 +445,17 @@ export class ClientComponent implements OnInit {
 
   searchClient() {
 
-    //this.clientID || Definir com o valor do campo
     this.logger.debug(this.newClient.clientId);
 
     var context = this;
     this.newClientForm = null;
 
-    /*this.onSearchSimulation(22181900000011);*/
     this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
       this.showFoundClient = true;
       var clients = o;
 
       var context2 = this;
 
-      this.logger.debug("a");
       this.logger.debug(context.clientsToShow);
       context.clientsToShow = [];
       this.logger.debug(context.clientsToShow);
@@ -475,7 +473,7 @@ export class ClientComponent implements OnInit {
               "locality": c.headquartersAddress.postalArea,
               "country": c.headquartersAddress.country,
             }
-            this.notFound = false;
+            context.notFound = false;
             context.clientsToShow.push(client);
             context.logger.debug(context.clientsToShow);
             context.clientsMat.data = context.clientsToShow;
@@ -484,7 +482,6 @@ export class ClientComponent implements OnInit {
       } else {
         this.showFoundClient = false;
         this.notFound = true;
-        // context.resultError = "Não existe Comerciante com esse número.";
         this.searchDone = true;
         this.createAdditionalInfoForm();
 
@@ -492,11 +489,9 @@ export class ClientComponent implements OnInit {
       }
     }, error => {
       context.showFoundClient = false;
-      // context.resultError = "Não existe Comerciante com esse número.";
       this.notFound = true;
       this.searchDone = true;
       this.createAdditionalInfoForm();
-
     });
   }
 
@@ -602,8 +597,12 @@ export class ClientComponent implements OnInit {
     } else {
       this.isCC = false;
     }
+    if (this.docType === '1010'){ // Nº de cliente
+      this.clientNr = true;
+    }
     this.documentType = true;
     this.okCC = false;
+    this.notFound = false;
   }
 
   changeDocType() {
@@ -680,6 +679,7 @@ export class ClientComponent implements OnInit {
     this.showButtons = true;
     this.isCC = false;
     this.notFound = false;
+    this.clientNr = false;
     this.isNoDataReadable = false;
     this.toSearch = false;
     this.documentType = false;
