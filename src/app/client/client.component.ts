@@ -316,7 +316,7 @@ export class ClientComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   
 
-  displayedColumns: string[] = ['clientNumber', 'commercialName', 'address' ,'ZIPCode', 'locale', 'country'];
+  displayedColumns: string[] = ['select','clientNumber', 'commercialName', 'address' ,'ZIPCode', 'locale', 'country'];
 
   selectedClient: {
     client?: Client,
