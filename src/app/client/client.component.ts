@@ -607,6 +607,7 @@ export class ClientComponent implements OnInit {
     this.documentType = true;
     this.okCC = false;
     this.notFound = false;
+    this.showSeguinte = false;
   }
 
   changeDocType() {
@@ -691,6 +692,7 @@ export class ClientComponent implements OnInit {
     this.errorMsg = '';
     this.resultError = ''
     this.newClientForm = null;
+    this.showSeguinte = false;
     this.errorInput = 'form-control campo_form_coment';
     if (id == true) {
       this.showENI = false;
