@@ -336,6 +336,7 @@ export class ClientComponent implements OnInit {
 
   public returned: string;
   public merchantInfo: any;
+  public notFound: boolean = false;
 
   public subs: Subscription[] = [];
 
@@ -474,6 +475,7 @@ export class ClientComponent implements OnInit {
               "locality": c.headquartersAddress.postalArea,
               "country": c.headquartersAddress.country,
             }
+            this.notFound = false;
             context.clientsToShow.push(client);
             context.logger.debug(context.clientsToShow);
             context.clientsMat.data = context.clientsToShow;
@@ -481,6 +483,7 @@ export class ClientComponent implements OnInit {
         })
       } else {
         this.showFoundClient = false;
+        this.notFound = true;
         // context.resultError = "Não existe Comerciante com esse número.";
         this.searchDone = true;
         this.createAdditionalInfoForm();
@@ -490,6 +493,7 @@ export class ClientComponent implements OnInit {
     }, error => {
       context.showFoundClient = false;
       // context.resultError = "Não existe Comerciante com esse número.";
+      this.notFound = true;
       this.searchDone = true;
       this.createAdditionalInfoForm();
 
@@ -675,6 +679,7 @@ export class ClientComponent implements OnInit {
     this.ccInfo = null;
     this.showButtons = true;
     this.isCC = false;
+    this.notFound = false;
     this.isNoDataReadable = false;
     this.toSearch = false;
     this.documentType = false;

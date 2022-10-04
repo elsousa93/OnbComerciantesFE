@@ -108,7 +108,7 @@
     "destinationCountry": "Países de destino dos produtos/serviços",
     "choose": "Escolher",
     "franchiseName": "Nome Franchise",
-    "searchError": "Não existe Comerciante com esse número",
+    "searchError": "Não foram encontrados resultados",
     "incorrectCRC": "CRC inserido não está com o formato correto",
     "CRCNotFound": "CRC inserido não foi encontrado",
     "countryError": "Escolha pelo menos um país"
