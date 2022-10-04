@@ -147,7 +147,7 @@
               
 
               <form *ngIf="newClientForm" [formGroup]="newClientForm" name="newClientForm">
-                <div class="row" *ngIf="showENI && !clientNr">
+                <div class="row" *ngIf="showENI && !clientNr && !isCC">
                   <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
                       <div class="col-5">
@@ -162,7 +162,7 @@
                   </div>
                 </div>
 
-                <div class="row" *ngIf="!showENI && !clientNr">
+                <div class="row" *ngIf="!showENI && !clientNr && !isCC">
                   <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
                       <div class="col-5">
@@ -327,7 +327,9 @@
         <form #contactForm="ngForm">
             <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
               <ng-container matColumnDef="select">
-                <mat-header-cell *matHeaderCellDef="let client" mat-sort-header class="text-center text-primary bg-light table-white"><input type="hidden" name="id" id="id" value={{client.clientId}}></mat-header-cell>
+                <mat-header-cell *matHeaderCellDef class="text-center text-primary bg-light table-white">
+                  
+                </mat-header-cell>
                 <mat-cell *matCellDef="let client"> 
                   <th scope="row" class="text-primary text-center">
                     <input type="radio" value={{client.documentationDeliveryMethod}}
