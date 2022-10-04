@@ -535,7 +535,9 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
     this.isShown = true;
-    this.searchEvent.next(this.stakeholderNumber);
+    setTimeout(() => {
+      this.searchEvent.next(this.stakeholderNumber);
+    });
 
     //var context = this;
 
@@ -603,8 +605,8 @@ export class CreateStakeholderComponent implements OnInit {
   addStakeholder() {
     console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders) {
-      this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').subscribe(stakeholder => {
-        var stakeholderToInsert = stakeholder;
+      this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').then(stakeholder => {
+        var stakeholderToInsert = stakeholder.result;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           this.currentStakeholder.id = result["id"];
           this.emitInsertedStake(of(this.currentStakeholder));
