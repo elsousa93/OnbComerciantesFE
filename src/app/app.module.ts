@@ -74,6 +74,8 @@ import { StoreTableComponent } from './store/store-table/store-table.component';
 import { LoggingInterceptor } from 'src/logger/loggerInterceptor';
 import { ClientCharacterizationComponent } from './client/clientCharacterization/clientcharacterization.component';
 import { RepresentationPowerListComponent } from './client/representation-power/representation-power-list/representation-power-list.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 registerLocaleData(localePT);
 
@@ -134,6 +136,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   imports: [
     ReactiveFormsModule,
     BrowserModule,
+    MatTableModule,
+    MatSortModule,
     AppRoutingModule,
     CommonModule,
     ModalModule.forRoot(),

@@ -60,52 +60,67 @@ export class SearchStakeholdersComponent implements OnInit {
     var context = this;
     var stakeholder = null;
     /*this.onSearchSimulation(22181900000011);*/
-    this.stakeholderService.SearchStakeholderByQuery(clientID, "por mudar", this.UUIDAPI, "2").subscribe(o => {
-      var clients = o;
+    this.stakeholderService.SearchStakeholderByQuery(clientID, "por mudar", this.UUIDAPI, "2").then(res => {
+      console.log("a");
+      var clients = res.result;
 
       //context.isShown = true;
 
       if (clients.length > 0) {
         //context.deactivateNotFoundForm();
-        context.searchAditionalInfoEmitter.emit({
-          found: true,
-          errorMsg: ''
-        });
+
         context.stakeholdersToShow = [];
+
+        var subpromises = [];
         clients.forEach(function (value, index) {
-          context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").then(success => {
-            var stake = success.result;
+          console.log("b");
+          subpromises.push(context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar"));
+        });
+
+        Promise.all(subpromises).then(res => {
+          console.log("c");
+          var stake = res;
+
+          stake.forEach(function (value, idx) {
+            console.log("d");
+            var stakeInfo = value.result;
             stakeholder = {
-              "stakeholderNumber": stake.stakeholderId,
-              "stakeholderName": stake.shortName,
-              "stakeholderNIF": stake.fiscalIdentification.fiscalId,
+              "stakeholderNumber": stakeInfo.stakeholderId,
+              "stakeholderName": stakeInfo.shortName,
+              "stakeholderNIF": stakeInfo.fiscalIdentification.fiscalId,
               "elegible": "elegivel",
               "associated": "SIM"
             } as IStakeholders;
             console.log('Dentro do forEach, valor de um stake ', stakeholder);
             console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
-          }, error => {
-            console.log("Erro ao obter informação de um stakeholder");
-          }).then(success => {
+
             context.stakeholdersToShow.push(stakeholder);
             console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
-          })
-          //context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-          //  var stakeholder = {
-          //    "stakeholderNumber": c.stakeholderId,
-          //    "stakeholderName": c.shortName,
-          //    "stakeholderNIF": c.fiscalIdentification.fiscalId,
-          //    "elegible": "elegivel",
-          //    "associated": "SIM"
-          //  } as IStakeholders;
-          //  console.log('Dentro do forEach, valor de um stake ', stakeholder);
-          //  console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
-          //  context.stakeholdersToShow.push(stakeholder);
-          //  console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
-          //});
-        })
+
+          });
+        }).then(res => {
+          console.log("nao encontrou!!");
+          context.searchAditionalInfoEmitter.emit({
+            found: true,
+            errorMsg: ''
+          });
+        });
+
+        //context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
+        //  var stakeholder = {
+        //    "stakeholderNumber": c.stakeholderId,
+        //    "stakeholderName": c.shortName,
+        //    "stakeholderNIF": c.fiscalIdentification.fiscalId,
+        //    "elegible": "elegivel",
+        //    "associated": "SIM"
+        //  } as IStakeholders;
+        //  console.log('Dentro do forEach, valor de um stake ', stakeholder);
+        //  console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
+        //  context.stakeholdersToShow.push(stakeholder);
+        //  console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
+        //});
       } else {
-        //context.initializeNotFoundForm();
+        console.log("sem resultados");
         context.stakeholdersToShow = [];
         context.searchAditionalInfoEmitter.emit({
           found: false,
@@ -113,14 +128,12 @@ export class SearchStakeholdersComponent implements OnInit {
         });
       }
     }, error => {
+      console.log("deu erro");
+      context.stakeholdersToShow = [];
       context.searchAditionalInfoEmitter.emit({
         found: false,
-        errorMsg: "Ocorreu um erro, tente novamente"
+        errorMsg: "Sem resultados"
       });
-      //context.showFoundClient = false;
-      //this.logger.debug("entrou aqui no erro huajshudsj");
-      //context.resultError = "Não existe Comerciante com esse número.";
-      //this.searchDone = true;
     });
 
     console.log('passou pela pesquisa e o valor encontrado foi ', this.stakeholdersToShow);

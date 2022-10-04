@@ -20,7 +20,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private logger: LoggerService, private submissionService: SubmissionService) {
-     // this.triggerFalseClick();
+    // this.triggerFalseClick();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -47,7 +47,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }
   }
 
-  @ViewChild('sort') sort = new MatSort();
+  @ViewChild(MatSort) sort : MatSort;
   
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;
@@ -78,7 +78,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     this.returned = localStorage.getItem("returned");
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
-    setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
+    //setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
     //this.selectedStakeholder = this.submissionStakeholders[0];
     //console.log('o current stake é ', this.selectedStakeholder);
   }
@@ -86,7 +86,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   ngAfterViewInit(): void {
     //this.stakesMat.data = this.submissionStakeholders;
     // this.stakesMat.paginator = this.paginator;
-    // this.stakesMat.sort = this.sort;
+    this.stakesMat.sort = this.sort;
     
   }
 

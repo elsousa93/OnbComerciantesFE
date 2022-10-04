@@ -118,10 +118,10 @@ export class StakeholderService {
 
   SearchStakeholderByQuery(searchID: string, searchType: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?): any {
 
-    var URI = this.urlOutbound + "api/v1/stakeholder?searchId=" + searchID + "&searchType=" + searchType;
+    var url = this.urlOutbound + "api/v1/stakeholder?searchId=" + searchID + "&searchType=" + searchType;
 
     if (countryID === null)
-      URI += "&countryId=" + countryID;
+      url += "&countryId=" + countryID;
 
     var data = new Date();
 
@@ -139,7 +139,7 @@ export class StakeholderService {
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
     this.logger.info(`[Outbound] Searching stakeholder with id ${searchID}`);
-    this.logger.debug(`[Outbound] URI used is ${URI}`);
+    this.logger.debug(`[Outbound] URI used is ${url}`);
     this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
       "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
       "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
@@ -147,7 +147,8 @@ export class StakeholderService {
       "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
       "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
     }, null, 2)}`);
-    return this.http.get<any>(URI, HTTP_OPTIONS);
+
+    return this.APIService.callAPIOutbound(HttpMethod.GET, url, "searchId", "searchType", "requestID", "AcquiringUserID");
   }
 
   /////////////////////////////////////////////////////
