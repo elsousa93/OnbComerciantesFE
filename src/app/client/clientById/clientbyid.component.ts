@@ -694,16 +694,45 @@ export class ClientByIdComponent implements OnInit {
     );
 
     console.log("antes da pesquisa");
-    this.clientService.getClientById(this.clientId).then(result => {
-      console.log("pesquisa do cliente: ", result);
-      this.clientContext.clientExists = true;
-      this.clientContext.setClient(result.result);
-      this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
-      //this.clientContext.setMerchantInfo(result.result);
+
+    if (this.dataCC !== {} && this.dataCC !== undefined) {
+      var client = {} as OutboundClient;
+      client.fiscalIdentification = {};
+      client.fiscalIdentification.fiscalId = this.dataCC.nifCC;
+      client.shortName = client.legalName = this.dataCC.nameCC;
+      client.documents = [];
+      client.bankingInformation = {};
+      client.headquartersAddress = {};
+      client.otherEconomicActivities = [];
+
+      client.sales = {};
+      client.sales.productsOrServicesCountries = [];
+      client.sales.productsOrServicesSold = [];
+
+      client.shareCapital = {};
+      client.incorporationStatement = {};
+      client.contacts = {};
+
+      
+      
+
+      this.clientContext.setClient(client);
+      this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
       this.updateBasicForm();
-    }).then(result => {
+
       this.createSubmission();
-    });
+    } else {
+      this.clientService.getClientById(this.clientId).then(result => {
+        console.log("pesquisa do cliente: ", result);
+        this.clientContext.clientExists = true;
+        this.clientContext.setClient(result.result);
+        this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
+        //this.clientContext.setMerchantInfo(result.result);
+        this.updateBasicForm();
+      }).then(result => {
+        this.createSubmission();
+      });
+    }
   }
 
   ngOnDestroy(): void {

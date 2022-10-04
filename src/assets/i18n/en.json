@@ -129,7 +129,8 @@
     "identificationDocumentType": "Type of Identification Document (1st Nationality)",
     "identificationDocumentCountry": "Country of Identification Document (1st Nationality)",
     "identificationDocumentNumber": "Number of Identification Document (1st Nationality)",
-    "identificationDocumentDate": "Expiration Date Doc. of identification (1st Nationality)"
+    "identificationDocumentDate": "Expiration Date Doc. of identification (1st Nationality)",
+    "birthDate": "Birth date"
   },
   "stakeholder": {
     "title": "Stakeholders",
