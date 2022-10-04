@@ -94,7 +94,7 @@
                     </div>
                   </div>
                 </div>
-                  <div *ngIf="isCC" class="offset-1 col-7 me-0 ps-0 pe-0">
+                  <div *ngIf="isCC" class="offset-1 col-7 me-0 ps-0 pe-0 ms-5" style="margin-left: 13px !important;">
                     <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
 
                     {{'citizenCard.process'|translate}}:*
@@ -144,7 +144,7 @@
               
 
               <form *ngIf="newClientForm" [formGroup]="newClientForm" name="newClientForm">
-                <div class="row" *ngIf="showENI">
+                <div class="row" *ngIf="showENI && !isCC">
                   <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
                       <div class="col-5">
@@ -159,7 +159,7 @@
                   </div>
                 </div>
 
-                <div class="row" *ngIf="!showENI">
+                <div class="row" *ngIf="!showENI && !isCC">
                   <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
                       <div class="col-5">
