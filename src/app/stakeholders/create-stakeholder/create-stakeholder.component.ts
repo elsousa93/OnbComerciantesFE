@@ -169,7 +169,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.dataCCcontents.nameCC = name;
     this.dataCCcontents.nationalityCC = nationality;
-    // this.birthDateCC = birthDate;
+    this.dataCCcontents.birthdateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
     this.dataCCcontents.nifCC = nif;
     this.dataCCcontents.localityCC = postalCode.split(" ").pop();
