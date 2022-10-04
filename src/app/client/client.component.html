@@ -327,14 +327,12 @@
         <form #contactForm="ngForm">
             <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
               <ng-container matColumnDef="select">
-                <mat-header-cell *matHeaderCellDef class="text-center text-primary bg-light table-white">
+                <mat-header-cell *matHeaderCellDef>
                   
                 </mat-header-cell>
                 <mat-cell *matCellDef="let client"> 
-                  <th scope="row" class="text-primary text-center">
-                    <input type="radio" value={{client.documentationDeliveryMethod}}
-                      (click)="aButtons(true, client.clientId)">
-                  </th></mat-cell>
+                    <input type="radio" (click)="aButtons(true, client.clientId)">
+                  </mat-cell>
               </ng-container>
                 <ng-container matColumnDef="clientNumber">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.number'|translate}} </mat-header-cell>
