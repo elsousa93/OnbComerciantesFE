@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { Bank, ShopBankingInformation } from '../store/IStore.interface';
-import { Address, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
+import { Address, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -242,6 +242,16 @@ export class TableInfoService {
       }),
     }
     return this.http.get<CorporateRelations[]>(this.acquiringUrl + 'merchant/corporaterelations', HTTP_OPTIONS);
+  }
+
+  GetAllFranchises() {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<Franchise[]>(this.acquiringUrl + 'franchise', HTTP_OPTIONS);
   }
 
   GetAllDocumentTypes(){

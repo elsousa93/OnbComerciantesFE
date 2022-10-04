@@ -68,6 +68,11 @@ export interface CorporateRelations {
   description: string
 }
 
+export interface Franchise {
+  code: string
+  description: string
+}
+
 export interface POS {
   communicationTypes: POSTemplate[]
   pointsOfSaleTypes: string[]

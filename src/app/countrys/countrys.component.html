@@ -86,7 +86,7 @@
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=true
                     formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
-                    (click)="setAssociatedWith(true)" [readonly]="returned == 'consult'">
+                    (click)="setAssociatedWith(true)" [readonly]="returned == 'consult'" default>
                   <label class="form-check-label radio pe-5"
                     for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
@@ -163,9 +163,7 @@
               id="franchiseName"
               [attr.disabled]="returned == 'consult' || clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null ">
               <option value=""></option>
-              <option value="1">Franchise 1</option>
-              <option value="2">Franchise 2</option>
-              <option value="3">Franchise 3</option>
+              <option *ngFor="let franchise of franchises" value={{franchise.code}}>{{franchise.description}} </option>
             </select>
             <div class="alert alert-danger"
               *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
