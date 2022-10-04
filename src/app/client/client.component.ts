@@ -481,7 +481,7 @@ export class ClientComponent implements OnInit {
         })
       } else {
         this.showFoundClient = false;
-        context.resultError = "Não existe Comerciante com esse número.";
+        // context.resultError = "Não existe Comerciante com esse número.";
         this.searchDone = true;
         this.createAdditionalInfoForm();
 
@@ -489,7 +489,7 @@ export class ClientComponent implements OnInit {
       }
     }, error => {
       context.showFoundClient = false;
-      context.resultError = "Não existe Comerciante com esse número.";
+      // context.resultError = "Não existe Comerciante com esse número.";
       this.searchDone = true;
       this.createAdditionalInfoForm();
 
@@ -532,27 +532,6 @@ export class ClientComponent implements OnInit {
         });
         break;
     }
-  }
-
-  /**
-   * SIMULAÇÃO da Pesquisa -- Enquanto não temos API
-   * Chamar esta função no botão de Pesquisar
-   * 
-   **/
-  onSearchSimulation(idToSeacrh: number) {
-    //No New SubmissionResponse, este é o valor do merchant.id
-    if (idToSeacrh == 22181900000011) {
-      //Cliente Encontrado
-      this.logger.debug("Cliente Encontrado");
-      this.showFoundClient = true;
-
-    }
-    if (!(idToSeacrh == 22181900000011)) {
-      this.showFoundClient = false;
-      this.resultError = "Não existe Comerciante com esse número.";
-    }
-
-    this.searchDone = true;
   }
 
   sendToParent() {
