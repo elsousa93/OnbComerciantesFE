@@ -617,7 +617,10 @@ export class CreateStakeholderComponent implements OnInit {
       }, error => {
         this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
       });
-    } else {
+    } else if (this.dataCCcontents !== undefined && this.dataCCcontents !== null) {
+      this.addStakeholderWithCC();
+    }
+    else {
       console.log("formstakeholder: ", this.formStakeholderSearch);
       var stakeholderToInsert: IStakeholders = {
         "fiscalId": this.formNewStakeholder.get("nif")?.value ?? this.formNewStakeholder.get("nipc")?.value,
@@ -653,7 +656,7 @@ export class CreateStakeholderComponent implements OnInit {
       "fullName": this.dataCCcontents.nameCC,
       "shortName": this.dataCCcontents.nameCC,
       "identificationDocument": {
-        "type": null,           //FIXME "CC"
+        "type": '1001',           //FIXME "CC"
         "number": this.dataCCcontents.cardNumberCC,
         "country": this.dataCCcontents.countryCC,
         "expirationDate": this.dataCCcontents.expiricyDateCC,
