@@ -327,8 +327,8 @@
         <form #contactForm="ngForm">
             <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
               <ng-container matColumnDef="select">
-                <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"></mat-header-cell>
-                <mat-cell *matCellDef="let client"> <input type="hidden" name="id" id="id" value={{client.clientId}}>
+                <mat-header-cell *matHeaderCellDef="let client" mat-sort-header class="text-center text-primary bg-light table-white"><input type="hidden" name="id" id="id" value={{client.clientId}}></mat-header-cell>
+                <mat-cell *matCellDef="let client"> 
                   <th scope="row" class="text-primary text-center">
                     <input type="radio" value={{client.documentationDeliveryMethod}}
                       (click)="aButtons(true, client.clientId)">
