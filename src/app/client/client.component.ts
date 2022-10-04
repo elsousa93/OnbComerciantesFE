@@ -338,22 +338,12 @@ export class ClientComponent implements OnInit {
   public merchantInfo: any;
 
   public subs: Subscription[] = [];
-  clientsMat: MatTableDataSource<Client> = new MatTableDataSource();
-  @ViewChild('paginator') set paginator(pager:MatPaginator) {
-    if (pager) {
-      this.clientsMat.paginator = pager;
-      this.clientsMat.paginator._intl = new MatPaginatorIntl();
-      this.clientsMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-    }
-  }
-
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
     private submissionService: SubmissionService, private readCardService: ReadcardService) {
-
 
     this.baseUrl = configuration.baseUrl;
     this.neyondBackUrl = configuration.neyondBackUrl;
@@ -401,6 +391,15 @@ export class ClientComponent implements OnInit {
           });
         });
       });
+    }
+  }
+
+  clientsMat = new MatTableDataSource<Client>();
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.clientsMat.paginator = pager;
+      this.clientsMat.paginator._intl = new MatPaginatorIntl();
+      this.clientsMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
 
