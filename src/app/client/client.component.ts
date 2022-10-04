@@ -594,11 +594,15 @@ export class ClientComponent implements OnInit {
     this.newClient.documentationDeliveryMethod = e.target.value;
     if (this.docType === '1001') { //código do Cartão do Cidadão
       this.isCC = true;
+      this.clientNr = false;
     } else {
       this.isCC = false;
+      this.clientNr = false;
     }
     if (this.docType === '1010'){ // Nº de cliente
       this.clientNr = true;
+    } else {
+      this.clientNr = false;
     }
     this.documentType = true;
     this.okCC = false;

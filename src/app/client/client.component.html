@@ -328,8 +328,11 @@
             <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
               <ng-container matColumnDef="select">
                 <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"></mat-header-cell>
-                <mat-cell *matCellDef="let client"> <input type="radio" value={{client.documentationDeliveryMethod}}
-                  (click)="aButtons(true, client.clientId)"></mat-cell>
+                <mat-cell *matCellDef="let client"> <input type="hidden" name="id" id="id" value={{client.clientId}}>
+                  <th scope="row" class="text-primary text-center">
+                    <input type="radio" value={{client.documentationDeliveryMethod}}
+                      (click)="aButtons(true, client.clientId)">
+                  </th></mat-cell>
               </ng-container>
                 <ng-container matColumnDef="clientNumber">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.number'|translate}} </mat-header-cell>
