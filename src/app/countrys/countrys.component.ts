@@ -5,7 +5,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
-import { CountryInformation } from '../table-info/ITable-info.interface';
+import { CountryInformation, Franchise } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
@@ -79,6 +79,7 @@ export class CountrysComponent implements OnInit {
   documentsList = []; //lista de documentos do utilizador
 
   processNumber: string;
+  franchises: Franchise[] = [];
 
   returned: string;
   merchantInfo: any;
@@ -256,6 +257,11 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.submissionUser.partner = "SIBS";
     this.rootForm = rootFormDirective.form;
     //this.form = this.rootForm.get("countrysForm");
+
+    this.subs.push(this.tableInfo.GetAllFranchises().subscribe(result => {
+      this.franchises = result;
+      this.franchises = this.franchises.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+    }));
   }
 
   changeFormStructure(newForm: FormGroup){
