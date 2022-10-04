@@ -93,7 +93,8 @@
 
                     </div>
                   </div>
-                  <div *ngIf="isCC" class="offset-1 col-5 ms-5 me-0 ps-5 pe-0">
+                </div>
+                  <div *ngIf="isCC" class="offset-1 col-7 ms-5 me-0 ps-0 pe-0">
                     <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
 
                     {{'citizenCard.process'|translate}}:*
@@ -117,7 +118,7 @@
                       </span>
                     </nav>
                   </div>
-                </div>
+                
                 </div>
                 <div *ngIf="isNoDataReadable && isCC" class="pt-2">
                   <div class="titulo-form-simples">
@@ -144,13 +145,13 @@
 
               <form *ngIf="newClientForm" [formGroup]="newClientForm" name="newClientForm">
                 <div class="row" *ngIf="showENI">
-                  <div class="col">
+                  <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
-                      <div class="col-7">
+                      <div class="col-5">
                         <p class="titulo-form-simples">{{'client.nif'|translate}}:*</p>
                         <input name="nif" type="text" id="nif" class="form-control" formControlName="nif">
                       </div>
-                      <div class="col-7">
+                      <div class="col-5">
                         <p class="titulo-form-simples mt-0">{{'client.name'|translate|uppercase}}:*</p>
                         <input name="nome" type="text" id="nome" class="form-control" formControlName="nome">
                       </div>
@@ -159,14 +160,14 @@
                 </div>
 
                 <div class="row" *ngIf="!showENI">
-                  <div class="col">
+                  <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
-                      <div class="col-7">
+                      <div class="col-5">
 
                         <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
                         <input name="nipc" type="text" id="nipc" class="form-control" formControlName="nipc">
                       </div>
-                      <div class="col-7">
+                      <div class="col-5">
                         <p class="titulo-form-simples mt-0">{{'client.socialDenomination'|translate|uppercase}}:*</p>
                         <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control"
                           formControlName="denominacaoSocial">
