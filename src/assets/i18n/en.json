@@ -108,7 +108,7 @@
     "destinationCountry": "Destination countries for products/services",
     "choose": "Choose",
     "franchiseName": "Franchise Name",
-    "searchError": "Merchant with this number does not exist",
+    "searchError": "No results were found",
     "incorrectCRC": "Inserted CRC does not have the correct format",
     "CRCNotFound": "Inserted CRC was not found",
     "countryError": "Choose at least one country"

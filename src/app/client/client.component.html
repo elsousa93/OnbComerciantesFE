@@ -141,10 +141,13 @@
                     </span>
                   </nav>
                 </div>
+                <div *ngIf="notFound">
+                  <p class="titulo-form-simples">{{'client.searchError'|translate}}</p>
+                </div>
               
 
               <form *ngIf="newClientForm" [formGroup]="newClientForm" name="newClientForm">
-                <div class="row" *ngIf="showENI && !isCC">
+                <div class="row" *ngIf="showENI && !isCC || showENI && isCC && !isNoDataReadable">
                   <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
                       <div class="col-5">
@@ -152,14 +155,14 @@
                         <input name="nif" type="text" id="nif" class="form-control" formControlName="nif">
                       </div>
                       <div class="col-5">
-                        <p class="titulo-form-simples mt-0">{{'client.name'|translate|uppercase}}:*</p>
+                        <p class="titulo-form-simples">{{'client.name'|translate|uppercase}}:*</p>
                         <input name="nome" type="text" id="nome" class="form-control" formControlName="nome">
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="row" *ngIf="!showENI && !isCC">
+                <div class="row" *ngIf="!showENI && !isCC || !showENI && isCC && !isNoDataReadable">
                   <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
                       <div class="col-5">
@@ -168,7 +171,7 @@
                         <input name="nipc" type="text" id="nipc" class="form-control" formControlName="nipc">
                       </div>
                       <div class="col-5">
-                        <p class="titulo-form-simples mt-0">{{'client.socialDenomination'|translate|uppercase}}:*</p>
+                        <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:*</p>
                         <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control"
                           formControlName="denominacaoSocial">
                       </div>
@@ -177,7 +180,7 @@
                 </div>
                 <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                   <span class="navbar-text me-2">
-                    <button *ngIf="!showFoundClient && searchDone" id="btn5a2" (click)="createNewClient()"
+                    <button *ngIf="!showFoundClient && searchDone && !isCC" id="btn5a2" (click)="createNewClient()"
                       class="btn botao_branco" wappler-command="editContent" [disabled]="!newClientForm.valid">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
@@ -316,10 +319,14 @@
   <div class="row me-0 pe-0">
     <div class="col mt-2 ms-0 me-0 pt-4 ps-3 pe-3">
       <h4 class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h4>
-      <div class="table-responsive mb-5">
+      <div class="table-responsive mb-2 ps-2 pe-2">
         <form #contactForm="ngForm">
             <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
-             
+              <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"></mat-header-cell>
+                <mat-cell *matCellDef="let client"> <input type="radio" value={{client.documentationDeliveryMethod}}
+                  (click)="aButtons(true, client.clientId)"></mat-cell>
+              </ng-container>
                 <ng-container matColumnDef="clientNumber">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.number'|translate}} </mat-header-cell>
                   <mat-cell *matCellDef="let client"> {{client.clientId}} </mat-cell>
