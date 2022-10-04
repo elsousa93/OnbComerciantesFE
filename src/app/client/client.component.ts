@@ -313,13 +313,7 @@ export class ClientComponent implements OnInit {
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator') set paginator(pager:MatPaginator) {
-    if (pager) {
-      this.clientsMat.paginator = pager;
-      this.clientsMat.paginator._intl = new MatPaginatorIntl();
-      this.clientsMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-    }
-  }
+  
 
   displayedColumns: string[] = ['clientNumber', 'commercialName', 'address' ,'ZIPCode', 'locale', 'country'];
 
@@ -344,8 +338,14 @@ export class ClientComponent implements OnInit {
   public merchantInfo: any;
 
   public subs: Subscription[] = [];
-  clientsMat = new MatTableDataSource<Client>();
-  
+  clientsMat: MatTableDataSource<Client> = new MatTableDataSource();
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.clientsMat.paginator = pager;
+      this.clientsMat.paginator._intl = new MatPaginatorIntl();
+      this.clientsMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
 
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
