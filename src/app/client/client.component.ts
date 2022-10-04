@@ -644,7 +644,7 @@ export class ClientComponent implements OnInit {
       }
     };
     this.logger.debug("a passar para a proxima pagina");
-    this.route.navigate(['/clientbyid', this.selectedClient.client.fiscalId], navigationExtras);
+    this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
 
     //isto nao esta a aparecer na versao mais nova.
   }
