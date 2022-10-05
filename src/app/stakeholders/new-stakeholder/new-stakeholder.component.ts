@@ -248,7 +248,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
     if (this.returned !== null) {
       if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring?.identificationDocument != null) {
-        if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.number == '004') {
+        if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.type == '1001') {
           this.logger.debug('Entrou cartão de cidadão');
           this.createFormCC();// mudei a ordem
           this.validateCC(true);
@@ -256,8 +256,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
           this.initializeFormWithoutCC();
           this.validateCC(false);
         }
-        this.initializeFormWithoutCC();
-        this.validateCC(false);
       } else {
         this.initializeFormWithoutCC();
         this.validateCC(false);
@@ -270,7 +268,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
-      flagRecolhaEletronica: new FormControl('true'), //v
+      flagRecolhaEletronica: new FormControl(true), //v
       proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring !== undefined) ? this.currentStakeholder?.stakeholderAcquiring.isProxy + '' : false, Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring !== undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
       Role: new FormControl(''),
@@ -317,8 +315,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   stringJson: any;
 
   createFormCC() {
+    var isCC = this.currentStakeholder.stakeholderAcquiring.identificationDocument?.type === '1001';
     this.formNewStakeholder = this.fb.group({
-      flagRecolhaEletronica: new FormControl('true'), //v
+      flagRecolhaEletronica: new FormControl(isCC), //v
       documentType: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type : ''),
       identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''),
       identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''),

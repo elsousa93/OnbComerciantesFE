@@ -54,7 +54,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="flagRecolhaEletronica"
-                         name="flagRecolhaEletronica" type="radio" [value]="true" id="flagRecolhaEletronica" [checked]="showYesCC" [attr.disabled]="returned === 'consult' ? true : null"
+                         name="flagRecolhaEletronica" type="radio" [value]=true id="flagRecolhaEletronica" [attr.disabled]="returned === 'consult' ? true : null"
                          (click)="validateCC(true)" />
                   <label class="form-check-label radio pe-5" for="radio2">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
@@ -62,7 +62,7 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input input class="form-check-input" formControlName="flagRecolhaEletronica"
-                         name="flagRecolhaEletronica" type="radio" [value]="false" id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica || returned === 'consult' ? true : null"
+                         name="flagRecolhaEletronica" type="radio" [value]=false id="flagRecolhaEletronica" [attr.disabled]="flagRecolhaEletronica || returned === 'consult' ? true : null"
                          (click)="validateCC(false)" />
                   <label class="form-check-label radio" for="radio2">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
