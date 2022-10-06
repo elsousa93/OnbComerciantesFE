@@ -63,26 +63,7 @@ export class ClientComponent implements OnInit {
   process: any;
 
   //---- Cartão de Cidadao - vars ------
-  public dataCCcontents: dataCC = {
-    cardNumberCC: null,
-    nameCC: null,
-    sexCC: null,
-    heightCC: null,
-    nationalityCC: null,
-    birthdateCC: null,
-    expiricyDateCC: null,
-    localOfEmissionCC: null,
-    fathersNameCC: null,
-    mothersNameCC: null,
-    nifCC: null,
-    socialSecurityCC: null,
-    healthNumberCC: null,
-    signatureCC: null,
-    addressCC: null,
-    postalCodeCC: null,
-    localityCC: null,
-    countryCC: null
-  };
+  public dataCCcontents = null;
   public prettyPDF: FileAndDetailsCC = null;
 
   //Variaveis para imprimir no html
@@ -127,6 +108,7 @@ export class ClientComponent implements OnInit {
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
+    this.dataCCcontents = {}
 
     this.dataCCcontents.nameCC = name;
     this.dataCCcontents.nationalityCC = nationality;
