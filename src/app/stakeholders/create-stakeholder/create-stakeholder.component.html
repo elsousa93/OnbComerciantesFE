@@ -130,7 +130,7 @@
               </tr>
             </tbody>
           </table> -->
-        <div *ngIf="isShown && foundStakeholders == false">
+        <div *ngIf="isShown && !foundStakeholders">
           <!--No Pessoa Colectiva e Denominacao Social-->
           <p class="titulo-form-simples">{{'client.searchError'|translate}}</p>
           <div *ngIf="isParticularSearched == false">
