@@ -701,6 +701,7 @@ export class ClientComponent implements OnInit {
 
   createNewClient() {
     var NIFNIPC = this.getNIFNIPC();
+    
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,

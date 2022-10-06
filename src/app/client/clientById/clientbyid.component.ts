@@ -49,6 +49,8 @@ export class ClientByIdComponent implements OnInit {
 
   public clientId: string;
 
+  socialDenomination: string;
+
   public client: OutboundClient = {
     "merchantId": null,
     "legalName": null,
@@ -347,6 +349,9 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
     }
 
+    this.socialDenomination = localStorage.getItem("clientName");
+    
+
     this.form = formBuilder.group({
       clientCharacterizationForm: new FormGroup({
         natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
@@ -455,15 +460,36 @@ export class ClientByIdComponent implements OnInit {
 
       this.createSubmission();
     } else {
-      this.clientService.getClientById(this.clientId).then(result => {
-        console.log("pesquisa do cliente: ", result);
-        this.clientContext.clientExists = true;
-        this.clientContext.setClient(result.result);
-        this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
-        this.updateBasicForm();
-      }).then(result => {
-        this.createSubmission();
-      });
+      
+      if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
+        this.clientService.getClientById(this.clientId).then(result => {
+          var client = result.result;
+          console.log("pesquisa do cliente: ", result);
+          this.clientContext.clientExists = true;
+          this.clientContext.setClient(client);
+
+          this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
+
+          if (this.tipologia === 'ENI') {
+            var stakeholdersToInsert = [];
+            stakeholdersToInsert.push(client)
+            this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
+          }
+          this.updateBasicForm();
+        }).then(result => {
+          this.createSubmission();
+        });
+      } else {
+        if (this.tipologia === 'ENI') {
+          var stakeholdersToInsert = [];
+          stakeholdersToInsert.push({
+            fiscalId: this.NIFNIPC,
+            socialDenomination: this.socialDenomination
+          })
+          this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
+        }
+        this.clientContext.setNIFNIPC(this.NIFNIPC);
+      }
     }
   }
 
