@@ -703,6 +703,11 @@ export class ClientByIdComponent implements OnInit {
       client.documents = [];
       client.bankingInformation = {};
       client.headquartersAddress = {};
+      client.headquartersAddress.address = this.dataCC.addressCC;
+      client.headquartersAddress.country = this.dataCC.countryCC;
+      client.headquartersAddress.locality = this.dataCC.localityCC;
+      client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
+      
       client.otherEconomicActivities = [];
 
       client.sales = {};

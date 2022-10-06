@@ -19,7 +19,7 @@ export interface RiskAssessment {
     type: StateResultDiscriminatorEnum,
     userObservations?: string,
     merchantAssessment : MerchantRiskAssessment,
-    stakeholderAssessment?: StakeholderRiskAssessment
+    stakeholderAssessment?: StakeholderRiskAssessment[]
 }
 export interface MerchantRiskAssessment {
     stakeholderId?: string,
@@ -45,7 +45,7 @@ export interface StandardIndustryClassificationChoice {
 
 export interface ShopClassifications {
     shopId?:string
-    schemaClassifications?: PaymentSchemaClassification
+    schemaClassifications?: PaymentSchemaClassification[]
 }
 
 export interface PaymentSchemaClassification{

@@ -146,21 +146,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     //this.triggerFalseClick();
     var context = this;
 
-    if (this.returned != null) {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-            res.forEach(function (value, index) {
-              context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-                context.submissionStakeholders.push(r);
-              }, error => {
-              });
-            }, error => {
-            });
-          });
-        });
-      });
-    }
+    this.getProcessStakeholders();
+    
     // this.updateForm(null); console.log("Update Form: Done");
     console.log("submissionId: ", this.submissionId);
     //this.currentStakeholder = {
@@ -194,6 +181,25 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateForm();
+  }
+
+  getProcessStakeholders() {
+    var context = this;
+    if (this.returned != null) {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+            res.forEach(function (value, index) {
+              context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                context.submissionStakeholders.push(r);
+              }, error => {
+              });
+            }, error => {
+            });
+          });
+        });
+      });
+    }
   }
 
   //getStakeFunction() {

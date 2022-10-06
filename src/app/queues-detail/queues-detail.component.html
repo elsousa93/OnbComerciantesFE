@@ -218,7 +218,7 @@
                               <th scope="col" class="text-center bg-white">MCC</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody formGroupName="shopsMCC">
                             <tr *ngFor="let shop of shopsList">
                               <td class="text-primary text-center">{{shop.name}}</td>
                               <td class="text-primary text-center">{{processId}}</td>
@@ -226,7 +226,12 @@
                               <td class="text-primary text-center">{{shop.subActivity}}</td>
                               <td class="text-primary text-center">JCB</td>
                               <td class="text-primary text-center">-</td>
-                              <td class="text-primary text-center"></td>
+                              <td class="text-primary text-center">
+                                <select name="MCC" formControlName="shop.id">
+                                  <option value="" disabled>A definir</option>
+                                  <option>Opção</option><!-- Quando tivermos a reference data do MCC -->
+                                </select>
+                              </td>
                             </tr>
                             <tr></tr>
                           </tbody>

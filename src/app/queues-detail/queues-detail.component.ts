@@ -11,7 +11,7 @@ import { QueuesService } from './queues.service';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
-import { EligibilityAssessment, ExternalState, RiskAssessment, State, StateResultDiscriminatorEnum } from './IQueues.interface';
+import { EligibilityAssessment, ExternalState, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { queue } from 'jquery';
@@ -88,6 +88,12 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
+  initializeMCCForm() {
+    this.form = new FormGroup({
+      shopsMCC: new FormGroup({})
+    });
+  }
+
   updateForm() {
     var formGroupStakeholdersEligibility = new FormGroup({});
     this.stakesList.forEach(function (value, idx) {
@@ -138,36 +144,97 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
-  loadShopsFromProcess() {
-    return new Promise(async (resolve, reject) => {
-      await this.queuesInfo.getProcessShopsList(this.processId).then(result => {
-        console.log("Loja");
-        var shops = result.result;
-        shops.forEach(value => {
-          // Obter o detalhe das lojas
-          this.queuesInfo.getProcessShopDetails(this.processId, value.id).then(res => {
-            var shop = res.result;
-            this.shopsList.push(shop);
-            // Obter os equipamentos das lojas
-            this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).then(eq => {
-              var equipments = eq.result;
-              equipments.forEach(val => {
-                // Obter o detalhe dos equipamentos das lojas
-                this.queuesInfo.getProcessShopEquipmentDetails(this.processId, shop.id, val.id).then(r => {
-                  var equipment = r.result;
-                  this.equipmentList.push(equipment);
-                })
-              })
-            })
-          });
+  getShopEquipmentInfo(processId, shopId, shopEquipmentId) {
+    var context = this;
+
+    return new Promise((resolve, reject) => {
+      this.queuesInfo.getProcessShopEquipmentDetails(processId, shopId, shopEquipmentId).then(r => {
+        var equipment = r.result;
+        this.equipmentList.push(equipment);
+        resolve;
+      });
+    });
+  }
+
+  getShopInfo(processId, shopId) {
+    var context = this;
+
+    return new Promise((resolve, reject) => {
+      this.queuesInfo.getProcessShopDetails(processId, shopId).then(result => {
+        var shop = result.result;
+
+        var shopMCC = this.form.get("shopsMCC") as FormGroup
+
+        shopMCC.addControl(shop.id + "", new FormControl(Validators.required));
+        this.shopsList.push(shop);
+
+        this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).then(eq => {
+          var equipments = eq.result;
+
+          var shopEquipmentPromisses = [];
+          equipments.forEach(val => {
+            // Obter o detalhe dos equipamentos das lojas
+            shopEquipmentPromisses.push(context.getShopEquipmentInfo(processId, shop.id, val.id));
+          })
+
+          Promise.all(shopEquipmentPromisses).then(res => {
+            resolve;
+          })
         });
-        this.logger.debug("lojas do processo: " + shops);
-        this.logger.debug("equipamentos das lojas do processo: " + this.equipmentList);
-      }).then(after => {
-        console.log("Ja acabou");
-        resolve(null);
+      })
+    });
+  }
+
+  
+
+  loadShopsFromProcess() {
+    var context = this;
+    var subPromisses = [];
+    return new Promise((resolve, reject) => {
+      this.queuesInfo.getProcessShopsList(this.processId).then(result => {
+        var shops = result.result;
+
+        shops.forEach(value => {
+          subPromisses.push(context.getShopInfo(this.processId, value.id));
+        });
+
+        Promise.all(subPromisses).then(success => {
+          resolve;
+        });
       });
     })
+    
+
+
+    //return new Promise(async (resolve, reject) => {
+    //  await this.queuesInfo.getProcessShopsList(this.processId).then(result => {
+    //    console.log("Loja");
+    //    var shops = result.result;
+    //    shops.forEach(value => {
+    //      // Obter o detalhe das lojas
+    //      this.queuesInfo.getProcessShopDetails(this.processId, value.id).then(res => {
+    //        var shop = res.result;
+    //        this.shopsList.push(shop);
+    //        // Obter os equipamentos das lojas
+    //        this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).then(eq => {
+    //          var equipments = eq.result;
+    //          equipments.forEach(val => {
+    //            // Obter o detalhe dos equipamentos das lojas
+    //            this.queuesInfo.getProcessShopEquipmentDetails(this.processId, shop.id, val.id).then(r => {
+    //              var equipment = r.result;
+    //              this.equipmentList.push(equipment);
+    //            })
+    //          })
+    //        })
+    //      });
+    //    });
+    //    this.logger.debug("lojas do processo: " + shops);
+    //    this.logger.debug("equipamentos das lojas do processo: " + this.equipmentList);
+    //  }).then(after => {
+    //    console.log("Ja acabou");
+    //    resolve(null);
+    //  });
+    //})
   }
 
   fetchStartingInfo() {
@@ -288,6 +355,27 @@ export class QueuesDetailComponent implements OnInit {
         accepted: true,
         merchantId: null
       };
+    } else if (this.queueName === 'MCC') {
+      this.state = State.STANDARD_INDUSTRY_CLASSIFICATION_CHOICE;
+      queueModel = {} as StandardIndustryClassificationChoice;
+
+      var stakeholders = this.form.get("shopsMCC") as FormGroup;
+      queueModel.shopClassifications = {
+        shopId: null,
+        schemaClassification: []
+      }
+
+
+      for (const cont in stakeholders.controls) {
+        console.log("Control dentro do group: ", cont);
+        const control = this.form.get("shopsMCC").get(cont);
+        console.log("valor do control: ", control.value);
+
+        queueModel.shopClassifications.schemaClassification.push({
+          paymentSchemaId: null,
+          classification: control.value
+        });
+      }
     }
 
     this.files.forEach(function (value, idx) {
