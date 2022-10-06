@@ -247,13 +247,14 @@ export class QueuesDetailComponent implements OnInit {
 
   fetchStartingInfo() {
 
-    this.loadStakeholdersFromProcess().then(success => {
+    this.queuesInfo.GetProcessStakeholders(this.processId).then(success => {
+      var stakeholdersList = success;
+      this.stakesList = stakeholdersList;
       this.loadShopsFromProcess().then(next => {
       }, reject => {
 
       })
     })
-    //Listar as lojas do processo
     
   }
 

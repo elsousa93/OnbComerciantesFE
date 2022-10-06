@@ -11,6 +11,7 @@ import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
+import { LoggerService } from '../logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class QueuesService {
 
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
-  constructor(private router: ActivatedRoute,
+  constructor(private router: ActivatedRoute, private logger: LoggerService,
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private tableinfo: TableInfoService, private APIService: APIRequestsService) {
     this.acquiringUrl = configuration.acquiringAPIUrl;
@@ -94,5 +95,42 @@ export class QueuesService {
     //return this.http.get<ShopEquipment>(this.acquiringUrl + 'process/' + processId + '/shop/' + shopId + '/equipment/' + equipmentId);
   }
 
-  
+  ///Experimentar///
+  GetProcessStakeholders(processId) {
+    var stakeholdersList = [];
+    return new Promise<any>((resolve, reject) => {
+      this.getProcessStakeholdersList(processId).then(result => {
+        console.log("stakeholders");
+        var stakeholders = result.result;
+        var totalLength = stakeholders.length;
+
+        var stakeholderInfoPromises = [];
+
+        stakeholders.forEach(value => {
+          console.log("stakeholder");
+          // Obter o detalhe dos stakeholders
+          stakeholderInfoPromises.push(this.GetProcessStakeholderInfo(processId, value.id));
+        });
+
+        Promise.all(stakeholderInfoPromises).then(res => {
+          res.forEach(res => {
+            stakeholdersList.push(res);
+          })
+          resolve(stakeholdersList);
+        });
+
+        this.logger.debug("stakeholders do processo: " + stakeholders);
+      });
+    });
+  }
+
+  GetProcessStakeholderInfo(processId, stakeholderId) {
+    return new Promise<any>((resolve, reject) => {
+      this.getProcessStakeholderDetails(processId, stakeholderId).then(res => {
+        console.log("stakeholder iter");
+        var stakeholder = res.result;
+        resolve(stakeholder);
+      })
+    });
+  }
 }
