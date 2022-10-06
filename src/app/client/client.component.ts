@@ -725,7 +725,7 @@ export class ClientComponent implements OnInit {
         clientExists: false,
         NIFNIPC: NIFNIPC,
         comprovativoCC: this.prettyPDF,
-        dataCC: this.dataCCcontents
+        dataCC: this.dataCC
       }
     };
 
