@@ -54,7 +54,7 @@ export class AddStoreComponent implements OnInit {
   private baseUrl;
 
   cae: string = "5212";
-  public chooseAddressV: boolean = false;
+  public chooseAddressV: boolean = true;
   formStores!: FormGroup;
   edit: boolean = false;
 

@@ -135,6 +135,7 @@
   },
   "stakeholder": {
     "title": "Intervenientes",
+    "titleSingular": "Interveniente",
     "add": "Adicionar Interveniente",
     "edit": "Editar Interveniente",
     "searchAdd": "Pesquisar ou Adicionar Interveniente",
@@ -152,7 +153,7 @@
     "role": "Cargo",
     "locale": "Localidade",
     "address": "Morada Fiscal",
-    "entityType": "Tipo Entidade",
+    "entityType": "Tipo Interveniente",
     "relationType": "Tipo Relação",
     "elegible": "Elegível",
     "clientNumber": "Nº Cliente",
@@ -164,6 +165,7 @@
   },
   "stores": {
     "title": "Lojas",
+    "titleOffer": "Loja(s)",
     "requestNumber":"Nº do Pedido",
     "identification": "Identificação da(s) Loja(s)",
     "remove": "Remover Loja",
