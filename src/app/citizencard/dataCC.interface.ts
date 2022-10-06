@@ -4,7 +4,7 @@ export class dataCC {
   nameCC: any;
   sexCC: any;
   heightCC: any;
-  nationalityCC: any,
+  nationalityCC: any;
   birthdateCC: any;
   expiricyDateCC: any;
   localOfEmissionCC: any;
