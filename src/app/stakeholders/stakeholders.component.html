@@ -143,6 +143,11 @@
           <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
               <span class="navbar-text me-2">
+                <button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
+                  {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                </button>
+                <button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                  <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
                 <button id="btn5a4" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="refreshPage()">
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
                   {{'generalKeywords.back'|translate|uppercase}}&nbsp;
