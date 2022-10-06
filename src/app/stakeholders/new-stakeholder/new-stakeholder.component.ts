@@ -278,6 +278,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       Address: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring !== undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required)
     });
     this.GetCountryByZipCode();
+    this.flagRecolhaEletronica = false;
+    this.showNoCC = true;
+    this.showYesCC = false;
   }
 
   ngOnInit(): void {
@@ -305,6 +308,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     if (this.showYesCC) {
       this.flagRecolhaEletronica = true;
     }
+
+    
   }
 
   ngOnDestroy(): void {
@@ -315,9 +320,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   stringJson: any;
 
   createFormCC() {
-    var isCC = this.currentStakeholder.stakeholderAcquiring.identificationDocument?.type === '1001';
     this.formNewStakeholder = this.fb.group({
-      flagRecolhaEletronica: new FormControl(isCC), //v
+      flagRecolhaEletronica: new FormControl(true), //v
       documentType: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type : ''),
       identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''),
       identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''),
@@ -326,6 +330,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy !== undefined ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : false, Validators.required),
     });
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
+    this.showYesCC = true;
+    this.showNoCC = false;
+    this.flagRecolhaEletronica = true;
   }
 
   submit() {
@@ -405,7 +412,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   chooseStakeholder(stake: any) {
     this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
       this.currentStakeholder = result;
-
+      
     }, error => {
       this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
     });

@@ -205,6 +205,9 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
     });
 
+    if (this.clientContext.dataCC !== {} && this.clientContext.dataCC !== null && this.clientContext.dataCC !== undefined)
+      newSubmission.stakeholders.push(this.clientContext.getClient());
+
     newSubmission.documents = [];
 
     this.crc = this.clientContext.crc;
