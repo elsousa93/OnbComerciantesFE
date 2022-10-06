@@ -1,5 +1,5 @@
 
-export interface dataCC {
+export class dataCC {
   cardNumberCC: any;
   nameCC: any;
   sexCC: any;

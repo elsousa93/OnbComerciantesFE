@@ -1,24 +1,17 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Client, OutboundClient } from '../Client.interface';
-import { TestScheduler } from 'rxjs/testing';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { OutboundClient } from '../Client.interface';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
-import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
+import { EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidationErrors, Validators } from '@angular/forms';
-import { Observable, of, OperatorFunction, pipe, fromEvent, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { Country } from '../../stakeholders/IStakeholders.interface';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/typeahead-match.class';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { ClientService } from '../client.service';
 import { CRCService } from '../../CRC/crcservice.service';
 import { CRCProcess } from '../../CRC/crcinterfaces';
-import { ProcessService } from '../../process/process.service';
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
@@ -31,9 +24,6 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
-import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
-
-
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -59,20 +49,12 @@ export class ClientByIdComponent implements OnInit {
 
   public clientId: string;
 
-  //client: Client = {} as Client;
-
   public client: OutboundClient = {
     "merchantId": null,
     "legalName": null,
     "commercialName": null,
     "shortName": null,
     "headquartersAddress": {},
-    //"headquartersAddress": {
-    //  "address": "",
-    //  "postalCode": "",
-    //  "postalArea": "",
-    //  "country": ""
-    //},
     "context": null,
     "contextId": null,
     "fiscalIdentification": {},
@@ -104,8 +86,6 @@ export class ClientByIdComponent implements OnInit {
   crcError: boolean = false;
   crcNotExists: boolean = false;
   crcIncorrect: boolean = false;
-
-  //client: OutboundClient = {};
 
   processClient: CRCProcess = {
     capitalStock: {},
@@ -175,67 +155,12 @@ export class ClientByIdComponent implements OnInit {
       this.logger.debug(this.legalNatureList);
       this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
     }, error => this.logger.error(error)));
-
-
-    //Chamada à API para obter a lista de CAEs
-    //this.tableInfo.GetAllCAEs().subscribe(result => {
-    //  this.CAEsList = result;
-    //  this.logger.debug("FETCH OS CAEs");
-    //});
-
-    //Chamada à API para obter a lista de CAEs
-    //this.tableInfo.GetAllCAEs().subscribe(result => {
-    //  this.CAEsList = result;
-    //});
   }
 
   updateBasicForm() {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
 
   }
-
-  //updateFormControls() {
-
-  //  this.logger.debug("durante");
-  //  this.logger.debug(this.processClient);
-  //  var crcCodeInput = this.form.get('crcCode').value;
-  //  this.form = new FormGroup({
-  //    commercialSociety: new FormControl(null, Validators.required), //sim
-  //    franchiseName: new FormControl(this.processClient.companyName), //sim
-  //    natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-  //    //expectableAnualInvoicing: new FormControl(this.client.sales.estimatedAnualRevenue, Validators.required),
-  //    //preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
-  //    //Pretende associar a grupo/franchise
-  //    //services: new FormControl('', Validators.required),
-  //    //transactionsAverage: new FormControl(this.client.sales.averageTransactions, Validators.required),
-  //    //destinationCountries: new FormControl('', Validators.required),
-  //    CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
-  //    CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
-  //    CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
-  //    CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
-  //    constitutionDate: new FormControl(this.client.establishmentDate), //sim
-  //    address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
-  //    ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
-  //    location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
-  //    country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
-  //    preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
-  //    crcCode: new FormControl(crcCodeInput, [Validators.required]), //sim
-  //    natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }), //sim
-  //    natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
-  //    socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
-  //    CAE1Branch: new FormControl(''), //talvez
-  //    CAESecondary1Branch: new FormControl(''), //talvez
-  //    CAESecondary2Branch: new FormControl(''), //talvez
-  //    CAESecondary3Branch: new FormControl(''), //talvez
-
-  //    //merchantType: new FormControl(this.client.merchantType), //talvez
-  //    //associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise), //talvez
-
-  //  });
-
-  //  this.logger.debug("pos");
-  //  //var a = this.form.get('CAE1Branch').validato
-  //}
 
   initializeENI() {
 
@@ -273,18 +198,6 @@ export class ClientByIdComponent implements OnInit {
     if (this.tipologia === 'ENI') {
       this.setCommercialSociety(false);
     }
-
-    //this.form.get("commercialSociety").valueChanges.subscribe(data => {
-    //  this.logger.debug("valor mudou commercial society");
-    //  this.logger.debug(data);
-    //  if (data == 'true') {
-    //    this.logger.debug("true entrou");
-    //    this.initializeFormControlCRC();
-    //  } else {
-    //    this.logger.debug("false entrou");
-    //    this.initializeFormControlOther();
-    //  }
-    //});
   }
 
   searchBranch(code) {
@@ -415,192 +328,25 @@ export class ClientByIdComponent implements OnInit {
 
   initializeFormControls() {
     this.logger.debug("inicializar form controls");
-    this.logger.debug("i");
     this.initializeBasicFormControl();
-    //this.form = new FormGroup({
-    //  commercialSociety: new FormControl(null, Validators.required), //sim
-    //  franchiseName: new FormControl(this.processClient.companyName), //sim
-    //  natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-    //  CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
-    //  CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
-    //  CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
-    //  CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
-    //  constitutionDate: new FormControl(this.client.establishmentDate), //sim
-    //  address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
-    //  ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
-    //  location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
-    //  country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
-    //  preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
-    //  crcCode: new FormControl('', [Validators.required]), //sim
-    //  natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: this.clientExists }), //sim
-    //  natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }), //sim
-    //  socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
-    //  CAE1Branch: new FormControl(''), //talvez
-    //  CAESecondary1Branch: new FormControl(''), //talvez
-    //  CAESecondary2Branch: new FormControl(''), //talvez
-    //  CAESecondary3Branch: new FormControl(''), //talvez
-
-    //  //merchantType: new FormControl(this.client.merchantType), //talvez
-    //  //associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise), //talvez
-
-    //});
-
-
-    //this.form = new FormGroup({
-    //  commercialSociety: new FormControl(null, Validators.required),
-    //  franchiseName: new FormControl(''),
-    //  natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-    //  expectableAnualInvoicing: new FormControl(this.client.sales.estimatedAnualRevenue, Validators.required),
-    //  preferenceDocuments: new FormControl(this.client.documentationDeliveryMethod, Validators.required),
-    //  //Pretende associar a grupo/franchise
-    //  services: new FormControl('', Validators.required),
-    //  transactionsAverage: new FormControl(this.client.sales.averageTransactions, Validators.required),
-    //  destinationCountries: new FormControl('', Validators.required),
-    //  CAE1: new FormControl('', Validators.required),
-    //  CAESecondary1: new FormControl(this.client.otherEconomicActivities[0]),
-    //  CAESecondary2: new FormControl(this.client.otherEconomicActivities[1]),
-    //  CAESecondary3: new FormControl(''),
-    //  constitutionDate: new FormControl(this.client.establishmentDate),
-    //  address: new FormControl('', Validators.required),
-    //  ZIPCode: new FormControl('', Validators.required),
-    //  location: new FormControl('', Validators.required),
-    //  country: new FormControl('', Validators.required),
-    //  preferenceContacts: new FormControl(this.client.contacts.preferredMethod, Validators.required),
-    //  crcCode: new FormControl('', [Validators.required]),
-    //  natJuridicaN1: new FormControl({ value: this.client.legalNature, disabled: this.clientExists }),
-    //  natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: this.clientExists }),
-    //  socialDenomination: new FormControl(this.client.shortName, Validators.required),
-    //  CAE1Branch: new FormControl(this.client.mainEconomicActivity),
-    //  CAESecondary1Branch: new FormControl(this.client.otherEconomicActivities[0]),
-    //  CAESecondary2Branch: new FormControl(this.client.otherEconomicActivities[1]),
-    //  CAESecondary3Branch: new FormControl(this.client.otherEconomicActivities[2]),
-
-    //  merchantType: new FormControl(this.client.merchantType),
-    //  associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise),
-    //  NIPCGroup: new FormControl(/*this.client.businessGroup.fiscalId*/),
-    //});
-    //var a = this.form.get('CAE1Branch').validator({} as AbstractControl);
-    //  this.form.updateValueAndValidity();
-
-    //  this.form.get("crcCode").valueChanges.subscribe(v => {
-
-    //    //var times = v.split('-').length - 1;
-
-    //    //if (times != 2) {
-    //    //  if (v.length == 4 || v.length == 9)
-    //    //    this.form.get("crcCode").setValue(v + "-");
-    //    //}
-    //  });
-
-    //  this.form.get("CAE1").valueChanges.subscribe(v => {
-    //    if (v !== '') {
-    //      this.form.updateValueAndValidity();
-    //    } else {
-    //      this.form.updateValueAndValidity();
-    //    }
-    //  });
-
-    //  this.form.get("CAESecondary1").valueChanges.subscribe(v => {
-    //    if (v !== '') {
-    //      //this.form.addControl('CAESecondary1Branch', new FormControl('', Validators.required));
-    //      this.form.get('CAESecondary1Branch').addValidators(Validators.required);
-    //    } else {
-    //      this.form.get('CAESecondary1Branch').setErrors({ 'required': false });
-
-    //    }
-
-    //    this.logger.debug("CAESecondary1");
-    //  });
-
-    //  this.form.get("CAESecondary2").valueChanges.subscribe(v => {
-    //    if (v !== '') {
-    //      this.form.get('CAESecondary2Branch').addValidators(Validators.required);
-    //    } else {
-    //      this.form.get('CAESecondary2Branch').setErrors({ 'required': false });
-    //    }
-    //  });
-
-    //  this.form.get("commercialSociety").valueChanges.subscribe(v => {
-    //    if (v === 'true') {
-    //      this.form.get('crcCode').addValidators(Validators.required);
-    //      this.form.get('socialDenomination').setErrors({ 'required': false });
-    //      this.form.get('natJuridicaN1').setErrors({'required': false});
-    //    } else {
-    //      this.form.get('crcCode').setErrors({ 'required': false });
-    //      this.form.get('socialDenomination').setValidators(Validators.required);
-    //      this.form.get('natJuridicaN1').setValidators([Validators.required]);
-    //      //this.form.addControl('socialDenomination', new FormControl('', Validators.required));
-    //      //this.form.addControl('natJuridicaN1', new FormControl('', Validators.required));
-    //    }
-
-    //  })
-
-    //  this.logger.debug(this.form.get('CAE1Branch').errors);
-    //  this.logger.debug(this.form.get('CAE1Branch').errors?.['required']);
-
-    //  this.form.get("franchiseName").valueChanges.subscribe(v => {
-    //    if (v !== '') {
-    //      this.isAssociatedWithFranchise = true;
-    //    } else {
-    //      this.isAssociatedWithFranchise = undefined;
-    //    }
-    //  })
-
-    //  this.form.get("NIPCGroup").valueChanges.subscribe(v => {
-    //    if (v !== null) {
-    //      this.isAssociatedWithFranchise = false;
-    //    } else {
-    //      this.isAssociatedWithFranchise = undefined;
-    //    }
-    //  })
-    //}
-
-    //getFormValidationErrors() {
-    //  //Object.keys(this.form.controls).forEach(key => {
-    //  //  const controlErrors: ValidationErrors = this.form.get(key).errors;
-    //  //  if (controlErrors != null) {
-    //  //    Object.keys(controlErrors).forEach(keyError => {
-    //  //      this.logger.debug('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-    //  //    });
-    //  //  }
-    //  //});
-    //}
   }
 
 
-  constructor(private logger: LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
-    private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService,
+  constructor(private logger: LoggerService, private datepipe: DatePipe, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
+    private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private rootFormDirective: FormGroupDirective) {
-
-
+    private stakeholderService: StakeholderService, private storeService: StoreService) {
 
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
-      //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
-      //this.tipologia = "ENI";
-      //this.tipologia = "Company";
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
       this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
-      //this.NIFNIPC = this.router.snapshot.params["id"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
-
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
-
-
-
-
-
-
-      console.log("Contexto acabado de ser criado: ", this.clientContext);
-
-      this.logger.debug("------------");
-      this.logger.debug(this.processId);
-      this.logger.debug("------------");
-      this.logger.debug("c");
     }
+
     this.form = formBuilder.group({
       clientCharacterizationForm: new FormGroup({
         natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
@@ -615,20 +361,7 @@ export class ClientByIdComponent implements OnInit {
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
-      //this.clientService.getClientByID(this.clientId, "6db0b920-3de4-431a-92c7-2c476784ed9a", "2").subscribe(result => {
-
-      //  this.clientContext.clientExists = true;
-      //  this.clientContext.client = result;
-      //  this.clientContext.NIFNIPC = this.client.fiscalIdentification.fiscalId;
-      //  this.updateBasicForm();
-      //});
-
-
-
-      //this.initializeBasicFormControl();
-
     } else {
-      //this.initializeFormControls();
       this.updateBasicForm();
     }
     this.initializeTableInfo();
@@ -676,8 +409,6 @@ export class ClientByIdComponent implements OnInit {
   //fim do construtor
 
   ngOnInit(): void {
-    // this.clientId = String(this.router.snapshot.params['id']);
-
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
@@ -695,7 +426,7 @@ export class ClientByIdComponent implements OnInit {
 
     console.log("antes da pesquisa");
 
-    if (this.dataCC !== {} && this.dataCC !== undefined) {
+    if (this.dataCC !== undefined || this.dataCC !== null) {
       var client = {} as OutboundClient;
       client.fiscalIdentification = {};
       client.fiscalIdentification.fiscalId = this.dataCC.nifCC;
@@ -713,9 +444,6 @@ export class ClientByIdComponent implements OnInit {
       client.incorporationStatement = {};
       client.contacts = {};
 
-      
-      
-
       this.clientContext.setClient(client);
       this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
       this.updateBasicForm();
@@ -727,7 +455,6 @@ export class ClientByIdComponent implements OnInit {
         this.clientContext.clientExists = true;
         this.clientContext.setClient(result.result);
         this.clientContext.setNIFNIPC(result.result.fiscalIdentification.fiscalId);
-        //this.clientContext.setMerchantInfo(result.result);
         this.updateBasicForm();
       }).then(result => {
         this.createSubmission();
@@ -784,26 +511,19 @@ export class ClientByIdComponent implements OnInit {
 
 
   searchByCRC() {
-    //var crcInserted = this.form.get('crcCode');
-    //this.logger.debug("codigo CRC:" , this.form.get('crcCode').value);
-    //this.logger.debug(crcInserted);
-    //this.crcFound = true;
-
-     var crcInserted = this.form.get('crcCode').value;
-     var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
-     if (!crcFormat.test(crcInserted)) {
-       this.crcIncorrect = true;
-       this.crcFound = false;
-       //this.errorMsg = 'CRC inserido não está com o formato correto'
-       return;
-     }
-     this.crcIncorrect = false;
-     this.crcService.getCRC(crcInserted, '001').subscribe(o => {
-       if (o === undefined || o === null) {
-         this.crcNotExists = true;
-         this.crcFound = false;
-         //this.errorMsg = 'CRC inserido não foi encontrado';
-       }
+    var crcInserted = this.form.get('crcCode').value;
+    var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
+    if (!crcFormat.test(crcInserted)) {
+      this.crcIncorrect = true;
+      this.crcFound = false;
+      return;
+    }
+    this.crcIncorrect = false;
+    this.crcService.getCRC(crcInserted, '001').subscribe(o => {
+      if (o === undefined || o === null) {
+        this.crcNotExists = true;
+        this.crcFound = false;
+      }
 
       var clientByCRC = o;
 
@@ -839,15 +559,6 @@ export class ClientByIdComponent implements OnInit {
       this.logger.debug("o crc chamou o initialize");
       this.initializeFormControlCRC();
     });
-
-
-    //if (crcInserted === '123') {
-    //  this.crcFound = true;
-    //  this.logger.debug("-Crc true-: ", this.crcFound);
-    //  this.logger.debug("-isCommercialSociety true-: ", this.isCommercialSociety);
-    //} else {
-    //  this.logger.debug("--");
-    //}
   }
   getCrcCode() {
     return this.form.get('crcCode').value;
@@ -863,14 +574,6 @@ export class ClientByIdComponent implements OnInit {
     this.lastExpandedTab = index;
   }
 
-  //getPaisSedeSocial() {
-  //  this.logger.debug(this.form.get('headquartersAddress.country').value);
-  //  this.logger.debug(this.form.get('headquartersAddress.country'));
-
-  //  return this.form.get('headquartersAddress.country').value;
-  //}
-
-
   submit() {
 
     console.log("form valido: ", this.form);
@@ -885,7 +588,6 @@ export class ClientByIdComponent implements OnInit {
 
     this.updateSubmission();
 
-    //    this.route.navigate(["/stakeholders/"]);
   }
 
 
@@ -979,40 +681,9 @@ export class ClientByIdComponent implements OnInit {
 
     this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
       context.clientContext.submissionID = result.id;
-        localStorage.setItem("submissionId", result.id);
-        context.processNrService.changeProcessNumber(result.processNumber);
-
-        //this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
-        //  res.forEach(value => {
-        //    this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-        //      var storeToAdd: ShopDetailsAcquiring = {
-        //        activity: r.activity,
-        //        subActivity: r.secondaryActivity,
-        //        address: {
-        //          address: r.address.address,
-        //          isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-        //          shoppingCenter: r.address.shoppingCenter,
-        //          useMerchantAddress: r.address.sameAsMerchantAddress
-        //        },
-        //        bank: {
-        //          bank: r.bankingInformation
-        //        },
-        //        name: r.name,
-        //        productCode: r.product,
-        //        subproductCode: r.subproduct,
-        //        website: r.url,
-        //        equipments: []
-        //      }
-
-        //      context.storeService.addShopToSubmission(result.id, storeToAdd).subscribe(shop => {
-
-        //      });
-        //    });
-        //  });
-        //});
-
-      });
-      //this.route.navigate["/stakeholders/"];
+      localStorage.setItem("submissionId", result.id);
+      context.processNrService.changeProcessNumber(result.processNumber);
+    });
   }
 
   updateSubmission() {
@@ -1046,35 +717,32 @@ export class ClientByIdComponent implements OnInit {
 
 
     this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
-          res.forEach(value => {
-            this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-              var storeToAdd: ShopDetailsAcquiring = {
-                activity: r.activity,
-                subActivity: r.secondaryActivity,
-                address: {
-                  address: r.address.address,
-                  isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-                  shoppingCenter: r.address.shoppingCenter,
-                  useMerchantAddress: r.address.sameAsMerchantAddress
-                },
-                bank: {
-                  bank: r.bankingInformation
-                },
-                name: r.name,
-                productCode: r.product,
-                subproductCode: r.subproduct,
-                website: r.url,
-                equipments: []
-              }
+      res.forEach(value => {
+        this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+          var storeToAdd: ShopDetailsAcquiring = {
+            activity: r.activity,
+            subActivity: r.secondaryActivity,
+            address: {
+              address: r.address.address,
+              isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+              shoppingCenter: r.address.shoppingCenter,
+              useMerchantAddress: r.address.sameAsMerchantAddress
+            },
+            bank: {
+              bank: r.bankingInformation
+            },
+            name: r.name,
+            productCode: r.product,
+            subproductCode: r.subproduct,
+            website: r.url,
+            equipments: []
+          }
 
-              context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
+          context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
 
-              });
-            });
           });
         });
-
-
+      });
+    });
   }
-  
 }

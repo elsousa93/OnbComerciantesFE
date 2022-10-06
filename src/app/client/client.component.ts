@@ -37,7 +37,7 @@ export class ClientComponent implements OnInit {
   private baseUrl: string;
   private neyondBackUrl: string;
 
-  dataCC = {};
+  dataCC = null;
 
   modalRef: BsModalRef;
 
