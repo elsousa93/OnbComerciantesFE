@@ -426,7 +426,7 @@ export class ClientByIdComponent implements OnInit {
 
     console.log("antes da pesquisa");
 
-    if (this.dataCC !== undefined || this.dataCC !== null) {
+    if (this.dataCC !== undefined && this.dataCC !== null) {
       var client = {} as OutboundClient;
       client.fiscalIdentification = {};
       client.fiscalIdentification.fiscalId = this.dataCC.nifCC;

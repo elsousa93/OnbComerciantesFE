@@ -274,7 +274,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
-      flagRecolhaEletronica: new FormControl(true), //v
+      flagRecolhaEletronica: new FormControl(false), //v
       proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring !== undefined) ? this.currentStakeholder?.stakeholderAcquiring.isProxy + '' : false, Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring !== undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
       Role: new FormControl(''),
