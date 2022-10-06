@@ -111,7 +111,8 @@
     "searchError": "No results were found",
     "incorrectCRC": "Inserted CRC does not have the correct format",
     "CRCNotFound": "Inserted CRC was not found",
-    "countryError": "Choose at least one country"
+    "countryError": "Choose at least one country",
+    "documents": "Merchant's Documents"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",

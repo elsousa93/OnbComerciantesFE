@@ -637,7 +637,7 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        NIFNIPC: NIFNIPC,
+        NIFNIPC: selectedClient.fiscalId,
         clientExists: true,
         clientId: this.clientId,
         dataCC: this.dataCC
@@ -723,6 +723,7 @@ export class ClientComponent implements OnInit {
       state: {
         tipologia: this.tipologia,
         clientExists: false,
+        NIFNIPC: NIFNIPC,
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents
       }

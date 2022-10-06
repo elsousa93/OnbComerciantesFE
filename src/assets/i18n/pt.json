@@ -111,7 +111,8 @@
     "searchError": "Não foram encontrados resultados",
     "incorrectCRC": "CRC inserido não está com o formato correto",
     "CRCNotFound": "CRC inserido não foi encontrado",
-    "countryError": "Escolha pelo menos um país"
+    "countryError": "Escolha pelo menos um país",
+    "documents": "Documentos do Cliente"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",

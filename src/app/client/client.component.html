@@ -325,7 +325,7 @@
       <h4 class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h4>
       <div class="table-responsive mb-2 ps-2 pe-2">
         <form #contactForm="ngForm">
-            <mat-table [dataSource]="clientsMat" class="table-success" matSort>
+            <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
               <ng-container matColumnDef="select">
                 <mat-header-cell *matHeaderCellDef>
                   
