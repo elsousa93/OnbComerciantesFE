@@ -15,10 +15,6 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
         <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="address">
-        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'stores.subZone'|translate|uppercase}} </mat-header-cell>
-        <mat-cell *matCellDef="let store"> {{store.address?.address?.postalArea}} </mat-cell>
-      </ng-container>
       <ng-container matColumnDef="bank">
         <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer" class="text-center text-primary bg-light table-white"> {{'commercialOffer.bank'|translate|uppercase}} </mat-header-cell>
         <mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer"></mat-cell>

@@ -160,7 +160,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
-  displayedColumns: string[] = ['name', 'activity', 'subActivity', 'address' ,'bank', 'terminalNumber', 'product'];
+  displayedColumns: string[] = ['name', 'activity', 'subActivity' ,'bank', 'terminalNumber', 'product'];
 
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;

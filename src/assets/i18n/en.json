@@ -135,6 +135,7 @@
   },
   "stakeholder": {
     "title": "Stakeholders",
+    "titleSingular": "Stakeholder",
     "add": "Add Stakeholder",
     "edit": "Edit Stakeholder",
     "searchAdd": "Search or Add Stakeholder",
@@ -152,7 +153,7 @@
     "role": "Role",
     "locale": "Locale",
     "address": "Fiscal Address",
-    "entityType": "Entity Type",
+    "entityType": "Stakeholder's Type",
     "relationType": "Relation Type",
     "elegible": "Elegible",
     "clientNumber": "Client Number",
@@ -164,6 +165,7 @@
   },
   "stores": {
     "title": "Stores",
+    "titleOffer": "Store(s)",
     "identification": "Store(s) Identification",
     "requestNumber": "Request Number",
     "remove": "Remove Store",

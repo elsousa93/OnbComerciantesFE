@@ -1,10 +1,10 @@
 
-export interface dataCC {
+export class dataCC {
   cardNumberCC: any;
   nameCC: any;
   sexCC: any;
   heightCC: any;
-  nationalityCC: any,
+  nationalityCC: any;
   birthdateCC: any;
   expiricyDateCC: any;
   localOfEmissionCC: any;
