@@ -880,7 +880,7 @@ export class ClientCharacterizationComponent implements OnInit {
     if (this.tipologia === 'ENI') {
       this.client.legalName = this.form.value["socialDenomination"];
       this.client.merchantType = 'Entrepeneur';
-      if (this.dataCC !== {}) {
+      if (this.dataCC !== {} && this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?
         this.client.fiscalIdentification.fiscalId = this.dataCC.nifCC;

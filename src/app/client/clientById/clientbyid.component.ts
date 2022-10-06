@@ -24,6 +24,7 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
+import { IStakeholders } from '../../stakeholders/IStakeholders.interface';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -472,7 +473,8 @@ export class ClientByIdComponent implements OnInit {
 
           if (this.tipologia === 'ENI') {
             var stakeholdersToInsert = [];
-            stakeholdersToInsert.push(client)
+            var stakeholder = client as IStakeholders;
+            stakeholdersToInsert.push(stakeholder)
             this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
           }
           this.updateBasicForm();
@@ -484,11 +486,13 @@ export class ClientByIdComponent implements OnInit {
           var stakeholdersToInsert = [];
           stakeholdersToInsert.push({
             fiscalId: this.NIFNIPC,
-            socialDenomination: this.socialDenomination
+            fullName: this.socialDenomination,
+            shortName: this.socialDenomination
           })
           this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
         }
         this.clientContext.setNIFNIPC(this.NIFNIPC);
+        this.createSubmission();
       }
     }
   }
@@ -708,6 +712,8 @@ export class ClientByIdComponent implements OnInit {
       newSubmission.merchant.merchantType = 'Corporate';
     else
       newSubmission.merchant.merchantType = 'Entrepeneur';
+
+    newSubmission.stakeholders = this.clientContext.getStakeholdersToInsert();
 
 
     this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
