@@ -112,34 +112,42 @@ export class QueuesDetailComponent implements OnInit {
     this.initializeElegibilityForm();
   }
 
+  getStakeholderInfo(processId, stakeholderId) {
+    return new Promise((resolve, reject) => {
+      this.queuesInfo.getProcessStakeholderDetails(processId, stakeholderId).then(res => {
+        console.log("stakeholder iter");
+        var stakeholder = res.result;
+        var stakeholderGroup = this.form.get('stakeholdersEligibility') as FormGroup;
+
+        stakeholderGroup.addControl(stakeholderId, new FormControl('', Validators.required));
+        this.stakesList.push(stakeholder);
+        resolve;
+      })
+    });
+  }
+
   loadStakeholdersFromProcess() {
     //Listar os stakeholders do processo
     var currentLength = 0;
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
         console.log("stakeholders");
         var stakeholders = result.result;
         var totalLength = stakeholders.length;
 
+        var stakeholderInfoPromises = [];
+
         stakeholders.forEach(value => {
           console.log("stakeholder");
           // Obter o detalhe dos stakeholders
-          this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).then(res => {
-            console.log("stakeholder iter");
-            var stakeholder = res.result;
-            var stakeholderGroup = this.form.get('stakeholdersEligibility') as FormGroup;
-
-            stakeholderGroup.addControl(value.id, new FormControl('', Validators.required));
-            this.stakesList.push(stakeholder);
-
-            if (++currentLength == totalLength)
-              resolve(null);
-          });
+          stakeholderInfoPromises.push(this.getStakeholderInfo(this.processId, value.id));
         });
+
+        Promise.all(stakeholderInfoPromises).then(res => {
+          resolve;
+        });
+
         this.logger.debug("stakeholders do processo: " + stakeholders);
-      }).then(next => {
-        console.log("acabou");
-        resolve(null);
       });
     });
   }
