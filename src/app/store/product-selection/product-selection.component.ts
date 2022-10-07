@@ -51,7 +51,7 @@ export class ProductSelectionComponent implements OnInit {
         iban: "12345"
       }
     },
-    website: "www.google.com",
+    website: "",
     productCode: "345",
     subproductCode: "324",
     equipments: [
@@ -243,15 +243,15 @@ export class ProductSelectionComponent implements OnInit {
       this.subProducts = [];
     }
 
-    if (productDescription == ("cardPresent" || "CARD PRESENT")) {
+    if (productDescription==="cardPresent" || productDescription==="CARD PRESENT") {
       this.isCardPresent = true;
       this.isCardNotPresent = false;
       this.isCombinedOffer = false;
-    } else if (productDescription == ("cardNotPresent" || "CARD NOT PRESENT")) {
+    } else if (productDescription==="cardNotPresent" || productDescription==="CARD NOT PRESENT") {
       this.isCardPresent = false;
       this.isCardNotPresent = true;
       this.isCombinedOffer = false;
-    } else if (productDescription == ("OFERTA COMBINADA")) {
+    } else if (productDescription==="OFERTA COMBINADA") {
       this.isCardPresent = false;
       this.isCardNotPresent = false;
       this.isCombinedOffer = true;
@@ -279,7 +279,7 @@ export class ProductSelectionComponent implements OnInit {
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
-      if (val === ('cardNotPresent' || 'CARD NOT PRESENT'))
+      if (val==='cardNotPresent' || val==='CARD NOT PRESENT')
         this.formStores.get('url').setValidators([Validators.required]);
       else
         this.formStores.get('url').setValidators(null);
