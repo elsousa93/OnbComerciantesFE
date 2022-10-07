@@ -264,9 +264,9 @@ export class AddStoreComponent implements OnInit {
     private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
 
     this.submissionId = localStorage.getItem("submissionId");
-    this.fetchStartingInfo();
     this.loadTableInfo();
     this.ngOnInit();
+    this.fetchStartingInfo();
     setTimeout(() => this.data.updateData(false, 3, 2), 0);
   }
 
