@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Host, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Istore, ShopActivities, ShopSubActivities, ShopDetailsAcquiring, ShopDetailsOutbound } from '../IStore.interface';
+import { ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
 import { CountryInformation, ShoppingCenter } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
@@ -11,12 +11,11 @@ import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { Merchant, SubmissionGetTemplate } from '../../submission/ISubmission.interface';
+import { SubmissionGetTemplate } from '../../submission/ISubmission.interface';
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
 import { LoggerService } from 'src/app/logger.service';
 import { StoreService } from '../store.service';
-import { Country } from '../../stakeholders/IStakeholders.interface';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 
 
@@ -52,11 +51,11 @@ export class AddStoreComponent implements OnInit {
   public isComercialCentreStore: boolean = null;
 
   private baseUrl;
-
-  cae: string = "5212";
-  public chooseAddressV: boolean = true;
+  public replicateAddress: boolean = true;
   formStores!: FormGroup;
   edit: boolean = false;
+
+  teste: boolean = false;
 
 
   /*Variable declaration*/
@@ -193,11 +192,6 @@ export class AddStoreComponent implements OnInit {
       }
     } as ShopDetailsAcquiring
 
-  public clientID: number = 12345678;
-  public totalUrl: string = "";
-
-  public zonasTuristicas: string[] = ["Não", "Sim"];
-  defaultZonaTuristica: number = 0;
 
   /*CHANGE - Get via service from the clients  - Address*/
   public commCountry: string = "";
@@ -288,7 +282,7 @@ export class AddStoreComponent implements OnInit {
         this.formStores.disable();
       }
     } else {
-      this.chooseAddressV = true;
+      this.replicateAddress = true;
       this.appComp.updateNavBar("Adicionar Loja")
       this.stroreId = Number(this.router.snapshot.params['stroreid']);
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -421,20 +415,20 @@ export class AddStoreComponent implements OnInit {
     this.store.product = this.formStores.get("productStores").value;
     this.store.subProduct = this.formStores.get("subProductStores").value;
 
-    if (this.chooseAddressV) {
+    if (!this.replicateAddress) {
       this.store.address.address.address = this.formStores.get("addressStore").value;
       this.store.address.address.country = this.formStores.get("countryStore").value;
       this.store.address.address.postalArea = this.formStores.get("localeStore").value;
       this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
       this.store.address.useMerchantAddress = false;
-      console.log('Valor do replicateAddress ', this.formStores.get("replicateAddress").value);
+      console.log('Valor do replicateAddress ', this.formStores.get("replicate").value);
     } else {
       this.store.address.address.address = this.submissionClient.headquartersAddress.address;
       this.store.address.address.country = this.submissionClient.headquartersAddress.country;
       this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
       this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
       this.store.address.useMerchantAddress = true;
-      console.log('Valor do replicateAddress ', this.formStores.get("replicateAddress").value);
+      console.log('Valor do replicateAddress ', this.formStores.get("replicate").value);
     }
 
     if (this.isComercialCentreStore) {
@@ -456,8 +450,8 @@ export class AddStoreComponent implements OnInit {
   }
 
   chooseAddress(toChoose: boolean) {
-    this.chooseAddressV = toChoose;
-    if (toChoose) {
+    this.replicateAddress = toChoose;
+    if (!toChoose) {
       this.formStores.get('localeStore').setValidators([Validators.required]);
       this.formStores.get('addressStore').setValidators([Validators.required]);
       this.formStores.get('countryStore').setValidators([Validators.required]);
@@ -542,7 +536,7 @@ export class AddStoreComponent implements OnInit {
       subactivityStore: new FormControl((this.returned !== null) ? this.store.subActivity : '', [Validators.required]),
       localeStore: new FormControl(''),
       addressStore: new FormControl(''),
-      replicateAddress: new FormControl(this.chooseAddressV, Validators.required),
+      replicate: new FormControl(true, Validators.required),
       commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
     })
     this.formStores.get("activityStores").valueChanges.subscribe(v => {
@@ -572,7 +566,7 @@ export class AddStoreComponent implements OnInit {
     this.isComercialCentreStore = isCentre;
     if (isCentre)
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
-      if (this.chooseAddressV){
+      if (!this.replicateAddress){
         //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
         this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
           this.logger.debug(result);
