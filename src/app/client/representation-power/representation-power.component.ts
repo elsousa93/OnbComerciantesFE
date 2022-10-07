@@ -62,7 +62,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
       var clientENI: StakeholdersProcess = {
         fiscalId: client.fiscalIdentification.id,
-        name: client.fullName
+        name: client.legalName
       }
       this.stakeholdersToInsert.push(clientENI);
     }

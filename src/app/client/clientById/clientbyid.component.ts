@@ -747,7 +747,7 @@ export class ClientByIdComponent implements OnInit {
     stakeholders.forEach(function (value, idx) {
       var cont = this;
       if (context.clientContext.tipologia === 'ENI') {
-        if (value.fiscalId === client.fiscalIdentification.fiscalId) {
+        if (value.fiscalId === client.fiscalId) {
           context.stakeholderService.UpdateStakeholder(submissionID, value.id, value);
         } else {
           context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
