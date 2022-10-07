@@ -471,26 +471,13 @@ export class ClientByIdComponent implements OnInit {
 
           this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
 
-          if (this.tipologia === 'ENI') {
-            var stakeholdersToInsert = [];
-            var stakeholder = client as IStakeholders;
-            stakeholdersToInsert.push(stakeholder)
-            this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
-          }
+          
           this.updateBasicForm();
         }).then(result => {
           this.createSubmission();
         });
       } else {
-        if (this.tipologia === 'ENI') {
-          var stakeholdersToInsert = [];
-          stakeholdersToInsert.push({
-            fiscalId: this.NIFNIPC,
-            fullName: this.socialDenomination,
-            shortName: this.socialDenomination
-          })
-          this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
-        }
+        
         this.clientContext.setNIFNIPC(this.NIFNIPC);
         this.createSubmission();
       }
@@ -713,7 +700,11 @@ export class ClientByIdComponent implements OnInit {
     else
       newSubmission.merchant.merchantType = 'Entrepeneur';
 
-    newSubmission.stakeholders = this.clientContext.getStakeholdersToInsert();
+    if (this.tipologia === 'ENI') {
+      var client = this.clientContext.getClient();
+      newSubmission.stakeholders.push(client);
+    }
+    
 
 
     this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
