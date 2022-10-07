@@ -377,7 +377,7 @@ export class ClientByIdComponent implements OnInit {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         if (result[0] !== undefined) {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.clientService.GetClientById(resul.id).subscribe(res => {
+            this.clientService.GetClientById(resul.id).then(res => {
               this.merchantInfo = res;
               this.clientContext.setMerchantInfo(res);
               if (this.NIFNIPC === undefined) {
@@ -409,7 +409,7 @@ export class ClientByIdComponent implements OnInit {
         }
       });
     }
-    this.ngOnInit();
+    //this.ngOnInit();
   }
 
   //fim do construtor
@@ -463,8 +463,8 @@ export class ClientByIdComponent implements OnInit {
     } else {
       
       if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
-        this.clientService.getClientById(this.clientId).then(result => {
-          var client = result.result;
+        this.clientService.GetClientById(this.clientId).then(result => {
+          var client = result;
           console.log("pesquisa do cliente: ", result);
           this.clientContext.clientExists = true;
           this.clientContext.setClient(client);
@@ -702,7 +702,12 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.tipologia === 'ENI') {
       var client = this.clientContext.getClient();
-      newSubmission.stakeholders.push(client);
+      var stakeholder = {
+        fiscalId: client.fiscalIdentification.fiscalId,
+        shortName: client.shortName,
+        fullName: client.legalName
+      } as IStakeholders
+      newSubmission.stakeholders.push(stakeholder);
     }
     
 

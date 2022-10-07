@@ -24,6 +24,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import jsPDF from 'jspdf';
 import { dataCC } from '../citizencard/dataCC.interface';
 import { LoggerService } from '../logger.service';
+import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -111,7 +112,7 @@ export class StakeholdersComponent implements OnInit {
   stakesLength: number;
 
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
-      private http: HttpClient, private route: Router, private logger: LoggerService, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService) {
+    private http: HttpClient, private route: Router, private logger: LoggerService, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService, private comprovativoService: ComprovativosService) {
 
     this.editStakes = this.fb.group({
       searchAddStakes: this.fb.group({
@@ -458,6 +459,26 @@ export class StakeholdersComponent implements OnInit {
       padding: 10px;
       text-align: center;
       border: 3px solid green;` );
+  }
+
+  loadStakeholderDocument(documentReference) {
+
+    this.comprovativoService.getUnicreDocument(documentReference).then(res => {
+      var file: File = res;
+
+      let blob = new Blob([file], { type: file.type });
+      let url = window.URL.createObjectURL(blob);
+
+      window.open(url, '_blank',
+        `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;
+      `);
+
+    });
+
   }
 }
 

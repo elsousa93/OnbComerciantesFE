@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { map, catchError, retryWhen, delay, take } from 'rxjs/operators';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { APIRequestsService } from '../../apirequests.service';
+import { HttpMethod } from '../../enums/enum-data';
 import { HttpUtilService } from './http.services';
 
 
@@ -11,9 +13,11 @@ import { HttpUtilService } from './http.services';
 export class ComprovativosService {
   API_URL:string = '';
   private baseUrl: string;
-  
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private httpUtil: HttpUtilService) {
+  private outboundUrl: string;
+
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private httpUtil: HttpUtilService, private APIRequest: APIRequestsService) {
     this.baseUrl = configuration.baseUrl;
+    this.outboundUrl = configuration.outboundUrl;
 
     this.API_URL = this.baseUrl;
    }
@@ -50,6 +54,20 @@ export class ComprovativosService {
       reader.readAsDataURL(file);
     });
     return future;
+  }
+
+  getUnicreDocument(documentReference, format?) {
+    var url = this.outboundUrl + "api/v1/document/" + documentReference + "/image";
+
+    return new Promise<any>((resolve, reject) => {
+      this.APIRequest.callAPIOutbound(HttpMethod.FETCH, url, "221212", "search", "8812451", "78217").then(res => {
+        var document = res;
+
+        resolve(document);
+      }, resolve => {
+        reject(null);
+      })
+    })
   }
 
 

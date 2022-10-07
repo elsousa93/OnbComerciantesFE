@@ -150,7 +150,7 @@ export class CommercialOfferListComponent implements OnInit {
       this.products = result.result;
     });
 
-    this.clientService.GetClientById(this.submissionId).subscribe(result => {
+    this.clientService.GetClientById(this.submissionId).then(result => {
       this.merchantCatalog = {
         context: result.context,
         contextId: result.contextId,

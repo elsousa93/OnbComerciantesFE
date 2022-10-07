@@ -9,7 +9,7 @@ import { CountryInformation, Franchise } from '../table-info/ITable-info.interfa
 import { TableInfoService } from '../table-info/table-info.service';
 import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
-import { Client, Crc } from '../client/Client.interface';
+import { Client, Crc, OutboundClient } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { ClientForProcess, ProcessService } from '../process/process.service';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
@@ -23,6 +23,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { AuthService } from '../services/auth.service';
 import { ClientContext } from '../client/clientById/clientById.model';
+import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 
 @Component({
   selector: 'app-countrys',
@@ -178,6 +179,7 @@ export class CountrysComponent implements OnInit {
       this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
 
+
     this.updateValues();
 
     //this.logger.debug("por entrar no clientbyid");
@@ -249,7 +251,7 @@ export class CountrysComponent implements OnInit {
   constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService,
     private route: Router, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private processService: ProcessService,
     private router: ActivatedRoute, private clientService: ClientService, private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private rootFormDirective: FormGroupDirective) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private rootFormDirective: FormGroupDirective, private comprovativoService: ComprovativosService) {
     
     var auth = authService.GetCurrentUser();
     this.newSubmission.submissionUser.user = auth.userName;
@@ -942,6 +944,26 @@ export class CountrysComponent implements OnInit {
         this.inserirText(null);
       }));
     });
+  }
+
+  loadClientDocument(documentReference) {
+
+    this.comprovativoService.getUnicreDocument(documentReference).then(res => {
+      var file: File = res;
+
+      let blob = new Blob([file], { type: file.type });
+      let url = window.URL.createObjectURL(blob);
+
+      window.open(url, '_blank',
+        `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;
+      `);
+
+    });
+    
   }
 
 
