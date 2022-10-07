@@ -57,8 +57,15 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
       this.stakeholdersToInsert = result;
     });
 
-    if (this.clientContext.tipologia === 'ENI')
-      this.stakeholdersToInsert.push(this.clientContext.getClient());
+    if (this.clientContext.tipologia === 'ENI') {
+      var client = this.clientContext.getClient();
+
+      var clientENI: StakeholdersProcess = {
+        fiscalId: client.fiscalIdentification.id,
+        name: client.fullName
+      }
+      this.stakeholdersToInsert.push(clientENI);
+    }
   }
 
 
