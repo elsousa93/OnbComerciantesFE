@@ -377,7 +377,7 @@ export class ClientByIdComponent implements OnInit {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         if (result[0] !== undefined) {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.clientService.GetClientById(resul.id).then(res => {
+            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
               this.merchantInfo = res;
               this.clientContext.setMerchantInfo(res);
               if (this.NIFNIPC === undefined) {
@@ -463,7 +463,7 @@ export class ClientByIdComponent implements OnInit {
     } else {
       
       if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
-        this.clientService.GetClientById(this.clientId).then(result => {
+        this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
           var client = result;
           console.log("pesquisa do cliente: ", result);
           this.clientContext.clientExists = true;
@@ -702,12 +702,16 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.tipologia === 'ENI') {
       var client = this.clientContext.getClient();
-      var stakeholder = {
-        fiscalId: client.fiscalIdentification.fiscalId,
-        shortName: client.shortName,
-        fullName: client.legalName
-      } as IStakeholders
+      var stakeholder: IStakeholders = client as IStakeholders;
+
+      console.log("CLIENTE A SER ADICIONADO COMO ENI: ", stakeholder);
+
+      if (this.clientExists) {
+        
+      }
       newSubmission.stakeholders.push(stakeholder);
+
+      this.clientContext.setStakeholdersToInsert([stakeholder]);
     }
     
 
@@ -734,10 +738,23 @@ export class ClientByIdComponent implements OnInit {
 
     var stakeholders = this.clientContext.newSubmission.stakeholders;
 
+    var client = this.clientContext.getClient();
+
     stakeholders.forEach(function (value, idx) {
-      context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-        console.log("adicionou: ", result);
-      });
+      var cont = this;
+      if (context.clientContext.tipologia === 'ENI') {
+        if (value.fiscalId === client.fiscalIdentification.fiscalId) {
+          context.stakeholderService.UpdateStakeholder(submissionID, value.id, value);
+        } else {
+          context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+            console.log("adicionou: ", result);
+          });
+        }
+      } else {
+        context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+          console.log("adicionou: ", result);
+        });
+      }
     });
 
     var documents = this.clientContext.newSubmission.documents;

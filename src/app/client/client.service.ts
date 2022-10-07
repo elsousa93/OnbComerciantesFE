@@ -101,10 +101,22 @@ export class ClientService {
     return this.API.callAPIOutbound(HttpMethod.GET, url, "por mudar", "por mudar", "por mudar", "por mudar");
   }
 
-  GetClientById(clientID: string) {
+  GetClientByIdOutbound(clientID: string) {
     return new Promise<any>((resolve, reject) => {
       this.getClientByIdCall(clientID).then(res => {
         var client = res.result
+        resolve(client);
+      }, error => {
+        reject(null);
+      });
+    });
+  }
+
+  GetClientByIdAcquiring(submissionId: string) {
+    var url = "api/v1/submission/" + submissionId + "/merchant"
+    return new Promise<any>((resolve, reject) => {
+      this.API.callAPIAcquiring(HttpMethod.GET, url).then(res => {
+        var client = res.result;
         resolve(client);
       }, error => {
         reject(null);
