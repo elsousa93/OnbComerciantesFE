@@ -202,7 +202,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       this.internationalCallingCodes = this.internationalCallingCodes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
 
-    this.clientService.GetClientById(localStorage.getItem("submissionId")).then(result => {
+    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
       this.client = result;
     });
 

@@ -358,7 +358,7 @@ export class ClientComponent implements OnInit {
         this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
           this.logger.debug('Submissão com detalhes mais especificos ' + resul);
-          this.clientService.GetClientById(resul.id).then(res => {
+          this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
             this.merchantInfo = res;
             this.logger.debug("MERCHANT QUE FOMOS BUSCAR " + this.merchantInfo);
             if (this.merchantInfo.merchantType == 'Corporate') {

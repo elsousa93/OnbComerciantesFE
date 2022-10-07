@@ -140,13 +140,13 @@ export class InfoDeclarativaComponent implements OnInit {
           this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
             this.logger.debug('Submissão com detalhes mais especificos ' + resul);
-            this.clientService.GetClientById(resul.id).then(res => {
+            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
               this.setForm(res);
             });
           });
         });
       } else {
-          this.clientService.GetClientById(localStorage.getItem("submissionId")).then(res => {
+          this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(res => {
               this.logger.debug("Fui buscar o merchant da submission " + res);
               this.setForm(res);
           });

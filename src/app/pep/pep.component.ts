@@ -204,6 +204,12 @@ export class PepComponent implements OnInit {
       }
     }
     this.logger.debug(this.form);
+    console.log("PEP form: ", this.form);
+    console.log("Visivel 12 meses ", this.isVisiblePep12months);
+    console.log("Visivel familiar ", this.isVisiblePepFamiliarOf);
+    console.log("Visivel empregos ", this.isVisiblePepPoliticalPublicJobs);
+    console.log("Visivel relacao ", this.isVisiblePepRelations);
+
   }
 
   // check selected on 1st question

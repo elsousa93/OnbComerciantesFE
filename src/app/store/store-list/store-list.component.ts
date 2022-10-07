@@ -247,7 +247,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   fetchStartingInfo() {
-    this.clientService.GetClientById(localStorage.getItem("submissionId")).then(client => {
+    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
       this.submissionClient = client;
       console.log("cliente da submissao: ", this.submissionClient);
     });
