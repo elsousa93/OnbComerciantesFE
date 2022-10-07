@@ -56,6 +56,9 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
       console.log("Atualizou os stakeholders a serem inseridos: ", result);
       this.stakeholdersToInsert = result;
     });
+
+    if (this.clientContext.tipologia === 'ENI')
+      this.stakeholdersToInsert.push(this.clientContext.getClient());
   }
 
 
@@ -84,6 +87,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
     //}
   }
   ngOnChanges(changes: SimpleChanges): void {
+    console.log("mudou o contexto: ", this.clientContext);
     this.loadStakeholders();
 
     this.clientExists = this.clientContext.clientExists;

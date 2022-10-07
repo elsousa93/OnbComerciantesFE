@@ -295,7 +295,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    this.clientService.GetClientById(this.submissionId).subscribe(client => {
+    this.clientService.GetClientById(this.submissionId).then(client => {
 
       this.submissionClient = client;
 

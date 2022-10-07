@@ -22,10 +22,6 @@ export class ClientService {
 
     }
 
-  GetClientById(submissionID: string): any {
-    return this.http.get<Client>(this.baseUrl + 'submission/' + submissionID + "/merchant");
-  }
-
   EditClient(submissionID: string, newClient: Client) {
     this.logger.info(`Editing client for submission ${submissionID}`)
     this.logger.debug(JSON.stringify(newClient)); //Usar em vez de console log
@@ -99,9 +95,20 @@ export class ClientService {
   /// A ALTERAR    ///
   ////////////////////
 
-  getClientById(clientID: string) {
+  getClientByIdCall(clientID: string) {
     var url = this.urlOutbound + "api/v1/merchant/" + clientID;
 
     return this.API.callAPIOutbound(HttpMethod.GET, url, "por mudar", "por mudar", "por mudar", "por mudar");
+  }
+
+  GetClientById(clientID: string) {
+    return new Promise<any>((resolve, reject) => {
+      this.getClientByIdCall(clientID).then(res => {
+        var client = res.result
+        resolve(client);
+      }, error => {
+        reject(null);
+      });
+    });
   }
 }
