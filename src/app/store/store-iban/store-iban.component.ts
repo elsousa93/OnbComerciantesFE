@@ -76,6 +76,7 @@ export class StoreIbanComponent implements OnInit {
   /*CHANGE - Get via service from the clients */
   public commIban: string = "232323232";
   public auxIban: string = "";
+  public bank: string;
 
   /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
@@ -226,21 +227,14 @@ export class StoreIbanComponent implements OnInit {
   constructor(private logger: LoggerService, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
-    if (this.route.getCurrentNavigation()?.extras?.state) {
-      this.store = this.route.getCurrentNavigation().extras.state["store"];
-
       this.authService.currentUser.subscribe(result => {
 
         if (result.permissions === UserPermissions.BANCA) {
-          var bank = this.store.bank;
-
-          if (bank !== undefined)
-            bank.bank.bank = result.bankName;
+          this.bank = this.authService.GetBankLocation();
 
           this.updateForm();
         }
       });
-    }
 
     this.tableInfo.GetBanks().subscribe(result => {
       this.banks = result;
@@ -329,13 +323,13 @@ export class StoreIbanComponent implements OnInit {
 
   initializeForm() {
     this.formStores = new FormGroup({
-      supportBank: new FormControl((this.store.bank !== null && this.store.bank.bank) ? this.store.bank.bank.bank : '', Validators.required),
+      supportBank: new FormControl((this.bank !== null) ? this.bank : '', Validators.required),
       bankInformation: new FormControl((this.store.bank.useMerchantBank !== null) ? this.store.bank.useMerchantBank : '', Validators.required),
     });
   }
 
   updateForm() {
-    this.formStores.get('supportBank').setValue(this.store.bank.bank.bank);
+    this.formStores.get('supportBank').setValue(this.bank);
   }
 
 }
