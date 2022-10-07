@@ -113,7 +113,7 @@ export class ClientService {
   }
 
   GetClientByIdAcquiring(submissionId: string) {
-    var url = "api/v1/submission/" + submissionId + "/merchant"
+    var url = this.baseUrl + "submission/" + submissionId + "/merchant"
     return new Promise<any>((resolve, reject) => {
       this.API.callAPIAcquiring(HttpMethod.GET, url).then(res => {
         var client = res.result;
