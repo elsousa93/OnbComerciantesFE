@@ -90,6 +90,7 @@
                             <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.type'|translate}}</th>
                             <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
                             <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -99,7 +100,8 @@
                             <td class="text-primary text-center">{{doc.validUntil}}</td>
                             <td>
                               <span>
-                                <img src="assets/images/search_blue.svg" (click)="b64toBlob(doc.uniqueReference, 'application/pdf', 512)" style="height: 25px !important; vertical-align: sub; cursor: pointer;" />
+                                <!-- método antigo do click => b64toBlob(doc.uniqueReference, 'application/pdf', 512) -->
+                                <img src="assets/images/search_blue.svg" (click)="loadStakeholderDocument(doc.uniqueReference)" style="height: 25px !important; vertical-align: sub; cursor: pointer;" />
                               </span>
                             </td>
                           </tr>

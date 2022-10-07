@@ -70,6 +70,26 @@ export class ComprovativosService {
     })
   }
 
+  viewDocument(documentReference) {
+
+    this.getUnicreDocument(documentReference).then(res => {
+      var file: File = res;
+
+      let blob = new Blob([file], { type: file.type });
+      let url = window.URL.createObjectURL(blob);
+
+      window.open(url, '_blank',
+        `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;
+      `);
+
+    });
+
+  }
+
 
 
 }
