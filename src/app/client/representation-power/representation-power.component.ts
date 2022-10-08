@@ -5,7 +5,7 @@ import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
 import { SubmissionService } from 'src/app/submission/service/submission-service.service';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { IStakeholders, StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
-import { Client } from '../Client.interface';
+import { Client, OutboundClient } from '../Client.interface';
 import { ClientContext } from '../clientById/clientById.model';
 
 @Component({
@@ -54,18 +54,22 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
   loadStakeholders() {
     this.clientContext.currentStakeholdersToInsert.subscribe(result => {
       console.log("Atualizou os stakeholders a serem inseridos: ", result);
+      
       this.stakeholdersToInsert = result;
     });
 
-    if (this.clientContext.tipologia === 'ENI') {
-      var client = this.clientContext.getClient();
+    //this.clientContext.currentClient.subscribe(res => {
+    //  if (this.clientContext.tipologia === 'ENI') {
+    //    var client = this.clientContext.getClient();
 
-      var clientENI: StakeholdersProcess = {
-        fiscalId: client.fiscalIdentification.id,
-        name: client.legalName
-      }
-      this.stakeholdersToInsert.push(clientENI);
-    }
+    //    var clientENI: StakeholdersProcess = {
+    //      fiscalId: client.fiscalIdentification.id,
+    //      name: client.legalName,
+    //    }
+    //    this.stakeholdersToInsert.push(clientENI);
+    //  }
+    //})
+    
   }
 
 

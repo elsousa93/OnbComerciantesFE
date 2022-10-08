@@ -24,7 +24,7 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
-import { IStakeholders } from '../../stakeholders/IStakeholders.interface';
+import { IStakeholders, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -477,8 +477,13 @@ export class ClientByIdComponent implements OnInit {
           this.createSubmission();
         });
       } else {
-        
+        //criar cliente aqui
+        var clientToInsert: OutboundClient = this.clientContext.getClient();
+
+        clientToInsert.fiscalIdentification.fiscalId = this.NIFNIPC;
+        clientToInsert.legalName = this.socialDenomination;
         this.clientContext.setNIFNIPC(this.NIFNIPC);
+        this.clientContext.setClient(clientToInsert);
         this.createSubmission();
       }
     }
@@ -702,19 +707,21 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.tipologia === 'ENI') {
       var client = this.clientContext.getClient();
-      var stakeholder: IStakeholders = client as IStakeholders;
 
       console.log("CLIENTE A SER ADICIONADO COMO ENI: ", stakeholder);
 
-      
+      var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
         stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
         stakeholder.shortName = client.shortName;
         stakeholder.fiscalAddress = client.headquartersAddress;
-      
-      newSubmission.stakeholders.push(stakeholder);
 
+      var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
+       stakeholderToShow.fiscalId = client.fiscalIdentification?.fiscalId;
+       stakeholderToShow.name = client.legalName;
+
+      newSubmission.stakeholders.push(stakeholderToShow);
       this.clientContext.setStakeholdersToInsert([stakeholder]);
     }
     
@@ -748,7 +755,14 @@ export class ClientByIdComponent implements OnInit {
       var cont = this;
       if (context.clientContext.tipologia === 'ENI') {
         if (value.fiscalId === client.fiscalId) {
-          context.stakeholderService.UpdateStakeholder(submissionID, value.id, value);
+          var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
+          stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
+          stakeholder.fullName = client.legalName;
+          stakeholder.contactName = client.commercialName;
+          stakeholder.shortName = client.shortName;
+          stakeholder.fiscalAddress = client.headquartersAddress;
+
+          context.stakeholderService.UpdateStakeholder(submissionID, value.id, stakeholder);
         } else {
           context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
             console.log("adicionou: ", result);
