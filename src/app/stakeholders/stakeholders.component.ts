@@ -421,7 +421,7 @@ export class StakeholdersComponent implements OnInit {
             this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
           } else {
             this.data.updateData(true, 2);
-            this.route.navigate(['/store-comp']);
+            this.route.navigate(['store-comp']);
           }
 
         }, error => {
