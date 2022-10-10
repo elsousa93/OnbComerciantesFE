@@ -155,72 +155,77 @@ export class CountrysComponent implements OnInit {
             this.merchantInfo = res;
             this.clientContext.setMerchantInfo(res);
             console.log('Merchant Info ', this.merchantInfo);
+
+            if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
+              this.form.get("preferenceDocuments").setValue("viaDigital");
+            } else {
+              this.form.get("preferenceDocuments").setValue("Mail");
+            }
+
+            if (this.merchantInfo.businessGroup != null) {
+              if (this.merchantInfo.businessGroup.type === 'Franchise') {
+                this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
+                this.setAssociatedWith(true);
+              }
+              if (this.merchantInfo.businessGroup.type === 'Group') {
+                this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
+                this.setAssociatedWith(true);
+              }
+              if (this.merchantInfo.businessGroup.type === 'Isolated') {
+                this.setAssociatedWith(false);
+              }
+            } else {
+              this.setAssociatedWith(false);
+            }
+            this.editCountries();
+
+            this.client = {
+              "merchantId": null,
+              "legalName": null,
+              "commercialName": null,
+              "shortName": null,
+              "headquartersAddress": {},
+              //"headquartersAddress": {
+              //  "address": "",
+              //  "postalCode": "",
+              //  "postalArea": "",
+              //  "country": ""
+              //},
+              "context": null,
+              "contextId": null,
+              "fiscalIdentification": {},
+              "merchantType": "corporation",
+              "legalNature": null,
+              "legalNature2": null,
+              "incorporationStatement": {},
+              "incorporationDate": null,
+              "shareCapital": null,
+              "bylaws": null,
+              "principalTaxCode": null,
+              "otherTaxCodes": [],
+              "principalEconomicActivity": null,
+              "otherEconomicActivities": [],
+              "sales": {
+                "annualEstimatedRevenue": null,
+                "productsOrServicesSold": [],
+                "productsOrServicesCountries": [],
+                "transactionsAverage": null
+              },
+              "documentationDeliveryMethod": null,
+              "bankingInformation": {},
+              "merchantRegistrationId": null,
+              "contacts": {},
+              "billingEmail": null,
+              "documents": []
+            };
+
+            this.updateValues();
           });
         });
       });
 
-      this.client = {
-        "merchantId": null,
-        "legalName": null,
-        "commercialName": null,
-        "shortName": null,
-        "headquartersAddress": {},
-        //"headquartersAddress": {
-        //  "address": "",
-        //  "postalCode": "",
-        //  "postalArea": "",
-        //  "country": ""
-        //},
-        "context": null,
-        "contextId": null,
-        "fiscalIdentification": {},
-        "merchantType": "corporation",
-        "legalNature": null,
-        "legalNature2": null,
-        "incorporationStatement": {},
-        "incorporationDate": null,
-        "shareCapital": null,
-        "bylaws": null,
-        "principalTaxCode": null,
-        "otherTaxCodes": [],
-        "principalEconomicActivity": null,
-        "otherEconomicActivities": [],
-        "sales": {
-          "annualEstimatedRevenue": null,
-          "productsOrServicesSold": [],
-          "productsOrServicesCountries": [],
-          "transactionsAverage": null
-        },
-        "documentationDeliveryMethod": null,
-        "bankingInformation": {},
-        "merchantRegistrationId": null,
-        "contacts": {},
-        "billingEmail": null,
-        "documents": []
-      };
+      
 
-      if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
-        this.form.get("preferenceDocuments").setValue("viaDigital");
-      } else {
-        this.form.get("preferenceDocuments").setValue("Mail");
-      }
-
-      if (this.merchantInfo.businessGroup != null) {
-        if (this.merchantInfo.businessGroup.type === 'Franchise') {
-          this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
-          this.setAssociatedWith(true);
-        }
-        if (this.merchantInfo.businessGroup.type === 'Group') {
-          this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
-          this.setAssociatedWith(true);
-        }
-        if (this.merchantInfo.businessGroup.type === 'Isolated') {
-          this.setAssociatedWith(false);
-        }
-      } else {
-        this.setAssociatedWith(false);
-      }
-      this.editCountries();
     }
 
     //Chamada à API para receber todos os Paises
@@ -228,9 +233,6 @@ export class CountrysComponent implements OnInit {
       this.countryList = result;
       this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
-
-
-    this.updateValues();
 
     //this.logger.debug("por entrar no clientbyid");
     //this.clientService.getClientByID(this.clientId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
@@ -247,8 +249,6 @@ export class CountrysComponent implements OnInit {
     //    this.documentService.GetDocumentImage("1a1e127a-ef25-49a1-a0c6-4e99b3c4c949", result.id);
     //  });
     //});
-
-   
   }
 
   updateValues() {
