@@ -415,6 +415,7 @@ export class ClientByIdComponent implements OnInit {
           });
         }
       });
+      console.log('VALOR DO FORM ' , this.form);
     }
     //this.ngOnInit();
   }
@@ -609,19 +610,21 @@ export class ClientByIdComponent implements OnInit {
   }
 
   submit() {
+    if (this.returned != 'consult') {
+      console.log("form valido: ", this.form);
+      this.clientCharacterizationComponent.submit();
 
-    console.log("form valido: ", this.form);
-    this.clientCharacterizationComponent.submit();
+      if (!this.clientContext.clientExists)
+        this.countriesComponent.submit();
 
-    if (!this.clientContext.clientExists)
-      this.countriesComponent.submit();
+      this.representationPowerComponent.submit();
 
-    this.representationPowerComponent.submit();
+      console.log("submit| clientContext final: ", this.clientContext);
 
-    console.log("submit| clientContext final: ", this.clientContext);
-
-    this.updateSubmission();
-
+      this.updateSubmission();
+    } else {
+      this.route.navigateByUrl('/stakeholders');
+    }
   }
 
 
