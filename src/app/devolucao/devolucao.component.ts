@@ -51,6 +51,7 @@ ngOnInit(): void {
   this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
   console.log('Process id ', this.processId);
   var context = this;
+  localStorage.setItem('processNumber', context.process.processNumber);
 }
 
 
