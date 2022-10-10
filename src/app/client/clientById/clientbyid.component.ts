@@ -353,6 +353,8 @@ export class ClientByIdComponent implements OnInit {
     }
 
     this.socialDenomination = localStorage.getItem("clientName");
+
+    this.returned = localStorage.getItem("returned");
     
     //mudar orderm
     if (this.returned != null) {
@@ -439,7 +441,7 @@ export class ClientByIdComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
 
-    this.returned = localStorage.getItem("returned");
+
 
     console.log('CLIENT CONTEXT ANTES DE SER CRIADO ', this.clientContext);
 
