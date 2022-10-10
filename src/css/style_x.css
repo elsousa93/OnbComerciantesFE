@@ -1595,3 +1595,8 @@ mat-paginator {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
+
+.fixed-accordion {
+  position: fixed;
+  top: 90px;
+}
