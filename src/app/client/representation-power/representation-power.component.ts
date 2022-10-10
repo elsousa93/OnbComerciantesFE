@@ -77,9 +77,6 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
 
-    this.ngOnInit();
-
-
     //this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
     //this.getSubmissionStakeholders();
 

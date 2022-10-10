@@ -355,7 +355,29 @@ export class ClientByIdComponent implements OnInit {
     this.socialDenomination = localStorage.getItem("clientName");
 
     this.returned = localStorage.getItem("returned");
-    
+
+    this.form = formBuilder.group({
+      clientCharacterizationForm: new FormGroup({
+        natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
+        commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+        crcCode: new FormControl((this.returned != null && this.merchantInfo?.incorporationStatement != undefined) ? this.merchantInfo?.incorporationStatement?.code : '', [Validators.required]), //sim
+        collectCRC: new FormControl(this.collectCRC)
+      }),
+      countrysForm: formBuilder.group({}),
+      powerRepresentationForm: formBuilder.group({}),
+    })
+
+    console.log('FORM DO CLIENT BY ID ', this.form);
+
+    var context = this;
+    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
+
+    } else {
+      this.updateBasicForm();
+    }
+    this.initializeTableInfo();
+
+
     //mudar orderm
     if (this.returned != null) {
       console.log('ENTREI NO IF DO RETURNED');
@@ -382,21 +404,21 @@ export class ClientByIdComponent implements OnInit {
               if (this.merchantInfo.incorporationStatement !== null) {
                 this.isCommercialSociety = true;
                 this.collectCRC = true;
-                this.initializeBasicCRCFormControl();
-                this.searchByCRC();
+                //this.initializeBasicCRCFormControl();
+                //this.searchByCRC();
               } else {
                 if (this.merchantInfo.legalNature !== "") {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'Company';
                   //this.clientContext.tipologia = this.tipologia;
-                  this.initializeFormControlOther();
+                  //this.initializeFormControlOther();
                 } else {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'ENI';
                   //this.clientContext.tipologia = this.tipologia;
-                  this.initializeENI();
+                  //this.initializeENI();
                 }
               }
             });
@@ -405,30 +427,6 @@ export class ClientByIdComponent implements OnInit {
       });
       console.log('VALOR DO FORM ', this.form);
     }
-
-    this.form = formBuilder.group({
-      clientCharacterizationForm: new FormGroup({
-        natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-        commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-        collectCRC: new FormControl(this.collectCRC)
-      }),
-      countrysForm: formBuilder.group({}),
-      powerRepresentationForm: formBuilder.group({}),
-    })
-
-    console.log('FORM DO CLIENT BY ID ', this.form);
-
-    var context = this;
-    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
-
-    } else {
-      this.updateBasicForm();
-    }
-    this.initializeTableInfo();
-
-
-    //CHAMADA DO RETURNED ANTES ESTAVA AQUI
 
     //this.ngOnInit();
 
@@ -441,8 +439,6 @@ export class ClientByIdComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
 
-
-
     console.log('CLIENT CONTEXT ANTES DE SER CRIADO ', this.clientContext);
 
     this.clientContext = new ClientContext(
@@ -454,12 +450,9 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC,
     );
 
+    console.log('VALOR DO MERCHANT INFO QUE É PASSADO PARA O CLIENT CONTEXT ', this.merchantInfo);
     this.clientContext.setMerchantInfo(this.merchantInfo);
-    console.log('CONTEXT CURRENT MERCHANT INFO', this.clientContext.currentMerchantInfo);
-    console.log('CONTEXT MERCHANT INFO', this.clientContext.merchantInfo);
-    console.log('CONTEXT GET MERCHANT INFO', this.clientContext.getMerchantInfo());
 
-    console.log('CLIENT CONTEXT DEPOIS DE SER CRIADO', this.clientContext);
     console.log("antes da pesquisa");
 
     if (this.dataCC !== undefined && this.dataCC !== null) {
@@ -771,7 +764,7 @@ export class ClientByIdComponent implements OnInit {
   updateSubmission() {
     console.log(".");
 
-    if (this.returned != 'consult') { 
+    if (this.returned != 'consult') {
 
       var context = this;
       var submissionID = this.clientContext.submissionID;
@@ -851,6 +844,8 @@ export class ClientByIdComponent implements OnInit {
           });
         });
       });
+    } else {
+      this.route.navigate(['/stakeholders']);
     }
   }
 }

@@ -583,8 +583,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
   ngOnInit(): void {
     // this.clientId = String(this.router.snapshot.params['id']);
-  
-    //Gets Tipologia from the Client component 
+    //Gets Tipologia from the Client component
+    this.returned = localStorage.getItem("returned");
     this.tipologia = this.clientContext.tipologia;
     this.clientExists = this.clientContext.clientExists;
     this.comprovativoCC = this.clientContext.comprovativoCC;
@@ -657,13 +657,15 @@ export class ClientCharacterizationComponent implements OnInit {
     //    }
     //  });
     //}
-    this.returned = localStorage.getItem("returned");
-
     this.getClientContextValues();
   }
 
   getClientContextValues() {
     var context = this;
+
+    this.clientExists = this.clientContext.clientExists;
+    this.NIFNIPC = this.clientContext.getNIFNIPC();
+    this.tipologia = this.clientContext.tipologia;
 
     this.clientContext.currentClient.subscribe(result => {
       console.log("CLIENTE CONTEXT current cliente: ", result);
@@ -680,6 +682,24 @@ export class ClientCharacterizationComponent implements OnInit {
 
       console.log("MERCHANT INFO ATUALIZOU: ", context.merchantInfo);
 
+      if (this.returned != null) {
+        if (this.tipologia == 'Company') {
+          this.isCommercialSociety = false;
+          this.collectCRC = false;
+          this.initializeFormControlOther();
+        }
+        if (this.tipologia == 'ENI') {
+          this.isCommercialSociety = false;
+          this.collectCRC = false;
+          this.initializeENI();
+        }
+        if (this.merchantInfo.incorporationStatement != null) {
+          this.isCommercialSociety = true;
+          this.collectCRC = true;
+          this.initializeBasicCRCFormControl();
+          this.searchByCRC();
+        }
+      }
     });
   }
 
