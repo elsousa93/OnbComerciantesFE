@@ -303,7 +303,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
     //this.loadStores(this.storesList);
     this.selectedStore = this.storesList[0];
-
+    this.currentStore = this.storesList[0];
   }
 
   emitSelectedStore(store, idx) {
