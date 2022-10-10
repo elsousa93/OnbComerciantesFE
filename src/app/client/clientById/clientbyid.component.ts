@@ -714,7 +714,7 @@ export class ClientByIdComponent implements OnInit {
         stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
-        stakeholder.shortName = client.shortName;
+        stakeholder.shortName = client.legalName;
         stakeholder.fiscalAddress = client.headquartersAddress;
 
       var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
