@@ -354,30 +354,9 @@ export class ClientByIdComponent implements OnInit {
 
     this.socialDenomination = localStorage.getItem("clientName");
     
-
-    this.form = formBuilder.group({
-      clientCharacterizationForm: new FormGroup({
-        natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-        commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-        collectCRC: new FormControl(this.collectCRC)
-      }),
-      countrysForm: formBuilder.group({}),
-      powerRepresentationForm: formBuilder.group({}),
-    })
-
-    console.log('FORM DO CLIENT BY ID ', this.form);
-
-    var context = this;
-    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
-
-    } else {
-      this.updateBasicForm();
-    }
-    this.initializeTableInfo();
-
-
+    //mudar orderm
     if (this.returned != null) {
+      console.log('ENTREI NO IF DO RETURNED');
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         if (result[0] !== undefined) {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
@@ -422,9 +401,35 @@ export class ClientByIdComponent implements OnInit {
           });
         }
       });
-      console.log('VALOR DO FORM ' , this.form);
+      console.log('VALOR DO FORM ', this.form);
     }
+
+    this.form = formBuilder.group({
+      clientCharacterizationForm: new FormGroup({
+        natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
+        commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+        collectCRC: new FormControl(this.collectCRC)
+      }),
+      countrysForm: formBuilder.group({}),
+      powerRepresentationForm: formBuilder.group({}),
+    })
+
+    console.log('FORM DO CLIENT BY ID ', this.form);
+
+    var context = this;
+    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
+
+    } else {
+      this.updateBasicForm();
+    }
+    this.initializeTableInfo();
+
+
+    //CHAMADA DO RETURNED ANTES ESTAVA AQUI
+
     //this.ngOnInit();
+
   }
 
   //fim do construtor
@@ -448,6 +453,9 @@ export class ClientByIdComponent implements OnInit {
     );
 
     this.clientContext.setMerchantInfo(this.merchantInfo);
+    console.log('CONTEXT CURRENT MERCHANT INFO', this.clientContext.currentMerchantInfo);
+    console.log('CONTEXT MERCHANT INFO', this.clientContext.merchantInfo);
+    console.log('CONTEXT GET MERCHANT INFO', this.clientContext.getMerchantInfo());
 
     console.log('CLIENT CONTEXT DEPOIS DE SER CRIADO', this.clientContext);
     console.log("antes da pesquisa");
