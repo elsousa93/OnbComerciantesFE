@@ -29,8 +29,8 @@ export class SubmissionService {
   }
 
   GetSubmissionByProcessNumber(processNumber: string): any {
-    var treatedProcessNumber = encodeURIComponent(processNumber);
-    return this.http.get<SubmissionGet[]>(this.baseUrl + 'submission?ProcessNumber=' + treatedProcessNumber);
+    //var treatedProcessNumber = encodeURIComponent(processNumber);
+    return this.http.get<SubmissionGet[]>(this.baseUrl + 'submission?ProcessNumber=' + processNumber);
   }
 
 
