@@ -159,7 +159,45 @@ export class CountrysComponent implements OnInit {
         });
       });
 
-      this.client.documents = [];
+      this.client = {
+        "merchantId": null,
+        "legalName": null,
+        "commercialName": null,
+        "shortName": null,
+        "headquartersAddress": {},
+        //"headquartersAddress": {
+        //  "address": "",
+        //  "postalCode": "",
+        //  "postalArea": "",
+        //  "country": ""
+        //},
+        "context": null,
+        "contextId": null,
+        "fiscalIdentification": {},
+        "merchantType": "corporation",
+        "legalNature": null,
+        "legalNature2": null,
+        "incorporationStatement": {},
+        "incorporationDate": null,
+        "shareCapital": null,
+        "bylaws": null,
+        "principalTaxCode": null,
+        "otherTaxCodes": [],
+        "principalEconomicActivity": null,
+        "otherEconomicActivities": [],
+        "sales": {
+          "annualEstimatedRevenue": null,
+          "productsOrServicesSold": [],
+          "productsOrServicesCountries": [],
+          "transactionsAverage": null
+        },
+        "documentationDeliveryMethod": null,
+        "bankingInformation": {},
+        "merchantRegistrationId": null,
+        "contacts": {},
+        "billingEmail": null,
+        "documents": []
+      };
 
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
         this.form.get("preferenceDocuments").setValue("viaDigital");
@@ -239,12 +277,14 @@ export class CountrysComponent implements OnInit {
       }
     })
 
-    this.clientContext.currentClient.subscribe(result => {
-      console.log("entrou no currentclient: ", result);
-      console.log(this.form);
-      this.client = result;
-      //context.insertValues();
-    })
+    if (this.returned == null) {
+      this.clientContext.currentClient.subscribe(result => {
+        console.log("entrou no currentclient: ", result);
+        console.log(this.form);
+        this.client = result;
+        //context.insertValues();
+      });
+    }
     //this.insertValues();
 
     //this.clientContext.currentClient.subscribe(result => {

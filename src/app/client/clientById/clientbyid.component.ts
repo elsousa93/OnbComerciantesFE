@@ -380,6 +380,11 @@ export class ClientByIdComponent implements OnInit {
             this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
               this.merchantInfo = res;
               this.clientContext.setMerchantInfo(res);
+              //if (this.clientExists == undefined) {
+              //  if (this.merchantInfo.merchantId != null) {
+
+              //  }
+              //}
               if (this.NIFNIPC === undefined) {
                 this.NIFNIPC = this.merchantInfo.fiscalId;
                 this.clientContext.setNIFNIPC(this.NIFNIPC);
