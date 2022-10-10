@@ -86,7 +86,8 @@ export interface Client {
   foreignFiscalInformation?: ForeignFiscalInformation,
   businessGroup?: BusinessGroup,
   clientId?: string,
-  merchantRegistrationId?: string
+  merchantRegistrationId?: string,
+  documents?: PostDocument[]
 }
 
 export interface HeadquartersAddress {
