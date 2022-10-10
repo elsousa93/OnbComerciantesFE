@@ -298,12 +298,12 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
     this.getStoreListFromSubmission().then(result => {
       this.getStoreListFromProcess().then(result => {
+        this.selectedStore = this.storesList[0];
+        this.currentStore = this.storesList[0];
         this.loadStores(this.storesList);
       })
     });
     //this.loadStores(this.storesList);
-    this.selectedStore = this.storesList[0];
-    this.currentStore = this.storesList[0];
   }
 
   emitSelectedStore(store, idx) {
