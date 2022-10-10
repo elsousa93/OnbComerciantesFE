@@ -146,6 +146,47 @@ export class CountrysComponent implements OnInit {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
 
+    this.client = {
+      "merchantId": null,
+      "legalName": null,
+      "commercialName": null,
+      "shortName": null,
+      "headquartersAddress": {},
+      //"headquartersAddress": {
+      //  "address": "",
+      //  "postalCode": "",
+      //  "postalArea": "",
+      //  "country": ""
+      //},
+      "context": null,
+      "contextId": null,
+      "fiscalIdentification": {},
+      "merchantType": "corporation",
+      "legalNature": null,
+      "legalNature2": null,
+      "incorporationStatement": {},
+      "incorporationDate": null,
+      "shareCapital": null,
+      "bylaws": null,
+      "principalTaxCode": null,
+      "otherTaxCodes": [],
+      "principalEconomicActivity": null,
+      "otherEconomicActivities": [],
+      "sales": {
+        "annualEstimatedRevenue": null,
+        "productsOrServicesSold": [],
+        "productsOrServicesCountries": [],
+        "transactionsAverage": null
+      },
+      "documentationDeliveryMethod": null,
+      "bankingInformation": {},
+      "merchantRegistrationId": null,
+      "contacts": {},
+      "billingEmail": null,
+      "documents": []
+    };
+
+
     this.initializeForm();
 
     if (this.returned != null) {
@@ -178,46 +219,6 @@ export class CountrysComponent implements OnInit {
               this.setAssociatedWith(false);
             }
             this.editCountries();
-
-            this.client = {
-              "merchantId": null,
-              "legalName": null,
-              "commercialName": null,
-              "shortName": null,
-              "headquartersAddress": {},
-              //"headquartersAddress": {
-              //  "address": "",
-              //  "postalCode": "",
-              //  "postalArea": "",
-              //  "country": ""
-              //},
-              "context": null,
-              "contextId": null,
-              "fiscalIdentification": {},
-              "merchantType": "corporation",
-              "legalNature": null,
-              "legalNature2": null,
-              "incorporationStatement": {},
-              "incorporationDate": null,
-              "shareCapital": null,
-              "bylaws": null,
-              "principalTaxCode": null,
-              "otherTaxCodes": [],
-              "principalEconomicActivity": null,
-              "otherEconomicActivities": [],
-              "sales": {
-                "annualEstimatedRevenue": null,
-                "productsOrServicesSold": [],
-                "productsOrServicesCountries": [],
-                "transactionsAverage": null
-              },
-              "documentationDeliveryMethod": null,
-              "bankingInformation": {},
-              "merchantRegistrationId": null,
-              "contacts": {},
-              "billingEmail": null,
-              "documents": []
-            };
 
             this.updateValues();
           });
@@ -253,7 +254,6 @@ export class CountrysComponent implements OnInit {
 
   updateValues() {
     var context = this;
-
     this.clientExists = this.clientContext.clientExists;
     this.tipologia = this.clientContext.tipologia;
     this.NIFNIPC = this.clientContext.getNIFNIPC();
@@ -262,36 +262,39 @@ export class CountrysComponent implements OnInit {
     //this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
     this.comprovativoCC = this.clientContext.comprovativoCC;
     this.crc = this.clientContext.crc;
-
-    console.log("update values");
-    this.clientContext.currentMerchantInfo.subscribe(result => {
-      console.log("entrou no currentMerchantinfo: ", result);
-      console.log(this.form);
-      if (result !== undefined && result !== null) {
-        this.newSubmission.merchant = result;
-        this.merchantInfo = result;
-        
-        console.log("form: ", this.form);
-
-        //context.insertValues();
-      }
-    })
-
     if (this.returned == null) {
+      console.log("update values");
+      this.clientContext.currentMerchantInfo.subscribe(result => {
+        console.log("entrou no currentMerchantinfo: ", result);
+        console.log(this.form);
+        if (result !== undefined && result !== null) {
+          this.newSubmission.merchant = result;
+          this.merchantInfo = result;
+
+          console.log("form: ", this.form);
+
+          //context.insertValues();
+        }
+      })
+
       this.clientContext.currentClient.subscribe(result => {
         console.log("entrou no currentclient: ", result);
         console.log(this.form);
         this.client = result;
         //context.insertValues();
       });
-    }
-    //this.insertValues();
 
-    //this.clientContext.currentClient.subscribe(result => {
-    //  this.client = result;
-    //  this.insertValues();
-    //  console.log("form cliente: ", this.form);
-    //})
+      //this.insertValues();
+
+      //this.clientContext.currentClient.subscribe(result => {
+      //  this.client = result;
+      //  this.insertValues();
+      //  console.log("form cliente: ", this.form);
+      //})
+    } else {
+      this.client = this.merchantInfo;
+      this.client["documents"] = [];
+    }
   }
 
   ngOnDestroy(): void {

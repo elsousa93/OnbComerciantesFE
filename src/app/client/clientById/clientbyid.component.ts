@@ -380,11 +380,13 @@ export class ClientByIdComponent implements OnInit {
             this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
               this.merchantInfo = res;
               this.clientContext.setMerchantInfo(res);
-              //if (this.clientExists == undefined) {
-              //  if (this.merchantInfo.merchantId != null) {
-
-              //  }
-              //}
+              if (this.clientExists == undefined || this.clientExists == null) {
+                if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+                  this.clientContext.clientExists = true;
+                } else {
+                  this.clientContext.clientExists = false;
+                }
+              }
               if (this.NIFNIPC === undefined) {
                 this.NIFNIPC = this.merchantInfo.fiscalId;
                 this.clientContext.setNIFNIPC(this.NIFNIPC);
