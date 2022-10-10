@@ -660,16 +660,16 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.getClientContextValues();
 
-    if (this.returned != null) {
-      console.log('Client Characterization RETURNED ');
-      if (this.clientExists == undefined || this.clientExists == null) {
-        if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-          this.clientExists = true;
-        } else {
-          this.clientExists = false;
-        }
-      }
+    console.log('MERCHANT INFO DEPOIS DO SUBSCRIBE ', this.merchantInfo);
 
+    if (this.returned != null) {
+
+      if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+        this.clientExists = true;
+      } else {
+        this.clientExists = false;
+      }
+      
       if (this.merchantInfo.incorporationStatement != null) {
         this.isCommercialSociety = true;
         this.collectCRC = true;

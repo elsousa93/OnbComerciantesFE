@@ -453,11 +453,7 @@ export class ClientByIdComponent implements OnInit {
     );
 
     this.clientContext.setMerchantInfo(this.merchantInfo);
-    console.log('CONTEXT CURRENT MERCHANT INFO', this.clientContext.currentMerchantInfo);
-    console.log('CONTEXT MERCHANT INFO', this.clientContext.merchantInfo);
-    console.log('CONTEXT GET MERCHANT INFO', this.clientContext.getMerchantInfo());
 
-    console.log('CLIENT CONTEXT DEPOIS DE SER CRIADO', this.clientContext);
     console.log("antes da pesquisa");
 
     if (this.dataCC !== undefined && this.dataCC !== null) {
