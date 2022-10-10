@@ -355,7 +355,29 @@ export class ClientByIdComponent implements OnInit {
     this.socialDenomination = localStorage.getItem("clientName");
 
     this.returned = localStorage.getItem("returned");
-    
+
+    this.form = formBuilder.group({
+      clientCharacterizationForm: new FormGroup({
+        natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
+        commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
+        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+        collectCRC: new FormControl(this.collectCRC)
+      }),
+      countrysForm: formBuilder.group({}),
+      powerRepresentationForm: formBuilder.group({}),
+    })
+
+    console.log('FORM DO CLIENT BY ID ', this.form);
+
+    var context = this;
+    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
+
+    } else {
+      this.updateBasicForm();
+    }
+    this.initializeTableInfo();
+
+
     //mudar orderm
     if (this.returned != null) {
       console.log('ENTREI NO IF DO RETURNED');
@@ -405,30 +427,6 @@ export class ClientByIdComponent implements OnInit {
       });
       console.log('VALOR DO FORM ', this.form);
     }
-
-    this.form = formBuilder.group({
-      clientCharacterizationForm: new FormGroup({
-        natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-        commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-        collectCRC: new FormControl(this.collectCRC)
-      }),
-      countrysForm: formBuilder.group({}),
-      powerRepresentationForm: formBuilder.group({}),
-    })
-
-    console.log('FORM DO CLIENT BY ID ', this.form);
-
-    var context = this;
-    if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
-
-    } else {
-      this.updateBasicForm();
-    }
-    this.initializeTableInfo();
-
-
-    //CHAMADA DO RETURNED ANTES ESTAVA AQUI
 
     //this.ngOnInit();
 
