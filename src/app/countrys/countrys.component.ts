@@ -159,12 +159,7 @@ export class CountrysComponent implements OnInit {
         });
       });
 
-      if (this.merchantInfo.documents != null || this.merchantInfo.documents != undefined) {
-        this.client.documents = this.merchantInfo.documents;
-      } else {
-        this.client.documents = [];
-      }
-      console.log('Cliente com os documentos do merchantInfo ', this.client.documents);
+      this.client.documents = [];
 
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
         this.form.get("preferenceDocuments").setValue("viaDigital");
