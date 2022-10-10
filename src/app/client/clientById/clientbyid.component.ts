@@ -711,12 +711,12 @@ export class ClientByIdComponent implements OnInit {
 
         console.log("CLIENTE A SER ADICIONADO COMO ENI: ", stakeholder);
 
-        var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
-          stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
-          stakeholder.fullName = client.legalName;
-          stakeholder.contactName = client.commercialName;
-          stakeholder.shortName = client.shortName;
-          stakeholder.fiscalAddress = client.headquartersAddress;
+      var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
+        stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
+        stakeholder.fullName = client.legalName;
+        stakeholder.contactName = client.commercialName;
+        stakeholder.shortName = client.legalName;
+        stakeholder.fiscalAddress = client.headquartersAddress;
 
         var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
          stakeholderToShow.fiscalId = client.fiscalIdentification?.fiscalId;
