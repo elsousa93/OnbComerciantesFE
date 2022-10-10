@@ -71,7 +71,8 @@ export class CreateStakeholderComponent implements OnInit {
     addressCC: null,
     postalCodeCC: null,
     localityCC: null,
-    countryCC: null
+    countryCC: null,
+    documentType: null
   };
   public prettyPDF: FileAndDetailsCC = null;
 
@@ -163,7 +164,7 @@ export class CreateStakeholderComponent implements OnInit {
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
-    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer, documentType) {
 
     console.log("Name: ", name);
 
@@ -171,6 +172,8 @@ export class CreateStakeholderComponent implements OnInit {
     this.dataCCcontents.nationalityCC = nationality;
     this.dataCCcontents.birthdateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.expiricyDateCC = expiryDate;
+    this.dataCCcontents.documentType = documentType;
     this.dataCCcontents.nifCC = nif;
     this.dataCCcontents.localityCC = postalCode.split(" ").pop();
     if (this.dataCCcontents.localityCC == null) {

@@ -308,12 +308,12 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
     //Tirar o comentario
     //this.showYesCC = this.route.getCurrentNavigation().extras.state["isCC"];
-    this.showYesCC = false;
+    // this.showYesCC = false;
 
     //this.formNewStakeholder.get('flagRecolhaEletronica').setValue(this.showYesCC);
-    if (this.showYesCC) {
-      this.flagRecolhaEletronica = true;
-    }
+    // if (this.showYesCC) {
+    //   this.flagRecolhaEletronica = true;
+    // }
 
     
   }
