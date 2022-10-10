@@ -146,45 +146,45 @@ export class CountrysComponent implements OnInit {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
 
-    //this.client = {
-    //  "merchantId": null,
-    //  "legalName": null,
-    //  "commercialName": null,
-    //  "shortName": null,
-    //  "headquartersAddress": {},
-    //  //"headquartersAddress": {
-    //  //  "address": "",
-    //  //  "postalCode": "",
-    //  //  "postalArea": "",
-    //  //  "country": ""
-    //  //},
-    //  "context": null,
-    //  "contextId": null,
-    //  "fiscalIdentification": {},
-    //  "merchantType": "corporation",
-    //  "legalNature": null,
-    //  "legalNature2": null,
-    //  "incorporationStatement": {},
-    //  "incorporationDate": null,
-    //  "shareCapital": null,
-    //  "bylaws": null,
-    //  "principalTaxCode": null,
-    //  "otherTaxCodes": [],
-    //  "principalEconomicActivity": null,
-    //  "otherEconomicActivities": [],
-    //  "sales": {
-    //    "annualEstimatedRevenue": null,
-    //    "productsOrServicesSold": [],
-    //    "productsOrServicesCountries": [],
-    //    "transactionsAverage": null
-    //  },
-    //  "documentationDeliveryMethod": null,
-    //  "bankingInformation": {},
-    //  "merchantRegistrationId": null,
-    //  "contacts": {},
-    //  "billingEmail": null,
-    //  "documents": []
-    //};
+    this.client = {
+      "merchantId": null,
+      "legalName": null,
+      "commercialName": null,
+      "shortName": null,
+      "headquartersAddress": {},
+      //"headquartersAddress": {
+      //  "address": "",
+      //  "postalCode": "",
+      //  "postalArea": "",
+      //  "country": ""
+      //},
+      "context": null,
+      "contextId": null,
+      "fiscalIdentification": {},
+      "merchantType": "corporation",
+      "legalNature": null,
+      "legalNature2": null,
+      "incorporationStatement": {},
+      "incorporationDate": null,
+      "shareCapital": null,
+      "bylaws": null,
+      "principalTaxCode": null,
+      "otherTaxCodes": [],
+      "principalEconomicActivity": null,
+      "otherEconomicActivities": [],
+      "sales": {
+        "annualEstimatedRevenue": null,
+        "productsOrServicesSold": [],
+        "productsOrServicesCountries": [],
+        "transactionsAverage": null
+      },
+      "documentationDeliveryMethod": null,
+      "bankingInformation": {},
+      "merchantRegistrationId": null,
+      "contacts": {},
+      "billingEmail": null,
+      "documents": []
+    };
 
 
     this.initializeForm();
