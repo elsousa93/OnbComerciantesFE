@@ -149,7 +149,6 @@ export class CountrysComponent implements OnInit {
     this.initializeForm();
 
     if (this.returned != null) {
-      console.log('Documentos do merchantInfo ', this.merchantInfo.documents);
 
       if (this.merchantInfo.documents != null || this.merchantInfo.documents != undefined) {
         this.client.documents = this.merchantInfo.documents;
