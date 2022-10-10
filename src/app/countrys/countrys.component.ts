@@ -145,13 +145,21 @@ export class CountrysComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
-    
+
     this.initializeForm();
 
     if (this.returned != null) {
-      console.log('Documentos do merchantInfo ', this.merchantInfo.documents);
-      this.client.documents = this.merchantInfo.documents;
-      console.log('Cliente com os documentos do merchantInfo ', this.client.documents);
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
+            this.merchantInfo = res;
+            this.clientContext.setMerchantInfo(res);
+            console.log('Merchant Info ', this.merchantInfo);
+          });
+        });
+      });
+
+      this.client.documents = [];
 
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
         this.form.get("preferenceDocuments").setValue("viaDigital");

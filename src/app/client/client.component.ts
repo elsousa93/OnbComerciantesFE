@@ -352,7 +352,7 @@ export class ClientComponent implements OnInit {
     // this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
 
-    if (this.returned !== null) { // && this.returned !== undefined
+    if (this.returned != null) { // && this.returned !== undefined
       this.logger.debug("ENTREI NO IF DO RETURNED");
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
