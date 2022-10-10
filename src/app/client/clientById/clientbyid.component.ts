@@ -379,6 +379,7 @@ export class ClientByIdComponent implements OnInit {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
             this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
               this.merchantInfo = res;
+              console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
               this.clientContext.setMerchantInfo(res);
               if (this.clientExists == undefined || this.clientExists == null) {
                 if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
