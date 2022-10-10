@@ -340,6 +340,8 @@ export class ClientByIdComponent implements OnInit {
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
+    console.log('CONSTRUTOR DO CLIENT BY ID');
+
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -364,6 +366,8 @@ export class ClientByIdComponent implements OnInit {
       powerRepresentationForm: formBuilder.group({}),
     })
 
+    console.log('FORM DO CLIENT BY ID ', this.form);
+
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
@@ -380,17 +384,19 @@ export class ClientByIdComponent implements OnInit {
             this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
               this.merchantInfo = res;
               console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
-              this.clientContext.setMerchantInfo(res);
+              //this.clientContext.setMerchantInfo(res);
               if (this.clientExists == undefined || this.clientExists == null) {
                 if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-                  this.clientContext.clientExists = true;
+                  this.clientExists = true;
+                  //this.clientContext.clientExists = true;
                 } else {
-                  this.clientContext.clientExists = false;
+                  this.clientExists = false;
+                  //this.clientContext.clientExists = false;
                 }
               }
               if (this.NIFNIPC === undefined) {
                 this.NIFNIPC = this.merchantInfo.fiscalId;
-                this.clientContext.setNIFNIPC(this.NIFNIPC);
+                //this.clientContext.setNIFNIPC(this.NIFNIPC);
               }
               if (this.merchantInfo.incorporationStatement !== null) {
                 this.isCommercialSociety = true;
@@ -402,13 +408,13 @@ export class ClientByIdComponent implements OnInit {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'Company';
-                  this.clientContext.tipologia = this.tipologia;
+                  //this.clientContext.tipologia = this.tipologia;
                   this.initializeFormControlOther();
                 } else {
                   this.isCommercialSociety = false;
                   this.collectCRC = false;
                   this.tipologia === 'ENI';
-                  this.clientContext.tipologia = this.tipologia;
+                  //this.clientContext.tipologia = this.tipologia;
                   this.initializeENI();
                 }
               }
@@ -430,6 +436,8 @@ export class ClientByIdComponent implements OnInit {
 
     this.returned = localStorage.getItem("returned");
 
+    console.log('CLIENT CONTEXT ANTES DE SER CRIADO ', this.clientContext);
+
     this.clientContext = new ClientContext(
       this.tipologia,
       this.clientExists,
@@ -439,6 +447,9 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC,
     );
 
+    this.clientContext.setMerchantInfo(this.merchantInfo);
+
+    console.log('CLIENT CONTEXT DEPOIS DE SER CRIADO', this.clientContext);
     console.log("antes da pesquisa");
 
     if (this.dataCC !== undefined && this.dataCC !== null) {
