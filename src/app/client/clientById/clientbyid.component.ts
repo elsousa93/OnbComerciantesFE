@@ -377,51 +377,47 @@ export class ClientByIdComponent implements OnInit {
     }
     this.initializeTableInfo();
 
-
-    //mudar orderm
     if (this.returned != null) {
       console.log('ENTREI NO IF DO RETURNED');
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
         if (result[0] !== undefined) {
-          this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-              this.merchantInfo = res;
-              console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
-              //this.clientContext.setMerchantInfo(res);
-              if (this.clientExists == undefined || this.clientExists == null) {
-                if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-                  this.clientExists = true;
-                  //this.clientContext.clientExists = true;
-                } else {
-                  this.clientExists = false;
-                  //this.clientContext.clientExists = false;
-                }
-              }
-              if (this.NIFNIPC === undefined) {
-                this.NIFNIPC = this.merchantInfo.fiscalId;
-                //this.clientContext.setNIFNIPC(this.NIFNIPC);
-              }
-              if (this.merchantInfo.incorporationStatement !== null) {
-                this.isCommercialSociety = true;
-                this.collectCRC = true;
-                //this.initializeBasicCRCFormControl();
-                //this.searchByCRC();
+          this.clientService.GetClientByIdAcquiring(result[0].submissionId).then(res => {
+            this.merchantInfo = res;
+            console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
+            //this.clientContext.setMerchantInfo(res);
+            if (this.clientExists == undefined || this.clientExists == null) {
+              if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+                this.clientExists = true;
+                //this.clientContext.clientExists = true;
               } else {
-                if (this.merchantInfo.legalNature !== "") {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'Company';
-                  //this.clientContext.tipologia = this.tipologia;
-                  //this.initializeFormControlOther();
-                } else {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'ENI';
-                  //this.clientContext.tipologia = this.tipologia;
-                  //this.initializeENI();
-                }
+                this.clientExists = false;
+                //this.clientContext.clientExists = false;
               }
-            });
+            }
+            if (this.NIFNIPC === undefined) {
+              this.NIFNIPC = this.merchantInfo.fiscalId;
+              //this.clientContext.setNIFNIPC(this.NIFNIPC);
+            }
+            if (this.merchantInfo.incorporationStatement !== null) {
+              this.isCommercialSociety = true;
+              this.collectCRC = true;
+              //this.initializeBasicCRCFormControl();
+              //this.searchByCRC();
+            } else {
+              if (this.merchantInfo.legalNature !== "") {
+                this.isCommercialSociety = false;
+                this.collectCRC = false;
+                this.tipologia === 'Company';
+                //this.clientContext.tipologia = this.tipologia;
+                //this.initializeFormControlOther();
+              } else {
+                this.isCommercialSociety = false;
+                this.collectCRC = false;
+                this.tipologia === 'ENI';
+                //this.clientContext.tipologia = this.tipologia;
+                //this.initializeENI();
+              }
+            }
           });
         }
       });
@@ -439,8 +435,6 @@ export class ClientByIdComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
 
-
-
     console.log('CLIENT CONTEXT ANTES DE SER CRIADO ', this.clientContext);
 
     this.clientContext = new ClientContext(
@@ -452,6 +446,7 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC,
     );
 
+    console.log('VALOR DO MERCHANT INFO QUE É PASSADO PARA O CLIENT CONTEXT ', this.merchantInfo);
     this.clientContext.setMerchantInfo(this.merchantInfo);
 
     console.log("antes da pesquisa");
