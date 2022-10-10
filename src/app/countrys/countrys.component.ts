@@ -186,13 +186,12 @@ export class CountrysComponent implements OnInit {
       "documents": []
     };
 
-
     this.initializeForm();
 
     if (this.returned != null) {
-      console.log('Merchant Info Antes', this.merchantInfo);
-      this.merchantInfo = this.clientContext.getMerchantInfo();
-      console.log('Merchant Info Depois', this.merchantInfo);
+      this.clientContext.currentMerchantInfo.subscribe(result => {
+        this.merchantInfo = result;
+      });
 
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
         this.form.get("preferenceDocuments").setValue("viaDigital");
