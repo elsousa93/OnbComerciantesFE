@@ -149,6 +149,10 @@ export class CountrysComponent implements OnInit {
     this.initializeForm();
 
     if (this.returned != null) {
+      console.log('Documentos do merchantInfo ', this.merchantInfo.documents);
+      this.client.documents = this.merchantInfo.documents;
+      console.log('Cliente com os documentos do merchantInfo ', this.client.documents);
+
       if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
         this.form.get("preferenceDocuments").setValue("viaDigital");
       } else {
