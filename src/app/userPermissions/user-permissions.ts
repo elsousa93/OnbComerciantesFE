@@ -54,11 +54,11 @@ export function getMenuPermissions(user: any) {
       return permissions;
     case UserPermissions.DO:
       permissions = {
-        HomePage: true, Consultation: true, ProcessHandling: { MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true }
+        HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true }
       };
       return permissions;
     case UserPermissions.COMPLIANCEOFFICE:
-      permissions = { HomePage: true, Consultation: true, ProcessHandling: { RiskOpinion: true, ComplianceDoubts: true } };
+      permissions = { HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { RiskOpinion: true, ComplianceDoubts: true } };
       return permissions;
     case UserPermissions.COMERCIAL:
       permissions = { HomePage: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } };

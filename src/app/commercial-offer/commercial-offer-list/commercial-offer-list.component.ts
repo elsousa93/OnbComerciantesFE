@@ -242,7 +242,7 @@ export class CommercialOfferListComponent implements OnInit {
         console.log(value);
         group.addControl(("formControl" + value.id), new FormControl(value.originalValue));
 
-        if (value.bundles !== [] && value.bundles !== undefined && value.bundles !== null) {
+        if (value.bundles !== undefined && value.bundles !== null) {
           var attributeGroup = new FormGroup({});
           var bundle = value.bundles;
 
