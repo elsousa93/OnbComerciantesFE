@@ -190,43 +190,34 @@ export class CountrysComponent implements OnInit {
     this.initializeForm();
 
     if (this.returned != null) {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-            this.merchantInfo = res;
-            this.clientContext.setMerchantInfo(res);
-            console.log('Merchant Info ', this.merchantInfo);
+      console.log('Merchant Info Antes', this.merchantInfo);
+      this.merchantInfo = this.clientContext.getMerchantInfo();
+      console.log('Merchant Info Depois', this.merchantInfo);
 
-            if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
-              this.form.get("preferenceDocuments").setValue("viaDigital");
-            } else {
-              this.form.get("preferenceDocuments").setValue("Mail");
-            }
+      if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
+        this.form.get("preferenceDocuments").setValue("viaDigital");
+      } else {
+        this.form.get("preferenceDocuments").setValue("Mail");
+      }
 
-            if (this.merchantInfo.businessGroup != null) {
-              if (this.merchantInfo.businessGroup.type === 'Franchise') {
-                this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
-                this.setAssociatedWith(true);
-              }
-              if (this.merchantInfo.businessGroup.type === 'Group') {
-                this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
-                this.setAssociatedWith(true);
-              }
-              if (this.merchantInfo.businessGroup.type === 'Isolated') {
-                this.setAssociatedWith(false);
-              }
-            } else {
-              this.setAssociatedWith(false);
-            }
-            this.editCountries();
+      if (this.merchantInfo.businessGroup != null) {
+        if (this.merchantInfo.businessGroup.type === 'Franchise') {
+          this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
+          this.setAssociatedWith(true);
+        }
+        if (this.merchantInfo.businessGroup.type === 'Group') {
+          this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
+          this.setAssociatedWith(true);
+        }
+        if (this.merchantInfo.businessGroup.type === 'Isolated') {
+          this.setAssociatedWith(false);
+        }
+      } else {
+        this.setAssociatedWith(false);
+      }
+      this.editCountries();
 
-            this.updateValues();
-          });
-        });
-      });
-
-      
-
+      this.updateValues();
     }
 
     //Chamada à API para receber todos os Paises
@@ -295,6 +286,8 @@ export class CountrysComponent implements OnInit {
       this.client = this.merchantInfo;
       this.client["documents"] = [];
     }
+
+    this.insertValues();
   }
 
   ngOnDestroy(): void {

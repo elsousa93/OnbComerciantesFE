@@ -340,6 +340,8 @@ export class ClientByIdComponent implements OnInit {
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
+    console.log('CONSTRUTOR DO CLIENT BY ID');
+
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -351,7 +353,58 @@ export class ClientByIdComponent implements OnInit {
     }
 
     this.socialDenomination = localStorage.getItem("clientName");
+
+    this.returned = localStorage.getItem("returned");
     
+    //mudar orderm
+    if (this.returned != null) {
+      console.log('ENTREI NO IF DO RETURNED');
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        if (result[0] !== undefined) {
+          this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
+              this.merchantInfo = res;
+              console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
+              //this.clientContext.setMerchantInfo(res);
+              if (this.clientExists == undefined || this.clientExists == null) {
+                if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+                  this.clientExists = true;
+                  //this.clientContext.clientExists = true;
+                } else {
+                  this.clientExists = false;
+                  //this.clientContext.clientExists = false;
+                }
+              }
+              if (this.NIFNIPC === undefined) {
+                this.NIFNIPC = this.merchantInfo.fiscalId;
+                //this.clientContext.setNIFNIPC(this.NIFNIPC);
+              }
+              if (this.merchantInfo.incorporationStatement !== null) {
+                this.isCommercialSociety = true;
+                this.collectCRC = true;
+                this.initializeBasicCRCFormControl();
+                this.searchByCRC();
+              } else {
+                if (this.merchantInfo.legalNature !== "") {
+                  this.isCommercialSociety = false;
+                  this.collectCRC = false;
+                  this.tipologia === 'Company';
+                  //this.clientContext.tipologia = this.tipologia;
+                  this.initializeFormControlOther();
+                } else {
+                  this.isCommercialSociety = false;
+                  this.collectCRC = false;
+                  this.tipologia === 'ENI';
+                  //this.clientContext.tipologia = this.tipologia;
+                  this.initializeENI();
+                }
+              }
+            });
+          });
+        }
+      });
+      console.log('VALOR DO FORM ', this.form);
+    }
 
     this.form = formBuilder.group({
       clientCharacterizationForm: new FormGroup({
@@ -364,6 +417,8 @@ export class ClientByIdComponent implements OnInit {
       powerRepresentationForm: formBuilder.group({}),
     })
 
+    console.log('FORM DO CLIENT BY ID ', this.form);
+
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
@@ -373,50 +428,10 @@ export class ClientByIdComponent implements OnInit {
     this.initializeTableInfo();
 
 
-    if (this.returned != null) {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        if (result[0] !== undefined) {
-          this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-              this.merchantInfo = res;
-              this.clientContext.setMerchantInfo(res);
-              if (this.clientExists == undefined || this.clientExists == null) {
-                if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-                  this.clientContext.clientExists = true;
-                } else {
-                  this.clientContext.clientExists = false;
-                }
-              }
-              if (this.NIFNIPC === undefined) {
-                this.NIFNIPC = this.merchantInfo.fiscalId;
-                this.clientContext.setNIFNIPC(this.NIFNIPC);
-              }
-              if (this.merchantInfo.incorporationStatement !== null) {
-                this.isCommercialSociety = true;
-                this.collectCRC = true;
-                this.initializeBasicCRCFormControl();
-                this.searchByCRC();
-              } else {
-                if (this.merchantInfo.legalNature !== "") {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'Company';
-                  this.clientContext.tipologia = this.tipologia;
-                  this.initializeFormControlOther();
-                } else {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'ENI';
-                  this.clientContext.tipologia = this.tipologia;
-                  this.initializeENI();
-                }
-              }
-            });
-          });
-        }
-      });
-    }
+    //CHAMADA DO RETURNED ANTES ESTAVA AQUI
+
     //this.ngOnInit();
+
   }
 
   //fim do construtor
@@ -426,7 +441,9 @@ export class ClientByIdComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
 
-    this.returned = localStorage.getItem("returned");
+
+
+    console.log('CLIENT CONTEXT ANTES DE SER CRIADO ', this.clientContext);
 
     this.clientContext = new ClientContext(
       this.tipologia,
@@ -437,6 +454,12 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC,
     );
 
+    this.clientContext.setMerchantInfo(this.merchantInfo);
+    console.log('CONTEXT CURRENT MERCHANT INFO', this.clientContext.currentMerchantInfo);
+    console.log('CONTEXT MERCHANT INFO', this.clientContext.merchantInfo);
+    console.log('CONTEXT GET MERCHANT INFO', this.clientContext.getMerchantInfo());
+
+    console.log('CLIENT CONTEXT DEPOIS DE SER CRIADO', this.clientContext);
     console.log("antes da pesquisa");
 
     if (this.dataCC !== undefined && this.dataCC !== null) {
@@ -609,19 +632,21 @@ export class ClientByIdComponent implements OnInit {
   }
 
   submit() {
+    if (this.returned != 'consult') {
+      console.log("form valido: ", this.form);
+      this.clientCharacterizationComponent.submit();
 
-    console.log("form valido: ", this.form);
-    this.clientCharacterizationComponent.submit();
+      if (!this.clientContext.clientExists)
+        this.countriesComponent.submit();
 
-    if (!this.clientContext.clientExists)
-      this.countriesComponent.submit();
+      this.representationPowerComponent.submit();
 
-    this.representationPowerComponent.submit();
+      console.log("submit| clientContext final: ", this.clientContext);
 
-    console.log("submit| clientContext final: ", this.clientContext);
-
-    this.updateSubmission();
-
+      this.updateSubmission();
+    } else {
+      this.route.navigateByUrl('/stakeholders');
+    }
   }
 
 
