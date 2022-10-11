@@ -16,6 +16,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { User } from '../userPermissions/user';
 import { TranslateService } from '@ngx-translate/core';
 import { State } from '../queues-detail/IQueues.interface';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -170,12 +171,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(private logger: LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService) {
+    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     localStorage.clear();
     this.date = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+
+    this.appComponent.toggleSideNav(true);
     //const users: UserData[] = [];
     //for (let i = 1; i <= 100; i++) {
     //  users.push(createNewUser(i));

@@ -72,7 +72,6 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.dataService.changeData(new Map());
     this.dataService.updateData(null, null, null);
     
@@ -90,9 +89,11 @@ export class NavMenuPresencialComponent implements OnInit {
     this.dataService.currentPage.subscribe((currentPage) => {
       this.currentPage = currentPage;
       if (this.currentPage != 0 && this.currentPage != null) {
+        console.log('Entrei no if da current page diferente de 0 ', this.currentPage);
         this.isToggle = false;
         this.toggleNavEvent.emit(this.isToggle);
       } else if (this.currentPage == 0 || this.currentPage == null) {
+        console.log('Entrei no if da current page igual a 0 ou null ', this.currentPage);
         this.isToggle = true;
         this.toggleNavEvent.emit(this.isToggle);
       }
@@ -101,9 +102,11 @@ export class NavMenuPresencialComponent implements OnInit {
     this.dataService.currentSubPage.subscribe((currentSubPage) => {
       this.currentSubPage = currentSubPage;
       if (this.currentSubPage != 0 && this.currentPage != null) {
+        console.log("CURRENT SUB PAGE É DIFERENTE DE 0", this.currentSubPage);
         this.isToggle = false;
         this.toggleNavEvent.emit(this.isToggle);
       } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
+        console.log("CURRENT SUB PAGE É IGUAL A 0 ", this.currentSubPage);
         this.isToggle = true;
         this.toggleNavEvent.emit(this.isToggle);
       }

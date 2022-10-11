@@ -11,6 +11,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TableInfoService } from '../table-info/table-info.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { AppComponent } from '../app.component';
 
 interface Process {
   processNumber: string;
@@ -55,7 +56,9 @@ export class ConsultasComponent implements OnInit{
   ListaDocType;
 
   
-  constructor(private logger : LoggerService, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService) {
+  constructor(private logger: LoggerService, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent) {
+
+    this.appComponent.toggleSideNav(false);
 
 
     this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
@@ -215,13 +218,15 @@ export class ConsultasComponent implements OnInit{
   }
 
   ngOnInit(): void {
-     this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.modalService.onHide.subscribe((e) => {
+      console.log('CONSULTAS ', e);
+      console.log('close', this.modalService);
       this.logger.debug('close' + this.modalService);
     });
-    var context = this;
   }
+
   ngAfterViewInit(){
     // this.processes = new MatTableDataSource();
     // this.processes.paginator = this.paginator;

@@ -24,7 +24,7 @@ export class AppComponent {
   pageName: string = 'Teste';
   title = 'app';
 
-  isToggle: boolean;
+  isToggle: boolean = false;
   isAutoHide: boolean = false;
 
   hasAuthenticated: boolean = true;
@@ -35,7 +35,6 @@ export class AppComponent {
 
     constructor(private logger: LoggerService, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
-
     tableInfo.GetAddressByZipCodeTeste(2830, 105).then(success => {
       console.log("sucesso: ", success);
     }, error => {

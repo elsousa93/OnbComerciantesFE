@@ -225,7 +225,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         }
     }),
   ],
-  providers: [{provide:HTTP_INTERCEPTORS, useClass:LoggingInterceptor, multi:true}, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective, AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/c
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
+import { AppComponent } from '../app.component';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../process/process.service';
 
@@ -26,7 +27,9 @@ export class AceitacaoComponent implements OnInit{
   
   constructor(private http: HttpClient,
     private route: Router,
-    private router: ActivatedRoute, private processService: ProcessService, private data: DataService,) {
+    private router: ActivatedRoute, private processService: ProcessService, private data: DataService, public appComponent: AppComponent) {
+
+    this.appComponent.toggleSideNav(false);
 
     this.ngOnInit();
     this.processService.getProcessById(this.processId).subscribe(result => {

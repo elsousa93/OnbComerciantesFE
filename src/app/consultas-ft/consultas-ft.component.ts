@@ -11,6 +11,7 @@ import { ProcessService } from '../process/process.service';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AppComponent } from '../app.component';
 
 interface ProcessFT {
   processNumber: string;
@@ -54,8 +55,9 @@ export class ConsultasFTComponent implements OnInit{
 
   
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private data: DataService, private processService: ProcessService, private translate: TranslateService) {
+    private route: Router, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent) {
 
+    this.appComponent.toggleSideNav(false);
     this.initializeForm();
 
     //Gets Queue Name from the Dashboard component 

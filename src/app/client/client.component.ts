@@ -352,30 +352,30 @@ export class ClientComponent implements OnInit {
     // this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
 
-    if (this.returned != null) { // && this.returned !== undefined
-      this.logger.debug("ENTREI NO IF DO RETURNED");
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          this.logger.debug('Submissão com detalhes mais especificos ' + resul);
-          this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-            this.merchantInfo = res;
-            this.logger.debug("MERCHANT QUE FOMOS BUSCAR " + this.merchantInfo);
-            if (this.merchantInfo.merchantType == 'Corporate') {
-              this.logger.debug("O tipo é empresa");
-              this.tipologia = 'Corporate';
-              this.activateButtons(true); // se for Empresa
-              this.clientTypology = "true";
-            } else {
-              this.logger.debug("O tipo é ENI");
-              this.tipologia = 'ENI';
-              this.activateButtons(false); // se for ENI
-              this.clientTypology = "false";
-            }
-          });
-        });
-      });
-    }
+    //if (this.returned != null) { // && this.returned !== undefined
+    //  this.logger.debug("ENTREI NO IF DO RETURNED");
+    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+    //    this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
+    //    this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+    //      this.logger.debug('Submissão com detalhes mais especificos ' + resul);
+    //      this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
+    //        this.merchantInfo = res;
+    //        this.logger.debug("MERCHANT QUE FOMOS BUSCAR " + this.merchantInfo);
+    //        if (this.merchantInfo.merchantType == 'Corporate') {
+    //          this.logger.debug("O tipo é empresa");
+    //          this.tipologia = 'Corporate';
+    //          this.activateButtons(true); // se for Empresa
+    //          this.clientTypology = "true";
+    //        } else {
+    //          this.logger.debug("O tipo é ENI");
+    //          this.tipologia = 'ENI';
+    //          this.activateButtons(false); // se for ENI
+    //          this.clientTypology = "false";
+    //        }
+    //      });
+    //    });
+    //  });
+    //}
   }
 
   clientsMat = new MatTableDataSource<Client>();
