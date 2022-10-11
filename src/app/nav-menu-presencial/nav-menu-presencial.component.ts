@@ -89,11 +89,9 @@ export class NavMenuPresencialComponent implements OnInit {
     this.dataService.currentPage.subscribe((currentPage) => {
       this.currentPage = currentPage;
       if (this.currentPage != 0 && this.currentPage != null) {
-        console.log('Entrei no if da current page diferente de 0 ', this.currentPage);
         this.isToggle = false;
         this.toggleNavEvent.emit(this.isToggle);
       } else if (this.currentPage == 0 || this.currentPage == null) {
-        console.log('Entrei no if da current page igual a 0 ou null ', this.currentPage);
         this.isToggle = true;
         this.toggleNavEvent.emit(this.isToggle);
       }

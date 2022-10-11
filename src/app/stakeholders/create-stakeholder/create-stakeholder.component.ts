@@ -620,7 +620,7 @@ export class CreateStakeholderComponent implements OnInit {
       }, error => {
         this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
       });
-    } else if (this.dataCCcontents !== undefined && this.dataCCcontents !== null) {
+    } else if (this.dataCCcontents.cardNumberCC != null) {
       this.addStakeholderWithCC();
     }
     else {
