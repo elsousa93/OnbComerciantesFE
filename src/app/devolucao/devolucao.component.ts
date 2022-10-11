@@ -10,7 +10,7 @@ import { Client } from '../client/Client.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
 import { Process } from '../process/process.interface';
-import { ProcessGet, ProcessList, ProcessService } from '../process/process.service';
+import { BusinessIssueViewModel, ProcessGet, ProcessList, ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 
 
@@ -29,6 +29,8 @@ export class DevolucaoComponent implements OnInit{
   public processId: string;
   public process: ProcessList;
 
+  public issues: BusinessIssueViewModel
+
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService) {
@@ -40,6 +42,10 @@ export class DevolucaoComponent implements OnInit{
 
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
+    });
+
+    this.processService.getProcessIssuesById(this.processId).subscribe(result => {
+      this.issues = result;
     });
 
   }

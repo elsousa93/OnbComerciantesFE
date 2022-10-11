@@ -270,7 +270,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     return new Promise((resolve, reject) => {
       //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
       if (this.returned != null) {
-        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
           this.storeService.getSubmissionShopsList(result[0].submissionId).then(resul => {
             var shops = result.result;
             var totalLength = shops.length;

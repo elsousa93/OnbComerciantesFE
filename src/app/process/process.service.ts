@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BankInformation, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { Configuration, configurationToken } from '../configuration';
-import { ISubmission } from '../submission/ISubmission.interface';
+import { ISubmission, SimplifiedReference } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
 @Injectable({
@@ -18,8 +18,7 @@ export class ProcessService {
     private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
       this.baseUrl = configuration.baseUrl;
       this.urlOutbound = configuration.outboundUrl;
-
-     }
+  }
 
    getAllProcessSubmissions(id) : any {
      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllProcesses/' + id);
@@ -111,6 +110,50 @@ export class ProcessService {
   submitDocumentOnProcess(processId: string, state: string, document) {
     return this.http.post(this.baseUrl + 'process/' + processId + '/' + state + '/document', document);
   }
+
+  getProcessIssuesById(processId: string) {
+    return this.http.get<BusinessIssueViewModel>(this.baseUrl + 'process/' + processId + '/issue');
+  }
+}
+
+export interface BusinessIssueViewModel {
+  process?: IssueViewModel[]
+  merchant?: MerchantIssueViewModel
+  stakeholders?: StakeholderIssueViewModel[]
+  shops?: ShopIssueViewModel[]
+  documents?: DocumentIssueViewModel[]
+}
+
+export enum IssueTypeEnum {
+  AUTOMATIC_RULE = "AutomaticRule",
+  MANUAL_RULE = "ManualRule"
+}
+
+interface IssueViewModel {
+  issueType?: IssueTypeEnum
+  originCode?: string
+  issueCode?: string
+  issueDescription?: string
+}
+
+interface MerchantIssueViewModel {
+  merchant?: SimplifiedReference
+  issues?: IssueViewModel[]
+}
+
+interface StakeholderIssueViewModel {
+  stakeholder?: SimplifiedReference
+  issues?: IssueViewModel[]
+}
+
+interface ShopIssueViewModel {
+  shop?: SimplifiedReference
+  issues?: IssueViewModel[]
+}
+
+interface DocumentIssueViewModel {
+  document?: SimplifiedReference
+  issues?: IssueViewModel[]
 }
 
 export interface ClientForProcess {

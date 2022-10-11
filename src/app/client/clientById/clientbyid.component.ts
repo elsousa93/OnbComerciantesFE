@@ -884,8 +884,8 @@ export class ClientByIdComponent implements OnInit {
                 bank: r.bankingInformation
               },
               name: r.name,
-              productCode: r.product,
-              subproductCode: r.subproduct,
+              //productCode: r.product,
+              //subproductCode: r.subproduct,
               website: r.url,
               equipments: []
             }
