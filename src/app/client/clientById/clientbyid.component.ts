@@ -382,7 +382,7 @@ export class ClientByIdComponent implements OnInit {
     if (this.returned != null) {
       console.log('ENTREI NO IF DO RETURNED');
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        if (result[0] !== undefined) {
+        //if (result[0] !== undefined) {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
             this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
               this.merchantInfo = res;
@@ -423,7 +423,7 @@ export class ClientByIdComponent implements OnInit {
               }
             });
           });
-        }
+        //}
       });
       console.log('VALOR DO FORM ', this.form);
     }

@@ -191,32 +191,33 @@ export class CountrysComponent implements OnInit {
     if (this.returned != null) {
       this.clientContext.currentMerchantInfo.subscribe(result => {
         this.merchantInfo = result;
-      });
 
-      if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
-        this.form.get("preferenceDocuments").setValue("viaDigital");
-      } else {
-        this.form.get("preferenceDocuments").setValue("Mail");
-      }
+        if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
+          this.form.get("preferenceDocuments").setValue("viaDigital");
+        } else {
+          this.form.get("preferenceDocuments").setValue("Mail");
+        }
 
-      if (this.merchantInfo.businessGroup != null) {
-        if (this.merchantInfo.businessGroup.type === 'Franchise') {
-          this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
-          this.setAssociatedWith(true);
-        }
-        if (this.merchantInfo.businessGroup.type === 'Group') {
-          this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
-          this.setAssociatedWith(true);
-        }
-        if (this.merchantInfo.businessGroup.type === 'Isolated') {
+        if (this.merchantInfo.businessGroup != null) {
+          if (this.merchantInfo.businessGroup.type === 'Franchise') {
+            this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
+            this.setAssociatedWith(true);
+          }
+          if (this.merchantInfo.businessGroup.type === 'Group') {
+            this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
+            this.setAssociatedWith(true);
+          }
+          if (this.merchantInfo.businessGroup.type === 'Isolated') {
+            this.setAssociatedWith(false);
+          }
+        } else {
           this.setAssociatedWith(false);
         }
-      } else {
-        this.setAssociatedWith(false);
-      }
-      this.editCountries();
 
-      this.updateValues();
+        this.editCountries();
+        this.updateValues();
+
+      });
     }
 
     //Chamada à API para receber todos os Paises
