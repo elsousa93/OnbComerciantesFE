@@ -133,7 +133,7 @@
         <div *ngIf="isShown && !foundStakeholders">
           <!--No Pessoa Colectiva e Denominacao Social-->
           <p class="titulo-form-simples">{{'client.searchError'|translate}}</p>
-          <div *ngIf="isParticularSearched == false">
+          <div *ngIf="!isParticularSearched">
             <div>
               <div class="row">
                 <div class="col-md-6">
@@ -148,7 +148,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="isParticularSearched == true">
+          <div *ngIf="isParticularSearched">
             <div class="row">
               <div class="col-md-6">
                 <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>
