@@ -7,6 +7,7 @@ import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { ClientService } from '../client.service';
 import { CRCService } from '../../CRC/crcservice.service';
@@ -377,55 +378,106 @@ export class ClientByIdComponent implements OnInit {
     }
     this.initializeTableInfo();
 
-
-    //mudar orderm
     if (this.returned != null) {
-      console.log('ENTREI NO IF DO RETURNED');
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        if (result[0] !== undefined) {
-          this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-              this.merchantInfo = res;
-              console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
-              //this.clientContext.setMerchantInfo(res);
-              if (this.clientExists == undefined || this.clientExists == null) {
-                if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-                  this.clientExists = true;
-                  //this.clientContext.clientExists = true;
-                } else {
-                  this.clientExists = false;
-                  //this.clientContext.clientExists = false;
-                }
-              }
-              if (this.NIFNIPC === undefined) {
-                this.NIFNIPC = this.merchantInfo.fiscalId;
-                //this.clientContext.setNIFNIPC(this.NIFNIPC);
-              }
-              if (this.merchantInfo.incorporationStatement !== null) {
-                this.isCommercialSociety = true;
-                this.collectCRC = true;
-                //this.initializeBasicCRCFormControl();
-                //this.searchByCRC();
-              } else {
-                if (this.merchantInfo.legalNature !== "") {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'Company';
-                  //this.clientContext.tipologia = this.tipologia;
-                  //this.initializeFormControlOther();
-                } else {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'ENI';
-                  //this.clientContext.tipologia = this.tipologia;
-                  //this.initializeENI();
-                }
-              }
-            });
-          });
-        }
-      });
-      console.log('VALOR DO FORM ', this.form);
+
+      const promises = [
+        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber"))
+      ];
+
+      var subpromises = [];
+
+      Promise.all(promises).then(res => {
+        console.log('a');
+        var submission = res[0].result;
+        console.log('Submission obtida ', submission);
+
+        subpromises.push(this.clientService.GetClientByIdAcquiring(submission[0].submissionId))
+
+        const allPromisesWithErrorHandler = subpromises.map(promise =>
+          promise.catch(error => error),
+        );
+
+        Promise.all(allPromisesWithErrorHandler).then(resolve => {
+          console.log("com sucesso!!! resolve ", resolve);
+        }, error => {
+          console.log("ocorreu um erro");
+        }).then(merchant => {
+          console.log('Valor do merchant ', merchant);
+          this.merchantInfo = merchant;
+
+          if (this.clientExists == undefined || this.clientExists == null) {
+            if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+              this.clientExists = true;
+            } else {
+              this.clientExists = false;
+            }
+          }
+          if (this.NIFNIPC === undefined) {
+            this.NIFNIPC = this.merchantInfo.fiscalId;
+          }
+          if (this.merchantInfo.incorporationStatement !== null) {
+            this.isCommercialSociety = true;
+            this.collectCRC = true;
+          } else {
+            if (this.merchantInfo.legalNature !== "") {
+              this.isCommercialSociety = false;
+              this.collectCRC = false;
+              this.tipologia === 'Company';
+            } else {
+              this.isCommercialSociety = false;
+              this.collectCRC = false;
+              this.tipologia === 'ENI';
+            }
+          }
+        });
+      })
+
+
+      //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
+      //  //if (result[0] !== undefined) {
+      //    this.submissionService.GetSubmissionByID(result[0].submissionId).then(resul => {
+      //      this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
+      //        this.merchantInfo = res;
+      //        console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
+      //        //this.clientContext.setMerchantInfo(res);
+      //        if (this.clientExists == undefined || this.clientExists == null) {
+      //          if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+      //            this.clientExists = true;
+      //            //this.clientContext.clientExists = true;
+      //          } else {
+      //            this.clientExists = false;
+      //            //this.clientContext.clientExists = false;
+      //          }
+      //        }
+      //        if (this.NIFNIPC === undefined) {
+      //          this.NIFNIPC = this.merchantInfo.fiscalId;
+      //          //this.clientContext.setNIFNIPC(this.NIFNIPC);
+      //        }
+      //        if (this.merchantInfo.incorporationStatement !== null) {
+      //          this.isCommercialSociety = true;
+      //          this.collectCRC = true;
+      //          //this.initializeBasicCRCFormControl();
+      //          //this.searchByCRC();
+      //        } else {
+      //          if (this.merchantInfo.legalNature !== "") {
+      //            this.isCommercialSociety = false;
+      //            this.collectCRC = false;
+      //            this.tipologia === 'Company';
+      //            //this.clientContext.tipologia = this.tipologia;
+      //            //this.initializeFormControlOther();
+      //          } else {
+      //            this.isCommercialSociety = false;
+      //            this.collectCRC = false;
+      //            this.tipologia === 'ENI';
+      //            //this.clientContext.tipologia = this.tipologia;
+      //            //this.initializeENI();
+      //          }
+      //        }
+      //      });
+      //    });
+      //  //}
+      //});
+      //console.log('VALOR DO FORM ', this.form);
     }
 
     //this.ngOnInit();
