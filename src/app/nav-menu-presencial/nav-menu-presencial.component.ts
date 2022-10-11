@@ -111,7 +111,7 @@ export class NavMenuPresencialComponent implements OnInit {
       this.updateProgress();
     });
 
-    setTimeout(this.toggleEvent.bind(this), 800);
+    // setTimeout(this.toggleEvent.bind(this), 800);
 
     //this.navPosition = '0';
     var prevScrollpos = window.pageYOffset;
