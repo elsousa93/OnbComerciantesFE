@@ -220,11 +220,6 @@ export class ConsultasComponent implements OnInit{
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.modalService.onHide.subscribe((e) => {
-      console.log('CONSULTAS ', e);
-      console.log('close', this.modalService);
-      this.logger.debug('close' + this.modalService);
-    });
   }
 
   ngAfterViewInit(){
