@@ -296,7 +296,7 @@ export class CreateStakeholderComponent implements OnInit {
   public subscription: Subscription;
 
   public isParticular: boolean = false;
-  public isParticularSearched: boolean = false;
+  // public isParticularSearched: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
@@ -352,7 +352,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   initializeNotFoundForm() {
     console.log('Não encontrou um stake ');
-    switch (this.isParticularSearched) {
+    switch (this.isParticular) {
       case false:
         let nipc = this.formStakeholderSearch.get("documentType").value === "0502" ?
           this.formStakeholderSearch.get("documentNumber").value : ''
@@ -589,7 +589,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   searchResultNotifier(info) {
     console.log("Info: ", info);
-    this.isParticularSearched = this.isParticular;
+    // this.isParticularSearched = this.isParticular;
 
     if (!info.found)
       this.initializeNotFoundForm();
