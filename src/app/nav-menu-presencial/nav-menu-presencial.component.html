@@ -2,10 +2,6 @@
   [@AutoHideClientBarAdjust]="isAutohide ? 'up' : 'down'">
   <div class="col pb-0 pt-0">
     <nav class="navbar navbar-expand navbar-widget justify-content-center pb-0 pt-0">
-      <a href="index.html">
-        <img src="assets/images/logo_unicre_widget.svg" class="navbar-toggler-logo"
-          [@AutoHideLogo]="isAutohide ? 'show' : 'hide'">
-      </a>
       <div class="navbar-nav ms-auto">
         <h5 *ngIf="processNumber && progressImage" class="widget img"><img src="assets/images/pin.svg" style="width: 19px; padding-top: 6px !important;"></h5>
         <a *ngIf="processNumber && progressImage" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{processNumber}}</a>
