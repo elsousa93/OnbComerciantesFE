@@ -448,9 +448,8 @@ export class ClientByIdComponent implements OnInit {
   getMerchantInfo() {
     return new Promise((resolve, reject) => {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-        this.submissionService.GetSubmissionByID(result[0].submissionId).then(resul => {
-          this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-            this.merchantInfo = res;
+          this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
+            this.merchantInfo = res.result;
             console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
             if (this.clientExists == undefined || this.clientExists == null) {
               if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
@@ -478,7 +477,6 @@ export class ClientByIdComponent implements OnInit {
             }
             resolve(null);
           });
-        });
       });
     });
   }
