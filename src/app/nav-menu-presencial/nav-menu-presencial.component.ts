@@ -32,7 +32,7 @@ export class NavMenuPresencialComponent implements OnInit {
   @Output() autoHide = new EventEmitter<boolean>();
 
 
-  isToggle: boolean = false;
+  isToggle: boolean = true;
   isAutohide: boolean = false;
 
   // progress bar behaviour
@@ -73,6 +73,9 @@ export class NavMenuPresencialComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.dataService.changeData(new Map());
+    this.dataService.updateData(null, null, null);
+    
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
@@ -86,10 +89,24 @@ export class NavMenuPresencialComponent implements OnInit {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.dataService.currentPage.subscribe((currentPage) => {
       this.currentPage = currentPage;
+      if (this.currentPage != 0 && this.currentPage != null) {
+        this.isToggle = false;
+        this.toggleNavEvent.emit(this.isToggle);
+      } else if (this.currentPage == 0 || this.currentPage == null) {
+        this.isToggle = true;
+        this.toggleNavEvent.emit(this.isToggle);
+      }
       this.updateProgress();
     });
     this.dataService.currentSubPage.subscribe((currentSubPage) => {
-      this.currentSubPage = currentSubPage
+      this.currentSubPage = currentSubPage;
+      if (this.currentSubPage != 0 && this.currentPage != null) {
+        this.isToggle = false;
+        this.toggleNavEvent.emit(this.isToggle);
+      } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
+        this.isToggle = true;
+        this.toggleNavEvent.emit(this.isToggle);
+      }
       this.updateProgress();
     });
 
@@ -102,7 +119,6 @@ export class NavMenuPresencialComponent implements OnInit {
 
     //this.navPosition = '0';
     //this.autohide();
-
   }
 
   openProcess(process) {

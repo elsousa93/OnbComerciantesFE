@@ -24,7 +24,7 @@ export class AppComponent {
   pageName: string = 'Teste';
   title = 'app';
 
-  isToggle: boolean = false;
+  isToggle: boolean;
   isAutoHide: boolean = false;
 
   hasAuthenticated: boolean = true;

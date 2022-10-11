@@ -10,6 +10,7 @@ import { ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TableInfoService } from '../table-info/table-info.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 interface Process {
   processNumber: string;
@@ -54,7 +55,7 @@ export class ConsultasComponent implements OnInit{
   ListaDocType;
 
   
-  constructor(private logger : LoggerService, private route: Router, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService) {
+  constructor(private logger : LoggerService, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService) {
 
 
     this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
@@ -214,8 +215,11 @@ export class ConsultasComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.modalService.onHide.subscribe((e) => {
+      this.logger.debug('close' + this.modalService);
+    });
     var context = this;
   }
   ngAfterViewInit(){

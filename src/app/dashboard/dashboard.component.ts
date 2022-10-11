@@ -122,9 +122,6 @@ export class DashboardComponent implements OnInit {
 
   state = State;
 
-  @Input() isToggle: boolean = false;
-  @Input() isAutoHide: boolean = false;
-
   displayedColumns = ['processNumber', 'contractNumber', 'requestDate', 'clientName', 'user', 'buttons'];
 
   // @ViewChild(MatSort) sort: MatSort;
@@ -407,9 +404,6 @@ export class DashboardComponent implements OnInit {
     this.dataService.updateData(null, null, null);
   }
 
-  public toggleSideNav(toggled: boolean) {
-    this.isToggle = toggled;
-  }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

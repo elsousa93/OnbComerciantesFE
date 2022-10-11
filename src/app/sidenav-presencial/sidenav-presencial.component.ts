@@ -25,7 +25,7 @@ import { User } from '../userPermissions/user';
 })
 export class SidenavPresencialComponent implements OnInit {
 
-  @Input() isToggle: boolean = false;
+  @Input() isToggle: boolean;
   @Input() isAutoHide: boolean = false;
 
   mobileQuery: MediaQueryList;
