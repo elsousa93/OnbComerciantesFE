@@ -502,7 +502,7 @@ export class CreateStakeholderComponent implements OnInit {
     this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
   }
 
-  changeListElementStakeType(stakeType: string, e: any) {
+  changeListElementStakeType(stakeType, e: any) {
     this.stakeholderType = e.target.value;
     if (this.stakeholderType === 'Particular') {
       this.isParticular = true;

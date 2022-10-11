@@ -222,28 +222,6 @@ export class StakeholdersComponent implements OnInit {
     this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
   }
 
-  changeListElementStakeType(stakeType: string, e: any) {
-    this.stakeholderType = e.target.value;
-    if (this.stakeholderType === 'Particular') {
-      this.isParticular = true;
-    } else {
-      this.isParticular = false;
-    }
-    this.stakeType = true;
-  }
-  changeListElementDocType(docType: string, e: any) {
-    this.documentType = e.target.value;
-
-    this.newStake.identificationDocument.type = this.documentType;
-
-    if (this.documentType === 'Cartão do Cidadão') {
-      this.isCC = true;
-    } else {
-      this.isCC = false;
-    }
-    this.stakeDocType = true;
-  }
-
   toggleShow(stake: IStakeholders) {
     //clear the array
     this.stakeShow = [];
