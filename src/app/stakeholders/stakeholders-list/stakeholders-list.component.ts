@@ -33,6 +33,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           eligibility: false
         } as StakeholdersCompleteInformation;
         this.submissionStakeholders.push(stakeToInsert);
+        this.listLengthEmitter.emit(this.submissionStakeholders.length);
         this.loadStakeholders(this.submissionStakeholders);
       });
     }

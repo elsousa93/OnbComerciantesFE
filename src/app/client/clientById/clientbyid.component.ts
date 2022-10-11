@@ -398,6 +398,9 @@ export class ClientByIdComponent implements OnInit {
         );
 
         Promise.all(allPromisesWithErrorHandler).then(resolve => {
+
+
+
           console.log("com sucesso!!! resolve ", resolve);
         }, error => {
           console.log("ocorreu um erro");
