@@ -91,7 +91,7 @@ export function getFTPermissions(user: any){
       permissions = { riskOpinion: true, complianceDoubts: true};
       return permissions;
     case UserPermissions.COMERCIAL:
-      permissions = { pendingEligibility: true};
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true, pendingEligibility: true};
       return permissions;
     case UserPermissions.ADMIN:
       permissions = {pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true};
