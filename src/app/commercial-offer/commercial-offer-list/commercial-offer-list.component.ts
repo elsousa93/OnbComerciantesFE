@@ -292,7 +292,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       result.result.forEach(pack => {
         this.COService.OutboundGetPackDetails(pack.id, this.productPack).then(res => {
-          res.result.groups.forEach(group => {
+          res.result.otherGroups.forEach(group => { // antes estava groups ao invés de otherGroups
             context.groupsList.push(group);
           });
           this.addFormGroups();
@@ -424,7 +424,7 @@ export class CommercialOfferListComponent implements OnInit {
         commission: {
           attributes: this.commissionAttributeList
         },
-        packDetails: this.groupsList
+        otherPackDetails: this.groupsList
       }
 
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.shopId, this.currentStore).subscribe(result => {

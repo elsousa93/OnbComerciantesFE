@@ -17,140 +17,6 @@ import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
 import { Subscription } from 'rxjs';
 
-const testValues: ShopDetailsAcquiring[] = [
-  {
-    shopId: "1",
-    name: "ShopName",
-    manager: "Manager1",
-    activity: "C",
-    subActivity: "C1",
-    supportEntity: "Entity1",
-    registrationId: "RegID",
-    address: {
-      useMerchantAddress: true,
-      address: {
-        address: "A",
-        postalCode: "B",
-        postalArea: "C",
-        country: "123"
-      },
-      isInsideShoppingCenter: true,
-      shoppingCenter: "Shopping1"
-    },
-    bank: {
-      useMerchantBank: true,
-      bank: {
-        bank: "Bank",
-        iban: "12345"
-      }
-    },
-    website: "www.google.com",
-    productCode: "345",
-    subproductCode: "324",
-    equipments: [
-      {
-        shopEquipmentId: "123",
-        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-        communicationType: "A",
-        equipmentType: "A",
-        quantity: 0,
-        pricing: {
-          id: "123",
-          attribute: [
-            {
-              id: "A",
-              description: "A",
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            }
-          ]
-        }
-      }
-    ],
-    pack: {
-      packId: "123",
-      processorId: "345",
-      packDetails: [
-        {
-          id: "1234",
-          description: "123",
-          kind: "1234",
-          attributes: [
-            {
-              id: "1234",
-              description: "AAA",
-              originalValue: true,
-              finalValue: true,
-              isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 0,
-              bundles: [
-                {
-                  id: "B",
-                  description: "B",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "B123",
-                      description: "B123456",
-                      originalValue: true,
-                      finalValue: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 0
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      commission: {
-        commissionId: "1",
-        attributes: [{
-          id: "",
-          description: "A1",
-          fixedValue: {
-            originalValue: 1,
-            finalValue: 1,
-            isReadOnly: true,
-            isVisible: true
-          },
-          maxValue: {
-            originalValue: 2,
-            finalValue: 2,
-            isReadOnly: true,
-            isVisible: true
-          },
-          minValue: {
-            originalValue: 0,
-            finalValue: 0,
-            isReadOnly: true,
-            isVisible: true
-          },
-          percentageValue: {
-            originalValue: 4,
-            finalValue: 4,
-            isReadOnly: true,
-            isVisible: true
-          }
-        }]
-      }
-    },
-    documents: {
-      href: "",
-      type: "",
-      id: ""
-    }
-  }
-]
-
 @Component({
   selector: 'app-info-declarativa-lojas',
   templateUrl: './info-declarativa-lojas.component.html',
@@ -259,7 +125,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       }, { validators: validPhoneNumber }),
       email: new FormControl('', Validators.required),
     });
-    this.loadStores();
+    
   }
 
   ngOnDestroy(): void {
@@ -296,10 +162,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
       //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-      if (this.currentIdx < (testValues.length - 1)) {
+      if (this.currentIdx < (this.stores.length - 1)) {
         this.currentIdx = this.currentIdx + 1;
         this.onActivate();
-        this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
+        this.selectStore({ store: this.stores[this.currentIdx], idx: this.currentIdx });
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }
@@ -308,7 +174,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loadStores(storesValues: ShopDetailsAcquiring[] = testValues) {
+  loadStores(storesValues: ShopDetailsAcquiring[]) {
     this.dataSource = new MatTableDataSource(storesValues);
     this.dataSource.paginator = this.paginator;
   }
