@@ -30,7 +30,7 @@ export class ConsultasComponent implements OnInit{
   processes: MatTableDataSource<Process> = new MatTableDataSource();
 
   displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'abrirProcesso'];
-  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+  @ViewChild('paginatorConsultas') set paginatorConsultas(pager:MatPaginator) {
     if (pager) {
       this.processes.paginator = pager;
       this.processes.paginator._intl = new MatPaginatorIntl();
@@ -67,9 +67,7 @@ export class ConsultasComponent implements OnInit{
     }));
 
 
-    this.initializeForm();
-    this.ngOnInit();
-    
+    this.initializeForm();    
   }
 
   initializeForm() {
@@ -81,24 +79,6 @@ export class ConsultasComponent implements OnInit{
       processDateStart: new FormControl(''), //Não é obrigatorio por enquanto
       processDateEnd: new FormControl('') //Não é obrigatorio por enquanto
     });
-
-    //this.form.get("processNumber").valueChanges.subscribe(data => {
-    //  if (data === '') {
-    //    this.form.controls["state"].setValidators([Validators.required]);
-    //  } else {
-    //    this.form.controls["state"].clearValidators();
-    //  }
-    //  this.form.controls["state"].updateValueAndValidity();
-    //});
-
-    //this.form.get("state").valueChanges.subscribe(data => {
-    //  if (data === '') {
-    //    this.form.controls["processNumber"].setValidators([Validators.required]);
-    //  } else {
-    //    this.form.controls["processNumber"].clearValidators();
-    //  }
-    //  this.form.controls["processNumber"].updateValueAndValidity();
-    //});
   }
 
   submitSearch() {
@@ -205,16 +185,6 @@ export class ConsultasComponent implements OnInit{
     localStorage.setItem("returned", 'consult');
 
     this.route.navigate(['/clientbyid']);
-    //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-    //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
-    //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-    //    this.logger.debug('Submissão com detalhes mais especificos ', resul);
-    //    this.clientService.GetClientById(resul.id).subscribe(res => {
-    //      this.route.navigate(['/client']);
-    //    });
-    //  });
-    //});
-
   }
 
   ngOnInit(): void {
@@ -223,13 +193,9 @@ export class ConsultasComponent implements OnInit{
   }
 
   ngAfterViewInit(){
-    // this.processes = new MatTableDataSource();
-    // this.processes.paginator = this.paginator;
   }
 
   loadProcesses(processValues: Process[]){
     this.processes.data = processValues;
-    // this.processes.paginator = this.paginator;
   }
-
 }

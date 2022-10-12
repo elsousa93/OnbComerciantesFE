@@ -1,15 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Renderer2 } from '@angular/core';
-import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription, take } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { Client } from '../client/Client.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
-import { Process } from '../process/process.interface';
 import { BusinessIssueViewModel, ProcessGet, ProcessList, ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 
@@ -27,6 +22,7 @@ export class DevolucaoComponent implements OnInit{
   public subscription: Subscription;
 
   public processId: string;
+  public processNumber: string;
   public process: ProcessList;
 
   public issues: BusinessIssueViewModel
@@ -35,7 +31,6 @@ export class DevolucaoComponent implements OnInit{
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService) {
 
-    this.ngOnInit();
     this.logger.debug('Process Id ' + this.processId);
 
     this.data.updateData(true, 0);
@@ -54,7 +49,8 @@ ngOnInit(): void {
   this.subscription = this.data.currentData.subscribe(map => this.map = map);
   this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   this.data.historyStream$.next(true);
-  this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+  // this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+  this.processNumber = localStorage.getItem("processNumber");
   console.log('Process id ', this.processId);
   var context = this;
 }
