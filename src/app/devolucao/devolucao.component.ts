@@ -5,17 +5,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
-import { BusinessIssueViewModel, ProcessGet, ProcessList, ProcessService } from '../process/process.service';
+import { BusinessIssueViewModel, ProcessList, ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { StoreService } from '../store/store.service';
 
-
+interface ProcessId {
+  processId: string;
+}
 @Component({
   selector: 'app-devolucao',
   templateUrl: './devolucao.component.html'
 })
+
 
 export class DevolucaoComponent implements OnInit{
   form: FormGroup;
@@ -35,10 +38,13 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
-    this.logger.debug('Process Id ' + this.processId);
+    this.logger.debug('Process Number ' + this.processNumber);
 
     this.data.updateData(true, 0);
-    this.ngOnInit();
+
+    this.processService.searchProcessByNumber(this.processNumber,0,1).subscribe(result => {
+      this.processId = result.items[0].processId;
+    })
 
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
@@ -76,8 +82,8 @@ export class DevolucaoComponent implements OnInit{
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
-    this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
-    console.log('Process id ', this.processId);
+    this.processNumber = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+    console.log('Process Number ', this.processNumber);
     var context = this;
   }
 
