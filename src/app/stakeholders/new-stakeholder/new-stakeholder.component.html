@@ -99,7 +99,7 @@
             <div class="row ms-0" id="role">
               <p class="titulo-form-simples">{{'stakeholder.role'|translate|uppercase}}</p>
               <select id="roleStakeholder" class="form-select campo-form-select" formControlName="Role"
-                [attr.disabled]="canEditRole() === false ? true : null">
+                [attr.disabled]="selectedStakeholderIsFromCRC === false ? true : null"> <!-- antes era chamado o método canEditRole()-->
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
             </div>

@@ -66,10 +66,11 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   flagProcurador: boolean = true;
   flagRecolhaEletronica: boolean = null;
 
-  selectedStakeholderIsFromCRC = false;
+  @Input() selectedStakeholderIsFromCRC = false;
   selectedStakeholderIsFromCC = false;
 
   formNewStakeholder!: FormGroup;
+
 
   newStake: IStakeholders = {
     fiscalId: 0,
@@ -180,6 +181,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log("O ONCHANGES NO NEW STAKEHOLDER FOI CHAMADO ", changes);
     this.updateForm();
   }
 
@@ -236,23 +238,23 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     });
   }
 
-  isStakeholderFromCRC(stakeholder) {
-    this.selectedStakeholderIsFromCRC = false;
-    var context = this;
-    this.crcStakeholders?.forEach(function (value, idx) {
-      var stakeholderFromCRC = value;
-      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
-        context.selectedStakeholderIsFromCRC = true;
-      }
-    });
-  }
+  //isStakeholderFromCRC(stakeholder) {
+  //  this.selectedStakeholderIsFromCRC = false;
+  //  var context = this;
+  //  this.crcStakeholders?.forEach(function (value, idx) {
+  //    var stakeholderFromCRC = value;
+  //    if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
+  //      context.selectedStakeholderIsFromCRC = true;
+  //    }
+  //  });
+  //}
 
   updateForm() {
     console.log('Página new stakeholder quando selecionamos um stakeholder ', this.currentStakeholder);
-    this.isStakeholderFromCRC(this.currentStakeholder);
+    //this.isStakeholderFromCRC(this.currentStakeholder);
     this.isStakeholderFromCC(this.currentStakeholder);
 
-    if (this.returned !== null) {
+    //if (this.returned != null) {
       if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring?.identificationDocument != null) {
         if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.type == '1001') {
           this.logger.debug('Entrou cartão de cidadão');
@@ -266,9 +268,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
         this.initializeFormWithoutCC();
         this.validateCC(false);
       }
-    } else {
-      this.initializeFormWithoutCC();
-    }
+    //} else {
+    //  this.initializeFormWithoutCC();
+    //}
   }
 
   initializeFormWithoutCC() {
@@ -296,7 +298,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.initializeFormWithoutCC();
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('stake', this.formNewStakeholder); //antes tava setControl
+      this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
       console.log("Form 2 ", this.rootFormGroup.form);
       if (this.returned == 'consult') {
         this.formNewStakeholder.disable();
@@ -335,7 +337,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != undefined ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : false, Validators.required),
     });
-    this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
+    //this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
     this.flagRecolhaEletronica = true;
@@ -470,12 +472,12 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     return true;
   }
 
-  canEditRole() {
-    if (this.returned === 'consult')
-      return false;
-    if (this.selectedStakeholderIsFromCRC)
-      return false;
-    return true;
-  }
+  //canEditRole() {
+  //  if (this.returned == 'consult')
+  //    return false;
+  //  if (this.selectedStakeholderIsFromCRC)
+  //    return false;
+  //  return true;
+  //}
 }
 

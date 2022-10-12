@@ -71,7 +71,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   selectedStakeholder: StakeholdersCompleteInformation = {};
   returned: string;
 
-  displayedColumns: string[] = ['stakeholderAcquiring.shortName', 'fiscalId', 'entityType', 'relationType', 'elegible', 'clientNumber', 'signature', 'delete'];
+  displayedColumns: string[] = ['stakeholderAcquiring.shortName', 'stakeholderAcquiring.fiscalId', 'entityType', 'relationType', 'elegible', 'stakeholderAcquiring.stakeholderId', 'stakeholderAcquiring.isProxy', 'delete'];
 
   //subStakeholders: StakeholdersCompleteInformation[] = [];
 
@@ -229,7 +229,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
-        context.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+        context.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0});
         console.log('o current stake é ', context.selectedStakeholder);
       }, error => {
         console.log("e");
@@ -379,6 +379,19 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {
     this.stakesMat.data = stakesList;
     // this.stakesMat.paginator = this.paginator;
+    this.stakesMat.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'stakeholderAcquiring.shortName': return item.stakeholderAcquiring.shortName;
+
+        case 'stakeholderAcquiring.fiscalId': return item.stakeholderAcquiring.fiscalId;
+
+        case 'stakeholderAcquiring.stakeholderId': return item.stakeholderAcquiring.stakeholderId;
+
+        case 'stakeholderAcquiring.isProxy': return item.stakeholderAcquiring.isProxy;
+
+        default: return item[property];
+      }
+    };
     this.stakesMat.sort = this.sort;
   }
 

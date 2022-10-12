@@ -17,6 +17,7 @@ import { User } from '../userPermissions/user';
 import { TranslateService } from '@ngx-translate/core';
 import { State } from '../queues-detail/IQueues.interface';
 import { AppComponent } from '../app.component';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -172,7 +173,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private logger: LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent) {
+    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -400,6 +401,7 @@ export class DashboardComponent implements OnInit {
     });
     this.dataService.changeData(new Map());
     this.dataService.updateData(null, null, null);
+    this.processNrService.changeProcessNumber(null);
   }
 
 

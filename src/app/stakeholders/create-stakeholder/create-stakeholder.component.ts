@@ -358,10 +358,6 @@ export class CreateStakeholderComponent implements OnInit {
           this.formStakeholderSearch.get("documentNumber").value : ''
         this.formNewStakeholder.get("nipc").setValue(nipc);
 
-        console.log('Valor do document type ', this.formStakeholderSearch.get("documentType").value);
-        console.log('Valor do document number ', this.formStakeholderSearch.get("documentNumber").value);
-        console.log('Valor do nipc ', nipc);
-
         if (nipc !== '') {
           this.formNewStakeholder.get("nipc").disable();
         } else {
@@ -475,8 +471,8 @@ export class CreateStakeholderComponent implements OnInit {
     this.data.updateData(false, 2);
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.addControl('searchStakes', this.formStakeholderSearch); //antes tava setControl
-      this.rootFormGroup.form.addControl('newStakes', this.formNewStakeholder); //antes tava setControl
+      this.rootFormGroup.form.setControl('searchStakes', this.formStakeholderSearch);
+      this.rootFormGroup.form.setControl('newStakes', this.formNewStakeholder);
       if (this.returned == 'consult') {
         this.formStakeholderSearch.disable();
         this.formNewStakeholder.disable();
@@ -516,6 +512,7 @@ export class CreateStakeholderComponent implements OnInit {
     }
     this.stakeType = true;
     this.okCC = false;
+    this.isShown = false; // adicionei 
   }
   changeListElementDocType(docType: string, e: any) {
     this.docType = e.target.value;
@@ -618,8 +615,9 @@ export class CreateStakeholderComponent implements OnInit {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.currentStakeholder.id = result["id"];
-          this.emitInsertedStake(of(this.currentStakeholder));
+          //this.currentStakeholder.id = result["id"];
+          stakeholderToInsert.id = result["id"];
+          this.emitInsertedStake(of(stakeholderToInsert));
           this.clearForm();
           this.route.navigate(['/stakeholders/']);
         }, error => {

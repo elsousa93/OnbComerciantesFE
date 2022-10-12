@@ -112,23 +112,29 @@ export class StakeholdersComponent implements OnInit {
   selectedStakeholderComprovativos = [];
   stakesLength: number;
 
+  crcStakeholders: IStakeholders[] = [];
+  selectedStakeholderIsFromCRC: boolean = false;
+
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
     private http: HttpClient, private route: Router, private logger: LoggerService, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService, private comprovativoService: ComprovativosService) {
 
+    this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
+
     this.editStakes = this.fb.group({
-      //searchAddStakes: this.fb.group({
-      //  searchStakes: this.fb.group({
-      //    "type": [''],
-      //    "documentType": [''],
-      //    "documentNumber": [''],
-      //  }),
-      //  newStakes: this.fb.group({
-      //    "nipc": [''],
-      //    "socialDenomination": [''],
-      //    "nif": [''],
-      //    "name": ['']
-      //  }),
-      //})
+      searchAddStakes: this.fb.group({
+        searchStakes: this.fb.group({
+          "type": [''],
+          "documentType": [''],
+          "documentNumber": [''],
+        }),
+        newStakes: this.fb.group({
+          "nipc": [''],
+          "socialDenomination": [''],
+          "nif": [''],
+          "name": ['']
+        }),
+      }),
+      stake: this.fb.group({})
     });
 
   }
@@ -446,6 +452,17 @@ export class StakeholdersComponent implements OnInit {
 
     this.comprovativoService.viewDocument(documentReference);
 
+  }
+
+  isStakeholderFromCRC(stakeholder) {
+    this.selectedStakeholderIsFromCRC = false;
+    var context = this;
+    this.crcStakeholders?.forEach(function (value, idx) {
+      var stakeholderFromCRC = value;
+      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
+        context.selectedStakeholderIsFromCRC = true;
+      }
+    });
   }
 }
 
