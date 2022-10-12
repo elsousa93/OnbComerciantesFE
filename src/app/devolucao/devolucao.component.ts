@@ -25,7 +25,6 @@ export class DevolucaoComponent implements OnInit{
   public subscription: Subscription;
 
   public processId: string;
-  public processNumber: string;
   public process: ProcessList;
 
   public issues: BusinessIssueViewModel
@@ -35,7 +34,7 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
-    this.logger.debug('Process Number ' + this.processNumber);
+    this.logger.debug('Process Id ' + this.processId);
 
     this.data.updateData(true, 0);
 
@@ -76,13 +75,9 @@ export class DevolucaoComponent implements OnInit{
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
-    this.processNumber = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
-    console.log('Process Number ', this.processNumber);
+    this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+    console.log('Process Id ', this.processId);
     var context = this;
-
-    this.processService.searchProcessByNumber(this.processNumber,0,1).subscribe(result => {
-      this.processId = result.items[0].processId;
-    })
   }
 
 
