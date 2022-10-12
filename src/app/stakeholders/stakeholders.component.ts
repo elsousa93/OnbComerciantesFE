@@ -367,6 +367,7 @@ export class StakeholdersComponent implements OnInit {
 
   submit() {
     console.log("Chamada do submit principal ", this.editStakes.valid);
+    console.log("Form ", this.editStakes);
     if (this.returned != 'consult') {
       if (this.editStakes.valid) {
         var stakeForm = this.editStakes.get("stake");
