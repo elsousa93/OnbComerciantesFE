@@ -394,9 +394,9 @@ export class StakeholdersComponent implements OnInit {
         }
 
         this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-          if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
+          if (this.currentIdx < (this.stakesLength - 1)) {
             this.currentIdx = this.currentIdx + 1;
-            this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
+            //this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
           } else {
             this.data.updateData(true, 2);
             this.route.navigate(['store-comp']);

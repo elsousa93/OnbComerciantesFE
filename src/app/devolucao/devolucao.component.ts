@@ -12,6 +12,9 @@ import { DataService } from '../nav-menu-interna/data.service';
 import { Process } from '../process/process.interface';
 import { BusinessIssueViewModel, ProcessGet, ProcessList, ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
+import { ClientService } from '../client/client.service';
+import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { StoreService } from '../store/store.service';
 
 
 @Component({
@@ -33,7 +36,8 @@ export class DevolucaoComponent implements OnInit{
 
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService,
-    private router: ActivatedRoute, private processService: ProcessService) {
+    private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
+    private stakeholderService: StakeholderService, private storeService: StoreService) {
 
     this.ngOnInit();
     this.logger.debug('Process Id ' + this.processId);
@@ -45,19 +49,41 @@ export class DevolucaoComponent implements OnInit{
     });
 
     this.processService.getProcessIssuesById(this.processId).subscribe(result => {
+      console.log('ISSUES ', result);
       this.issues = result;
     });
 
   }
 
-ngOnInit(): void {
-  this.subscription = this.data.currentData.subscribe(map => this.map = map);
-  this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-  this.data.historyStream$.next(true);
-  this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
-  console.log('Process id ', this.processId);
-  var context = this;
-}
+  getEntityName(entity: string, id: string) {
+    if (entity == 'merchant') {
+      this.clientService.GetClientByIdOutbound(id).then(res => {
+        return res.legalName;
+      });
+    }
+    if (entity == 'stake') {
+      this.stakeholderService.getStakeholderByID(id, "por mudar", "por mudar").then(res => {
+        return res.shortName;
+      });
+    }
+    if (entity == 'shop') {
+      this.storeService.getProcessShopDetails(this.processId, id).subscribe(res => {
+        return res.name;
+      });
+    }
+    if (entity == 'document') {
+      return id;
+    }
+  }
+
+  ngOnInit(): void {
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.historyStream$.next(true);
+    this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+    console.log('Process id ', this.processId);
+    var context = this;
+  }
 
 
   nextPage() {

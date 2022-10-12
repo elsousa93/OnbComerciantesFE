@@ -357,6 +357,11 @@ export class CreateStakeholderComponent implements OnInit {
         let nipc = this.formStakeholderSearch.get("documentType").value === "0502" ?
           this.formStakeholderSearch.get("documentNumber").value : ''
         this.formNewStakeholder.get("nipc").setValue(nipc);
+
+        console.log('Valor do document type ', this.formStakeholderSearch.get("documentType").value);
+        console.log('Valor do document number ', this.formStakeholderSearch.get("documentNumber").value);
+        console.log('Valor do nipc ', nipc);
+
         if (nipc !== '') {
           this.formNewStakeholder.get("nipc").disable();
         } else {
@@ -600,6 +605,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   clearForm() {
+    this.isShown = false;
     this.formNewStakeholder.reset();
     this.formStakeholderSearch.reset();
     this.initializeForm();
@@ -682,6 +688,9 @@ export class CreateStakeholderComponent implements OnInit {
     };
 
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+      stakeholderToInsert.id = result["id"];
+      this.emitInsertedStake(of(stakeholderToInsert));
+      this.clearForm();
       this.route.navigate(['/stakeholders/']); 
     }, error => {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");

@@ -449,7 +449,7 @@ export class ClientByIdComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
           this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
-            this.merchantInfo = res.result;
+            this.merchantInfo = res;
             console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
             if (this.clientExists == undefined || this.clientExists == null) {
               if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
