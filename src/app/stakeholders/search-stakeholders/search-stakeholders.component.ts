@@ -80,7 +80,11 @@ export class SearchStakeholdersComponent implements OnInit {
           subpromises.push(context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar"));
         });
 
-        Promise.all(subpromises).then(res => {
+        const allPromisesWithErrorHandler = subpromises.map(promise =>
+          promise.catch(error => error)
+         );
+
+        Promise.all(allPromisesWithErrorHandler).then(res => {
           console.log("c");
           var stake = res;
 
@@ -101,6 +105,8 @@ export class SearchStakeholdersComponent implements OnInit {
             console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
 
           });
+        }, error => {
+          console.log('ocorreu um erro!');
         }).then(res => {
           console.log("nao encontrou!!");
           context.foundStakeholders = true;

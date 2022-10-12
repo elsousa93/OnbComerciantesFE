@@ -475,8 +475,8 @@ export class CreateStakeholderComponent implements OnInit {
     this.data.updateData(false, 2);
 
     if (this.rootFormGroup.form != null) {
-      this.rootFormGroup.form.setControl('searchStakes', this.formStakeholderSearch);
-      this.rootFormGroup.form.setControl('newStakes', this.formNewStakeholder);
+      this.rootFormGroup.form.addControl('searchStakes', this.formStakeholderSearch); //antes tava setControl
+      this.rootFormGroup.form.addControl('newStakes', this.formNewStakeholder); //antes tava setControl
       if (this.returned == 'consult') {
         this.formStakeholderSearch.disable();
         this.formNewStakeholder.disable();
@@ -606,6 +606,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   clearForm() {
     this.isShown = false;
+    this.foundStakeholders = null;
     this.formNewStakeholder.reset();
     this.formStakeholderSearch.reset();
     this.initializeForm();
@@ -696,4 +697,5 @@ export class CreateStakeholderComponent implements OnInit {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });
   }
+
 }

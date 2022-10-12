@@ -53,6 +53,7 @@ export class StakeholdersComponent implements OnInit {
 
   emitInsertedStake(stake) {
     this.insertStakeholderEvent = stake;
+    this.editStakeInfo = null;
   }
 
   currentStakeholder: StakeholdersCompleteInformation = {};
@@ -115,19 +116,19 @@ export class StakeholdersComponent implements OnInit {
     private http: HttpClient, private route: Router, private logger: LoggerService, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService, private comprovativoService: ComprovativosService) {
 
     this.editStakes = this.fb.group({
-      searchAddStakes: this.fb.group({
-        searchStakes: this.fb.group({
-          "type": [''],
-          "documentType": [''],
-          "documentNumber": [''],
-        }),
-        newStakes: this.fb.group({
-          "nipc": [''],
-          "socialDenomination": [''],
-          "nif": [''],
-          "name": ['']
-        }),
-      })
+      //searchAddStakes: this.fb.group({
+      //  searchStakes: this.fb.group({
+      //    "type": [''],
+      //    "documentType": [''],
+      //    "documentNumber": [''],
+      //  }),
+      //  newStakes: this.fb.group({
+      //    "nipc": [''],
+      //    "socialDenomination": [''],
+      //    "nif": [''],
+      //    "name": ['']
+      //  }),
+      //})
     });
 
   }
@@ -357,6 +358,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   selectStake(info) {
+    console.log('INFO STAKES ', info);
     if(info.stakeholder != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
