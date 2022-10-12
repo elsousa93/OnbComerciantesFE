@@ -228,7 +228,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         console.log("d");
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
-        context.selectedStakeholder = context.submissionStakeholders[0];
+        //context.selectedStakeholder = context.submissionStakeholders[0];
+        context.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
         console.log('o current stake é ', context.selectedStakeholder);
       }, error => {
         console.log("e");
@@ -371,8 +372,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     if (!this.canSelect)
       return;
     console.log("stakeholder escolhido: ", stakeholder);
-    this.selectedStakeholderEmitter.emit({ stakeholder: stakeholder, idx: idx });
     this.selectedStakeholder = stakeholder;
+    this.selectedStakeholderEmitter.emit({ stakeholder: stakeholder, idx: idx });
   }
 
   loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {

@@ -42,6 +42,8 @@ export class SearchStakeholdersComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
   currentStakeholder: IStakeholders = {};
 
+  foundStakeholders: boolean;
+
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
     @Inject(configurationToken) private configuration: Configuration, 
     private route: Router, private stakeholderService: StakeholderService, private authService: AuthService) {
@@ -101,6 +103,7 @@ export class SearchStakeholdersComponent implements OnInit {
           });
         }).then(res => {
           console.log("nao encontrou!!");
+          context.foundStakeholders = true;
           context.searchAditionalInfoEmitter.emit({
             found: true,
             errorMsg: ''
@@ -123,6 +126,7 @@ export class SearchStakeholdersComponent implements OnInit {
       } else {
         console.log("sem resultados");
         context.stakeholdersToShow = [];
+        context.foundStakeholders = false;
         context.searchAditionalInfoEmitter.emit({
           found: false,
           errorMsg: "Sem resultados"
@@ -131,6 +135,7 @@ export class SearchStakeholdersComponent implements OnInit {
     }, error => {
       console.log("deu erro");
       context.stakeholdersToShow = [];
+      context.foundStakeholders = false;
       context.searchAditionalInfoEmitter.emit({
         found: false,
         errorMsg: "Sem resultados"

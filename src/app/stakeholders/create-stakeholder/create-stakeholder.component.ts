@@ -302,7 +302,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   stakeholderNumber: string;
 
-  foundStakeholders: boolean;
+  foundStakeholders: boolean = null;
   errorMsg: string = "";
 
   currentStakeholder: IStakeholders = {};
