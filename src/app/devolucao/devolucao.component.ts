@@ -42,6 +42,8 @@ export class DevolucaoComponent implements OnInit{
 
     this.data.updateData(true, 0);
 
+    this.ngOnInit();
+
     this.processService.searchProcessByNumber(this.processNumber,0,1).subscribe(result => {
       this.processId = result.items[0].processId;
     })
@@ -54,7 +56,6 @@ export class DevolucaoComponent implements OnInit{
       console.log('ISSUES ', result);
       this.issues = result;
     });
-
   }
 
   getEntityName(entity: string, id: string) {
