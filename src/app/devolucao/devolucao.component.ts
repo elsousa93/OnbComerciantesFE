@@ -25,7 +25,6 @@ export class DevolucaoComponent implements OnInit{
   public subscription: Subscription;
 
   public processId: string;
-  public processNumber: string;
   public process: ProcessList;
 
   public issues: BusinessIssueViewModel
@@ -35,20 +34,9 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
-    this.logger.debug('Process Number ' + this.processNumber);
+    this.logger.debug('Process Id ' + this.processId);
 
-    this.data.updateData(true, 0);
-
-    this.ngOnInit();
-
-    this.processService.getProcessById(this.processId).subscribe(result => {
-      this.process = result;
-    });
-
-    this.processService.getProcessIssuesById(this.processId).subscribe(result => {
-      console.log('ISSUES ', result);
-      this.issues = result;
-    });
+    this.data.updateData(true, 0);    
   }
 
   getEntityName(entity: string, id: string) {
@@ -76,16 +64,22 @@ export class DevolucaoComponent implements OnInit{
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
-    this.processNumber = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
-    console.log('Process Number ', this.processNumber);
+    this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+    console.log('Process Id ', this.processId);
     var context = this;
-
-    this.processService.searchProcessByNumber(this.processNumber,0,1).subscribe(result => {
-      this.processId = result.items[0].processId;
-    })
+    this.getPageInfo();
   }
 
-
+  getPageInfo() {
+    this.processService.getProcessById(this.processId).subscribe(result => {
+      this.process = result;
+      this.processService.getProcessIssuesById(this.processId).subscribe(res => {
+        console.log('ISSUES ', res);
+        this.issues = res;
+      });
+    });
+  }
+  
   nextPage() {
     this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
     if (localStorage.getItem("returned") != 'consult') {

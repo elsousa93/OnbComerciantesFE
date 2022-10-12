@@ -9,6 +9,8 @@
     "processDate": "Process Date",
     "clientName": "Merchant's Name",
     "user": "User",
+    "state": "State",
+    "assigned": "Assigned",
     "findProcess": "Search Process",
     "openProcess": "Open Process",
     "findProcessButton": "Search Process",

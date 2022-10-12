@@ -123,7 +123,8 @@ export class DashboardComponent implements OnInit {
 
   state = State;
 
-  displayedColumns = ['processNumber', 'contractNumber', 'requestDate', 'clientName', 'user', 'buttons'];
+  displayedColumns = ['processNumber', 'nipc', 'clientName', 'requestDate','state', 'buttons'];
+  displayedColumnsQueues = ['processNumber', 'nipc', 'clientName', 'requestDate','state', 'assigned', 'buttons'];
 
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
