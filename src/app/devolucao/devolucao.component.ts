@@ -36,18 +36,7 @@ export class DevolucaoComponent implements OnInit{
 
     this.logger.debug('Process Id ' + this.processId);
 
-    this.data.updateData(true, 0);
-
-    this.ngOnInit();
-
-    this.processService.getProcessById(this.processId).subscribe(result => {
-      this.process = result;
-    });
-
-    this.processService.getProcessIssuesById(this.processId).subscribe(result => {
-      console.log('ISSUES ', result);
-      this.issues = result;
-    });
+    this.data.updateData(true, 0);    
   }
 
   getEntityName(entity: string, id: string) {
@@ -78,6 +67,18 @@ export class DevolucaoComponent implements OnInit{
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
     console.log('Process Id ', this.processId);
     var context = this;
+    this.getPageInfo();
+  }
+
+  getPageInfo() {
+    this.processService.getProcessById(this.processId).subscribe(result => {
+      this.process = result;
+    });
+
+    this.processService.getProcessIssuesById(this.processId).subscribe(result => {
+      console.log('ISSUES ', result);
+      this.issues = result;
+    });
   }
 
 
