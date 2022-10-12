@@ -38,6 +38,7 @@ export class DevolucaoComponent implements OnInit{
     this.logger.debug('Process Id ' + this.processId);
 
     this.data.updateData(true, 0);
+    this.ngOnInit();
 
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;

@@ -50,7 +50,7 @@
 
             <!-- adicionar um if para aparecer a tabela caso sejam encontrados clientes -->
 
-            <mat-table *ngIf="processes.data.length!=0" [dataSource]="processes" matSort>
+            <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" matSort>
               <!-- Nº Pedido Column -->
               <ng-container matColumnDef="processNumber">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> {{'searches.processNumber'|translate|uppercase}}
@@ -88,7 +88,7 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
             </mat-table>
-            <mat-paginator *ngIf="processes.data.length!=0" #paginatorConsultas>
+            <mat-paginator [hidden]="processes.data.length==0" #paginatorConsultas>
             </mat-paginator>
           </div>
         </div>
