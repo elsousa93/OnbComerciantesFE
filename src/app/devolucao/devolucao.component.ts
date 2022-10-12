@@ -73,15 +73,13 @@ export class DevolucaoComponent implements OnInit{
   getPageInfo() {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
-    });
-
-    this.processService.getProcessIssuesById(this.processId).subscribe(result => {
-      console.log('ISSUES ', result);
-      this.issues = result;
+      this.processService.getProcessIssuesById(this.processId).subscribe(res => {
+        console.log('ISSUES ', res);
+        this.issues = res;
+      });
     });
   }
-
-
+  
   nextPage() {
     this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
     if (localStorage.getItem("returned") != 'consult') {
