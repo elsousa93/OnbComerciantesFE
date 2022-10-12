@@ -130,19 +130,8 @@ export class NavMenuPresencialComponent implements OnInit {
       this.processNrService.changeProcessNumber(process);
       localStorage.setItem("returned", 'consult');
 
-      this.route.navigate(['/app-devolucao/', encodedCode]);
-      //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-      //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
-      //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-      //    this.logger.debug('Submissão com detalhes mais especificos ', resul);
-      //    this.clientService.GetClientById(resul.id).subscribe(res => {
-      //      this.route.navigate(['/client']);
-      //    });
-      //  });
-      //});
+      this.route.navigate(['/clientbyid', encodedCode]);
     }
-
-
   }
 
   updateProgress() {

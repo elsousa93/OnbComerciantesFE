@@ -11,9 +11,6 @@ import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { StoreService } from '../store/store.service';
 
-interface ProcessId {
-  processId: string;
-}
 @Component({
   selector: 'app-devolucao',
   templateUrl: './devolucao.component.html'
@@ -43,10 +40,6 @@ export class DevolucaoComponent implements OnInit{
     this.data.updateData(true, 0);
 
     this.ngOnInit();
-
-    this.processService.searchProcessByNumber(this.processNumber,0,1).subscribe(result => {
-      this.processId = result.items[0].processId;
-    })
 
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
@@ -86,6 +79,10 @@ export class DevolucaoComponent implements OnInit{
     this.processNumber = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
     console.log('Process Number ', this.processNumber);
     var context = this;
+
+    this.processService.searchProcessByNumber(this.processNumber,0,1).subscribe(result => {
+      this.processId = result.items[0].processId;
+    })
   }
 
 
