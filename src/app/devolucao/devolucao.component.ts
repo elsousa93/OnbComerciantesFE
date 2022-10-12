@@ -1,15 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Renderer2 } from '@angular/core';
-import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription, take } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { Client } from '../client/Client.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
-import { Process } from '../process/process.interface';
 import { BusinessIssueViewModel, ProcessGet, ProcessList, ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { ClientService } from '../client/client.service';
@@ -30,6 +25,7 @@ export class DevolucaoComponent implements OnInit{
   public subscription: Subscription;
 
   public processId: string;
+  public processNumber: string;
   public process: ProcessList;
 
   public issues: BusinessIssueViewModel
@@ -39,7 +35,6 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
-    this.ngOnInit();
     this.logger.debug('Process Id ' + this.processId);
 
     this.data.updateData(true, 0);

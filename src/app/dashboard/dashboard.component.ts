@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, HostBinding, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostBinding, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CookieService } from 'ngx-cookie-service'
@@ -179,12 +179,6 @@ export class DashboardComponent implements OnInit {
     this.date = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
     this.appComponent.toggleSideNav(true);
-    //const users: UserData[] = [];
-    //for (let i = 1; i <= 100; i++) {
-    //  users.push(createNewUser(i));
-    //}
-
-    // Assign the data to the data source for the table to render
 
     //Pendentes de envio
     this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
@@ -417,26 +411,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-  //   this.dataSourcePendentes = new MatTableDataSource();
-  //   this.dataSourcePendentes.paginator = this.paginatorPage;
-
-    //this.dataSourcePendentes.paginator = this.paginator;
-    //this.dataSourcePendentes.sort = this.sort;
-
-    ////-------------------------------------
-    //this.empTbSortWithObject.disableClear = true;
-    //this.dataSourceTratamento.sort = this.empTbSortWithObject;
-    //this.dataSourceTratamento.paginator = this.paginatorPageSize;
-
-    //this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
-    //this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
-
-    //this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
-    //this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
-
-    //this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
-    //this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
-
   }
 
   applyFilter(filterValue: string) {
