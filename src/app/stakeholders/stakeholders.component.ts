@@ -380,11 +380,11 @@ export class StakeholdersComponent implements OnInit {
 
   submit() {
     //this.editStakes.get("stakes").updateValueAndValidity();
-    console.log("Chamada do submit principal ", this.editStakes.valid);
+    var stakeForm = this.editStakes.controls["stake"];
+    console.log("Chamada do submit principal ", stakeForm.valid);
     console.log("Form ", this.editStakes.controls["stake"]);
     if (this.returned != 'consult') {
-      if (this.editStakes.valid) {
-        var stakeForm = this.editStakes.controls["stake"];
+      if (this.editStakes.controls["stake"].valid) {
 
         this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
 
