@@ -167,7 +167,7 @@ export class NavMenuPresencialComponent implements OnInit {
             processNumber: this.encodedCode,
           }
         };
-        this.route.navigate(['/consultas'], navigationExtras);
+        this.route.navigate(['/app-consultas'], navigationExtras);
       }
     }, error => {
       this.logger.debug("Erro na pesquisa de processo");
