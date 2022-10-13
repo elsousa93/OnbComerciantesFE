@@ -143,7 +143,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.processNumber = localStorage.getItem("processNumber");
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
-    this.ngOnInit();
+    //this.ngOnInit();
     //this.triggerFalseClick();
     var context = this;
 
@@ -181,8 +181,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("O ONCHANGES NO NEW STAKEHOLDER FOI CHAMADO ", changes);
-    this.updateForm();
+    //console.log("O ONCHANGES NO NEW STAKEHOLDER FOI CHAMADO ", changes);
+    //this.updateForm();
   }
 
   getProcessStakeholders() {
@@ -250,29 +250,29 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   //}
 
 
-  updateForm() {
-    console.log('Página new stakeholder quando selecionamos um stakeholder ', this.currentStakeholder);
-    //this.isStakeholderFromCRC(this.currentStakeholder);
-    this.isStakeholderFromCC(this.currentStakeholder);
+  //updateForm() {
+  //  console.log('Página new stakeholder quando selecionamos um stakeholder ', this.currentStakeholder);
+  //  //this.isStakeholderFromCRC(this.currentStakeholder);
+  //  this.isStakeholderFromCC(this.currentStakeholder);
 
-    //if (this.returned != null) {
-      if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring?.identificationDocument != null) {
-        if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.type == '1001') {
-          this.logger.debug('Entrou cartão de cidadão');
-          this.createFormCC();// mudei a ordem
-          this.validateCC(true);
-        } else {
-          this.initializeFormWithoutCC();
-          this.validateCC(false);
-        }
-      } else {
-        this.initializeFormWithoutCC();
-        this.validateCC(false);
-      }
-    //} else {
-    //  this.initializeFormWithoutCC();
-    //}
-  }
+  //  //if (this.returned != null) {
+  //    if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring?.identificationDocument != null) {
+  //      if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.type == '1001') {
+  //        this.logger.debug('Entrou cartão de cidadão');
+  //        this.createFormCC();// mudei a ordem
+  //        this.validateCC(true);
+  //      } else {
+  //        this.initializeFormWithoutCC();
+  //        this.validateCC(false);
+  //      }
+  //    } else {
+  //      this.initializeFormWithoutCC();
+  //      this.validateCC(false);
+  //    }
+  //  //} else {
+  //  //  this.initializeFormWithoutCC();
+  //  //}
+  //}
 
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({

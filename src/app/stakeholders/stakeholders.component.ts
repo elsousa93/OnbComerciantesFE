@@ -349,7 +349,7 @@ export class StakeholdersComponent implements OnInit {
   setFormData() {
     var stakeForm = this.editStakes.get("stake");
     stakeForm.get("contractAssociation").setValue('false');
-    stakeForm.get("flagRecolhaEletronica").setValue('true');
+    stakeForm.get("flagRecolhaEletronica").setValue(false);
     stakeForm.get("proxy").setValue(this.currentStakeholder.stakeholderAcquiring.isProxy + '');
 
     if (stakeForm.get("documentType") == null) {
@@ -357,7 +357,7 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("Role").setValue("");
       stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country);
       stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode);
-      stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality);
+      stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea);
       stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address);
     } else {
       stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
@@ -365,11 +365,10 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("identificationDocumentValidUntil").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate);
       stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
     }
-    console.log('Form dos stakes depois de selecionar um stake ', stakeForm);
+    console.log('FORM DOS STAKES DEPOIS DE SELECIONAR UM STAKE NOVO', stakeForm);
   }
 
   selectStake(info) {
-    console.log('INFO STAKES ', info);
     if(info.stakeholder != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
