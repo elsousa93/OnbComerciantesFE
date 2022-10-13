@@ -54,6 +54,9 @@ export class ConsultasComponent implements OnInit{
   public subscription: Subscription;
   public subs: Subscription[] = [];
 
+  public url: string;
+  public search: boolean = false;
+
   baseUrl = '';
 
   ListaDocType;
@@ -95,7 +98,15 @@ export class ConsultasComponent implements OnInit{
       this.searchProcess();
   }
 
+  checkAdvancedSearch(search){
+      if (search) {
+        this.url += '&';
+    }
+  }
+
+
   searchProcess() {
+    this.search = false;
     this.logger.debug(this.form);
     this.loadProcesses([]);
       var processStateToSearch = this.form.get("state").value;
@@ -106,21 +117,31 @@ export class ConsultasComponent implements OnInit{
       var processDateUntil = this.form.get('processDateEnd').value;
 
       var encodedCode = encodeURIComponent(processNumber);
-      var url = this.baseUrl + 'process';
+      this.url = this.baseUrl + 'process?';
 
       if (processStateToSearch!='') {
-        url += '?state=' + processStateToSearch;
+        this.checkAdvancedSearch(this.search);
+        this.url += 'state=' + processStateToSearch;
+        this.search = true;
       } if (processNumber!='') {
-        url += '?number=' + encodedCode;
+        this.checkAdvancedSearch(this.search);
+        this.url += 'number=' + encodedCode;
+        this.search = true;
       } if (processDocType!='' && processDocNumber != '') {
-        url += '?documentType=' + processDocType + '&documentNumber=' + processDocNumber
+        this.checkAdvancedSearch(this.search);
+        this.url += 'documentType=' + processDocType + '&documentNumber=' + processDocNumber;
+        this.search = true;
       } if (processDateStart!='') {
-        url += '?fromStartedAt=' + processDateStart
+        this.checkAdvancedSearch(this.search);
+        this.url += 'fromStartedAt=' + processDateStart;
+        this.search = true;
       } if (processDateUntil!='') {
-        url += '?untilStartedAt=' + processDateUntil
+        this.checkAdvancedSearch(this.search);
+        this.url += 'untilStartedAt=' + processDateUntil;
+        this.search = true;
       }
 
-      this.processService.advancedSearch(url, 0, this.processes.paginator.pageSize).subscribe(result => {
+      this.processService.advancedSearch(this.url, 0, this.processes.paginator.pageSize).subscribe(result => {
         let processesArray: Process[] = result.items.map<Process>((process) => {
           return {
             processNumber: process.processNumber,
