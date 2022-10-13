@@ -1,18 +1,8 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
-import { Client, Crc } from '../client/Client.interface';
-import { ClientService } from '../client/client.service';
-import { StakeholderService } from '../stakeholders/stakeholder.service';
-import { CRCService } from '../CRC/crcservice.service';
-import { SubmissionPostTemplate, SubmissionPutTemplate } from '../submission/ISubmission.interface';
-import { SubmissionService } from '../submission/service/submission-service.service';
-import { TableInfoService } from '../table-info/table-info.service';
 import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPermissions/user-permissions'
-import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { DataService } from '../nav-menu-interna/data.service';
 import { AuthService } from '../services/auth.service';
 import { User } from '../userPermissions/user';
@@ -36,9 +26,8 @@ export class SidenavPresencialComponent implements OnInit {
 
   currentUser: User = {};
 
-  constructor(private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private submissionService: SubmissionService,
-    private clientService: ClientService, private crcService: CRCService, private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
+  constructor( private router: Router,
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
     private dataService: DataService, private authService: AuthService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -84,18 +73,5 @@ export class SidenavPresencialComponent implements OnInit {
   testeAuth() {
     console.log(this.currentUser);
     console.log(this.userPermissions);
-  }
-
-  logout() {
-    localStorage.removeItem('auth');
-    this.authService.reset();
-  }
-
-  login() {
-    this.authService.reset();
-
-    console.log("currentUser: ", this.authService.GetCurrentUser());
-
-    this.logout();
   }
 }

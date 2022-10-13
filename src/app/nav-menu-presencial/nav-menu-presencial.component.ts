@@ -113,15 +113,9 @@ export class NavMenuPresencialComponent implements OnInit {
       this.updateProgress();
     });
 
-    // setTimeout(this.toggleEvent.bind(this), 800);
-
-    //this.navPosition = '0';
     var prevScrollpos = window.pageYOffset;
 
     window.addEventListener("scroll", this.autohide.bind(this), false);
-
-    //this.navPosition = '0';
-    //this.autohide();
   }
 
   openProcess(process) {
@@ -192,14 +186,7 @@ export class NavMenuPresencialComponent implements OnInit {
 
     if (currentRoute === '/') {
       this.route.navigate(["dashboard"], language);
-      // this.chooseLanguage(language);
-      // // this.route.navigateByUrl("/", { skipLocationChange: true, state: currentState }).then(() => {
-      // //   this.route.navigate([decodeURI(this._location.path())], { state: currentState });
-      // // });
-      // this.ngOnInit();
     }
-
-
   }
 
   chooseLanguage(language) {
@@ -225,6 +212,7 @@ export class NavMenuPresencialComponent implements OnInit {
   logout() {
     localStorage.removeItem('auth');
     this.authService.reset();
+    // this.route.navigate(['/logout']);
   }
 
   login() {

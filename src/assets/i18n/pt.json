@@ -464,7 +464,16 @@
   "footer": {
     "cookies": "Política de Cookies",
     "privacy": "Política de Privacidade",
-    "contacts": "Contactos de Suporte"
+    "contacts": "Contactos de Suporte",
+    "contact": "Contacto",
+    "supportContact": {
+      "title": "Contacto do Suporte",
+      "name": "Nome Completo",
+      "email": "Email",
+      "contactType": "Tipo de Contacto",
+      "subject": "Assunto",
+      "message": "Mensagem"
+    } 
   },
   "errorMessages": {
     "bothFieldsPhone": "Necessário preencher os dois campos",

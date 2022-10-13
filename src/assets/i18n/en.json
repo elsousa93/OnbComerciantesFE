@@ -462,7 +462,16 @@
   "footer": {
     "cookies": "Cookies Policy",
     "privacy": "Privacy Policy",
-    "contacts": "Support Contacts"
+    "contacts": "Support Contacts",
+    "contact": "Contact",
+    "supportContact": {
+      "title": "Support Contact",
+      "name": "Full Name",
+      "email": "Email",
+      "contactType": "Contact Type",
+      "subject": "Subject",
+      "message": "Message"
+    }   
   },
   "errorMessages": {
     "bothFieldsPhone": "Both fields are required",
