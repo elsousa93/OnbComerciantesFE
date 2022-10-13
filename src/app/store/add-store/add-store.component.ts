@@ -295,13 +295,13 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    this.clientService.GetClientByIdAcquiring(this.submissionId).then(client => {
+    //this.clientService.GetClientByIdAcquiring(this.submissionId).then(client => {
 
-      this.submissionClient = client;
+    //  this.submissionClient = client;
 
-      this.logger.debug("cliente da submissao: " + this.submissionClient);
-      this.updateForm();
-    });
+    //  this.logger.debug("cliente da submissao: " + this.submissionClient);
+    //  this.updateForm();
+    //});
 
     this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
@@ -405,9 +405,9 @@ export class AddStoreComponent implements OnInit {
 
   submit() {
     this.store.name = this.formStores.get("storeName").value;
-    if (this.submissionClient?.merchantType == 'Entrepreneur')
-      this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
-    else
+    //if (this.submissionClient?.merchantType == 'Entrepreneur')
+    //  this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
+    //else
       this.store.manager = this.formStores.get("contactPoint").value;
 
     this.store.activity = this.formStores.get("activityStores").value;

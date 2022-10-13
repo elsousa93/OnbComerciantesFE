@@ -80,8 +80,6 @@ export class StoreComponent implements AfterViewInit {
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
     this.baseUrl = configuration.baseUrl;
 
-    this.ngOnInit();
-
     this.editStores = this.formBuilder.group({
       infoStores: this.formBuilder.group({
         "storeName": [''],
@@ -115,6 +113,7 @@ export class StoreComponent implements AfterViewInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
+    this.fetchStartingInfo();
   }
 
   navigateTo(id: number) {
@@ -144,7 +143,12 @@ export class StoreComponent implements AfterViewInit {
     infoStores.get("storeName").setValue(this.currentStore.name);
     infoStores.get("activityStores").setValue(this.currentStore.activity);
     infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
-    infoStores.get("contactPoint").setValue(this.currentStore.manager);
+
+    if (this.submissionClient.merchantType == 'Entrepeneur')
+      infoStores.get("contactPoint").setValue(this.submissionClient.legalName);
+    else
+      infoStores.get("contactPoint").setValue(this.currentStore.manager);
+
     infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
     infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
     infoStores.get("addressStore").setValue(this.currentStore.address.address.address);

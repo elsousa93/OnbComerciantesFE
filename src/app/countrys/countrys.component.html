@@ -185,7 +185,7 @@
             </div>
             <p class="titulo-form-simples"></p>
           </div>
-          <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
+          <!--<div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
             <h3 class="text-primary mt-5">{{'client.documents'|translate|uppercase}}</h3>
             <p class="titulo-form-simples" *ngIf="client.documents == null || client.documents.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
             <div class="table-responsive mt-5 mb-5 pb-5">
@@ -202,9 +202,9 @@
                 <tbody>
                   <tr *ngFor="let docum of client.documents">
                     <td class="text-primary text-center">{{docum.documentType}}</td>
-                    <td class="text-primary text-center">{{docum.receivedAt}}</td>
+                    <td class="text-primary text-center">{{docum.receivedAt}}</td>-->
                     <!--Não sei o que equivale a este campo nos documents-->
-                    <td class="text-primary text-center">{{docum.validUntil}}</td>
+                    <!--<td class="text-primary text-center">{{docum.validUntil}}</td>
                     <td>
                       <span>
                         <img src="assets/images/search_blue.svg"
@@ -218,7 +218,7 @@
                 </tbody>
               </table>
             </div>
-          </div>
+          </div>-->
           <div *ngIf="!inline" class="col ms-0 ps-0">
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
               <span class="navbar-text align-self-center ms-0 me-0">

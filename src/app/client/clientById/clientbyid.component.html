@@ -44,7 +44,7 @@
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" 
                           data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                     <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/manage_accounts.svg" />
+                      <img src="assets/images/manage_accounts.svg"/>
                     </span>
                     &nbsp;&nbsp;{{'client.companyInformation'|translate|uppercase}}&nbsp;&nbsp;
                       <img src="assets/images/triangle-exclamation-solid.svg" *ngIf="touchedTabs[1] && !form.get('countrysForm').valid" class="img_add"
@@ -55,6 +55,54 @@
                     data-bs-parent="#accordionFlushExample">
                   <div>
                     <app-countrys [clientContext]="clientContext" [inline]="true"></app-countrys>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion1-item">
+                <h2 class="accordion-header" id="flush-headingFour">
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" 
+                          data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                    <span class="material-symbols-outlined icon-accordion">
+                      <img src="assets/images/manage_accounts.svg"/>
+                    </span>
+                    &nbsp;&nbsp;{{'client.documents'|translate|uppercase}}&nbsp;&nbsp;
+                  </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+                    data-bs-parent="#accordionFlushExample">
+                  <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
+                    <p class="titulo-form-simples" *ngIf="client.documents == null || client.documents.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
+                    <div class="table-responsive mt-5 mb-5 pb-5">
+                      <table class="table" *ngIf="client.documents.length > 0">
+                        <thead class="text-primary table-primary">
+                          <tr class="table-white text-primary">
+                            <th scope="col" class="text-center text-primary bg-light table-white">
+                              {{'supportingDocuments.type'|translate}}
+                            </th>
+                            <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
+                            <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let docum of client.documents">
+                            <td class="text-primary text-center">{{docum.documentType}}</td>
+                            <td class="text-primary text-center">{{docum.receivedAt}}</td>
+                            <!--Não sei o que equivale a este campo nos documents-->
+                            <td class="text-primary text-center">{{docum.validUntil}}</td>
+                            <td>
+                              <span>
+                                <img src="assets/images/search_blue.svg"
+                                     (click)="b64toBlob(docum.uniqueReference, 'application/pdf', 512)"
+                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
