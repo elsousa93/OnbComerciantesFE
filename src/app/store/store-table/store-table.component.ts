@@ -50,7 +50,9 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() deleteStoreEvent: Observable<ShopDetailsAcquiring>;
   @Input() insertStoreEvent: Observable<ShopDetailsAcquiring>;
+  @Input() updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
 
+  @Output() listLengthEmitter = new EventEmitter<number>();
 
   constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService) { }
 
@@ -64,17 +66,11 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //var store = {};
-    //var idx = 0;
-    //for (const propName in changes) {
-    //  const change = changes[propName];
-    //  if (propName == 'currentStore')
-    //    store = change.currentValue;
-    //  if (propName == 'currentIdx')
-    //    idx = change.currentValue;
-    //}
-    if (changes["currentStore"]) {
-      this.emitSelectedStore(this.currentStore, this.currentIdx);
+    if (changes["updatedStoreEvent"]) {
+      this.updatedStoreEvent.subscribe(result => {
+        var nextIdx = result.idx;
+        this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
+      });
     }
   }
 
@@ -163,9 +159,9 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
     this.getStoreListFromSubmission().then(result => {
       this.getStoreListFromProcess().then(result => {
-        this.selectedStore = this.storesList[0];
-        this.currentStore = this.storesList[0];
         this.loadStores(this.storesList);
+        this.emitSelectedStore(this.storesList[0], 0);
+        this.listLengthEmitter.emit(this.storesList.length);
       })
     });
     //this.loadStores(this.storesList);

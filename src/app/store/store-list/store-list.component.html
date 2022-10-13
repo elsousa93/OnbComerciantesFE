@@ -17,7 +17,7 @@
           <img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'stores.identification'|translate|uppercase}}
         </h2>
         <p>{{'stores.validateStores'|translate}}</p>
-        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)" [deleteStoreEvent]="removedStoreSubject.asObservable()" [insertStoreEvent]="insertedStoreSubject.asObservable()" ></app-store-table>
+        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)" [deleteStoreEvent]="removedStoreSubject.asObservable()" [insertStoreEvent]="insertedStoreSubject.asObservable()" [updatedStoreEvent]="updatedStoreEvent" (listLengthEmitter)="getStoresListLength($event)"></app-store-table>
       </div>
 
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">

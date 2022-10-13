@@ -208,8 +208,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     var context = this;
 
     if (this.returned != null) {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
+        this.submissionService.GetSubmissionByID(result[0].submissionId).then(resul => {
           this.documentService.GetSubmissionDocuments(resul.id).subscribe(res => {
             var documents = res;
             console.log("Lista inicial ", res);
@@ -277,7 +277,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       }); 
     }
 
-    this.submissionService.GetSubmissionByID(this.submissionId).subscribe(result => {
+    this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
       this.submission = result;
       this.logger.debug('Submission ' + result);
 

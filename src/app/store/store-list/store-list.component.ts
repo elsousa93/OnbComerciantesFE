@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
@@ -58,6 +58,9 @@ export class StoreComponent implements AfterViewInit {
   returned: string;
   processNumber: string;
   submissionId: string;
+
+  updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
+  storesLength: number = 0;
 
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
@@ -139,34 +142,35 @@ export class StoreComponent implements AfterViewInit {
   }
 
   setFormData() {
-    var infoStores = this.editStores.controls["infoStores"];
-    infoStores.get("storeName").setValue(this.currentStore.name);
-    infoStores.get("activityStores").setValue(this.currentStore.activity);
-    infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
+    if (this.currentStore != null) { 
+      var infoStores = this.editStores.controls["infoStores"];
+      infoStores.get("storeName").setValue(this.currentStore.name);
+      infoStores.get("activityStores").setValue(this.currentStore.activity);
+      infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
 
-    if (this.submissionClient.merchantType == 'Entrepeneur')
-      infoStores.get("contactPoint").setValue(this.submissionClient.legalName);
-    else
-      infoStores.get("contactPoint").setValue(this.currentStore.manager);
+      if (this.submissionClient.merchantType == 'Entrepeneur')
+        infoStores.get("contactPoint").setValue(this.submissionClient.legalName);
+      else
+        infoStores.get("contactPoint").setValue(this.currentStore.manager);
 
-    infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
-    infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
-    infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
-    infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
-    infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
-    infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
-    infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
+      infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
+      infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
+      infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
+      infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
+      infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+      infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+      infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
 
-    var bankStores = this.editStores.controls["bankStores"];
-    bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
-    bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
+      var bankStores = this.editStores.controls["bankStores"];
+      bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
+      bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
 
 
-    var productStores = this.editStores.controls["productStores"];
-    productStores.get("solutionType").setValue(this.currentStore.productCode);
-    productStores.get("subProduct").setValue(this.currentStore.subproductCode);
-    productStores.get("url").setValue(this.currentStore.website);
-
+      var productStores = this.editStores.controls["productStores"];
+      productStores.get("solutionType").setValue(this.currentStore.productCode);
+      productStores.get("subProduct").setValue(this.currentStore.subproductCode);
+      productStores.get("url").setValue(this.currentStore.website);
+    }
   }
 
   deleteStore() {
@@ -230,24 +234,31 @@ export class StoreComponent implements AfterViewInit {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
           this.emitInsertedStore(this.currentStore);
+          this.formStores.reset();
         });
       } else {
         console.log('EDIT');
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
+          if (this.currentIdx < (this.storesLength - 1)) {
+            this.emitUpdatedStore(of({store: this.currentStore, idx: this.currentIdx }));
+            this.onActivate();
+            this.formStores.reset();
+          } else {
+            this.data.updateData(true, 3);
+            //this.route.navigate(['comprovativos']);
+          }
         });
       }
-
-      if (this.currentIdx < (this.storeList.length - 1)) {
-        this.currentStore = this.storeList[this.currentIdx + 1];
-        //this.currentIdx = this.currentIdx + 1;
-        this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
-        this.onActivate();
-      } else {
-        this.data.updateData(true, 3);
-        //this.route.navigate(['comprovativos']);
-      }
     }
+  }
+
+  emitUpdatedStore(info) {
+    this.updatedStoreEvent = info;
+  }
+
+  getStoresListLength(length) {
+    this.storesLength = length;
   }
 
   fetchStartingInfo() {
