@@ -1,6 +1,6 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
@@ -168,7 +168,12 @@ export class NavMenuPresencialComponent implements OnInit {
   
         this.route.navigate(['/clientbyid', this.encodedCode]);
       } else {
-        this.route.navigate(['/consultas'], this.encodedCode);
+        let navigationExtras: NavigationExtras = {
+          state: {
+            processNumber: this.encodedCode,
+          }
+        };
+        this.route.navigate(['/consultas'], navigationExtras);
       }
     }, error => {
       this.logger.debug("Erro na pesquisa de processo");

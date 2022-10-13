@@ -60,6 +60,10 @@ export class ConsultasComponent implements OnInit{
 
     this.appComponent.toggleSideNav(false);
 
+    //Gets ProcessNr when search on homepage does not return results 
+    if (this.route.getCurrentNavigation().extras.state) {
+      this.navbarProcessNumberSearch = this.route.getCurrentNavigation().extras.state["processNumber"];
+    }
 
     this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
       this.ListaDocType = result;
