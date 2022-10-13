@@ -71,24 +71,16 @@ export class ProcessService {
     return this.http.get(this.baseUrl + 'process/' + processId + '/merchant');
   }
 
+  advancedSearch(url: string, from: number, count: number) {
+    return this.http.get<ProcessGet>(url + "&from=" + from + '&count=' + count);
+  }
+
   searchProcessByNumber(processNumber: string, from: number, count: number) {
     return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?number=' + processNumber + "&from=" + from + '&count=' + count);
   }
 
   searchProcessByState(state: string, from: number, count: number) {
     return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?state=' + state + "&from=" + from + '&count=' + count);
-  }
-
-  searchProcessByStartedDate(startedDate: Date, from: number, count: number) {
-    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?fromStartedAt=' + startedDate + "&from=" + from + '&count=' + count);
-  }
-
-  searchProcessByUntilDate(untilDate: Date, from: number, count: number) {
-    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?untilStartedAt=' + untilDate + "&from=" + from + '&count=' + count);
-  }
-
-  searchProcessByDoc(docType: string, docNumber: string, from: number, count: number) {
-    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?documentType=' + docType + '&documentNumber=' + docNumber + "&from=" + from + '&count=' + count);
   }
 
   getProcessById(processId: string) {
