@@ -167,13 +167,13 @@ export class NavMenuPresencialComponent implements OnInit {
             processNumber: this.encodedCode,
           }
         };
+        this.processNumberToSearch = ''; // to clean processNr
         this.route.navigate(['/app-consultas'], navigationExtras);
       }
     }, error => {
       this.logger.debug("Erro na pesquisa de processo");
       this.logger.debug(error);
     });
-    this.processNumberToSearch = ''; // to clean processNr
   }
 
   changeLanguage(language) {
