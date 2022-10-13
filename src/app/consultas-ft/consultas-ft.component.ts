@@ -96,7 +96,7 @@ export class ConsultasFTComponent implements OnInit{
     this.form = new FormGroup({
       processNumber: new FormControl(this.navbarProcessNumberSearch),
       documentType: new FormControl(''), //Não é obrigatorio por enquanto
-      state: new FormControl(this.state), //Não é diretamente obrigatório
+      state: new FormControl(''), //Não é diretamente obrigatório
       documentNumber: new FormControl(''), //Não é obrigatorio por enquanto
       processDateStart: new FormControl(''), //Não é obrigatorio por enquanto
       processDateEnd: new FormControl('') //Não é obrigatorio por enquanto
@@ -111,7 +111,7 @@ export class ConsultasFTComponent implements OnInit{
   searchProcess() {
     this.logger.debug(this.form);
     this.loadProcesses([]);
-      var processStateToSearch = this.form.get("state").value;
+      var processStateToSearch = this.state;
       var processNumber = this.form.get('processNumber').value;
       var processDocType = this.form.get('documentType').value;
       var processDocNumber = this.form.get('documentNumber').value;
