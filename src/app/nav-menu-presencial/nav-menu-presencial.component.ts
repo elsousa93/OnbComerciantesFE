@@ -14,6 +14,7 @@ import { progressSteps } from './progressSteps';
 import { MenuPermissions, UserPermissions, getMenuPermissions } from '../userPermissions/user-permissions';
 import { TableInfoService } from '../table-info/table-info.service';
 import { Location } from '@angular/common';
+import { ProcessService } from '../process/process.service';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class NavMenuPresencialComponent implements OnInit {
   currentPage: number = 0;
   currentSubPage: number = 0;
   progressImage: string;
+  encodedCode: string;
 
   currentUser: User = {};
 
@@ -64,7 +66,7 @@ export class NavMenuPresencialComponent implements OnInit {
   currentLanguage: TranslationLanguage;
   userPermissions: MenuPermissions;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
+  constructor(private route: Router, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
@@ -125,12 +127,8 @@ export class NavMenuPresencialComponent implements OnInit {
   openProcess(process) {
     if (process !== "") {
       this.logger.debug("Opening process: " + process);
-      var encodedCode = encodeURIComponent(process);
-      localStorage.setItem("processNumber", process);
-      this.processNrService.changeProcessNumber(process);
-      localStorage.setItem("returned", 'consult');
-
-      this.route.navigate(['/clientbyid', encodedCode]);
+      this.encodedCode = encodeURIComponent(process);
+      this.searchProcess(process);
     }
   }
 
@@ -161,9 +159,21 @@ export class NavMenuPresencialComponent implements OnInit {
     this.prevScrollpos = currentScrollPos;
   }
 
-  searchProcess() {
-    this.logger.debug("Searching process " + this.processNumberToSearch);
-    this.route.navigate(['/app-consultas/', this.processNumberToSearch]);
+  searchProcess(process) {
+    this.processService.searchProcessByNumber(this.encodedCode, 0, 1).subscribe(resul => {
+      if (resul != null) {
+        localStorage.setItem("processNumber", process);
+        this.processNrService.changeProcessNumber(process);
+        localStorage.setItem("returned", 'consult');
+  
+        this.route.navigate(['/clientbyid', this.encodedCode]);
+      } else {
+        this.route.navigate(['/consultas'], this.encodedCode);
+      }
+    }, error => {
+      this.logger.debug("Erro na pesquisa de processo");
+      this.logger.debug(error);
+    });
   }
 
   changeLanguage(language) {
