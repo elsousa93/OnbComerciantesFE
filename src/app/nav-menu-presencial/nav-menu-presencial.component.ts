@@ -118,11 +118,11 @@ export class NavMenuPresencialComponent implements OnInit {
     window.addEventListener("scroll", this.autohide.bind(this), false);
   }
 
-  openProcess(process) {
-    if (process !== "") {
-      this.logger.debug("Opening process: " + process);
-      this.encodedCode = encodeURIComponent(process);
-      this.searchProcess(process);
+  openProcess() {
+    if (this.processNumberToSearch !== "") {
+      this.logger.debug("Opening process: " + this.processNumberToSearch);
+      this.encodedCode = encodeURIComponent(this.processNumberToSearch);
+      this.searchProcess(this.processNumberToSearch);
     }
   }
 

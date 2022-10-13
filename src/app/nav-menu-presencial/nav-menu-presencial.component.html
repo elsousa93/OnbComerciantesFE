@@ -54,9 +54,9 @@
           </a>
           <span class="navbar-text text-light ms-auto">
             <form class="d-flex" style="margin-bottom: 0px;">
-              <input class="form-control me-2 form-control-sm" type="search" placeholder="{{'searches.placeholderSearch'|translate}}" #processNumberToSearch
+              <input class="form-control me-2 form-control-sm" type="search" placeholder="{{'searches.placeholderSearch'|translate}}" [(ngModel)]="processNumberToSearch" 
                 aria-label="Search">
-                <button class="btn align-self-center btn-sm mt-0 mb-0 ms-0 me-3 pt-0 pb-0 ps-1 pe-1 text-white-50" type="submit" (click)="openProcess(processNumberToSearch.value)">
+                <button class="btn align-self-center btn-sm mt-0 mb-0 ms-0 me-3 pt-0 pb-0 ps-1 pe-1 text-white-50" type="submit" (click)="openProcess()">
                   <img src="assets/images/search.svg" class="img_btn">
                 </button>
             </form>
