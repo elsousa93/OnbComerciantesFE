@@ -281,10 +281,10 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.isProxy + '' : false, Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
       Role: new FormControl(''),
-      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
-      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required), //
-      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
-      Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
+      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
+      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required), //
+      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
+      Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
     });
     this.GetCountryByZipCode();
     this.flagRecolhaEletronica = false;
@@ -338,7 +338,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != undefined ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : false, Validators.required),
     });
-    //this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
+    this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
     this.flagRecolhaEletronica = true;
@@ -452,15 +452,16 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
           this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
 
 
-          this.formNewStakeholder.get('Address').updateValueAndValidity();
-          this.formNewStakeholder.get('Country').updateValueAndValidity();
-          this.formNewStakeholder.get('Locality').updateValueAndValidity();
+          //this.formNewStakeholder.get('Address').updateValueAndValidity();
+          //this.formNewStakeholder.get('Country').updateValueAndValidity();
+          //this.formNewStakeholder.get('Locality').updateValueAndValidity();
         }));
       }
     } else {
       this.lockLocality = false;
-      this.formNewStakeholder.updateValueAndValidity();
+      //this.formNewStakeholder.updateValueAndValidity();
     }
+    //this.formNewStakeholder.updateValueAndValidity();
     console.log('Valor do form no new-stakeholder ', this.formNewStakeholder);
   }
 
