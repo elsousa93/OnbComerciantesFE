@@ -27,7 +27,7 @@
             </h2>
             <div id="flush-collapseFour" class="accordion-collapse collapse show" aria-labelledby="flush-headingFour"
                  data-bs-parent="#accordionFlushExample1">
-              <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false [insertStakeholderEvent]="insertStakeholderEvent" [updatedStakeholderEvent]="updatedStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)">
+              <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false [insertStakeholderEvent]="insertStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)">
               </app-stakeholders-list>
             </div>
           </div>
@@ -50,7 +50,7 @@
                 </h2>
                 <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne">
                   <!-- data-bs-parent="#accordionFlushExample" -->
-                  <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="selectStake($event)" (listLengthEmitter)="getStakesListLength($event)">
+                  <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="selectStake($event)" [updatedStakeholderEvent]="updatedStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)">
                     <!-- [canDelete]=true -->
                   </app-stakeholders-list>
                 </div>
