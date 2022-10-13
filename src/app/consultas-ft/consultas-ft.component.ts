@@ -109,96 +109,96 @@ export class ConsultasFTComponent implements OnInit{
   }
 
   searchProcess() {
-    this.logger.debug(this.form);
-    this.loadProcesses([]);
-      var processStateToSearch = this.state;
-      var processNumber = this.form.get('processNumber').value;
-      var processDocType = this.form.get('documentType').value;
-      var processDocNumber = this.form.get('documentNumber').value;
-      var processDateStart = this.form.get('processDateStart').value;
-      var processDateUntil = this.form.get('processDateEnd').value;
-      if (processNumber !== '') {
-        this.logger.debug(processNumber);
-        var encodedCode = encodeURIComponent(processNumber);
-          this.processService.searchProcessByNumber(encodedCode, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug("deu erro");
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
+  //   this.logger.debug(this.form);
+  //   this.loadProcesses([]);
+  //     var processStateToSearch = this.state;
+  //     var processNumber = this.form.get('processNumber').value;
+  //     var processDocType = this.form.get('documentType').value;
+  //     var processDocNumber = this.form.get('documentNumber').value;
+  //     var processDateStart = this.form.get('processDateStart').value;
+  //     var processDateUntil = this.form.get('processDateEnd').value;
+  //     if (processNumber !== '') {
+  //       this.logger.debug(processNumber);
+  //       var encodedCode = encodeURIComponent(processNumber);
+  //         this.processService.searchProcessByNumber(encodedCode, 0, this.processes.paginator.pageSize).subscribe(resul => {
+  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+  //             return {
+  //               processNumber: process.processNumber,
+  //               nipc: 529463466,
+  //               nome: "EMPRESA UNIPESSOAL TESTES",
+  //               estado: process.state
+  //             };
+  //           })
+  //           this.loadProcesses(processesArray);
+  //         }, error => {
+  //           this.logger.debug("deu erro");
+  //           this.logger.debug(error);
+  //           this.loadProcesses([]);
+  //         });
           
-      } else if (processStateToSearch!=''){  
-          this.processService.searchProcessByState(processStateToSearch, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
-      } else if (processDocNumber != '' && processDocType != '') {
+  //     } else if (processStateToSearch!=''){  
+  //         this.processService.searchProcessByState(processStateToSearch, 0, this.processes.paginator.pageSize).subscribe(resul => {
+  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+  //             return {
+  //               processNumber: process.processNumber,
+  //               nipc: 529463466,
+  //               nome: "EMPRESA UNIPESSOAL TESTES",
+  //               estado: process.state
+  //             };
+  //           })
+  //           this.loadProcesses(processesArray);
+  //         }, error => {
+  //           this.logger.debug(error);
+  //           this.loadProcesses([]);
+  //         });
+  //     } else if (processDocNumber != '' && processDocType != '') {
 
-          this.processService.searchProcessByDoc(processDocType,processDocNumber, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
+  //         this.processService.searchProcessByDoc(processDocType,processDocNumber, 0, this.processes.paginator.pageSize).subscribe(resul => {
+  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+  //             return {
+  //               processNumber: process.processNumber,
+  //               nipc: 529463466,
+  //               nome: "EMPRESA UNIPESSOAL TESTES",
+  //               estado: process.state
+  //             };
+  //           })
+  //           this.loadProcesses(processesArray);
+  //         }, error => {
+  //           this.logger.debug(error);
+  //           this.loadProcesses([]);
+  //         });
        
-      } else if (processDateStart != '') {
-          this.processService.searchProcessByStartedDate(processDateStart, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
-      } else if (processDateUntil != '') {
-          this.processService.searchProcessByUntilDate(processDateUntil, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
-      }
+  //     } else if (processDateStart != '') {
+  //         this.processService.searchProcessByStartedDate(processDateStart, 0, this.processes.paginator.pageSize).subscribe(resul => {
+  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+  //             return {
+  //               processNumber: process.processNumber,
+  //               nipc: 529463466,
+  //               nome: "EMPRESA UNIPESSOAL TESTES",
+  //               estado: process.state
+  //             };
+  //           })
+  //           this.loadProcesses(processesArray);
+  //         }, error => {
+  //           this.logger.debug(error);
+  //           this.loadProcesses([]);
+  //         });
+  //     } else if (processDateUntil != '') {
+  //         this.processService.searchProcessByUntilDate(processDateUntil, 0, this.processes.paginator.pageSize).subscribe(resul => {
+  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
+  //             return {
+  //               processNumber: process.processNumber,
+  //               nipc: 529463466,
+  //               nome: "EMPRESA UNIPESSOAL TESTES",
+  //               estado: process.state
+  //             };
+  //           })
+  //           this.loadProcesses(processesArray);
+  //         }, error => {
+  //           this.logger.debug(error);
+  //           this.loadProcesses([]);
+  //         });
+  //     }
   }
 
   openProcess(process) {
