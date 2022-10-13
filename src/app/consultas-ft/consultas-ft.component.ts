@@ -56,6 +56,11 @@ export class ConsultasFTComponent implements OnInit{
 
   public state: string;
 
+  public search: boolean;
+  public url: string;
+
+  baseUrl = '';
+
   ListaDocType;
   
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
@@ -63,6 +68,7 @@ export class ConsultasFTComponent implements OnInit{
 
     this.appComponent.toggleSideNav(false);
     
+    this.baseUrl = configuration.baseUrl;
 
     //Gets Queue Name from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -108,97 +114,64 @@ export class ConsultasFTComponent implements OnInit{
       this.searchProcess();
   }
 
-  searchProcess() {
-  //   this.logger.debug(this.form);
-  //   this.loadProcesses([]);
-  //     var processStateToSearch = this.state;
-  //     var processNumber = this.form.get('processNumber').value;
-  //     var processDocType = this.form.get('documentType').value;
-  //     var processDocNumber = this.form.get('documentNumber').value;
-  //     var processDateStart = this.form.get('processDateStart').value;
-  //     var processDateUntil = this.form.get('processDateEnd').value;
-  //     if (processNumber !== '') {
-  //       this.logger.debug(processNumber);
-  //       var encodedCode = encodeURIComponent(processNumber);
-  //         this.processService.searchProcessByNumber(encodedCode, 0, this.processes.paginator.pageSize).subscribe(resul => {
-  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-  //             return {
-  //               processNumber: process.processNumber,
-  //               nipc: 529463466,
-  //               nome: "EMPRESA UNIPESSOAL TESTES",
-  //               estado: process.state
-  //             };
-  //           })
-  //           this.loadProcesses(processesArray);
-  //         }, error => {
-  //           this.logger.debug("deu erro");
-  //           this.logger.debug(error);
-  //           this.loadProcesses([]);
-  //         });
-          
-  //     } else if (processStateToSearch!=''){  
-  //         this.processService.searchProcessByState(processStateToSearch, 0, this.processes.paginator.pageSize).subscribe(resul => {
-  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-  //             return {
-  //               processNumber: process.processNumber,
-  //               nipc: 529463466,
-  //               nome: "EMPRESA UNIPESSOAL TESTES",
-  //               estado: process.state
-  //             };
-  //           })
-  //           this.loadProcesses(processesArray);
-  //         }, error => {
-  //           this.logger.debug(error);
-  //           this.loadProcesses([]);
-  //         });
-  //     } else if (processDocNumber != '' && processDocType != '') {
+  checkAdvancedSearch(search){
+      if (search) {
+        this.url += '&';
+    }
+  }
 
-  //         this.processService.searchProcessByDoc(processDocType,processDocNumber, 0, this.processes.paginator.pageSize).subscribe(resul => {
-  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-  //             return {
-  //               processNumber: process.processNumber,
-  //               nipc: 529463466,
-  //               nome: "EMPRESA UNIPESSOAL TESTES",
-  //               estado: process.state
-  //             };
-  //           })
-  //           this.loadProcesses(processesArray);
-  //         }, error => {
-  //           this.logger.debug(error);
-  //           this.loadProcesses([]);
-  //         });
-       
-  //     } else if (processDateStart != '') {
-  //         this.processService.searchProcessByStartedDate(processDateStart, 0, this.processes.paginator.pageSize).subscribe(resul => {
-  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-  //             return {
-  //               processNumber: process.processNumber,
-  //               nipc: 529463466,
-  //               nome: "EMPRESA UNIPESSOAL TESTES",
-  //               estado: process.state
-  //             };
-  //           })
-  //           this.loadProcesses(processesArray);
-  //         }, error => {
-  //           this.logger.debug(error);
-  //           this.loadProcesses([]);
-  //         });
-  //     } else if (processDateUntil != '') {
-  //         this.processService.searchProcessByUntilDate(processDateUntil, 0, this.processes.paginator.pageSize).subscribe(resul => {
-  //           let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-  //             return {
-  //               processNumber: process.processNumber,
-  //               nipc: 529463466,
-  //               nome: "EMPRESA UNIPESSOAL TESTES",
-  //               estado: process.state
-  //             };
-  //           })
-  //           this.loadProcesses(processesArray);
-  //         }, error => {
-  //           this.logger.debug(error);
-  //           this.loadProcesses([]);
-  //         });
-  //     }
+
+  searchProcess() {
+    this.search = false;
+    this.logger.debug(this.form);
+    this.loadProcesses([]);
+      var processStateToSearch = this.state;
+      var processNumber = this.form.get('processNumber').value;
+      var processDocType = this.form.get('documentType').value;
+      var processDocNumber = this.form.get('documentNumber').value;
+      var processDateStart = this.form.get('processDateStart').value;
+      var processDateUntil = this.form.get('processDateEnd').value;
+
+      var encodedCode = encodeURIComponent(processNumber);
+      this.url = this.baseUrl + 'process?';
+
+      if (processStateToSearch!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'state=' + processStateToSearch;
+        this.search = true;
+      } if (processNumber!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'number=' + encodedCode;
+        this.search = true;
+      } if (processDocType!='' && processDocNumber != '') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'documentType=' + processDocType + '&documentNumber=' + processDocNumber;
+        this.search = true;
+      } if (processDateStart!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'fromStartedAt=' + processDateStart;
+        this.search = true;
+      } if (processDateUntil!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'untilStartedAt=' + processDateUntil;
+        this.search = true;
+      }
+
+      this.processService.advancedSearch(this.url, 0, this.processes.paginator.pageSize).subscribe(result => {
+        let processesArray: ProcessFT[] = result.items.map<ProcessFT>((process) => {
+          return {
+            processNumber: process.processNumber,
+            nipc: 529463466,
+            nome: "EMPRESA UNIPESSOAL TESTES",
+            estado: process.state
+          };
+        })
+        this.loadProcesses(processesArray);
+      }, error => {
+        this.logger.debug("deu erro");
+        this.logger.debug(error);
+        this.loadProcesses([]);
+      });
   }
 
   openProcess(process) {
