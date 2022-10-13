@@ -227,7 +227,9 @@ export class StoreIbanComponent implements OnInit {
   constructor(private logger: LoggerService, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
-      this.authService.currentUser.subscribe(result => {
+    this.initializeForm();
+
+    this.authService.currentUser.subscribe(result => {
 
         if (result.permissions === UserPermissions.BANCA) {
           this.bank = this.authService.GetBankLocation();
@@ -245,7 +247,7 @@ export class StoreIbanComponent implements OnInit {
 
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
-    this.initializeForm();
+    //this.initializeForm();
 
 
     if (this.rootFormGroup.form != null) {

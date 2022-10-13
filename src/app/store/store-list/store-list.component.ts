@@ -95,7 +95,7 @@ export class StoreComponent implements AfterViewInit {
         "countryStore": [''],
         "zipCodeStore": [''],
         "commercialCenter": [''],
-        "replicateAddress": ['']
+        "replicate": ['']
       }),
       bankStores: this.formBuilder.group({
         "supportBank": [''],
@@ -159,7 +159,7 @@ export class StoreComponent implements AfterViewInit {
       infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
       infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
       infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
-      infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
+      infoStores.get("replicate").setValue(this.currentStore.address.useMerchantAddress);
 
       var bankStores = this.editStores.controls["bankStores"];
       bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
@@ -234,7 +234,7 @@ export class StoreComponent implements AfterViewInit {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
           this.emitInsertedStore(this.currentStore);
-          this.formStores.reset();
+          this.editStores.reset();
         });
       } else {
         console.log('EDIT');
@@ -243,10 +243,10 @@ export class StoreComponent implements AfterViewInit {
           if (this.currentIdx < (this.storesLength - 1)) {
             this.emitUpdatedStore(of({store: this.currentStore, idx: this.currentIdx }));
             this.onActivate();
-            this.formStores.reset();
+            this.editStores.reset();
           } else {
             this.data.updateData(true, 3);
-            //this.route.navigate(['comprovativos']);
+            this.route.navigate(['comprovativos']);
           }
         });
       }
