@@ -512,8 +512,9 @@ export class CreateStakeholderComponent implements OnInit {
     }
     this.stakeType = true;
     this.okCC = false;
-    this.isShown = false; // adicionei 
+    this.resetSearchStakeholder(); //
   }
+
   changeListElementDocType(docType: string, e: any) {
     this.docType = e.target.value;
     if (this.docType === '1001') {
@@ -523,6 +524,16 @@ export class CreateStakeholderComponent implements OnInit {
     }
     this.stakeDocType = true;
     this.okCC = false;
+    this.resetSearchStakeholder(); //
+  }
+
+  resetSearchStakeholder() {
+    this.isShown = false;
+    this.foundStakeholders = null; 
+    this.formNewStakeholder.get("nif")?.setValue("");
+    this.formNewStakeholder.get("nipc")?.setValue("");
+    this.formNewStakeholder.get("nif")?.updateValueAndValidity();
+    this.formNewStakeholder.get("nipc")?.updateValueAndValidity();
   }
 
   toggleShow(stake: IStakeholders) {
@@ -540,6 +551,8 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
     this.isShown = true;
+
+
     setTimeout(() => {
       this.searchEvent.next(this.stakeholderNumber);
     });

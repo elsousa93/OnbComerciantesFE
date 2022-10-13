@@ -430,9 +430,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var teste = 'consult'
     var teste1 = true;
 
-    if ((teste === 'consult' ? true : null) || teste1)
+    //if ((teste === 'consult' ? true : null) || teste1)
 
-      var currentCountry = this.formNewStakeholder.get('Country').value;
+    var currentCountry = this.formNewStakeholder.get('Country').value;
 
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
 
@@ -451,7 +451,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
           this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
 
 
-          this.formNewStakeholder.updateValueAndValidity();
+          this.formNewStakeholder.get('Address').updateValueAndValidity();
+          this.formNewStakeholder.get('Country').updateValueAndValidity();
+          this.formNewStakeholder.get('Locality').updateValueAndValidity();
         }));
       }
     } else {
