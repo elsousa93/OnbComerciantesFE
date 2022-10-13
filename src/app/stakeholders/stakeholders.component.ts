@@ -6,7 +6,7 @@ import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
+import { of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
@@ -50,6 +50,11 @@ export class StakeholdersComponent implements OnInit {
   @ViewChild('newModal') newModal;
 
   insertStakeholderEvent: Observable<IStakeholders>;
+  updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
+
+  emitUpdatedStakeholder(info) {
+    this.updatedStakeholderEvent = info;
+  }
 
   emitInsertedStake(stake) {
     this.insertStakeholderEvent = stake;
@@ -375,7 +380,7 @@ export class StakeholdersComponent implements OnInit {
 
   submit() {
     console.log("Chamada do submit principal ", this.editStakes.valid);
-    console.log("Form ", this.editStakes);
+    console.log("Form ", this.editStakes.get("stake"));
     if (this.returned != 'consult') {
       if (this.editStakes.valid) {
         var stakeForm = this.editStakes.get("stake");
@@ -404,7 +409,8 @@ export class StakeholdersComponent implements OnInit {
 
         this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
           if (this.currentIdx < (this.stakesLength - 1)) {
-            this.currentIdx = this.currentIdx + 1;
+            this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+            //this.currentIdx = this.currentIdx + 1;
             //this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
           } else {
             this.data.updateData(true, 2);

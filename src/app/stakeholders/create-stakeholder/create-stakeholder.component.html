@@ -110,7 +110,7 @@
         </div>
       </form>
       <form [formGroup]="formNewStakeholder">
-        <h5 *ngIf="isShown" class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h5>
+        <h5 *ngIf="isShown && foundStakeholders" class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h5>
         <div *ngIf=" ( (isShown && foundStakeholders == null) || (isShown && foundStakeholders) )" class="row container-fluid" id="divshow" style="padding-left: 0px;">
           <app-search-stakeholders [clientID]="testEvent"
             (selectedStakeholderEmitter)="selectNewStakeholder($event)"
@@ -133,7 +133,7 @@
         <div *ngIf="isShown && foundStakeholders == false">
           <!--No Pessoa Colectiva e Denominacao Social-->
           <p class="titulo-form-simples">{{'client.searchError'|translate}}</p>
-          <div *ngIf="!isParticular">
+          <div *ngIf="!isParticular && !isClientNrSelected">
             <div>
               <div class="row">
                 <div class="col-md-6">
@@ -148,7 +148,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="isParticular">
+          <div *ngIf="isParticular && !isClientNrSelected">
             <div class="row">
               <div class="col-md-6">
                 <p class="titulo-form-simples">{{'client.nif'|translate|uppercase}}:</p>

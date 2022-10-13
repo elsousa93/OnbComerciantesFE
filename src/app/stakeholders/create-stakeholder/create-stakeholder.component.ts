@@ -311,6 +311,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   public subs: Subscription[] = [];
   returned: string;
+  isClientNrSelected: boolean = false;
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
@@ -522,6 +523,11 @@ export class CreateStakeholderComponent implements OnInit {
     } else {
       this.isCC = false;
     }
+    if (this.docType === '1010') { // Nº de cliente
+      this.isClientNrSelected = true;
+    } else {
+      this.isClientNrSelected = false;
+    }
     this.stakeDocType = true;
     this.okCC = false;
     this.resetSearchStakeholder(); //
@@ -530,10 +536,12 @@ export class CreateStakeholderComponent implements OnInit {
   resetSearchStakeholder() {
     this.isShown = false;
     this.foundStakeholders = null; 
-    this.formNewStakeholder.get("nif")?.setValue("");
-    this.formNewStakeholder.get("nipc")?.setValue("");
-    this.formNewStakeholder.get("nif")?.updateValueAndValidity();
-    this.formNewStakeholder.get("nipc")?.updateValueAndValidity();
+    //this.formNewStakeholder.get("nif")?.setValue("");
+    //this.formNewStakeholder.get("nipc")?.setValue("");
+    //this.formNewStakeholder.get("nif")?.updateValueAndValidity();
+    //this.formNewStakeholder.get("nipc")?.updateValueAndValidity();
+    this.formStakeholderSearch.get("documentNumber").setValue("");
+    this.formStakeholderSearch.get("documentNumber").updateValueAndValidity();
   }
 
   toggleShow(stake: IStakeholders) {
