@@ -78,27 +78,31 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.returned = localStorage.getItem("returned");
     this.getStoreList();
 
-    this.deleteStoreEvent.subscribe(result => {
-      var storeToRemove = result;
+    if (this.deleteStoreEvent != null) { 
+      this.deleteStoreEvent.subscribe(result => {
+        var storeToRemove = result;
 
-      var idx = this.storesList.indexOf(storeToRemove);
+        var idx = this.storesList.indexOf(storeToRemove);
 
-      this.storesList.splice(idx, 1);
+        this.storesList.splice(idx, 1);
 
-      this.listLengthEmitter.emit(this.storesList.length);
+        this.listLengthEmitter.emit(this.storesList.length);
 
-      this.loadStores(this.storesList);
-    });
+        this.loadStores(this.storesList);
+      });
+    }
 
-    this.insertStoreEvent.subscribe(result => {
-      var storeToInsert = result;
+    if (this.insertStoreEvent != null) { 
+      this.insertStoreEvent.subscribe(result => {
+        var storeToInsert = result;
 
-      this.storesList.push(storeToInsert);
+        this.storesList.push(storeToInsert);
 
-      this.listLengthEmitter.emit(this.storesList.length);
+        this.listLengthEmitter.emit(this.storesList.length);
 
-      this.loadStores(this.storesList);
-    });
+        this.loadStores(this.storesList);
+      });
+    }
   }
 
   ngAfterViewInit(): void {

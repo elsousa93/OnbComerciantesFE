@@ -155,7 +155,7 @@ export class StoreComponent implements AfterViewInit {
     this.currentStore.bank = new ShopBank();
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
-    if (this.submissionClient.merchantType == '02') {
+    if (this.submissionClient.merchantType == 'Entrepeneur') {
       setTimeout(() => this.updateContactPoint(), 100);
     }
   }
@@ -262,7 +262,7 @@ export class StoreComponent implements AfterViewInit {
       this.currentStore.website = productStores.get("url").value;
 
       this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER; //de momento vou deixar este valor, não sei qual a condição para ser este valor ou outro
-
+      console.log("ESTRUTURA DE DADOS DA LOJA ANTES DE SER ADICIONADA ", this.currentStore);
       if (addStore) {
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
