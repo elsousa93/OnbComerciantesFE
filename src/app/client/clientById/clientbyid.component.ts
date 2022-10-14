@@ -721,8 +721,6 @@ export class ClientByIdComponent implements OnInit {
         this.clientContext.setStakeholdersToInsert([stakeholder]);
       }
 
-      this.clientContext.setClient(newSubmission.merchant); //ADICIONEI ESTA LINHA
-
       this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
         context.clientContext.submissionID = result.id;
         localStorage.setItem("submissionId", result.id);
@@ -739,8 +737,6 @@ export class ClientByIdComponent implements OnInit {
       var submissionID = this.clientContext.submissionID;
 
       var newSubmission = this.clientContext.newSubmission;
-
-      newSubmission.merchant = this.clientContext.getClient();//adicionei esta linha
 
       if (this.returned == 'edit')
         newSubmission.processNumber = localStorage.getItem("processNumber");
