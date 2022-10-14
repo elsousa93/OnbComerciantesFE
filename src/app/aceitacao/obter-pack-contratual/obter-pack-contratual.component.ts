@@ -10,6 +10,8 @@ import { AceitacaoService } from '../services/aceitacao.services';
 import { PostDocument } from '../../submission/document/ISubmission-document';
 import { ProcessService } from '../../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -42,7 +44,7 @@ export class ObterPackContratualComponent implements OnInit{
   @ViewChild('submissionModal') submissionModal;
   
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private router: Router, private modalService: BsModalService, private processService: ProcessService, public aceitacao: AceitacaoService) {
+    private router: Router, private translate: TranslateService, private snackBar: MatSnackBar, private modalService: BsModalService, private processService: ProcessService, public aceitacao: AceitacaoService) {
 
     this.ngOnInit();
   
@@ -135,6 +137,10 @@ selectFile(event: any) {
           }
           reader.readAsDataURL(files[i]);
           this.files.push(file);
+          this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         } else {
           alert("Verifique o tipo / tamanho do ficheiro");
         }

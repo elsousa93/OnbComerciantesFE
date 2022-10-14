@@ -334,7 +334,10 @@
     "documentNumber": "Document Number",
     "companyName": "Company Name",
     "openProcess": "Open Process",
-    "placeholderSearch": "Process Nr."
+    "placeholderSearch": "Process Nr.",
+    "emptyList": "No results",
+    "errorDocs": "Search for documents must be by document type and number",
+    "search300": "Too many results returned, only the first 300 will be displayed, please refine your search"
   },
   "acceptance": {
     "title": "Acceptance",
@@ -388,7 +391,8 @@
       "compliance": "Evidence of Clarification of Doubts Compliance",
       "DOValidation": "Evidence of Clarification of Doubt DO",
       "risk": "Evidence of Approval Risk",
-      "negotiationAproval": "Evidence of Business Approval"
+      "negotiationAproval": "Evidence of Business Approval",
+      "success": "Successful attachment"
     } ,
     "completed": "Complete opinion",
     "favorable": "Favorable",

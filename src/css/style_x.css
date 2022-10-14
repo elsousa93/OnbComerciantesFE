@@ -1616,3 +1616,11 @@ mat-paginator {
   position: fixed;
   /* top: 90px; */
 }
+
+.snack-bar {
+  background-color:#1e66b0;
+  color: white;
+  position: fixed;
+  top: 135px;
+  right: 108px;
+}

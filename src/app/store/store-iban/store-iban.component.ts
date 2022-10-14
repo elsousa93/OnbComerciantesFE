@@ -13,6 +13,8 @@ import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { BankInformation } from 'src/app/client/Client.interface';
 import { TableInfoService } from 'src/app/table-info/table-info.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -224,7 +226,7 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
     this.initializeForm();
@@ -310,6 +312,10 @@ export class StoreIbanComponent implements OnInit {
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
+            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
