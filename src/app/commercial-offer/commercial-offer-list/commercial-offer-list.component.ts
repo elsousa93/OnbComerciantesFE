@@ -210,8 +210,7 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.disableNewConfiguration = false;
 
-    if (this.returned != null)
-      setTimeout(() => this.setFormData(), 500);
+    setTimeout(() => this.setFormData(), 500);
 
     this.getStoreEquipsFromSubmission();
     setTimeout(() => this.storeEquipMat.data = this.storeEquipList, 1000); //tomar em atenção se esta chamada está correta
@@ -227,6 +226,13 @@ export class CommercialOfferListComponent implements OnInit {
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
       terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
+    });
+    this.form.get("isUnicre").valueChanges.subscribe(val => {
+      if (val == true) {
+        this.disableNewConfiguration = false;
+      } else {
+        this.disableNewConfiguration = true;
+      }
     });
   }
 
@@ -347,8 +353,10 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
 
-    if (!this.form.get("isUnicre").value)
+    if (!this.form.get("isUnicre").value) {
       this.form.get("terminalRegistrationNumber").setValue(null);
+      this.disableNewConfiguration = true;
+    }
 
     this.form.get("productPackKind").setValue(null);
   }

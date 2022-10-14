@@ -306,4 +306,5 @@ export class ProductSelectionComponent implements OnInit {
     this.exists = false;
     this.subProducts = [];
   }
+
 }

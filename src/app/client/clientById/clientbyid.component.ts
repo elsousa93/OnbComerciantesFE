@@ -778,12 +778,16 @@ export class ClientByIdComponent implements OnInit {
       else
         newSubmission.merchant.merchantType = '02'; //'Entrepeneur'
 
+      if (this.tipologia === 'Corporate')
+        newSubmission.merchant.merchantType = '01';
+        
       if (this.tipologia === 'ENI') {
+        newSubmission.merchant.merchantType = '02';
         var client = this.clientContext.getClient();
 
         console.log("CLIENTE A SER ADICIONADO COMO ENI: ", stakeholder);
 
-      var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
+        var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
         stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
