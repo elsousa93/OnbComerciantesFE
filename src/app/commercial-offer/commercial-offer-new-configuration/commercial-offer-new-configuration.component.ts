@@ -93,9 +93,17 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
     this.loadReferenceData();
     this.initializeForm();
 
-    if (this.store.productCode === 'cardPresent' || this.store.productCode === 'CARD PRESENT') {
-      if (this.store.supportEntity === 'acquirer') { //caso o ETA seja UNICRE
-        if (this.store.subproductCode === 'easy') {
+
+
+    this.ngOnInit();
+    
+    this.data.updateData(false, 5, 2);
+  }
+
+  disableForm() {
+    if (this.store.productCode == 'CARD PRESENT') {
+      if (this.store.supportEntity == 'acquirer') { //caso o ETA seja UNICRE
+        if (this.store.subproductCode == 'easy') {
           this.formConfig.get("terminalProperty").setValue("acquirer");
           this.formConfig.get("terminalProperty").disable();
 
@@ -105,13 +113,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
           //slide 97, não percebi qual é a exceção que deve ser feita
         }
       } else { // caso seja BANCO
-        
+
       }
     }
-
-    this.ngOnInit();
-    
-    this.data.updateData(false, 5, 2);
   }
 
   ngOnInit(): void {
@@ -151,6 +155,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       this.formConfig.get('terminalType').updateValueAndValidity();
       this.formConfig.get('communicationType').updateValueAndValidity();
       this.formConfig.get('terminalAmount').updateValueAndValidity();
+      this.disableForm();
     });
 
   }
