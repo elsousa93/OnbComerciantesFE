@@ -21,6 +21,8 @@ import { ComprovativosTemplate, IComprovativos } from './IComprovativos.interfac
 import { ComprovativosService } from './services/comprovativos.services';
 import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from '../table-info/table-info.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -200,7 +202,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     return blob;
   }
 
-  constructor(private logger: LoggerService, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
     private modalService: BsModalService, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
 
     this.baseUrl = configuration.baseUrl;
@@ -458,6 +460,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               type: 'pdf',
               uploadDate: 'desconhecido',
               file: file
+            });
+            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
             });
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");

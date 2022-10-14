@@ -15,6 +15,8 @@ import { EligibilityAssessment, ExternalState, RiskAssessment, StandardIndustryC
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { queue } from 'jquery';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -62,7 +64,7 @@ export class QueuesDetailComponent implements OnInit {
   public state: State;
   //public externalState: ExternalState;
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService) {
 
     //Gets Queue Name and processId from the Dashboard component 
@@ -297,6 +299,10 @@ export class QueuesDetailComponent implements OnInit {
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
+            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }

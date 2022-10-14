@@ -335,7 +335,10 @@
     "documentNumber": "Nº de Documento",
     "companyName": "Nome da Empresa",
     "openProcess": "Abrir Processo",
-    "placeholderSearch": "Nº processo"
+    "placeholderSearch": "Nº processo",
+    "emptyList": "Não existem resultados para esta pesquisa",
+    "errorDocs": "A pesquisa por documentos tem de ser por tipo e número de documento",
+    "search300": "Foram retornados demasiados resultados, vão ser apresentados apenas os primeiros 300, por favor redifina a pesquisa"
   },
   "acceptance": {
     "title": "Aceitação",
@@ -389,7 +392,8 @@
       "compliance": "Evidência de Esclarecimento de Dúvidas Compliance",
       "DOValidation": "Evidência de Esclarecimento de Dúvida DO",
       "risk": "Evidência de Aprovação Risco",
-      "negotiationAproval": "Evidência de Aprovação Negocial"
+      "negotiationAproval": "Evidência de Aprovação Negocial",
+      "success": "Upload efetuado com sucesso"
     } ,
     "completed": "Concluir parecer",
     "favorable": "Favorável",

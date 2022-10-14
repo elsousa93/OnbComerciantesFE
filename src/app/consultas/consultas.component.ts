@@ -13,6 +13,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AppComponent } from '../app.component';
 import { Configuration, configurationToken } from '../configuration';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Process {
   processNumber: string;
@@ -62,7 +63,7 @@ export class ConsultasComponent implements OnInit{
   ListaDocType;
 
   
-  constructor(private logger: LoggerService, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, @Inject(configurationToken) private configuration: Configuration) {
+  constructor(private logger: LoggerService, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, @Inject(configurationToken) private configuration: Configuration) {
 
     this.appComponent.toggleSideNav(false);
 
@@ -71,6 +72,11 @@ export class ConsultasComponent implements OnInit{
     //Gets ProcessNr when search on homepage does not return results 
     if (this.route.getCurrentNavigation().extras.state) {
       this.navbarProcessNumberSearch = this.route.getCurrentNavigation().extras.state["processNumber"];
+      // se entrar aqui é pq a pesquisa não tem resultados
+      this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
+        duration: 4000,
+        panelClass: ['snack-bar']
+      });
     }
 
     this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
@@ -103,7 +109,6 @@ export class ConsultasComponent implements OnInit{
         this.url += '&';
     }
   }
-
 
   searchProcess() {
     this.search = false;
@@ -141,7 +146,27 @@ export class ConsultasComponent implements OnInit{
         this.search = true;
       }
 
+      if (this.url == this.baseUrl + 'process?'){
+        this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
+      }
+
+      if (processDocType!='' && processDocNumber == '' || processDocType=='' && processDocNumber != ''){
+        this.snackBar.open(this.translate.instant('searches.errorDocs'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
+      }
+
       this.processService.advancedSearch(this.url, 0, this.processes.paginator.pageSize).subscribe(result => {
+        if (result.pagination.count > 300) {
+          this.snackBar.open(this.translate.instant('searches.search300'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        }
         let processesArray: Process[] = result.items.map<Process>((process) => {
           return {
             processNumber: process.processNumber,
@@ -150,6 +175,12 @@ export class ConsultasComponent implements OnInit{
             estado: process.state
           };
         })
+        if (processesArray.length == 0) {
+          this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        }
         this.loadProcesses(processesArray);
       }, error => {
         this.logger.debug("deu erro");

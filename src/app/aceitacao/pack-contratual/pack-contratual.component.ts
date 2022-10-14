@@ -7,6 +7,8 @@ import { Subscription, take } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { LoggerService } from 'src/app/logger.service';
+import { TranslateService } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -42,7 +44,7 @@ export class PackContratualComponent implements OnInit{
   
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
   private route: Router,
-  private router: ActivatedRoute, private modalService: BsModalService,) {
+  private router: ActivatedRoute, private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar) {
 
     this.ngOnInit();
   
@@ -95,6 +97,10 @@ selectFile(event: any) {
           }
           reader.readAsDataURL(files[i]);
           this.files.push(file);
+          this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         } else {
           alert("Verifique o tipo / tamanho do ficheiro");
         }
