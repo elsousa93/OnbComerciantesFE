@@ -147,7 +147,7 @@ export class ConsultasComponent implements OnInit{
       }
 
       if (this.url == this.baseUrl + 'process?'){
-        this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
+        this.snackBar.open(this.translate.instant('searches.emptySearch'), '', {
           duration: 4000,
           panelClass: ['snack-bar']
         });

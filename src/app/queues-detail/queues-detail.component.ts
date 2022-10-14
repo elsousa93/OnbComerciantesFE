@@ -312,6 +312,21 @@ export class QueuesDetailComponent implements OnInit {
     this.logger.debug(this.files);
   }
 
+  
+  openFile(/*url: any, imgName: any*/ file: File) {
+    let blob = new Blob([file], { type: file.type });
+    let url = window.URL.createObjectURL(blob);
+
+    window.open(url, '_blank',
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;
+      `);
+
+  }
+
   check(){
     this.checkButton = true;
   }
