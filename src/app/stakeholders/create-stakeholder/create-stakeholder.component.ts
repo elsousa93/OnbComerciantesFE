@@ -111,52 +111,7 @@ export class CreateStakeholderComponent implements OnInit {
   setAddressFalse() {
     this.addressReading = false;
   }
-  /* To Test the Read Card Functionality in case the isAlive connection fails.
-   */
-  callReadCCSimulation() {
 
-    this.dataCCcontents.nameCC = "Nome Nome2 Apelido";
-    this.dataCCcontents.nationalityCC = "Portuguesa";
-    this.dataCCcontents.cardNumberCC = "00000000"; // Nº do CC
-    this.dataCCcontents.addressCC = "Rua Primeira";
-    this.dataCCcontents.postalCodeCC = "1000-010 LISBOA";
-
-    var postalCodeX = "1000-010 LISBOA";
-
-    this.dataCCcontents.localityCC = postalCodeX.split(" ").pop();
-    if (this.dataCCcontents.localityCC == null) {
-      this.dataCCcontents.localityCC = '';
-    }
-    this.dataCCcontents.countryCC = "República Portuguesa";
-    this.countryCC = "República Portuguesa";
-
-    var stakeholderToInsert: IStakeholders = {
-      "fiscalId": this.dataCCcontents.nifCC,
-      "fullName": this.dataCCcontents.nameCC,
-      "shortName": this.dataCCcontents.nameCC,
-      "identificationDocument": {
-        "type": null,           //FIXME "CC"
-        "number": this.dataCCcontents.cardNumberCC,
-        "country": this.dataCCcontents.countryCC,
-        "expirationDate": this.dataCCcontents.expiricyDateCC,
-        "checkDigit": null     //FIXME
-      },
-      "fiscalAddress": {
-        "address": this.dataCCcontents.addressCC,
-        "postalCode": this.dataCCcontents.postalCodeCC,
-        "postalArea": this.dataCCcontents.localityCC,
-        "country": this.dataCCcontents.countryCC,
-      },
-      "phone1": {},
-      "phone2": {}
-    }
-    this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-      this.route.navigate(['/stakeholders/']); 
-    }, error => {
-      this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC Simulado");
-    });
-    console.log("Data CC Contents Simul: ", this.dataCCcontents);
-  }
   /**
    * Information from the Citizen Card will be associated to the client structure
    * em "create-stakeholder"
@@ -165,8 +120,6 @@ export class CreateStakeholderComponent implements OnInit {
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer, documentType) {
-
-    console.log("Name: ", name);
 
     this.dataCCcontents.nameCC = name;
     this.dataCCcontents.nationalityCC = nationality;
@@ -200,8 +153,6 @@ export class CreateStakeholderComponent implements OnInit {
       var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
         emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
 
-      console.log(ccArrayData);
-
       //Send to PDF without address -- type base64
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
         this.prettyPDF = resolve;
@@ -222,7 +173,6 @@ export class CreateStakeholderComponent implements OnInit {
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
         this.prettyPDF = resolve;
       });
-      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
     }
   }
 
@@ -611,9 +561,6 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   searchResultNotifier(info) {
-    console.log("Info: ", info);
-    // this.isParticularSearched = this.isParticular;
-
     if (!info.found)
       this.initializeNotFoundForm();
     else

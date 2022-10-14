@@ -207,36 +207,18 @@ export class ProductSelectionComponent implements OnInit {
 
     this.storeService.GetAllShopProducts().subscribe(result => {
       this.logger.debug(result);
-      console.log("resultado getAllShopProducts: ", result);
       this.products = result;
-      this.getProductDescriptions(this.products);
     }, error => {
       this.logger.debug("Erro");
     });
   }
 
-  //Prints Product Descriptions - for debug purposes
-  getProductDescriptions(products) {
-    console.log("getProductDescriptions");
-    var productsNames;
-    for (let i = 0; i < products.length; i++) {
-      console.log(`${i} Description:${products[i].productDescription}, code:${products[i].productCode}`)
-    }
-    return productsNames;
-  }
-
   chooseSolutionAPI(productDescription: any) {
-    console.log("recebido do front: " + productDescription);
     this.products.forEach(Prod => {
-      console.log("This Subprod: ", Prod.subProducts);
       var subProductToSearch = productDescription;
       if (subProductToSearch == Prod.productDescription) {
-        console.log("entrou no if, subProd.productDescription: ", Prod.subProducts);
         this.subProducts = Prod.subProducts;
         this.exists = true;
-        console.log("subProducts: ", this.subProducts);
-        //Add to store to be Submitted
-        // this.store.product = 
       }
     })
     if (!this.exists) {
@@ -297,12 +279,10 @@ export class ProductSelectionComponent implements OnInit {
     this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.store).subscribe(result => {
       console.log("Uma nova loja foi adicionada à submissão", result);
     });
-
     this.route.navigate(['store-comp']);
   }
 
   clearSubProducts() {
-    console.log("CHAMADA DO METODO DOS SUBPRODUTOS");
     this.exists = false;
     this.subProducts = [];
   }

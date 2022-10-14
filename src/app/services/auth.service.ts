@@ -33,8 +33,6 @@ export class AuthService implements OnDestroy {
     console.log("user template: ", this.user);
   }
 
-  
-
   GetToken() {
     return this.dataSource.getValue().token;
   }
@@ -73,7 +71,6 @@ export class AuthService implements OnDestroy {
 
   ngOnDestroy(): void {
     console.log("destruido");
-
     localStorage.setItem("auth", JSON.stringify(this.GetCurrentUser()));
   }
 

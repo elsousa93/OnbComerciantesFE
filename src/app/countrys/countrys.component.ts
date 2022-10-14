@@ -202,23 +202,16 @@ export class CountrysComponent implements OnInit {
     this.comprovativoCC = this.clientContext.comprovativoCC;
     this.crc = this.clientContext.crc;
     if (this.returned == null) {
-      console.log("update values");
       this.clientContext.currentMerchantInfo.subscribe(result => {
-        console.log("entrou no currentMerchantinfo: ", result);
-        console.log(this.form);
         if (result !== undefined && result !== null) {
           this.newSubmission.merchant = result;
           this.merchantInfo = result;
 
-          console.log("form: ", this.form);
-
-          //context.insertValues();
+          console.log("Form: ", this.form);
         }
       })
 
       this.clientContext.currentClient.subscribe(result => {
-        console.log("entrou no currentclient: ", result);
-        console.log(this.form);
         this.client = result;
       });
     } else {
@@ -260,9 +253,7 @@ export class CountrysComponent implements OnInit {
 
   insertValues() {
 
-    console.log("---- INSERT VALUES ----");
     if (this.clientExists) {
-      console.log("merchantinfo a ir buscar a informação: ", this.merchantInfo);
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
@@ -329,8 +320,6 @@ export class CountrysComponent implements OnInit {
         this.isAssociatedWithFranchise = undefined;
       }
     })
-
-
   }
 
   newSubmission: SubmissionPostTemplate = {

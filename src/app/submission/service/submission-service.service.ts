@@ -40,7 +40,6 @@ export class SubmissionService {
         response.msg = "Sucesso";
         resolve(response);
       }, error => {
-        console.log("erro que deu: ", error);
         response.result = null;
         response.msg = "Sem stakeholders";
         reject(response);
@@ -76,7 +75,6 @@ export class SubmissionService {
         response.msg = "Sucesso";
         resolve(response);
       }, error => {
-        console.log("erro que deu: ", error);
         response.result = null;
         response.msg = "Sem stakeholders";
         reject(response);
@@ -97,7 +95,6 @@ export class SubmissionService {
           resolve(requestResponse);
         },
         error: (err: any) => {
-          console.log("erro obj: ", err);
           requestResponse.result = null;
           requestResponse.error = {
             code: err.status,

@@ -146,15 +146,10 @@ export class StakeholdersComponent implements OnInit {
 
   redirectAddStakeholder() {
     this.editStakeInfo = false;
-    console.log(this.editStakes);
-    //this.route.navigate(['/create-stakeholder/']);
   }
 
   redirectInfoStakeholder() {
-    //this.selectStake({ stakeholder: null, currentIdx: 0 });
     this.editStakeInfo = true;
-    console.log(this.editStakes.get("stake"));
-    //this.route.navigate(['/add-stakeholder/']);
   }
 
   refreshPage() {
@@ -165,21 +160,12 @@ export class StakeholdersComponent implements OnInit {
     this.isNoDataReadable = readable;
   }
   ngOnInit(): void {
-    //Get Id from the store
-   // this.clientNr = Number(this.router.snapshot.params['nif']);
-   //this.form = new FormGroup({
-   //   stakeholderType: new FormControl(''),
-   //   tipoDocumento: new FormControl(''),
-   //   stakeholderNif: new FormControl(''),
-   // });
-    //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 2, 1);
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
-    // this.getStakesListLength(this.submissionStakeholders);
 
   }
 
@@ -249,24 +235,8 @@ export class StakeholdersComponent implements OnInit {
     
   }
 
-  //searchStakeholder(formStakeholderSearch) {
-  //  this.logger.debug(formStakeholderSearch);
-  //  this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
-  //    this.logger.debug(result);
-  //    this.toggleShow(result);
-  //  }, error => console.error(error));
-  //}
-
   searchStakeholder() {
-    //this.formStakeholderSearch
-    //this.logger.debug("ola");
-    //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  this.logger.debug(o);
-    //});
-
     var context = this;
-
-    /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
 
@@ -288,10 +258,6 @@ export class StakeholdersComponent implements OnInit {
         });
       })
     }, error => {
-      //context.showFoundClient = false;
-      //this.logger.debug("entrou aqui no erro huajshudsj");
-      //context.resultError = "Não existe Comerciante com esse número.";
-      //this.searchDone = true;
 
     });
   }
@@ -305,18 +271,6 @@ export class StakeholdersComponent implements OnInit {
     if (this.returned !== 'consult') {
       this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
         this.route.navigateByUrl('stakeholders/');
-        //this.ngOnInit();
-        //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
-        //this.logger.debug(index);
-        //if (index > -1) { // 
-        //  this.stakeholdersToShow.splice(index, 1);
-        //}
-        //this.logger.debug("depois de apagar");
-        //this.logger.debug(this.stakeholdersToShow);
-        //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
-        //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
-        //    this.stakeholdersToShow.splice(i, 1);
-        //}
       });
     } else {
     }
@@ -332,8 +286,6 @@ export class StakeholdersComponent implements OnInit {
             var documents = result.documents;
             context.allStakeholdersComprovativos[result.stakeholderId] = documents;
             console.log("get stake by id resposnse: ", result);
-            //context.stakeholdersComprovativos.push(result);
-
           }, error => {
             console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
           });
@@ -365,7 +317,6 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("identificationDocumentValidUntil").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate);
       stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
     }
-    console.log('FORM DOS STAKES DEPOIS DE SELECIONAR UM STAKE NOVO', stakeForm);
   }
 
   selectStake(info) {
@@ -378,10 +329,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   submit() {
-    //this.editStakes.get("stakes").updateValueAndValidity();
     var stakeForm = this.editStakes.controls["stake"];
-    console.log("Chamada do submit principal ", stakeForm.valid);
-    console.log("Form ", this.editStakes.controls["stake"]);
     if (this.returned != 'consult') {
       if (this.editStakes.controls["stake"].valid) {
 
@@ -410,8 +358,6 @@ export class StakeholdersComponent implements OnInit {
         this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
           if (this.currentIdx < (this.stakesLength - 1)) {
             this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-            //this.currentIdx = this.currentIdx + 1;
-            //this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
           } else {
             this.data.updateData(true, 2);
             this.route.navigate(['store-comp']);
@@ -424,7 +370,6 @@ export class StakeholdersComponent implements OnInit {
   }
 
   getStakesListLength(value) {
-    console.log('Tamanho da lista dos stakeholders ', value);
     this.stakesLength = value;
   }
 

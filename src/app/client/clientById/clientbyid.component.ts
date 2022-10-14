@@ -169,7 +169,6 @@ export class ClientByIdComponent implements OnInit {
 
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
-    console.log("now NIFNIPC is " + this.NIFNIPC)
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
@@ -340,8 +339,6 @@ export class ClientByIdComponent implements OnInit {
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
-    console.log('CONSTRUTOR DO CLIENT BY ID');
-
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -367,7 +364,7 @@ export class ClientByIdComponent implements OnInit {
       powerRepresentationForm: formBuilder.group({}),
     })
 
-    console.log('FORM DO CLIENT BY ID ', this.form);
+    console.log('Form do Clientbyid: ', this.form);
 
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
@@ -379,77 +376,16 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.returned != null) {
       this.getMerchantInfo().then(result => {
-        console.log('Result do getMerchantInfo', result);
+        console.log('Result do getMerchantInfo: ', result);
       });
-      //const promises = [
-      //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber"))
-      //];
-
-      //var subpromises = [];
-
-      //Promise.all(promises).then(res => {
-      //  console.log('a');
-      //  var submission = res[0].result;
-      //  console.log('Submission obtida ', submission);
-
-      //  subpromises.push(this.clientService.GetClientByIdAcquiring(submission[0].submissionId))
-
-      //  const allPromisesWithErrorHandler = subpromises.map(promise =>
-      //    promise.catch(error => error),
-      //  );
-
-      //  Promise.all(allPromisesWithErrorHandler).then(resolve => {
-
-
-
-      //    console.log("com sucesso!!! resolve ", resolve);
-      //  }, error => {
-      //    console.log("ocorreu um erro");
-      //  }).then(merchant => {
-      //    console.log('Valor do merchant ', merchant);
-      //    this.merchantInfo = merchant;
-
-      //    if (this.clientExists == undefined || this.clientExists == null) {
-      //      if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-      //        this.clientExists = true;
-      //      } else {
-      //        this.clientExists = false;
-      //      }
-      //    }
-      //    if (this.NIFNIPC === undefined) {
-      //      this.NIFNIPC = this.merchantInfo.fiscalId;
-      //    }
-      //    if (this.merchantInfo.incorporationStatement !== null) {
-      //      this.isCommercialSociety = true;
-      //      this.collectCRC = true;
-      //    } else {
-      //      if (this.merchantInfo.legalNature !== "") {
-      //        this.isCommercialSociety = false;
-      //        this.collectCRC = false;
-      //        this.tipologia === 'Company';
-      //      } else {
-      //        this.isCommercialSociety = false;
-      //        this.collectCRC = false;
-      //        this.tipologia === 'ENI';
-      //      }
-      //    }
-      //  });
-      //})
-
     }
-
-    //this.ngOnInit();
-
   }
-
-  //fim do construtor
 
   getMerchantInfo() {
     return new Promise((resolve, reject) => {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
           this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
             this.merchantInfo = res;
-            console.log("MERCHANT INFO NO CLIENT BY ID ", this.merchantInfo);
             if (this.clientExists == undefined || this.clientExists == null) {
               if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
                 this.clientExists = true;
@@ -486,8 +422,6 @@ export class ClientByIdComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
 
-    console.log('CLIENT CONTEXT ANTES DE SER CRIADO ', this.clientContext);
-
     this.clientContext = new ClientContext(
       this.tipologia,
       this.clientExists,
@@ -497,10 +431,7 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC,
     );
 
-    console.log('VALOR DO MERCHANT INFO QUE É PASSADO PARA O CLIENT CONTEXT ', this.merchantInfo);
     this.clientContext.setMerchantInfo(this.merchantInfo);
-
-    console.log("antes da pesquisa");
 
     if (this.dataCC !== undefined && this.dataCC !== null) {
       var client = {} as OutboundClient;
@@ -673,23 +604,17 @@ export class ClientByIdComponent implements OnInit {
 
   submit() {
     if (this.returned != 'consult') {
-      console.log("form valido: ", this.form);
       this.clientCharacterizationComponent.submit();
 
       if (!this.clientContext.clientExists)
         this.countriesComponent.submit();
 
       this.representationPowerComponent.submit();
-
-      console.log("submit| clientContext final: ", this.clientContext);
-
       this.updateSubmission();
     } else {
       this.route.navigateByUrl('/stakeholders');
     }
   }
-
-
   redirectBeginningClient() {
     this.route.navigate(["/client"]);
   }
@@ -781,8 +706,6 @@ export class ClientByIdComponent implements OnInit {
       if (this.tipologia === 'ENI') {
         var client = this.clientContext.getClient();
 
-        console.log("CLIENTE A SER ADICIONADO COMO ENI: ", stakeholder);
-
       var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
         stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
         stakeholder.fullName = client.legalName;
@@ -809,7 +732,6 @@ export class ClientByIdComponent implements OnInit {
   }
 
   updateSubmission() {
-    console.log(".");
 
     if (this.returned != 'consult') {
 
@@ -846,12 +768,10 @@ export class ClientByIdComponent implements OnInit {
             context.stakeholderService.UpdateStakeholder(submissionID, value.id, stakeholder);
           } else {
             context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-              console.log("adicionou: ", result);
             });
           }
         } else {
           context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-            console.log("adicionou: ", result);
           });
         }
       });

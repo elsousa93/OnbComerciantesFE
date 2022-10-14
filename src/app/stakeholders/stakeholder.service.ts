@@ -42,7 +42,6 @@ export class StakeholderService {
           resolve(requestResponse);
         },
         error: (err: any) => {
-          console.log("erro obj: ", err);
           requestResponse.result = null;
           requestResponse.error = {
             code: err.status,
@@ -76,7 +75,6 @@ export class StakeholderService {
         response.msg = "Sucesso";
         resolve(response);
       }, error => {
-        console.log("erro que deu: ", error);
         response.result = null;
         response.msg = "Sem stakeholders";
         reject(response);
@@ -85,10 +83,6 @@ export class StakeholderService {
   }
 
   GetStakeholderFromSubmission(submissionId: string, stakeholderId: string): any {
-
-    console.log("GET STAKEHOLDER FROM SUBMISSIO");
-    console.log("submissionID: ", submissionId);
-    console.log("stakeholderID: ", stakeholderId);
 
     this.logger.info(`Getting stakeholder ${stakeholderId} for submission ${submissionId}`)
     return this.http.get<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
@@ -152,31 +146,6 @@ export class StakeholderService {
     return this.APIService.callAPIOutbound(HttpMethod.GET, url, "searchId", "searchType", "requestID", "AcquiringUserID");
   }
 
-  /////////////////////////////////////////////////////
-  //getStakeholderByIDNew(stakeholderID : string) {
-  //  var url = this.urlOutbound + "api/v1/stakeholder/" + stakeholderID;
-  //  var response: TreatedResponse<any> = {};
-  //  return new Promise<TreatedResponse<any>>((resolve, reject) => {
-  //    var HTTP_OPTIONS = {
-  //      headers: new HttpHeaders({
-  //        'Accept-Language': this.currentLanguage,
-
-  //      }),
-  //    }
-  //    this.tableInfo.callAPIOutboundNew(HttpMethod.GET, url, "pesquisa", "searchtype", "ola", "userID", this.currentLanguage).then(success => {
-  //      response.result = success.result;
-  //      response.msg = "Sucesso";
-  //      resolve(response);
-  //    }, error => {
-  //      console.log("erro que deu: ", error);
-  //      response.result = null;
-  //      response.msg = "Sem stakeholders";
-  //      reject(response);
-  //    })
-  //  })
-  //}
-  /////////////////////////////////////////////////////
-
   getStakeholderByID(StakeholderID: string, requestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
 
     var URI = this.urlOutbound + "api/v1/stakeholder/" + StakeholderID;
@@ -211,8 +180,6 @@ export class StakeholderService {
     var url = this.urlOutbound + "api/v1/stakeholder/" + StakeholderID;
 
     return this.APIService.callAPIOutbound(HttpMethod.GET, url, "searchId", "searchType", "requestID", "AcquiringUserID");
-
-    //return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
 
