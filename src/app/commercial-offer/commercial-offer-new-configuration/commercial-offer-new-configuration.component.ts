@@ -93,9 +93,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
     this.loadReferenceData();
     this.initializeForm();
 
-    if (this.store.productCode == 'cardPresent' || this.store.productCode == 'CARD PRESENT') {
-      if (this.store.supportEntity == 'acquirer') { //caso o ETA seja UNICRE
-        if (this.store.subproductCode == 'easy') {
+    if (this.store.productCode === 'cardPresent' || this.store.productCode === 'CARD PRESENT') {
+      if (this.store.supportEntity === 'acquirer') { //caso o ETA seja UNICRE
+        if (this.store.subproductCode === 'easy') {
           this.formConfig.get("terminalProperty").setValue("acquirer");
           this.formConfig.get("terminalProperty").disable();
 
