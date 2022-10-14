@@ -878,9 +878,9 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.commercialName = this.form.value["socialDenomination"];
 
       if (this.client.merchantType === 'corporation')
-        this.client.merchantType = 'Corporate';
+        this.client.merchantType = '01';
       else
-        this.client.merchantType = 'Entrepeneur';
+        this.client.merchantType = '02';
     } else {
       
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
@@ -890,7 +890,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
         var natJuridicaN2 = this.form.value["natJuridicaN2"];
 
-        this.client.merchantType = 'Corporate';
+        this.client.merchantType = '01';
 
         if (natJuridicaN2 !== null)
           this.client.legalNature2 = this.form.value["natJuridicaN2"];
@@ -899,7 +899,7 @@ export class ClientCharacterizationComponent implements OnInit {
     }
     if (this.tipologia === 'ENI') {
       this.client.legalName = this.form.value["socialDenomination"];
-      this.client.merchantType = 'Entrepeneur';
+      this.client.merchantType = '02';
       if (this.dataCC !== {} && this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;
        // this.client.cardNumber(?) = this.dataCC.value["cardNumberCC"]; Nº do CC não é guardado?

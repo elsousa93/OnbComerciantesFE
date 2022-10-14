@@ -16,6 +16,7 @@ import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOff
 import { StoreTableComponent } from '../store-table/store-table.component';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
+import { ProductSelectionComponent } from '../product-selection/product-selection.component';
 
 @Component({
   selector: 'app-store-list',
@@ -80,7 +81,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private productSelectionComponent: ProductSelectionComponent) {
     this.baseUrl = configuration.baseUrl;
 
     this.editStores = this.formBuilder.group({
@@ -133,6 +134,7 @@ export class StoreComponent implements AfterViewInit {
 
 
   addStore() {
+    console.log("ACCORDION ", document.getElementById("flush-headingOne"));
     this.currentStore = new ShopDetailsAcquiring();
     this.currentStore.address = new ShopAddressAcquiring();
     this.currentStore.address.address = new FiscalAddress();
@@ -140,7 +142,7 @@ export class StoreComponent implements AfterViewInit {
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
     console.log('AO SELECIONAR PARA ADICIONAR UMA LOJA O VALOR DO CLIENT É', this.submissionClient);
-    if (this.submissionClient.merchantType == 'Entrepeneur') {
+    if (this.submissionClient.merchantType == '02') {
       console.log("ENTROU NO IF DO ENI");
       this.currentStore.manager = this.submissionClient.legalName;
       this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
@@ -237,6 +239,7 @@ export class StoreComponent implements AfterViewInit {
           this.currentStore.id = result["id"];
           this.emitInsertedStore(this.currentStore);
           this.editStores.reset();
+          this.productSelectionComponent.clearSubProducts();
         });
       } else {
         console.log('EDIT');
@@ -246,6 +249,7 @@ export class StoreComponent implements AfterViewInit {
             this.emitUpdatedStore(of({store: this.currentStore, idx: this.currentIdx }));
             this.onActivate();
             this.editStores.reset();
+            this.productSelectionComponent.clearSubProducts();
           } else {
             this.data.updateData(true, 3);
             this.route.navigate(['comprovativos']);
@@ -271,6 +275,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   onActivate() {
+
     let scrollToTop = window.setInterval(() => {
       let pos = window.pageYOffset;
       if (pos > 0) {

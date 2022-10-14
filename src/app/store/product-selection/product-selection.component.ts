@@ -300,4 +300,9 @@ export class ProductSelectionComponent implements OnInit {
 
     this.route.navigate(['store-comp']);
   }
+
+  clearSubProducts() {
+    this.exists = false;
+    this.subProducts = [];
+  }
 }

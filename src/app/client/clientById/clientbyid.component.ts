@@ -774,9 +774,9 @@ export class ClientByIdComponent implements OnInit {
         newSubmission.merchant.documentationDeliveryMethod = 'Mail';
 
       if (merchantType === 'corporation')
-        newSubmission.merchant.merchantType = 'Corporate';
+        newSubmission.merchant.merchantType = '01'; //'Corporate'
       else
-        newSubmission.merchant.merchantType = 'Entrepeneur';
+        newSubmission.merchant.merchantType = '02'; //'Entrepeneur'
 
       if (this.tipologia === 'ENI') {
         var client = this.clientContext.getClient();
