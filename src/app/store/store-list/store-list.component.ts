@@ -124,7 +124,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   selectStore(info) {
-    if (info !== null) {
+    if (info.store != null && info.idx != null) {
       this.currentStore = info.store;
       this.currentIdx = info.idx;
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
@@ -139,6 +139,13 @@ export class StoreComponent implements AfterViewInit {
     this.currentStore.bank = new ShopBank();
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
+    console.log('AO SELECIONAR PARA ADICIONAR UMA LOJA O VALOR DO CLIENT É', this.submissionClient);
+    if (this.submissionClient.merchantType == 'Entrepeneur') {
+      console.log("ENTROU NO IF DO ENI");
+      this.currentStore.manager = this.submissionClient.legalName;
+      this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
+    }
+
   }
 
   setFormData() {
@@ -147,12 +154,7 @@ export class StoreComponent implements AfterViewInit {
       infoStores.get("storeName").setValue(this.currentStore.name);
       infoStores.get("activityStores").setValue(this.currentStore.activity);
       infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
-
-      if (this.submissionClient.merchantType == 'Entrepeneur')
-        infoStores.get("contactPoint").setValue(this.submissionClient.legalName);
-      else
-        infoStores.get("contactPoint").setValue(this.currentStore.manager);
-
+      infoStores.get("contactPoint").setValue(this.currentStore.manager);
       infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
       infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
       infoStores.get("addressStore").setValue(this.currentStore.address.address.address);

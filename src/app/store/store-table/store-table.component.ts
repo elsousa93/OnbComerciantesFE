@@ -66,7 +66,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes["updatedStoreEvent"]) {
+    if (changes["updatedStoreEvent"] && this.updatedStoreEvent != null) {
       this.updatedStoreEvent.subscribe(result => {
         var nextIdx = result.idx;
         this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
@@ -160,8 +160,9 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.getStoreListFromSubmission().then(result => {
       this.getStoreListFromProcess().then(result => {
         this.loadStores(this.storesList);
-        this.emitSelectedStore(this.storesList[0], 0);
         this.listLengthEmitter.emit(this.storesList.length);
+        if (this.storesList.length > 0)
+          this.emitSelectedStore(this.storesList[0], 0);
       })
     });
     //this.loadStores(this.storesList);

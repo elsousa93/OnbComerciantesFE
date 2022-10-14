@@ -291,6 +291,7 @@ export class StoreIbanComponent implements OnInit {
   }
 
   selectFile(event: any) {
+    this.files = [];
     this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento: "01-08-2022" }
     this.newStore.id = 1;
     this.newStore.iban = "teste";
@@ -332,6 +333,20 @@ export class StoreIbanComponent implements OnInit {
 
   updateForm() {
     this.formStores.get('supportBank').setValue(this.bank);
+  }
+
+  openFile(/*url: any, imgName: any*/ file: File) {
+    let blob = new Blob([file], { type: file.type });
+    let url = window.URL.createObjectURL(blob);
+
+    window.open(url, '_blank',
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;
+      `);
+
   }
 
 }
