@@ -53,43 +53,30 @@ export class SearchStakeholdersComponent implements OnInit {
   ngOnInit() {
     var context = this;
     this.eventsSubscription = this.clientID.subscribe(result => {
-      console.log("entrou no clientID: ", result);
       context.searchStakeholders(result);
     });
   }
 
   searchStakeholders(clientID) {
-    console.log("entrou na pesquisa de um stakeholder");
+    console.log("A pesquisar um stakeholder");
     var context = this;
     var stakeholder = null;
-    /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery(clientID, "por mudar", this.UUIDAPI, "2").then(res => {
-      console.log("a");
       var clients = res.result;
-
-      //context.isShown = true;
-
       if (clients.length > 0) {
-        //context.deactivateNotFoundForm();
-
         context.stakeholdersToShow = [];
-
         var subpromises = [];
         clients.forEach(function (value, index) {
-          console.log("b");
           subpromises.push(context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar"));
         });
-
         const allPromisesWithErrorHandler = subpromises.map(promise =>
           promise.catch(error => error)
          );
 
         Promise.all(allPromisesWithErrorHandler).then(res => {
-          console.log("c");
           var stake = res;
 
           stake.forEach(function (value, idx) {
-            console.log("d");
             var stakeInfo = value.result;
             stakeholder = {
               "stakeholderNumber": stakeInfo.stakeholderId,
@@ -98,37 +85,20 @@ export class SearchStakeholdersComponent implements OnInit {
               "elegible": "elegivel",
               "associated": "SIM"
             } as IStakeholders;
-            console.log('Dentro do forEach, valor de um stake ', stakeholder);
-            console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
 
             context.stakeholdersToShow.push(stakeholder);
             console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
-
           });
         }, error => {
-          console.log('ocorreu um erro!');
+          console.log('ocorreu um erro');
         }).then(res => {
-          console.log("nao encontrou!!");
+          console.log("Não encontrou o stakeholder");
           context.foundStakeholders = true;
           context.searchAditionalInfoEmitter.emit({
             found: true,
             errorMsg: ''
           });
         });
-
-        //context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-        //  var stakeholder = {
-        //    "stakeholderNumber": c.stakeholderId,
-        //    "stakeholderName": c.shortName,
-        //    "stakeholderNIF": c.fiscalIdentification.fiscalId,
-        //    "elegible": "elegivel",
-        //    "associated": "SIM"
-        //  } as IStakeholders;
-        //  console.log('Dentro do forEach, valor de um stake ', stakeholder);
-        //  console.log('Valor do stakeholderNIF ', stakeholder["stakeholderNIF"]);
-        //  context.stakeholdersToShow.push(stakeholder);
-        //  console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
-        //});
       } else {
         console.log("sem resultados");
         context.stakeholdersToShow = [];
@@ -148,7 +118,7 @@ export class SearchStakeholdersComponent implements OnInit {
       });
     });
 
-    console.log('passou pela pesquisa e o valor encontrado foi ', this.stakeholdersToShow);
+    console.log('Efetuou a pesquisa e o valor encontrado foi ', this.stakeholdersToShow);
   }
 
   selectStakeholder(stakeholder, index) {
@@ -158,7 +128,7 @@ export class SearchStakeholdersComponent implements OnInit {
     });
 
     this.currentStakeholder = stakeholder;
-    console.log(this.currentStakeholder);
+    console.log('Current stakeholder', this.currentStakeholder);
   }
   
   ngOnChanges(){

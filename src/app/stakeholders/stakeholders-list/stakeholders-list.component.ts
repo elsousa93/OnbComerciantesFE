@@ -38,7 +38,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       });
     }
     if (changes["updatedStakeholderEvent"]) {
-      console.log("CHANGES NO UPDATE STAKEHOLDER ");
       this.updatedStakeholderEvent?.subscribe(result => {
         var nextIdx = result.idx + 1;
         this.emitSelectedStakeholder(this.submissionStakeholders[nextIdx], nextIdx);
@@ -81,22 +80,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   displayedColumns: string[] = ['stakeholderAcquiring.shortName', 'stakeholderAcquiring.fiscalId', 'entityType', 'relationType', 'elegible', 'stakeholderAcquiring.stakeholderId', 'stakeholderAcquiring.isProxy', 'delete'];
 
-  //subStakeholders: StakeholdersCompleteInformation[] = [];
-
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
     console.log("Valor do submissionId no INIT ", this.submissionId);
     this.getSubmissionStakeholders();
-    //setTimeout(() => this.stakesMat.data = this.submissionStakeholders, 2000);
-    //this.selectedStakeholder = this.submissionStakeholders[0];
-    //console.log('o current stake é ', this.selectedStakeholder);
   }
 
   ngAfterViewInit(): void {
-    //this.stakesMat.data = this.submissionStakeholders;
-    // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
-    
   }
 
   getSubmissionStakeholders() {
@@ -124,63 +115,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }
 
     this.getSubmissionStakeholdersTest();
-    //this.getSubmissionStakeholdersAux();
-
-    //if (this.submissionId !== null) {
-    //  this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-    //    var results = result.result;
-    //    results.forEach(function (value, index) {
-    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-    //        var AcquiringStakeholder = result;
-    //        var stakeholderToInsert = {
-    //          displayName: '',
-    //          eligibility: false,
-    //          stakeholderAcquiring: AcquiringStakeholder,
-    //          stakeholderOutbound: undefined
-    //        }
-
-    //        var tempStakeholderID = "75c99155-f3a8-45e2-9bd3-56a39d8a68ae";
-
-    //        context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
-    //          stakeholderToInsert.stakeholderOutbound = outboundResult;
-    //          context.submissionStakeholders.push(stakeholderToInsert);
-
-    //        })
-    //        //context.submissionStakeholders.push({
-    //        //  displayName: '',
-    //        //  eligibility: false,
-    //        //  stakeholderAcquiring: result,
-    //        //  stakeholderOutbound: undefined
-    //        //});
-    //        console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
-    //      }, error => {
-    //      });
-    //    });
-    //  }, error => {
-    //  });
-    //}
-
-    //if (this.submissionId !== null) {
-    //  console.log("submission: ", this.submissionId);
-    //  this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-    //    var allSubmissionStakeholders = result;
-    //    console.log("todos os stakeholders: ", allSubmissionStakeholders);
-    //    allSubmissionStakeholders.forEach(function (value, index) {
-    //      var submissionStakeholder = value;
-    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, submissionStakeholder.id).subscribe(result => {
-    //        var AcquiringStakeholder = result;
-    //        console.log("info stakeholder: ", AcquiringStakeholder);
-    //        context.subStakeholders.push({
-    //          displayName: '',
-    //          stakeholderAcquiring: result,
-    //          stakeholderOutbound: undefined,
-    //          elegibility: false
-    //        })
-    //      });
-    //    });
-    //  })
-    //}
-
   }
 
   async getSubmissionStakeholdersAux() {
@@ -189,11 +123,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     console.log('Valor do localStorage ', localStorage.getItem("submissionId"));
     if (this.submissionId != null) {
       await this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        console.log("a");
         var results = result.result;
         results.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
-            console.log("b");
             var AcquiringStakeholder = res;
             var stakeholderToInsert = {
               displayName: '',
@@ -201,31 +133,16 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
               stakeholderAcquiring: AcquiringStakeholder,
               stakeholderOutbound: undefined
             }
-            //context.submissionStakeholders.push(stakeholderToInsert);
-
-            //context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
-            //  stakeholderToInsert.stakeholderOutbound = outboundResult;
-            //  context.submissionStakeholders.push(stakeholderToInsert);
-
-            //})
-
             console.log("stakeholder acquiring: ", AcquiringStakeholder);
             if (AcquiringStakeholder.id != null) {
-              console.log("c");
-              //var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "por mudar", "por mudar").toPromise();
-
               context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(success => {
                 stakeholderToInsert.stakeholderOutbound = success.result;
               }, error => {
                 console.log("Foi rejeitado: ", error);
               }).then(success => {
-                console.log("vai adicionar: ", context.submissionStakeholders);
                 console.log("stakeholder a adicionar: ", stakeholderToInsert);
                 context.submissionStakeholders.push(stakeholderToInsert);
-
-                console.log("adicionou a lista?: ", context.submissionStakeholders);
               });
-              console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
             }
 
           }, error => {
@@ -233,14 +150,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         });
       }, error => {
       }).then(success => {
-        console.log("d");
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
         context.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0});
         console.log('o current stake é ', context.selectedStakeholder);
       }, error => {
-        console.log("e");
         console.log('Foi rejeitado ', error);
       });
     }
@@ -251,7 +166,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
     return new Promise((resolve, reject) => {
       context.stakeholderService.GetStakeholderFromSubmissionTest(submissionID, stakeholderID).then(res => {
-        console.log("c");
         var AcquiringStakeholder = res.result;
         var stakeholderToInsert = {
           displayName: AcquiringStakeholder.shortName,
@@ -262,14 +176,11 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
 
         if (AcquiringStakeholder.id != null) {
-          console.log("d");
-          //var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "por mudar", "por mudar").toPromise();
           context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(res => {
-            console.log("e");
             stakeholderToInsert.stakeholderOutbound = res.result;
             resolve(null);
           }, rej => {
-            console.log("nao foi possivel carregar");
+            console.log("não foi possivel carregar");
             resolve(null);
           }).then(res => {
             context.submissionStakeholders.push(stakeholderToInsert);
@@ -293,7 +204,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     var subpromises = [];
 
     Promise.all(promises).then(res => {
-      console.log("a");
       var stakeholders = res[0].result;
 
       stakeholders.forEach(function (value, index) {
@@ -305,76 +215,17 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       );
 
       Promise.all(allPromisesWithErrorHandler).then(resolve => {
-        console.log("com sucesso!!!");
+        console.log("Sucesso");
       }, error => {
         console.log("ocorreu um erro");
       }).then(stakeholderInfo => {
-          console.log("acabou de preencher: ", context.submissionStakeholders);
+          console.log("Preenchido: ", context.submissionStakeholders);
           this.selectedStakeholder = context.submissionStakeholders[0];
           this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
           this.listLengthEmitter.emit(context.submissionStakeholders.length);
           this.loadStakeholders(context.submissionStakeholders);
       });
     })
-
-    //console.log('Valor do submission id dentro da chamada do getSubmissionStakeholdersAux', this.submissionId);
-    //console.log('Valor do localStorage ', localStorage.getItem("submissionId"));
-    //if (this.submissionId != null) {
-    //  this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-    //    console.log("a");
-    //    var results = result.result;
-    //    results.forEach(function (value, index) {
-    //      context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
-    //        console.log("b");
-    //        var AcquiringStakeholder = res;
-    //        var stakeholderToInsert = {
-    //          displayName: '',
-    //          eligibility: false,
-    //          stakeholderAcquiring: AcquiringStakeholder,
-    //          stakeholderOutbound: undefined
-    //        }
-    //        //context.submissionStakeholders.push(stakeholderToInsert);
-
-    //        //context.stakeholderService.getStakeholderByID(tempStakeholderID/*AcquiringStakeholder.stakeholderId*/, "por mudar", "por mudar").subscribe(outboundResult => {
-    //        //  stakeholderToInsert.stakeholderOutbound = outboundResult;
-    //        //  context.submissionStakeholders.push(stakeholderToInsert);
-
-    //        //})
-
-    //        console.log("stakeholder acquiring: ", AcquiringStakeholder);
-    //        if (AcquiringStakeholder.id != null) {
-    //          console.log("c");
-    //          //var stakeholderFunction = context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "por mudar", "por mudar").toPromise();
-
-    //          context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(success => {
-    //            stakeholderToInsert.stakeholderOutbound = success.result;
-    //          }, error => {
-    //            console.log("Foi rejeitado: ", error);
-    //          }).then(success => {
-    //            console.log("vai adicionar: ", context.submissionStakeholders);
-    //            console.log("stakeholder a adicionar: ", stakeholderToInsert);
-    //            context.submissionStakeholders.push(stakeholderToInsert);
-
-    //            console.log("adicionou a lista?: ", context.submissionStakeholders);
-    //          });
-    //          console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
-    //        }
-
-    //      }, error => {
-    //      });
-    //    });
-    //  }, error => {
-    //  }).then(success => {
-    //    console.log("d");
-    //    context.listLengthEmitter.emit(context.submissionStakeholders.length);
-    //    context.loadStakeholders(context.submissionStakeholders);
-    //    context.selectedStakeholder = context.submissionStakeholders[0];
-    //    console.log('o current stake é ', context.selectedStakeholder);
-    //  }, error => {
-    //    console.log("e");
-    //    console.log('Foi rejeitado ', error);
-    //  });
-    //}
   }
 
   emitSelectedStakeholder(stakeholder, idx) {
@@ -387,7 +238,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   loadStakeholders(stakesList: StakeholdersCompleteInformation[]) {
     this.stakesMat.data = stakesList;
-    // this.stakesMat.paginator = this.paginator;
     this.stakesMat.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'stakeholderAcquiring.shortName': return item.stakeholderAcquiring.shortName;
@@ -421,9 +271,5 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }, error => {
       console.log("error: ", error);
     });
-
-    //this.reloadCurrentRoute();
-
   }
-
 }

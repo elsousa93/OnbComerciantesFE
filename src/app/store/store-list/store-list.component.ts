@@ -214,7 +214,6 @@ export class StoreComponent implements AfterViewInit {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
         this.emitRemovedStore(this.currentStore);
-        //this.route.navigateByUrl('store-comp/');
       });
     }
   }
@@ -265,7 +264,6 @@ export class StoreComponent implements AfterViewInit {
       this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER; //de momento vou deixar este valor, não sei qual a condição para ser este valor ou outro
 
       if (addStore) {
-        console.log('ADD');
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
@@ -275,7 +273,6 @@ export class StoreComponent implements AfterViewInit {
           this.closeAccordion();
         });
       } else {
-        console.log('EDIT');
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
           if (this.currentIdx < (this.storesLength - 1)) {

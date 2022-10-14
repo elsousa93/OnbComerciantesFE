@@ -30,7 +30,7 @@ export class AuthComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.authForm);
+    console.log("Form da autenticação: " + this.authForm);
 
     if (this.authForm.invalid) {
       return;
@@ -48,8 +48,6 @@ export class AuthComponent implements OnInit {
       user.token = result.access_token;
 
        this.authService.changeUser(user);
-
-       console.log(this.authService);
 
        this.router.navigate(['/']);
     });
@@ -73,7 +71,7 @@ export class AuthComponent implements OnInit {
     
     this.authService.changeUser(user);
 
-    console.log(this.authService);
+    console.log("Form da autenticação: " + this.authService);
 
     this.router.navigate(['/']);
   
@@ -84,7 +82,7 @@ export class AuthComponent implements OnInit {
   getAccessToken() {
     this.openDiv = true;
     this.getsToken = this.token.getAccessToken();
-    console.log(this.getsToken);
+    console.log("Token de acesso: " + this.getsToken);
 
   }
 

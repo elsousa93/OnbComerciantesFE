@@ -4,16 +4,16 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { CommunicationOwnershipTypeEnum, EquipmentOwnershipTypeEnum, Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
+import { Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { MerchantCatalog, MerchantContextEnum, Product, ProductPackAttribute, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackKindEnum, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { MerchantCatalog, Product, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
@@ -87,7 +87,6 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //this.storesMat = new MatTableDataSource();
     this.storesOfferMat.paginator = this.paginator;
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
@@ -240,12 +239,10 @@ export class CommercialOfferListComponent implements OnInit {
     var context = this;
 
     this.groupsList.forEach(function (value, idx) {
-      console.log(value)
       var group = new FormGroup({});
       var attributes = value.attributes;
 
       attributes.forEach(function (value, idx) {
-        console.log(value);
         group.addControl(("formControl" + value.id), new FormControl(value.originalValue));
 
         if (value.bundles !== undefined && value.bundles !== null) {
@@ -253,11 +250,9 @@ export class CommercialOfferListComponent implements OnInit {
           var bundle = value.bundles;
 
           bundle.forEach(function (value, idx) {
-            console.log(value);
             var bundleAttributes = value.attributes;
 
             bundleAttributes.forEach(function (value, idx) {
-              console.log(value);
               attributeGroup.addControl(("formControl" + value.id), new FormControl(value.originalValue));
             });
             group.addControl("formGroup" + value.id, attributeGroup);
@@ -388,16 +383,6 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
-  //   if (this.returned != 'consult') {
-  //     if (this.currentIdx < (testValues.length - 1)) {
-  //       this.currentIdx = this.currentIdx + 1;
-  //       this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
-  //       this.onActivate();
-  //     } else {
-        //this.data.updateData(true, 5);
-        //this.route.navigate(['info-declarativa']);
-  //     }
-  //   }
 
     this.commissionAttributeList.forEach(commission => {
       var currentValue = this.form.controls["commission" + commission.id];

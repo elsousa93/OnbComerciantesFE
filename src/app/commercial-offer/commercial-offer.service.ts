@@ -31,13 +31,9 @@ export class CommercialOfferService {
 
     return new Promise<TreatedResponse<Product[]>>((resolve, reject) => {
       this.tableInfo.callAPIOutbound(HttpMethod.GET, URI, "por mudar", "por mudar", "por mudar", "por mudar").then(success => {
-        console.log("success: ", success);
-
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
-
         resolve(treatedResponse);
-
       }, error => {
         treatedResponse.result = null;
         treatedResponse.msg = "Codigo errado";
@@ -53,13 +49,9 @@ export class CommercialOfferService {
 
     return new Promise<TreatedResponse<ProductPackEntry[]>>((resolve, reject) => {
       this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
-        console.log("success: ", success);
-
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
-
         resolve(treatedResponse);
-
       }, error => {
         treatedResponse.result = null;
         treatedResponse.msg = "Codigo errado";
@@ -75,13 +67,9 @@ export class CommercialOfferService {
 
     return new Promise<TreatedResponse<ProductPack>>((resolve, reject) => {
       this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
-        console.log("success: ", success);
-
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
-
         resolve(treatedResponse);
-
       }, error => {
         treatedResponse.result = null;
         treatedResponse.msg = "Codigo errado";
@@ -96,19 +84,15 @@ export class CommercialOfferService {
     var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
     return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
-          this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
-            console.log("success: ", success);
-
-            treatedResponse.result = success.result;
-            treatedResponse.msg = "sucesso";
-
-            resolve(treatedResponse);
-
-          }, error => {
-            treatedResponse.result = null;
-            treatedResponse.msg = "Codigo errado";
-          });
-        });
+      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
+        treatedResponse.result = success.result;
+        treatedResponse.msg = "sucesso";
+        resolve(treatedResponse);
+      }, error => {
+        treatedResponse.result = null;
+        treatedResponse.msg = "Codigo errado";
+      });
+    });
 
   }
 
@@ -119,19 +103,15 @@ export class CommercialOfferService {
     var treatedResponse: TreatedResponse<ProductPackPricing> = {};
 
     return new Promise<TreatedResponse<ProductPackPricing>>((resolve, reject) => {
-          this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
-            console.log("success: ", success);
-
-            treatedResponse.result = success.result;
-            treatedResponse.msg = "sucesso";
-
-            resolve(treatedResponse);
-
-          }, error => {
-            treatedResponse.result = null;
-            treatedResponse.msg = "Codigo errado";
-          });
-        });
+      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
+        treatedResponse.result = success.result;
+        treatedResponse.msg = "sucesso";
+        resolve(treatedResponse);
+      }, error => {
+        treatedResponse.result = null;
+        treatedResponse.msg = "Codigo errado";
+      });
+    });
   }
 
 
@@ -141,19 +121,15 @@ export class CommercialOfferService {
     var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
     return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
-          this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
-            console.log("success: ", success);
-
-            treatedResponse.result = success.result;
-            treatedResponse.msg = "sucesso";
-
-            resolve(treatedResponse);
-
-          }, error => {
-            treatedResponse.result = null;
-            treatedResponse.msg = "Codigo errado";
-          });
-        });
+      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
+        treatedResponse.result = success.result;
+        treatedResponse.msg = "sucesso";
+        resolve(treatedResponse);
+      }, error => {
+        treatedResponse.result = null;
+        treatedResponse.msg = "Codigo errado";
+      });
+    });
   }
 
   GetProductCommercialPackCommission(packId: string, commissionId: string, productPackCommissionFilter: ProductPackCommissionFilter) {
@@ -163,18 +139,13 @@ export class CommercialOfferService {
 
     return new Promise<TreatedResponse<ProductPackCommission>>((resolve, reject) => {
       this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
-        console.log("success: ", success);
-
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
-
         resolve(treatedResponse);
-
       }, error => {
         treatedResponse.result = null;
         treatedResponse.msg = "Codigo errado";
       });
     });
-
   }
 }

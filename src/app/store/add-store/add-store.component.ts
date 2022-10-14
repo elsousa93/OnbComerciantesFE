@@ -250,11 +250,6 @@ export class AddStoreComponent implements OnInit {
       this.Countries = res;
     })
   }
-
-  //updateForm() {
-  //  this.formStores.get("contactPoint").setValue((this.submissionClient.merchantType === 'Entrepeneur') ? this.submissionClient.legalName : '', Validators.required);
-  //}
-
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
@@ -295,14 +290,6 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    //this.clientService.GetClientByIdAcquiring(this.submissionId).then(client => {
-
-    //  this.submissionClient = client;
-
-    //  this.logger.debug("cliente da submissao: " + this.submissionClient);
-    //  this.updateForm();
-    //});
-
     this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       this.activities = result;
@@ -313,8 +300,6 @@ export class AddStoreComponent implements OnInit {
 
     this.storeService.GetAllShopProducts().subscribe(result => {
       this.logger.debug(result);
-      console.log("resultado: ", result);
-
       this.products = result;
     }, error => {
       this.logger.debug("Erro");
@@ -343,11 +328,6 @@ export class AddStoreComponent implements OnInit {
       /*Update Address according to the default from Client*/
       this.auxAddress = this.store.address.address.address;
       this.store.address.address.address = this.commAddress;
-
-      /*Update IP according to the default from Client*/
-      //this.auxIP = this.store.fixedIP;
-      //this.store.fixedIP = this.commIP;
-      /*Update Locale according to the default from Client*/
 
       this.auxLocal = this.store.address.address.postalArea;
       this.store.address.address.postalArea = this.commLocal;
@@ -405,9 +385,6 @@ export class AddStoreComponent implements OnInit {
 
   submit() {
     this.store.name = this.formStores.get("storeName").value;
-    //if (this.submissionClient?.merchantType == 'Entrepreneur')
-    //  this.store.manager = this.submissionClient.legalName; // caso o cliente seja ENI, o nome do ponto de contacto fica com o nome do comerciante
-    //else
       this.store.manager = this.formStores.get("contactPoint").value;
 
     this.store.activity = this.formStores.get("activityStores").value;
@@ -475,7 +452,6 @@ export class AddStoreComponent implements OnInit {
         var zipCode = zipcode.split('-');
 
         this.tableData.GetAddressByZipCodeTeste(Number(zipCode[0]), Number(zipCode[1])).then(success => {
-          console.log(success);
           var address = success.result;
           var addressToShow = address[0];
 
@@ -541,25 +517,12 @@ export class AddStoreComponent implements OnInit {
     })
     this.formStores.get("activityStores").valueChanges.subscribe(v => {
       this.onActivitiesSelected();
-      console.log("Já saiu do activities selected")
-      console.log("Subactivities length: " + this.subActivities.length);
       if (this.subActivities.length > 0)
         this.formStores.controls["subactivityStore"].setValidators([Validators.required]);
       else
         this.formStores.controls["subactivityStore"].clearValidators();
       this.formStores.controls["subactivityStore"].updateValueAndValidity();
     });
-
-    /*this.formStores.get("productStores").valueChanges.subscribe(v => {
-      this.onProductsSelected();
-      console.log("Já saiu do products selected")
-      console.log("SubProducst length: " + this.subProducts.length);
-      if (this.subProducts.length > 0)
-        this.formStores.controls["subProductsStore"].setValidators([Validators.required]);
-      else
-        this.formStores.controls["subProductsStore"].clearValidators();
-      this.formStores.controls["subProductsStore"].updateValueAndValidity();
-    });*/
   }
 
   comercialCentre(isCentre: boolean) {
@@ -583,9 +546,6 @@ export class AddStoreComponent implements OnInit {
 
   onActivitiesSelected() {
     var exists = false;
-
-    console.log("entrei no activies selected")
-
     this.activities.forEach(act => {
       var actToSearch = this.formStores.get('activityStores').value;
       if (actToSearch == act.activityCode) {
@@ -601,13 +561,10 @@ export class AddStoreComponent implements OnInit {
   onProductsSelected() {
     var exists = false;
 
-    console.log("product selected")
-
     this.products.forEach(prod => {
       var prodToSearch = this.formStores.get('activityStores').value;
       if (prodToSearch == prod.productCode) {
         exists = true;
-        // this.subProducts = prod.code;
       }
     })
     if (!exists) {

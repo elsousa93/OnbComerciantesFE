@@ -74,7 +74,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
           console.log("stakeholder adicionado com sucesso");
           context.submissionStakeholders.push(res);
         }, error => {
-          console.log("deu erro");
+          console.log("Erro a adicionar stakeholder");
         });
       });
     }, error => {

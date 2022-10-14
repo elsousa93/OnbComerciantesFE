@@ -214,37 +214,18 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.submissionService.GetSubmissionByID(result[0].submissionId).then(resul => {
           this.documentService.GetSubmissionDocuments(resul.id).subscribe(res => {
             var documents = res;
-            console.log("Lista inicial ", res);
 
             documents.forEach(function (value, index) {
               var document = value;
-              console.log("Cada documento ", document);
-              //context.logger.debug("Documento do for");
-              //context.logger.debug(document);
-
-              //if (document.documentPurpose === 'crcPDF') {
-              //context.logger.debug("encontrou!!!!");
               context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-                //context.logger.debug("entrou no document get image!!!");
-                //context.logger.debug(res)
-                console.log("imagem de um documento ", res);
                 var teste = await res.blob();
-                //context.logger.debug(teste);
-                console.log('teste ', teste);
-
                 teste.lastModifiedDate = new Date();
                 teste.name = "nome";
 
                 context.file = <File>teste;
-
-                //context.logger.debug("ficheiro tratado");
-                //context.logger.debug(context.file);
                 console.log("Ficheiro encontrado ", context.file);
 
                 context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
-
-                  console.log("Value do purpose ", val);
-
                   context.compsToShow.push({
                     id: document.id,
                     type: "pdf",
@@ -276,71 +257,31 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             });
           });
         });
-      }); 
+      });
     }
 
     this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
       this.submission = result;
       this.logger.debug('Submission ' + result);
 
-      //this.crcService.getCRC('001', '001').subscribe(result => {
-
-      //  this.logger.debug("--------- CRC SERVICE ---------");
-      //  var crcResult = result;
-      //  var crcFile = this.b64toBlob(crcResult.pdf, "application/pdf", 512);
-
-      //  crcFile["lastModifiedDate"] = new Date();
-      //  crcFile["name"] = "crc pdf";
-
-      //  this.logger.debug("!!! crc file !!!");
-      //  this.logger.debug(crcFile);
-
-      //  this.compsToShow.push({
-      //    type: "pdf",
-      //    expirationDate: "2024-10-10",
-      //    stakeholder: "Manuel",
-      //    status: "não definido",
-      //    uploadDate: "2020-10-10",
-      //    file: <File>crcFile
-      //  });
-
-      //  this.logger.debug(this.compsToShow);
-      //});
-
       this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
         var documents = res;
-        console.log("Lista inicial ", res);
-
         documents.forEach(function (value, index) {
           var document = value;
-          console.log("Cada documento ", document);
-          //context.logger.debug("Documento do for");
-          //context.logger.debug(document);
-
-          //if (document.documentPurpose === 'crcPDF') {
-          //context.logger.debug("encontrou!!!!");
           context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-            //context.logger.debug("entrou no document get image!!!");
-            //context.logger.debug(res)
             console.log("imagem de um documento ", res);
             var teste = await res.blob();
-            //context.logger.debug(teste);
-            console.log('teste ', teste);
 
             teste.lastModifiedDate = new Date();
             teste.name = "nome";
 
             context.file = <File>teste;
-
-            //context.logger.debug("ficheiro tratado");
-            //context.logger.debug(context.file);
             console.log("Ficheiro encontrado ", context.file);
 
             context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
 
-              console.log("Value do purpose ", val);
               var index = context.compsToShow.findIndex(value => value.id == document.id);
-              if (index == -1) { 
+              if (index == -1) {
                 context.compsToShow.push({
                   id: document.id,
                   type: "pdf",
@@ -355,7 +296,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               console.log("Lista de comprovativos ", context.compsToShow);
             });
           });
-          //}
         });
       });
 
@@ -370,7 +310,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
           this.logger.debug('Stakeholder ' + result);
           var index = this.stakeholdersList.findIndex(s => s.id == result.id);
-          if(index == -1)
+          if (index == -1)
             this.stakeholdersList.push(result);
         }, error => {
           this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
@@ -448,27 +388,27 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
-          if (event.target.files && files[i]) {
-            var reader = new FileReader();
-            reader.readAsDataURL(files[i]);
-            this.files.push(file);
-            this.compsToShow.push({
-              expirationDate: 'desconhecido',
-              stakeholder: 'desconhecido',
-              status: 'desconhecido',
-              type: 'pdf',
-              uploadDate: 'desconhecido',
-              file: file
-            });
-            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-            });
-          } else {
-            alert("Verifique o tipo / tamanho do ficheiro");
-          }
+      if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+        if (event.target.files && files[i]) {
+          var reader = new FileReader();
+          reader.readAsDataURL(files[i]);
+          this.files.push(file);
+          this.compsToShow.push({
+            expirationDate: 'desconhecido',
+            stakeholder: 'desconhecido',
+            status: 'desconhecido',
+            type: 'pdf',
+            uploadDate: 'desconhecido',
+            file: file
+          });
+          this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        } else {
+          alert("Verifique o tipo / tamanho do ficheiro");
         }
+      }
     }
     this.logger.debug(this.files);
   }
@@ -504,9 +444,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   onDelete(file: File, documentID) {
     this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
-      console.log("Sucesso: ", sucess.msg);
+      console.log("Sucesso a apagar um documento: ", sucess.msg);
     }, error => {
-      console.log("Erro: ", error.msg);
+      console.log("Erro a apagar um ficheiro: ", error.msg);
     });
 
     this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
@@ -536,17 +476,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
 
     this.fileToDelete = null;
-    //this.compService.delFile(this.id).subscribe(data => {
-    //  this.logger.debug("DATA: " + data);
-    //  if (data != null) {
-    //    alert("Ficheiro apagado com sucesso!!");
-    //    this.load();
-    //  }
-    //},
-    //  err => {
-    //    console.error(err);
-    //  }
-    //)
 
   }
 
@@ -664,7 +593,4 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       reader.readAsArrayBuffer(file)
     })
   }
-
-
 }
-

@@ -117,7 +117,6 @@ export class QueuesDetailComponent implements OnInit {
   getStakeholderInfo(processId, stakeholderId) {
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessStakeholderDetails(processId, stakeholderId).then(res => {
-        console.log("stakeholder iter");
         var stakeholder = res.result;
         var stakeholderGroup = this.form.get('stakeholdersEligibility') as FormGroup;
 
@@ -133,14 +132,12 @@ export class QueuesDetailComponent implements OnInit {
     var currentLength = 0;
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
-        console.log("stakeholders");
         var stakeholders = result.result;
         var totalLength = stakeholders.length;
 
         var stakeholderInfoPromises = [];
 
         stakeholders.forEach(value => {
-          console.log("stakeholder");
           // Obter o detalhe dos stakeholders
           stakeholderInfoPromises.push(this.getStakeholderInfo(this.processId, value.id));
         });
@@ -347,15 +344,12 @@ export class QueuesDetailComponent implements OnInit {
       queueModel.stakeholderAssessment = [];
 
       for (const cont in stakeholders.controls) {
-        console.log("Control dentro do group: ", cont);
         const control = this.form.get("stakeholdersEligibility").get(cont);
-        console.log("valor do control: ", control.value);
         queueModel.stakeholderAssessment.push({
           stakeholderId: cont,
           accepted: control.value
         });
       }
-      console.log("Queue model final: ", queueModel);
       queueModel.merchantAssessment = {
         accepted: true,
         merchantId: null
@@ -372,15 +366,12 @@ export class QueuesDetailComponent implements OnInit {
       queueModel.stakeholderAssessment = [];
 
       for (const cont in stakeholders.controls) {
-        console.log("Control dentro do group: ", cont);
         const control = this.form.get("stakeholdersEligibility").get(cont);
-        console.log("valor do control: ", control.value);
         queueModel.stakeholderAssessment.push({
           stakeholderId: cont,
           accepted: control.value
         });
       }
-      console.log("Queue model final: ", queueModel);
       queueModel.merchantAssessment = {
         accepted: true,
         merchantId: null
@@ -397,9 +388,7 @@ export class QueuesDetailComponent implements OnInit {
 
 
       for (const cont in stakeholders.controls) {
-        console.log("Control dentro do group: ", cont);
         const control = this.form.get("shopsMCC").get(cont);
-        console.log("valor do control: ", control.value);
 
         queueModel.shopClassifications.schemaClassification.push({
           paymentSchemaId: null,

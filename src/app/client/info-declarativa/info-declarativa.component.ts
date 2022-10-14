@@ -16,9 +16,6 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 
-
-
-
 @Component({
   selector: 'app-info-declarativa',
   templateUrl: './info-declarativa.component.html',
@@ -44,23 +41,6 @@ export class InfoDeclarativaComponent implements OnInit {
   internationalCallingCodes: CountryInformation[];
 
   public newClient: Client = null;
-  //public newClient: Client = {
-  //  clientId: '0',
-  //  commercialName: "",
-  //  contactName: "EMPRESA PARTICIPANTE UNIP LDA",
-  //  billingEmail: "empresa@participante.com",
-  //  contacts: {
-  //    email: "empresa@participante.com",
-  //    phone1: {
-  //      countryCode: "",
-  //      phoneNumber: ""
-  //    },
-  //    phone2: {
-  //      countryCode: "",
-  //      phoneNumber: ""
-  //    },
-  //  },
-  //} as unknown as Client;
 
   @Output() nameEmitter = new EventEmitter<string>();
 
@@ -79,12 +59,10 @@ export class InfoDeclarativaComponent implements OnInit {
   getValueSearch(val: string) {
     console.warn("component recebeu: ", val)
     this.displayValueSearch = val;
-
   }
 
   setForm(client : Client){
     this.newClient = client;
-    console.log('this.newClient ', this.newClient?.contacts?.phone1?.countryCode);
     this.listValue.get("comercialName").setValue(client.commercialName);
     this.listValue.get("phone1").get("countryCode").setValue(client.contacts.phone1.countryCode)
     this.listValue.get("phone1").get("phoneNumber").setValue(client.contacts.phone1.phoneNumber);
@@ -94,11 +72,7 @@ export class InfoDeclarativaComponent implements OnInit {
     this.listValue.get("billingEmail").setValue(client.billingEmail);
   }
 
-
-
-
   public subs: Subscription[] = [];
-
 
   constructor(private logger : LoggerService, private formBuilder: FormBuilder, 
     @Inject(configurationToken) private configuration: Configuration, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
@@ -109,10 +83,6 @@ export class InfoDeclarativaComponent implements OnInit {
       this.internationalCallingCodes = result;
       this.internationalCallingCodes = this.internationalCallingCodes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }));
-
-    
-
-    //this.internationalCallingCodes = [{code:'POR', continent:"Europe", description:"thing", internationalCallingCode:"+351"}];
 
     this.listValue = this.formBuilder.group({
       comercialName: new FormControl(this.newClient?.commercialName, Validators.required),
@@ -134,7 +104,6 @@ export class InfoDeclarativaComponent implements OnInit {
     this.phone2 = this.listValue.get("phone2");
 
     if (!this.newClient) {
-      console.log("O cliente n existe");
       if (this.returned != null) {
         this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
           this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
@@ -147,77 +116,14 @@ export class InfoDeclarativaComponent implements OnInit {
         });
       } else {
           this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(res => {
-              this.logger.debug("Fui buscar o merchant da submission " + res);
+              this.logger.debug("Foi buscar o merchant da submission " + res);
               this.setForm(res);
           });
         }
     } else {
-      console.log('o cliente existe');
-      this.logger.debug("Fui buscar o merchant da localStorage " + this.newClient);
+      this.logger.debug("Foi buscar o merchant da localStorage " + this.newClient);
     }
 
-    
-    /* this.listValue.get("phone1CountryCode").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.listValue.controls["phone1PhoneNumber"].setValidators([Validators.required]);  
-      } else {
-        this.listValue.controls["phone1PhoneNumber"].clearValidators();
-      }
-      this.listValue.controls["phone1PhoneNumber"].updateValueAndValidity();
-    });
-
-    this.listValue.get("phone1PhoneNumber").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.listValue.controls["phone1CountryCode"].setValidators([Validators.required]);
-      } else {
-        this.listValue.controls["phone1CountryCode"].clearValidators();
-      }
-      this.listValue.controls["phone1CountryCode"].updateValueAndValidity();
-    });
-
-    this.listValue.get("phone2CountryCode").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.listValue.controls["phone2PhoneNumber"].setValidators([Validators.required]);
-      } else {
-        this.listValue.controls["phone2PhoneNumber"].clearValidators();
-      }
-      this.listValue.controls["phone2PhoneNumber"].updateValueAndValidity();
-    });
-
-    this.listValue.get("phone2PhoneNumber").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.listValue.controls["phone2CountryCode"].setValidators([Validators.required]);
-      } else {
-        this.listValue.controls["phone2CountryCode"].clearValidators();
-      }
-      this.listValue.controls["phone2CountryCode"].updateValueAndValidity();
-    }); */
-
-    //this.listValue.get("faxCountryCode").valueChanges.subscribe(data => {
-    //  if (data !== '') {
-    //    this.listValue.controls["faxPhoneNumber"].setValidators([Validators.required]);
-    //  } else {
-    //    this.listValue.controls["faxPhoneNumber"].clearValidators();
-    //  }
-    //  this.listValue.controls["faxPhoneNumber"].updateValueAndValidity();
-    //});
-
-    //this.listValue.get("faxPhoneNumber").valueChanges.subscribe(data => {
-    //  if (data !== '') {
-    //    this.listValue.controls["faxCountryCode"].setValidators([Validators.required]);
-    //  } else {
-    //    this.listValue.controls["faxCountryCode"].clearValidators();
-    //  }
-    //  this.listValue.controls["faxCountryCode"].updateValueAndValidity();
-    //});
-
-   /** if (this.newClient.id != 0) {
-      http.get<Client>(baseUrl + 'beclient/GetClientById/' + this.newClient.id).subscribe(result => {
-        this.logger.debug(result);
-        this.newClient = result;
-      }, error => console.error(error));
-
-    } **/
 }
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -235,11 +141,9 @@ export class InfoDeclarativaComponent implements OnInit {
   changeListElement(variavel:string, e: any) {
     if (e.target.id == 'phone1CountryCode') {
       this.listValue.get("phone1").get("countryCode").setValue(e.target.value);
-      //this.phone1CountryCode = e.target.value;
     }
     if (e.target.id == 'phone2CountryCode') {
       this.listValue.get("phone2").get("countryCode").setValue(e.target.value);
-      //this.phone2CountryCode = e.target.value;
     }
     if (e.target.id == 'faxCountryCode') {
       this.listValue.get("faxCountryCode").setValue(e.target.value);
@@ -265,7 +169,4 @@ export class InfoDeclarativaComponent implements OnInit {
     }
     this.router.navigate(['/info-declarativa-stakeholder']);
   }
-
-
-
 }

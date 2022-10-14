@@ -238,13 +238,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       }
 
       if (this.edit) {
-        console.log("Editar ");
         //chamada à API para editar uma configuração
         this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
           this.logger.debug("Update Shop Equipment From Submission Response ", result.id);
         });
       } else {
-        console.log("Criar ");
         //chamada à API para criar uma nova configuração
         this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
           this.logger.debug("Add Shop Equipment To Submission Response ", result.id);
