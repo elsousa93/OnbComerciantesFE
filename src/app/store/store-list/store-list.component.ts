@@ -146,6 +146,7 @@ export class StoreComponent implements AfterViewInit {
       console.log("ENTROU NO IF DO ENI");
       this.currentStore.manager = this.submissionClient.legalName;
       this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
+      this.editStores.controls["infoStores"].get("contactPoint").updateValueAndValidity();
     }
   }
 
