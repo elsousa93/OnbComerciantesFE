@@ -85,6 +85,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
       this.storesList.splice(idx, 1);
 
+      this.listLengthEmitter.emit(this.storesList.length);
+
       this.loadStores(this.storesList);
     });
 
@@ -92,6 +94,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
       var storeToInsert = result;
 
       this.storesList.push(storeToInsert);
+
+      this.listLengthEmitter.emit(this.storesList.length);
 
       this.loadStores(this.storesList);
     });

@@ -21,7 +21,7 @@ import { ProductSelectionComponent } from '../product-selection/product-selectio
 @Component({
   selector: 'app-store-list',
   templateUrl: './store-list.component.html',
-  styleUrls: ['./store-list.component.css']
+  styleUrls: ['./store-list.component.css'],
 })
 export class StoreComponent implements AfterViewInit {
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
@@ -73,6 +73,8 @@ export class StoreComponent implements AfterViewInit {
 
   insertedStoreSubject: Subject<ShopDetailsAcquiring> = new Subject<ShopDetailsAcquiring>();
 
+  @ViewChild(ProductSelectionComponent) productSelectionComponent: ProductSelectionComponent;
+
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
   }
@@ -81,7 +83,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, public productSelectionComponent: ProductSelectionComponent) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
     this.baseUrl = configuration.baseUrl;
 
     this.editStores = this.formBuilder.group({
@@ -142,12 +144,16 @@ export class StoreComponent implements AfterViewInit {
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
     console.log('AO SELECIONAR PARA ADICIONAR UMA LOJA O VALOR DO CLIENT É', this.submissionClient);
-    if (this.submissionClient.merchantType == 'Corporate' || this.submissionClient.merchantType == '02') { //ALTERAR PARA 02
-      console.log("ENTROU NO IF DO ENI");
-      this.currentStore.manager = this.submissionClient.legalName;
-      this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
-      this.editStores.controls["infoStores"].get("contactPoint").updateValueAndValidity();
+    if (this.submissionClient.merchantType == '02') { //ALTERAR PARA 02
+      setTimeout(() => this.updateContactPoint(), 100);
     }
+  }
+
+  updateContactPoint() {
+    console.log("ENTROU NO IF DO ENI");
+    this.currentStore.manager = this.submissionClient.legalName;
+    this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
+    this.editStores.controls["infoStores"].get("contactPoint").updateValueAndValidity();
   }
 
   closeAccordion() {
