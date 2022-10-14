@@ -797,8 +797,8 @@ export class ClientByIdComponent implements OnInit {
         newSubmission.stakeholders.push(stakeholderToShow);
         this.clientContext.setStakeholdersToInsert([stakeholder]);
       }
-    
 
+      this.clientContext.setClient(newSubmission.merchant); //ADICIONEI ESTA LINHA
 
       this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
         context.clientContext.submissionID = result.id;
@@ -818,10 +818,12 @@ export class ClientByIdComponent implements OnInit {
 
       var newSubmission = this.clientContext.newSubmission;
 
+      newSubmission.merchant = this.clientContext.getClient();//adicionei esta linha
+
       if (this.returned == 'edit')
         newSubmission.processNumber = localStorage.getItem("processNumber");
 
-      this.submissionService.EditSubmission(submissionID, this.clientContext.newSubmission).subscribe(result => {
+      this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
         this.data.updateData(true, 1);
         this.route.navigateByUrl('/stakeholders');
       });

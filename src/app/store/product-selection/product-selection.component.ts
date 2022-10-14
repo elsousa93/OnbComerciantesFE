@@ -302,6 +302,7 @@ export class ProductSelectionComponent implements OnInit {
   }
 
   clearSubProducts() {
+    console.log("CHAMADA DO METODO DOS SUBPRODUTOS");
     this.exists = false;
     this.subProducts = [];
   }

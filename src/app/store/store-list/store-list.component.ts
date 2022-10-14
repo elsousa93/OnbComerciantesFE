@@ -81,7 +81,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private productSelectionComponent: ProductSelectionComponent) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, public productSelectionComponent: ProductSelectionComponent) {
     this.baseUrl = configuration.baseUrl;
 
     this.editStores = this.formBuilder.group({
@@ -134,7 +134,7 @@ export class StoreComponent implements AfterViewInit {
 
 
   addStore() {
-    console.log("ACCORDION ", document.getElementById("flush-headingOne"));
+
     this.currentStore = new ShopDetailsAcquiring();
     this.currentStore.address = new ShopAddressAcquiring();
     this.currentStore.address.address = new FiscalAddress();
@@ -142,12 +142,20 @@ export class StoreComponent implements AfterViewInit {
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
     console.log('AO SELECIONAR PARA ADICIONAR UMA LOJA O VALOR DO CLIENT É', this.submissionClient);
-    if (this.submissionClient.merchantType == '02') {
+    if (this.submissionClient.merchantType == 'Corporate' || this.submissionClient.merchantType == '02') { //ALTERAR PARA 02
       console.log("ENTROU NO IF DO ENI");
       this.currentStore.manager = this.submissionClient.legalName;
       this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
     }
+  }
 
+  closeAccordion() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton1").className = "accordion1-button collapsed";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton2").className = "accordion1-button collapsed";
+    document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton3").className = "accordion1-button collapsed";
   }
 
   setFormData() {
@@ -240,6 +248,7 @@ export class StoreComponent implements AfterViewInit {
           this.emitInsertedStore(this.currentStore);
           this.editStores.reset();
           this.productSelectionComponent.clearSubProducts();
+          this.closeAccordion();
         });
       } else {
         console.log('EDIT');
@@ -250,6 +259,7 @@ export class StoreComponent implements AfterViewInit {
             this.onActivate();
             this.editStores.reset();
             this.productSelectionComponent.clearSubProducts();
+            this.closeAccordion();
           } else {
             this.data.updateData(true, 3);
             this.route.navigate(['comprovativos']);
