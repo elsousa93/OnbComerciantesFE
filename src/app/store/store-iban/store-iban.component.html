@@ -47,12 +47,20 @@
           <tr class="table-white text-primary">
           <th scope="col" class="text-center text-primary bg-light table-white">{{'generalKeywords.type'|translate|uppercase}}</th>
           <th scope="col" class="text-center bg-light">{{'generalKeywords.documentDate'|translate|uppercase}}</th>
+          <th scope="col" class="text-center bg-light"></th>
           </tr>
         </thead>
         <tbody *ngIf="IBANToShow !== undefined">
           <tr>
-          <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
-          <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
+            <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
+            <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
+            <td>
+              <span>
+                <img src="assets/images/search_blue.svg"
+                     (click)="openFile(files[0])"
+                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+              </span>
+            </td>
           </tr>
           <tr></tr>
           <tr></tr>
