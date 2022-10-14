@@ -703,7 +703,11 @@ export class ClientByIdComponent implements OnInit {
       else
         newSubmission.merchant.merchantType = '02'; //'Entrepeneur'
 
+      if (this.tipologia === 'Corporate')
+        newSubmission.merchant.merchantType = '01';
+        
       if (this.tipologia === 'ENI') {
+        newSubmission.merchant.merchantType = '02';
         var client = this.clientContext.getClient();
 
       var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API

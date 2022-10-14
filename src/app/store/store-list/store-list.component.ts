@@ -17,6 +17,7 @@ import { StoreTableComponent } from '../store-table/store-table.component';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
 import { ProductSelectionComponent } from '../product-selection/product-selection.component';
+import { AddStoreComponent } from '../add-store/add-store.component';
 
 @Component({
   selector: 'app-store-list',
@@ -74,6 +75,9 @@ export class StoreComponent implements AfterViewInit {
   insertedStoreSubject: Subject<ShopDetailsAcquiring> = new Subject<ShopDetailsAcquiring>();
 
   @ViewChild(ProductSelectionComponent) productSelectionComponent: ProductSelectionComponent;
+  @ViewChild(AddStoreComponent) addStoreComponent: AddStoreComponent;
+
+  products: any = [];
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -81,6 +85,14 @@ export class StoreComponent implements AfterViewInit {
 
   emitInsertedStore(store) {
     this.insertedStoreSubject.next(store);
+  }
+
+  getAllProducts() {
+    this.storeService.GetAllShopProducts().subscribe(result => {
+      this.products = result;
+    }, error => {
+
+    });
   }
 
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
@@ -120,6 +132,7 @@ export class StoreComponent implements AfterViewInit {
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
     this.fetchStartingInfo();
+    this.getAllProducts();
   }
 
   navigateTo(id: number) {
@@ -136,21 +149,18 @@ export class StoreComponent implements AfterViewInit {
 
 
   addStore() {
-
     this.currentStore = new ShopDetailsAcquiring();
     this.currentStore.address = new ShopAddressAcquiring();
     this.currentStore.address.address = new FiscalAddress();
     this.currentStore.bank = new ShopBank();
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
-    console.log('AO SELECIONAR PARA ADICIONAR UMA LOJA O VALOR DO CLIENT É', this.submissionClient);
-    if (this.submissionClient.merchantType == '02') { //ALTERAR PARA 02
+    if (this.submissionClient.merchantType == 'Entrepeneur') {
       setTimeout(() => this.updateContactPoint(), 100);
     }
   }
 
   updateContactPoint() {
-    console.log("ENTROU NO IF DO ENI");
     this.currentStore.manager = this.submissionClient.legalName;
     this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
     this.editStores.controls["infoStores"].get("contactPoint").updateValueAndValidity();
@@ -168,17 +178,22 @@ export class StoreComponent implements AfterViewInit {
   setFormData() {
     if (this.currentStore != null) { 
       var infoStores = this.editStores.controls["infoStores"];
+      console.log("FORM INFO STORES AO SELECIONAR UMA LOJA ", this.editStores);
       infoStores.get("storeName").setValue(this.currentStore.name);
       infoStores.get("activityStores").setValue(this.currentStore.activity);
       infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
       infoStores.get("contactPoint").setValue(this.currentStore.manager);
       infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
-      infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
-      infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
-      infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
-      infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
       infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
       infoStores.get("replicate").setValue(this.currentStore.address.useMerchantAddress);
+
+      if (!this.currentStore.address.useMerchantAddress) {
+        this.addStoreComponent.chooseAddress(false);
+        infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
+        infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
+        infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
+        infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+      }
 
       var bankStores = this.editStores.controls["bankStores"];
       bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
@@ -187,7 +202,9 @@ export class StoreComponent implements AfterViewInit {
 
       var productStores = this.editStores.controls["productStores"];
       productStores.get("solutionType").setValue(this.currentStore.productCode);
+      this.productSelectionComponent.chooseSolutionAPI(this.currentStore.productCode);
       productStores.get("subProduct").setValue(this.currentStore.subproductCode);
+
       productStores.get("url").setValue(this.currentStore.website);
     }
   }
@@ -245,7 +262,7 @@ export class StoreComponent implements AfterViewInit {
       this.currentStore.website = productStores.get("url").value;
 
       this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER; //de momento vou deixar este valor, não sei qual a condição para ser este valor ou outro
-
+      console.log("ESTRUTURA DE DADOS DA LOJA ANTES DE SER ADICIONADA ", this.currentStore);
       if (addStore) {
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);

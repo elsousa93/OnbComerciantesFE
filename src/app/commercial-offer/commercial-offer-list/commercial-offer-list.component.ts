@@ -28,7 +28,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   selectedPack: ShopProductPack = null;
 
-  storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
+  //storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
   storeEquipMat!: MatTableDataSource<ShopEquipment>;
 
   form: FormGroup;
@@ -87,14 +87,14 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.storesOfferMat.paginator = this.paginator;
+    //this.storesOfferMat.paginator = this.paginator;
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
   constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.baseUrl = configuration.baseUrl;
-
+    this.storeEquipMat = new MatTableDataSource<ShopEquipment>();
     this.ngOnInit();
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
@@ -115,36 +115,6 @@ export class CommercialOfferListComponent implements OnInit {
       this.isUnicre = true;
     }
 
-    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
-    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
-      var shops = result.result;
-     shops.forEach(value => {
-       this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).then(res => {
-         var shop = res.result;
-         this.storesList.push(shop);
-       });
-     });
-     this.loadStores(this.storesList);
-    });
-
-    //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
-    if (this.returned != null) {
-     this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
-       this.storeService.getSubmissionShopsList(result[0].submissionId).then(resul => {
-         var shops = resul.result;
-         shops.forEach(val => {
-           this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).then(res => {
-             var shop = res.result;
-             var index = this.storesList.findIndex(store => store.shopId == shop.shopId);
-             if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
-               this.storesList.push(shop);
-           });
-         });
-         this.loadStores(this.storesList);
-       })
-     });
-    }
-
     this.COService.OutboundGetProductsAvailable().then(result => {
       this.products = result.result;
     });
@@ -154,8 +124,8 @@ export class CommercialOfferListComponent implements OnInit {
         context: result.context,
         contextId: result.contextId,
         fiscalIdentification: {
-          fiscalId: result.fiscalIdentification.fiscalId,
-          issuerCountry: result.fiscalIdentification.issuerCountry
+          fiscalId: result.fiscalId,
+          issuerCountry: ""
         }
       }
     });
@@ -180,16 +150,17 @@ export class CommercialOfferListComponent implements OnInit {
     }
     this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.shopId).subscribe(result => {
       this.storeEquipList.push(result);
+      this.loadStoreEquips(this.storeEquipList);
     });
   }
 
-  loadStores(storesValues: ShopDetailsAcquiring[]) {
-    this.storesOfferMat = new MatTableDataSource(storesValues);
-    this.storesOfferMat.paginator = this.paginator;
-  }
+  //loadStores(storesValues: ShopDetailsAcquiring[]) {
+  //  this.storesOfferMat = new MatTableDataSource(storesValues);
+  //  this.storesOfferMat.paginator = this.paginator;
+  //}
 
   loadStoreEquips(storeEquipValues: ShopEquipment[]) {
-    this.storeEquipMat = new MatTableDataSource(storeEquipValues);
+    this.storeEquipMat.data = storeEquipValues;
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
 
@@ -209,11 +180,9 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.disableNewConfiguration = false;
 
-    if (this.returned != null)
-      setTimeout(() => this.setFormData(), 500);
+    setTimeout(() => this.setFormData(), 500);
 
     this.getStoreEquipsFromSubmission();
-    setTimeout(() => this.storeEquipMat.data = this.storeEquipList, 1000); //tomar em atenção se esta chamada está correta
 
     if (this.returned == 'consult')
       this.form.disable();
@@ -226,6 +195,13 @@ export class CommercialOfferListComponent implements OnInit {
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
       terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
+    });
+    this.form.get("isUnicre").valueChanges.subscribe(val => {
+      if (val == true) {
+        this.disableNewConfiguration = false;
+      } else {
+        this.disableNewConfiguration = true;
+      }
     });
   }
 
@@ -342,8 +318,10 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
 
-    if (!this.form.get("isUnicre").value)
+    if (!this.form.get("isUnicre").value) {
       this.form.get("terminalRegistrationNumber").setValue(null);
+      this.disableNewConfiguration = true;
+    }
 
     this.form.get("productPackKind").setValue(null);
   }

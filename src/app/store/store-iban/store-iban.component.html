@@ -20,8 +20,8 @@
         <div class="col-5 ms-0 me-0 ps-5 pe-0">
         <p class="titulo-form-simples" wappler-command="editContent">{{'stores.supportBank'|translate}}</p>
 
-        <select class="form-select campo_form" #supportBank formControlName="supportBank" id="supportBank">
-          <option *ngFor="let bank of banks" [value]='bank.code'>{{bank.description}}</option>
+        <select class="form-select campo_form" #supportBank formControlName="supportBank" id="supportBank" name="supportBank">
+          <option *ngFor="let bank of banks" value={{bank.code}}>{{bank.description}}</option>
         </select>
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
         <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.infoClientBank'|translate}}</p>
