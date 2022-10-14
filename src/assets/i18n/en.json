@@ -336,6 +336,7 @@
     "openProcess": "Open Process",
     "placeholderSearch": "Process Nr.",
     "emptyList": "No results",
+    "emptySearch": "You must fill in at least one search filter",
     "errorDocs": "Search for documents must be by document type and number",
     "search300": "Too many results returned, only the first 300 will be displayed, please refine your search"
   },
