@@ -75,11 +75,6 @@ export class NavMenuPresencialComponent implements OnInit {
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
     this.chooseLanguage(this.translate.getDefaultLang());
-
-    this.tableInfo.GetBanks().subscribe(result => {
-      this.banks = result;
-    });
-
   }
 
   ngOnInit(): void {
@@ -94,13 +89,15 @@ export class NavMenuPresencialComponent implements OnInit {
       this.logger.debug("userPermission tratada: " + a);
       this.userPermissions = getMenuPermissions(a);
     });
-    if (this.banks !== undefined) {
-      var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
-      if (index > 0) {
-        this.bank = this.banks[index].description;
+    this.tableInfo.GetBanks().subscribe(result => {
+      this.banks = result;
+      if (this.banks !== undefined) {
+        var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
+        if (index > 0) {
+          this.bank = this.banks[index].description;
+        }
       }
-    }
-
+    });
 
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.dataService.currentPage.subscribe((currentPage) => {
