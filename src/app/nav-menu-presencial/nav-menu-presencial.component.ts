@@ -95,7 +95,7 @@ export class NavMenuPresencialComponent implements OnInit {
 
       this.userPermissions = getMenuPermissions(a);
 
-      if (this.banks != undefined){
+      if (this.banks !== undefined){
         var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
         if (index > 0) {
           this.bank = this.banks[index].description;
@@ -144,10 +144,12 @@ export class NavMenuPresencialComponent implements OnInit {
     if (this.currentPage == 0 || this.currentSubPage == 0) {
       this.progressImage = undefined;
       return;
+    } else {
+      let progress = progressSteps[this.currentPage - 1][this.currentSubPage - 1];
+      this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
+      this.logger.debug("New process image" + this.progressImage);
     }
-    let progress = progressSteps[this.currentPage - 1][this.currentSubPage - 1];
-    this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
-    this.logger.debug("New process image" + this.progressImage);
+
   }
 
   toggleEvent() {
