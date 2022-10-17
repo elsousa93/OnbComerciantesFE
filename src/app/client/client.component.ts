@@ -475,12 +475,12 @@ export class ClientComponent implements OnInit {
           }
 
           if (clients.length===1){
-            this.snackBar.open(this.translate.instant('client.find'), '', {
+            context.snackBar.open(this.translate.instant('client.find'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
             });
           } else {
-            this.snackBar.open(this.translate.instant('client.multipleClients'), '', {
+            context.snackBar.open(this.translate.instant('client.multipleClients'), '', {
               duration: 4000,
               panelClass: ['snack-bar']
               });
