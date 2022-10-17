@@ -122,7 +122,7 @@ export class ClientContext{
   };
 
   formClientCharacterizationValid: Observable<FormControlStatus>;
-  formCountrys: Observable<FormControlStatus>;
+  formCountrysValid: Observable<FormControlStatus>;
 
 
   //Client predefinido
