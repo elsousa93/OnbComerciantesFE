@@ -218,6 +218,7 @@ export class ClientComponent implements OnInit {
 
   hasClient: boolean = true;
   hasNewClient: boolean = true;
+  isClient: boolean;
 
   //Pesquisa 
   showFoundClient: boolean = false;     //sem backend: true // antigo nome: showWarning
@@ -237,7 +238,7 @@ export class ClientComponent implements OnInit {
   clientTypology: string = "";
   clientNr: boolean = false;
 
-  clientsToShow: Client[] = [];
+  clientsToShow: { client: Client, isClient: boolean }[] = [];
 
   newClient: Client = {
     "clientId": "",
@@ -396,7 +397,7 @@ export class ClientComponent implements OnInit {
     //}
   }
 
-  clientsMat = new MatTableDataSource<Client>();
+  clientsMat = new MatTableDataSource<any>();
   @ViewChild('paginator') set paginator(pager:MatPaginator) {
     if (pager) {
       this.clientsMat.paginator = pager;
@@ -456,6 +457,7 @@ export class ClientComponent implements OnInit {
 
       var context2 = this;
 
+      
       this.logger.debug(context.clientsToShow);
       context.clientsToShow = [];
       this.logger.debug(context.clientsToShow);
@@ -463,6 +465,14 @@ export class ClientComponent implements OnInit {
         context.resultError = "";
         clients.forEach(function (value, index) {
           context.logger.debug(value);
+          var clientToShow = {
+            client: undefined,
+            isClient: value.isClient
+          } as {
+            client: Client,
+            isClient: boolean
+          }
+
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
             context.logger.debug(c);
             var client = {
@@ -474,14 +484,24 @@ export class ClientComponent implements OnInit {
               "country": c.headquartersAddress.country,
             }
             context.notFound = false;
-            context.clientsToShow.push(client);
+
+            clientToShow.client = client;
+            context.clientsToShow.push(clientToShow);
             context.logger.debug(context.clientsToShow);
             context.clientsMat.data = context.clientsToShow;
           });
-          this.snackBar.open(this.translate.instant('client.find'), '', {
+          if (clients.length===1){
+            this.snackBar.open(this.translate.instant('client.find'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
-          });
+            });
+          } else {
+            this.snackBar.open(this.translate.instant('client.multipleClients'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+              });
+          }
+          
         })
       } else {
         this.showFoundClient = false;
@@ -712,10 +732,11 @@ export class ClientComponent implements OnInit {
 
   clientId: string
 
-  aButtons(id: boolean, clientId: string) {
+  aButtons(id: boolean, clientId: string, isClient: boolean) {
     if (id == true) {
       this.showSeguinte = true
       this.clientId = clientId;
+      this.isClient = isClient;
     } else {
       this.showSeguinte = false
     }

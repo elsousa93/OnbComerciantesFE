@@ -331,32 +331,32 @@
                   
                 </mat-header-cell>
                 <mat-cell *matCellDef="let client"> 
-                    <input type="radio" (click)="aButtons(true, client.clientId)">
+                    <input type="radio" (click)="aButtons(true, client.clientId, client.clientExists)">
                   </mat-cell>
               </ng-container>
                 <ng-container matColumnDef="clientNumber">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.number'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.clientId}} </mat-cell>
+                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.clientId}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="commercialName">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.nameSocialDesignation'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.commercialName}} </mat-cell>
+                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.commercialName}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="address">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.address'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.address}} </mat-cell>
+                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.address}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="ZIPCode">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.postalCode'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.ZIPCode}} </mat-cell>
+                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.ZIPCode}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="locale">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.locale'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.locality}} </mat-cell>
+                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.locality}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="country">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.country'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.country}} </mat-cell>
+                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.country}} </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary"></mat-header-row>
                 <mat-row *matRowDef="let client; let idx = index; columns: displayedColumns;"
