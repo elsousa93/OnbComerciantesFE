@@ -113,11 +113,11 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (this.currentUser.permissions == UserPermissions.BANCA) {
       this.form.get("isUnicre").setValue(false);
-      this.isUnicre = false;
       this.form.get("isUnicre").disable();
+      this.changeUnicre(false);
     } else {
       this.form.get("isUnicre").setValue(true);
-      this.isUnicre = true;
+      this.changeUnicre(true);
     }
 
     this.COService.OutboundGetProductsAvailable().then(result => {
@@ -212,13 +212,6 @@ export class CommercialOfferListComponent implements OnInit {
       productPackKind: new FormControl('', [Validators.required]),
     })
 
-    this.form.get("isUnicre").valueChanges.subscribe(val => {
-      if (val) {
-        this.disableNewConfiguration = false;
-      } else {
-        this.disableNewConfiguration = true;
-      }
-    });
   }
 
   addFormGroups() {
@@ -348,6 +341,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   changeUnicre(bool: boolean){
     this.isUnicre = bool;
+    this.disableNewConfiguration = !bool;
   }
 
   changeReplicateProducts(bool: boolean) {
