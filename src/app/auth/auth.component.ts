@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Bank } from '../store/IStore.interface';
+import { TableInfoService } from '../table-info/table-info.service';
 import { TokenService } from '../token.service';
 import { User } from '../userPermissions/user';
 import { getMenuPermissions, role, roles, UserPermissions } from '../userPermissions/user-permissions';
@@ -19,14 +21,21 @@ export class AuthComponent implements OnInit {
 
   //Informação das tabelas
   roles: role[] = roles; //roles é uma const
+  banks: Bank[];
 
-  constructor(private token: TokenService, private authService: AuthService, private router: Router) { }
+  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService) { }
 
   ngOnInit(): void {
     this.generateAuthForm();
 
     this.authService.currentUser.subscribe(result => {
     })
+
+    this.tableInfo.GetBanks().subscribe(result => {
+      this.banks = result;
+      this.banks = this.banks.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    });
+
   }
 
   submit() {

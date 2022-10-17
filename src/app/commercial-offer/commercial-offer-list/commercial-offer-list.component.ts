@@ -8,7 +8,7 @@ import { Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '..
 import { LoggerService } from 'src/app/logger.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
@@ -80,7 +80,12 @@ export class CommercialOfferListComponent implements OnInit {
   submissionId: string;
   processNumber: string;
 
-  storeEquipList : ShopEquipment[] = [];
+  storeEquipList: ShopEquipment[] = [];
+
+  editForm: FormGroup;
+  configTerm: FormGroup;
+
+  isNewConfig: boolean;
 
   getPacoteComercial() {
     console.log("loja selecionada: ", this.currentStore);
@@ -92,7 +97,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService) {
+  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder) {
     this.baseUrl = configuration.baseUrl;
     this.storeEquipMat = new MatTableDataSource<ShopEquipment>();
     this.ngOnInit();
@@ -189,13 +194,24 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   initializeForm() {
+    //this.editForm = this.formBuilder.group({
+    //  form: this.formBuilder.group({
+    //    replicateProducts: new FormControl(this.replicateProducts, [Validators.required]),
+    //    store: new FormControl(''),
+    //    isUnicre: new FormControl(this.isUnicre, [Validators.required]),
+    //    terminalRegistrationNumber: new FormControl(''),
+    //    productPackKind: new FormControl('', [Validators.required]),
+    //  }),
+    //  configTerm: this.formBuilder.group({})
+    //});
     this.form = new FormGroup({
       replicateProducts: new FormControl(this.replicateProducts, [Validators.required]),
       store: new FormControl(''),
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
       terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
-    });
+    })
+
     this.form.get("isUnicre").valueChanges.subscribe(val => {
       if (val == true) {
         this.disableNewConfiguration = false;
@@ -275,7 +291,7 @@ export class CommercialOfferListComponent implements OnInit {
   //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
   getCommissionsList() {
     this.commissionFilter = {
-      productCode : this.form.get("productPackKind").value,
+      productCode: this.form.get("productPackKind").value,
       subproductCode: this.form.get("").value,
       merchant: this.merchantCatalog,
       store: {
@@ -339,23 +355,21 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   createNewConfiguration() {
-    if (this.currentStore != null) {
-      let navigationExtras: NavigationExtras = {
-        state: {
-          store: this.currentStore,
-          packId: this.form.get("productPackKind").value,
-          merchantCatalog: this.merchantCatalog,
-          packAttributes: this.groupsList
-        }
-      }
-      this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
-    }
+    this.isNewConfig = true;
+    //let navigationExtras: NavigationExtras = {
+    //  state: {
+    //    store: this.currentStore,
+    //    packId: this.form.get("productPackKind").value,
+    //    merchantCatalog: this.merchantCatalog,
+    //    packAttributes: this.groupsList
+    //  }
+    //}
+    //this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
   }
 
   submit() {
-
     this.commissionAttributeList.forEach(commission => {
-      var currentValue = this.form.controls["commission" + commission.id];
+      var currentValue = this.form.get["commission" + commission.id];
       commission.minValue.finalValue = currentValue.get("commissionMin").value;
       commission.maxValue.finalValue = currentValue.get("commissionMax").value;
       commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
@@ -363,13 +377,13 @@ export class CommercialOfferListComponent implements OnInit {
     });
 
     this.groupsList.forEach(group => {
-      var groups = this.form.controls["formGroup" + group.id];
+      var groups = this.form.get["formGroup" + group.id];
       group.attributes.forEach(attr => {
         if (attr.isVisible) {
           attr.finalValue = groups.get("formControl" + attr.id).value;
           if (attr.finalValue && attr.bundles.length > 0) { // se tiver sido selecionado
             attr.bundles.forEach(bundle => {
-              var bundles = this.form.controls["formGroupBundle" + bundle.id];
+              var bundles = this.form.get["formGroupBundle" + bundle.id];
               bundle.attributes.forEach(bundleAttr => { 
                 if (bundleAttr.isVisible) {
                   bundleAttr.finalValue = bundles.get("formControlBundle" + bundleAttr.id).value;
@@ -411,17 +425,19 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   editConfiguration(shopEquipment: ShopEquipment) {
-    if (this.returned != 'consult') { 
-      let navigationExtras: NavigationExtras = {
-        state: {
-          store: this.currentStore,
-          storeEquip: shopEquipment,
-          packId: this.form.get("productPackKind").value,
-          merchantCatalog: this.merchantCatalog,
-          packAttributes: this.groupsList
-        }
-      }
-      this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
+    if (this.returned != 'consult') {
+      this.isNewConfig = false;
+      this.storeEquip = shopEquipment;
+      //let navigationExtras: NavigationExtras = {
+      //  state: {
+      //    store: this.currentStore,
+      //    storeEquip: shopEquipment,
+      //    packId: this.form.get("productPackKind").value,
+      //    merchantCatalog: this.merchantCatalog,
+      //    packAttributes: this.groupsList
+      //  }
+      //}
+      //this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
     }
   }
 
@@ -434,5 +450,14 @@ export class CommercialOfferListComponent implements OnInit {
         window.clearInterval(scrollToTop);
       }
     }, 16);
+  }
+
+  changedStoreEvent(value) {
+    if (value) 
+      this.isNewConfig = null;
+  }
+
+  storeEquipEvent(value) {
+    this.getStoreEquipsFromSubmission();
   }
 }

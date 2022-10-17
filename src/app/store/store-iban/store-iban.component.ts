@@ -233,12 +233,12 @@ export class StoreIbanComponent implements OnInit {
 
     this.authService.currentUser.subscribe(result => {
 
-        if (result.permissions === UserPermissions.BANCA) {
-          this.bank = this.authService.GetBankLocation();
-
-          this.updateForm();
-        }
-      });
+      if (result.permissions === UserPermissions.BANCA) {
+        this.bank = this.authService.GetBank();
+        console.log('VALOR DO BANK ', this.bank);
+        this.updateForm();
+      }
+    });
 
     this.tableInfo.GetBanks().subscribe(result => {
       this.banks = result;
@@ -332,8 +332,8 @@ export class StoreIbanComponent implements OnInit {
 
   initializeForm() {
     this.formStores = new FormGroup({
-      supportBank: new FormControl((this.bank !== null) ? this.bank : '', Validators.required),
-      bankInformation: new FormControl((this.store.bank.useMerchantBank !== null) ? this.store.bank.useMerchantBank : '', Validators.required),
+      supportBank: new FormControl((this.bank != null) ? this.bank : '', Validators.required),
+      bankInformation: new FormControl((this.store.bank.useMerchantBank != null) ? this.store.bank.useMerchantBank : '', Validators.required),
     });
   }
 

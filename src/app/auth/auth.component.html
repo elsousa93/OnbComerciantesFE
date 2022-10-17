@@ -31,8 +31,11 @@
             </div>
             <div>
               <p class="titulo-form-simples" for="bankName">{{'auth.bankName'|translate}}: </p>
-              <input type="text" formControlName="bankName" name="bankName" id="bankName"
-                     class="form-control campo_form" />
+              <select class="form-select campo_form" formControlName="bankName" id="bankName" name="bankName">
+                <option *ngFor="let bank of banks" value={{bank.code}}>{{bank.description}}</option>
+              </select>
+              <!--<input type="text" formControlName="bankName" name="bankName" id="bankName"
+                     class="form-control campo_form" />-->
             </div>
             <div>
               <p class="titulo-form-simples" for="bankLocation">{{'auth.bankLocation'|translate}}: </p>
