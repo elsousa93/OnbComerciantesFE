@@ -26,6 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-client',
@@ -346,7 +347,7 @@ export class ClientComponent implements OnInit {
     @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
-    private submissionService: SubmissionService, private readCardService: ReadcardService) {
+    private submissionService: SubmissionService, private readCardService: ReadcardService, private snackBar: MatSnackBar) {
 
     this.baseUrl = configuration.baseUrl;
     this.neyondBackUrl = configuration.neyondBackUrl;
