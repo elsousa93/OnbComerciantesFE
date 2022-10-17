@@ -144,10 +144,14 @@ export class ClientByIdComponent implements OnInit {
   idClient: string;
   comprovativoCC: FileAndDetailsCC;
 
+  formIsValid: false;
+
   DisableNIFNIPC = null;
   collectCRC: boolean;
   lastExpandedTab: number;
   touchedTabs: boolean[] = new Array<boolean>(3).fill(false);
+    formClientIsValid: boolean;
+    formCountryIsValid: boolean;
 
 
   initializeTableInfo() {
@@ -855,5 +859,17 @@ export class ClientByIdComponent implements OnInit {
       padding: 10px;
       text-align: center;
       border: 3px solid green;` );
+  }
+
+  formsValid() {
+    this.clientContext.formClientCharacterizationValid.subscribe(res => {
+      if (res !== 'VALID')
+        this.formClientIsValid = false;
+    });
+
+    this.clientContext.formCountrysValid.subscribe(res => {
+      if (res !== 'VALID')
+        this.formCountryIsValid = false;
+    })
   }
 }

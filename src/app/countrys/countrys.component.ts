@@ -190,6 +190,8 @@ export class CountrysComponent implements OnInit {
       this.countryList = result;
       this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
+
+    this.clientContext.formCountrysValid = this.form.statusChanges;
   }
 
   updateValues() {

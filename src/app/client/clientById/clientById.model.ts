@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from "@angular/core";
-import { FormGroup, FormGroupDirective } from "@angular/forms";
+import { FormControlStatus, FormGroup, FormGroupDirective } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Behavior } from "popper.js";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -121,8 +121,8 @@ export class ClientContext{
     "documents": []
   };
 
-  formClientCharacterization: FormGroup;
-  formCountrys: FormGroup;
+  formClientCharacterizationValid: Observable<FormControlStatus>;
+  formCountrysValid: Observable<FormControlStatus>;
 
 
   //Client predefinido
