@@ -85,24 +85,23 @@ export class NavMenuPresencialComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.changeData(new Map());
     this.dataService.updateData(null, null, null);
-    
+
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
-
+    
       this.logger.debug("permissões: " + this.currentUser.permissions);
       this.logger.debug("userPermission tratada: " + a);
-
       this.userPermissions = getMenuPermissions(a);
-
-      if (this.banks !== undefined){
-        var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
-        if (index > 0) {
-          this.bank = this.banks[index].description;
-        }
-      }
-
     });
+    if (this.banks !== undefined) {
+      var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
+      if (index > 0) {
+        this.bank = this.banks[index].description;
+      }
+    }
+
+
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.dataService.currentPage.subscribe((currentPage) => {
       this.currentPage = currentPage;
@@ -175,7 +174,7 @@ export class NavMenuPresencialComponent implements OnInit {
         localStorage.setItem("processNumber", process);
         this.processNrService.changeProcessNumber(process);
         localStorage.setItem("returned", 'consult');
-  
+
         this.route.navigate(['/clientbyid', this.encodedCode]);
       } else {
         let navigationExtras: NavigationExtras = {
