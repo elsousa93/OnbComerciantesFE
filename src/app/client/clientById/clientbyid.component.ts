@@ -863,14 +863,20 @@ export class ClientByIdComponent implements OnInit {
   }
 
   formsValid() {
-    this.clientContext.formClientCharacterizationValid?.subscribe(res => {
-      if (res !== 'VALID')
-        this.formClientIsValid = false;
+    console.log("form ta valido???");
+
+    this.clientCharacterizationComponent?.form.valueChanges.subscribe(res => {
+      console.log("estado do client characterization: ", res);
     });
 
-    this.clientContext.formCountrysValid?.subscribe(res => {
-      if (res !== 'VALID')
-        this.formCountryIsValid = false;
-    })
+    //this.clientContext.formClientCharacterizationValid?.subscribe(res => {
+    //  if (res !== 'VALID')
+    //    this.formClientIsValid = false;
+    //});
+
+    //this.clientContext.formCountrysValid?.subscribe(res => {
+    //  if (res !== 'VALID')
+    //    this.formCountryIsValid = false;
+    //})
   }
 }
