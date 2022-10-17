@@ -70,6 +70,7 @@
     "search": "Search Merchant",
     "add": "Add Merchant",
     "found": "Select the merchant:",
+    "find":"Existing Client",
     "number": "Client Number",
     "nif": "Fiscal Identification Number",
     "nipc": "Legal Person Identification Number",

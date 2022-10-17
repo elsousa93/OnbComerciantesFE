@@ -478,6 +478,10 @@ export class ClientComponent implements OnInit {
             context.logger.debug(context.clientsToShow);
             context.clientsMat.data = context.clientsToShow;
           });
+          this.snackBar.open(this.translate.instant('client.find'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         })
       } else {
         this.showFoundClient = false;
