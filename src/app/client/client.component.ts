@@ -128,7 +128,10 @@ export class ClientComponent implements OnInit {
     this.dataCCcontents.gender = gender;
     this.dataCCcontents.countryCC = country;
     this.countryCC = countryIssuer; //HTML
-    this.dataCCcontents.expiryDate = expiryDate;
+
+    var expireDate = expiryDate.replaceAll(" ", "/");
+    this.dataCCcontents.expiryDate = new Date(expireDate);
+
     this.dataCCcontents.emissonDate = emissonDate;
     this.dataCCcontents.emissonLocal = emissonLocal;
 
