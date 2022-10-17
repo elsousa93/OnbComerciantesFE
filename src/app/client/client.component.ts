@@ -26,6 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-client',
@@ -346,7 +347,7 @@ export class ClientComponent implements OnInit {
     @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
-    private submissionService: SubmissionService, private readCardService: ReadcardService) {
+    private submissionService: SubmissionService, private readCardService: ReadcardService, private snackBar: MatSnackBar) {
 
     this.baseUrl = configuration.baseUrl;
     this.neyondBackUrl = configuration.neyondBackUrl;
@@ -474,12 +475,12 @@ export class ClientComponent implements OnInit {
           }
 
           if (clients.length===1){
-            this.snackBar.open(this.translate.instant('client.find'), '', {
+            context.snackBar.open(this.translate.instant('client.find'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
             });
           } else {
-            this.snackBar.open(this.translate.instant('client.multipleClients'), '', {
+            context.snackBar.open(this.translate.instant('client.multipleClients'), '', {
               duration: 4000,
               panelClass: ['snack-bar']
               });
