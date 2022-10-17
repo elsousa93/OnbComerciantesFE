@@ -1,6 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <form [formGroup]="form" name="form" id="form" >
+  <form [formGroup]="editForm" name="editForm" id="editForm" >
    <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
@@ -396,6 +396,8 @@
                      </button>
                    </div>
                  </div>
+
+                 <app-commercial-offer-new-configuration *ngIf="isNewConfig != null" [currentStore]="currentStore" [isNewConfig]="isNewConfig" [storeEquip]="storeEquip" [parentFormGroup] ="editForm.get['configTerm']" (changedStoreEvent)="changedStoreEvent($event)" (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>
                </div>
             </div>
 

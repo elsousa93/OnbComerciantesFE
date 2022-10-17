@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { StoreService } from '../../store/store.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
@@ -14,19 +14,20 @@ import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPack
 import { CommercialOfferService } from '../commercial-offer.service';
 
 
+
 @Component({
   selector: 'app-commercial-offer-new-configuration',
   templateUrl: './commercial-offer-new-configuration.component.html',
   styleUrls: ['./commercial-offer-new-configuration.component.css']
 })
-export class CommercialOfferNewConfigurationComponent implements OnInit {
+export class CommercialOfferNewConfigurationComponent implements OnInit, OnChanges {
   private baseUrl: string;
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
 
-  public storeEquip: ShopEquipment = { };
+  //public storeEquip: ShopEquipment = { };
   public store: ShopDetailsAcquiring;
   public clientID: number = 12345678;
 
@@ -58,6 +59,16 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   pricingOptions: ProductPackPricingEntry[] = [];
   pricingAttributeList: ProductPackPricingAttribute[] = [];
 
+  returned: string;
+
+  @Input() parentFormGroup: FormGroup;
+  @Input() isNewConfig: boolean;
+  @Input() currentStore: ShopDetailsAcquiring;
+  @Input() storeEquip: ShopEquipment;
+
+  @Output() changedStoreEvent = new EventEmitter<boolean>();
+  @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
+
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
       this.allCommunications = result;
@@ -74,36 +85,45 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService) {
+  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private rootFormGroup: FormGroupDirective) {
     this.baseUrl = configuration.baseUrl;
+    
+    //if (this.route.getCurrentNavigation()?.extras?.state) {
+    //  this.store = this.route.getCurrentNavigation().extras.state["store"];
+    //  this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"]; //CASO SEJA PARA EDITAR UMA CONFIGURAÇÃO
+    //  this.packId = this.route.getCurrentNavigation().extras.state["packId"];
+    //  this.merchantCatalog = this.route.getCurrentNavigation().extras.state["merchantCatalog"];
+    //  this.groupsList = this.route.getCurrentNavigation().extras.state["groupsList"];
 
-    if (this.route.getCurrentNavigation()?.extras?.state) {
-      this.store = this.route.getCurrentNavigation().extras.state["store"];
-      this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"]; //CASO SEJA PARA EDITAR UMA CONFIGURAÇÃO
-      this.packId = this.route.getCurrentNavigation().extras.state["packId"];
-      this.merchantCatalog = this.route.getCurrentNavigation().extras.state["merchantCatalog"];
-      this.groupsList = this.route.getCurrentNavigation().extras.state["groupsList"];
+    //  if (this.storeEquip != undefined)
+    //    this.edit = true;
+    //}
 
-      if (this.storeEquip != undefined)
-        this.edit = true;
-    }
-
-    console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.store);
+    console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.currentStore);
 
     this.loadReferenceData();
     this.initializeForm();
-
-
-
     this.ngOnInit();
     
     this.data.updateData(false, 5, 2);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["currentStore"]) {
+      this.changedStoreEvent.emit(true);
+    }
+    if (changes["isNewConfig"]) {
+
+    }
+    if (changes["storeEquip"]) {
+      this.updateFormData();
+    }
+  }
+
   disableForm() {
-    if (this.store.productCode == 'CARD PRESENT') {
-      if (this.store.supportEntity == 'acquirer') { //caso o ETA seja UNICRE
-        if (this.store.subproductCode == 'easy') {
+    if (this.currentStore.productCode == 'CARD PRESENT' || this.currentStore.productCode == 'card present' || this.currentStore.productCode == 'cardPresent') {
+      if (this.currentStore.supportEntity == 'acquirer') { //caso o ETA seja UNICRE
+        if (this.currentStore.subproductCode == 'EASY' || this.currentStore.subproductCode == 'easy') {
           this.formConfig.get("terminalProperty").setValue("acquirer");
           this.formConfig.get("terminalProperty").disable();
 
@@ -122,6 +142,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.submissionId = localStorage.getItem("submissionId");
+    this.returned = localStorage.getItem("returned");
+    //if (this.rootFormGroup.form != null) {
+    //  this.rootFormGroup.form.setControl('configTerm', this.formConfig);
+
+    //  if (this.returned == 'consult') {
+    //    this.formConfig.disable();
+    //  }
+    //}
   }
 
   ngOnDestroy(): void {
@@ -131,13 +159,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   initializeForm() {
     this.formConfig = new FormGroup({
       name: new FormControl(''),
-      terminalProperty: new FormControl(this.storeEquip != null ? this.storeEquip.equipmentOwnership : '', Validators.required),
-      communicationOwnership: new FormControl(this.storeEquip != null ? this.storeEquip.communicationOwnership : ''),
-      terminalType: new FormControl(this.storeEquip != null ? this.storeEquip.equipmentType : ''),
-      communicationType: new FormControl(this.storeEquip != null ? this.storeEquip.communicationType : ''),
-      terminalAmount: new FormControl(this.storeEquip != null ? this.storeEquip.quantity : ''),
+      terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership : '', Validators.required),
+      communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership : ''),
+      terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : ''),
+      communicationType: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationType : ''),
+      terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : ''),
       //adicionar um form para o preço
     });
+
+    this.disableForm();
 
     this.formConfig.get("terminalProperty").valueChanges.subscribe(val => {
       if (val === 'acquirer') {
@@ -155,25 +185,31 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       this.formConfig.get('terminalType').updateValueAndValidity();
       this.formConfig.get('communicationType').updateValueAndValidity();
       this.formConfig.get('terminalAmount').updateValueAndValidity();
-      this.disableForm();
     });
+  }
 
+  updateFormData() {
+    this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership);
+    this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
+    this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
+    this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
+    this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity);
   }
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
     this.productPackPricingFilter = {
-      processorId: this.store.processorId,
+      processorId: this.currentStore.processorId,
       productCode: this.packId,
       subproductCode: "",
       merchant: this.merchantCatalog,
       packAttributes: this.groupsList,
       store: {
-        activity: this.store.activity,
-        subActivity: this.store.subActivity,
-        supportEntity: TerminalSupportEntityEnum[this.store.supportEntity] as TerminalSupportEntityEnum,
-        referenceStore: this.store.shopId,
-        supportBank: this.store.supportEntity
+        activity: this.currentStore.activity,
+        subActivity: this.currentStore.subActivity,
+        supportEntity: TerminalSupportEntityEnum[this.currentStore.supportEntity] as TerminalSupportEntityEnum,
+        referenceStore: this.currentStore.shopId,
+        supportBank: this.currentStore.supportEntity
       },
       equipment: {
         communicationOwnership: CommunicationOwnershipTypeEnum[this.storeEquip.communicationOwnership] as CommunicationOwnershipTypeEnum,
@@ -220,7 +256,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       this.storeEquip.equipmentOwnership = this.formConfig.get("terminalProperty").value;
       this.storeEquip.communicationOwnership = this.formConfig.get("communicationOwnership").value;
       this.storeEquip.equipmentType = this.formConfig.get("terminalType").value;
-      this.storeEquip.equipmentType = this.formConfig.get("communicationType").value;
+      this.storeEquip.communicationType = this.formConfig.get("communicationType").value;
       this.storeEquip.quantity = this.formConfig.get("terminalAmount").value;
 
       this.pricingAttributeList.forEach(attr => {
@@ -236,34 +272,33 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
         attribute: this.pricingAttributeList
       }
 
-      let navigationExtras: NavigationExtras = {
-        state: {
-          store: this.store,
-        }
-      }
-
       if (this.edit) {
         //chamada à API para editar uma configuração
-        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
+        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.shopId, this.storeEquip).subscribe(result => {
+          this.changedStoreEvent.emit(true);
+          this.storeEquipEvent.emit(this.storeEquip);
           this.logger.debug("Update Shop Equipment From Submission Response ", result.id);
         });
       } else {
         //chamada à API para criar uma nova configuração
-        this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
+        this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.currentStore.shopId, this.storeEquip).subscribe(result => {
+          this.storeEquip.shopEquipmentId = result.id;
+          this.changedStoreEvent.emit(true);
+          this.storeEquipEvent.emit(this.storeEquip);
           this.logger.debug("Add Shop Equipment To Submission Response ", result.id);
         });
       }
 
-      this.route.navigate(['commercial-offert-list'], navigationExtras);
     }
   }
 
   cancelConfig() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        store: this.store,
-      }
-    }
-    this.route.navigate(['commercial-offert-list'], navigationExtras);
+    //let navigationExtras: NavigationExtras = {
+    //  state: {
+    //    store: this.currentStore,
+    //  }
+    //}
+    //this.route.navigate(['commercial-offert-list'], navigationExtras);
+    this.changedStoreEvent.emit(true);
   }
 }

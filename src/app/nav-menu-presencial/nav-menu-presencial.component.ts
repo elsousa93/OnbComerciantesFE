@@ -15,6 +15,7 @@ import { MenuPermissions, UserPermissions, getMenuPermissions } from '../userPer
 import { TableInfoService } from '../table-info/table-info.service';
 import { Location } from '@angular/common';
 import { ProcessService } from '../process/process.service';
+import { Bank } from '../store/IStore.interface';
 
 
 @Component({
@@ -66,11 +67,19 @@ export class NavMenuPresencialComponent implements OnInit {
   currentLanguage: TranslationLanguage;
   userPermissions: MenuPermissions;
 
+  banks: Bank[];
+  bank: string;
+
   constructor(private route: Router, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
     this.chooseLanguage(this.translate.getDefaultLang());
+
+    this.tableInfo.GetBanks().subscribe(result => {
+      this.banks = result;
+    });
+
   }
 
   ngOnInit(): void {
@@ -85,6 +94,8 @@ export class NavMenuPresencialComponent implements OnInit {
       this.logger.debug("userPermission tratada: " + a);
 
       this.userPermissions = getMenuPermissions(a);
+
+      this.bank = this.banks.find(b => b.code == this.currentUser.bankName).description;
 
     });
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
