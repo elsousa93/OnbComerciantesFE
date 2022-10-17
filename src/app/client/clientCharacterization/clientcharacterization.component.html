@@ -28,7 +28,7 @@
             <div class="form-check">
               <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety" type="radio"
                 [value]=false id="commercialSociety" (click)="setCommercialSociety(false)"
-                [disabled]="returned === 'consult'">
+                [disabled]="returned === 'consult' || (tipologia==='ENI' && isCommercialSociety===false)">
               <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
             </div>
 
