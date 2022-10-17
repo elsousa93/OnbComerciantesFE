@@ -396,9 +396,10 @@
                      </button>
                    </div>
                  </div>
-
-                 <app-commercial-offer-new-configuration *ngIf="isNewConfig != null" [currentStore]="currentStore" [isNewConfig]="isNewConfig" [storeEquip]="storeEquip" [parentFormGroup] ="editForm.get['configTerm']" (changedStoreEvent)="changedStoreEvent($event)" (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>
-               </div>
+                 <ng-container *ngIf="isNewConfig != null && currentStore != null">
+                   <app-commercial-offer-new-configuration [currentStore]="currentStore" [isNewConfig]="isNewConfig" [storeEquip]="storeEquip" (changedStoreEvent)="changedStoreEvent($event)" (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>
+                 </ng-container>
+                </div>
             </div>
 
             <div class="accordion1-item">
