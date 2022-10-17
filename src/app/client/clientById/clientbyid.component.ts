@@ -111,6 +111,7 @@ export class ClientByIdComponent implements OnInit {
   crcCode: string;
 
   clientExists: boolean;
+  isClient: boolean;
   crcFound: boolean = false;
 
   isCommercialSociety: boolean = null;
@@ -347,6 +348,7 @@ export class ClientByIdComponent implements OnInit {
       this.comprovativoCC = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
+      this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
     }
 
     this.socialDenomination = localStorage.getItem("clientName");
@@ -429,6 +431,7 @@ export class ClientByIdComponent implements OnInit {
       this.idClient,
       this.clientId,
       this.dataCC,
+      this.clientExists
     );
 
     this.clientContext.setMerchantInfo(this.merchantInfo);

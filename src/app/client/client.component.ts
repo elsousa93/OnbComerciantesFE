@@ -653,7 +653,7 @@ export class ClientComponent implements OnInit {
         cardNumberCC: this.cardNumberCC,
         nifCC: this.nifCC,
         addresssCC: this.addressCC,
-        postalCodeCC: this.postalCodeCC
+        postalCodeCC: this.postalCodeCC,
       };
       NIFNIPC = this.nifCC;
     }
@@ -664,7 +664,8 @@ export class ClientComponent implements OnInit {
         NIFNIPC: selectedClient.fiscalId,
         clientExists: true,
         clientId: this.clientId,
-        dataCC: this.dataCC
+        dataCC: this.dataCC,
+        isClient: this.isClient
       }
     };
     this.logger.debug("a passar para a proxima pagina");

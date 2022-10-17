@@ -166,14 +166,14 @@ export class ClientContext{
   "documents": []
 };
 
-  constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: any) {
+  constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: any, isClient: boolean) {
     this.dataCC = dataCC;
         this.tipologia = tipologia;
         this.clientExists = clientExists;
         this.comprovativoCC = comprovativoCC;
         this.NIFNIPC = new BehaviorSubject(NIFNIPC);
-      this.clientId = clientId;
-
+    this.clientId = clientId;
+    this.isClient = isClient;
       
 
       this.client = new BehaviorSubject(this.clientOutbound);
@@ -239,6 +239,14 @@ export class ClientContext{
 
   setDocuments(documents) {
     this.documents.next(documents);
+  }
+
+  getIsClient() {
+    return this.isClient;
+  }
+
+  setIsClient(isClient) {
+    this.isClient = isClient;
   }
 
   
