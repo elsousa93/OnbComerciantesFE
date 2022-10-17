@@ -22,13 +22,13 @@
             <div class="form-check">
               <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety" type="radio"
                 [value]=true id="commercialSociety" (click)="setCommercialSociety(true)"
-                [attr.disabled]="tipologia === 'ENI' || returned === 'consult'">
+                [attr.disabled]="(tipologia === 'ENI' || returned === 'consult') ? true: null">
               <label class="form-check-label radio">{{'generalKeywords.yes'|translate|uppercase}}</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety" type="radio"
                 [value]=false id="commercialSociety" (click)="setCommercialSociety(false)"
-                [attr.disabled]="tipologia === 'ENI' || returned === 'consult'">
+                [attr.disabled]="(tipologia === 'ENI' || returned === 'consult') ? true: null">
               <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
             </div>
 
