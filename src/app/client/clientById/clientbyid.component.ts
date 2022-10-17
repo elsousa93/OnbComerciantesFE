@@ -431,7 +431,7 @@ export class ClientByIdComponent implements OnInit {
       this.idClient,
       this.clientId,
       this.dataCC,
-      this.clientExists
+      this.isClient
     );
 
     this.clientContext.setMerchantInfo(this.merchantInfo);
