@@ -95,11 +95,11 @@ export class NavMenuPresencialComponent implements OnInit {
 
       this.userPermissions = getMenuPermissions(a);
 
-      var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
-      if (index > 0) {
-        console.log('INDEX ENCONTRADO ', index);
-        this.bank = this.banks[index].description;
-        console.log('DESCRIÇÃO DO BANCO ', this.bank);
+      if (this.banks != undefined){
+        var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
+        if (index > 0) {
+          this.bank = this.banks[index].description;
+        }
       }
 
     });
