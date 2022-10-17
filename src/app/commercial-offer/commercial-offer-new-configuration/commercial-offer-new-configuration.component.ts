@@ -101,14 +101,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
     
 
-    //this.ngOnInit();
+    this.ngOnInit();
     
     this.data.updateData(false, 5, 2);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["currentStore"]) {
-      this.changedStoreEvent.emit(true);
+      //this.changedStoreEvent.emit(true);
     }
     if (changes["isNewConfig"]) {
 
