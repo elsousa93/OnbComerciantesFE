@@ -720,7 +720,8 @@ export class ClientByIdComponent implements OnInit {
         stakeholder.identificationDocument = {
           type: '1001',
           country: this.clientContext.dataCC.countryCC,
-          number: this.clientContext.dataCC.nifCC
+          number: this.clientContext.dataCC.nifCC,
+          expirationDate: this.clientContext.dataCC.expiryDate
         }
 
         var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes

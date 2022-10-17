@@ -168,6 +168,22 @@ export class ConsultasComponent implements OnInit{
           });
         }
         let processesArray: Process[] = result.items.map<Process>((process) => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+
           return {
             processNumber: process.processNumber,
             nipc: 529463466,

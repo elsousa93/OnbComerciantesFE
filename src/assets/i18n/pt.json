@@ -329,6 +329,7 @@
     "completed": "Completado",
     "returned": "Retornado",
     "cancelled": "Cancelado",
+    "contractAcceptance": "Aceitação",
     "orderDateFrom": "Date do Processo - De:",
     "orderDateUntil": "Data do Processo - Até:",
     "documentType": "Tipo de Documento",

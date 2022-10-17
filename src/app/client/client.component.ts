@@ -119,8 +119,22 @@ export class ClientComponent implements OnInit {
     if (this.dataCCcontents.localityCC == null) {
       this.dataCCcontents.localityCC = '';
     }
+
+    this.dataCCcontents.postalCode = postalCode;
+    this.dataCCcontents.notes = notes;
+    this.dataCCcontents.sns = sns;
+    this.dataCCcontents.nss = nss;
+    this.dataCCcontents.height = height;
+    this.dataCCcontents.gender = gender;
     this.dataCCcontents.countryCC = country;
     this.countryCC = countryIssuer; //HTML
+    this.dataCCcontents.expiryDate = expiryDate;
+    this.dataCCcontents.emissonDate = emissonDate;
+    this.dataCCcontents.emissonLocal = emissonLocal;
+
+    this.dataCCcontents.countryIssuer = countryIssuer;
+    this.dataCCcontents.imgSrc = imgSrc;
+    this.dataCCcontents.cardIsExpired = cardIsExpired;
 
     if (notes != null || notes != "") {
       var assinatura = "Sabe assinar";
