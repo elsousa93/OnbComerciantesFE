@@ -71,6 +71,7 @@
     "add": "Add Merchant",
     "found": "Select the merchant:",
     "find":"Existing Client",
+    "multipleClients": "There are multiple customers",
     "number": "Client Number",
     "nif": "Fiscal Identification Number",
     "nipc": "Legal Person Identification Number",

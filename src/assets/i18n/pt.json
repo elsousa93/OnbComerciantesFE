@@ -71,6 +71,7 @@
     "add": "Adicionar Comerciante",
     "found": "Selecione um cliente:",
     "find":"Cliente Existente",
+    "multipleClients": "Existem múltiplos clientes",
     "number": "Nº de Cliente",
     "nameSocialDesignation": "Nome/Designação Social",
     "address": "Morada",
