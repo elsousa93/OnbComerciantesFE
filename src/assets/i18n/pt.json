@@ -476,6 +476,7 @@
       "title": "Contacto do Suporte",
       "name": "Nome Completo",
       "email": "Email",
+      "phone": "Telefone",
       "contactType": "Tipo de Contacto",
       "subject": "Assunto",
       "message": "Mensagem"

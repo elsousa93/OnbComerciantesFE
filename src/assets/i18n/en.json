@@ -474,6 +474,7 @@
       "title": "Support Contact",
       "name": "Full Name",
       "email": "Email",
+      "phone": "Phone",
       "contactType": "Contact Type",
       "subject": "Subject",
       "message": "Message"
