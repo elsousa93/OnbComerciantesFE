@@ -490,10 +490,18 @@ export class ClientComponent implements OnInit {
             context.logger.debug(context.clientsToShow);
             context.clientsMat.data = context.clientsToShow;
           });
-          this.snackBar.open(this.translate.instant('client.find'), '', {
+          if (clients.length===1){
+            this.snackBar.open(this.translate.instant('client.find'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
-          });
+            });
+          } else {
+            this.snackBar.open(this.translate.instant('client.multipleClients'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+              });
+          }
+          
         })
       } else {
         this.showFoundClient = false;
