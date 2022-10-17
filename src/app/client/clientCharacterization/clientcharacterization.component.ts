@@ -181,7 +181,7 @@ export class ClientCharacterizationComponent implements OnInit {
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
-
+    this.clientContext.formClientCharacterizationReady.emit(true);
   }
 
   initializeBasicCRCFormControl() {
@@ -193,6 +193,8 @@ export class ClientCharacterizationComponent implements OnInit {
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
+    this.clientContext.formClientCharacterizationReady.emit(true);
+
   }
 
   initializeBasicFormControl() {
@@ -207,6 +209,9 @@ export class ClientCharacterizationComponent implements OnInit {
     if (this.tipologia === 'ENI') {
       this.setCommercialSociety(false);
     }
+
+    this.clientContext.formClientCharacterizationReady.emit(true);
+
   }
 
   searchBranch(code) {
@@ -237,6 +242,8 @@ export class ClientCharacterizationComponent implements OnInit {
         this.form.get("natJuridicaN2").clearValidators();
       this.form.get("natJuridicaN2").updateValueAndValidity();
     });
+    this.clientContext.formClientCharacterizationReady.emit(true);
+
   }
 
   initializeFormControlCRC() {
@@ -320,6 +327,9 @@ export class ClientCharacterizationComponent implements OnInit {
           this.form.get("CAESecondary1Branch").setValue(data.description);
         });
     }
+
+    this.clientContext.formClientCharacterizationReady.emit(true);
+
   }
 
   initializeFormControls() {
@@ -335,7 +345,6 @@ export class ClientCharacterizationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.clientContext.formClientCharacterizationValid = this.form.statusChanges;
     this.returned = localStorage.getItem("returned");
     this.tipologia = this.clientContext.tipologia;
     this.clientExists = this.clientContext.clientExists;

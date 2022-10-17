@@ -865,9 +865,31 @@ export class ClientByIdComponent implements OnInit {
   formsValid() {
     console.log("form ta valido???");
 
-    this.clientCharacterizationComponent?.form.valueChanges.subscribe(res => {
-      console.log("estado do client characterization: ", res);
-    });
+    this.clientContext.formClientCharacterizationReady.subscribe(ready => {
+      console.log("FORM CLIENT CHARACTERIZATION ESTÁ PRONTO");
+      if (ready) {
+        this.clientCharacterizationComponent.form.statusChanges.subscribe(res => {
+          console.log("SOFREU ALTERACOES NO ESTADO: ", res);
+          if (res === 'VALID')
+            this.formClientIsValid = true;
+          else
+            this.formClientIsValid = false;
+        });
+      }
+
+    })
+
+    this.clientContext.formCountrysReady.subscribe(ready => {
+      if (ready) {
+        this.countriesComponent.form.statusChanges.subscribe(res => {
+          if (res === 'VALID')
+            this.formCountryIsValid = true;
+          else
+            this.formCountryIsValid = false;
+        });
+      }
+
+    })
 
     //this.clientContext.formClientCharacterizationValid?.subscribe(res => {
     //  if (res !== 'VALID')
