@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
+import { APIRequestsService } from '../apirequests.service';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { TreatedResponse } from '../table-info/ITable-info.interface';
@@ -17,7 +18,7 @@ export class CommercialOfferService {
   public urlOutbound: string;
   public currentLanguage: string;
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService, private translateService: TranslateService) {
+  constructor(private logger: LoggerService, private apiRequest: APIRequestsService ,private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService, private translateService: TranslateService) {
     this.baseUrl = configuration.acquiringAPIUrl;
     this.urlOutbound = configuration.outboundUrl;
     this.currentLanguage = this.translateService.currentLang;
@@ -30,7 +31,7 @@ export class CommercialOfferService {
 
 
     return new Promise<TreatedResponse<Product[]>>((resolve, reject) => {
-      this.tableInfo.callAPIOutbound(HttpMethod.GET, URI, "por mudar", "por mudar", "por mudar", "por mudar").then(success => {
+      this.apiRequest.callAPIOutbound(HttpMethod.GET, URI, "por mudar", "por mudar", "por mudar", "por mudar").then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
         resolve(treatedResponse);
