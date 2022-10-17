@@ -206,6 +206,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.data.updateData(false, 2, 2);
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
+
+    
+
     this.initializeFormWithoutCC();
 
     if (this.rootFormGroup.form != null) {
@@ -213,7 +216,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       if (this.returned == 'consult') {
         this.formNewStakeholder.disable();
       }
-    }     
+    }
+
+
   }
 
   ngOnDestroy(): void {

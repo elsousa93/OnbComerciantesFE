@@ -716,6 +716,12 @@ export class ClientByIdComponent implements OnInit {
         stakeholder.contactName = client.commercialName;
         stakeholder.shortName = client.legalName;
         stakeholder.fiscalAddress = client.headquartersAddress;
+        console.log("CC Data: ", this.dataCC);
+        stakeholder.identificationDocument = {
+          type: '1001',
+          country: this.clientContext.dataCC.countryCC,
+          number: this.clientContext.dataCC.nifCC
+        }
 
         var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
          stakeholderToShow.fiscalId = client.fiscalIdentification?.fiscalId;

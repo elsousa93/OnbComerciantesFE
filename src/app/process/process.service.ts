@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BankInformation, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
+import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { ISubmission, SimplifiedReference } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
@@ -68,7 +68,7 @@ export class ProcessService {
   }
 
   getMerchantFromProcess(processId: string) {
-    return this.http.get(this.baseUrl + 'process/' + processId + '/merchant');
+    return this.http.get<Client>(this.baseUrl + 'process/' + processId + '/merchant');
   }
 
   advancedSearch(url: string, from: number, count: number) {

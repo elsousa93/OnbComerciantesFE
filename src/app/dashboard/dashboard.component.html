@@ -284,21 +284,21 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row['nipc'] }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row['name'] }} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -306,7 +306,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -394,7 +394,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -402,7 +402,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -482,7 +482,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -490,7 +490,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -571,7 +571,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -579,7 +579,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -665,7 +665,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -673,7 +673,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -754,7 +754,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -762,7 +762,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -852,7 +852,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -860,7 +860,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -949,7 +949,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -957,7 +957,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1046,7 +1046,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -1054,7 +1054,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1144,7 +1144,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -1152,7 +1152,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1241,7 +1241,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -1249,7 +1249,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1338,7 +1338,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -1346,7 +1346,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1435,7 +1435,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.processDate'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
                   </ng-container>
 
                   <!-- State Column -->
@@ -1443,7 +1443,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">

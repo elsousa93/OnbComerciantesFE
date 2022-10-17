@@ -29,20 +29,6 @@ interface Process {
 })
 
 export class ConsultasComponent implements OnInit{
-  processes: MatTableDataSource<Process> = new MatTableDataSource();
-
-  displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'abrirProcesso'];
-  @ViewChild('paginatorConsultas') set paginatorConsultas(pager:MatPaginator) {
-    if (pager) {
-      this.processes.paginator = pager;
-      this.processes.paginator._intl = new MatPaginatorIntl();
-      this.processes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-      this.processes.paginator.pageSizeOptions = [10, 25, 50, 100];
-      this.processes.paginator.length = 10;
-    }
-  }
-  @ViewChild(MatSort) sort: MatSort;
-
 
   //////////////////////
   navbarProcessNumberSearch: string = '';
@@ -87,6 +73,20 @@ export class ConsultasComponent implements OnInit{
 
     this.initializeForm();    
   }
+
+  processes = new MatTableDataSource<Process>();
+
+  displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'abrirProcesso'];
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.processes.paginator = pager;
+      this.processes.paginator._intl = new MatPaginatorIntl();
+      this.processes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+      this.processes.paginator.pageSizeOptions = [10, 25, 50, 100];
+      this.processes.paginator.length = 10;
+    }
+  }
+  @ViewChild(MatSort) sort: MatSort;
 
   initializeForm() {
     this.form = new FormGroup({
@@ -201,7 +201,12 @@ export class ConsultasComponent implements OnInit{
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
   }
 
+  ngAfterViewInit(): void {
+    this.processes.sort = this.sort;
+  }
+
   loadProcesses(processValues: Process[]){
     this.processes.data = processValues;
+    this.processes.sort = this.sort;
   }
 }

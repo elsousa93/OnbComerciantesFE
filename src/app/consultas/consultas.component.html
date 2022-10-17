@@ -48,7 +48,7 @@
               wappler-command="editContent">{{'searches.search'|translate|uppercase}}
               &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;"></button>
 
-            <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" matSort>
+            <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" class="table-success" matSort>
               <!-- Nº Processo Column -->
               <ng-container matColumnDef="processNumber">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> {{'searches.processNumber'|translate|uppercase}}
@@ -86,7 +86,7 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
             </mat-table>
-            <mat-paginator [hidden]="processes.data.length==0" #paginatorConsultas>
+            <mat-paginator [hidden]="processes.data.length==0" #paginator>
             </mat-paginator>
           </div>
         </div>
