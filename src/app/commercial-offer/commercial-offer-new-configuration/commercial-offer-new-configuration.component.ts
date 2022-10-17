@@ -99,11 +99,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     //    this.edit = true;
     //}
 
-    console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.currentStore);
+    
 
-    this.loadReferenceData();
-    this.initializeForm();
-    this.ngOnInit();
+    //this.ngOnInit();
     
     this.data.updateData(false, 5, 2);
   }
@@ -143,6 +141,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.submissionId = localStorage.getItem("submissionId");
     this.returned = localStorage.getItem("returned");
+    console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.currentStore);
+    this.loadReferenceData();
+    this.initializeForm();
     //if (this.rootFormGroup.form != null) {
     //  this.rootFormGroup.form.setControl('configTerm', this.formConfig);
 
