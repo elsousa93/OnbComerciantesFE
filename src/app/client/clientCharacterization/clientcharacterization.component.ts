@@ -357,6 +357,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientId = this.clientContext.clientId;
     this.dataCC = this.clientContext.dataCC;
 
+
     this.initializeTableInfo();
     this.getClientContextValues();
   }

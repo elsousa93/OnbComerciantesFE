@@ -151,6 +151,13 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    var identificationDocument = this.currentStakeholder.stakeholderAcquiring.identificationDocument;
+
+    if (identificationDocument.type === '1001') {
+      this.createFormCC();
+    } else {
+      this.initializeFormWithoutCC();
+    }
     //console.log("O ONCHANGES NO NEW STAKEHOLDER FOI CHAMADO ", changes);
     //this.updateForm();
   }
@@ -320,7 +327,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   chooseStakeholder(stake: any) {
     this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
       this.currentStakeholder = result;
-      
+
     }, error => {
       this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
     });
