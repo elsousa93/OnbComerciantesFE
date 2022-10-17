@@ -213,7 +213,7 @@ export class CommercialOfferListComponent implements OnInit {
     })
 
     this.form.get("isUnicre").valueChanges.subscribe(val => {
-      if (val == true) {
+      if (val) {
         this.disableNewConfiguration = false;
       } else {
         this.disableNewConfiguration = true;
