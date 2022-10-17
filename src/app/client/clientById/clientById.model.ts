@@ -23,7 +23,8 @@ export class ClientContext{
     clientId: string;
     dataCC: any;
     crc?: any;
-  processId?: string;
+  processId?: string
+  isClient: boolean;
 
   submissionID: string;
 

@@ -717,11 +717,15 @@ export class ClientByIdComponent implements OnInit {
         stakeholder.shortName = client.legalName;
         stakeholder.fiscalAddress = client.headquartersAddress;
         console.log("CC Data: ", this.dataCC);
-        stakeholder.identificationDocument = {
-          type: '1001',
-          country: this.clientContext.dataCC.countryCC,
-          number: this.clientContext.dataCC.nifCC,
-          expirationDate: this.clientContext.dataCC.expiryDate
+        if (this.dataCC !== undefined && this.dataCC !== null && this.dataCC !== {}) {
+          stakeholder.identificationDocument = {
+            type: '1001',
+            country: this.clientContext.dataCC.countryCC,
+            number: this.clientContext.dataCC.nifCC,
+            expirationDate: this.clientContext.dataCC.expiryDate
+          }
+
+          this.clientContext.setStakeholdersToInsert([stakeholder]);
         }
 
         var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
@@ -729,7 +733,6 @@ export class ClientByIdComponent implements OnInit {
          stakeholderToShow.name = client.legalName;
 
         newSubmission.stakeholders.push(stakeholderToShow);
-        this.clientContext.setStakeholdersToInsert([stakeholder]);
       }
 
       this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
