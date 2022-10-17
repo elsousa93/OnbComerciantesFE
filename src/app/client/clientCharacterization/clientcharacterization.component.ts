@@ -334,6 +334,8 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.clientContext.formClientCharacterizationValid = this.form.statusChanges;
     this.returned = localStorage.getItem("returned");
     this.tipologia = this.clientContext.tipologia;
     this.clientExists = this.clientContext.clientExists;
