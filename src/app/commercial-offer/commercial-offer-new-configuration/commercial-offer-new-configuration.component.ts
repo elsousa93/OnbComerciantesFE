@@ -109,21 +109,25 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["currentStore"]) {
       //this.changedStoreEvent.emit(true);
-      console.log('SKJALKSJAKLSJSLKAJSLKASJAKL ', changes["currentStore"]);
       this.currentStore = changes["currentStore"].currentValue;
     }
     if (changes["isNewConfig"]) {
 
     }
     if (changes["storeEquip"]) {
-      this.updateFormData();
+      if (changes["storeEquip"].previousValue != null) {
+        //this.updateFormData();
+      }
     }
   }
 
   disableForm() {
     if (this.currentStore.productCode == "CARD PRESENT" || this.currentStore.productCode == "card present" || this.currentStore.productCode == "cardPresent") {
+      console.log('OLA');
       if (this.currentStore.supportEntity == "acquirer") { //caso o ETA seja UNICRE
+        console.log('TUDO BEM?');
         if (this.currentStore.subproductCode == "EASY" || this.currentStore.subproductCode == "easy") {
+          console.log('SIM E CONTIGO?');
           this.formConfig.get("terminalProperty").setValue("acquirer");
           this.formConfig.get("terminalProperty").disable();
 
@@ -146,6 +150,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.currentStore);
     this.loadReferenceData();
     this.initializeForm();
+    if (this.storeEquip != null) {
+      this.updateFormData();
+    }
     //if (this.rootFormGroup.form != null) {
     //  this.rootFormGroup.form.setControl('configTerm', this.formConfig);
 
