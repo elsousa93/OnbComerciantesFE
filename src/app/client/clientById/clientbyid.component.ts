@@ -495,6 +495,7 @@ export class ClientByIdComponent implements OnInit {
         this.createSubmission();
       }
     }
+    this.formsValid();
   }
 
   ngOnDestroy(): void {
@@ -862,12 +863,12 @@ export class ClientByIdComponent implements OnInit {
   }
 
   formsValid() {
-    this.clientContext.formClientCharacterizationValid.subscribe(res => {
+    this.clientContext.formClientCharacterizationValid?.subscribe(res => {
       if (res !== 'VALID')
         this.formClientIsValid = false;
     });
 
-    this.clientContext.formCountrysValid.subscribe(res => {
+    this.clientContext.formCountrysValid?.subscribe(res => {
       if (res !== 'VALID')
         this.formCountryIsValid = false;
     })
