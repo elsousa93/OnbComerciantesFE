@@ -20,6 +20,7 @@ export class AuthService implements OnDestroy {
 
   private dataSource = new BehaviorSubject(this.user);
   private bankLocation = new BehaviorSubject(this.user.bankLocation);
+  private bank = new BehaviorSubject(this.user.bankName);
   private authenticated = new BehaviorSubject(false);
   private wantsLogin = new BehaviorSubject(false);
 
@@ -43,6 +44,10 @@ export class AuthService implements OnDestroy {
 
   GetBankLocation(){
     return this.bankLocation.getValue();
+  }
+
+  GetBank() {
+    return this.bank.getValue();
   }
 
   hasUser(user: User) {

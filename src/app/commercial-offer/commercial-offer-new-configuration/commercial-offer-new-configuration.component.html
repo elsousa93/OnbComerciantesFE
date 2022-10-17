@@ -1,7 +1,7 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
    <div class="row">
-      <form [formGroup]="formConfig" name="formConfig" id="formConfig" (ngSubmit)="submit()">
+      <form [formGroup]="formConfig" name="formConfig" id="formConfig" >
          <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
             <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
                <span class="navbar-text text-light">
@@ -19,7 +19,7 @@
                   class="material-symbols-rounded">
                </span>
             </h3>
-            <div class="table-responsive me-2 ps-3 pe-3">
+            <!--<div class="table-responsive me-2 ps-3 pe-3">
                <table class="table table-success">
                   <thead class="text-primary table-primary">
                      <tr class="text-center text-primary table-light">
@@ -52,7 +52,7 @@
                      </tr>
                   </tbody>
                </table>
-            </div>
+            </div>-->
             <div class="row">
                <div class="mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 text-start col-5">
                   <p class="titulo-form-simples ps-4">{{'commercialOffer.terminalIdentification'|translate|uppercase}}
@@ -204,14 +204,14 @@
                <button id="btn5a3" (click)="cancelConfig()" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-4 pe-4"
                   wappler-command="editContent">{{'commercialOffer.cancelConfiguration'|translate|uppercase}}&nbsp;<img
                      src="assets/images/close.svg" style="height: 25px !important; vertical-align: sub;"></button>
-               <button id="btn5a4" type="submit" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5"
+               <button id="btn5a4" (click)="submit()" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5"
                   wappler-command="editContent">{{'generalKeywords.save'|translate|uppercase}}&nbsp;&nbsp;<img
                      src="assets/images/save.svg" style="height: 25px !important; vertical-align: sub;"></button>
             </div>
          </div>
 
 
-         <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
+         <!--<div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
             <div class="col ms-0 ps-0">
                <hr>
                <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -237,7 +237,7 @@
                   </span>
                </nav>
             </div>
-         </div>
+         </div>-->
       </form>
    </div>
 </div>
