@@ -49,7 +49,7 @@ export class CommercialOfferService {
 
 
     return new Promise<TreatedResponse<ProductPackEntry[]>>((resolve, reject) => {
-      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
+      this.apiRequest.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
         resolve(treatedResponse);
@@ -67,7 +67,7 @@ export class CommercialOfferService {
 
 
     return new Promise<TreatedResponse<ProductPack>>((resolve, reject) => {
-      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
+      this.apiRequest.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackFilter).then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
         resolve(treatedResponse);
@@ -85,7 +85,7 @@ export class CommercialOfferService {
     var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
     return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
-      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
+      this.apiRequest.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
         resolve(treatedResponse);
@@ -104,7 +104,7 @@ export class CommercialOfferService {
     var treatedResponse: TreatedResponse<ProductPackPricing> = {};
 
     return new Promise<TreatedResponse<ProductPackPricing>>((resolve, reject) => {
-      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
+      this.apiRequest.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackPricingFilter).then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
         resolve(treatedResponse);
@@ -122,7 +122,7 @@ export class CommercialOfferService {
     var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
     return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
-      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
+      this.apiRequest.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
         resolve(treatedResponse);
@@ -139,7 +139,7 @@ export class CommercialOfferService {
     var treatedResponse: TreatedResponse<ProductPackCommission> = {};
 
     return new Promise<TreatedResponse<ProductPackCommission>>((resolve, reject) => {
-      this.tableInfo.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
+      this.apiRequest.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";
         resolve(treatedResponse);
