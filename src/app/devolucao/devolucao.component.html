@@ -52,22 +52,30 @@
                  <thead class="text-primary table-primary">
                   <tr class="table-white text-primary">
                     <th scope="col" class="text-center text-primary bg-light table-white">{{'acceptance.returnReason0'|translate}}</th>
-                    <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
                     <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
                   </tr>
                  </thead>
                  <tbody>
-                  <tr>
-                    <td class="text-primary text-center">{{'generalKeywords.yes'|translate}}</td>
-                    <td class="text-primary text-center">CERTIDÃO DO REGISTO COMERCIAL</td>
-                    <td class="text-primary text-start">Os intervenientes associados ao processo não estão de acordo com os comprovativos de sociedade. Queiram enviar documentos que sustentem a sua intervenção.</td>
-                  </tr>
-                  <tr>
-                    <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
-                    <td class="text-primary text-center">-</td>
-                    <td class="text-primary text-center">Empresa Testes SA</td>
-                  </tr>
-                  <tr></tr>
+                   <tr *ngFor="let issue of issues.process">
+                     <td class="text-primary text-center">Processo</td>
+                     <td class="text-primary text-start">{{issue.issueDescription}}</td>
+                   </tr>
+                   <tr>
+                     <td class="text-primary text-center">{{getEntityName('merchant', issues.merchant.merchant.id)}}</td>
+                     <td class="text-primary text-start">{{issues.merchant.issues[0].issueDescription}}</td>
+                   </tr>
+                   <tr *ngFor="let issue of issues.stakeholders">
+                     <td class="text-primary text-center">{{getEntityName('stake', issue.stakeholder.id)}}</td>
+                     <td class="text-primary text-start">{{issue.issues[0].issueDescription}}</td>
+                   </tr>
+                   <tr *ngFor="let issue of issues.shops">
+                     <td class="text-primary text-center">{{getEntityName('shop', issue.shop.id)}}</td>
+                     <td class="text-primary text-start">{{issue.issues[0].issueDescription}}</td>
+                   </tr>
+                   <tr *ngFor="let issue of issues.documents">
+                     <td class="text-primary text-center">{{getEntityName('document', issue.document.id)}}</td>
+                     <td class="text-primary text-start">{{issue.issues[0].issueDescription}}</td>
+                   </tr>
                  </tbody>
                </table>
               </div>

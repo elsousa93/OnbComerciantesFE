@@ -100,14 +100,12 @@ export class QueuesService {
     var stakeholdersList = [];
     return new Promise<any>((resolve, reject) => {
       this.getProcessStakeholdersList(processId).then(result => {
-        console.log("stakeholders");
         var stakeholders = result.result;
         var totalLength = stakeholders.length;
 
         var stakeholderInfoPromises = [];
 
         stakeholders.forEach(value => {
-          console.log("stakeholder");
           // Obter o detalhe dos stakeholders
           stakeholderInfoPromises.push(this.GetProcessStakeholderInfo(processId, value.id));
         });
@@ -127,7 +125,6 @@ export class QueuesService {
   GetProcessStakeholderInfo(processId, stakeholderId) {
     return new Promise<any>((resolve, reject) => {
       this.getProcessStakeholderDetails(processId, stakeholderId).then(res => {
-        console.log("stakeholder iter");
         var stakeholder = res.result;
         resolve(stakeholder);
       })

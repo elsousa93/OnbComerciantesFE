@@ -74,7 +74,8 @@ export interface ProductPackEntry {
 }
 
 export interface ProductPack {
-  groups?: ProductPackRootAttributeProductPackKind[]
+  paymentSchemes?: ProductPackAttribute
+  otherGroups?: ProductPackRootAttributeProductPackKind[]
 }
 
 export interface ProductPackRootAttributeProductPackKind {
@@ -96,7 +97,7 @@ interface ProductPackRootAttribute {
   bundles?: ProductPackAttributeProductPackKind[]
 }
 
-interface ProductPackAttributeProductPackKind{
+export interface ProductPackAttributeProductPackKind{
   id?: string
   description?: string
   kind?: ProductPackKindEnum
@@ -111,6 +112,7 @@ export interface ProductPackAttribute {
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
+  aggregatorId?: string
   order?: number
 }
 
@@ -173,6 +175,20 @@ interface ProductPackCommissionAttributeValue {
   finalValue?: number
   isReadOnly?: boolean
   isVisible?: boolean
+}
+
+export interface ProductPackPaymentSchemes {
+  id?: string
+  description?: string
+  //originalValue?: boolean
+  //finalValue?: boolean
+  value?: boolean
+  isReadOnly?: boolean
+  isVisible?: boolean
+  isSelected?: boolean
+  aggregatorId?: string
+  order?: number
+  standardIndustryClassification?: string
 }
 
 export enum MerchantContextEnum {

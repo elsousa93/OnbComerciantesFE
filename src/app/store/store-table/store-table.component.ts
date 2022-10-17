@@ -9,141 +9,6 @@ import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPack
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-const testValues: ShopDetailsAcquiring[] = [
-  {
-    shopId: "1",
-    name: "ShopName",
-    manager: "Manager1",
-    activity: "C",
-    subActivity: "C1",
-    supportEntity: "Entity1",
-    registrationId: "RegID",
-    address: {
-      useMerchantAddress: true,
-      address: {
-        address: "A",
-        postalCode: "B",
-        postalArea: "C",
-        country: "123"
-      },
-      isInsideShoppingCenter: true,
-      shoppingCenter: "Shopping1"
-    },
-    bank: {
-      useMerchantBank: true,
-      bank: {
-        bank: "Bank",
-        iban: "12345"
-      }
-    },
-    website: "www.google.com",
-    productCode: "345",
-    subproductCode: "324",
-    equipments: [
-      {
-        shopEquipmentId: "123",
-        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-        communicationType: "A",
-        equipmentType: "A",
-        quantity: 0,
-        pricing: {
-          id: "123",
-          attribute: [
-            {
-              id: "A",
-              description: "A",
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            }
-          ]
-        }
-      }
-    ],
-    pack: {
-      packId: "123",
-      processorId: "345",
-      packDetails: [
-        {
-          id: "1234",
-          description: "123",
-          kind: "1234",
-          attributes: [
-            {
-              id: "1234",
-              description: "AAA",
-              originalValue: true,
-              finalValue: true,
-              isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 0,
-              bundles: [
-                {
-                  id: "B",
-                  description: "B",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "B123",
-                      description: "B123456",
-                      originalValue: true,
-                      finalValue: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 0
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      commission: {
-        commissionId: "1",
-        attributes: [{
-          id: "",
-          description: "A1",
-          fixedValue: {
-            originalValue: 1,
-            finalValue: 1,
-            isReadOnly: true,
-            isVisible: true
-          },
-          maxValue: {
-            originalValue: 2,
-            finalValue: 2,
-            isReadOnly: true,
-            isVisible: true
-          },
-          minValue: {
-            originalValue: 0,
-            finalValue: 0,
-            isReadOnly: true,
-            isVisible: true
-          },
-          percentageValue: {
-            originalValue: 4,
-            finalValue: 4,
-            isReadOnly: true,
-            isVisible: true
-          }
-        }
-          ]
-      }
-    },
-    documents: {
-      href: "",
-      type: "",
-      id: ""
-    }
-  }
-]
-
 @Component({
   selector: 'app-store-table',
   templateUrl: './store-table.component.html',
@@ -185,7 +50,9 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() deleteStoreEvent: Observable<ShopDetailsAcquiring>;
   @Input() insertStoreEvent: Observable<ShopDetailsAcquiring>;
+  @Input() updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
 
+  @Output() listLengthEmitter = new EventEmitter<number>();
 
   constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService) { }
 
@@ -199,17 +66,11 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //var store = {};
-    //var idx = 0;
-    //for (const propName in changes) {
-    //  const change = changes[propName];
-    //  if (propName == 'currentStore')
-    //    store = change.currentValue;
-    //  if (propName == 'currentIdx')
-    //    idx = change.currentValue;
-    //}
-    if (changes["currentStore"]) {
-      this.emitSelectedStore(this.currentStore, this.currentIdx);
+    if (changes["updatedStoreEvent"] && this.updatedStoreEvent != null) {
+      this.updatedStoreEvent.subscribe(result => {
+        var nextIdx = result.idx;
+        this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
+      });
     }
   }
 
@@ -217,23 +78,31 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.returned = localStorage.getItem("returned");
     this.getStoreList();
 
-    this.deleteStoreEvent.subscribe(result => {
-      var storeToRemove = result;
+    if (this.deleteStoreEvent != null) { 
+      this.deleteStoreEvent.subscribe(result => {
+        var storeToRemove = result;
 
-      var idx = this.storesList.indexOf(storeToRemove);
+        var idx = this.storesList.indexOf(storeToRemove);
 
-      this.storesList.splice(idx, 1);
+        this.storesList.splice(idx, 1);
 
-      this.loadStores(this.storesList);
-    });
+        this.listLengthEmitter.emit(this.storesList.length);
 
-    this.insertStoreEvent.subscribe(result => {
-      var storeToInsert = result;
+        this.loadStores(this.storesList);
+      });
+    }
 
-      this.storesList.push(storeToInsert);
+    if (this.insertStoreEvent != null) { 
+      this.insertStoreEvent.subscribe(result => {
+        var storeToInsert = result;
 
-      this.loadStores(this.storesList);
-    });
+        this.storesList.push(storeToInsert);
+
+        this.listLengthEmitter.emit(this.storesList.length);
+
+        this.loadStores(this.storesList);
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -270,7 +139,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     return new Promise((resolve, reject) => {
       //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
       if (this.returned != null) {
-        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
           this.storeService.getSubmissionShopsList(result[0].submissionId).then(resul => {
             var shops = result.result;
             var totalLength = shops.length;
@@ -299,6 +168,9 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.getStoreListFromSubmission().then(result => {
       this.getStoreListFromProcess().then(result => {
         this.loadStores(this.storesList);
+        this.listLengthEmitter.emit(this.storesList.length);
+        if (this.storesList.length > 0)
+          this.emitSelectedStore(this.storesList[0], 0);
       })
     });
     //this.loadStores(this.storesList);

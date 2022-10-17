@@ -5,7 +5,6 @@ import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
 import { SubmissionService } from 'src/app/submission/service/submission-service.service';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { IStakeholders, StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
-import { Client, OutboundClient } from '../Client.interface';
 import { ClientContext } from '../clientById/clientById.model';
 
 @Component({
@@ -38,38 +37,10 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
   merchantInfo: any;
   crc: any;
 
-
-
-  // public stakeholders: IStakeholders[] = [
-  //   {
-  //     shortName: "Bijal de Canela",
-  //     fiscalId: "123456789",
-  //   },
-  //   {
-  //     shortName: "Maria Santos",
-  //     fiscalId: "987654321"
-  //   }
-  // ];
-
   loadStakeholders() {
     this.clientContext.currentStakeholdersToInsert.subscribe(result => {
-      console.log("Atualizou os stakeholders a serem inseridos: ", result);
-      
       this.stakeholdersToInsert = result;
-    });
-
-    //this.clientContext.currentClient.subscribe(res => {
-    //  if (this.clientContext.tipologia === 'ENI') {
-    //    var client = this.clientContext.getClient();
-
-    //    var clientENI: StakeholdersProcess = {
-    //      fiscalId: client.fiscalIdentification.id,
-    //      name: client.legalName,
-    //    }
-    //    this.stakeholdersToInsert.push(clientENI);
-    //  }
-    //})
-    
+    });    
   }
 
 
@@ -77,33 +48,12 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
 
-    this.ngOnInit();
-
-
-    //this.stakeholdersToInsert = this.clientContext.stakeholdersToInsert;
-    //this.getSubmissionStakeholders();
-
-    
-    //if (this.router.getCurrentNavigation().extras.state) {
-    //  this.clientExists = this.router.getCurrentNavigation().extras.state["clientExists"];
-    //  this.tipologia = this.router.getCurrentNavigation().extras.state["tipologia"];
-    //  //this.NIFNIPC = this.router.getCurrentNavigation().extras.state["NIFNIPC"];
-    //  this.NIFNIPC = this.route.snapshot.params["id"];
-    //  this.client = this.router.getCurrentNavigation().extras.state["client"];
-    //  this.clientId = this.router.getCurrentNavigation().extras.state["clientId"];
-    //  this.processId = this.router.getCurrentNavigation().extras.state["processId"];
-    //  this.merchantInfo = this.router.getCurrentNavigation().extras.state["merchantInfo"];
-    //  if (this.router.getCurrentNavigation().extras.state["crc"])
-    //    this.crc = this.router.getCurrentNavigation().extras.state["crc"];
-    //}
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("mudou o contexto: ", this.clientContext);
     this.loadStakeholders();
 
     this.clientExists = this.clientContext.clientExists;
     this.tipologia = this.clientContext.tipologia;
-    //this.NIFNIPC = this.router.getCurrentNavigation().extras.state["NIFNIPC"];
     this.NIFNIPC = this.clientContext.getNIFNIPC();
     this.client = this.clientContext.getClient();
     this.clientId = this.clientContext.clientId;
@@ -111,63 +61,6 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
     this.merchantInfo = this.clientContext.getMerchantInfo();
     this.crc = this.clientContext.crc;
     }
-
-  //getSubmissionStakeholders() {
-  //  var context = this;
-  //  if (this.returned !== null) { 
-  //    this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
-  //      this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-  //        this.stakeholderService.GetAllStakeholdersFromSubmission(result[0].submissionId).then(res => {
-  //          res.forEach(function (value, index) {
-  //            context.stakeholderService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-  //              console.log("stakeholder: ", r);
-  //              context.submissionStakeholders.push({
-  //                displayName: '',
-  //                eligibility: false,
-  //                stakeholderAcquiring: r,
-  //                stakeholderOutbound: undefined
-  //              });
-  //              this.stakeholders.append(r);
-  //            }, error => {
-  //            });
-  //          }, error => {
-  //          });
-  //        });
-  //      });
-  //    });
-  //  }
-
-  //  if (this.submissionId !== null) {
-  //    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-  //      result.result.forEach(function (value, index) {
-  //        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-  //          var AcquiringStakeholder = result;
-  //          var stakeholderToInsert = {
-  //            displayName: '',
-  //            eligibility: false,
-  //            stakeholderAcquiring: AcquiringStakeholder,
-  //            stakeholderOutbound: undefined
-  //          }
-
-  //          context.stakeholderService.getStakeholderByID(AcquiringStakeholder.stakeholderId, "por mudar", "por mudar").subscribe(outboundResult => {
-  //            stakeholderToInsert.stakeholderOutbound = outboundResult;
-  //            context.submissionStakeholders.push(stakeholderToInsert);
-              
-  //          })
-  //          //context.submissionStakeholders.push({
-  //          //  displayName: '',
-  //          //  eligibility: false,
-  //          //  stakeholderAcquiring: result,
-  //          //  stakeholderOutbound: undefined
-  //          //});
-  //          console.log("array que ainda está a ser preenchida: ", context.submissionStakeholders);
-  //        }, error => {
-  //        });
-  //      });
-  //    }, error => {
-  //    });
-  //  }
-  //}
 
   ngOnInit(): void {
     console.log("contexto dentro do representation: ", this.clientContext);
@@ -220,9 +113,6 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
     });
 
-    //if (this.clientContext.dataCC !== {} && this.clientContext.dataCC !== null && this.clientContext.dataCC !== undefined)
-    //  newSubmission.stakeholders.push(this.clientContext.getClient());
-
     newSubmission.documents = [];
 
     this.crc = this.clientContext.crc;
@@ -254,9 +144,6 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
         data: null
       })
     }
-
     this.clientContext.newSubmission = newSubmission;
-
-
   }
 }

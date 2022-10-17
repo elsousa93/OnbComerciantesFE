@@ -1,4 +1,4 @@
-import { Product, Subproduct, ProductPackCommissionAttribute, ProductPackPricingAttribute, ProductPackRootAttributeProductPackKind } from "../commercial-offer/ICommercialOffer.interface";
+import { Product, Subproduct, ProductPackCommissionAttribute, ProductPackPricingAttribute, ProductPackRootAttributeProductPackKind, ProductPackAttributeProductPackKind, TerminalSupportEntityEnum, ProductPackPaymentSchemes, ProductPackAttribute } from "../commercial-offer/ICommercialOffer.interface";
 import { FiscalAddress } from "../stakeholders/IStakeholders.interface";
 import { Document } from "../submission/ISubmission.interface";
 
@@ -42,8 +42,7 @@ export interface ShopSubActivities {
 export interface ShopDetailsOutbound {
   shopId?: string
   name?: string,
-  product?: string,
-  subproduct?: string,
+  supportEntity?: TerminalSupportEntityEnum
   registrationId?: string,
   activity?: string,
   secondaryActivity?: string,
@@ -52,6 +51,7 @@ export interface ShopDetailsOutbound {
   contacts?: ShopContacts
   bankingInformation?: ShopBankingInformation
   supportingDocuments?: Document[]
+  productPack?: ShopProductPack
 }
 
 export class ShopDetailsAcquiring {
@@ -68,7 +68,7 @@ export class ShopDetailsAcquiring {
   productCode?: string
   subproductCode?: string
   equipments: ShopEquipment[]
-  pack?: ShopProductPack
+  pack?: ShopProductPackViewModel
   product?: Product
   subProduct?: Subproduct 
   documents?: ShopDocuments
@@ -78,11 +78,24 @@ export class ShopDetailsAcquiring {
 
 //Interfaces auxiliares
 
-export interface ShopProductPack {
+export interface ShopProductPackViewModel {
   packId?: string
-  packDetails?: ProductPackRootAttributeProductPackKind[]
+  //packDetails?: ProductPackRootAttributeProductPackKind[]
+  paymentSchemes?: ProductPackAttributeProductPackKind[]
+  otherPackDetails?: ProductPackRootAttributeProductPackKind[]
   commission?: ShopProductPackCommission
   processorId?: string
+}
+
+export interface ShopProductPack {
+  product: string
+  subproduct: string
+  processorId: string
+  productPackId: string
+  paymentSchemes: ProductPackPaymentSchemes[]
+  otherProductPackAttributes: ProductPackAttribute[]
+  commissionId: string
+  commissionAttributes: ProductPackCommissionAttribute[]
 }
 
 interface ShopProductPackCommission {

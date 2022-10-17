@@ -54,11 +54,11 @@ export function getMenuPermissions(user: any) {
       return permissions;
     case UserPermissions.DO:
       permissions = {
-        HomePage: true, Consultation: true, ProcessHandling: { MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true }
+        HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true }
       };
       return permissions;
     case UserPermissions.COMPLIANCEOFFICE:
-      permissions = { HomePage: true, Consultation: true, ProcessHandling: { RiskOpinion: true, ComplianceDoubts: true } };
+      permissions = { HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { RiskOpinion: true, ComplianceDoubts: true } };
       return permissions;
     case UserPermissions.COMERCIAL:
       permissions = { HomePage: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } };
@@ -91,7 +91,7 @@ export function getFTPermissions(user: any){
       permissions = { riskOpinion: true, complianceDoubts: true};
       return permissions;
     case UserPermissions.COMERCIAL:
-      permissions = { pendingEligibility: true};
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true, pendingEligibility: true};
       return permissions;
     case UserPermissions.ADMIN:
       permissions = {pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true};

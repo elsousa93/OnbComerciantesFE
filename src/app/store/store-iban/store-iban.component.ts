@@ -13,6 +13,8 @@ import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { BankInformation } from 'src/app/client/Client.interface';
 import { TableInfoService } from 'src/app/table-info/table-info.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -224,10 +226,12 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
-      this.authService.currentUser.subscribe(result => {
+    this.initializeForm();
+
+    this.authService.currentUser.subscribe(result => {
 
         if (result.permissions === UserPermissions.BANCA) {
           this.bank = this.authService.GetBankLocation();
@@ -245,7 +249,7 @@ export class StoreIbanComponent implements OnInit {
 
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
-    this.initializeForm();
+    //this.initializeForm();
 
 
     if (this.rootFormGroup.form != null) {
@@ -289,6 +293,7 @@ export class StoreIbanComponent implements OnInit {
   }
 
   selectFile(event: any) {
+    this.files = [];
     this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento: "01-08-2022" }
     this.newStore.id = 1;
     this.newStore.iban = "teste";
@@ -308,6 +313,10 @@ export class StoreIbanComponent implements OnInit {
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
+            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
@@ -330,6 +339,20 @@ export class StoreIbanComponent implements OnInit {
 
   updateForm() {
     this.formStores.get('supportBank').setValue(this.bank);
+  }
+
+  openFile(/*url: any, imgName: any*/ file: File) {
+    let blob = new Blob([file], { type: file.type });
+    let url = window.URL.createObjectURL(blob);
+
+    window.open(url, '_blank',
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;
+      `);
+
   }
 
 }

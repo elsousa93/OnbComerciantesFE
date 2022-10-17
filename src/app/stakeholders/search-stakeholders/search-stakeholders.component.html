@@ -1,12 +1,14 @@
-<table class="table table-success">
+<table class="table table-success" *ngIf="foundStakeholders">
   <thead class="text-primary table-primary">
     <tr class="text-center text-primary table-light">
+      <th></th>
       <th scope="col" class="align-baseline text-primary table-white"> {{'stakeholder.fiscalID'|translate}} </th> <!---->
       <th scope="col" class="text-center bg-light"> {{'stakeholder.name'|translate}} </th> <!---->
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let stake of stakeholdersToShow; let idx = index" (click)="selectStakeholder(stake, idx)" [ngClass]="{'row-selected': stake['stakeholderNIF'] === currentStakeholder['stakeholderNIF']}">
+    <tr *ngFor="let stake of stakeholdersToShow; let idx = index">
+      <td><input type="radio" name="stakeSearch" id="stakeSearch" (click)="selectStakeholder(stake, idx)"/></td>
       <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
       <td class="text-primary text-center">{{stake.stakeholderName}}</td>
     </tr>

@@ -71,7 +71,8 @@ export class CreateStakeholderComponent implements OnInit {
     addressCC: null,
     postalCodeCC: null,
     localityCC: null,
-    countryCC: null
+    countryCC: null,
+    documentType: null
   };
   public prettyPDF: FileAndDetailsCC = null;
 
@@ -110,52 +111,7 @@ export class CreateStakeholderComponent implements OnInit {
   setAddressFalse() {
     this.addressReading = false;
   }
-  /* To Test the Read Card Functionality in case the isAlive connection fails.
-   */
-  callReadCCSimulation() {
 
-    this.dataCCcontents.nameCC = "Nome Nome2 Apelido";
-    this.dataCCcontents.nationalityCC = "Portuguesa";
-    this.dataCCcontents.cardNumberCC = "00000000"; // Nº do CC
-    this.dataCCcontents.addressCC = "Rua Primeira";
-    this.dataCCcontents.postalCodeCC = "1000-010 LISBOA";
-
-    var postalCodeX = "1000-010 LISBOA";
-
-    this.dataCCcontents.localityCC = postalCodeX.split(" ").pop();
-    if (this.dataCCcontents.localityCC == null) {
-      this.dataCCcontents.localityCC = '';
-    }
-    this.dataCCcontents.countryCC = "República Portuguesa";
-    this.countryCC = "República Portuguesa";
-
-    var stakeholderToInsert: IStakeholders = {
-      "fiscalId": this.dataCCcontents.nifCC,
-      "fullName": this.dataCCcontents.nameCC,
-      "shortName": this.dataCCcontents.nameCC,
-      "identificationDocument": {
-        "type": null,           //FIXME "CC"
-        "number": this.dataCCcontents.cardNumberCC,
-        "country": this.dataCCcontents.countryCC,
-        "expirationDate": this.dataCCcontents.expiricyDateCC,
-        "checkDigit": null     //FIXME
-      },
-      "fiscalAddress": {
-        "address": this.dataCCcontents.addressCC,
-        "postalCode": this.dataCCcontents.postalCodeCC,
-        "postalArea": this.dataCCcontents.localityCC,
-        "country": this.dataCCcontents.countryCC,
-      },
-      "phone1": {},
-      "phone2": {}
-    }
-    this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-      this.route.navigate(['/stakeholders/']); 
-    }, error => {
-      this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC Simulado");
-    });
-    console.log("Data CC Contents Simul: ", this.dataCCcontents);
-  }
   /**
    * Information from the Citizen Card will be associated to the client structure
    * em "create-stakeholder"
@@ -163,14 +119,14 @@ export class CreateStakeholderComponent implements OnInit {
    * */
   SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
     gender, height, nationality, expiryDate, nameFather, nameMother,
-    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
-
-    console.log("Name: ", name);
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer, documentType) {
 
     this.dataCCcontents.nameCC = name;
     this.dataCCcontents.nationalityCC = nationality;
     this.dataCCcontents.birthdateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.expiricyDateCC = expiryDate;
+    this.dataCCcontents.documentType = documentType;
     this.dataCCcontents.nifCC = nif;
     this.dataCCcontents.localityCC = postalCode.split(" ").pop();
     if (this.dataCCcontents.localityCC == null) {
@@ -197,8 +153,6 @@ export class CreateStakeholderComponent implements OnInit {
       var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
         emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
 
-      console.log(ccArrayData);
-
       //Send to PDF without address -- type base64
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
         this.prettyPDF = resolve;
@@ -219,7 +173,6 @@ export class CreateStakeholderComponent implements OnInit {
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
         this.prettyPDF = resolve;
       });
-      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
     }
   }
 
@@ -293,13 +246,13 @@ export class CreateStakeholderComponent implements OnInit {
   public subscription: Subscription;
 
   public isParticular: boolean = false;
-  public isParticularSearched: boolean = false;
+  // public isParticularSearched: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
   stakeholderNumber: string;
 
-  foundStakeholders: boolean;
+  foundStakeholders: boolean = null;
   errorMsg: string = "";
 
   currentStakeholder: IStakeholders = {};
@@ -308,6 +261,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   public subs: Subscription[] = [];
   returned: string;
+  isClientNrSelected: boolean = false;
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
     private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
@@ -349,11 +303,12 @@ export class CreateStakeholderComponent implements OnInit {
 
   initializeNotFoundForm() {
     console.log('Não encontrou um stake ');
-    switch (this.isParticularSearched) {
+    switch (this.isParticular) {
       case false:
         let nipc = this.formStakeholderSearch.get("documentType").value === "0502" ?
           this.formStakeholderSearch.get("documentNumber").value : ''
         this.formNewStakeholder.get("nipc").setValue(nipc);
+
         if (nipc !== '') {
           this.formNewStakeholder.get("nipc").disable();
         } else {
@@ -499,7 +454,7 @@ export class CreateStakeholderComponent implements OnInit {
     this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
   }
 
-  changeListElementStakeType(stakeType: string, e: any) {
+  changeListElementStakeType(stakeType, e: any) {
     this.stakeholderType = e.target.value;
     if (this.stakeholderType === 'Particular') {
       this.isParticular = true;
@@ -508,7 +463,9 @@ export class CreateStakeholderComponent implements OnInit {
     }
     this.stakeType = true;
     this.okCC = false;
+    this.resetSearchStakeholder(); //
   }
+
   changeListElementDocType(docType: string, e: any) {
     this.docType = e.target.value;
     if (this.docType === '1001') {
@@ -516,8 +473,25 @@ export class CreateStakeholderComponent implements OnInit {
     } else {
       this.isCC = false;
     }
+    if (this.docType === '1010') { // Nº de cliente
+      this.isClientNrSelected = true;
+    } else {
+      this.isClientNrSelected = false;
+    }
     this.stakeDocType = true;
     this.okCC = false;
+    this.resetSearchStakeholder(); //
+  }
+
+  resetSearchStakeholder() {
+    this.isShown = false;
+    this.foundStakeholders = null; 
+    //this.formNewStakeholder.get("nif")?.setValue("");
+    //this.formNewStakeholder.get("nipc")?.setValue("");
+    //this.formNewStakeholder.get("nif")?.updateValueAndValidity();
+    //this.formNewStakeholder.get("nipc")?.updateValueAndValidity();
+    this.formStakeholderSearch.get("documentNumber").setValue("");
+    this.formStakeholderSearch.get("documentNumber").updateValueAndValidity();
   }
 
   toggleShow(stake: IStakeholders) {
@@ -535,6 +509,8 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
     this.isShown = true;
+
+
     setTimeout(() => {
       this.searchEvent.next(this.stakeholderNumber);
     });
@@ -585,9 +561,6 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   searchResultNotifier(info) {
-    console.log("Info: ", info);
-    this.isParticularSearched = this.isParticular;
-
     if (!info.found)
       this.initializeNotFoundForm();
     else
@@ -597,6 +570,8 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   clearForm() {
+    this.isShown = false;
+    this.foundStakeholders = null;
     this.formNewStakeholder.reset();
     this.formStakeholderSearch.reset();
     this.initializeForm();
@@ -608,8 +583,9 @@ export class CreateStakeholderComponent implements OnInit {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.currentStakeholder.id = result["id"];
-          this.emitInsertedStake(of(this.currentStakeholder));
+          //this.currentStakeholder.id = result["id"];
+          stakeholderToInsert.id = result["id"];
+          this.emitInsertedStake(of(stakeholderToInsert));
           this.clearForm();
           this.route.navigate(['/stakeholders/']);
         }, error => {
@@ -617,7 +593,7 @@ export class CreateStakeholderComponent implements OnInit {
       }, error => {
         this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
       });
-    } else if (this.dataCCcontents !== undefined && this.dataCCcontents !== null) {
+    } else if (this.dataCCcontents.cardNumberCC != null) {
       this.addStakeholderWithCC();
     }
     else {
@@ -679,9 +655,13 @@ export class CreateStakeholderComponent implements OnInit {
     };
 
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+      stakeholderToInsert.id = result["id"];
+      this.emitInsertedStake(of(stakeholderToInsert));
+      this.clearForm();
       this.route.navigate(['/stakeholders/']); 
     }, error => {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });
   }
+
 }

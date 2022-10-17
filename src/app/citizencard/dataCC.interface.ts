@@ -20,5 +20,7 @@ export class dataCC {
   postalCodeCC?: any;
   localityCC?: any;
   countryCC?: any; //Country issuer of the document
+
+  documentType?: any;
 }
  

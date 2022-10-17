@@ -11,7 +11,9 @@ import { ProcessService } from '../process/process.service';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { AppComponent } from '../app.component';
+import { TableInfoService } from '../table-info/table-info.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 interface ProcessFT {
   processNumber: string;
   nipc: number;
@@ -28,7 +30,7 @@ interface ProcessFT {
 export class ConsultasFTComponent implements OnInit{
   processes: MatTableDataSource<ProcessFT> = new MatTableDataSource();
 
-  displayedColumns = ['processNumber', 'contractNumber', 'processDate', 'nome', 'user', 'abrirProcesso'];
+  displayedColumns = ['processNumber', 'nipc', 'nome', 'estado', 'abrirProcesso'];
   @ViewChild('paginator') set paginator(pager:MatPaginator) {
     if (pager) {
       this.processes.paginator = pager;
@@ -51,18 +53,50 @@ export class ConsultasFTComponent implements OnInit{
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
+  public subs: Subscription[] = [];
 
+  public state: string;
+
+  public search: boolean;
+  public url: string;
+
+  baseUrl = '';
+
+  ListaDocType;
   
   constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private data: DataService, private processService: ProcessService, private translate: TranslateService) {
+    private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent) {
 
-    this.initializeForm();
+    this.appComponent.toggleSideNav(false);
+    
+    this.baseUrl = configuration.baseUrl;
 
     //Gets Queue Name from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
       this.queueName = this.route.getCurrentNavigation().extras.state["queueName"];
     }
-    this.ngOnInit();
+
+    this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
+      this.ListaDocType = result;
+      this.ListaDocType = this.ListaDocType.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+    }));
+
+    this.chooseState();
+    this.initializeForm();
+  }
+
+  chooseState() {
+    switch(this.queueName) {
+      case "MCCTreatment":
+        this.state = "StandardIndustryClassificationChoice"
+        break;
+      case "eligibility":
+        this.state = "ElegibilityAssessment"
+        break;
+      case "risk":
+        this.state = "RiskAssessment"
+        break;
+    }
   }
 
   initializeForm() {
@@ -74,24 +108,6 @@ export class ConsultasFTComponent implements OnInit{
       processDateStart: new FormControl(''), //Não é obrigatorio por enquanto
       processDateEnd: new FormControl('') //Não é obrigatorio por enquanto
     });
-
-    //this.form.get("processNumber").valueChanges.subscribe(data => {
-    //  if (data === '') {
-    //    this.form.controls["state"].setValidators([Validators.required]);
-    //  } else {
-    //    this.form.controls["state"].clearValidators();
-    //  }
-    //  this.form.controls["state"].updateValueAndValidity();
-    //});
-
-    //this.form.get("state").valueChanges.subscribe(data => {
-    //  if (data === '') {
-    //    this.form.controls["processNumber"].setValidators([Validators.required]);
-    //  } else {
-    //    this.form.controls["processNumber"].clearValidators();
-    //  }
-    //  this.form.controls["processNumber"].updateValueAndValidity();
-    //});
   }
 
   submitSearch() {
@@ -99,97 +115,91 @@ export class ConsultasFTComponent implements OnInit{
       this.searchProcess();
   }
 
+  checkAdvancedSearch(search){
+      if (search) {
+        this.url += '&';
+    }
+  }
+
+
   searchProcess() {
+    this.search = false;
     this.logger.debug(this.form);
     this.loadProcesses([]);
-      var processStateToSearch = this.form.get("state").value;
+      var processStateToSearch = this.state;
       var processNumber = this.form.get('processNumber').value;
       var processDocType = this.form.get('documentType').value;
       var processDocNumber = this.form.get('documentNumber').value;
       var processDateStart = this.form.get('processDateStart').value;
       var processDateUntil = this.form.get('processDateEnd').value;
-      if (processNumber !== '') {
-        this.logger.debug(processNumber);
-        var encodedCode = encodeURIComponent(processNumber);
-          this.processService.searchProcessByNumber(encodedCode, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug("deu erro");
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
-          
-      } else if (processStateToSearch!=''){  
-          this.processService.searchProcessByState(processStateToSearch, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
-      } else if (processDocNumber != '' && processDocType != '') {
 
-          this.processService.searchProcessByDoc(processDocType,processDocNumber, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
-       
-      } else if (processDateStart != '') {
-          this.processService.searchProcessByStartedDate(processDateStart, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
-      } else if (processDateUntil != '') {
-          this.processService.searchProcessByUntilDate(processDateUntil, 0, this.processes.paginator.pageSize).subscribe(resul => {
-            let processesArray: ProcessFT[] = resul.items.map<ProcessFT>((process) => {
-              return {
-                processNumber: process.processNumber,
-                nipc: 529463466,
-                nome: "EMPRESA UNIPESSOAL TESTES",
-                estado: process.state
-              };
-            })
-            this.loadProcesses(processesArray);
-          }, error => {
-            this.logger.debug(error);
-            this.loadProcesses([]);
-          });
+      var encodedCode = encodeURIComponent(processNumber);
+      this.url = this.baseUrl + 'process?';
+
+      if (processStateToSearch!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'state=' + processStateToSearch;
+        this.search = true;
+      } if (processNumber!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'number=' + encodedCode;
+        this.search = true;
+      } if (processDocType!='' && processDocNumber != '') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'documentType=' + processDocType + '&documentNumber=' + processDocNumber;
+        this.search = true;
+      } if (processDateStart!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'fromStartedAt=' + processDateStart;
+        this.search = true;
+      } if (processDateUntil!='') {
+        this.checkAdvancedSearch(this.search);
+        this.url += 'untilStartedAt=' + processDateUntil;
+        this.search = true;
       }
+
+      if (this.url == this.baseUrl + 'process?'){
+        this.snackBar.open(this.translate.instant('searches.emptySearch'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
+      }
+
+      if (processDocType!='' && processDocNumber == '' || processDocType=='' && processDocNumber != ''){
+        this.snackBar.open(this.translate.instant('searches.errorDocs'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
+      }
+
+      this.processService.advancedSearch(this.url, 0, this.processes.paginator.pageSize).subscribe(result => {
+        if (result.pagination.count > 300) {
+          this.snackBar.open(this.translate.instant('searches.search300'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        }
+        let processesArray: ProcessFT[] = result.items.map<ProcessFT>((process) => {
+          return {
+            processNumber: process.processNumber,
+            nipc: 529463466,
+            nome: "EMPRESA UNIPESSOAL TESTES",
+            estado: process.state
+          };
+          
+        })
+        if (processesArray.length == 0) {
+          this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        }
+        this.loadProcesses(processesArray);
+      }, error => {
+        this.logger.debug("deu erro");
+        this.logger.debug(error);
+        this.loadProcesses([]);
+      });
   }
 
   openProcess(process) {
@@ -207,15 +217,6 @@ export class ConsultasFTComponent implements OnInit{
     };
 
     this.route.navigate(['/queues-detail'], navigationExtras);
-    //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-    //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
-    //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-    //    this.logger.debug('Submissão com detalhes mais especificos ', resul);
-    //    this.clientService.GetClientById(resul.id).subscribe(res => {
-    //      this.route.navigate(['/client']);
-    //    });
-    //  });
-    //});
   }
 
   ngOnInit(): void {

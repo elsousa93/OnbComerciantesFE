@@ -1,6 +1,6 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ import { progressSteps } from './progressSteps';
 import { MenuPermissions, UserPermissions, getMenuPermissions } from '../userPermissions/user-permissions';
 import { TableInfoService } from '../table-info/table-info.service';
 import { Location } from '@angular/common';
+import { ProcessService } from '../process/process.service';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class NavMenuPresencialComponent implements OnInit {
   @Output() autoHide = new EventEmitter<boolean>();
 
 
-  isToggle: boolean = false;
+  isToggle: boolean = true;
   isAutohide: boolean = false;
 
   // progress bar behaviour
@@ -57,6 +58,7 @@ export class NavMenuPresencialComponent implements OnInit {
   currentPage: number = 0;
   currentSubPage: number = 0;
   progressImage: string;
+  encodedCode: string;
 
   currentUser: User = {};
 
@@ -64,7 +66,7 @@ export class NavMenuPresencialComponent implements OnInit {
   currentLanguage: TranslationLanguage;
   userPermissions: MenuPermissions;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
+  constructor(private route: Router, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
@@ -72,7 +74,9 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.dataService.changeData(new Map());
+    this.dataService.updateData(null, null, null);
+    
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
@@ -86,46 +90,38 @@ export class NavMenuPresencialComponent implements OnInit {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.dataService.currentPage.subscribe((currentPage) => {
       this.currentPage = currentPage;
+      if (this.currentPage != 0 && this.currentPage != null) {
+        this.isToggle = false;
+        this.toggleNavEvent.emit(this.isToggle);
+      } else if (this.currentPage == 0 || this.currentPage == null) {
+        this.isToggle = true;
+        this.toggleNavEvent.emit(this.isToggle);
+      }
       this.updateProgress();
     });
     this.dataService.currentSubPage.subscribe((currentSubPage) => {
-      this.currentSubPage = currentSubPage
+      this.currentSubPage = currentSubPage;
+      if (this.currentSubPage != 0 && this.currentPage != null) {
+        this.isToggle = false;
+        this.toggleNavEvent.emit(this.isToggle);
+      } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
+        this.isToggle = true;
+        this.toggleNavEvent.emit(this.isToggle);
+      }
       this.updateProgress();
     });
 
-    setTimeout(this.toggleEvent.bind(this), 800);
-
-    //this.navPosition = '0';
     var prevScrollpos = window.pageYOffset;
 
     window.addEventListener("scroll", this.autohide.bind(this), false);
-
-    //this.navPosition = '0';
-    //this.autohide();
-
   }
 
-  openProcess(process) {
-    if (process !== "") {
-      this.logger.debug("Opening process: " + process);
-      var encodedCode = encodeURIComponent(process);
-      localStorage.setItem("processNumber", process);
-      this.processNrService.changeProcessNumber(process);
-      localStorage.setItem("returned", 'consult');
-
-      this.route.navigate(['/app-devolucao/', encodedCode]);
-      //this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-      //  this.logger.debug('Submissão retornada quando pesquisada pelo número de processo', result);
-      //  this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-      //    this.logger.debug('Submissão com detalhes mais especificos ', resul);
-      //    this.clientService.GetClientById(resul.id).subscribe(res => {
-      //      this.route.navigate(['/client']);
-      //    });
-      //  });
-      //});
+  openProcess() {
+    if (this.processNumberToSearch !== "") {
+      this.logger.debug("Opening process: " + this.processNumberToSearch);
+      this.encodedCode = encodeURIComponent(this.processNumberToSearch);
+      this.searchProcess(this.processNumberToSearch);
     }
-
-
   }
 
   updateProgress() {
@@ -155,9 +151,27 @@ export class NavMenuPresencialComponent implements OnInit {
     this.prevScrollpos = currentScrollPos;
   }
 
-  searchProcess() {
-    this.logger.debug("Searching process " + this.processNumberToSearch);
-    this.route.navigate(['/app-consultas/', this.processNumberToSearch]);
+  searchProcess(process) {
+    this.processService.searchProcessByNumber(this.encodedCode, 0, 1).subscribe(resul => {
+      if (resul.items.length != 0) {
+        localStorage.setItem("processNumber", process);
+        this.processNrService.changeProcessNumber(process);
+        localStorage.setItem("returned", 'consult');
+  
+        this.route.navigate(['/clientbyid', this.encodedCode]);
+      } else {
+        let navigationExtras: NavigationExtras = {
+          state: {
+            processNumber: this.encodedCode,
+          }
+        };
+        this.processNumberToSearch = ''; // to clean processNr
+        this.route.navigate(['/app-consultas'], navigationExtras);
+      }
+    }, error => {
+      this.logger.debug("Erro na pesquisa de processo");
+      this.logger.debug(error);
+    });
   }
 
   changeLanguage(language) {
@@ -171,14 +185,7 @@ export class NavMenuPresencialComponent implements OnInit {
 
     if (currentRoute === '/') {
       this.route.navigate(["dashboard"], language);
-      // this.chooseLanguage(language);
-      // // this.route.navigateByUrl("/", { skipLocationChange: true, state: currentState }).then(() => {
-      // //   this.route.navigate([decodeURI(this._location.path())], { state: currentState });
-      // // });
-      // this.ngOnInit();
     }
-
-
   }
 
   chooseLanguage(language) {
@@ -204,6 +211,7 @@ export class NavMenuPresencialComponent implements OnInit {
   logout() {
     localStorage.removeItem('auth');
     this.authService.reset();
+    // this.route.navigate(['/logout']);
   }
 
   login() {

@@ -27,6 +27,8 @@ import { InfoDeclarativaStakeholderComponent } from './stakeholders/info-declara
 import { ClientByIdComponent } from './client/clientById/clientbyid.component';
 import { ReadcardComponent } from './readcard/readcard.component';
 import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
+import { SupportContactsComponent } from './support-contacts/support-contacts.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CookieService } from 'ngx-cookie-service';
@@ -115,6 +117,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NavMenuInternaComponent,
     ProcessComponent,
     LoginComponent,
+    LogoutComponent,
+    SupportContactsComponent,
     NavMenuPresencialComponent,
     FooterPresencialComponent,
     SidenavPresencialComponent,
@@ -184,7 +188,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       { path: 'info-declarativa', component: InfoDeclarativaComponent },
       { path: 'info-declarativa-stakeholder', component: InfoDeclarativaStakeholderComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'logout', component: LogoutComponent },
       { path: 'login/:tokenid', component: LoginComponent },
+      { path: 'support-contacts', component: SupportContactsComponent },
       { path: 'dashboard', component: DashboardComponent},
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
@@ -225,7 +231,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         }
     }),
   ],
-  providers: [{provide:HTTP_INTERCEPTORS, useClass:LoggingInterceptor, multi:true}, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective, AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

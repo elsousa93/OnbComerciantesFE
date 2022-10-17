@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
@@ -16,11 +16,13 @@ import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOff
 import { StoreTableComponent } from '../store-table/store-table.component';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
+import { ProductSelectionComponent } from '../product-selection/product-selection.component';
+import { AddStoreComponent } from '../add-store/add-store.component';
 
 @Component({
   selector: 'app-store-list',
   templateUrl: './store-list.component.html',
-  styleUrls: ['./store-list.component.css']
+  styleUrls: ['./store-list.component.css'],
 })
 export class StoreComponent implements AfterViewInit {
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
@@ -59,6 +61,9 @@ export class StoreComponent implements AfterViewInit {
   processNumber: string;
   submissionId: string;
 
+  updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
+  storesLength: number = 0;
+
   ngAfterViewInit() {
     //this.storesMat = new MatTableDataSource();
     //this.storesMat.paginator = this.paginator;
@@ -69,6 +74,11 @@ export class StoreComponent implements AfterViewInit {
 
   insertedStoreSubject: Subject<ShopDetailsAcquiring> = new Subject<ShopDetailsAcquiring>();
 
+  @ViewChild(ProductSelectionComponent) productSelectionComponent: ProductSelectionComponent;
+  @ViewChild(AddStoreComponent) addStoreComponent: AddStoreComponent;
+
+  products: any = [];
+
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
   }
@@ -77,10 +87,16 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
+  getAllProducts() {
+    this.storeService.GetAllShopProducts().subscribe(result => {
+      this.products = result;
+    }, error => {
+
+    });
+  }
+
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
     this.baseUrl = configuration.baseUrl;
-
-    this.ngOnInit();
 
     this.editStores = this.formBuilder.group({
       infoStores: this.formBuilder.group({
@@ -94,7 +110,7 @@ export class StoreComponent implements AfterViewInit {
         "countryStore": [''],
         "zipCodeStore": [''],
         "commercialCenter": [''],
-        "replicateAddress": ['']
+        "replicate": ['']
       }),
       bankStores: this.formBuilder.group({
         "supportBank": [''],
@@ -115,6 +131,8 @@ export class StoreComponent implements AfterViewInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
+    this.fetchStartingInfo();
+    this.getAllProducts();
   }
 
   navigateTo(id: number) {
@@ -122,7 +140,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   selectStore(info) {
-    if (info !== null) {
+    if (info.store != null && info.idx != null) {
       this.currentStore = info.store;
       this.currentIdx = info.idx;
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
@@ -137,32 +155,58 @@ export class StoreComponent implements AfterViewInit {
     this.currentStore.bank = new ShopBank();
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
+    if (this.submissionClient.merchantType == 'Entrepeneur') {
+      setTimeout(() => this.updateContactPoint(), 100);
+    }
+  }
+
+  updateContactPoint() {
+    this.currentStore.manager = this.submissionClient.legalName;
+    this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
+    this.editStores.controls["infoStores"].get("contactPoint").updateValueAndValidity();
+  }
+
+  closeAccordion() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton1").className = "accordion1-button collapsed";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton2").className = "accordion1-button collapsed";
+    document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton3").className = "accordion1-button collapsed";
   }
 
   setFormData() {
-    var infoStores = this.editStores.controls["infoStores"];
-    infoStores.get("storeName").setValue(this.currentStore.name);
-    infoStores.get("activityStores").setValue(this.currentStore.activity);
-    infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
-    infoStores.get("contactPoint").setValue(this.currentStore.manager);
-    infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
-    infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
-    infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
-    infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
-    infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
-    infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
-    infoStores.get("replicateAddress").setValue(this.currentStore.address.useMerchantAddress);
+    if (this.currentStore != null) { 
+      var infoStores = this.editStores.controls["infoStores"];
+      console.log("FORM INFO STORES AO SELECIONAR UMA LOJA ", this.editStores);
+      infoStores.get("storeName").setValue(this.currentStore.name);
+      infoStores.get("activityStores").setValue(this.currentStore.activity);
+      infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
+      infoStores.get("contactPoint").setValue(this.currentStore.manager);
+      infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
+      infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+      infoStores.get("replicate").setValue(this.currentStore.address.useMerchantAddress);
 
-    var bankStores = this.editStores.controls["bankStores"];
-    bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
-    bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
+      if (!this.currentStore.address.useMerchantAddress) {
+        this.addStoreComponent.chooseAddress(false);
+        infoStores.get("localeStore").setValue(this.currentStore.address.address.postalArea);
+        infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
+        infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
+        infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+      }
+
+      var bankStores = this.editStores.controls["bankStores"];
+      bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
+      bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
 
 
-    var productStores = this.editStores.controls["productStores"];
-    productStores.get("solutionType").setValue(this.currentStore.productCode);
-    productStores.get("subProduct").setValue(this.currentStore.subproductCode);
-    productStores.get("url").setValue(this.currentStore.website);
+      var productStores = this.editStores.controls["productStores"];
+      productStores.get("solutionType").setValue(this.currentStore.productCode);
+      this.productSelectionComponent.chooseSolutionAPI(this.currentStore.productCode);
+      productStores.get("subProduct").setValue(this.currentStore.subproductCode);
 
+      productStores.get("url").setValue(this.currentStore.website);
+    }
   }
 
   deleteStore() {
@@ -170,7 +214,6 @@ export class StoreComponent implements AfterViewInit {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
         this.emitRemovedStore(this.currentStore);
-        //this.route.navigateByUrl('store-comp/');
       });
     }
   }
@@ -219,31 +262,40 @@ export class StoreComponent implements AfterViewInit {
       this.currentStore.website = productStores.get("url").value;
 
       this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER; //de momento vou deixar este valor, não sei qual a condição para ser este valor ou outro
-
+      console.log("ESTRUTURA DE DADOS DA LOJA ANTES DE SER ADICIONADA ", this.currentStore);
       if (addStore) {
-        console.log('ADD');
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
           this.emitInsertedStore(this.currentStore);
+          this.editStores.reset();
+          this.productSelectionComponent.clearSubProducts();
+          this.closeAccordion();
         });
       } else {
-        console.log('EDIT');
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
+          if (this.currentIdx < (this.storesLength - 1)) {
+            this.emitUpdatedStore(of({store: this.currentStore, idx: this.currentIdx }));
+            this.onActivate();
+            this.editStores.reset();
+            this.productSelectionComponent.clearSubProducts();
+            this.closeAccordion();
+          } else {
+            this.data.updateData(true, 3);
+            this.route.navigate(['comprovativos']);
+          }
         });
       }
-
-      if (this.currentIdx < (this.storeList.length - 1)) {
-        this.currentStore = this.storeList[this.currentIdx + 1];
-        //this.currentIdx = this.currentIdx + 1;
-        this.selectStore({ store: this.storeList[this.currentIdx], idx: this.currentIdx });
-        this.onActivate();
-      } else {
-        this.data.updateData(true, 3);
-        //this.route.navigate(['comprovativos']);
-      }
     }
+  }
+
+  emitUpdatedStore(info) {
+    this.updatedStoreEvent = info;
+  }
+
+  getStoresListLength(length) {
+    this.storesLength = length;
   }
 
   fetchStartingInfo() {
@@ -254,6 +306,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   onActivate() {
+
     let scrollToTop = window.setInterval(() => {
       let pos = window.pageYOffset;
       if (pos > 0) {

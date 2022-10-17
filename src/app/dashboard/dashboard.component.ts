@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, HostBinding, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostBinding, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CookieService } from 'ngx-cookie-service'
@@ -16,6 +16,8 @@ import { LoggerService } from 'src/app/logger.service';
 import { User } from '../userPermissions/user';
 import { TranslateService } from '@ngx-translate/core';
 import { State } from '../queues-detail/IQueues.interface';
+import { AppComponent } from '../app.component';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -122,10 +124,8 @@ export class DashboardComponent implements OnInit {
 
   state = State;
 
-  @Input() isToggle: boolean = false;
-  @Input() isAutoHide: boolean = false;
-
-  displayedColumns = ['processNumber', 'contractNumber', 'requestDate', 'clientName', 'user', 'buttons'];
+  displayedColumns = ['processNumber', 'nipc', 'clientName', 'requestDate','state', 'buttons'];
+  displayedColumnsQueues = ['processNumber', 'nipc', 'clientName', 'requestDate','state', 'assigned', 'buttons'];
 
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -173,18 +173,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(private logger: LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService) {
+    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     localStorage.clear();
     this.date = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-    //const users: UserData[] = [];
-    //for (let i = 1; i <= 100; i++) {
-    //  users.push(createNewUser(i));
-    //}
 
-    // Assign the data to the data source for the table to render
+    this.appComponent.toggleSideNav(true);
 
     //Pendentes de envio
     this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
@@ -405,11 +401,9 @@ export class DashboardComponent implements OnInit {
     });
     this.dataService.changeData(new Map());
     this.dataService.updateData(null, null, null);
+    this.processNrService.changeProcessNumber(null);
   }
 
-  public toggleSideNav(toggled: boolean) {
-    this.isToggle = toggled;
-  }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -420,26 +414,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-  //   this.dataSourcePendentes = new MatTableDataSource();
-  //   this.dataSourcePendentes.paginator = this.paginatorPage;
-
-    //this.dataSourcePendentes.paginator = this.paginator;
-    //this.dataSourcePendentes.sort = this.sort;
-
-    ////-------------------------------------
-    //this.empTbSortWithObject.disableClear = true;
-    //this.dataSourceTratamento.sort = this.empTbSortWithObject;
-    //this.dataSourceTratamento.paginator = this.paginatorPageSize;
-
-    //this.dataSourceDevolvidos.paginator = this.paginatorPageDevolvidos;
-    //this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
-
-    //this.dataSourceAceitacao.paginator = this.paginatorPageAceitacao;
-    //this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
-
-    //this.dataSourceArquivoFisico.paginator = this.paginatorPageArquivoFisico;
-    //this.dataSourceArquivoFisico.sort = this.empTbSortArquivoFisico;
-
   }
 
   applyFilter(filterValue: string) {

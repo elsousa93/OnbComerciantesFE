@@ -309,7 +309,7 @@
                 <img src="assets/images/person_add_blue.svg" class="img_btn">
               </button>
             </span>
-            <h5 class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h5>
+            <h5 *ngIf="!okCC" class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h5>
           </div>
         </div>
       </div>

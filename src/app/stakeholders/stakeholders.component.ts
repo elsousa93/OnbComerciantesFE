@@ -6,7 +6,7 @@ import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
+import { of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 import { SubmissionService } from '../submission/service/submission-service.service';
@@ -50,9 +50,15 @@ export class StakeholdersComponent implements OnInit {
   @ViewChild('newModal') newModal;
 
   insertStakeholderEvent: Observable<IStakeholders>;
+  updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
+
+  emitUpdatedStakeholder(info) {
+    this.updatedStakeholderEvent = info;
+  }
 
   emitInsertedStake(stake) {
     this.insertStakeholderEvent = stake;
+    this.editStakeInfo = null;
   }
 
   currentStakeholder: StakeholdersCompleteInformation = {};
@@ -111,8 +117,13 @@ export class StakeholdersComponent implements OnInit {
   selectedStakeholderComprovativos = [];
   stakesLength: number;
 
+  crcStakeholders: IStakeholders[] = [];
+  selectedStakeholderIsFromCRC: boolean = false;
+
   constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
     private http: HttpClient, private route: Router, private logger: LoggerService, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService, private comprovativoService: ComprovativosService) {
+
+    this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
     this.editStakes = this.fb.group({
       searchAddStakes: this.fb.group({
@@ -127,22 +138,18 @@ export class StakeholdersComponent implements OnInit {
           "nif": [''],
           "name": ['']
         }),
-      })
+      }),
+      stake: this.fb.group({})
     });
 
   }
 
   redirectAddStakeholder() {
     this.editStakeInfo = false;
-    console.log(this.editStakes);
-    //this.route.navigate(['/create-stakeholder/']);
   }
 
   redirectInfoStakeholder() {
-    //this.selectStake({ stakeholder: null, currentIdx: 0 });
     this.editStakeInfo = true;
-    console.log(this.editStakes.get("stake"));
-    //this.route.navigate(['/add-stakeholder/']);
   }
 
   refreshPage() {
@@ -153,21 +160,12 @@ export class StakeholdersComponent implements OnInit {
     this.isNoDataReadable = readable;
   }
   ngOnInit(): void {
-    //Get Id from the store
-   // this.clientNr = Number(this.router.snapshot.params['nif']);
-   //this.form = new FormGroup({
-   //   stakeholderType: new FormControl(''),
-   //   tipoDocumento: new FormControl(''),
-   //   stakeholderNif: new FormControl(''),
-   // });
-    //this.createForm();
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 2, 1);
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
-    // this.getStakesListLength(this.submissionStakeholders);
 
   }
 
@@ -222,28 +220,6 @@ export class StakeholdersComponent implements OnInit {
     this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
   }
 
-  changeListElementStakeType(stakeType: string, e: any) {
-    this.stakeholderType = e.target.value;
-    if (this.stakeholderType === 'Particular') {
-      this.isParticular = true;
-    } else {
-      this.isParticular = false;
-    }
-    this.stakeType = true;
-  }
-  changeListElementDocType(docType: string, e: any) {
-    this.documentType = e.target.value;
-
-    this.newStake.identificationDocument.type = this.documentType;
-
-    if (this.documentType === 'Cartão do Cidadão') {
-      this.isCC = true;
-    } else {
-      this.isCC = false;
-    }
-    this.stakeDocType = true;
-  }
-
   toggleShow(stake: IStakeholders) {
     //clear the array
     this.stakeShow = [];
@@ -259,24 +235,8 @@ export class StakeholdersComponent implements OnInit {
     
   }
 
-  //searchStakeholder(formStakeholderSearch) {
-  //  this.logger.debug(formStakeholderSearch);
-  //  this.http.get<IStakeholders>(this.baseUrl + 'BEStakeholders/StakeholderBySubmissionID/' + this.formStakeholderSearch.value.docNumber + "/submission/" + "1").subscribe(result => {
-  //    this.logger.debug(result);
-  //    this.toggleShow(result);
-  //  }, error => console.error(error));
-  //}
-
   searchStakeholder() {
-    //this.formStakeholderSearch
-    //this.logger.debug("ola");
-    //this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  this.logger.debug(o);
-    //});
-
     var context = this;
-
-    /*this.onSearchSimulation(22181900000011);*/
     this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
       var clients = o;
 
@@ -298,10 +258,6 @@ export class StakeholdersComponent implements OnInit {
         });
       })
     }, error => {
-      //context.showFoundClient = false;
-      //this.logger.debug("entrou aqui no erro huajshudsj");
-      //context.resultError = "Não existe Comerciante com esse número.";
-      //this.searchDone = true;
 
     });
   }
@@ -315,18 +271,6 @@ export class StakeholdersComponent implements OnInit {
     if (this.returned !== 'consult') {
       this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
         this.route.navigateByUrl('stakeholders/');
-        //this.ngOnInit();
-        //const index = this.stakeholdersToShow.indexOf(this.currentStakeholder);
-        //this.logger.debug(index);
-        //if (index > -1) { // 
-        //  this.stakeholdersToShow.splice(index, 1);
-        //}
-        //this.logger.debug("depois de apagar");
-        //this.logger.debug(this.stakeholdersToShow);
-        //for (var i = 0; i < this.stakeholdersToShow.length; i++) {
-        //  if (this.stakeholdersToShow[i] === this.currentStakeholder)
-        //    this.stakeholdersToShow.splice(i, 1);
-        //}
       });
     } else {
     }
@@ -342,8 +286,6 @@ export class StakeholdersComponent implements OnInit {
             var documents = result.documents;
             context.allStakeholdersComprovativos[result.stakeholderId] = documents;
             console.log("get stake by id resposnse: ", result);
-            //context.stakeholdersComprovativos.push(result);
-
           }, error => {
             console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
           });
@@ -359,7 +301,7 @@ export class StakeholdersComponent implements OnInit {
   setFormData() {
     var stakeForm = this.editStakes.get("stake");
     stakeForm.get("contractAssociation").setValue('false');
-    stakeForm.get("flagRecolhaEletronica").setValue('true');
+    stakeForm.get("flagRecolhaEletronica").setValue(false);
     stakeForm.get("proxy").setValue(this.currentStakeholder.stakeholderAcquiring.isProxy + '');
 
     if (stakeForm.get("documentType") == null) {
@@ -367,7 +309,7 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("Role").setValue("");
       stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country);
       stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode);
-      stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality);
+      stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea);
       stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address);
     } else {
       stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
@@ -375,7 +317,6 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("identificationDocumentValidUntil").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate);
       stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
     }
-    console.log('Form dos stakes depois de selecionar um stake ', stakeForm);
   }
 
   selectStake(info) {
@@ -388,10 +329,9 @@ export class StakeholdersComponent implements OnInit {
   }
 
   submit() {
-    console.log("Chamada do submit principal ", this.editStakes.valid);
-    if (this.returned !== 'consult') {
-      if (this.editStakes.valid) {
-        var stakeForm = this.editStakes.get("stake");
+    var stakeForm = this.editStakes.controls["stake"];
+    if (this.returned != 'consult') {
+      if (this.editStakes.controls["stake"].valid) {
 
         this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
 
@@ -416,12 +356,11 @@ export class StakeholdersComponent implements OnInit {
         }
 
         this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-          if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
-            this.currentIdx = this.currentIdx + 1;
-            this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
+          if (this.currentIdx < (this.stakesLength - 1)) {
+            this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
           } else {
             this.data.updateData(true, 2);
-            this.route.navigate(['/store-comp']);
+            this.route.navigate(['store-comp']);
           }
 
         }, error => {
@@ -431,7 +370,6 @@ export class StakeholdersComponent implements OnInit {
   }
 
   getStakesListLength(value) {
-    console.log('Tamanho da lista dos stakeholders ', value);
     this.stakesLength = value;
   }
 
@@ -465,6 +403,17 @@ export class StakeholdersComponent implements OnInit {
 
     this.comprovativoService.viewDocument(documentReference);
 
+  }
+
+  isStakeholderFromCRC(stakeholder) {
+    this.selectedStakeholderIsFromCRC = false;
+    var context = this;
+    this.crcStakeholders?.forEach(function (value, idx) {
+      var stakeholderFromCRC = value;
+      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
+        context.selectedStakeholderIsFromCRC = true;
+      }
+    });
   }
 }
 

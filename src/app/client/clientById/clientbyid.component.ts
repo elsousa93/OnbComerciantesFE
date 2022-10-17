@@ -169,7 +169,6 @@ export class ClientByIdComponent implements OnInit {
 
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
-    console.log("now NIFNIPC is " + this.NIFNIPC)
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
@@ -351,18 +350,21 @@ export class ClientByIdComponent implements OnInit {
     }
 
     this.socialDenomination = localStorage.getItem("clientName");
-    
+
+    this.returned = localStorage.getItem("returned");
 
     this.form = formBuilder.group({
       clientCharacterizationForm: new FormGroup({
         natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
         commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-        crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
+        crcCode: new FormControl((this.returned != null && this.merchantInfo?.incorporationStatement != undefined) ? this.merchantInfo?.incorporationStatement?.code : '', [Validators.required]), //sim
         collectCRC: new FormControl(this.collectCRC)
       }),
       countrysForm: formBuilder.group({}),
       powerRepresentationForm: formBuilder.group({}),
     })
+
+    console.log('Form do Clientbyid: ', this.form);
 
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
@@ -372,54 +374,53 @@ export class ClientByIdComponent implements OnInit {
     }
     this.initializeTableInfo();
 
-
     if (this.returned != null) {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        if (result[0] !== undefined) {
-          this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-              this.merchantInfo = res;
-              this.clientContext.setMerchantInfo(res);
-              if (this.NIFNIPC === undefined) {
-                this.NIFNIPC = this.merchantInfo.fiscalId;
-                this.clientContext.setNIFNIPC(this.NIFNIPC);
-              }
-              if (this.merchantInfo.incorporationStatement !== null) {
-                this.isCommercialSociety = true;
-                this.collectCRC = true;
-                this.initializeBasicCRCFormControl();
-                this.searchByCRC();
-              } else {
-                if (this.merchantInfo.legalNature !== "") {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'Company';
-                  this.clientContext.tipologia = this.tipologia;
-                  this.initializeFormControlOther();
-                } else {
-                  this.isCommercialSociety = false;
-                  this.collectCRC = false;
-                  this.tipologia === 'ENI';
-                  this.clientContext.tipologia = this.tipologia;
-                  this.initializeENI();
-                }
-              }
-            });
-          });
-        }
+      this.getMerchantInfo().then(result => {
+        console.log('Result do getMerchantInfo: ', result);
       });
     }
-    //this.ngOnInit();
   }
 
-  //fim do construtor
+  getMerchantInfo() {
+    return new Promise((resolve, reject) => {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
+          this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
+            this.merchantInfo = res;
+            if (this.clientExists == undefined || this.clientExists == null) {
+              if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+                this.clientExists = true;
+              } else {
+                this.clientExists = false;
+              }
+            }
+            if (this.NIFNIPC === undefined) {
+              this.NIFNIPC = this.merchantInfo.fiscalId;
+            }
+            if (this.merchantInfo.incorporationStatement !== null) {
+              this.isCommercialSociety = true;
+              this.collectCRC = true;
+            } else {
+              if (this.merchantInfo.legalNature !== "") {
+                this.isCommercialSociety = false;
+                this.collectCRC = false;
+                this.tipologia === 'Company';
+              } else {
+                this.isCommercialSociety = false;
+                this.collectCRC = false;
+                this.tipologia === 'ENI';
+              }
+            }
+            resolve(null);
+          });
+      });
+    });
+  }
+
 
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
-
-    this.returned = localStorage.getItem("returned");
 
     this.clientContext = new ClientContext(
       this.tipologia,
@@ -430,7 +431,7 @@ export class ClientByIdComponent implements OnInit {
       this.dataCC,
     );
 
-    console.log("antes da pesquisa");
+    this.clientContext.setMerchantInfo(this.merchantInfo);
 
     if (this.dataCC !== undefined && this.dataCC !== null) {
       var client = {} as OutboundClient;
@@ -602,22 +603,18 @@ export class ClientByIdComponent implements OnInit {
   }
 
   submit() {
+    if (this.returned != 'consult') {
+      this.clientCharacterizationComponent.submit();
 
-    console.log("form valido: ", this.form);
-    this.clientCharacterizationComponent.submit();
+      if (!this.clientContext.clientExists)
+        this.countriesComponent.submit();
 
-    if (!this.clientContext.clientExists)
-      this.countriesComponent.submit();
-
-    this.representationPowerComponent.submit();
-
-    console.log("submit| clientContext final: ", this.clientContext);
-
-    this.updateSubmission();
-
+      this.representationPowerComponent.submit();
+      this.updateSubmission();
+    } else {
+      this.route.navigateByUrl('/stakeholders');
+    }
   }
-
-
   redirectBeginningClient() {
     this.route.navigate(["/client"]);
   }
@@ -687,130 +684,163 @@ export class ClientByIdComponent implements OnInit {
   }
 
   createSubmission() {
-    var context = this;
-    var newSubmission = this.clientContext.newSubmission;
-    //newSubmission.startedAt = new Date().toISOString();
-    newSubmission.merchant = this.clientContext.getClient();
+    if (this.returned != 'consult') { 
+      var context = this;
+      var newSubmission = this.clientContext.newSubmission;
+      //newSubmission.startedAt = new Date().toISOString();
+      newSubmission.merchant = this.clientContext.getClient();
 
-    var documentDelivery = newSubmission.merchant.documentationDeliveryMethod;
-    var merchantType = newSubmission.merchant.merchantType;
+      var documentDelivery = newSubmission.merchant.documentationDeliveryMethod;
+      var merchantType = newSubmission.merchant.merchantType;
 
-    if (documentDelivery === 'viaDigital')
-      newSubmission.merchant.documentationDeliveryMethod = 'Portal';
-    else
-      newSubmission.merchant.documentationDeliveryMethod = 'Mail';
+      if (documentDelivery === 'viaDigital')
+        newSubmission.merchant.documentationDeliveryMethod = 'Portal';
+      else
+        newSubmission.merchant.documentationDeliveryMethod = 'Mail';
 
-    if (merchantType === 'corporation')
-      newSubmission.merchant.merchantType = 'Corporate';
-    else
-      newSubmission.merchant.merchantType = 'Entrepeneur';
+      if (merchantType === 'corporation')
+        newSubmission.merchant.merchantType = '01'; //'Corporate'
+      else
+        newSubmission.merchant.merchantType = '02'; //'Entrepeneur'
 
-    if (this.tipologia === 'ENI') {
-      var client = this.clientContext.getClient();
-
-      console.log("CLIENTE A SER ADICIONADO COMO ENI: ", stakeholder);
+      if (this.tipologia === 'Corporate')
+        newSubmission.merchant.merchantType = '01';
+        
+      if (this.tipologia === 'ENI') {
+        newSubmission.merchant.merchantType = '02';
+        var client = this.clientContext.getClient();
 
       var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
         stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
-        stakeholder.shortName = client.shortName;
+        stakeholder.shortName = client.legalName;
         stakeholder.fiscalAddress = client.headquartersAddress;
 
-      var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
-       stakeholderToShow.fiscalId = client.fiscalIdentification?.fiscalId;
-       stakeholderToShow.name = client.legalName;
+        var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
+         stakeholderToShow.fiscalId = client.fiscalIdentification?.fiscalId;
+         stakeholderToShow.name = client.legalName;
 
-      newSubmission.stakeholders.push(stakeholderToShow);
-      this.clientContext.setStakeholdersToInsert([stakeholder]);
+        newSubmission.stakeholders.push(stakeholderToShow);
+        this.clientContext.setStakeholdersToInsert([stakeholder]);
+      }
+
+      this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
+        context.clientContext.submissionID = result.id;
+        localStorage.setItem("submissionId", result.id);
+        context.processNrService.changeProcessNumber(result.processNumber);
+      });
     }
-    
-
-
-    this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
-      context.clientContext.submissionID = result.id;
-      localStorage.setItem("submissionId", result.id);
-      context.processNrService.changeProcessNumber(result.processNumber);
-    });
   }
 
   updateSubmission() {
-    console.log(".");
 
-    var context = this;
-    var submissionID = this.clientContext.submissionID;
+    if (this.returned != 'consult') {
 
-    var newSubmission = this.clientContext.newSubmission;
+      var context = this;
+      var submissionID = this.clientContext.submissionID;
 
-    this.submissionService.EditSubmission(submissionID, this.clientContext.newSubmission).subscribe(result => {
-      this.data.updateData(true, 1);
-      this.route.navigateByUrl('/stakeholders');
-    });
+      var newSubmission = this.clientContext.newSubmission;
 
-    var stakeholders = this.clientContext.newSubmission.stakeholders;
+      if (this.returned == 'edit')
+        newSubmission.processNumber = localStorage.getItem("processNumber");
 
-    var client = this.clientContext.getClient();
+      this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
+        this.data.updateData(true, 1);
+        this.route.navigateByUrl('/stakeholders');
+      });
 
-    stakeholders.forEach(function (value, idx) {
-      var cont = this;
-      if (context.clientContext.tipologia === 'ENI') {
-        if (value.fiscalId === client.fiscalId) {
-          var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
-          stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
-          stakeholder.fullName = client.legalName;
-          stakeholder.contactName = client.commercialName;
-          stakeholder.shortName = client.shortName;
-          stakeholder.fiscalAddress = client.headquartersAddress;
+      var stakeholders = this.clientContext.newSubmission.stakeholders;
 
-          context.stakeholderService.UpdateStakeholder(submissionID, value.id, stakeholder);
+      var client = this.clientContext.getClient();
+
+      stakeholders.forEach(function (value, idx) {
+        var cont = this;
+        if (context.clientContext.tipologia === 'ENI') {
+          if (value.fiscalId === client.fiscalId) {
+            var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
+            stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
+            stakeholder.fullName = client.legalName;
+            stakeholder.contactName = client.commercialName;
+            stakeholder.shortName = client.shortName;
+            stakeholder.fiscalAddress = client.headquartersAddress;
+
+            context.stakeholderService.UpdateStakeholder(submissionID, value.id, stakeholder);
+          } else {
+            context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+            });
+          }
         } else {
           context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-            console.log("adicionou: ", result);
           });
         }
-      } else {
-        context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-          console.log("adicionou: ", result);
-        });
-      }
-    });
-
-    var documents = this.clientContext.newSubmission.documents;
-    documents.forEach(function (value, idx) {
-      context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-        console.log("adicionou documento: ", result);
       });
-    });
+
+      var documents = this.clientContext.newSubmission.documents;
+      documents.forEach(function (value, idx) {
+        context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
+          console.log("adicionou documento: ", result);
+        });
+      });
 
 
 
-    this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
-      res.forEach(value => {
-        this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-          var storeToAdd: ShopDetailsAcquiring = {
-            activity: r.activity,
-            subActivity: r.secondaryActivity,
-            address: {
-              address: r.address.address,
-              isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-              shoppingCenter: r.address.shoppingCenter,
-              useMerchantAddress: r.address.sameAsMerchantAddress
-            },
-            bank: {
-              bank: r.bankingInformation
-            },
-            name: r.name,
-            productCode: r.product,
-            subproductCode: r.subproduct,
-            website: r.url,
-            equipments: []
-          }
+      this.storeService.getShopsListOutbound(newSubmission.merchant.merchantId, "por mudar", "por mudar").subscribe(res => {
+        res.forEach(value => {
+          this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+            var storeToAdd: ShopDetailsAcquiring = {
+              activity: r.activity,
+              subActivity: r.secondaryActivity,
+              address: {
+                address: r.address.address,
+                isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+                shoppingCenter: r.address.shoppingCenter,
+                useMerchantAddress: r.address.sameAsMerchantAddress
+              },
+              bank: {
+                bank: r.bankingInformation
+              },
+              name: r.name,
+              //productCode: r.product,
+              //subproductCode: r.subproduct,
+              website: r.url,
+              equipments: []
+            }
 
-          context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
+            context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
 
+            });
           });
         });
       });
-    });
+    } else {
+      this.route.navigate(['/stakeholders']);
+    }
+  }
+
+  b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    const blobUrl = window.URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank',
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;` );
   }
 }

@@ -25,11 +25,11 @@
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
-            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select id="select3"
-              class="form-select  campo_form" formControlName="documentType">
-              <option value="1"></option>
-              <option value="2">Outro1</option>
-              <option value="3">Outro2</option>
+            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
+              <option value=""></option>      
+            <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
+              {{docType.description}}
+            </option>
             </select>
             <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p><input id="text3" name="text3"
               type="text" class="form-control campo_form" formControlName="documentNumber">
@@ -43,26 +43,19 @@
 
             <!-- adicionar um if para aparecer a tabela caso sejam encontrados clientes -->
 
-            <mat-table [dataSource]="processes" matSort>
-              <!-- Nº Pedido Column -->
+            <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" matSort>
+              <!-- Nº Processo Column -->
               <ng-container matColumnDef="processNumber">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> {{'searches.processNumber'|translate|uppercase}}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
               </ng-container>
-              <!-- contractNumber Column -->
-              <ng-container matColumnDef="contractNumber">
+              <!-- NIPC Column -->
+              <ng-container matColumnDef="nipc">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                  {{'homepage.contractNumber'|translate|uppercase}}
+                  NIPC
                 </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.contractNumber}} </mat-cell>
-              </ng-container>
-              <!-- processDate Column -->
-              <ng-container matColumnDef="processDate">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                  {{'homepage.processDate'|translate|uppercase}}
-                </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.processDate}} </mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.nipc}} </mat-cell>
               </ng-container>
               <!-- Nome da Empresa Column -->
               <ng-container matColumnDef="nome">
@@ -71,22 +64,24 @@
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
               </ng-container>
-              <!-- user Column -->
-              <ng-container matColumnDef="user">
+              <!-- Estado Column -->
+              <ng-container matColumnDef="estado">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                  {{'homepage.user'|translate|uppercase}}
+                  {{'searches.state'|translate|uppercase}}
                 </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.user}} </mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
               </ng-container>
               <ng-container matColumnDef="abrirProcesso">
-                <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>
+                  {{'searches.openProcess'|translate|uppercase}}
+                </mat-header-cell>
                 <mat-cell *matCellDef="let row"> <img src="assets/images/description.svg" (click)="openProcess(row)"
                     style="height: 25px !important; vertical-align: sub; cursor: pointer;"> </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
             </mat-table>
-            <mat-paginator #paginator>
+            <mat-paginator [hidden]="processes.data.length==0" #paginator>
             </mat-paginator>
           </div>
         </div>

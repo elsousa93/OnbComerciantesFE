@@ -32,7 +32,7 @@ export class APIRequestsService {
         requestResponse.error = null;
         resolve(requestResponse);
       }, error => {
-        console.log("error que deu: ", error);
+        console.log("erro na chamada da Acquiring: ", error);
         requestResponse.result = null;
         requestResponse.error = error;
         reject(requestResponse);
@@ -65,7 +65,7 @@ export class APIRequestsService {
           requestResponse.error = null;
           resolve(requestResponse);
         }, error => {
-          console.log("error que deu: ", error);
+          console.log("Erro na chamada da Outbound: ", error);
           requestResponse.result = null;
           requestResponse.error = error;
           reject(requestResponse);
@@ -76,7 +76,7 @@ export class APIRequestsService {
           requestResponse.error = null;
           resolve(requestResponse);
         }, error => {
-          console.log("error que deu: ", error);
+          console.log("Erro na chamada da Outbound: ", error);
           requestResponse.result = null;
           requestResponse.error = error;
           reject(requestResponse);

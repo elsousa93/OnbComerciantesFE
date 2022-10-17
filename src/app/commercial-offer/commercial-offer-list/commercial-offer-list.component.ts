@@ -4,16 +4,16 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { CommunicationOwnershipTypeEnum, EquipmentOwnershipTypeEnum, Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
+import { Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { MerchantCatalog, MerchantContextEnum, Product, ProductPackAttribute, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackKindEnum, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { MerchantCatalog, Product, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
@@ -28,7 +28,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   selectedPack: ShopProductPack = null;
 
-  storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
+  //storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
   storeEquipMat!: MatTableDataSource<ShopEquipment>;
 
   form: FormGroup;
@@ -87,15 +87,14 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //this.storesMat = new MatTableDataSource();
-    this.storesOfferMat.paginator = this.paginator;
+    //this.storesOfferMat.paginator = this.paginator;
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
   constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.baseUrl = configuration.baseUrl;
-
+    this.storeEquipMat = new MatTableDataSource<ShopEquipment>();
     this.ngOnInit();
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
@@ -116,36 +115,6 @@ export class CommercialOfferListComponent implements OnInit {
       this.isUnicre = true;
     }
 
-    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
-    this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
-      var shops = result.result;
-     shops.forEach(value => {
-       this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).then(res => {
-         var shop = res.result;
-         this.storesList.push(shop);
-       });
-     });
-     this.loadStores(this.storesList);
-    });
-
-    //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
-    if (this.returned != null) {
-     this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
-       this.storeService.getSubmissionShopsList(result[0].submissionId).then(resul => {
-         var shops = resul.result;
-         shops.forEach(val => {
-           this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).then(res => {
-             var shop = res.result;
-             var index = this.storesList.findIndex(store => store.shopId == shop.shopId);
-             if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
-               this.storesList.push(shop);
-           });
-         });
-         this.loadStores(this.storesList);
-       })
-     });
-    }
-
     this.COService.OutboundGetProductsAvailable().then(result => {
       this.products = result.result;
     });
@@ -155,8 +124,8 @@ export class CommercialOfferListComponent implements OnInit {
         context: result.context,
         contextId: result.contextId,
         fiscalIdentification: {
-          fiscalId: result.fiscalIdentification.fiscalId,
-          issuerCountry: result.fiscalIdentification.issuerCountry
+          fiscalId: result.fiscalId,
+          issuerCountry: ""
         }
       }
     });
@@ -181,16 +150,17 @@ export class CommercialOfferListComponent implements OnInit {
     }
     this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.shopId).subscribe(result => {
       this.storeEquipList.push(result);
+      this.loadStoreEquips(this.storeEquipList);
     });
   }
 
-  loadStores(storesValues: ShopDetailsAcquiring[]) {
-    this.storesOfferMat = new MatTableDataSource(storesValues);
-    this.storesOfferMat.paginator = this.paginator;
-  }
+  //loadStores(storesValues: ShopDetailsAcquiring[]) {
+  //  this.storesOfferMat = new MatTableDataSource(storesValues);
+  //  this.storesOfferMat.paginator = this.paginator;
+  //}
 
   loadStoreEquips(storeEquipValues: ShopEquipment[]) {
-    this.storeEquipMat = new MatTableDataSource(storeEquipValues);
+    this.storeEquipMat.data = storeEquipValues;
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
 
@@ -210,11 +180,9 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.disableNewConfiguration = false;
 
-    if (this.returned != null)
-      setTimeout(() => this.setFormData(), 500);
+    setTimeout(() => this.setFormData(), 500);
 
     this.getStoreEquipsFromSubmission();
-    setTimeout(() => this.storeEquipMat.data = this.storeEquipList, 1000); //tomar em atenção se esta chamada está correta
 
     if (this.returned == 'consult')
       this.form.disable();
@@ -228,30 +196,33 @@ export class CommercialOfferListComponent implements OnInit {
       terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
     });
+    this.form.get("isUnicre").valueChanges.subscribe(val => {
+      if (val == true) {
+        this.disableNewConfiguration = false;
+      } else {
+        this.disableNewConfiguration = true;
+      }
+    });
   }
 
   addFormGroups() {
     var context = this;
 
     this.groupsList.forEach(function (value, idx) {
-      console.log(value)
       var group = new FormGroup({});
       var attributes = value.attributes;
 
       attributes.forEach(function (value, idx) {
-        console.log(value);
         group.addControl(("formControl" + value.id), new FormControl(value.originalValue));
 
-        if (value.bundles !== [] && value.bundles !== undefined && value.bundles !== null) {
+        if (value.bundles !== undefined && value.bundles !== null) {
           var attributeGroup = new FormGroup({});
           var bundle = value.bundles;
 
           bundle.forEach(function (value, idx) {
-            console.log(value);
             var bundleAttributes = value.attributes;
 
             bundleAttributes.forEach(function (value, idx) {
-              console.log(value);
               attributeGroup.addControl(("formControl" + value.id), new FormControl(value.originalValue));
             });
             group.addControl("formGroup" + value.id, attributeGroup);
@@ -292,7 +263,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       result.result.forEach(pack => {
         this.COService.OutboundGetPackDetails(pack.id, this.productPack).then(res => {
-          res.result.groups.forEach(group => {
+          res.result.otherGroups.forEach(group => { // antes estava groups ao invés de otherGroups
             context.groupsList.push(group);
           });
           this.addFormGroups();
@@ -347,8 +318,10 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
 
-    if (!this.form.get("isUnicre").value)
+    if (!this.form.get("isUnicre").value) {
       this.form.get("terminalRegistrationNumber").setValue(null);
+      this.disableNewConfiguration = true;
+    }
 
     this.form.get("productPackKind").setValue(null);
   }
@@ -380,16 +353,6 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
-  //   if (this.returned != 'consult') {
-  //     if (this.currentIdx < (testValues.length - 1)) {
-  //       this.currentIdx = this.currentIdx + 1;
-  //       this.selectStore({ store: testValues[this.currentIdx], idx: this.currentIdx });
-  //       this.onActivate();
-  //     } else {
-        //this.data.updateData(true, 5);
-        //this.route.navigate(['info-declarativa']);
-  //     }
-  //   }
 
     this.commissionAttributeList.forEach(commission => {
       var currentValue = this.form.controls["commission" + commission.id];
@@ -424,7 +387,7 @@ export class CommercialOfferListComponent implements OnInit {
         commission: {
           attributes: this.commissionAttributeList
         },
-        packDetails: this.groupsList
+        otherPackDetails: this.groupsList
       }
 
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.shopId, this.currentStore).subscribe(result => {

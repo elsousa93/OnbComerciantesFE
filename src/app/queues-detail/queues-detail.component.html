@@ -405,12 +405,18 @@
                             <th scope="col" class="text-center bg-light">
                               {{'generalKeywords.documentDate'|translate|uppercase}}
                             </th>
+                            <th scope="col" class="text-center text-primary bg-light table-white"></th>
                           </tr>
                         </thead>
                         <tbody *ngIf="attach !== undefined">
                           <tr>
                             <td class="text-primary text-center">{{attach.tipo|translate}}</td>
                             <td class="text-primary text-center">{{attach.dataDocumento}}</td>
+                            <td>              <span>
+                              <img src="assets/images/search_blue.svg"
+                                   (click)="openFile(files[0])"
+                                   style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                            </span></td>
                           </tr>
                           <tr></tr>
                           <tr></tr>

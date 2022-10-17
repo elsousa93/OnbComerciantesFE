@@ -66,10 +66,11 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   flagProcurador: boolean = true;
   flagRecolhaEletronica: boolean = null;
 
-  selectedStakeholderIsFromCRC = false;
+  @Input() selectedStakeholderIsFromCRC = false;
   selectedStakeholderIsFromCC = false;
 
   formNewStakeholder!: FormGroup;
+
 
   newStake: IStakeholders = {
     fiscalId: 0,
@@ -141,46 +142,17 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
-
-    this.ngOnInit();
-    //this.triggerFalseClick();
     var context = this;
 
     this.getProcessStakeholders();
     
-    // this.updateForm(null); console.log("Update Form: Done");
     console.log("submissionId: ", this.submissionId);
-    //this.currentStakeholder = {
-    //  fiscalId: '162243839',
-    //  id: '1032',
-    //  shortName: "Bijal de canela",
-    //  fiscalAddress: {
-    //    address: '',
-    //    country: '',
-    //    locality: '',
-    //    postalArea: '',
-    //    postalCode: ''
-    //  }
-    //}
 
-    //this.stakeholderNumber = "999";
-
-    //stakeService.getStakeholderByID(this.stakeholderNumber, "", "").subscribe(success => {
-    //  this.logger.debug(success);
-    //  this.newStake = success;
-    //}, error => {
-    //  this.logger.debug(error);
-    //});
-
-    //Tirar o comentário depois de confirmar a página anterior (por enquanto usar um valor predefinido)
-    //if (this.route.getCurrentNavigation().extras.state) {
-    //  //this.isCompany = this.route.getCurrentNavigation().extras.state["isCompany"];
-    //  this.stakeholderNumber = this.route.getCurrentNavigation().extras.state["stakeholderNumber"];
-    //}
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.updateForm();
+    //console.log("O ONCHANGES NO NEW STAKEHOLDER FOI CHAMADO ", changes);
+    //this.updateForm();
   }
 
   getProcessStakeholders() {
@@ -202,29 +174,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }
   }
 
-  //getStakeFunction() {
-  //  this.stakeService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-  //    result.forEach(function (value, index) {
-  //      this.stakeService.GetStakeholderFromSubmission(this.submissionId, value.id).subscribe(result => {
-  //        this.submissionStakeholders.push(result);
-  //        this.stakeService.getStakeholderByID(result.stakeholderId, 'faltarequestID', 'faltaAcquiringUserID').subscribe((result: { documents: any; stakeholderId: string | number; }) => {
-  //          var documents = result.documents;
-  //          this.allStakeholdersComprovativos[result.stakeholderId] = documents;
-  //          console.log("get stake by id resposnse: ", result);
-  //          //context.stakeholdersComprovativos.push(result);
-
-  //        }, error => {
-  //          console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
-  //        });
-  //      }, error => {
-  //        console.log("Erro em GetStakeholderFromSubmission: ", error);
-  //      });
-  //    });
-  //  }, error => {
-  //    console.log("Erro na Get All: ", error);
-  //  });
-  //}
-
   isStakeholderFromCC(stakeholder) {
     this.selectedStakeholderIsFromCC = false;
     var context = this;
@@ -236,52 +185,17 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     });
   }
 
-  isStakeholderFromCRC(stakeholder) {
-    this.selectedStakeholderIsFromCRC = false;
-    var context = this;
-    this.crcStakeholders?.forEach(function (value, idx) {
-      var stakeholderFromCRC = value;
-      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
-        context.selectedStakeholderIsFromCRC = true;
-      }
-    });
-  }
-
-  updateForm() {
-    console.log('Página new stakeholder quando selecionamos um stakeholder ', this.currentStakeholder);
-    this.isStakeholderFromCRC(this.currentStakeholder);
-    this.isStakeholderFromCC(this.currentStakeholder);
-
-    if (this.returned !== null) {
-      if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring?.identificationDocument != null) {
-        if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.type == '1001') {
-          this.logger.debug('Entrou cartão de cidadão');
-          this.createFormCC();// mudei a ordem
-          this.validateCC(true);
-        } else {
-          this.initializeFormWithoutCC();
-          this.validateCC(false);
-        }
-      } else {
-        this.initializeFormWithoutCC();
-        this.validateCC(false);
-      }
-    } else {
-      this.initializeFormWithoutCC();
-    }
-  }
-
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl('false', Validators.required),
       flagRecolhaEletronica: new FormControl(false), //v
-      proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring !== undefined) ? this.currentStakeholder?.stakeholderAcquiring.isProxy + '' : false, Validators.required),
-      NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring !== undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
+      proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.isProxy + '' : false, Validators.required),
+      NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
       Role: new FormControl(''),
-      Country: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring !== undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required),
-      ZIPCode: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring !== undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required),
-      Locality: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring !== undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required),
-      Address: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring !== undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress !== undefined && this.currentStakeholder.stakeholderAcquiring.fiscalAddress !== null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required)
+      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
+      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required), //
+      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
+      Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
     });
     this.GetCountryByZipCode();
     this.flagRecolhaEletronica = false;
@@ -292,48 +206,31 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.data.updateData(false, 2, 2);
     this.newStake.fiscalId = this.router.snapshot.params['nif'];
-    // this.logger.debug(this.route.getCurrentNavigation().extras.state["isCC"]);
     this.initializeFormWithoutCC();
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
-      console.log("Form 2 ", this.rootFormGroup.form);
       if (this.returned == 'consult') {
         this.formNewStakeholder.disable();
       }
-    } 
-
-    //this.createForm();
-    //this.logger.debug('value antes ', this.formNewStakeholder.get('flagRecolhaEletronica').value);
-
-    //Tirar o comentario
-    //this.showYesCC = this.route.getCurrentNavigation().extras.state["isCC"];
-    this.showYesCC = false;
-
-    //this.formNewStakeholder.get('flagRecolhaEletronica').setValue(this.showYesCC);
-    if (this.showYesCC) {
-      this.flagRecolhaEletronica = true;
-    }
-
-    
+    }     
   }
 
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
-  //@Output()  newStakeholderAdded = new EventEmitter<any>();
   stringJson: any;
 
   createFormCC() {
     this.formNewStakeholder = this.fb.group({
       flagRecolhaEletronica: new FormControl(true), //v
-      documentType: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type : ''),
-      identificationDocumentCountry: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''),
-      identificationDocumentValidUntil: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''),
-      identificationDocumentId: new FormControl((this.returned !== null && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument !== undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.number : 'THIS'),
+      documentType: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type : ''), //tirei o this.returned != null
+      identificationDocumentCountry: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''), //
+      identificationDocumentValidUntil: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''), //
+      identificationDocumentId: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.number : 'THIS'), //
       contractAssociation: new FormControl('false', Validators.required),
-      proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy !== undefined ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : false, Validators.required),
+      proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != undefined ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : false, Validators.required),
     });
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
@@ -425,12 +322,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   GetCountryByZipCode() {
-    var teste = 'consult'
-    var teste1 = true;
 
-    if ((teste === 'consult' ? true : null) || teste1)
-
-      var currentCountry = this.formNewStakeholder.get('Country').value;
+    var currentCountry = this.formNewStakeholder.get('Country').value;
 
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
 
@@ -447,15 +340,12 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
           this.formNewStakeholder.get('Address').setValue(addressToShow.address);
           this.formNewStakeholder.get('Country').setValue(addressToShow.country);
           this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
-
-
-          this.formNewStakeholder.updateValueAndValidity();
         }));
       }
     } else {
       this.lockLocality = false;
-      this.formNewStakeholder.updateValueAndValidity();
     }
+    console.log('Valor do form no new-stakeholder ', this.formNewStakeholder);
   }
 
   goToStores() {
@@ -470,12 +360,12 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     return true;
   }
 
-  canEditRole() {
-    if (this.returned === 'consult')
-      return false;
-    if (this.selectedStakeholderIsFromCRC)
-      return false;
-    return true;
-  }
+  //canEditRole() {
+  //  if (this.returned == 'consult')
+  //    return false;
+  //  if (this.selectedStakeholderIsFromCRC)
+  //    return false;
+  //  return true;
+  //}
 }
 

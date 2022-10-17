@@ -47,7 +47,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
 
-  form: FormGroup;
+  formConfig: FormGroup;
   edit: boolean;
   submissionId: string;
 
@@ -87,28 +87,35 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       if (this.storeEquip != undefined)
         this.edit = true;
     }
+
+    console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.store);
+
     this.loadReferenceData();
     this.initializeForm();
 
-    if (this.store.productCode == 'cardPresent') {
-      if (this.store.supportEntity == 'acquirer') { //caso o ETA seja UNICRE
-        if (this.store.subproductCode == 'easy') {
-          this.form.get("terminalProperty").setValue("acquirer");
-          this.form.get("terminalProperty").disable();
 
-          this.form.get("communicationOwnership").setValue("acquirer");
-          this.form.get("communicationOwnership").disable();
-        } else {
-          //slide 97, não percebi qual é a exceção que deve ser feita
-        }
-      } else { // caso seja BANCO
-        
-      }
-    }
 
     this.ngOnInit();
     
     this.data.updateData(false, 5, 2);
+  }
+
+  disableForm() {
+    if (this.store.productCode == 'CARD PRESENT') {
+      if (this.store.supportEntity == 'acquirer') { //caso o ETA seja UNICRE
+        if (this.store.subproductCode == 'easy') {
+          this.formConfig.get("terminalProperty").setValue("acquirer");
+          this.formConfig.get("terminalProperty").disable();
+
+          this.formConfig.get("communicationOwnership").setValue("acquirer");
+          this.formConfig.get("communicationOwnership").disable();
+        } else {
+          //slide 97, não percebi qual é a exceção que deve ser feita
+        }
+      } else { // caso seja BANCO
+
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -122,7 +129,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   }
 
   initializeForm() {
-    this.form = new FormGroup({
+    this.formConfig = new FormGroup({
       name: new FormControl(''),
       terminalProperty: new FormControl(this.storeEquip != null ? this.storeEquip.equipmentOwnership : '', Validators.required),
       communicationOwnership: new FormControl(this.storeEquip != null ? this.storeEquip.communicationOwnership : ''),
@@ -132,22 +139,23 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       //adicionar um form para o preço
     });
 
-    this.form.get("terminalProperty").valueChanges.subscribe(val => {
+    this.formConfig.get("terminalProperty").valueChanges.subscribe(val => {
       if (val === 'acquirer') {
-        this.form.get('communicationOwnership').setValidators([Validators.required]);
-        this.form.get('terminalType').setValidators([Validators.required]);
-        this.form.get('communicationType').setValidators([Validators.required]);
-        this.form.get('terminalAmount').setValidators([Validators.required]);
+        this.formConfig.get('communicationOwnership').setValidators([Validators.required]);
+        this.formConfig.get('terminalType').setValidators([Validators.required]);
+        this.formConfig.get('communicationType').setValidators([Validators.required]);
+        this.formConfig.get('terminalAmount').setValidators([Validators.required]);
       } else {
-        this.form.get('communicationOwnership').setValidators(null);
-        this.form.get('terminalType').setValidators(null);
-        this.form.get('communicationType').setValidators(null);
-        this.form.get('terminalAmount').setValidators(null);
+        this.formConfig.get('communicationOwnership').setValidators(null);
+        this.formConfig.get('terminalType').setValidators(null);
+        this.formConfig.get('communicationType').setValidators(null);
+        this.formConfig.get('terminalAmount').setValidators(null);
       }
-      this.form.get('communicationOwnership').updateValueAndValidity();
-      this.form.get('terminalType').updateValueAndValidity();
-      this.form.get('communicationType').updateValueAndValidity();
-      this.form.get('terminalAmount').updateValueAndValidity();
+      this.formConfig.get('communicationOwnership').updateValueAndValidity();
+      this.formConfig.get('terminalType').updateValueAndValidity();
+      this.formConfig.get('communicationType').updateValueAndValidity();
+      this.formConfig.get('terminalAmount').updateValueAndValidity();
+      this.disableForm();
     });
 
   }
@@ -190,13 +198,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
 
   //ao escolher uma mensalidade, é carregado os valors associados a essa mensalidade escolhida
   chooseMensalidade(id: string) {
-    if (this.form.valid) {
+    if (this.formConfig.valid) {
       this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
         res.result.attributes.forEach(attr => {
           this.pricingAttributeList.push(attr);
         });
       });
-      this.form.valueChanges.subscribe(value => {
+      this.formConfig.valueChanges.subscribe(value => {
         if (value) { //se algum valor do form for alterado, é preciso carregar as mensalidades novamente e as que já existiam são limpas
           this.pricingOptions = [];
           this.pricingAttributeList = [];
@@ -207,16 +215,16 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.valid) {
+    if (this.formConfig.valid) {
       this.storeEquip = {};
-      this.storeEquip.equipmentOwnership = this.form.get("terminalProperty").value;
-      this.storeEquip.communicationOwnership = this.form.get("communicationOwnership").value;
-      this.storeEquip.equipmentType = this.form.get("terminalType").value;
-      this.storeEquip.equipmentType = this.form.get("communicationType").value;
-      this.storeEquip.quantity = this.form.get("terminalAmount").value;
+      this.storeEquip.equipmentOwnership = this.formConfig.get("terminalProperty").value;
+      this.storeEquip.communicationOwnership = this.formConfig.get("communicationOwnership").value;
+      this.storeEquip.equipmentType = this.formConfig.get("terminalType").value;
+      this.storeEquip.equipmentType = this.formConfig.get("communicationType").value;
+      this.storeEquip.quantity = this.formConfig.get("terminalAmount").value;
 
       this.pricingAttributeList.forEach(attr => {
-        var group = this.form.controls["formGroupPricing" + attr.id];
+        var group = this.formConfig.controls["formGroupPricing" + attr.id];
         if (!attr.isReadOnly && attr.isVisible) {
           attr.originalValue = group.get("formControlPricingOriginal" + attr.id).value;
           group.get("formControlPricingDiscount" + attr.id); //não existe variável para este valor
@@ -235,13 +243,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit {
       }
 
       if (this.edit) {
-        console.log("Editar ");
         //chamada à API para editar uma configuração
         this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
           this.logger.debug("Update Shop Equipment From Submission Response ", result.id);
         });
       } else {
-        console.log("Criar ");
         //chamada à API para criar uma nova configuração
         this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.store.shopId, this.storeEquip).subscribe(result => {
           this.logger.debug("Add Shop Equipment To Submission Response ", result.id);

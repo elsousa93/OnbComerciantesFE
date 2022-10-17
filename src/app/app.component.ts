@@ -24,7 +24,7 @@ export class AppComponent {
   pageName: string = 'Teste';
   title = 'app';
 
-  isToggle: boolean = false;
+  isToggle: boolean = true;
   isAutoHide: boolean = false;
 
   hasAuthenticated: boolean = true;
@@ -35,12 +35,6 @@ export class AppComponent {
 
     constructor(private logger: LoggerService, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
-
-    tableInfo.GetAddressByZipCodeTeste(2830, 105).then(success => {
-      console.log("sucesso: ", success);
-    }, error => {
-      console.log("error: ", error);
-    });
 
     //ir buscar as linguagens disponiveis. para adicionar uma nova linguagem basta adicionar à lista que se encontra no 'translationLanguages.ts'
     let langs = this.translationLanguages.map(val => {
@@ -105,7 +99,7 @@ export class AppComponent {
   }
 
   refresh(): void {
-    console.log("a guardar: ", this.authService.GetCurrentUser());
+    console.log("User Atual: ", this.authService.GetCurrentUser());
     localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
       window.location.reload();
   }

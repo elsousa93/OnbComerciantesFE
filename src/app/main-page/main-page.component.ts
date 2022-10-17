@@ -20,7 +20,7 @@ export class MainPageComponent implements OnInit {
   pageName: string = 'Teste';
   title = 'app';
 
-  isToggle: boolean = false;
+  isToggle: boolean = true;
   isAutoHide: boolean = false;
 
   constructor(private logger: LoggerService, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
