@@ -473,6 +473,18 @@ export class ClientComponent implements OnInit {
             isClient: boolean
           }
 
+          if (clients.length===1){
+            this.snackBar.open(this.translate.instant('client.find'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+            });
+          } else {
+            this.snackBar.open(this.translate.instant('client.multipleClients'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+              });
+          }
+
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
             context.logger.debug(c);
             var client = {
@@ -490,17 +502,6 @@ export class ClientComponent implements OnInit {
             context.logger.debug(context.clientsToShow);
             context.clientsMat.data = context.clientsToShow;
           });
-          if (clients.length===1){
-            this.snackBar.open(this.translate.instant('client.find'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-            });
-          } else {
-            this.snackBar.open(this.translate.instant('client.multipleClients'), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-              });
-          }
           
         })
       } else {

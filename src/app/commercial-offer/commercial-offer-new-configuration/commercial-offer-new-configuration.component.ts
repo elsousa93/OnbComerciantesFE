@@ -101,7 +101,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
     
 
-    this.ngOnInit();
+    //this.ngOnInit();
     
     this.data.updateData(false, 5, 2);
   }
