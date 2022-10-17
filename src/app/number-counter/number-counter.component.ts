@@ -20,17 +20,6 @@ export class NumberCounterComponent implements OnInit {
     this.displayPercentage();
   }
 
-  //public displayPercentage() {
-  //  setInterval(() => {
-  //    if (this.numberDisplay == this.number) {
-  //      clearInterval();
-  //    } else {
-  //      this.numberDisplay += 1;
-  //    }
-
-  //  }, 1);
-  //}
-
   public displayPercentage() {
     var context = this;
     if (this.speed > this.number)
@@ -54,7 +43,5 @@ export class NumberCounterComponent implements OnInit {
 
   public numberWithCommas(x) {
   return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
-}
-
-
+  }
 }
