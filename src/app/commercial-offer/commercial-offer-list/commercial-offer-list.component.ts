@@ -229,7 +229,7 @@ export class CommercialOfferListComponent implements OnInit {
       var attributes = value.attributes;
 
       attributes.forEach(function (value, idx) {
-        group.addControl(("formControl" + value.id), new FormControl(value.originalValue));
+        group.addControl("formControl" + value.id, new FormControl(value.originalValue));
 
         if (value.bundles !== undefined && value.bundles !== null) {
           var attributeGroup = new FormGroup({});
@@ -239,7 +239,7 @@ export class CommercialOfferListComponent implements OnInit {
             var bundleAttributes = value.attributes;
 
             bundleAttributes.forEach(function (value, idx) {
-              attributeGroup.addControl(("formControl" + value.id), new FormControl(value.originalValue));
+              attributeGroup.addControl("formControl" + value.id, new FormControl(value.originalValue));
             });
             group.addControl("formGroup" + value.id, attributeGroup);
           });
@@ -253,7 +253,7 @@ export class CommercialOfferListComponent implements OnInit {
   addCommissionFormGroups() {
     this.commissionAttributeList.forEach(function (value, idx) {
       var group = new FormGroup({});
-      group.addControl(("commission" + value.id), new FormControl(value.id));
+      group.addControl("commission" + value.id, new FormControl(value.id));
     });
   }
 
@@ -369,7 +369,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   submit() {
     this.commissionAttributeList.forEach(commission => {
-      var currentValue = this.form.get["commission" + commission.id];
+      var currentValue = this.form.get("commission" + commission.id);
       commission.minValue.finalValue = currentValue.get("commissionMin").value;
       commission.maxValue.finalValue = currentValue.get("commissionMax").value;
       commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
@@ -377,13 +377,13 @@ export class CommercialOfferListComponent implements OnInit {
     });
 
     this.groupsList.forEach(group => {
-      var groups = this.form.get["formGroup" + group.id];
+      var groups = this.form.get("formGroup" + group.id);
       group.attributes.forEach(attr => {
         if (attr.isVisible) {
           attr.finalValue = groups.get("formControl" + attr.id).value;
           if (attr.finalValue && attr.bundles.length > 0) { // se tiver sido selecionado
             attr.bundles.forEach(bundle => {
-              var bundles = this.form.get["formGroupBundle" + bundle.id];
+              var bundles = this.form.get("formGroupBundle" + bundle.id);
               bundle.attributes.forEach(bundleAttr => { 
                 if (bundleAttr.isVisible) {
                   bundleAttr.finalValue = bundles.get("formControlBundle" + bundleAttr.id).value;
