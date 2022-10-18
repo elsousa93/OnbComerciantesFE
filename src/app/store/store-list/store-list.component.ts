@@ -91,14 +91,6 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  getAllProducts() {
-    this.storeService.GetAllShopProducts().subscribe(result => {
-      this.products = result;
-    }, error => {
-
-    });
-  }
-
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService) {
     this.baseUrl = configuration.baseUrl;
     authService.currentUser.subscribe(user => this.currentUser = user);
@@ -136,7 +128,6 @@ export class StoreComponent implements AfterViewInit {
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");
     this.fetchStartingInfo();
-    this.getAllProducts();
   }
 
   navigateTo(id: number) {

@@ -17,12 +17,12 @@
             <span class="navbar-text text-primary">
               <div class="form-check">
                 <input formControlName="solutionType" class="form-check-input" type="radio" name="solutionType"
-                  (click)="chooseSolutionAPI(product.productDescription)" value={{product.productDescription}}>
+                  (click)="chooseSolutionAPI(product.name)" value={{product.name}}>
                 <label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b>
-                    {{product.productDescription}}</b></label>
+                    {{product.name}}</b></label>
               </div>
               <div class="form-check"><label class="form-check-label" for="solutionType">
-                  {{product.productDescription}}</label></div>
+                  {{product.name}}</label></div>
             </span>
           </div>
         </nav>

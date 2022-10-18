@@ -217,7 +217,7 @@ export class ProductSelectionComponent implements OnInit {
   chooseSolutionAPI(productDescription: any) {
     this.products.forEach(Prod => {
       var subProductToSearch = productDescription;
-      if (subProductToSearch == Prod.productDescription) {
+      if (subProductToSearch == Prod.name) {
         this.subProducts = Prod.subProducts;
         this.exists = true;
       }
