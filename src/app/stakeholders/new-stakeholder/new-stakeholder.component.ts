@@ -152,11 +152,12 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     var identificationDocument = this.currentStakeholder.stakeholderAcquiring.identificationDocument;
-
-    if (identificationDocument.type === '1001') {
-      this.createFormCC();
-    } else {
-      this.initializeFormWithoutCC();
+    if (changes["currentStakeholder"]) { 
+      if (identificationDocument.type === '1001') {
+        this.createFormCC();
+      } else {
+        this.initializeFormWithoutCC();
+      }
     }
   }
 
