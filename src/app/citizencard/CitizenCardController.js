@@ -143,7 +143,8 @@ export function ClearCCFields() {
     $("#submitDataFromCC").click();
 } */
 
-const BASE_URL = 'http://localhost:12000/BackendPortal'; //FIXME
+var BASE_URL = require('../../assets/config/config.json');
+// const BASE_URL = 'http://localhost:12000/BackendPortal'; //FIXME
 
 (function () {
   /* http://stackoverflow.com/questions/12404528/ie-parameters-get-undefined-when-using-them-in-settimeout/12404562#12404562 */
@@ -187,7 +188,7 @@ function submit(data) {
 
     var xhr = new XMLHttpRequest();
     //const processid = $("#CCCallProcessId").text() || null;
-    let url = BASE_URL + '/api/citizencard/readcitizencarddata';
+    let url = BASE_URL.baseUrlCC + '/api/citizencard/readcitizencarddata';
     //if (processid && processid != '') {
     //    url = url + '?processId=' + processid;
     //}
@@ -219,7 +220,7 @@ function submit(data) {
 export function readCCAddress(componentCallback) {
   SetNewCCData = componentCallback;
   ClearCCFields();
-  let url = BASE_URL + '/api/citizencard/generateccpluginrequestwithaddress';
+  let url = BASE_URL.baseUrlCC + '/api/citizencard/generateccpluginrequestwithaddress';
   //const processid = $("#CCCallProcessId").text();
   //if (processid && processid != '') {
   //    url = url + '?processId=' + processid;
@@ -236,7 +237,7 @@ export function readCCAddress(componentCallback) {
 export function readCC(componentCallback) {
   SetNewCCData = componentCallback;
   ClearCCFields();
-  let url = BASE_URL + '/api/citizencard/generateccpluginrequest';
+  let url = BASE_URL.baseUrlCC + '/api/citizencard/generateccpluginrequest';
   //const processid = $("#CCCallProcessId").text();
   //if (processid && processid != '') {
   //    url = url + '?processId=' + processid;
