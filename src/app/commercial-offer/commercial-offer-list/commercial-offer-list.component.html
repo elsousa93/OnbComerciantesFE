@@ -1,6 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <form [formGroup]="editForm" name="editForm" id="editForm" >
+  <form [formGroup]="form" name="form" id="form">
    <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
@@ -106,20 +106,21 @@
                </h2>
                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                   data-bs-parent="#accordionFlushExample">
-                 <div class="row ps-2"  *ngFor="let product of products">
+                 <div class="row ps-2" *ngFor="let product of products">
                    <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
                      <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
                        <span class="navbar-text">
                          <div class="form-check">
-                           <input class="form-check-input" type="radio" value="product.code" id="radio3" formControlName="productPackKind" name="productPackKind">
+                           <input class="form-check-input" type="radio" value={{product.code}} id="radio3" formControlName="productPackKind" name="productPackKind">
                            <label class="form-check-label radio pe-5" for="radio3" (click)="getPackDetails()"
                                   wappler-command="editContent">{{product.name}}</label>
                          </div>
                        </span>
                      </nav>
                    </div>
-                   <hr>
+                  </div>
+                  <hr>
                    <!-- ATRIBUTOS DO PACOTE -->
                    <!-- *ngFor="let packDetail of pack.packDetails" na div debaixo -->
                    <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}"><!--formGroupName="{{'formGroup' + packDetail.id}}" -->
@@ -327,7 +328,7 @@
                         </div>
                      </ng-container>
                    </div>
-                 </div>
+                 <!--</div>-->
                </div>
             </div>
 
