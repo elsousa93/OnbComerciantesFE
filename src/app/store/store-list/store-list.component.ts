@@ -18,6 +18,8 @@ import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPack
 import { FiscalAddress } from 'src/app/stakeholders/IStakeholders.interface';
 import { ProductSelectionComponent } from '../product-selection/product-selection.component';
 import { AddStoreComponent } from '../add-store/add-store.component';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../userPermissions/user';
 
 @Component({
   selector: 'app-store-list',
@@ -79,6 +81,8 @@ export class StoreComponent implements AfterViewInit {
 
   products: any = [];
 
+  currentUser: User = {};
+
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
   }
@@ -95,9 +99,9 @@ export class StoreComponent implements AfterViewInit {
     });
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService) {
     this.baseUrl = configuration.baseUrl;
-
+    authService.currentUser.subscribe(user => this.currentUser = user);
     this.editStores = this.formBuilder.group({
       infoStores: this.formBuilder.group({
         "storeName": [''],
@@ -261,7 +265,12 @@ export class StoreComponent implements AfterViewInit {
       this.currentStore.subproductCode = productStores.get("subProduct").value;
       this.currentStore.website = productStores.get("url").value;
 
-      this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER; //de momento vou deixar este valor, não sei qual a condição para ser este valor ou outro
+      if (this.currentUser.permissions == "UNICRE") {
+        this.currentStore.supportEntity = TerminalSupportEntityEnum.ACQUIRER;
+      } else {
+        this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER;
+      }
+
       console.log("ESTRUTURA DE DADOS DA LOJA ANTES DE SER ADICIONADA ", this.currentStore);
       if (addStore) {
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
