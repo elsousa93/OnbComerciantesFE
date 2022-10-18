@@ -445,7 +445,7 @@ export class ClientByIdComponent implements OnInit {
     this.clientContext.setMerchantInfo(this.merchantInfo);
 
     if (this.dataCC !== undefined && this.dataCC !== null) {
-      var client = {} as AcquiringClientPost;
+      var client: AcquiringClientPost = {} as AcquiringClientPost;
       
       client.fiscalId = this.dataCC.nifCC;
       client.shortName = client.legalName = this.dataCC.nameCC;
@@ -458,9 +458,9 @@ export class ClientByIdComponent implements OnInit {
       
       client.otherEconomicActivities = [];
 
-      client.knowYourSales = {};
-      client.knowYourSales.servicesOrProductsDestinations = [];
-      client.knowYourSales.servicesOrProductsSold = [];
+      client["knowYourSales"] = {};
+      client["knowYourSales"]["servicesOrProductsDestinations"] = [];
+      client["knowYourSales"]["servicesOrProductsSold"] = [];
 
       client.shareCapital = {};
       client.incorporationStatement = {};
