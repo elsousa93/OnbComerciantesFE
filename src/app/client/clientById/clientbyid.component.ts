@@ -871,8 +871,10 @@ export class ClientByIdComponent implements OnInit {
       if (ready) {
         context.clientCharacterizationComponent.form.statusChanges.subscribe(res => {
           console.log("SOFREU ALTERACOES NO ESTADO: ", res);
-          if (res === 'VALID')
+          console.log("formulário do client characterization: ", context.clientCharacterizationComponent?.form);
+          if (res === 'VALID') {
             this.formClientIsValid = true;
+          }
           else
             this.formClientIsValid = false;
         });
@@ -883,6 +885,7 @@ export class ClientByIdComponent implements OnInit {
     this.clientContext.formCountrysReady.subscribe(ready => {
       if (ready) {
         context.countriesComponent.form.statusChanges.subscribe(res => {
+          console.log("formulário do countries: ", context.countriesComponent?.form);
           if (res === 'VALID')
             this.formCountryIsValid = true;
           else
