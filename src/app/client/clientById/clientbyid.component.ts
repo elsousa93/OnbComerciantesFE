@@ -861,10 +861,10 @@ export class ClientByIdComponent implements OnInit {
       border: 3px solid green;` );
   }
 
-  formClientCharacterizationIsValid(form) {
-    console.log("formulario: ", form);
+  formClientCharacterizationIsValid(formCharact) {
+    console.log("formulario: ", formCharact);
 
-    this.form.statusChanges.subscribe(res => {
+    formCharact.statusChanges.subscribe(res => {
       console.log("Client Characterization estado: ", res);
       if (res === 'VALID') {
         console.log("client charac estado valido");
@@ -916,11 +916,11 @@ export class ClientByIdComponent implements OnInit {
     //})
   }
 
-  formClientCountryIsValid(form) {
-    console.log("form country: ", form);
+  formClientCountryIsValid(formCountry) {
+    console.log("form country: ", formCountry);
 
 
-    this.form.statusChanges.subscribe(res => {
+    formCountry.statusChanges.subscribe(res => {
       console.log("client country estado: ", res);
       if (res === 'VALID') {
         console.log("client country valido");
@@ -935,5 +935,9 @@ export class ClientByIdComponent implements OnInit {
     console.log("variavel characterization valid: ", this.formClientCharacterizationIsValid);
     console.log("variavel country valid: ", this.formCountryIsValid);
 
+  }
+
+  countryListValidator() {
+    return (this.countriesComponent.countryList.length > 0);
   }
 }

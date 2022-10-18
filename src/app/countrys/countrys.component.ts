@@ -637,4 +637,8 @@ export class CountrysComponent implements OnInit {
 
   }
 
+  formIsValid() {
+    return (this.form.valid && this.countryList.length > 0);
+  }
+
 }
