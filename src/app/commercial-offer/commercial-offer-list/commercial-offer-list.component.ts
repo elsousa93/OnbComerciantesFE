@@ -471,7 +471,7 @@ export class CommercialOfferListComponent implements OnInit {
   attributeSelected(formGroup: string, formControl: string, value: boolean) {
     console.log('Valor do formControl selecionado ', this.form.get(formGroup).get(formControl).value);
     console.log('Valor recebido ', value);
-    console.log('Valor atual ', this.form.get(formControl).value);
+    console.log('Valor atual ', this.form.get(formGroup).get(formControl).value);
     this.form.get(formGroup).get(formControl).setValue(value);
     console.log('Valor depois de selecionar a checkbox ', this.form.get(formGroup).get(formControl).value);
   }
@@ -479,7 +479,7 @@ export class CommercialOfferListComponent implements OnInit {
   attributeShowMoreSelected(formGroup: string, formControl: string, value: boolean) {
     console.log('Valor do formControl showMore selecionado ', this.form.get(formGroup).get(formControl).value);
     console.log('Valor recebido showMore', value);
-    console.log('Valor atual showmore', this.form.get(formControl).value);
+    console.log('Valor atual showmore', this.form.get(formGroup).get(formControl).value);
     this.form.get(formGroup).get(formControl).setValue(value);
     console.log('Valor depois de selecionar a checkbox showmore ', this.form.get(formGroup).get(formControl).value);
   }

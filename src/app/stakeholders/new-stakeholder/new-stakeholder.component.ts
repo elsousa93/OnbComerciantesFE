@@ -166,7 +166,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var context = this;
     this.crcStakeholders?.forEach(function (value, idx) {
       var stakeholderFromCRC = value;
-      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
+      if (stakeholder.stakeholderAcquiring.fiscalId === stakeholderFromCRC.fiscalId) {
         context.selectedStakeholderIsFromCRC = true;
       }
     });
