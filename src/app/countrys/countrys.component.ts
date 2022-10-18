@@ -1,5 +1,5 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Component, Inject, Input, OnInit, EventEmitter } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
@@ -78,6 +78,8 @@ export class CountrysComponent implements OnInit {
   consult: any;
 
   stakeholdersToInsert: StakeholdersProcess[];
+
+  formCountrysReady: EventEmitter<AbstractControl> = new EventEmitter();
 
   countriesCheckBox = [
     {
@@ -321,6 +323,8 @@ export class CountrysComponent implements OnInit {
         this.isAssociatedWithFranchise = undefined;
       }
     })
+
+    this.formCountrysReady.emit(this.form);
   }
 
   newSubmission: SubmissionPostTemplate = {

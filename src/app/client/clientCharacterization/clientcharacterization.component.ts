@@ -7,7 +7,7 @@ import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
-import { AbstractControl, FormControl, FormGroup, FormGroupDirective, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, Form, FormControl, FormGroup, FormGroupDirective, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, of, OperatorFunction, pipe, fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { Country } from '../../stakeholders/IStakeholders.interface';
@@ -150,6 +150,8 @@ export class ClientCharacterizationComponent implements OnInit {
   collectCRC: boolean;
   rootForm: FormGroup;
 
+  formClientCharacterizationReady: EventEmitter<AbstractControl> = new EventEmitter();
+
   changeFormStructure(newForm: FormGroup){
     this.rootForm.setControl("clientCharacterizationForm", newForm);
     this.form = this.rootForm.get("clientCharacterizationForm");
@@ -181,7 +183,7 @@ export class ClientCharacterizationComponent implements OnInit {
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
-    this.clientContext.formClientCharacterizationReady.emit(true);
+    this.formClientCharacterizationReady.emit(this.form);
   }
 
   initializeBasicCRCFormControl() {
@@ -193,7 +195,7 @@ export class ClientCharacterizationComponent implements OnInit {
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
-    this.clientContext.formClientCharacterizationReady.emit(true);
+    this.formClientCharacterizationReady.emit(this.form);
 
   }
 
@@ -210,7 +212,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.setCommercialSociety(false);
     }
 
-    this.clientContext.formClientCharacterizationReady.emit(true);
+    this.formClientCharacterizationReady.emit(this.form);
 
   }
 
@@ -242,7 +244,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.form.get("natJuridicaN2").clearValidators();
       this.form.get("natJuridicaN2").updateValueAndValidity();
     });
-    this.clientContext.formClientCharacterizationReady.emit(true);
+    this.formClientCharacterizationReady.emit(this.form);
 
   }
 
@@ -328,7 +330,7 @@ export class ClientCharacterizationComponent implements OnInit {
         });
     }
 
-    this.clientContext.formClientCharacterizationReady.emit(true);
+    this.formClientCharacterizationReady.emit(this.form);
 
   }
 
