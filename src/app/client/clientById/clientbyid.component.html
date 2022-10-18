@@ -35,7 +35,7 @@
                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                     data-bs-parent="#accordionFlushExample">
                   <div *ngIf="clientContext">
-                    <app-client-characterization [clientContext]="clientContext"></app-client-characterization>
+                    <app-client-characterization (formClientCharacterizationReady)="formClientCharacterizationIsValid($event)" [clientContext]="clientContext"></app-client-characterization>
                   </div>
                 </div>
               </div>
@@ -54,7 +54,7 @@
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                     data-bs-parent="#accordionFlushExample">
                   <div>
-                    <app-countrys [clientContext]="clientContext" [inline]="true"></app-countrys>
+                    <app-countrys (formCountrysReady)="formClientCountryIsValid($event)" [clientContext]="clientContext" [inline]="true"></app-countrys>
                   </div>
                 </div>
               </div>

@@ -121,9 +121,6 @@ export class ClientContext{
     "documents": []
   };
 
-  formClientCharacterizationReady: EventEmitter<boolean> = new EventEmitter<boolean>();
-  formCountrysReady: EventEmitter<boolean> = new EventEmitter<boolean>();
-
 
   //Client predefinido
   clientOutbound = {

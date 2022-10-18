@@ -150,8 +150,8 @@ export class ClientByIdComponent implements OnInit {
   collectCRC: boolean;
   lastExpandedTab: number;
   touchedTabs: boolean[] = new Array<boolean>(3).fill(false);
-    formClientIsValid: boolean;
-    formCountryIsValid: boolean;
+    formClientIsValid: boolean = false;
+    formCountryIsValid: boolean = false;
 
 
   initializeTableInfo() {
@@ -495,7 +495,6 @@ export class ClientByIdComponent implements OnInit {
         this.createSubmission();
       }
     }
-    this.formsValid();
   }
 
   ngOnDestroy(): void {
@@ -862,38 +861,39 @@ export class ClientByIdComponent implements OnInit {
       border: 3px solid green;` );
   }
 
-  formsValid() {
-    console.log("form ta valido???");
-    var context = this;
+  formClientCharacterizationIsValid(form) {
+    console.log("formulario: ", form);
 
-    this.clientContext.formClientCharacterizationReady.subscribe(ready => {
-      console.log("FORM CLIENT CHARACTERIZATION ESTÁ PRONTO");
-      if (ready) {
-        context.clientCharacterizationComponent.form.statusChanges.subscribe(res => {
-          console.log("SOFREU ALTERACOES NO ESTADO: ", res);
-          console.log("formulário do client characterization: ", context.clientCharacterizationComponent?.form);
-          if (res === 'VALID') {
-            this.formClientIsValid = true;
-          }
-          else
-            this.formClientIsValid = false;
-        });
-      }
+    this.formClientIsValid = form.valid;
 
-    })
+    //this.clientContext.formClientCharacterizationReady.subscribe(ready => {
+    //  console.log("FORM CLIENT CHARACTERIZATION ESTÁ PRONTO");
+    //  if (ready) {
+    //    context.clientCharacterizationComponent.form.statusChanges.subscribe(res => {
+    //      console.log("SOFREU ALTERACOES NO ESTADO: ", res);
+    //      console.log("formulário do client characterization: ", context.clientCharacterizationComponent?.form);
+    //      if (res === 'VALID') {
+    //        this.formClientIsValid = true;
+    //      }
+    //      else
+    //        this.formClientIsValid = false;
+    //    });
+    //  }
 
-    this.clientContext.formCountrysReady.subscribe(ready => {
-      if (ready) {
-        context.countriesComponent.form.statusChanges.subscribe(res => {
-          console.log("formulário do countries: ", context.countriesComponent?.form);
-          if (res === 'VALID')
-            this.formCountryIsValid = true;
-          else
-            this.formCountryIsValid = false;
-        });
-      }
+    //})
 
-    })
+    //this.clientContext.formCountrysReady.subscribe(ready => {
+    //  if (ready) {
+    //    context.countriesComponent.form.statusChanges.subscribe(res => {
+    //      console.log("formulário do countries: ", context.countriesComponent?.form);
+    //      if (res === 'VALID')
+    //        this.formCountryIsValid = true;
+    //      else
+    //        this.formCountryIsValid = false;
+    //    });
+    //  }
+
+    //})
 
     //this.clientContext.formClientCharacterizationValid?.subscribe(res => {
     //  if (res !== 'VALID')
@@ -904,5 +904,11 @@ export class ClientByIdComponent implements OnInit {
     //  if (res !== 'VALID')
     //    this.formCountryIsValid = false;
     //})
+  }
+
+  formClientCountryIsValid(form) {
+    console.log("form country: ", form);
+
+    this.formCountryIsValid = form.valid;
   }
 }
