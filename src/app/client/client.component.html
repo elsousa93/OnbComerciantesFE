@@ -331,7 +331,7 @@
                   
                 </mat-header-cell>
                 <mat-cell *matCellDef="let client"> 
-                    <input type="radio" (click)="aButtons(true, client.clientId, client.isClient)">
+                    <input type="radio" (click)="aButtons(true, client.client.clientId, client.isClient)">
                   </mat-cell>
               </ng-container>
                 <ng-container matColumnDef="clientNumber">
