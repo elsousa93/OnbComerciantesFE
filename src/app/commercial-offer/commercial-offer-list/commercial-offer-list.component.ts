@@ -468,20 +468,20 @@ export class CommercialOfferListComponent implements OnInit {
     console.log("form com os checkboxes: ", this.form);
   }
 
-  attributeSelected(formControl: string, value: boolean) {
-    console.log('Valor do formControl selecionado ', this.form.get(formControl));
+  attributeSelected(formGroup: string, formControl: string, value: boolean) {
+    console.log('Valor do formControl selecionado ', this.form.get(formGroup).get(formControl).value);
     console.log('Valor recebido ', value);
     console.log('Valor atual ', this.form.get(formControl).value);
-    this.form.get(formControl).setValue(value);
-    console.log('Valor depois de selecionar a checkbox ', this.form.get(formControl).value);
+    this.form.get(formGroup).get(formControl).setValue(value);
+    console.log('Valor depois de selecionar a checkbox ', this.form.get(formGroup).get(formControl).value);
   }
 
-  attributeShowMoreSelected(formControl: string, value: boolean) {
-    console.log('Valor do formControl showMore selecionado ', this.form.get(formControl));
-    console.log('Valor recebido do showMore', value);
-    console.log('Valor atual do showMore', this.form.get(formControl).value);
-    this.form.get(formControl).setValue(value);
-    console.log('Valor depois de selecionar a checkbox do showMore', this.form.get(formControl).value);
+  attributeShowMoreSelected(formGroup: string, formControl: string, value: boolean) {
+    console.log('Valor do formControl showMore selecionado ', this.form.get(formGroup).get(formControl).value);
+    console.log('Valor recebido showMore', value);
+    console.log('Valor atual showmore', this.form.get(formControl).value);
+    this.form.get(formGroup).get(formControl).setValue(value);
+    console.log('Valor depois de selecionar a checkbox showmore ', this.form.get(formGroup).get(formControl).value);
   }
 
   paymentAttributeSelected(formControl: string, value: boolean) {
