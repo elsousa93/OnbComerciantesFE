@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Client, OutboundClient } from '../Client.interface';
+import { AcquiringClientPost, Client, OutboundClient } from '../Client.interface';
 import { TestScheduler } from 'rxjs/testing';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { CountryInformation, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
@@ -10,7 +10,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { AbstractControl, Form, FormControl, FormGroup, FormGroupDirective, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, of, OperatorFunction, pipe, fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { Country } from '../../stakeholders/IStakeholders.interface';
+import { Country, IStakeholders } from '../../stakeholders/IStakeholders.interface';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/typeahead-match.class';
 import { DataService } from '../../nav-menu-interna/data.service';
@@ -48,45 +48,32 @@ export class ClientCharacterizationComponent implements OnInit {
   public clientId: string;
   
   //client: Client = {} as Client;
-  
-  public client: OutboundClient = {
-    "merchantId": null,
-    "legalName": null,
-    "commercialName": null,
-    "shortName": null,
-    "headquartersAddress": {},
-    //"headquartersAddress": {
-    //  "address": "",
-    //  "postalCode": "",
-    //  "postalArea": "",
-    //  "country": ""
-    //},
-    "context": null,
-    "contextId": null,
-    "fiscalIdentification": {},
-    "merchantType": "corporation",
-    "legalNature": null,
-    "legalNature2": null,
-    "incorporationStatement": {},
-    "incorporationDate": null,
-    "shareCapital": null,
-    "bylaws": null,
-    "principalTaxCode": null,
-    "otherTaxCodes": [],
-    "principalEconomicActivity": null,
-    "otherEconomicActivities": [],
-    "sales": {
-      "annualEstimatedRevenue": null,
-      "productsOrServicesSold": [],
-      "productsOrServicesCountries": [],
-      "transactionsAverage": null
-    },
-    "documentationDeliveryMethod": null,
-    "bankingInformation": {},
-    "merchantRegistrationId": null,
-    "contacts": {},
-    "billingEmail": null,
-    "documents": []
+
+  public client: AcquiringClientPost = {
+    clientId: '',
+    fiscalId: '',
+    legalName: '',
+    shortName: '',
+    headquartersAddress: {},
+    merchantType: '',
+    commercialName: '',
+    legalNature: '',
+    legalNature2: '',
+    incorporationStatement: {},
+    shareCapital: {},
+    byLaws: '',
+    mainEconomicActivity: '',
+    otherEconomicActivities: [],
+    mainTaxCode: '',
+  otherTaxCodes: [],
+    incorporationDate: '',
+    businessGroup: {},
+    knowYourSales: {},
+    bankInformation: {},
+    contacts: {},
+    documentationDeliveryMethod: '',
+    billingEmail: '',
+    merchantRegistrationId: ''
   };
 
   crcError: boolean = false;
@@ -533,7 +520,7 @@ export class ClientCharacterizationComponent implements OnInit {
         postalCode: this.form.value["ZIPCode"],
         postalArea: this.form.value["location"]
       }
-      this.client.principalEconomicActivity = this.form.value["CAE1"];
+      this.client.mainEconomicActivity = this.form.value["CAE1"];
       this.client.otherEconomicActivities = [];
 
       var CAESecondary1 = (this.form.value["CAESecondary1"]);
@@ -551,7 +538,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       this.client.legalNature = this.form.value["natJuridicaN1"];
 
-      this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+      this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
 
@@ -561,7 +548,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.client.merchantType = '02';
     } else {
       
-      this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+      this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
 
       if (this.tipologia === 'Company') {
@@ -581,10 +568,12 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.merchantType = '02';
       if (this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;
-        this.client.fiscalIdentification.fiscalId = this.dataCC.nifCC;
+        this.client.fiscalId = this.dataCC.nifCC;
       }
 
     }
+
+
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     this.clientContext.clientExists = this.clientExists;
@@ -596,6 +585,64 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.setMerchantInfo(this.merchantInfo);
     this.clientContext.crc =(this.crcFound) ? this.processClient : null;
     this.clientContext.comprovativoCC = this.comprovativoCC;
+
+
+    //Intervenientes do processo
+    var newSubmission = this.clientContext.newSubmission;
+    var stakeholdersToInsert = this.clientContext.getStakeholdersToInsert();
+    var crc = this.clientContext.crc;
+
+    newSubmission.stakeholders = [];
+    stakeholdersToInsert.forEach(function (value, idx) {
+      console.log("stakeholder: ", value);
+      var fiscalID = value.fiscalId;
+
+      var stakeholderToInsert = {
+        "fiscalId": (fiscalID !== null && fiscalID !== undefined) ? fiscalID : '',
+        "shortName": value.name,
+        "fiscalAddress": {
+          "postalCode": "",
+          "postalArea": "",
+          "country": "",
+          "address": ""
+        }
+      } as IStakeholders;
+
+      newSubmission.stakeholders.push(stakeholderToInsert);
+
+    });
+
+    newSubmission.documents = [];
+
+
+    if (crc !== null && crc !== undefined) {
+      newSubmission.documents.push({
+        documentType: null, // alterar quando tivermos o enum do docType
+        documentPurpose: 'CompanyIdentification',
+        file: {
+          fileType: 'PDF',
+          binary: crc.pdf
+        },
+        validUntil: crc.expirationDate,
+        data: null
+      })
+    }
+
+    var comprovativoCC = this.clientContext.comprovativoCC;
+
+    if (comprovativoCC !== null && comprovativoCC !== undefined) {
+      newSubmission.documents.push({
+        documentType: null, // alterar quando tivermos o enum do docType
+        documentPurpose: 'Identification',
+        file: {
+          fileType: 'PDF',
+          binary: comprovativoCC.file
+        },
+        validUntil: "2022-07-13T11:10:13.420Z", //FIXME
+        data: null
+      })
+    }
+    this.clientContext.newSubmission = newSubmission;
   }
 
   redirectBeginningClient() {
