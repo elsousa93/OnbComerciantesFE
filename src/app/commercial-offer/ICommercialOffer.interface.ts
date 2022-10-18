@@ -28,6 +28,17 @@ export interface Product {
   subProducts?: Subproduct[]
 }
 
+export interface ProductOutbound {
+  code?: string
+  name?: string
+  subProducts?: string
+}
+
+export interface SubproductOutbound {
+  code?: string
+  name?: string
+}
+
 export interface Subproduct{
   subProductCode?: string
   subProductName?: string
