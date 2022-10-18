@@ -1,30 +1,19 @@
-import { Component, Inject, OnInit, EventEmitter, Output } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { IStakeholders, StakeholdersCompleteInformation } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
 import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
-import { of, Subject, Subscription } from 'rxjs';
+import { NavigationExtras, Router } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { of, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
-import { SubmissionService } from '../submission/service/submission-service.service';
-import { TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
+import { ViewChild } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { Configuration, configurationToken } from '../configuration';
-
-import { readCC } from '../citizencard/CitizenCardController.js';
-import { readCCAddress } from '../citizencard/CitizenCardController.js';
-
-import { ReadcardService } from '../readcard/readcard.service';
-import { BrowserModule } from '@angular/platform-browser';
-import jsPDF from 'jspdf';
-import { dataCC } from '../citizencard/dataCC.interface';
-import { LoggerService } from '../logger.service';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -120,8 +109,9 @@ export class StakeholdersComponent implements OnInit {
   crcStakeholders: IStakeholders[] = [];
   selectedStakeholderIsFromCRC: boolean = false;
 
-  constructor(private router: ActivatedRoute, public modalService: BsModalService, private readCardService: ReadcardService,
-    private http: HttpClient, private route: Router, private logger: LoggerService, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, private submissionService: SubmissionService, private comprovativoService: ComprovativosService) {
+  constructor(public modalService: BsModalService,
+    private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
+    private comprovativoService: ComprovativosService, private snackBar: MatSnackBar, private translate: TranslateService) {
 
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
@@ -150,6 +140,10 @@ export class StakeholdersComponent implements OnInit {
 
   redirectInfoStakeholder() {
     this.editStakeInfo = true;
+    this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+      duration: 4000,
+      panelClass: ['snack-bar']
+    });
   }
 
   refreshPage() {

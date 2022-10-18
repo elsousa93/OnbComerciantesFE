@@ -165,7 +165,8 @@
     "identification2": "Stakeholder Identification II",
     "area": "Area",
     "documents": "Stakeholder's Documents",
-    "emptyList": "There are no stakeholders"
+    "emptyList": "There are no stakeholders",
+    "addSuccess": "Stakeholder successfully added"
   },
   "stores": {
     "title": "Stores",
@@ -457,7 +458,8 @@
     "select": "Select",
     "restrictions": "Restrictions",
     "itemsPerPage": "Items Per Page: ",
-    "performSearch": "Perform Search"
+    "performSearch": "Perform Search",
+    "final": "Process submitted successfully"
   },
   "generalButtons": {
     "continue": "Continue",
