@@ -123,11 +123,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   disableForm() {
     if (this.currentStore.productCode == "CARD PRESENT" || this.currentStore.productCode == "card present" || this.currentStore.productCode == "cardPresent") {
-      console.log('OLA');
-      if (this.currentStore.supportEntity == "acquirer") { //caso o ETA seja UNICRE
-        console.log('TUDO BEM?');
+      if (this.currentStore.supportEntity == "Acquirer") { //caso o ETA seja UNICRE
         if (this.currentStore.subproductCode == "EASY" || this.currentStore.subproductCode == "easy") {
-          console.log('SIM E CONTIGO?');
           this.formConfig.get("terminalProperty").setValue("acquirer");
           this.formConfig.get("terminalProperty").disable();
 
