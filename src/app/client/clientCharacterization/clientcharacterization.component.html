@@ -124,7 +124,7 @@
                       </div>
                       <div>
                         <p class="titulo-form-simples" for="CAESecondary1">{{'client.secondaryCAE'|translate}} 1: </p>
-                        <input minlength="2" maxlength="100" formControlName="CAESecondary1" name="CAESecondary1"
+                        <input formControlName="CAESecondary1" name="CAESecondary1"
                           type="text" id="CAESecondary1" class="form-control campo_form" readonly>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
@@ -136,7 +136,7 @@
                       </div>
                       <div>
                         <p class="titulo-form-simples" for="CAESecondary2">{{'client.secondaryCAE'|translate}} 2: </p>
-                        <input minlength="2" maxlength="100" formControlName="CAESecondary2" name="CAESecondary2"
+                        <input formControlName="CAESecondary2" name="CAESecondary2"
                           type="text" id="CAESecondary2" class="form-control campo_form" readonly>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('CAESecondary2').touched && !this.form.get('CAESecondary2').valid">
@@ -149,7 +149,7 @@
 
                       <div>
                         <p class="titulo-form-simples" for="CAESecondary3">{{'client.secondaryCAE'|translate}} 3: </p>
-                        <input minlength="2" maxlength="100" formControlName="CAESecondary3" name="CAESecondary3"
+                        <input formControlName="CAESecondary3" name="CAESecondary3"
                           type="text" id="CAESecondary3" class="form-control campo_form" readonly>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('CAESecondary3').touched && !this.form.get('CAESecondary3').valid">
@@ -176,7 +176,7 @@
                       <div>
                         <p class="titulo-form-simples" for="socialDenomination">
                           {{'client.socialDenomination'|translate}}:* </p>
-                        <input minlength="2" maxlength="100" formControlName="socialDenomination"
+                        <input formControlName="socialDenomination"
                           name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
                           >
                         <div class="alert alert-danger"
@@ -190,7 +190,7 @@
                       <div>
                         <p class="titulo-form-simples" for="CAE1Branch">{{'client.principalCAEBranch'|translate}}*: </p>
 
-                        <input disabled minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
+                        <input disabled formControlName="CAE1Branch" name="CAE1Branch"
                           type="text" id="CAE1Branch" class="form-control campo_form" readonly>
 
                         <!--<div *ngIf="!this.form.get('CAE1').errors">
@@ -215,7 +215,7 @@
                       <div>
                         <p class="titulo-form-simples" for="ramoSecundario1">{{'client.secondaryCAEBranch'|translate}}
                           1: </p>
-                        <input minlength="2" maxlength="100" formControlName="CAESecondary1Branch"
+                        <input formControlName="CAESecondary1Branch"
                           name="ramoSecundario1" type="text" id="ramoSecundario1" class="form-control campo_form"
                           readonly>
                         <div class="alert alert-danger"
@@ -229,7 +229,7 @@
                       <div>
                         <p class="titulo-form-simples" for="ramoSecundario2">{{'client.secondaryCAEBranch'|translate}}
                           2: </p>
-                        <input minlength="2" maxlength="100" formControlName="CAESecondary2Branch"
+                        <input formControlName="CAESecondary2Branch"
                           name="ramoSecundario2" type="text" id="ramoSecundario2" class="form-control campo_form"
                           readonly>
                         <div class="alert alert-danger"
@@ -244,7 +244,7 @@
                       <div>
                         <p class="titulo-form-simples" for="ramoSecundario3">{{'client.secondaryCAEBranch'|translate}}
                           3: </p>
-                        <input minlength="2" maxlength="100" formControlName="CAESecondary2Branch"
+                        <input formControlName="CAESecondary2Branch"
                           name="ramoSecundario3" type="text" id="ramoSecundario3" class="form-control campo_form"
                           readonly>
                         <div class="alert alert-danger"
@@ -286,7 +286,7 @@
                       <div>
                         <p class="titulo-form-simples" for="paisSedeSocial">
                           {{'client.registeredOfficeCountry'|translate}}: </p>
-                        <input minlength="2" maxlength="100" formControlName="country" name="country" type="text"
+                        <input formControlName="country" name="country" type="text"
                           id="country" class="form-control campo_form" readonly> <!-- [value]="getPaisSedeSocial()" -->
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
@@ -298,7 +298,7 @@
                       <div>
                         <p class="titulo-form-simples" for="ZIPCode">{{'client.registeredOfficePostalCode'|translate}}:
                         </p>
-                        <input minlength="2" maxlength="100" formControlName="ZIPCode" name="ZIPCode" type="text"
+                        <input formControlName="ZIPCode" name="ZIPCode" type="text"
                           id="ZIPCode" class="form-control campo_form" (keyup)="GetCountryByZipCode()" readonly>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
@@ -312,7 +312,7 @@
                       <div>
                         <p class="titulo-form-simples" for="localidadeSedeSocial">
                           {{'client.registeredOfficeLocale'|translate}}: </p>
-                        <input minlength="2" maxlength="100" formControlName="location" name="localidadeSedeSocial"
+                        <input formControlName="location" name="localidadeSedeSocial"
                           type="text" id="localidadeSedeSocial" class="form-control campo_form" readonly>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
@@ -325,7 +325,7 @@
                       <div>
                         <p class="titulo-form-simples" for="moradaSedeSocial">
                           {{'client.registeredOfficeAddress'|translate}}: </p>
-                        <input minlength="2" maxlength="100" formControlName="address" name="address" type="text"
+                        <input formControlName="address" name="address" type="text"
                           id="address" class="form-control campo_form" rows="3" readonly>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
@@ -384,7 +384,7 @@
                   <div>
                     <p class="titulo-form-simples" for="socialDenomination">{{'client.socialDenomination'|translate}}:*
                     </p>
-                    <input minlength="2" maxlength="100" formControlName="socialDenomination" name="socialDenomination"
+                    <input formControlName="socialDenomination" name="socialDenomination"
                       type="text" id="socialDenomination" class="form-control campo_form">
                     <div class="alert alert-danger"
                       *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
@@ -405,7 +405,7 @@
             <div class="col-10 ms-3 me-3 ps-3 pe-3">
               <p class="titulo-form-simples" for="socialDenomination">{{'client.socialDenominationName'|translate}}:*
               </p>
-              <input minlength="2" maxlength="100" formControlName="socialDenomination" name="socialDenomination"
+              <input formControlName="socialDenomination" name="socialDenomination"
                 type="text" id="socialDenomination" class="form-control campo_form" style="width: 906px;"
                 [readonly]="returned === 'consult'">
             </div>
