@@ -165,7 +165,8 @@
     "identification2": "Identificação do Interveniente II",
     "area": "Área",
     "documents": "Documentos do Interveniente",
-    "emptyList": "Não existem intervenientes"
+    "emptyList": "Não existem intervenientes",
+    "addSuccess": "Interveniente adicionado com sucesso"
   },
   "stores": {
     "title": "Lojas",
@@ -459,7 +460,8 @@
     "select": "Selecione",
     "restrictions": "Restrições",
     "itemsPerPage": "Items por Página: ",
-    "performSearch": "Efetuar pesquisa"
+    "performSearch": "Efetuar pesquisa",
+    "final": "Processo submetido com sucesso"
   },
   "generalButtons": {
     "continue": "Continuar",

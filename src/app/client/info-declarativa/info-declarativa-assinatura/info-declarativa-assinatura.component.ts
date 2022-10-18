@@ -9,6 +9,8 @@ import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
 import { LoggerService } from 'src/app/logger.service';
+import { TranslateService } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -31,7 +33,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription; 
 
-  constructor(private logger : LoggerService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService) {
+  constructor(private logger : LoggerService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService) {
     this.baseUrl = configuration.baseUrl;
     http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
       this.stakeholders = result;
@@ -62,6 +64,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   closeSubmission() {
     this.closeSubmissionModalRef?.hide();
+    this.snackBar.open(this.translate.instant('client.find'), '', {
+      duration: 4000,
+      panelClass: ['snack-bar']
+    });
     this.router.navigate(["/"]);
     this.data.reset();
   }
