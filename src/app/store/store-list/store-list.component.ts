@@ -159,7 +159,7 @@ export class StoreComponent implements AfterViewInit {
     this.currentStore.bank = new ShopBank();
     this.currentStore.bank.bank = new ShopBankingInformation();
     this.currentIdx = -1; //-1 index means new store is being created
-    if (this.submissionClient.merchantType == 'Entrepeneur') {
+    if (this.submissionClient.merchantType.toLowerCase() == 'entrepeneur' || this.submissionClient.merchantType == '02') {
       setTimeout(() => this.updateContactPoint(), 100);
     }
   }
