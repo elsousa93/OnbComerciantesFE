@@ -500,7 +500,7 @@ export class ClientByIdComponent implements OnInit {
 
           clientToInsert.incorporationStatement = client.incorporationStatement;
           clientToInsert.shareCapital = client.shareCapital;
-          clientToInsert.byLaws = client.byLaws;
+          clientToInsert.byLaws = client.bylaws;
           clientToInsert.incorporationDate = client.incorporationDate;
           clientToInsert.mainTaxCode = client.principalTaxCode;
           clientToInsert.otherTaxCodes = client.otherTaxCodes;
