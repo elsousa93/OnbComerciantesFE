@@ -158,8 +158,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     } else {
       this.initializeFormWithoutCC();
     }
-    //console.log("O ONCHANGES NO NEW STAKEHOLDER FOI CHAMADO ", changes);
-    this.updateForm();
   }
 
   isStakeholderFromCRC(stakeholder) {
@@ -239,6 +237,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
       Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
     });
+    this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.GetCountryByZipCode();
     this.flagRecolhaEletronica = false;
     this.showNoCC = true;
