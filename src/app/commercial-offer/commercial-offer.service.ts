@@ -7,7 +7,7 @@ import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { TreatedResponse } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
-import { Product, ProductPack, ProductPackCommission, ProductPackCommissionAttribute, ProductPackCommissionEntry, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingAttribute, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer.interface';
+import { Product, ProductOutbound, ProductPack, ProductPackCommission, ProductPackCommissionAttribute, ProductPackCommissionEntry, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingAttribute, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,13 +24,13 @@ export class CommercialOfferService {
     this.currentLanguage = this.translateService.currentLang;
   }
 
-  OutboundGetProductsAvailable(): Promise<TreatedResponse<Product[]>> {
+  OutboundGetProductsAvailable(): Promise<TreatedResponse<ProductOutbound[]>> {
     var URI = this.urlOutbound + "api/v1/product/catalog/" + this.currentLanguage;
 
-    var treatedResponse: TreatedResponse<Product[]> = {};
+    var treatedResponse: TreatedResponse<ProductOutbound[]> = {};
 
 
-    return new Promise<TreatedResponse<Product[]>>((resolve, reject) => {
+    return new Promise<TreatedResponse<ProductOutbound[]>>((resolve, reject) => {
       this.apiRequest.callAPIOutbound(HttpMethod.GET, URI, "por mudar", "por mudar", "por mudar", "por mudar").then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";

@@ -80,6 +80,7 @@ export class CountrysComponent implements OnInit {
   stakeholdersToInsert: StakeholdersProcess[];
 
   @Output() formCountrysReady: EventEmitter<AbstractControl> = new EventEmitter();
+  @Output() countryIsValid: EventEmitter<boolean> = new EventEmitter();
 
   countriesCheckBox = [
     {
@@ -596,8 +597,9 @@ export class CountrysComponent implements OnInit {
       this.lstPaisPreenchido.forEach(country => {
         $('#text5').val($('#text5').val() + country.description + ', ');
       });
+
     }
-    
+    this.emitteCountrySize();
   }
 
   redirectToClientById() {
@@ -637,8 +639,7 @@ export class CountrysComponent implements OnInit {
 
   }
 
-  formIsValid() {
-    return (this.form.valid && this.countryList.length > 0);
+  emitteCountrySize() {
+    this.countryIsValid.emit((this.countryList.length > 0));
   }
-
 }
