@@ -477,8 +477,43 @@ export class ClientByIdComponent implements OnInit {
         this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
           var client = result;
           console.log("pesquisa do cliente: ", result);
+
+          var clientToInsert: AcquiringClientPost = {};
+
+          clientToInsert.merchantRegistrationId = client.merchantRegistrationId;
+          clientToInsert.legalName = client.legalName;
+          clientToInsert.commercialName = client.commercialName;
+          clientToInsert.shortName = client.shortName;
+          clientToInsert.headquartersAddress = {
+            address: client.headquartersAddress?.address,
+            postalCode: client.headquartersAddress?.postalCode,
+            postalArea: client.headquartersAddress?.postalArea,
+            country: client.headquartersAddress?.country
+          }
+          clientToInsert.fiscalId = client.fiscalIdentification?.fiscalId;
+          clientToInsert.knowYourSales = {
+            estimatedAnualRevenue: client.sales?.annualEstimatedRevenue,
+            servicesOrProductsSold: client.sales?.productsOrServicesSold,
+            servicesOrProductsDestinations: client.sales?.productsOrServicesCountries,
+            averageTransactions: client.sales?.transactionsAverage
+          };
+
+          clientToInsert.documentationDeliveryMethod = client.documentationDeliveryMethod;
+          clientToInsert.bankInformation = client.bankingInformation;
+          clientToInsert.contacts = {
+            email: client.contacts?.email,
+            phone1: {
+              phoneNumber: client.contacts?.phone1?.phoneNumber,
+              countryCode: client.contacts?.phone1?.internationalIndicative
+            },
+            phone2: {
+              phoneNumber: client.contacts?.phone2?.phoneNumber,
+              countryCode: client.contacts?.phone2?.internationalIndicative
+            },
+          }
+
           this.clientContext.clientExists = true;
-          this.clientContext.setClient(client);
+          this.clientContext.setClient(clientToInsert);
 
           this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
 
@@ -489,7 +524,8 @@ export class ClientByIdComponent implements OnInit {
         });
       } else {
         //criar cliente aqui
-        var clientToInsert: AcquiringClientPost = this.clientContext.getClient();
+        var currentClient = this.clientContext.getClient();
+        var clientToInsert: AcquiringClientPost = {};
 
         clientToInsert.fiscalId = this.NIFNIPC;
         clientToInsert.legalName = this.socialDenomination;
