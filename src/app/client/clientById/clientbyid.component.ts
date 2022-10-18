@@ -620,7 +620,7 @@ export class ClientByIdComponent implements OnInit {
       if (!this.clientContext.isClient)
         this.countriesComponent.submit();
 
-      if (!this.clientContext.isClient)
+      if (this.returned === 'edit')
         this.representationPowerComponent.submit();
       this.updateSubmission();
     } else {

@@ -27,7 +27,7 @@ export class CommercialOfferService {
   OutboundGetProductsAvailable(): Promise<TreatedResponse<ProductOutbound[]>> {
     var URI = this.urlOutbound + "api/v1/product/catalog/" + this.currentLanguage;
 
-    var treatedResponse: TreatedResponse<Product[]> = {};
+    var treatedResponse: TreatedResponse<ProductOutbound[]> = {};
 
 
     return new Promise<TreatedResponse<ProductOutbound[]>>((resolve, reject) => {
