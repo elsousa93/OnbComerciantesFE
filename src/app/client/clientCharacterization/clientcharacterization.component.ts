@@ -150,7 +150,7 @@ export class ClientCharacterizationComponent implements OnInit {
   collectCRC: boolean;
   rootForm: FormGroup;
 
-  formClientCharacterizationReady: EventEmitter<AbstractControl> = new EventEmitter();
+  @Output() formClientCharacterizationReady: EventEmitter<AbstractControl> = new EventEmitter();
 
   changeFormStructure(newForm: FormGroup){
     this.rootForm.setControl("clientCharacterizationForm", newForm);
