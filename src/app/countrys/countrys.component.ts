@@ -344,11 +344,11 @@ export class CountrysComponent implements OnInit {
   submit() {
     var client: AcquiringClientPost = this.clientContext.getClient();
 
-    client.knowYourSales.estimatedAnualRevenue = this.form.get("expectableAnualInvoicing").value;
-    client.knowYourSales.averageTransactions = this.form.get("transactionsAverage").value;
-    client.knowYourSales.servicesOrProductsSold.push(this.form.get("services").value); //
-    client.knowYourSales.servicesOrProductsDestinations = this.lstPaisPreenchido.map(country => country.code);
-    client.documentationDeliveryMethod = this.form.get("preferenceDocuments").value;
+    client["knowYourSales"]["estimatedAnualRevenue"] = this.form.get("expectableAnualInvoicing").value;
+    client["knowYourSales"]["averageTransactions"] = this.form.get("transactionsAverage").value;
+    client["knowYourSales"]["servicesOrProductsSold"].push(this.form.get("services").value); //
+    client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPaisPreenchido.map(country => country.code);
+    client["documentationDeliveryMethod"] = this.form.get("preferenceDocuments").value;
 
 
     this.clientContext.setClient(client);
