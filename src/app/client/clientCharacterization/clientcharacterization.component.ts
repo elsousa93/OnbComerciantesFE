@@ -552,6 +552,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.legalNature = this.form.value["natJuridicaN1"];
 
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+      this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
 
       if (this.client.merchantType === 'corporation')
@@ -561,6 +562,7 @@ export class ClientCharacterizationComponent implements OnInit {
     } else {
       
       this.client.fiscalIdentification.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+      this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
 
       if (this.tipologia === 'Company') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
