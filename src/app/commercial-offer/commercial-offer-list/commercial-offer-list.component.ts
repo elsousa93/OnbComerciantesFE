@@ -71,7 +71,12 @@ export class CommercialOfferListComponent implements OnInit {
   storesList: ShopDetailsAcquiring[];
 
   merchantCatalog: MerchantCatalog;
-  productPack: ProductPackFilter;
+  productPack: ProductPackFilter = {
+    productCode: "",
+    subproductCode: "",
+    merchant: {},
+    store: {}
+  };
   groupsList: ProductPackRootAttributeProductPackKind[] = [];
   commissionOptions: ProductPackPricingEntry[] = [];
   commissionFilter: ProductPackCommissionFilter;
@@ -322,7 +327,7 @@ export class CommercialOfferListComponent implements OnInit {
   setFormData() {
     //setValue(null) - são valores que ainda não conseguimos ir buscar
     this.form.get("replicateProducts").setValue(null);
-    this.form.get("isUnicre").setValue(this.currentStore.supportEntity == 'Acquirer' ? true : false);
+    this.form.get("isUnicre").setValue(this.currentStore.supportEntity.toLowerCase() == 'acquirer' ? true : false);
 
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
