@@ -483,4 +483,9 @@ export class CommercialOfferListComponent implements OnInit {
     this.form.get(formControl).setValue(value);
     console.log('Valor depois de selecionar a checkbox do showMore', this.form.get(formControl).value);
   }
+
+  paymentAttributeSelected(formControl: string, value: boolean) {
+    console.log('Form control payment ', formControl);
+    console.log('Form control payment valor ', value);
+  }
 }
