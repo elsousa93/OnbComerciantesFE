@@ -910,5 +910,9 @@ export class ClientByIdComponent implements OnInit {
     console.log("form country: ", form);
 
     this.formCountryIsValid = form.valid;
+
+    console.log("variavel characterization valid: ", this.formClientCharacterizationIsValid);
+    console.log("variavel country valid: ", this.formCountryIsValid);
+
   }
 }

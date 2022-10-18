@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, EventEmitter } from '@angular/core';
+import { Component, Inject, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -79,7 +79,7 @@ export class CountrysComponent implements OnInit {
 
   stakeholdersToInsert: StakeholdersProcess[];
 
-  formCountrysReady: EventEmitter<AbstractControl> = new EventEmitter();
+  @Output() formCountrysReady: EventEmitter<AbstractControl> = new EventEmitter();
 
   countriesCheckBox = [
     {
