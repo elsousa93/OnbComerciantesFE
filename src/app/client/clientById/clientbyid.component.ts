@@ -151,7 +151,8 @@ export class ClientByIdComponent implements OnInit {
   lastExpandedTab: number;
   touchedTabs: boolean[] = new Array<boolean>(3).fill(false);
     formClientIsValid: boolean = false;
-    formCountryIsValid: boolean = false;
+  formCountryIsValid: boolean = false;
+  countriesListValid: boolean = false;
 
 
   initializeTableInfo() {
@@ -937,7 +938,7 @@ export class ClientByIdComponent implements OnInit {
 
   }
 
-  countryListValidator() {
-    return (this.countriesComponent.countryList.length > 0);
+  countryListValidator(valid) {
+    this.countriesListValid = valid;
   }
 }
