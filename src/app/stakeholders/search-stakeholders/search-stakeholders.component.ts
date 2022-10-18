@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, Output, EventEmitter, OnInit, Inject, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, Inject, OnChanges, SimpleChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from 'src/app/logger.service';
 import { config, Observable, Subscription } from 'rxjs';
@@ -8,6 +8,9 @@ import { Configuration, configurationToken } from '../../configuration';
 import { AuthService } from '../../services/auth.service';
 import { IStakeholders } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-stakeholders',
@@ -18,6 +21,8 @@ import { StakeholderService } from '../stakeholder.service';
 export class SearchStakeholdersComponent implements OnInit {
 
   private eventsSubscription: Subscription;
+
+  displayedColumns: string[] = ['select','stakeFiscalId', 'stakeName'];
 
   //Variáveis de Input
   @Input() clientID: Observable<string>;
@@ -46,8 +51,16 @@ export class SearchStakeholdersComponent implements OnInit {
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
     @Inject(configurationToken) private configuration: Configuration, 
-    private route: Router, private stakeholderService: StakeholderService, private authService: AuthService) {
-    
+    private route: Router, private stakeholderService: StakeholderService, private authService: AuthService, private translate: TranslateService) {
+  }
+
+  stakesMat = new MatTableDataSource<any>();
+  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+    if (pager) {
+      this.stakesMat.paginator = pager;
+      this.stakesMat.paginator._intl = new MatPaginatorIntl();
+      this.stakesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
   }
 
   ngOnInit() {
