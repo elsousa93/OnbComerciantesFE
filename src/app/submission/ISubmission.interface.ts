@@ -1,4 +1,4 @@
-import { Client } from "../client/Client.interface"
+import { AcquiringClientPost, Client } from "../client/Client.interface"
 import { IStakeholders, OutboundDocument } from "../stakeholders/IStakeholders.interface"
 import { SimplifiedDocument } from "./document/ISubmission-document"
 
@@ -23,7 +23,7 @@ export interface SubmissionPostTemplate {
   submissionUser?: SubmissionUser
   isComplete?: boolean
   bank?: string
-  merchant?: Client
+  merchant?: AcquiringClientPost
   stakeholders?: IStakeholders[]
   documents?: SubmissionPostDocumentTemplate[],
   startedAt?: string
