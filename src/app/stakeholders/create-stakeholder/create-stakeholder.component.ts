@@ -29,6 +29,8 @@ import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 import { TableInfoService } from 'src/app/table-info/table-info.service';
 import { UserTypes } from 'src/app/table-info/ITable-info.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -263,9 +265,9 @@ export class CreateStakeholderComponent implements OnInit {
   returned: string;
   isClientNrSelected: boolean = false;
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private readCardService: ReadcardService, public modalService: BsModalService,
-    private http: HttpClient, private route: Router, private data: DataService, private fb: FormBuilder,
-    private stakeholderService: StakeholderService, private submissionService: SubmissionService, private tableInfo: TableInfoService,
+  constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
+    private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
+    private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
     private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective) {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
@@ -599,7 +601,7 @@ export class CreateStakeholderComponent implements OnInit {
     else {
       console.log("formstakeholder: ", this.formStakeholderSearch);
       var stakeholderToInsert: IStakeholders = {
-        "fiscalId": this.formNewStakeholder.get("nif")?.value ?? this.formNewStakeholder.get("nipc")?.value,
+        "fiscalId": this.formNewStakeholder.get("nif")?.value!='' ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
         "identificationDocument": {
           "type": this.formStakeholderSearch.get("documentType").value,
           "number": this.formStakeholderSearch.get("documentNumber").value,
@@ -615,6 +617,10 @@ export class CreateStakeholderComponent implements OnInit {
         this.route.navigate(['/stakeholders/']);
       });
     }
+    this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+      duration: 4000,
+      panelClass: ['snack-bar']
+    });
   }
   /**
    * Add Stakeholder with CC: Only gets the Name and NIF from the stakeholder.
