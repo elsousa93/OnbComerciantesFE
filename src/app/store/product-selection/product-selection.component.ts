@@ -11,6 +11,7 @@ import { StoreService } from '../store.service';
 import { } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, Product } from '../../commercial-offer/ICommercialOffer.interface';
 import { SubProduct } from '../../table-info/ITable-info.interface';
+import { CommercialOfferService } from '../../commercial-offer/commercial-offer.service';
 
 
 @Component({
@@ -179,7 +180,7 @@ export class ProductSelectionComponent implements OnInit {
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
     @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService,
-    private storeService: StoreService, private rootFormGroup: FormGroupDirective) {
+    private storeService: StoreService, private rootFormGroup: FormGroupDirective, private COService: CommercialOfferService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
 
@@ -205,7 +206,7 @@ export class ProductSelectionComponent implements OnInit {
     }
 
 
-    this.storeService.GetAllShopProducts().subscribe(result => {
+    this.COService.OutboundGetProductsAvailable().then(result => {
       this.logger.debug(result);
       this.products = result;
     }, error => {

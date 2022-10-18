@@ -125,9 +125,9 @@ export class CommercialOfferListComponent implements OnInit {
       this.changeUnicre(true);
     }
 
-    this.COService.OutboundGetProductsAvailable().then(result => {
-      this.products = result.result;
-    });
+    //this.COService.OutboundGetProductsAvailable().then(result => {
+    //  this.products = result.result;
+    //});
 
     this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
       this.merchantCatalog = {
@@ -183,16 +183,11 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.form.get("replicateProducts").value)
       this.loadStoresWithSameBank(this.currentStore.bank.bank.bank);
 
-    //if (info.store.supportEntity == 'other' || this.returned == 'consult')
-    //  this.disableNewConfiguration = true;
-    //else
-    //  this.disableNewConfiguration = false;
-
-    this.disableNewConfiguration = false;
-
     setTimeout(() => this.setFormData(), 500);
 
     this.getStoreEquipsFromSubmission();
+
+    this.getPackDetails();
 
     if (this.returned == 'consult')
       this.form.disable();
@@ -257,8 +252,8 @@ export class CommercialOfferListComponent implements OnInit {
 
   //utilizado para mostrar os valores no PACOTE COMERCIAL
   getPackDetails() {
-    this.productPack.productCode = this.form.get("productPackKind").value;
-    this.productPack.subproductCode = this.form.get("").value;
+    this.productPack.productCode = this.currentStore.productCode;
+    this.productPack.subproductCode = this.currentStore.subproductCode;
 
     this.productPack.merchant = this.merchantCatalog;
 
