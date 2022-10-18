@@ -112,8 +112,8 @@
                      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
                        <span class="navbar-text">
                          <div class="form-check">
-                           <input class="form-check-input" type="radio" value={{product.code}} id="radio3" formControlName="productPackKind" name="productPackKind">
-                           <label class="form-check-label radio pe-5" for="radio3" (click)="getPackDetails()"
+                           <input class="form-check-input" type="radio" value={{product.code}} id="radio3" formControlName="productPackKind" name="productPackKind" (click)="getPackDetails()">
+                           <label class="form-check-label radio pe-5" for="radio3" 
                                   wappler-command="editContent">{{product.name}}</label>
                          </div>
                        </span>
