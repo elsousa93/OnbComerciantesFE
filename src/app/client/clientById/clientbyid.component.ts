@@ -529,6 +529,7 @@ export class ClientByIdComponent implements OnInit {
 
         clientToInsert.fiscalId = this.NIFNIPC;
         clientToInsert.legalName = this.socialDenomination;
+        clientToInsert.knowYourSales = {}
         this.clientContext.setNIFNIPC(this.NIFNIPC);
         this.clientContext.setClient(clientToInsert);
         this.createSubmission();
