@@ -608,7 +608,7 @@ export class CreateStakeholderComponent implements OnInit {
         },
         "phone1": {},
         "phone2": {},
-        "shortName": this.formNewStakeholder.get("name")?.value ?? this.formNewStakeholder.get("socialDenomination")?.value
+        "shortName": this.formNewStakeholder.get("name")?.value!='' ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
       }
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
         stakeholderToInsert.id = result["id"];
