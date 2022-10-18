@@ -121,8 +121,8 @@ export class ClientContext{
     "documents": []
   };
 
-  formClientCharacterizationValid: Observable<FormControlStatus>;
-  formCountrysValid: Observable<FormControlStatus>;
+  formClientCharacterizationReady: EventEmitter<boolean> = new EventEmitter<boolean>();
+  formCountrysReady: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
   //Client predefinido
