@@ -85,7 +85,7 @@ export interface ProductPackEntry {
 }
 
 export interface ProductPack {
-  paymentSchemes?: ProductPackAttribute
+  paymentSchemes?: ProductPackAttributeProductPackKind
   otherGroups?: ProductPackRootAttributeProductPackKind[]
 }
 
@@ -99,6 +99,7 @@ export interface ProductPackRootAttributeProductPackKind {
 interface ProductPackRootAttribute {
   id?: string
   description?: string
+  value?: boolean
   originalValue?: boolean
   finalValue?: boolean
   isReadOnly?: boolean
@@ -118,6 +119,7 @@ export interface ProductPackAttributeProductPackKind{
 export interface ProductPackAttribute {
   id?: string
   description?: string
+  value?: boolean
   originalValue?: boolean
   finalValue?: boolean
   isReadOnly?: boolean
@@ -149,6 +151,7 @@ export interface ProductPackPricing {
 export interface ProductPackPricingAttribute {
   id?: string
   description?: string
+  value?: number
   originalValue?: number
   finalValue?: number
   isReadOnly?: boolean
@@ -182,6 +185,7 @@ export interface ProductPackCommissionAttribute {
 }
 
 interface ProductPackCommissionAttributeValue {
+  value?: number
   originalValue?: number
   finalValue?: number
   isReadOnly?: boolean

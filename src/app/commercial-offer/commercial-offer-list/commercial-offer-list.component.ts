@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { MerchantCatalog, Product, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { MerchantCatalog, Product, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
@@ -91,6 +91,7 @@ export class CommercialOfferListComponent implements OnInit {
   configTerm: FormGroup;
 
   isNewConfig: boolean;
+  paymentSchemes: ProductPackAttributeProductPackKind;
 
   getPacoteComercial() {
     console.log("loja selecionada: ", this.currentStore);
@@ -222,9 +223,9 @@ export class CommercialOfferListComponent implements OnInit {
       var attributes = value.attributes;
 
       attributes.forEach(function (value, idx) {
-        group.addControl("formControl" + value.id, new FormControl(value.originalValue));
+        group.addControl("formControl" + value.id, new FormControl(value.value));
 
-        if (value.bundles !== undefined && value.bundles !== null) {
+        if (value.bundles != undefined || value.bundles != null) {
           var attributeGroup = new FormGroup({});
           var bundle = value.bundles;
 
@@ -232,7 +233,7 @@ export class CommercialOfferListComponent implements OnInit {
             var bundleAttributes = value.attributes;
 
             bundleAttributes.forEach(function (value, idx) {
-              attributeGroup.addControl("formControl" + value.id, new FormControl(value.originalValue));
+              attributeGroup.addControl("formControl" + value.id, new FormControl(value.value));
             });
             group.addControl("formGroup" + value.id, attributeGroup);
           });
@@ -272,10 +273,12 @@ export class CommercialOfferListComponent implements OnInit {
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       result.result.forEach(pack => {
         this.COService.OutboundGetPackDetails(pack.id, this.productPack).then(res => {
-          res.result.otherGroups.forEach(group => { // antes estava groups ao invés de otherGroups
+          context.paymentSchemes = res.result.paymentSchemes;
+          context.addPaymentFormGroups();
+          res.result.otherGroups.forEach(group => {
             context.groupsList.push(group);
           });
-          this.addFormGroups();
+          context.addFormGroups();
         });
       });
     });
@@ -453,5 +456,31 @@ export class CommercialOfferListComponent implements OnInit {
 
   storeEquipEvent(value) {
     this.getStoreEquipsFromSubmission();
+  }
+
+  addPaymentFormGroups() {
+    var group = new FormGroup({});
+    this.paymentSchemes.attributes.forEach(function (value, idx) {
+      group.addControl('formControlPayment' + value.id, new FormControl(value.value));
+    });
+
+    this.form.addControl("formGroupPayment" + this.paymentSchemes.id, group);
+    console.log("form com os checkboxes: ", this.form);
+  }
+
+  attributeSelected(formControl: string, value: boolean) {
+    console.log('Valor do formControl selecionado ', this.form.get(formControl));
+    console.log('Valor recebido ', value);
+    console.log('Valor atual ', this.form.get(formControl).value);
+    this.form.get(formControl).setValue(value);
+    console.log('Valor depois de selecionar a checkbox ', this.form.get(formControl).value);
+  }
+
+  attributeShowMoreSelected(formControl: string, value: boolean) {
+    console.log('Valor do formControl showMore selecionado ', this.form.get(formControl));
+    console.log('Valor recebido do showMore', value);
+    console.log('Valor atual do showMore', this.form.get(formControl).value);
+    this.form.get(formControl).setValue(value);
+    console.log('Valor depois de selecionar a checkbox do showMore', this.form.get(formControl).value);
   }
 }
