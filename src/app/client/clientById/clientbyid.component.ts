@@ -360,6 +360,9 @@ export class ClientByIdComponent implements OnInit {
 
     this.returned = localStorage.getItem("returned");
 
+    this.countriesListValid = this.isClient;
+    this.formCountryIsValid = this.isClient;
+
     this.form = formBuilder.group({
       clientCharacterizationForm: new FormGroup({
         natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
@@ -614,10 +617,11 @@ export class ClientByIdComponent implements OnInit {
     if (this.returned != 'consult') {
       this.clientCharacterizationComponent.submit();
 
-      if (!this.clientContext.clientExists)
+      if (!this.clientContext.isClient)
         this.countriesComponent.submit();
 
-      this.representationPowerComponent.submit();
+      if (!this.clientContext.isClient)
+        this.representationPowerComponent.submit();
       this.updateSubmission();
     } else {
       this.route.navigateByUrl('/stakeholders');
