@@ -495,8 +495,19 @@ export class ClientByIdComponent implements OnInit {
             estimatedAnualRevenue: client.sales?.annualEstimatedRevenue,
             servicesOrProductsSold: client.sales?.productsOrServicesSold,
             servicesOrProductsDestinations: client.sales?.productsOrServicesCountries,
-            averageTransactions: client.sales?.transactionsAverage
+            transactionsAverage: client.sales?.transactionsAverage
           };
+
+          clientToInsert.incorporationStatement = client.incorporationStatement;
+          clientToInsert.shareCapital = client.shareCapital;
+          clientToInsert.byLaws = client.byLaws;
+          clientToInsert.incorporationDate = client.incorporationDate;
+          clientToInsert.mainTaxCode = client.principalTaxCode;
+          clientToInsert.otherTaxCodes = client.otherTaxCodes;
+          clientToInsert.mainEconomicActivity = client.principalEconomicActivity;
+          clientToInsert.otherEconomicActivities = client.otherEconomicActivities;
+          clientToInsert.billingEmail = client.billingEmail;
+          
 
           clientToInsert.documentationDeliveryMethod = client.documentationDeliveryMethod;
           clientToInsert.bankInformation = client.bankingInformation;
@@ -529,7 +540,21 @@ export class ClientByIdComponent implements OnInit {
 
         clientToInsert.fiscalId = this.NIFNIPC;
         clientToInsert.legalName = this.socialDenomination;
-        clientToInsert.knowYourSales = {}
+        clientToInsert.knowYourSales = {
+          servicesOrProductsDestinations: [],
+          servicesOrProductsSold: []
+        }
+        clientToInsert.bankInformation = {}
+        clientToInsert.businessGroup = {}
+        clientToInsert.contacts = {
+          phone1: {},
+          phone2: {}
+        }
+        clientToInsert.otherEconomicActivities = [];
+        clientToInsert.otherTaxCodes = [];
+        clientToInsert.incorporationStatement = {};
+        clientToInsert.shareCapital = {};
+
         this.clientContext.setNIFNIPC(this.NIFNIPC);
         this.clientContext.setClient(clientToInsert);
         this.createSubmission();

@@ -256,7 +256,7 @@ export class CountrysComponent implements OnInit {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.averageTransactions, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
         inputEuropa: new FormControl(this.inputEuropa),
@@ -345,7 +345,7 @@ export class CountrysComponent implements OnInit {
     var client: AcquiringClientPost = this.clientContext.getClient() as AcquiringClientPost;
 
     client["knowYourSales"]["estimatedAnualRevenue"] = this.form.get("expectableAnualInvoicing").value;
-    client["knowYourSales"]["averageTransactions"] = this.form.get("transactionsAverage").value;
+    client["knowYourSales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
     client["knowYourSales"]["servicesOrProductsSold"].push(this.form.get("services").value); //
     client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPaisPreenchido.map(country => country.code);
     client["documentationDeliveryMethod"] = this.form.get("preferenceDocuments").value;

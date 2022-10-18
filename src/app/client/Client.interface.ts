@@ -141,7 +141,7 @@ export interface SalesOutbound {
 
 export interface Sales {
   estimatedAnualRevenue?: Number,
-  averageTransactions?: Number,
+  transactionsAverage?: Number,
   servicesOrProductsSold?: string[],
   servicesOrProductsDestinations?: string[],
 }
