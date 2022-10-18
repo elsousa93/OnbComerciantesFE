@@ -9,7 +9,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { } from '../store.service';
-import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, Product } from '../../commercial-offer/ICommercialOffer.interface';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, Product, ProductOutbound } from '../../commercial-offer/ICommercialOffer.interface';
 import { SubProduct } from '../../table-info/ITable-info.interface';
 import { CommercialOfferService } from '../../commercial-offer/commercial-offer.service';
 
@@ -170,7 +170,7 @@ export class ProductSelectionComponent implements OnInit {
   public isCombinedOffer: boolean = false;
   public isURLFilled: boolean = false;
 
-  public products;
+  public products: ProductOutbound[];
   public subProducts;
   public exists = false;
 
@@ -208,7 +208,7 @@ export class ProductSelectionComponent implements OnInit {
 
     this.COService.OutboundGetProductsAvailable().then(result => {
       this.logger.debug(result);
-      this.products = result;
+      this.products = result.result;
     }, error => {
       this.logger.debug("Erro");
     });
