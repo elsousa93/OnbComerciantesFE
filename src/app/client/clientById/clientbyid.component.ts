@@ -864,7 +864,17 @@ export class ClientByIdComponent implements OnInit {
   formClientCharacterizationIsValid(form) {
     console.log("formulario: ", form);
 
-    this.formClientIsValid = form.valid;
+    this.form.statusChanges.subscribe(res => {
+      console.log("Client Characterization estado: ", res);
+      if (res === 'VALID') {
+        console.log("client charac estado valido");
+        this.formClientIsValid = true;
+      }
+      else {
+        console.log("client charact estado invalido");
+        this.formClientIsValid = false;
+      }
+    })
 
     //this.clientContext.formClientCharacterizationReady.subscribe(ready => {
     //  console.log("FORM CLIENT CHARACTERIZATION ESTÁ PRONTO");
@@ -909,7 +919,18 @@ export class ClientByIdComponent implements OnInit {
   formClientCountryIsValid(form) {
     console.log("form country: ", form);
 
-    this.formCountryIsValid = form.valid;
+
+    this.form.statusChanges.subscribe(res => {
+      console.log("client country estado: ", res);
+      if (res === 'VALID') {
+        console.log("client country valido");
+        this.formCountryIsValid = true;
+      }
+      else {
+        console.log("client country invalido");
+        this.formCountryIsValid = false;
+      }
+    })
 
     console.log("variavel characterization valid: ", this.formClientCharacterizationIsValid);
     console.log("variavel country valid: ", this.formCountryIsValid);
