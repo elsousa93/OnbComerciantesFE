@@ -15,6 +15,7 @@ import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { AuthService } from '../services/auth.service';
 import { ClientContext } from '../client/clientById/clientById.model';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
+import { AcquiringClientPost } from '../client/Client.interface';
 
 @Component({
   selector: 'app-countrys',
@@ -62,7 +63,7 @@ export class CountrysComponent implements OnInit {
 
   tipologia: any;
   NIFNIPC: any;
-  client: any;
+  client: AcquiringClientPost;
   clientId: string;
   processId: string;
 
@@ -121,38 +122,32 @@ export class CountrysComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
 
     this.client = {
-      "merchantId": null,
-      "legalName": null,
-      "commercialName": null,
-      "shortName": null,
-      "headquartersAddress": {},
-      "context": null,
-      "contextId": null,
-      "fiscalIdentification": {},
-      "merchantType": "corporation",
-      "legalNature": null,
-      "legalNature2": null,
-      "incorporationStatement": {},
-      "incorporationDate": null,
-      "shareCapital": null,
-      "bylaws": null,
-      "principalTaxCode": null,
-      "otherTaxCodes": [],
-      "principalEconomicActivity": null,
-      "otherEconomicActivities": [],
-      "sales": {
-        "annualEstimatedRevenue": null,
-        "productsOrServicesSold": [],
-        "productsOrServicesCountries": [],
-        "transactionsAverage": null
-      },
-      "documentationDeliveryMethod": null,
-      "bankingInformation": {},
-      "merchantRegistrationId": null,
-      "contacts": {},
-      "billingEmail": null,
-      "documents": []
+      clientId: '',
+        fiscalId: '',
+          legalName: '',
+            shortName: '',
+              headquartersAddress: { },
+      merchantType: '',
+        commercialName: '',
+          legalNature: '',
+            legalNature2: '',
+              incorporationStatement: { },
+      shareCapital: { },
+      byLaws: '',
+        mainEconomicActivity: '',
+          otherEconomicActivities: [],
+            mainTaxCode: '',
+              otherTaxCodes: [],
+                incorporationDate: '',
+                  businessGroup: { },
+      knowYourSales: { },
+      bankInformation: { },
+      contacts: { },
+      documentationDeliveryMethod: '',
+        billingEmail: '',
+          merchantRegistrationId: ''
     };
+
 
     this.initializeForm();
 
@@ -259,9 +254,9 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.form = new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.sales.annualEstimatedRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.sales?.productsOrServicesSold[0], disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.sales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+        services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
+        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.averageTransactions, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
         inputEuropa: new FormControl(this.inputEuropa),
@@ -347,7 +342,7 @@ export class CountrysComponent implements OnInit {
   }
 
   submit() {
-    var client = this.clientContext.getClient();
+    var client: AcquiringClientPost = this.clientContext.getClient() as AcquiringClientPost;
 
     client["sales"]["annualEstimatedRevenue"] = this.form.get("expectableAnualInvoicing").value;
     client["sales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;

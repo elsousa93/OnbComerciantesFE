@@ -12,8 +12,6 @@ import { ViewChild } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -111,7 +109,7 @@ export class StakeholdersComponent implements OnInit {
 
   constructor(public modalService: BsModalService,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
-    private comprovativoService: ComprovativosService, private snackBar: MatSnackBar, private translate: TranslateService) {
+    private comprovativoService: ComprovativosService) {
 
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
@@ -140,10 +138,6 @@ export class StakeholdersComponent implements OnInit {
 
   redirectInfoStakeholder() {
     this.editStakeInfo = true;
-    this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-      duration: 4000,
-      panelClass: ['snack-bar']
-    });
   }
 
   refreshPage() {
