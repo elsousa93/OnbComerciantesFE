@@ -63,7 +63,7 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                      <input id="clientId" type="number" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
                         #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
                     </div>
                   </div>
@@ -88,7 +88,7 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                      <input id="clientId" type="number" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
                         #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
@@ -152,7 +152,7 @@
                     <div class="row">
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.nif'|translate}}:*</p>
-                        <input name="nif" type="text" id="nif" class="form-control" formControlName="nif">
+                        <input name="nif" type="number" (keypress)="numericOnly($event)" id="nif" class="form-control" formControlName="nif">
                       </div>
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.name'|translate|uppercase}}:*</p>
@@ -168,7 +168,7 @@
                       <div class="col-5">
 
                         <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
-                        <input name="nipc" type="text" id="nipc" class="form-control" formControlName="nipc">
+                        <input name="nipc" type="number" (keypress)="numericOnly($event)" id="nipc" class="form-control" formControlName="nipc">
                       </div>
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:*</p>

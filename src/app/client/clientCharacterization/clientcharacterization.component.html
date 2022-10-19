@@ -58,7 +58,7 @@
                 </span>
               </p>
               <input *ngIf="collectCRC == true" maxlength="14" formControlName="crcCode" name="crcCode" type="text"
-                id="crcCode" class="form-control campo_form" (focusout)="searchByCRC()"
+                id="crcCode" class="form-control campo_form" (keyup)="searchByCRC()"
                 [disabled]="returned === 'consult'" />
               <!--crc fim-->
 
@@ -178,7 +178,7 @@
                           {{'client.socialDenomination'|translate}}:* </p>
                         <input formControlName="socialDenomination"
                           name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                          >
+                          readonly>
                         <div class="alert alert-danger"
                           *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
                           <div
