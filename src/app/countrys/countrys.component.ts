@@ -28,7 +28,8 @@ export class CountrysComponent implements OnInit {
 
   lstCountry: CountryInformation[] = [];
   lstCountry1 : CountryInformation[] = [];
-  lstCountry2 : CountryInformation[] = [];
+  lstCountry2: CountryInformation[] = [];
+  lstCountr3: CountryInformation[] = [];
   contPais : CountryInformation[] = [];
 
   continenteName: string;
@@ -438,13 +439,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountr3.push(country);
+                  }
                 }
               }
               count++;
