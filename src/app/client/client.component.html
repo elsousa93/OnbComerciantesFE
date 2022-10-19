@@ -396,7 +396,7 @@
 
           <button id="btn5a3"
             class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-            wappler-command="editContent" (click)="obterSelecionado()">
+            wappler-command="editContent" (click)="obterSelecionado()" [disabled]="!showSeguinte">
             {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
 
               <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">
