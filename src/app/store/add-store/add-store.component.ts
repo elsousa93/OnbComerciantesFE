@@ -262,7 +262,7 @@ export class AddStoreComponent implements OnInit {
 
     this.submissionId = localStorage.getItem("submissionId");
     this.loadTableInfo();
-    this.ngOnInit();
+    //this.ngOnInit();
     this.fetchStartingInfo();
     setTimeout(() => this.data.updateData(false, 3, 2), 0);
   }
@@ -435,11 +435,13 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValidators([Validators.required]);
       this.formStores.get('countryStore').setValidators([Validators.required]);
       this.formStores.get('zipCodeStore').setValidators([Validators.required]);
+      this.formStores.updateValueAndValidity();
     } else {
       this.formStores.get('localeStore').setValidators(null);
       this.formStores.get('addressStore').setValidators(null);
       this.formStores.get('countryStore').setValidators(null);
       this.formStores.get('zipCodeStore').setValidators(null);
+      this.formStores.updateValueAndValidity();
     }
   }
 
