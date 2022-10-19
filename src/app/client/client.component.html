@@ -63,7 +63,7 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
+                      <input id="clientId" type="text"  [(ngModel)]="newClient.clientId" name="clientId"
                         #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
                     </div>
                   </div>
