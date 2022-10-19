@@ -653,17 +653,17 @@ export class ClientComponent implements OnInit {
       this.dataCC = {
         nameCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
-        nifCC: this.nifCC,
+        nifCC: this.nifCC + "",
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC,
       };
-      NIFNIPC = this.nifCC;
+      NIFNIPC = this.nifCC + "";
     }
     this.logger.debug("antes de passar");
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        NIFNIPC: selectedClient.fiscalId,
+        NIFNIPC: selectedClient.fiscalId + "",
         clientExists: true,
         clientId: this.clientId,
         dataCC: this.dataCC,
@@ -752,7 +752,7 @@ export class ClientComponent implements OnInit {
       state: {
         tipologia: this.tipologia,
         clientExists: false,
-        NIFNIPC: NIFNIPC,
+        NIFNIPC: NIFNIPC + "",
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents
       }
