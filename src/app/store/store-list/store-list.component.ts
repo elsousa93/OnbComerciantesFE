@@ -210,7 +210,6 @@ export class StoreComponent implements AfterViewInit {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
         this.resetForm();
         this.emitRemovedStore(this.currentStore);
-        this.currentStore = null;
       });
     }
   }
