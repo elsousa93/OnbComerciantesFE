@@ -9,11 +9,11 @@
       </ng-container>
       <ng-container matColumnDef="activity">
         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'stores.activity'|translate|uppercase}} </mat-header-cell>
-        <mat-cell *matCellDef="let store"> {{store.activity}} </mat-cell>
+        <mat-cell *matCellDef="let store"> {{getActivityDescription(store.activity)}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="subActivity">
         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'stores.subActivity'|translate|uppercase}} </mat-header-cell>
-        <mat-cell *matCellDef="let store"> {{store.subActivity}} </mat-cell>
+        <mat-cell *matCellDef="let store"> {{getSubActivityDescription(store.subActivity)}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="bank">
         <mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer" class="text-center text-primary bg-light table-white"> {{'commercialOffer.bank'|translate|uppercase}} </mat-header-cell>
