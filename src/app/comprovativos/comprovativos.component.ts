@@ -87,7 +87,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     },
     "knowYourSales": {
       "estimatedAnualRevenue": 0,
-      "averageTransactions": 0,
+      "transactionsAverage": 0,
       "servicesOrProductsSold": [
         "",
         ""

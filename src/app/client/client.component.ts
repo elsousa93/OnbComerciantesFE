@@ -283,7 +283,7 @@ export class ClientComponent implements OnInit {
     },
     "knowYourSales": {
       "estimatedAnualRevenue": 1000000,
-      "averageTransactions": 30000,
+      "transactionsAverage": 30000,
       "servicesOrProductsSold": [
         "Cafe",
         "Pastelaria"
