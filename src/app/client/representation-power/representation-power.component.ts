@@ -113,6 +113,8 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
     });
 
+    localStorage.setItem("crcStakeholders", JSON.stringify(this.stakeholdersToInsert));
+
     newSubmission.documents = [];
 
     this.crc = this.clientContext.crc;
