@@ -469,13 +469,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Africa") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
@@ -495,13 +499,17 @@ export class CountrysComponent implements OnInit {
           this.inputEuropa = false;
           this.countryList.forEach(country => {
             if (country.continent == "Oceania") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
@@ -521,13 +529,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
@@ -547,13 +559,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
