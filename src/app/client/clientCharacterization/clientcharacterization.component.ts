@@ -461,7 +461,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.crcFound = false;
       }
 
-      var nif = this.clientContext.getNIFNIPC() + "";
+      var nif = this.form.get("NIFNIPC").value;
       if (clientByCRC.fiscalId !== nif) {
         this.crcIncorrect = true;
         this.crcFound = false;
