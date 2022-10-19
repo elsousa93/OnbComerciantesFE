@@ -245,6 +245,8 @@ export class AddStoreComponent implements OnInit {
   products: Product[] = [];
   subProducts: Subproduct[] = [];
 
+  lockLocality: boolean = false;
+
   loadTableInfo() {
     this.tableInfo.GetAllCountries().subscribe(res => {
       this.Countries = res;
@@ -447,6 +449,7 @@ export class AddStoreComponent implements OnInit {
     this.logger.debug("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
+      this.lockLocality = true;
       var zipcode = this.formStores.value['zipCodeStore'];
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
@@ -471,7 +474,17 @@ export class AddStoreComponent implements OnInit {
           console.log("error no codigo postal: ", error);
         });
       }
+    } else {
+      this.lockLocality = false;
     }
+  }
+
+  canEditLocality() {
+    if (this.returned === 'consult')
+      return false;
+    if (this.lockLocality)
+      return false;
+    return true;
   }
 
   GetCountryByZipCode() {
@@ -479,6 +492,7 @@ export class AddStoreComponent implements OnInit {
     this.logger.debug("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
+      this.lockLocality = true;
       var zipcode = this.formStores.value['zipCodeStore'];
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
@@ -498,6 +512,8 @@ export class AddStoreComponent implements OnInit {
           this.formStores.updateValueAndValidity();
         });
       }
+    } else {
+      this.lockLocality = false;
     }
   }
 

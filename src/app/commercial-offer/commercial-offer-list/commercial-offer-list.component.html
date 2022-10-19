@@ -85,9 +85,9 @@
                            </span>
                         </nav>
                      </div>
-                     <div *ngIf="isUnicre == false" class="col-7 ms-0 me-0 ps-3 pe-0">
+                     <div *ngIf="!isUnicre" class="col-7 ms-0 me-0 ps-3 pe-0">
                         <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.registrationTerminalNumber'|translate}}:</p>
-                        <input id="text1" name="text1" type="text" class="form-control campo_form">
+                        <input id="text1" name="terminalRegistrationNumber" formControlName="terminalRegistrationNumber" type="text" class="form-control campo_form">
                         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                      </div>
                   </div>

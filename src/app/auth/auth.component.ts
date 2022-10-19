@@ -65,9 +65,9 @@ export class AuthComponent implements OnInit {
   noToken() {
     console.log(this.authForm);
 
-    if (this.authForm.invalid) {
-      return;
-    }
+    //if (this.authForm.invalid) {
+    //  return;
+    //}
 
     var user: User = {};
 
