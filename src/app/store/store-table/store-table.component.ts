@@ -3,11 +3,12 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { ShopDetailsAcquiring } from '../IStore.interface';
+import { ShopActivities, ShopDetailsAcquiring, ShopSubActivities } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { TableInfoService } from '../../table-info/table-info.service';
 
 @Component({
   selector: 'app-store-table',
@@ -54,7 +55,35 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Output() listLengthEmitter = new EventEmitter<number>();
 
-  constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService) { }
+
+  public subs: Subscription[] = [];
+  activities: ShopActivities[];
+  subActivities: ShopSubActivities[];
+
+  constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService, private tableInfo: TableInfoService) {
+    this.fetchActivities();
+  }
+
+  fetchActivities() {
+    this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
+      this.activities = result;
+    }, error => {
+
+    }));
+  }
+
+  getActivityDescription(activityCode) {
+    this.activities.forEach(act => {
+      if (activityCode == act.activityCode) {
+        this.subActivities = act.subActivities;
+      }
+    })
+    return this.activities.find(a => a.activityCode == activityCode).activityDescription;
+  }
+
+  getSubActivityDescription(subActivityCode) {
+    return this.subActivities.find(s => s.subActivityCode == subActivityCode).subActivityDescription;
+  }
 
   storesMat = new MatTableDataSource<ShopDetailsAcquiring>();
   @ViewChild('paginator') set paginator(pager:MatPaginator) {
