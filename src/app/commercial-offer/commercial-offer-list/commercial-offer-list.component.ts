@@ -235,7 +235,7 @@ export class CommercialOfferListComponent implements OnInit {
             bundleAttributes.forEach(function (value, idx) {
               attributeGroup.addControl("formControl" + value.id, new FormControl(value.value));
             });
-            group.addControl("formGroup" + value.id, attributeGroup);
+            group.addControl("formGroupBundle" + value.id, attributeGroup);
           });
         }
       });
@@ -365,25 +365,25 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
-    this.commissionAttributeList.forEach(commission => {
-      var currentValue = this.form.get("commission" + commission.id);
-      commission.minValue.finalValue = currentValue.get("commissionMin").value;
-      commission.maxValue.finalValue = currentValue.get("commissionMax").value;
-      commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
-      commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
-    });
+    //this.commissionAttributeList.forEach(commission => {
+    //  var currentValue = this.form.get("commission" + commission.id);
+    //  commission.minValue.finalValue = currentValue.get("commissionMin").value;
+    //  commission.maxValue.finalValue = currentValue.get("commissionMax").value;
+    //  commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
+    //  commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
+    //});
 
     this.groupsList.forEach(group => {
       var groups = this.form.get("formGroup" + group.id);
       group.attributes.forEach(attr => {
         if (attr.isVisible) {
-          attr.finalValue = groups.get("formControl" + attr.id).value;
-          if (attr.finalValue && attr.bundles.length > 0) { // se tiver sido selecionado
+          attr.value = groups.get("formControl" + attr.id).value;
+          if (attr.value && attr.bundles.length > 0) { // se tiver sido selecionado
             attr.bundles.forEach(bundle => {
               var bundles = this.form.get("formGroupBundle" + bundle.id);
               bundle.attributes.forEach(bundleAttr => { 
                 if (bundleAttr.isVisible) {
-                  bundleAttr.finalValue = bundles.get("formControlBundle" + bundleAttr.id).value;
+                  bundleAttr.value = bundles.get("formControlBundle" + bundleAttr.id).value;
                 }
               });
             });
@@ -402,7 +402,8 @@ export class CommercialOfferListComponent implements OnInit {
       }
 
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.shopId, this.currentStore).subscribe(result => {
-        this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
+        //this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
+        console.log('Loja atualizada ', this.currentStore);
       });
     }
   }
