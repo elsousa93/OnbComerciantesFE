@@ -152,7 +152,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     var identificationDocument = this.currentStakeholder.stakeholderAcquiring.identificationDocument;
-    if (changes["currentStakeholder"]) { 
+    if (changes["currentStakeholder"]) {
+      this.isStakeholderFromCC(this.currentStakeholder);
+      this.isStakeholderFromCRC(this.currentStakeholder);
       if (identificationDocument.type === '1001') {
         this.createFormCC();
       } else {
@@ -170,30 +172,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
         context.selectedStakeholderIsFromCRC = true;
       }
     });
-  }
-
-  updateForm() {
-    console.log('Página new stakeholder quando selecionamos um stakeholder ', this.currentStakeholder);
-    this.isStakeholderFromCRC(this.currentStakeholder);
-    this.isStakeholderFromCC(this.currentStakeholder);
-
-    if (this.returned !== null) {
-      if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring?.identificationDocument != null) {
-        if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.type == '1001') {
-          this.logger.debug('Entrou cartão de cidadão');
-          this.createFormCC();// mudei a ordem
-          this.validateCC(true);
-        } else {
-          this.initializeFormWithoutCC();
-          this.validateCC(false);
-        }
-      } else {
-        this.initializeFormWithoutCC();
-        this.validateCC(false);
-      }
-    } else {
-      this.initializeFormWithoutCC();
-    }
   }
 
   getProcessStakeholders() {
