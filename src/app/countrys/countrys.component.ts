@@ -29,7 +29,7 @@ export class CountrysComponent implements OnInit {
   lstCountry: CountryInformation[] = [];
   lstCountry1 : CountryInformation[] = [];
   lstCountry2: CountryInformation[] = [];
-  lstCountr3: CountryInformation[] = [];
+  lstCountry3: CountryInformation[] = [];
   contPais : CountryInformation[] = [];
 
   continenteName: string;
@@ -448,7 +448,7 @@ export class CountrysComponent implements OnInit {
                   if (count <= 35) {
                     this.lstCountry2.push(country);
                   } else {
-                    this.lstCountr3.push(country);
+                    this.lstCountry3.push(country);
                   }
                 }
               }
