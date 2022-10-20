@@ -267,7 +267,7 @@ export class StoreComponent implements AfterViewInit {
 
       console.log("ESTRUTURA DE DADOS DA LOJA ANTES DE SER ADICIONADA ", this.currentStore);
       if (addStore) {
-        this.storeService.addShopToSubmission("81c29c3d-64b6-43f6-9adc-3f0065991178"/*localStorage.getItem("submissionId")*/, this.currentStore).subscribe(result => {
+        this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
           this.emitInsertedStore(this.currentStore);
@@ -311,7 +311,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   fetchStartingInfo() {
-    this.clientService.GetClientByIdAcquiring("81c29c3d-64b6-43f6-9adc-3f0065991178"/*localStorage.getItem("submissionId")*/).then(client => {
+    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
       this.submissionClient = client;
       console.log("cliente da submissao: ", this.submissionClient);
     });

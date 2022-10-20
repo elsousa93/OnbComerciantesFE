@@ -811,6 +811,7 @@ export class ClientByIdComponent implements OnInit {
         newSubmission.stakeholders.push(stakeholderToShow);
       }
 
+      localStorage.setItem("submissionId", "81c29c3d-64b6-43f6-9adc-3f0065991178");
       this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
         context.clientContext.submissionID = result.id;
         localStorage.setItem("submissionId", result.id);
