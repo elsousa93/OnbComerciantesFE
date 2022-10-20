@@ -176,7 +176,9 @@ export class ClientCharacterizationComponent implements OnInit {
   initializeBasicCRCFormControl() {
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
-    var hasCrc = (this.client.incorporationStatement !== {} && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+    var isEmpty = JSON.stringify(this.client.incorporationStatement) === '{}';
+
+    var hasCrc = (!isEmpty && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
 
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
