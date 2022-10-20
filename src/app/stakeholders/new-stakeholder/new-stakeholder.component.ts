@@ -312,6 +312,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       this.showBtnCC = true;
       this.showYesCC = true;
       this.showNoCC = false;
+      this.createFormCC();
     }
     else {
       this.showBtnCC = false;

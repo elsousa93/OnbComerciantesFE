@@ -85,6 +85,7 @@ export class StakeholdersComponent implements OnInit {
   isFoundStakeholderShown: boolean = false;
   public flagRecolhaEletronica: boolean = true;
   public poppy?: any;
+  public clickButton: boolean = false;
 
   formStakeholderSearch: FormGroup;
 
@@ -133,6 +134,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectAddStakeholder() {
+    this.clickButton = true;
     this.editStakeInfo = false;
   }
 
@@ -317,6 +319,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   submit() {
+    this.clickButton = false;
     var stakeForm = this.editStakes.controls["stake"];
     if (this.returned != 'consult') {
       if (this.editStakes.controls["stake"].valid) {

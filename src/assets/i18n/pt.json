@@ -140,7 +140,7 @@
   "stakeholder": {
     "title": "Intervenientes",
     "titleSingular": "Interveniente",
-    "add": "Adicionar Interveniente",
+    "add": "Pesquisar/Adicionar Interveniente",
     "edit": "Editar Interveniente",
     "searchAdd": "Pesquisar ou Adicionar Interveniente",
     "type": "Tipo de Interveniente",
