@@ -140,7 +140,7 @@
   "stakeholder": {
     "title": "Stakeholders",
     "titleSingular": "Stakeholder",
-    "add": "Add Stakeholder",
+    "add": "Search/Add Stakeholder",
     "edit": "Edit Stakeholder",
     "searchAdd": "Search or Add Stakeholder",
     "type": "Stakeholder Type",

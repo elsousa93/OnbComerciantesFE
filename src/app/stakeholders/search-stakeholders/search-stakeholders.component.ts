@@ -105,7 +105,6 @@ export class SearchStakeholdersComponent implements OnInit {
         }, error => {
           console.log('ocorreu um erro');
         }).then(res => {
-          console.log("Não encontrou o stakeholder");
           context.foundStakeholders = true;
           context.searchAditionalInfoEmitter.emit({
             found: true,
