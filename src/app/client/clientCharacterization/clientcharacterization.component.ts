@@ -176,12 +176,18 @@ export class ClientCharacterizationComponent implements OnInit {
   initializeBasicCRCFormControl() {
     this.logger.debug("intializebasiccrcform");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
+
+    console.log("Cliente a ir buscar a informação: ", this.client);
+    var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC)
+      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : (hasCrc ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
+      collectCRC: new FormControl(hasCrc)
     }));
+
+    
     this.formClientCharacterizationReady.emit(this.form);
 
   }
@@ -191,12 +197,17 @@ export class ClientCharacterizationComponent implements OnInit {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC , [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC, [Validators.required])
+      collectCRC: new FormControl((this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null), [Validators.required])
     });
     this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
     if (this.tipologia === 'ENI') {
       this.setCommercialSociety(false);
+    }
+
+    var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+    if (hasCrc) {
+      this.initializeBasicCRCFormControl();
     }
 
     this.formClientCharacterizationReady.emit(this.form);
@@ -214,11 +225,11 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : ''), //sim
-      natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : ''), //sim
+      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : this.client.legalNature), //sim
+      natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
       socialDenomination: new FormControl({value:(this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled:localStorage.getItem("clientName")!==null}, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC)
+      collectCRC: new FormControl((this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null))
     }));
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -249,7 +260,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
     this.changeFormStructure(new FormGroup({
-      crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
+      crcCode: new FormControl(this.client.incorporationStatement.code, [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */}, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl({ value: '', disabled: true/*, disabled: this.clientExists*/ }), //sim

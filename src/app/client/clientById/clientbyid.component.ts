@@ -498,6 +498,9 @@ export class ClientByIdComponent implements OnInit {
             transactionsAverage: client.sales?.transactionsAverage
           };
 
+          clientToInsert.legalNature = client.legalNature;
+          clientToInsert.legalNature2 = client.legalNature2;
+
           clientToInsert.incorporationStatement = client.incorporationStatement;
           clientToInsert.shareCapital = client.shareCapital;
           clientToInsert.byLaws = client.bylaws;
