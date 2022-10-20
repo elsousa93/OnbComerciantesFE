@@ -192,8 +192,8 @@ export class DashboardComponent implements OnInit {
         this.incompleteProcessess = resul;
         this.incompleteProcessess.items.forEach(process => {
           this.processService.getMerchantFromProcess(process.processId).subscribe(r => {
-            process['nipc'] = r.fiscalId;
-            process['name'] = r.commercialName;
+            process.merchant.fiscalId = r.fiscalId;
+            process.merchant.name = r.commercialName;
           })
         });
         this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
