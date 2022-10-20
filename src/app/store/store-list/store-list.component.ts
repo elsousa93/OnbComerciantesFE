@@ -272,6 +272,7 @@ export class StoreComponent implements AfterViewInit {
           this.currentStore.id = result["id"];
           this.emitInsertedStore(this.currentStore);
           this.resetForm();
+          this.currentStore = null;
         });
       } else {
         if (this.currentStore != null || this.currentStore != undefined) {
