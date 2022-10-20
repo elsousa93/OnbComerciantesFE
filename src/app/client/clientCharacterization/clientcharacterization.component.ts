@@ -46,7 +46,7 @@ export class ClientCharacterizationComponent implements OnInit {
   errorMsg: string = "";
 
   public clientId: string;
-  
+
   //client: Client = {} as Client;
 
   public client: AcquiringClientPost = {
@@ -65,7 +65,7 @@ export class ClientCharacterizationComponent implements OnInit {
     mainEconomicActivity: '',
     otherEconomicActivities: [],
     mainTaxCode: '',
-  otherTaxCodes: [],
+    otherTaxCodes: [],
     incorporationDate: '',
     businessGroup: {},
     knowYourSales: {},
@@ -131,7 +131,7 @@ export class ClientCharacterizationComponent implements OnInit {
   isAssociatedWithFranchise: boolean;
   NIFNIPC: any;
   idClient: string;
-  comprovativoCC: FileAndDetailsCC; 
+  comprovativoCC: FileAndDetailsCC;
 
   DisableNIFNIPC = null;
   collectCRC: boolean;
@@ -139,7 +139,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
   @Output() formClientCharacterizationReady: EventEmitter<AbstractControl> = new EventEmitter();
 
-  changeFormStructure(newForm: FormGroup){
+  changeFormStructure(newForm: FormGroup) {
     this.rootForm.setControl("clientCharacterizationForm", newForm);
     this.form = this.rootForm.get("clientCharacterizationForm");
 
@@ -152,7 +152,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.logger.debug("FETCH LEGAL NATURES");
       this.logger.debug(result);
       this.logger.debug(this.legalNatureList);
-      this.legalNatureList = this.legalNatureList.sort((a, b) => a.description> b.description? 1 : -1);
+      this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
     }, error => this.logger.error(error)));
   }
 
@@ -164,36 +164,37 @@ export class ClientCharacterizationComponent implements OnInit {
   initializeENI() {
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
-    this.form = new FormGroup({
+    this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
-    });
+    }));
     this.formClientCharacterizationReady.emit(this.form);
   }
 
   initializeBasicCRCFormControl() {
+    this.logger.debug("intializebasiccrcform");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
-    var hasCrc = (this.client.incorporationStatement !== {} && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+    var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
 
-    this.form = new FormGroup({
+    this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : (hasCrc ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
       collectCRC: new FormControl(hasCrc)
-    });
+    }));
 
-    
+
     this.formClientCharacterizationReady.emit(this.form);
 
   }
 
   initializeBasicFormControl() {
-   
+
     this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC , [Validators.required]), //sim
+      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl((this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null), [Validators.required])
     });
@@ -217,17 +218,17 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("initializeformcontrolother");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
-    this.form = new FormGroup({
+    this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : this.client.legalNature), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
-      socialDenomination: new FormControl({value:(this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled:localStorage.getItem("clientName")!==null}, Validators.required), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl((this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null))
-    });
+    }));
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
-      
+
       this.onLegalNatureSelected();
 
       if (this.legalNatureList2.length > 0)
@@ -253,9 +254,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
-    this.form = new FormGroup({
+    this.changeFormStructure(new FormGroup({
       crcCode: new FormControl(this.client.incorporationStatement.code, [Validators.required]), //sim
-      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */}, [Validators.required]), //sim
+      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl({ value: '', disabled: true/*, disabled: this.clientExists*/ }), //sim
       socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
@@ -274,8 +275,8 @@ export class ClientCharacterizationComponent implements OnInit {
       address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC, [Validators.required])
-    });
-      
+    }));
+
 
     this.form.get("CAE1").valueChanges.subscribe(data => {
       if (data !== '') {
@@ -331,9 +332,9 @@ export class ClientCharacterizationComponent implements OnInit {
     this.initializeBasicFormControl();
   }
 
-  constructor(private logger : LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private rootFormDirective: FormGroupDirective,
+  constructor(private logger: LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private rootFormDirective: FormGroupDirective,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
-      this.rootForm = this.rootFormDirective.form;
+    this.rootForm = this.rootFormDirective.form;
     this.form = this.rootForm.get("clientCharacterizationForm");
   }
 
@@ -344,18 +345,13 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientExists = this.clientContext.clientExists;
     this.comprovativoCC = this.clientContext.comprovativoCC;
 
-    var subscription = this.clientContext.currentNIFNIPC.subscribe(result => {
+    this.clientContext.currentNIFNIPC.subscribe(result => {
       this.NIFNIPC = result;
       this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC + '');
       this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
       this.initializeBasicFormControl();
-
-      if (this.NIFNIPC !== null && this.NIFNIPC !== undefined)
-        subscription.unsubscribe();
     });
-
-   
 
     if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
       this.DisableNIFNIPC = true;
@@ -392,13 +388,13 @@ export class ClientCharacterizationComponent implements OnInit {
         this.collectCRC = false;
         this.initializeENI();
       }
-      if (this.client.incorporationStatement != {} && this.client.incorporationStatement != null && this.client.incorporationStatement != undefined) {
+      if (this.client.incorporationStatement != null) {
         this.isCommercialSociety = true;
         this.collectCRC = true;
         this.initializeBasicCRCFormControl();
         this.searchByCRC();
       }
-    
+
     });
 
     this.clientContext.currentMerchantInfo.subscribe(result => {
@@ -424,7 +420,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
     });
 
-    
+
   }
 
   ngOnDestroy(): void {
@@ -458,7 +454,7 @@ export class ClientCharacterizationComponent implements OnInit {
   getCommercialSociety() {
     return this.isCommercialSociety;
   }
- 
+
   onLegalNatureSelected() {
     var exists = false;
     this.logger.debug("entrou no legalnatureselected");
@@ -469,7 +465,7 @@ export class ClientCharacterizationComponent implements OnInit {
       if (legalNatureToSearch == legalNat.code) {
         exists = true;
         this.legalNatureList2 = legalNat.secondaryNatures;
-        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description> b.description? 1 : -1);
+        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description > b.description ? 1 : -1);
       }
     })
     if (!exists) {
@@ -488,58 +484,60 @@ export class ClientCharacterizationComponent implements OnInit {
       return;
     }
     this.crcIncorrect = false;
-    this.crcService.getCRC(crcInserted, '001').subscribe({next: clientByCRC => {
-      if (clientByCRC === undefined || clientByCRC === null) {
+    this.crcService.getCRC(crcInserted, '001').subscribe({
+      next: clientByCRC => {
+        if (clientByCRC === undefined || clientByCRC === null) {
+          this.crcNotExists = true;
+          this.crcFound = false;
+        }
+
+        var nif = this.form.get("natJuridicaNIFNIPC").value;
+        if (clientByCRC.fiscalId !== nif) {
+          this.crcIncorrect = true;
+          this.crcFound = false;
+          return;
+        }
+
+
+        this.crcFound = true;
+        this.crcNotExists = false;
+        this.errorMsg = '';
+        this.processClient.legalNature = clientByCRC.legalNature;
+        this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
+        this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
+
+        this.processClient.fiscalId = clientByCRC.fiscalId;
+        this.processClient.companyName = clientByCRC.companyName;
+
+        this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
+        this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
+
+        this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
+        this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
+        this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
+        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
+        this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
+
+        this.processClient.expirationDate = clientByCRC.expirationDate;
+        this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
+
+        this.processClient.stakeholders = clientByCRC.stakeholders;
+
+        this.clientContext.setStakeholdersToInsert(clientByCRC.stakeholders);
+
+        this.processClient.pdf = clientByCRC.pdf;
+
+        this.processClient.code = clientByCRC.code;
+        this.processClient.requestId = clientByCRC.requestId;
+
+        this.logger.debug("o crc chamou o initialize");
+        this.initializeFormControlCRC();
+
+      }, error: (error) => {
         this.crcNotExists = true;
         this.crcFound = false;
       }
-
-      var nif = this.form.get("natJuridicaNIFNIPC").value;
-      if (clientByCRC.fiscalId !== nif) {
-        this.crcIncorrect = true;
-        this.crcFound = false;
-        return;
-      }
-        
-
-      this.crcFound = true;
-      this.crcNotExists = false;
-      this.errorMsg = '';
-      this.processClient.legalNature = clientByCRC.legalNature;
-      this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
-      this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
-
-      this.processClient.fiscalId = clientByCRC.fiscalId;
-      this.processClient.companyName = clientByCRC.companyName;
-
-      this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
-      this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
-
-      this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
-      this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
-      this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-      this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
-      this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
-
-      this.processClient.expirationDate = clientByCRC.expirationDate;
-      this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
-
-      this.processClient.stakeholders = clientByCRC.stakeholders;
-
-      this.clientContext.setStakeholdersToInsert(clientByCRC.stakeholders);
-
-      this.processClient.pdf = clientByCRC.pdf;
-
-      this.processClient.code = clientByCRC.code;
-      this.processClient.requestId = clientByCRC.requestId;
-
-      this.logger.debug("o crc chamou o initialize");
-      this.initializeFormControlCRC();
-      
-    }, error: (error)=>{
-        this.crcNotExists = true;
-        this.crcFound = false;
-    }});
+    });
   }
   getCrcCode() {
     return this.form.get('crcCode').value;
@@ -588,7 +586,7 @@ export class ClientCharacterizationComponent implements OnInit {
       else
         this.client.merchantType = '02';
     } else {
-      
+
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
 
@@ -624,7 +622,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.clientId = this.clientId;
     this.clientContext.processId = this.processId;
     this.clientContext.setMerchantInfo(this.merchantInfo);
-    this.clientContext.crc =(this.crcFound) ? this.processClient : null;
+    this.clientContext.crc = (this.crcFound) ? this.processClient : null;
     this.clientContext.comprovativoCC = this.comprovativoCC;
 
 
@@ -709,7 +707,7 @@ export class ClientCharacterizationComponent implements OnInit {
       var zipCode = zipcode.split('-');
 
       this.subs.push(this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
-        
+
         var addressToShow = address[0];
 
         this.form.get('address').setValue(addressToShow.address);

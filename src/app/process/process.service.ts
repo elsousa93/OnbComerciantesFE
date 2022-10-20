@@ -213,10 +213,16 @@ export interface ProcessList {
   state: string
   isClientAwaiting: boolean
   startedBy: StartedBy
+  merchant: Merchant
 }
 
 interface Pagination {
   from: number
   count: number
   total: number
+}
+
+interface Merchant {
+  fiscalId: string
+  name: string
 }

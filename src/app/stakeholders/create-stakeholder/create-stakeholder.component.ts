@@ -252,6 +252,8 @@ export class CreateStakeholderComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
+  public isSearch: boolean = false;
+
   stakeholderNumber: string;
 
   foundStakeholders: boolean = null;
@@ -507,6 +509,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   searchStakeholder() {
+    this.isSearch = false;
     if (this.formStakeholderSearch.invalid)
       return false;
 
@@ -516,6 +519,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     setTimeout(() => {
       this.searchEvent.next(this.stakeholderNumber);
+      this.isSearch = true;
     });
 
     //var context = this;
