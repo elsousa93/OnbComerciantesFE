@@ -214,33 +214,35 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.submissionService.GetSubmissionByID(result[0].submissionId).then(resul => {
           this.documentService.GetSubmissionDocuments(resul.id).subscribe(res => {
             var documents = res;
-
-            documents.forEach(function (value, index) {
-              var document = value;
-              context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-                var teste = await res.blob();
-                teste.lastModifiedDate = new Date();
-                teste.name = "nome";
-
-                context.file = <File>teste;
-                console.log("Ficheiro encontrado ", context.file);
-
-                context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
-                  context.compsToShow.push({
-                    id: document.id,
-                    type: "pdf",
-                    expirationDate: "2024-10-10",
-                    stakeholder: "Manuel",
-                    status: "não definido",
-                    uploadDate: "2020-10-10",
-                    file: context.file,
-                    documentPurpose: val.documentPurpose
-                  })
-                  console.log("Lista de comprovativos ", context.compsToShow);
+            if (documents.length != 0) {
+              documents.forEach(function (value, index) {
+                var document = value;
+                context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
+                  var teste = await res.blob();
+                  teste.lastModifiedDate = new Date();
+                  teste.name = "nome";
+  
+                  context.file = <File>teste;
+                  console.log("Ficheiro encontrado ", context.file);
+  
+                  context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+                    context.compsToShow.push({
+                      id: document.id,
+                      type: "pdf",
+                      expirationDate: "2024-10-10",
+                      stakeholder: "Manuel",
+                      status: "não definido",
+                      uploadDate: "2020-10-10",
+                      file: context.file,
+                      documentPurpose: val.documentPurpose
+                    })
+                    console.log("Lista de comprovativos ", context.compsToShow);
+                  });
                 });
+  
               });
+            }
 
-            });
           });
 
           this.clientService.getClientByID(resul.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
