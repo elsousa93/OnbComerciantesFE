@@ -498,6 +498,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   toggleShow(stake: IStakeholders) {
     //clear the array
+    this.resetSearchStakeholder();
     this.stakeShow = [];
     this.isShown = !this.isShown;
 
