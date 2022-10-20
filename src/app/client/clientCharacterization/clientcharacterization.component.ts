@@ -176,12 +176,18 @@ export class ClientCharacterizationComponent implements OnInit {
   initializeBasicCRCFormControl() {
     this.logger.debug("intializebasiccrcform");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
+
+    console.log("Cliente a ir buscar a informação: ", this.client);
+    var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-      collectCRC: new FormControl((this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null))
+      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : (hasCrc ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
+      collectCRC: new FormControl(hasCrc)
     }));
+
+    
     this.formClientCharacterizationReady.emit(this.form);
 
   }
@@ -197,6 +203,11 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (this.tipologia === 'ENI') {
       this.setCommercialSociety(false);
+    }
+
+    var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+    if (hasCrc) {
+      this.initializeBasicCRCFormControl();
     }
 
     this.formClientCharacterizationReady.emit(this.form);
