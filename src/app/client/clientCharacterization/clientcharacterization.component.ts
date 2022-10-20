@@ -344,13 +344,18 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientExists = this.clientContext.clientExists;
     this.comprovativoCC = this.clientContext.comprovativoCC;
 
-    this.clientContext.currentNIFNIPC.subscribe(result => {
+    var subscription = this.clientContext.currentNIFNIPC.subscribe(result => {
       this.NIFNIPC = result;
       this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC + '');
       this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
-      //this.initializeBasicFormControl();
+      this.initializeBasicFormControl();
+
+      
     });
+
+    if (this.NIFNIPC !== null && this.NIFNIPC !== undefined)
+      subscription.unsubscribe();
 
     if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
       this.DisableNIFNIPC = true;
@@ -387,7 +392,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.collectCRC = false;
         this.initializeENI();
       }
-      if (this.client.incorporationStatement != null) {
+      if (this.client.incorporationStatement != {} && this.client.incorporationStatement != null && this.client.incorporationStatement != undefined) {
         this.isCommercialSociety = true;
         this.collectCRC = true;
         this.initializeBasicCRCFormControl();
