@@ -192,7 +192,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-    this.isCommercialSociety = false;
+    this.isCommercialSociety = true;
     this.collectCRC = false;
 
     this.form = new FormGroup({
