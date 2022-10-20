@@ -177,7 +177,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("intializebasiccrcform");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
-    var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+    var hasCrc = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
@@ -192,8 +192,9 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-    this.isCommercialSociety = true;
-    this.collectCRC = false;
+    this.setCommercialSociety(true);
+    //this.isCommercialSociety = true;
+    //this.collectCRC = true;
 
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
@@ -390,7 +391,10 @@ export class ClientCharacterizationComponent implements OnInit {
         this.collectCRC = false;
         this.initializeENI();
       }
-      if (this.client.incorporationStatement != null) {
+
+      var hasCrc = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
+
+      if (hasCrc) {
         this.isCommercialSociety = true;
         this.collectCRC = true;
         this.initializeBasicCRCFormControl();
@@ -413,6 +417,7 @@ export class ClientCharacterizationComponent implements OnInit {
           this.collectCRC = false;
           this.initializeENI();
         }
+
         if (this.merchantInfo.incorporationStatement != null) {
           this.isCommercialSociety = true;
           this.collectCRC = true;

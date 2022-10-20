@@ -190,6 +190,12 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Pendentes de envio ' + result.items);
       this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
         this.incompleteProcessess = resul;
+        this.incompleteProcessess.items.forEach(process => {
+          this.processService.getMerchantFromProcess(process.processId).subscribe(r => {
+            process['nipc'] = r.fiscalId;
+            process['name'] = r.commercialName;
+          })
+        });
         this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
         this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
         
