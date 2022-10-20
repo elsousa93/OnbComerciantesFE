@@ -159,14 +159,16 @@ export class ConsultasComponent implements OnInit{
           panelClass: ['snack-bar']
         });
       }
-
-      this.processService.advancedSearch(this.url, 0, this.processes.paginator.pageSize).subscribe(result => {
-        if (result.pagination.count > 300) {
+      this.processService.advancedSearch(this.url, 0, 1).subscribe(r => {
+        if (r.pagination.total > 300) {
           this.snackBar.open(this.translate.instant('searches.search300'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
           });
+          r.pagination.total = 300;
         }
+      this.processService.advancedSearch(this.url, 0, r.pagination.total).subscribe(result => {
+        
         let processesArray: Process[] = result.items.map<Process>((process) => {
 
           // mapear os estados para aparecer em PT ou EN
@@ -203,6 +205,7 @@ export class ConsultasComponent implements OnInit{
         this.logger.debug(error);
         this.loadProcesses([]);
       });
+    });
   }
 
   openProcess(process) {
