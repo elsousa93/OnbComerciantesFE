@@ -398,9 +398,10 @@ export class CommercialOfferListComponent implements OnInit {
         commission: {
           attributes: this.commissionAttributeList
         },
+        paymentSchemes: this.paymentSchemes,
         otherPackDetails: this.groupsList
       }
-
+      console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.shopId, this.currentStore).subscribe(result => {
         //this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
         console.log('Loja atualizada ', this.currentStore);
@@ -467,27 +468,6 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.form.addControl("formGroupPayment" + this.paymentSchemes.id, group);
     console.log("form com os checkboxes: ", this.form);
-  }
-
-  attributeSelected(formGroup: string, formControl: string, value: boolean) {
-    console.log('Form group ', this.form.get(formGroup));
-    console.log('Form control ', this.form.get(formGroup).get(formControl));
-    console.log('Valor do atributo passado ', value);
-    console.log('Valor do form quando selecionamos a checkbox ', this.form.get(formGroup).get(formControl).value);
-    console.log('Valor da condição feita no html ', this.form.controls[formGroup].get(formControl).value === true);
-  }
-
-  attributeShowMoreSelected(formGroup: string, formControl: string, value: boolean) {
-    console.log('Valor do formControl showMore selecionado ', this.form.get(formGroup).get(formControl).value);
-    console.log('Valor recebido showMore', value);
-    console.log('Valor atual showmore', this.form.get(formGroup).get(formControl).value);
-    this.form.get(formGroup).get(formControl).setValue(value);
-    console.log('Valor depois de selecionar a checkbox showmore ', this.form.get(formGroup).get(formControl).value);
-  }
-
-  paymentAttributeSelected(formControl: string, value: boolean) {
-    console.log('Form control payment ', formControl);
-    console.log('Form control payment valor ', value);
   }
 
   getAttributeValue(formGroup: string, formControl: string) {
