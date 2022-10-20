@@ -491,8 +491,8 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   getAttributeValue(formGroup: string, formControl: string) {
-    console.log('GET ATTRIBUTE VALUE ', this.form.get(formGroup).get(formControl).value);
-    return this.form.get(formGroup).get(formControl).value;
+    console.log('GET ATTRIBUTE VALUE ', this.form.get(formGroup)?.get(formControl)?.value);
+    return this.form.get(formGroup)?.get(formControl)?.value;
   }
 
 }
