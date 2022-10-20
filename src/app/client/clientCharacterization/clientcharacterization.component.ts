@@ -392,7 +392,9 @@ export class ClientCharacterizationComponent implements OnInit {
         this.collectCRC = false;
         this.initializeENI();
       }
-      if (this.client.incorporationStatement != {} && this.client.incorporationStatement != null && this.client.incorporationStatement != undefined) {
+
+      var isEmpty = JSON.stringify(this.client.incorporationStatement) === '{}';
+      if (!isEmpty && this.client.incorporationStatement != null && this.client.incorporationStatement != undefined) {
         this.isCommercialSociety = true;
         this.collectCRC = true;
         this.initializeBasicCRCFormControl();
