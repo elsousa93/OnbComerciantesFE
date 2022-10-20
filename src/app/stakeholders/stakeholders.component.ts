@@ -103,7 +103,7 @@ export class StakeholdersComponent implements OnInit {
   editStakeInfo: boolean;
 
   selectedStakeholderComprovativos = [];
-  stakesLength: number;
+  stakesLength: number = null;
 
   crcStakeholders: IStakeholders[] = [];
   selectedStakeholderIsFromCRC: boolean = false;
