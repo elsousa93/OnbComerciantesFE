@@ -360,7 +360,10 @@ export class ClientCharacterizationComponent implements OnInit {
       this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC + '');
       this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
-      this.initializeBasicFormControl();
+      if (!this.isCommercialSociety)
+        this.initializeFormControlOther()
+      else
+        this.initializeBasicFormControl();
     });
 
     if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
