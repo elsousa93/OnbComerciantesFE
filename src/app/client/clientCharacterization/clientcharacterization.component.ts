@@ -164,11 +164,12 @@ export class ClientCharacterizationComponent implements OnInit {
   initializeENI() {
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
+    var hasCrc = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC)
+      collectCRC: new FormControl(hasCrc)
     }));
     this.formClientCharacterizationReady.emit(this.form);
   }
@@ -197,10 +198,12 @@ export class ClientCharacterizationComponent implements OnInit {
     //this.collectCRC = true;
     this.setCommercialSociety(false);
 
+    var hasCrc = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl((this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null), [Validators.required])
+      collectCRC: new FormControl(hasCrc, [Validators.required])
     });
     this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
@@ -221,6 +224,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("initializeformcontrolother");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
+    var hasCrc = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
@@ -228,7 +232,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
       socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl((this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null))
+      collectCRC: new FormControl(hasCrc)
     }));
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
@@ -258,6 +262,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
+    var hasCrc = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+
     this.changeFormStructure(new FormGroup({
       crcCode: new FormControl(this.client.incorporationStatement.code, [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
@@ -278,7 +284,7 @@ export class ClientCharacterizationComponent implements OnInit {
       ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
       address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC, [Validators.required])
+      collectCRC: new FormControl(hasCrc, [Validators.required])
     }));
 
 
