@@ -351,11 +351,11 @@ export class ClientCharacterizationComponent implements OnInit {
 
       this.initializeBasicFormControl();
 
-      
+      if (this.NIFNIPC !== null && this.NIFNIPC !== undefined)
+        subscription.unsubscribe();
     });
 
-    if (this.NIFNIPC !== null && this.NIFNIPC !== undefined)
-      subscription.unsubscribe();
+   
 
     if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
       this.DisableNIFNIPC = true;
