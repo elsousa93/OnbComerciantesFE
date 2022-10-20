@@ -233,7 +233,7 @@ export class CommercialOfferListComponent implements OnInit {
             var bundleAttributes = value.attributes;
 
             bundleAttributes.forEach(function (value, idx) {
-              attributeGroup.addControl("formControl" + value.id, new FormControl(value.value));
+              attributeGroup.addControl("formControlBundle" + value.id, new FormControl(value.value));
             });
             group.addControl("formGroupBundle" + value.id, attributeGroup);
           });
@@ -474,6 +474,7 @@ export class CommercialOfferListComponent implements OnInit {
     console.log('Form control ', this.form.get(formGroup).get(formControl));
     console.log('Valor do atributo passado ', value);
     console.log('Valor do form quando selecionamos a checkbox ', this.form.get(formGroup).get(formControl).value);
+    console.log('Valor da condição feita no html ', this.form.controls[formGroup].get(formControl).value === true);
     //this.form.get(formGroup).get(formControl).setValue(!this.form.get(formGroup).get(formControl).value);
 
   }
