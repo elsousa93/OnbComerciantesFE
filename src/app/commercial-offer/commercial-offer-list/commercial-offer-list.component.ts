@@ -475,8 +475,6 @@ export class CommercialOfferListComponent implements OnInit {
     console.log('Valor do atributo passado ', value);
     console.log('Valor do form quando selecionamos a checkbox ', this.form.get(formGroup).get(formControl).value);
     console.log('Valor da condição feita no html ', this.form.controls[formGroup].get(formControl).value === true);
-    //this.form.get(formGroup).get(formControl).setValue(!this.form.get(formGroup).get(formControl).value);
-
   }
 
   attributeShowMoreSelected(formGroup: string, formControl: string, value: boolean) {
@@ -491,4 +489,10 @@ export class CommercialOfferListComponent implements OnInit {
     console.log('Form control payment ', formControl);
     console.log('Form control payment valor ', value);
   }
+
+  getAttributeValue(formGroup: string, formControl: string) {
+    console.log('GET ATTRIBUTE VALUE ', this.form.get(formGroup).get(formControl).value);
+    return this.form.get(formGroup).get(formControl).value;
+  }
+
 }
