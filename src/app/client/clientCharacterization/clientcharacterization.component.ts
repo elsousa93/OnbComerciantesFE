@@ -177,7 +177,6 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("intializebasiccrcform");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
-    console.log("Cliente a ir buscar a informação: ", this.client);
     var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
 
     this.changeFormStructure(new FormGroup({
@@ -205,10 +204,6 @@ export class ClientCharacterizationComponent implements OnInit {
       this.setCommercialSociety(false);
     }
 
-    var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
-    if (hasCrc) {
-      this.initializeBasicCRCFormControl();
-    }
 
     this.formClientCharacterizationReady.emit(this.form);
 
@@ -382,6 +377,24 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.clientContext.currentClient.subscribe(result => {
       context.client = result;
+
+      if (this.tipologia == 'Company') {
+        this.isCommercialSociety = false;
+        this.collectCRC = false;
+        this.initializeFormControlOther();
+      }
+      if (this.tipologia == 'ENI') {
+        this.isCommercialSociety = false;
+        this.collectCRC = false;
+        this.initializeENI();
+      }
+      if (this.client.incorporationStatement != null) {
+        this.isCommercialSociety = true;
+        this.collectCRC = true;
+        this.initializeBasicCRCFormControl();
+        this.searchByCRC();
+      }
+    
     });
 
     this.clientContext.currentMerchantInfo.subscribe(result => {
@@ -406,6 +419,8 @@ export class ClientCharacterizationComponent implements OnInit {
         }
       }
     });
+
+    
   }
 
   ngOnDestroy(): void {
@@ -417,6 +432,9 @@ export class ClientCharacterizationComponent implements OnInit {
     this.collectCRC = undefined;
     this.crcIncorrect = false;
     this.crcNotExists = false;
+
+    //var hasCrc = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
+
     this.form.get('collectCRC').setValue(undefined);
     if (id == true) {
       this.initializeBasicCRCFormControl();
