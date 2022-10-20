@@ -192,8 +192,9 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-    this.isCommercialSociety = true;
-    this.collectCRC = false;
+    this.setCommercialSociety(true);
+    //this.isCommercialSociety = true;
+    //this.collectCRC = true;
 
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
