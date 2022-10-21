@@ -61,8 +61,8 @@
                         </div>
                         <div class="col">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.cellPhone'|translate}}:*</p>
-                          <input (keypress)="numericOnly($event)" #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber"
-                                 class="form-control" formControlName="countryCode">
+                          <input (keypress)="numericOnly($event)" #phone1PhoneNumber name="phoneNumber" type="text" id="phone1PhoneNumber"
+                                 class="form-control" formControlName="phoneNumber">
                           <div class="alert alert-danger"
                                *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
                                {{'errorMessages.isRequired'|translate}}
@@ -73,7 +73,7 @@
                       <div class="row">
                         <div class="col-12">
                           <p class="titulo-form-simples mt-0">EMAIL*</p>
-                          <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
+                          <input #emailClient name="email" type="text" id="emailClient" class="form-control"
                               formControlName="email">
                           <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
                             {{'errorMessages.isRequired'|translate}}
@@ -84,7 +84,7 @@
                       <div class="row" formGroupName="telephone">
                         <div class="col-4">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate}}:</p>
-                          <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode, $event)" id="phone2CountryCode">
+                          <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode, $event)" id="phone2CountryCode" name="countryCode">
                             <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' >{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
                           <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
@@ -93,8 +93,8 @@
                         </div>
                         <div class="col">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate}}:*</p>
-                          <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="phone2PhoneNumber" type="text" id="phone2PhoneNumber"
-                                 class="form-control" formControlName="countryCode">
+                          <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="phoneNumber" type="text" id="phone2PhoneNumber"
+                                 class="form-control" formControlName="phoneNumber">
                           <div class="alert alert-danger"
                                *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
                                {{'errorMessages.isRequired'|translate}}
