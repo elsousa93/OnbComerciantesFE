@@ -85,9 +85,9 @@
                            </span>
                         </nav>
                      </div>
-                     <div *ngIf="isUnicre == false" class="col-7 ms-0 me-0 ps-3 pe-0">
+                     <div *ngIf="!isUnicre" class="col-7 ms-0 me-0 ps-3 pe-0">
                         <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.registrationTerminalNumber'|translate}}:</p>
-                        <input id="text1" name="text1" type="text" class="form-control campo_form">
+                        <input id="text1" name="terminalRegistrationNumber" formControlName="terminalRegistrationNumber" type="text" class="form-control campo_form">
                         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                      </div>
                   </div>
@@ -125,41 +125,36 @@
                  <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="paymentSchemes.kind == 'simple'">
                    <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{paymentSchemes.description}}</p>
                    <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of paymentSchemes.attributes">
-                     <!-- LISTAR OS ATRIBUTOS *ngFor="let attribute of packDetail.attributes" [checked]="attribute.isSelected"-->
+                     <!-- LISTAR OS ATRIBUTOS -->
                      <span class="navbar-text text-start align-self-start">
                        <div class="form-check" *ngIf="attribute.isVisible">
-                         <input class="form-check-input" type="checkbox" id="input1" value={{attribute.value}} name="{{'formControlPayment' + attribute.id}}" formControlName="{{'formControlPayment' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected" (click)="paymentAttributeSelected('formControlPayment'+ attribute.id, attribute.value)"> <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
-                         <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label> <!--{{attribute.description}}-->
+                         <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControlPayment' + attribute.id}}" formControlName="{{'formControlPayment' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected"> 
+                         <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                        </div>
                      </span>
                    </nav>
-
                  </div>
 
 
                    <!-- ATRIBUTOS DO PACOTE -->
-                   <!-- *ngFor="let packDetail of pack.packDetails" na div debaixo -->
-                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}"><!--formGroupName="{{'formGroup' + packDetail.id}}" -->
+                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
                      <div *ngIf="group.kind == 'simple'">
-                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{group.description}}</p><!--{{packDetail.description}}-->
-                       <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of group.attributes"> <!-- LISTAR OS ATRIBUTOS *ngFor="let attribute of packDetail.attributes" [checked]="attribute.isSelected"-->
+                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{group.description}}</p>
+                       <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of group.attributes">
                          <span class="navbar-text text-start align-self-start">
-                            <div class="form-check" *ngIf="attribute.isVisible"><!--*ngIf="attribute.isVisible" -->
-                             <input class="form-check-input" type="checkbox" id="input1" value={{attribute.value}} name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected" (click)="attributeSelected('formControl'+ attribute.id, attribute.value)"> <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
-                             <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label> <!--{{attribute.description}}-->
-                             <div *ngIf="attribute.value"><!--*ngIf="attribute.isSelected" -->
+                            <div class="form-check" *ngIf="attribute.isVisible">
+                             <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
+                             <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
+                             <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
- <!--*ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"-->
                                  <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
                                  <div *ngIf="bundle.kind == 'simple'">
                                    <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p><!--{{bundle.description}}-->
                                    <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let bundleAttr of bundle.attributes">
-                                     <!--*ngFor="let bundleAttribute of bundle.attributes"-->
                                      <span class="navbar-text text-start align-self-start">
                                        <div class="form-check" *ngIf="bundleAttr.isVisible">
-                                         <!--*ngIf="bundleAttribute.isVisible"-->
-                                         <input class="form-check-input" type="checkbox" id="input1" value={{bundleAttr.value}} formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}" [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected"><!--formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected"-->
-                                         <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label><!--{{bundleAttribute.description}}-->
+                                         <input class="form-check-input" type="checkbox" id="input1" [value]="bundleAttr.value" formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}" [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected">
+                                         <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label>
                                        </div>
                                      </span>
                                    </nav>
@@ -170,145 +165,7 @@
                          </span>
                        </nav>
                      </div>
-                     <!--<p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">BRANDS</p>
-                     <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input1" name="input1">
-                           <label class="form-check-label texto_check_box" for="input1">VISA</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input2" name="input2">
-                           <label class="form-check-label texto_check_box" for="input2">MASTERCARD</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input3" name="input3">
-                           <label class="form-check-label texto_check_box" for="input3">DINERS</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input4" name="input4">
-                           <label class="form-check-label texto_check_box" for="input4">JCB</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input5" name="input5">
-                           <label class="form-check-label texto_check_box" for="input5">UPI</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input6" name="input6">
-                           <label class="form-check-label texto_check_box" for="input6">MB</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input7" name="input7">
-                           <label class="form-check-label texto_check_box" for="input7">MBWAY</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input8" name="input8">
-                           <label class="form-check-label texto_check_box" for="input8">WALLETS</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input9" name="input9">
-                           <label class="form-check-label texto_check_box" for="input9">GLOBAL WHALESALE</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input10" name="input10">
-                           <label class="form-check-label texto_check_box" for="input10">MEAL VOUCHER</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input11" name="input11">
-                           <label class="form-check-label texto_check_box" for="input11">
-                             TICKET
-                             RESTAURANTE
-                           </label>
-                         </div>
-                       </span>
-                     </nav>-->
                    </div>
-                   <!--<div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
-                     <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
-                       Bundle/
-                       Unbundle
-                     </p>
-                     <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                           <label class="form-check-label texto_check_box" for="input12">GEOGRAFIA</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                           <label class="form-check-label texto_check_box" for="input12">TIPO DE CARTÃO</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                           <label class="form-check-label texto_check_box" for="input12">TIPO DE CLIENTE</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input12" name="input12">
-                           <label class="form-check-label texto_check_box" for="input12">MARCA</label>
-                         </div>
-                       </span>
-                     </nav>
-
-                   </div>
-
-                   <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
-                     <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
-                       Informações
-                       Adicionais
-                     </p>
-                     <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                           <label class="form-check-label texto_check_box" for="input14">GEOGRAFIA</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                           <label class="form-check-label texto_check_box" for="input14">TIPO DE CARTÃO</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                           <label class="form-check-label texto_check_box" for="input14">TIPO DE CLIENTE</label>
-                         </div>
-                       </span>
-                       <span class="navbar-text text-start align-self-start">
-                         <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="input14" name="input14">
-                           <label class="form-check-label texto_check_box" for="input14">MARCA</label>
-                         </div>
-                       </span>
-                     </nav>
-                   </div>-->
 
                    <!-- MAIS DETALHES -->
                    <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
@@ -321,31 +178,40 @@
                        </button>
                      </span>
                      <ng-container *ngIf="showMore">
+
+                       <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="paymentSchemes.kind == 'advanced'">
+                         <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{paymentSchemes.description}}</p>
+                         <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of paymentSchemes.attributes">
+                           <!-- LISTAR OS ATRIBUTOS-->
+                           <span class="navbar-text text-start align-self-start">
+                             <div class="form-check" *ngIf="attribute.isVisible">
+                               <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControlPayment' + attribute.id}}" formControlName="{{'formControlPayment' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
+                               <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
+                             </div>
+                           </span>
+                         </nav>
+                       </div>
+
+
                        <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
-                         <!--formGroupName="{{'formGroup' + packDetail.id}}" -->
                          <div *ngIf="group.kind == 'advanced'">
-                           <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{group.description}}</p><!--{{packDetail.description}}-->
+                           <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{group.description}}</p>
                            <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of group.attributes">
-                             <!-- LISTAR OS ATRIBUTOS *ngFor="let attribute of packDetail.attributes" [checked]="attribute.isSelected"-->
+                             <!-- LISTAR OS ATRIBUTOS -->
                              <span class="navbar-text text-start align-self-start">
                                <div class="form-check" *ngIf="attribute.isVisible">
-                                 <!--*ngIf="attribute.isVisible" -->
-                                 <input class="form-check-input" type="checkbox" id="input1" value={{attribute.value}} name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected" (click)="attributeShowMoreSelected('formControl'+ attribute.id, attribute.value)"> <!--formControlName="{{'formControl'+ attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" -->
-                                 <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label> <!--{{attribute.description}}-->
-                                 <div *ngIf="attribute.value">
-                                   <!--*ngIf="attribute.isSelected" -->
+                                 <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected"> 
+                                 <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
+                                 <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                    <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
-                                     <!--*ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroup' + bundle.id}}"-->
                                      <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
                                      <div *ngIf="bundle.kind == 'advanced'">
-                                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p><!--{{bundle.description}}-->
+                                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p>
                                        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let bundleAttr of bundle.attributes">
-                                         <!--*ngFor="let bundleAttribute of bundle.attributes"-->
                                          <span class="navbar-text text-start align-self-start">
                                            <div class="form-check" *ngIf="bundleAttr.isVisible">
-                                             <!--*ngIf="bundleAttribute.isVisible"-->
-                                             <input class="form-check-input" type="checkbox" id="input1" value={{bundleAttr.value}} formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}" [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected"><!--formControlName="{{'formControl'+ bundleAttribute.id}}" id="input1" name="input1" [attr.disabled]="bundleAttribute.isReadOnly ? true : null" [checked]="attribute.isSelected"-->
-                                             <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label><!--{{bundleAttribute.description}}-->
+                                             <input class="form-check-input" type="checkbox" id="input1" [value]="bundleAttr.value" formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}" [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected">
+                                             <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label>
                                            </div>
                                          </span>
                                        </nav>
@@ -356,39 +222,9 @@
                              </span>
                            </nav>
                          </div>
-                        </div>
-                         <!--<div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
-                              <div>
-                                <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{group.description}}</p>-->
-                                                 <!--{{packDetail.description}}-->
-                                                 <!--<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of group.attributes">
-                              <span class="navbar-text text-start align-self-start">
-                                <div class="form-check" *ngIf="attribute.isVisible && group.kind == 'advanced'">
-                                  <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.finalValue" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
-                                  <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>-->
-                                                 <!--{{attribute.description}}-->
-                                                 <!--<div *ngIf="attribute.finalValue">
-                              <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
-                                <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p>-->
-                                                 <!--{{bundle.description}}-->
-                                                 <!--<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let bundleAttr of bundle.attributes">
-                                           <span class="navbar-text text-start align-self-start">
-                                             <div class="form-check" *ngIf="bundleAttr.isVisible && bundleAttr.kind == 'advanced'">
-                                               <input class="form-check-input" type="checkbox" id="input1" [value]="bundleAttr.finalValue" formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}" [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected">
-                                               <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label>
-                                             </div>
-                                           </span>
-                                         </nav>
-                                       </div>
-                                     </div>
-                                   </div>
-                                 </span>
-                               </nav>
-                             </div>
-                            </div>-->
+                       </div>
                      </ng-container>
                    </div>
-                 <!--</div>-->
                </div>
             </div>
 
@@ -558,7 +394,7 @@
                      class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                      wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
                         style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-                  <button type="submit" id="btn5a1"
+                  <button (click)="submit()" id="btn5a1"
                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                      wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
                         style="height: 25px !important; vertical-align: sub;"></button>

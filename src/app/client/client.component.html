@@ -63,7 +63,7 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
                         #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
                     </div>
                   </div>
@@ -88,7 +88,7 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" [(ngModel)]="newClient.clientId" name="clientId"
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
                         #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
@@ -152,7 +152,7 @@
                     <div class="row">
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.nif'|translate}}:*</p>
-                        <input name="nif" type="text" id="nif" class="form-control" formControlName="nif">
+                        <input name="nif" type="text" (keypress)="numericOnly($event)" id="nif" class="form-control" formControlName="nif">
                       </div>
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.name'|translate|uppercase}}:*</p>
@@ -168,7 +168,7 @@
                       <div class="col-5">
 
                         <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
-                        <input name="nipc" type="text" id="nipc" class="form-control" formControlName="nipc">
+                        <input name="nipc" type="text" (keypress)="numericOnly($event)" id="nipc" class="form-control" formControlName="nipc">
                       </div>
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:*</p>
@@ -270,7 +270,7 @@
               </div>
             </div>
 
-            <table class="table table-sm table-light" *ngIf="dataCCcontents != undefined && dataCCcontents != null">
+            <table class="table table-sm table-light">
               <thead>
                 <tr class="titulo-form-simples">
                   {{'citizenCard.readData'|translate|uppercase}}
@@ -279,27 +279,27 @@
               <tbody>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.name'|translate}}:</th>
-                  <td>{{dataCCcontents.nameCC}}</td>
+                  <td>{{dataCCcontents?.nameCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.ccNumber'|translate}}:</th>
-                  <td>{{dataCCcontents.cardNumberCC}}</td>
+                  <td>{{dataCCcontents?.cardNumberCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">NIF:</th>
-                  <td>{{dataCCcontents.nifCC}}</td>
+                  <td>{{dataCCcontents?.nifCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.address'|translate}}:</th>
-                  <td>{{dataCCcontents.addressCC}}</td>
+                  <td>{{dataCCcontents?.addressCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.postalCode'|translate}}:</th>
-                  <td>{{dataCCcontents.postalCodeCC}}</td>
+                  <td>{{dataCCcontents?.postalCodeCC}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="titulo-form-simples">{{'citizenCard.birthDate'|translate}}:</th>
-                  <td>{{dataCCcontents.birthdateCC}}</td>
+                  <td>{{dataCCcontents?.birthdateCC}}</td>
                 </tr>
               </tbody>
             </table>
@@ -396,7 +396,7 @@
 
           <button id="btn5a3"
             class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-            wappler-command="editContent" (click)="obterSelecionado()">
+            wappler-command="editContent" (click)="obterSelecionado()" [disabled]="!showSeguinte">
             {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
 
               <img src="assets/images/angle-right-solid.svg" style="height: 25px !important;">

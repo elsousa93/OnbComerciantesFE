@@ -28,7 +28,8 @@ export class CountrysComponent implements OnInit {
 
   lstCountry: CountryInformation[] = [];
   lstCountry1 : CountryInformation[] = [];
-  lstCountry2 : CountryInformation[] = [];
+  lstCountry2: CountryInformation[] = [];
+  lstCountry3: CountryInformation[] = [];
   contPais : CountryInformation[] = [];
 
   continenteName: string;
@@ -256,7 +257,7 @@ export class CountrysComponent implements OnInit {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.averageTransactions, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
         inputEuropa: new FormControl(this.inputEuropa),
@@ -345,7 +346,7 @@ export class CountrysComponent implements OnInit {
     var client: AcquiringClientPost = this.clientContext.getClient() as AcquiringClientPost;
 
     client["knowYourSales"]["estimatedAnualRevenue"] = this.form.get("expectableAnualInvoicing").value;
-    client["knowYourSales"]["averageTransactions"] = this.form.get("transactionsAverage").value;
+    client["knowYourSales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
     client["knowYourSales"]["servicesOrProductsSold"].push(this.form.get("services").value); //
     client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPaisPreenchido.map(country => country.code);
     client["documentationDeliveryMethod"] = this.form.get("preferenceDocuments").value;
@@ -438,13 +439,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
@@ -464,13 +469,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Africa") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
@@ -490,13 +499,17 @@ export class CountrysComponent implements OnInit {
           this.inputEuropa = false;
           this.countryList.forEach(country => {
             if (country.continent == "Oceania") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
@@ -516,13 +529,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;
@@ -542,13 +559,17 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              if (count <= 19) {
+              if (count <= 11) {
                 this.lstCountry.push(country)
               } else {
-                if (count <= 39) {
+                if (count <= 23) {
                   this.lstCountry1.push(country);
                 } else {
-                  this.lstCountry2.push(country);
+                  if (count <= 35) {
+                    this.lstCountry2.push(country);
+                  } else {
+                    this.lstCountry3.push(country);
+                  }
                 }
               }
               count++;

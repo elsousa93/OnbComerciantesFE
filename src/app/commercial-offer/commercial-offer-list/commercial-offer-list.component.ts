@@ -233,9 +233,9 @@ export class CommercialOfferListComponent implements OnInit {
             var bundleAttributes = value.attributes;
 
             bundleAttributes.forEach(function (value, idx) {
-              attributeGroup.addControl("formControl" + value.id, new FormControl(value.value));
+              attributeGroup.addControl("formControlBundle" + value.id, new FormControl(value.value));
             });
-            group.addControl("formGroup" + value.id, attributeGroup);
+            group.addControl("formGroupBundle" + value.id, attributeGroup);
           });
         }
       });
@@ -365,25 +365,25 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
-    this.commissionAttributeList.forEach(commission => {
-      var currentValue = this.form.get("commission" + commission.id);
-      commission.minValue.finalValue = currentValue.get("commissionMin").value;
-      commission.maxValue.finalValue = currentValue.get("commissionMax").value;
-      commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
-      commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
-    });
+    //this.commissionAttributeList.forEach(commission => {
+    //  var currentValue = this.form.get("commission" + commission.id);
+    //  commission.minValue.finalValue = currentValue.get("commissionMin").value;
+    //  commission.maxValue.finalValue = currentValue.get("commissionMax").value;
+    //  commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
+    //  commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
+    //});
 
     this.groupsList.forEach(group => {
       var groups = this.form.get("formGroup" + group.id);
       group.attributes.forEach(attr => {
         if (attr.isVisible) {
-          attr.finalValue = groups.get("formControl" + attr.id).value;
-          if (attr.finalValue && attr.bundles.length > 0) { // se tiver sido selecionado
+          attr.value = groups.get("formControl" + attr.id).value;
+          if (attr.value && attr.bundles.length > 0) { // se tiver sido selecionado
             attr.bundles.forEach(bundle => {
               var bundles = this.form.get("formGroupBundle" + bundle.id);
               bundle.attributes.forEach(bundleAttr => { 
                 if (bundleAttr.isVisible) {
-                  bundleAttr.finalValue = bundles.get("formControlBundle" + bundleAttr.id).value;
+                  bundleAttr.value = bundles.get("formControlBundle" + bundleAttr.id).value;
                 }
               });
             });
@@ -398,11 +398,13 @@ export class CommercialOfferListComponent implements OnInit {
         commission: {
           attributes: this.commissionAttributeList
         },
+        paymentSchemes: this.paymentSchemes,
         otherPackDetails: this.groupsList
       }
-
+      console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.shopId, this.currentStore).subscribe(result => {
-        this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
+        //this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
+        console.log('Loja atualizada ', this.currentStore);
       });
     }
   }
@@ -468,24 +470,9 @@ export class CommercialOfferListComponent implements OnInit {
     console.log("form com os checkboxes: ", this.form);
   }
 
-  attributeSelected(formControl: string, value: boolean) {
-    console.log('Valor do formControl selecionado ', this.form.get(formControl));
-    console.log('Valor recebido ', value);
-    console.log('Valor atual ', this.form.get(formControl).value);
-    this.form.get(formControl).setValue(value);
-    console.log('Valor depois de selecionar a checkbox ', this.form.get(formControl).value);
+  getAttributeValue(formGroup: string, formControl: string) {
+    console.log('GET ATTRIBUTE VALUE ', this.form.get(formGroup)?.get(formControl)?.value);
+    return this.form.get(formGroup)?.get(formControl)?.value;
   }
 
-  attributeShowMoreSelected(formControl: string, value: boolean) {
-    console.log('Valor do formControl showMore selecionado ', this.form.get(formControl));
-    console.log('Valor recebido do showMore', value);
-    console.log('Valor atual do showMore', this.form.get(formControl).value);
-    this.form.get(formControl).setValue(value);
-    console.log('Valor depois de selecionar a checkbox do showMore', this.form.get(formControl).value);
-  }
-
-  paymentAttributeSelected(formControl: string, value: boolean) {
-    console.log('Form control payment ', formControl);
-    console.log('Form control payment valor ', value);
-  }
 }

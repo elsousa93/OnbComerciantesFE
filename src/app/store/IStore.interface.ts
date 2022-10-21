@@ -81,7 +81,7 @@ export class ShopDetailsAcquiring {
 export interface ShopProductPackViewModel {
   packId?: string
   //packDetails?: ProductPackRootAttributeProductPackKind[]
-  paymentSchemes?: ProductPackAttributeProductPackKind[]
+  paymentSchemes?: ProductPackAttributeProductPackKind //antes estava como array
   otherPackDetails?: ProductPackRootAttributeProductPackKind[]
   commission?: ShopProductPackCommission
   processorId?: string

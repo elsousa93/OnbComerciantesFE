@@ -152,11 +152,14 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     var identificationDocument = this.currentStakeholder.stakeholderAcquiring.identificationDocument;
-
-    if (identificationDocument.type === '1001') {
-      this.createFormCC();
-    } else {
-      this.initializeFormWithoutCC();
+    if (changes["currentStakeholder"]) {
+      this.isStakeholderFromCC(this.currentStakeholder);
+      this.isStakeholderFromCRC(this.currentStakeholder);
+      if (identificationDocument.type === '1001') {
+        this.createFormCC();
+      } else {
+        this.initializeFormWithoutCC();
+      }
     }
   }
 
@@ -165,34 +168,10 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var context = this;
     this.crcStakeholders?.forEach(function (value, idx) {
       var stakeholderFromCRC = value;
-      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
+      if (stakeholder.stakeholderAcquiring.fiscalId === stakeholderFromCRC.fiscalId) {
         context.selectedStakeholderIsFromCRC = true;
       }
     });
-  }
-
-  updateForm() {
-    console.log('Página new stakeholder quando selecionamos um stakeholder ', this.currentStakeholder);
-    this.isStakeholderFromCRC(this.currentStakeholder);
-    this.isStakeholderFromCC(this.currentStakeholder);
-
-    if (this.returned !== null) {
-      if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument != undefined || this.currentStakeholder.stakeholderAcquiring?.identificationDocument != null) {
-        if (this.currentStakeholder.stakeholderAcquiring?.identificationDocument.type == '1001') {
-          this.logger.debug('Entrou cartão de cidadão');
-          this.createFormCC();// mudei a ordem
-          this.validateCC(true);
-        } else {
-          this.initializeFormWithoutCC();
-          this.validateCC(false);
-        }
-      } else {
-        this.initializeFormWithoutCC();
-        this.validateCC(false);
-      }
-    } else {
-      this.initializeFormWithoutCC();
-    }
   }
 
   getProcessStakeholders() {
@@ -333,6 +312,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       this.showBtnCC = true;
       this.showYesCC = true;
       this.showNoCC = false;
+      this.createFormCC();
     }
     else {
       this.showBtnCC = false;

@@ -208,6 +208,7 @@ export class StoreComponent implements AfterViewInit {
     if (this.currentStore !== null) {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
+        this.resetForm();
         this.emitRemovedStore(this.currentStore);
       });
     }
@@ -224,11 +225,13 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
         this.currentStore.address.useMerchantAddress = false;
       } else {
-        this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
-        this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
-        this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-        this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-        this.currentStore.address.useMerchantAddress = true;
+        if (this.submissionClient.headquartersAddress != null) {
+          this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
+          this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
+          this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+          this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+          this.currentStore.address.useMerchantAddress = true;
+        }
       }
 
       if (infoStores.get("commercialCenter").value) {
@@ -268,26 +271,35 @@ export class StoreComponent implements AfterViewInit {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
           this.emitInsertedStore(this.currentStore);
-          this.editStores.reset();
-          this.productSelectionComponent.clearSubProducts();
-          this.closeAccordion();
+          this.resetForm();
+          this.currentStore = null;
         });
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
           if (this.currentIdx < (this.storesLength - 1)) {
-            this.emitUpdatedStore(of({store: this.currentStore, idx: this.currentIdx }));
+            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
             this.onActivate();
-            this.editStores.reset();
-            this.productSelectionComponent.clearSubProducts();
-            this.closeAccordion();
+            this.resetForm();
           } else {
             this.data.updateData(true, 3);
             this.route.navigate(['comprovativos']);
           }
         });
       }
+    } else {
+      if (this.currentStore == null) {
+        this.data.updateData(true, 3);
+        this.route.navigate(['comprovativos']);
+      }
     }
+  }
+
+  resetForm() {
+    this.editStores.reset();
+    this.productSelectionComponent.clearSubProducts();
+    this.addStoreComponent.chooseAddress(true);
+    this.closeAccordion();
   }
 
   emitUpdatedStore(info) {

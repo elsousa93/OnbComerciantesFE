@@ -121,8 +121,8 @@
                   <div *ngFor="let item of countriesCheckBox">
                     <div class="form-check">
                       <input type="checkbox" formControlName="{{item.formControlName}}" value="{{item.value}}"
-                        id="{{item.value}}" name="{{item.value}}" class="form-check-input" (click)="countrys(item)"
-                        [checked]="item.isSelected" [attr.disabled]="returned == 'consult' ? true : null">
+                             id="{{item.value}}" name="{{item.value}}" class="form-check-input" (click)="countrys(item)"
+                             [checked]="item.isSelected" [attr.disabled]="returned == 'consult' ? true : null">
                       <label class="form-check-label radio" for="{{item.value}}">{{item.value}}</label>
                     </div>
                   </div>
@@ -130,22 +130,29 @@
                 <div class="col ps-5">
                   <div class="form-check" *ngFor="let item of lstCountry; index as i">
                     <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                      (change)="onCountryChange(item)"
-                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                           (change)="onCountryChange(item)"
+                           [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry1; index as i">
                     <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                      (change)="onCountryChange(item)"
-                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                           (change)="onCountryChange(item)"
+                           [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry2; index as i">
                     <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                      (change)="onCountryChange(item)"
-                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                           (change)="onCountryChange(item)"
+                           [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check" *ngFor="let item of lstCountry3; index as i">
+                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
+                           (change)="onCountryChange(item)"
+                           [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
                   </div>
                 </div>
               </div>

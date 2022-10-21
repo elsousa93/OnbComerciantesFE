@@ -245,6 +245,8 @@ export class AddStoreComponent implements OnInit {
   products: Product[] = [];
   subProducts: Subproduct[] = [];
 
+  lockLocality: boolean = false;
+
   loadTableInfo() {
     this.tableInfo.GetAllCountries().subscribe(res => {
       this.Countries = res;
@@ -260,7 +262,7 @@ export class AddStoreComponent implements OnInit {
 
     this.submissionId = localStorage.getItem("submissionId");
     this.loadTableInfo();
-    this.ngOnInit();
+    //this.ngOnInit();
     this.fetchStartingInfo();
     setTimeout(() => this.data.updateData(false, 3, 2), 0);
   }
@@ -433,11 +435,13 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValidators([Validators.required]);
       this.formStores.get('countryStore').setValidators([Validators.required]);
       this.formStores.get('zipCodeStore').setValidators([Validators.required]);
+      this.formStores.updateValueAndValidity();
     } else {
       this.formStores.get('localeStore').setValidators(null);
       this.formStores.get('addressStore').setValidators(null);
       this.formStores.get('countryStore').setValidators(null);
       this.formStores.get('zipCodeStore').setValidators(null);
+      this.formStores.updateValueAndValidity();
     }
   }
 
@@ -447,6 +451,7 @@ export class AddStoreComponent implements OnInit {
     this.logger.debug("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
+      this.lockLocality = true;
       var zipcode = this.formStores.value['zipCodeStore'];
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
@@ -471,7 +476,17 @@ export class AddStoreComponent implements OnInit {
           console.log("error no codigo postal: ", error);
         });
       }
+    } else {
+      this.lockLocality = false;
     }
+  }
+
+  canEditLocality() {
+    if (this.returned === 'consult')
+      return false;
+    if (this.lockLocality)
+      return false;
+    return true;
   }
 
   GetCountryByZipCode() {
@@ -479,6 +494,7 @@ export class AddStoreComponent implements OnInit {
     this.logger.debug("Pais escolhido atual");
 
     if (currentCountry === 'PT') {
+      this.lockLocality = true;
       var zipcode = this.formStores.value['zipCodeStore'];
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
@@ -498,6 +514,8 @@ export class AddStoreComponent implements OnInit {
           this.formStores.updateValueAndValidity();
         });
       }
+    } else {
+      this.lockLocality = false;
     }
   }
 

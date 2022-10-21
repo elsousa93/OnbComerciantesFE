@@ -253,6 +253,8 @@ export class CreateStakeholderComponent implements OnInit {
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
 
+  public isSearch: boolean = false;
+
   stakeholderNumber: string;
 
   foundStakeholders: boolean = null;
@@ -499,6 +501,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   toggleShow(stake: IStakeholders) {
     //clear the array
+    this.resetSearchStakeholder();
     this.stakeShow = [];
     this.isShown = !this.isShown;
 
@@ -507,6 +510,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   searchStakeholder() {
+    this.isSearch = false;
     if (this.formStakeholderSearch.invalid)
       return false;
 
@@ -517,6 +521,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     setTimeout(() => {
       this.searchEvent.next(this.stakeholderNumber);
+      this.isSearch = true;
     });
 
     //var context = this;
@@ -590,6 +595,10 @@ export class CreateStakeholderComponent implements OnInit {
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];
           stakeholderToInsert.id = result["id"];
+          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
           this.emitInsertedStake(of(stakeholderToInsert));
           this.clearForm();
           this.route.navigate(['/stakeholders/']);
@@ -615,15 +624,15 @@ export class CreateStakeholderComponent implements OnInit {
       }
       this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
         stakeholderToInsert.id = result["id"];
+        this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
         this.emitInsertedStake(of(stakeholderToInsert));
         this.clearForm();
         this.route.navigate(['/stakeholders/']);
       });
     }
-    this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-      duration: 4000,
-      panelClass: ['snack-bar']
-    });
   }
   /**
    * Add Stakeholder with CC: Only gets the Name and NIF from the stakeholder.
@@ -665,6 +674,10 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
       stakeholderToInsert.id = result["id"];
+      this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+        duration: 4000,
+        panelClass: ['snack-bar']
+      });
       this.emitInsertedStake(of(stakeholderToInsert));
       this.clearForm();
       this.route.navigate(['/stakeholders/']); 

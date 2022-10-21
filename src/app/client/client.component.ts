@@ -283,7 +283,7 @@ export class ClientComponent implements OnInit {
     },
     "knowYourSales": {
       "estimatedAnualRevenue": 1000000,
-      "averageTransactions": 30000,
+      "transactionsAverage": 30000,
       "servicesOrProductsSold": [
         "Cafe",
         "Pastelaria"
@@ -448,6 +448,8 @@ export class ClientComponent implements OnInit {
   searchClient() {
 
     this.logger.debug(this.newClient.clientId);
+    this.clientId = '';
+    this.showSeguinte = false;
 
     var context = this;
     this.newClientForm = null;
@@ -653,17 +655,17 @@ export class ClientComponent implements OnInit {
       this.dataCC = {
         nameCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
-        nifCC: this.nifCC,
+        nifCC: this.nifCC + "",
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC,
       };
-      NIFNIPC = this.nifCC;
+      NIFNIPC = this.nifCC + "";
     }
     this.logger.debug("antes de passar");
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        NIFNIPC: selectedClient.fiscalId,
+        NIFNIPC: selectedClient.fiscalId + "",
         clientExists: true,
         clientId: this.clientId,
         dataCC: this.dataCC,
@@ -752,7 +754,7 @@ export class ClientComponent implements OnInit {
       state: {
         tipologia: this.tipologia,
         clientExists: false,
-        NIFNIPC: NIFNIPC,
+        NIFNIPC: NIFNIPC + "",
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents
       }
@@ -784,4 +786,14 @@ export class ClientComponent implements OnInit {
     this.selectedClient.client = clientEmitted.client;
     this.selectedClient.idx = clientEmitted.idx;
   }
+
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      return false;
+    return true;
+  }
+
+
 }

@@ -79,7 +79,7 @@
             <div class="row" id="nif">
               <p class="titulo-form-simples">NIF</p>
               <input id="fiscalId" class="form-control" type="text" formControlName="NIF"
-              [attr.disabled]="selectedStakeholderIsFromCRC === false ? true : null">
+              [readonly]="selectedStakeholderIsFromCRC === true">
             </div>
             <div class="row" id="country">
               <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}}</p>
@@ -99,7 +99,7 @@
             <div class="row ms-0" id="role">
               <p class="titulo-form-simples">{{'stakeholder.role'|translate|uppercase}}</p>
               <select id="roleStakeholder" class="form-select campo-form-select" formControlName="Role"
-                [attr.disabled]="selectedStakeholderIsFromCRC === false ? true : null"> <!-- antes era chamado o método canEditRole()-->
+                [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null"> <!-- antes era chamado o método canEditRole()-->
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
             </div>

@@ -26,5 +26,23 @@ fetch(path)
 
 window.addEventListener('unload', function () {
   console.log("deu unload");
-})
+});
+
+function addLeadingZero(event) {
+
+  // get maxlength attr
+  const maxLength = parseInt(event.target.getAttribute("maxlength"))
+  // check and flag if negative
+  const isNegative = parseInt(event.target.value) < 0
+  // "0".repeat(maxLength) <-- create default pad with maxlength given
+  // Math.abs(event.target.value) to make sure we proceed with positive value
+  // append zero and slice last of attr maxlength value
+  let newValue = ("0".repeat(maxLength) + Math.abs(event.target.value).toString()).slice(-maxLength);
+  // add - if flag negative is true
+  if (isNegative) {
+    newValue = "-" + newValue
+  }
+  // change the value of input
+  event.target.value = newValue
+}
 
