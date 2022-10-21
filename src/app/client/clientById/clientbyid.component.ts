@@ -25,6 +25,7 @@ import { ProcessNumberService } from '../../nav-menu-presencial/process-number.s
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
 import { IStakeholders, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -343,7 +344,7 @@ export class ClientByIdComponent implements OnInit {
   constructor(private logger: LoggerService, private datepipe: DatePipe, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService) {
 
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -765,6 +766,14 @@ export class ClientByIdComponent implements OnInit {
       var newSubmission = this.clientContext.newSubmission;
       //newSubmission.startedAt = new Date().toISOString();
       newSubmission.merchant = this.clientContext.getClient();
+
+      var loginUser = this.authService.GetCurrentUser();
+
+      newSubmission.submissionUser = {
+        user: loginUser.userName,
+        branch: loginUser.bankLocation,
+        partner: loginUser.bankName
+      }
 
       var documentDelivery = newSubmission.merchant.documentationDeliveryMethod;
       var merchantType = newSubmission.merchant.merchantType;
