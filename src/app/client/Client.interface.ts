@@ -160,13 +160,13 @@ export interface BankInformation {
   accountOpenedAt?: string,
 }
 
-export interface Contacts {
-  preferredMethod?: string,
-  preferredPeriod?: PreferredPeriod,
-  phone1?: Phone,
-  phone2?: Phone,
-  fax?: Phone,
-  email?: string,
+export class Contacts {
+  //preferredMethod?: string
+  //preferredPeriod?: PreferredPeriod
+  phone1?: Phone
+  phone2?: Phone
+/*  fax?: Phone*/
+  email?: string
 }
 
 export interface PreferredPeriod {
@@ -174,9 +174,9 @@ export interface PreferredPeriod {
   endsAt: string,
 }
 
-export interface Phone {
-  countryCode?: string,
-  phoneNumber?: string,
+export class Phone {
+  countryCode?: string
+  phoneNumber?: string
 }
 
 export interface Phone2 {

@@ -175,4 +175,12 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   emitUpdatedStore(info) {
     this.updatedStoreEvent = info;
   }
+
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      return false;
+    return true;
+  }
 }
