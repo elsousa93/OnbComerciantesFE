@@ -146,7 +146,7 @@
                              <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
                              <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                              <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
-                               <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
+                               <div *ngIf="attribute.bundles.length > 0" *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
                                  <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
                                  <div *ngIf="bundle.kind == 'simple'">
                                    <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p><!--{{bundle.description}}-->
@@ -203,7 +203,7 @@
                                  <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected"> 
                                  <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                                  <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
-                                   <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
+                                   <div *ngIf="attribute.bundles.length > 0" *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
                                      <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
                                      <div *ngIf="bundle.kind == 'advanced'">
                                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p>
