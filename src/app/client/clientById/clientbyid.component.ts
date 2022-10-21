@@ -886,35 +886,37 @@ export class ClientByIdComponent implements OnInit {
       });
 
 
+      if (this.clientContext.isClient) { 
+        this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
+          res.forEach(value => {
+            this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+              var storeToAdd: ShopDetailsAcquiring = {
+                activity: r.activity,
+                subActivity: r.secondaryActivity,
+                address: {
+                  address: r.address.address,
+                  isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+                  shoppingCenter: r.address.shoppingCenter,
+                  useMerchantAddress: r.address.sameAsMerchantAddress
+                },
+                bank: {
+                  bank: r.bankingInformation
+                },
+                name: r.name,
+                //productCode: r.product,
+                //subproductCode: r.subproduct,
+                website: r.url,
+                equipments: []
+              }
 
-      this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
-        res.forEach(value => {
-          this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-            var storeToAdd: ShopDetailsAcquiring = {
-              activity: r.activity,
-              subActivity: r.secondaryActivity,
-              address: {
-                address: r.address.address,
-                isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-                shoppingCenter: r.address.shoppingCenter,
-                useMerchantAddress: r.address.sameAsMerchantAddress
-              },
-              bank: {
-                bank: r.bankingInformation
-              },
-              name: r.name,
-              //productCode: r.product,
-              //subproductCode: r.subproduct,
-              website: r.url,
-              equipments: []
-            }
+              context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
 
-            context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
-
+              });
             });
           });
         });
-      });
+      }
+
     } else {
       this.route.navigate(['/stakeholders']);
     }
