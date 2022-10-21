@@ -393,14 +393,14 @@ export class CommercialOfferListComponent implements OnInit {
     //});
 
     this.groupsList.forEach((group) => {
-      var groups = this.form?.get("formGroup" + group.id);
+      //var groups = this.form?.get("formGroup" + group.id);
       group.attributes.forEach((attr) => {
-        attr.value = groups?.get("formControl" + attr.id)?.value;
+        attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
           if (attr.value && (attr.bundles != null || attr.bundles.length > 0 )) { // se tiver sido selecionado
             attr.bundles.forEach((bundle) => {
-              var bundles = groups?.get("formGroupBundle" + bundle.id);
+              //var bundles = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id);
               bundle.attributes.forEach((bundleAttr) => { 
-                bundleAttr.value = bundles?.get("formControlBundle" + bundleAttr.id)?.value;
+                bundleAttr.value = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
               });
             }, this);
           }
