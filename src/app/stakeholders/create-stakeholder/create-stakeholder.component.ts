@@ -232,6 +232,7 @@ export class CreateStakeholderComponent implements OnInit {
   public clientNr: number = 8875;
   public totalUrl: string = "";
   public auxUrl: string = "";
+  public selected: boolean = false;
   isShown: boolean = false;
   isFoundStakeholderShown: boolean = false;
   public flagRecolhaEletronica: boolean = true;
@@ -511,6 +512,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
     this.isShown = true;
+    this.selected = false;
 
 
     setTimeout(() => {
@@ -557,6 +559,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   selectNewStakeholder(emittedStakeholder) {
+    this.selected = true;
     this.currentStakeholder = emittedStakeholder.stakeholder;
 
     console.log("current stakeholder: ", this.currentStakeholder);
