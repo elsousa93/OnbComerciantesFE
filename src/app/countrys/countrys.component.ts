@@ -293,7 +293,7 @@ export class CountrysComponent implements OnInit {
       services: new FormControl('', Validators.required),
       transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
       associatedWithGroupOrFranchise: new FormControl(false, Validators.required),
-      preferenceDocuments: new FormControl(''),
+      preferenceDocuments: new FormControl('', Validators.required),
       inputEuropa: new FormControl(this.inputEuropa),
       inputAfrica: new FormControl(this.inputAfrica),
       inputAmerica: new FormControl(this.inputAmericas),

@@ -1,4 +1,3 @@
-<app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
     <div class="row ">
         <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
@@ -21,7 +20,7 @@
                             <p class="titulo-form-simples mt-0">
                                 {{'declarativeInformation.cellPhone'|translate|uppercase}}/{{'declarativeInformation.phone'|translate|uppercase}}:*
                             </p>
-                            <input #phone name="phoneNumber" type="text" id="phoneNumber" class="form-control" 
+                            <input (keypress)="numericOnly($event)" #phone name="phoneNumber" type="text" id="phoneNumber" class="form-control" 
                                 formControlName="phoneNumber" [readonly]="returned === 'consult'">
                             <div class="alert alert-danger"
                                 *ngIf="(phone.touched || phone.dirty) && !phone.valid && phone.errors.hasOwnProperty('invalidNumber')">

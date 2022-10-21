@@ -173,7 +173,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
-      collectCRC: new FormControl(this.hasCRC ? true : ((collectCRC !== null && collectCRC !== '' && collectCRC !== undefined) ? true : null))
+      collectCRC: new FormControl(this.hasCRC ? true: collectCRC)
     }));
     this.formClientCharacterizationReady.emit(this.form);
   }
@@ -190,7 +190,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : (this.hasCRC ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
-      collectCRC: new FormControl(this.hasCRC ? true : ((collectCRC !== null && collectCRC !== '' && collectCRC !== undefined) ? true : null))
+      collectCRC: new FormControl(this.hasCRC ? true : collectCRC)
     }));
 
 
@@ -239,7 +239,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
       socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.hasCRC ? true : ((collectCRC !== null && collectCRC !== '' && collectCRC !== undefined) ? false : null))
+      collectCRC: new FormControl(this.hasCRC ? true : collectCRC)
     }));
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {

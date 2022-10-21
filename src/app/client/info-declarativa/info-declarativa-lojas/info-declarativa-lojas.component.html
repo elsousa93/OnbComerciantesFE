@@ -61,7 +61,7 @@
                         </div>
                         <div class="col">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.cellPhone'|translate}}:*</p>
-                          <input #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber"
+                          <input (keypress)="numericOnly($event)" #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber"
                                  class="form-control" formControlName="countryCode">
                           <div class="alert alert-danger"
                                *ngIf="phone1PhoneNumber.touched && !phone1PhoneNumber.valid || phone1CountryCode.value && !phone1PhoneNumber.value">
@@ -93,7 +93,7 @@
                         </div>
                         <div class="col">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate}}:*</p>
-                          <input #phone2PhoneNumber name="phone2PhoneNumber" type="text" id="phone2PhoneNumber"
+                          <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="phone2PhoneNumber" type="text" id="phone2PhoneNumber"
                                  class="form-control" formControlName="countryCode">
                           <div class="alert alert-danger"
                                *ngIf="phone2PhoneNumber.touched && !phone2PhoneNumber.valid || phone2CountryCode.value && !phone2PhoneNumber.value">
