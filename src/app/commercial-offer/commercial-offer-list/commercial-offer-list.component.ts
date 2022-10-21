@@ -379,7 +379,7 @@ export class CommercialOfferListComponent implements OnInit {
         attr.value = groups?.get("formControl" + attr.id)?.value;
           if (attr.value && (attr.bundles != null || attr.bundles.length > 0 )) { // se tiver sido selecionado
             attr.bundles.forEach(bundle => {
-              var bundles = this.form?.get("formGroupBundle" + bundle.id);
+              var bundles = groups?.get("formGroupBundle" + bundle.id);
               bundle.attributes.forEach(bundleAttr => { 
                 bundleAttr.value = bundles?.get("formControlBundle" + bundleAttr.id)?.value;
               });

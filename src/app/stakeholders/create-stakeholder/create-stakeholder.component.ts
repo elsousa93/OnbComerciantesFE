@@ -592,6 +592,7 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.foundStakeholders) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
+        stakeholderToInsert.fiscalIdentification.fiscalId = this.currentStakeholder["stakeholderNIF"];
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];
           stakeholderToInsert.id = result["id"];
