@@ -353,17 +353,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       //  this.files.push(file);
       //});
     });
-    if (this.submission.stakeholders.length != 0) {
-      this.submission.stakeholders.forEach(stake => {
-      this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-        this.logger.debug('Stakeholder ' + result);
-        var index = this.stakeholdersList.findIndex(s => s.id == result.id);
-        if (index == -1)
-          this.stakeholdersList.push(result);
-      }, error => {
-        this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
-      });
-    });
+    if (this.submission.stakeholders != null) { 
+      if (this.submission.stakeholders.length != 0) {
+        this.submission.stakeholders.forEach(stake => {
+          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+            this.logger.debug('Stakeholder ' + result);
+            var index = this.stakeholdersList.findIndex(s => s.id == result.id);
+            if (index == -1)
+              this.stakeholdersList.push(result);
+          }, error => {
+            this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
+          });
+        });
+      }
     }
   }
 
