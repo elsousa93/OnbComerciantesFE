@@ -409,7 +409,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.initializeENI();
       }
 
-      this.hasCRC = JSON.stringify(this.client.incorporationStatement) !== '{}' //(this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
+      this.hasCRC = (JSON.stringify(this.client.incorporationStatement) !== '{}' && this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
 
       if (this.hasCRC) {
         this.isCommercialSociety = true;
