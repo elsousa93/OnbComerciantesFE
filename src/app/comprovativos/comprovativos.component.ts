@@ -212,10 +212,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   var teste = await res.blob();
                   teste.lastModifiedDate = new Date();
                   teste.name = "nome";
-  
+
                   context.file = <File>teste;
                   console.log("Ficheiro encontrado ", context.file);
-  
+
                   context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
                     context.compsToShow.push({
                       id: document.id,
@@ -230,7 +230,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     console.log("Lista de comprovativos ", context.compsToShow);
                   });
                 });
-  
+
               });
             }
 
@@ -259,37 +259,40 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
       this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
         var documents = res;
-        documents.forEach(function (value, index) {
-          var document = value;
-          context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-            console.log("imagem de um documento ", res);
-            var teste = await res.blob();
+        if (documents.length != 0) {
+          documents.forEach(function (value, index) {
+            var document = value;
+            context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
+              console.log("imagem de um documento ", res);
+              var teste = await res.blob();
 
-            teste.lastModifiedDate = new Date();
-            teste.name = "nome";
+              teste.lastModifiedDate = new Date();
+              teste.name = "nome";
 
-            context.file = <File>teste;
-            console.log("Ficheiro encontrado ", context.file);
+              context.file = <File>teste;
+              console.log("Ficheiro encontrado ", context.file);
 
-            context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
 
-              var index = context.compsToShow.findIndex(value => value.id == document.id);
-              if (index == -1) {
-                context.compsToShow.push({
-                  id: document.id,
-                  type: "pdf",
-                  expirationDate: "2024-10-10",
-                  stakeholder: "Manuel",
-                  status: "não definido",
-                  uploadDate: "2020-10-10",
-                  file: context.file,
-                  documentPurpose: val.documentPurpose
-                });
-              }
-              console.log("Lista de comprovativos ", context.compsToShow);
+                var index = context.compsToShow.findIndex(value => value.id == document.id);
+                if (index == -1) {
+                  context.compsToShow.push({
+                    id: document.id,
+                    type: "pdf",
+                    expirationDate: "2024-10-10",
+                    stakeholder: "Manuel",
+                    status: "não definido",
+                    uploadDate: "2020-10-10",
+                    file: context.file,
+                    documentPurpose: val.documentPurpose
+                  });
+                }
+                console.log("Lista de comprovativos ", context.compsToShow);
+              });
             });
           });
-        });
+        }
+
       });
 
 
