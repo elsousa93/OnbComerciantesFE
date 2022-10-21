@@ -127,7 +127,7 @@
                   {{'stakeholder.add'|translate|uppercase}}&nbsp;
                   <img src="assets/images/person_add_blue.svg" class="img_btn">
                 </button>
-                <button id="btn5a3"
+                <button id="btn5a3" *ngIf="clickButton"
               class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
               wappler-command="editContent" (click)="redirectInfoStakeholder();" [disabled]="stakesLength === 0">
         {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">

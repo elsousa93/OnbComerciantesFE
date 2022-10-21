@@ -63,8 +63,8 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
-                        #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
+                        name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
                     </div>
                   </div>
                 </div>
@@ -88,63 +88,63 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
-                        #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
+                        name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
                   </div>
                 </div>
-                  <div *ngIf="isCC" class="offset-1 col-7 me-0 ps-0 pe-0 ms-5" style="margin-left: 13px !important;">
-                    <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
+                <div *ngIf="isCC" class="offset-1 col-7 me-0 ps-0 pe-0 ms-5" style="margin-left: 13px !important;">
+                  <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
 
-                    {{'citizenCard.process'|translate}}:*
+                  {{'citizenCard.process'|translate}}:*
 
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                      <span class="navbar-text">
-                        <div class="form-check">
-                          <input class="form-check-input" required type="radio" [value]=true id="flagAutCol"
-                            name="flagAutCol" (click)="changeDataReadable(true)" />
-                          <label class="form-check-label radio pe-5"
-                            for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
-                        </div>
-                      </span>
-                      <span class="navbar-text">
-                        <div class="form-check">
-                          <input class="form-check-input" required type="radio" [value]=false id="flagAutCol"
-                            name="flagAutCol" (click)="changeDataReadable(false)" />
-                          <label class="form-check-label radio"
-                            for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
-                        </div>
-                      </span>
-                    </nav>
-                  </div>
-                
-                </div>
-                <div *ngIf="isNoDataReadable && isCC" class="pt-2">
-                  <div class="titulo-form-simples">
-                    {{'citizenCard.readClick'|translate}}:
-                  </div>
-                  <button class="btn botao_azul_pesquisa" (click)="openModal(template)"
-                    type="submit">{{'citizenCard.read'|translate}}</button>
-                </div>
-
-                <div class="align-self-center col-12 mt-4 ms-0 me-0 pe-0">
-                  <nav
-                    class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                    <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-                      <button
-                        [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0"
-                        id="btn5a2" class="btn botao_azul" (click)="searchClient()" wappler-command="editContent">
-                        {{'client.search'|translate|uppercase}}&nbsp;&nbsp;
-                        <img src="assets/images/person_search.svg" class="img_btn">
-                      </button>
+                  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <span class="navbar-text">
+                      <div class="form-check">
+                        <input class="form-check-input" required type="radio" [value]=true id="flagAutCol"
+                          name="flagAutCol" (click)="changeDataReadable(true)" />
+                        <label class="form-check-label radio pe-5"
+                          for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                      </div>
+                    </span>
+                    <span class="navbar-text">
+                      <div class="form-check">
+                        <input class="form-check-input" required type="radio" [value]=false id="flagAutCol"
+                          name="flagAutCol" (click)="changeDataReadable(false)" />
+                        <label class="form-check-label radio"
+                          for="radio3">{{'generalKeywords.no'|translate|uppercase}}</label>
+                      </div>
                     </span>
                   </nav>
                 </div>
-                <div *ngIf="notFound">
-                  <p class="titulo-form-simples">{{'client.searchError'|translate}}</p>
+
+              </div>
+              <div *ngIf="isNoDataReadable && isCC" class="pt-2">
+                <div class="titulo-form-simples">
+                  {{'citizenCard.readClick'|translate}}:
                 </div>
-              
+                <button class="btn botao_azul_pesquisa" (click)="openModal(template)"
+                  type="submit">{{'citizenCard.read'|translate}}</button>
+              </div>
+
+              <div class="align-self-center col-12 mt-4 ms-0 me-0 pe-0">
+                <nav
+                  class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                  <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
+                    <button
+                      [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0"
+                      id="btn5a2" class="btn botao_azul" (click)="searchClient()" wappler-command="editContent">
+                      {{'client.search'|translate|uppercase}}&nbsp;&nbsp;
+                      <img src="assets/images/person_search.svg" class="img_btn">
+                    </button>
+                  </span>
+                </nav>
+              </div>
+              <div *ngIf="notFound">
+                <p class="titulo-form-simples">{{'client.searchError'|translate}}</p>
+              </div>
+
 
               <form *ngIf="newClientForm" [formGroup]="newClientForm" name="newClientForm">
                 <div class="row" *ngIf="showENI && !clientNr && !isCC">
@@ -152,7 +152,8 @@
                     <div class="row">
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.nif'|translate}}:*</p>
-                        <input name="nif" type="text" (keypress)="numericOnly($event)" id="nif" class="form-control" formControlName="nif">
+                        <input name="nif" type="text" (keypress)="numericOnly($event)" id="nif" class="form-control"
+                          formControlName="nif">
                       </div>
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.name'|translate|uppercase}}:*</p>
@@ -162,26 +163,25 @@
                   </div>
                 </div>
 
-                <div class="row" *ngIf="!showENI && !clientNr && !isCC">
-                  <div class="col-12 ms-0 me-0 pe-0">
-                    <div class="row">
-                      <div class="col-5">
-
-                        <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
-                        <input name="nipc" type="text" (keypress)="numericOnly($event)" id="nipc" class="form-control" formControlName="nipc">
-                      </div>
-                      <div class="col-5">
-                        <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:*</p>
-                        <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control"
-                          formControlName="denominacaoSocial">
-                      </div>
+                <div class="col-12 ms-0 me-0 pe-0" *ngIf="!showENI && !clientNr && !isCC">
+                  <div class="row">
+                    <div class="col-6">
+                      <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
+                      <input name="nipc" type="text" (keypress)="numericOnly($event)" id="nipc" class="form-control"
+                        formControlName="nipc">
+                    </div>
+                    <div class="col-6">
+                      <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:*</p>
+                      <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control"
+                        formControlName="denominacaoSocial">
                     </div>
                   </div>
                 </div>
                 <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                   <span class="navbar-text me-2">
-                    <button *ngIf="!showFoundClient && searchDone && !isCC && !clientNr" id="btn5a2" (click)="createNewClient()"
-                      class="btn botao_branco" wappler-command="editContent" [disabled]="!newClientForm.valid">
+                    <button *ngIf="!showFoundClient && searchDone && !isCC && !clientNr" id="btn5a2"
+                      (click)="createNewClient()" class="btn botao_branco" wappler-command="editContent"
+                      [disabled]="!newClientForm.valid">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
                     </button>
@@ -325,48 +325,54 @@
     <div class="col mt-2 ms-0 me-0 pt-4 ps-3 pe-3">
       <div class="table-responsive mb-2 ps-2 pe-2">
         <form #contactForm="ngForm">
-            <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
-              <ng-container matColumnDef="select">
-                <mat-header-cell *matHeaderCellDef>
-                  
-                </mat-header-cell>
-                <mat-cell *matCellDef="let client"> 
-                    <input type="radio" (click)="aButtons(true, client.client.clientId, client.isClient)">
-                  </mat-cell>
-              </ng-container>
-                <ng-container matColumnDef="clientNumber">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.number'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.clientId}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="commercialName">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.nameSocialDesignation'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.commercialName}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="address">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.address'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.address}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="ZIPCode">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.postalCode'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.ZIPCode}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="locale">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.locale'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.locality}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="country">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white"> {{'client.country'|translate}} </mat-header-cell>
-                  <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.country}} </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary"></mat-header-row>
-                <mat-row *matRowDef="let client; let idx = index; columns: displayedColumns;"
-                         [ngClass]="{'row-selected': idx === currentIdx}">
-                </mat-row>
-            </mat-table>
-          
-            <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]"
-                           showFirstLastButtons>
-            </mat-paginator>
+          <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
+            <ng-container matColumnDef="select">
+              <mat-header-cell *matHeaderCellDef>
+
+              </mat-header-cell>
+              <mat-cell *matCellDef="let client">
+                <input type="radio" (click)="aButtons(true, client.client.clientId, client.isClient)">
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="clientNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                {{'client.number'|translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.clientId}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="commercialName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                {{'client.nameSocialDesignation'|translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.commercialName}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="address">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                {{'client.address'|translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.address}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="ZIPCode">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                {{'client.postalCode'|translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.ZIPCode}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="locale">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                {{'client.locale'|translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.locality}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="country">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                {{'client.country'|translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.country}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary"></mat-header-row>
+            <mat-row *matRowDef="let client; let idx = index; columns: displayedColumns;"
+              [ngClass]="{'row-selected': idx === currentIdx}">
+            </mat-row>
+          </mat-table>
+
+          <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+          </mat-paginator>
 
         </form>
       </div>
