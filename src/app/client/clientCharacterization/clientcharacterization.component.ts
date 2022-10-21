@@ -208,7 +208,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.hasCRC ? true : ((collectCRC !== null && collectCRC !== '' && collectCRC !== undefined) ? true : null), [Validators.required])
+      collectCRC: new FormControl(this.hasCRC ? true : null, [Validators.required])
     });
     this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
