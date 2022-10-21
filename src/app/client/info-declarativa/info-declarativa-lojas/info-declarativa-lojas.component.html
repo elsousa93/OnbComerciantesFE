@@ -39,7 +39,7 @@
           <div class="container-fluid mt-0 ps-3 pe-3">
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="selectedStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"></app-store-table>
+                <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="selectedStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)" (listLengthEmitter)="getStoresListLength($event)" [updatedStoreEvent]="updatedStoreEvent"></app-store-table>
               </div>
               <div  class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
                 <h2 *ngIf="selectedStore != null" class="text-primary mt-3 ps-0"><img src="assets/images/add_call.svg" class="img_add" style="height:37px;">&nbsp;{{'stores.information'|translate|uppercase}}

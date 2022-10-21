@@ -15,7 +15,7 @@ import { ClientService } from '../../client.service';
 import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
-import { Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -52,6 +52,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   submissionId: string;
   processNumber: string;
 
+  storesLength: number;
+  updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -59,9 +62,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   public subs: Subscription[] = [];
 
 
-    constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
     this.baseUrl = configuration.baseUrl;
-    this.ngOnInit();
+    //this.ngOnInit();
     
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
@@ -71,40 +74,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
       this.client = result;
     });
-
-
-      this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
-        var shops = result.result;
-      shops.forEach(value => {
-        this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).then(res => {
-          var shop = res.result;
-          this.stores.push(shop);
-        });
-      });
-      this.loadStores(this.stores);
-    });
-
-    //this.internationalCallingCodes = tableInfo.GetAllCountries();
-
- /*    //se o telemovel estiver vazio, o numero de telefone é obrigatorio
-    this.listValue.controls["cellphoneNumber"].valueChanges.subscribe(data => {
-      if (data === '') {
-        this.listValue.controls["telephoneNumber"].setValidators([Validators.required]);
-      } else {
-        this.listValue.controls["telephoneNumber"].clearValidators();
-      }
-      this.listValue.controls["telephoneNumber"].updateValueAndValidity();
-    });
-
-    //se o telefone esta vazio, o numero de telemovel é obrigatorio
-    this.listValue.controls["telephoneNumber"].valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.listValue.controls["cellphoneNumber"].setValidators([Validators.required]);
-      } else {
-        this.listValue.controls["cellphoneNumber"].clearValidators();
-      }
-      this.listValue.controls["cellphoneNumber"].updateValueAndValidity();
-    });*/
   } 
 
   ngOnInit(): void {
@@ -116,14 +85,14 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
-        countryCode: new FormControl('' /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
-        phoneNumber: new FormControl('')
+        countryCode: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone1?.countryCode : '' /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
+        phoneNumber: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone1?.phoneNumber : '')
       }, {validators : validPhoneNumber}),
       telephone: this.formBuilder.group({
-        countryCode: new FormControl(''), //telefone
-        phoneNumber: new FormControl('')
+        countryCode: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone2?.countryCode : ''), //telefone
+        phoneNumber: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone2?.phoneNumber : '')
       }, { validators: validPhoneNumber }),
-      email: new FormControl('', Validators.required),
+      email: new FormControl(this.client?.contacts != null ? this.client?.contacts?.email : '', Validators.required),
     });
     
   }
@@ -161,15 +130,14 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       storedForm.store = this.selectedStore;
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
-      //this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-      if (this.currentIdx < (this.stores.length - 1)) {
-        this.currentIdx = this.currentIdx + 1;
-        this.onActivate();
-        this.selectStore({ store: this.stores[this.currentIdx], idx: this.currentIdx });
+      this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
+        if (this.currentIdx < (this.storesLength - 1)) {
+          this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+          this.onActivate();
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }
-      //});
+      });
 
     }
   }
@@ -180,7 +148,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    this.listValue.get("cellphone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.countryCode : '');
+    this.listValue.get("cellphone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.countryCode : ''); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
     this.listValue.get("cellphone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.phoneNumber : '');
     this.listValue.get("telephone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.countryCode : '');
     this.listValue.get("telephone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.phoneNumber : '');
@@ -198,5 +166,13 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         window.clearInterval(scrollToTop);
       }
     }, 16);
+  }
+
+  getStoresListLength(length) {
+    this.storesLength = length;
+  }
+
+  emitUpdatedStore(info) {
+    this.updatedStoreEvent = info;
   }
 }

@@ -63,13 +63,17 @@ export class InfoDeclarativaComponent implements OnInit {
 
   setForm(client : Client){
     this.newClient = client;
-    this.listValue.get("comercialName").setValue(client.commercialName);
-    this.listValue.get("phone1").get("countryCode").setValue(client.contacts.phone1.countryCode)
-    this.listValue.get("phone1").get("phoneNumber").setValue(client.contacts.phone1.phoneNumber);
-    this.listValue.get("phone2").get("countryCode").setValue(client.contacts.phone2.countryCode);
-    this.listValue.get("phone2").get("phoneNumber").setValue(client.contacts.phone2.phoneNumber);
-    this.listValue.get("email").setValue(client.contacts.email);
-    this.listValue.get("billingEmail").setValue(client.billingEmail);
+    this.listValue.get("comercialName").setValue(client?.commercialName);
+    this.listValue.get("phone1").get("countryCode").setValue(client?.contacts?.phone1?.countryCode)
+    this.listValue.get("phone1").get("phoneNumber").setValue(client?.contacts?.phone1?.phoneNumber);
+    this.listValue.get("phone2").get("countryCode").setValue(client?.contacts?.phone2?.countryCode);
+    this.listValue.get("phone2").get("phoneNumber").setValue(client?.contacts?.phone2?.phoneNumber);
+    this.listValue.get("email").setValue(client?.contacts?.email);
+    if (client.billingEmail == null || client.billingEmail == "") {
+      this.listValue.get("billingEmail").setValue(client?.contacts?.email);
+    } else {
+      this.listValue.get("billingEmail").setValue(client?.billingEmail);
+    }
   }
 
   public subs: Subscription[] = [];
@@ -110,7 +114,7 @@ export class InfoDeclarativaComponent implements OnInit {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
             this.logger.debug('Submissão com detalhes mais especificos ' + resul);
             this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-              this.setForm(res);
+              this.setForm(res); // n sei se aqui é res.res
             });
           });
         });
@@ -151,7 +155,7 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
   submit() {
-    if (this.returned !== 'consult') { 
+    if (this.returned != 'consult') { 
       this.newClient.commercialName = this.listValue.get('comercialName').value;
       this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('countryCode').value;
       this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('phoneNumber').value;
