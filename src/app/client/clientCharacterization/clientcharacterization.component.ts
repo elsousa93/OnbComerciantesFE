@@ -190,7 +190,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : (this.hasCRC ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
-      collectCRC: new FormControl(this.hasCRC ? true : collectCRC)
+      collectCRC: new FormControl(true)
     }));
 
 
@@ -208,7 +208,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.hasCRC ? true : ((collectCRC !== null && collectCRC !== '' && collectCRC !== undefined) ? true : null), [Validators.required])
+      collectCRC: new FormControl(this.hasCRC ? true : null, [Validators.required])
     });
     this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
@@ -239,7 +239,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
       socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.hasCRC ? true : collectCRC)
+      collectCRC: new FormControl(false)
     }));
 
     this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
