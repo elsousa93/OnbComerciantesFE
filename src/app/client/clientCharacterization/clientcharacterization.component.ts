@@ -183,14 +183,14 @@ export class ClientCharacterizationComponent implements OnInit {
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
     //this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
-    var collectCRC = this.form.get("collectCRC")?.value;
+    
     
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : (this.hasCRC ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
-      collectCRC: new FormControl(true)
+      collectCRC: new FormControl(this.collectCRC)
     }));
 
 
@@ -409,7 +409,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.initializeENI();
       }
 
-      this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
+      this.hasCRC = JSON.stringify(this.client.incorporationStatement) !== '{}' //(this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
 
       if (this.hasCRC) {
         this.isCommercialSociety = true;
