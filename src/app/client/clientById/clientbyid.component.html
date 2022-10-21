@@ -82,10 +82,11 @@
                             </th>
                             <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
                             <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
+                            <th scope="col" class="text-center bg-white"></th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let docum of client.documents">
+                          <tr *ngFor="let docum of client['documents']">
                             <td class="text-primary text-center">{{docum.documentType}}</td>
                             <td class="text-primary text-center">{{docum.receivedAt}}</td>
                             <!--Não sei o que equivale a este campo nos documents-->

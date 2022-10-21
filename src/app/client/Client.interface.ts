@@ -1,3 +1,4 @@
+import { OutboundDocument } from "../stakeholders/IStakeholders.interface"
 import { PostDocument } from "../submission/document/ISubmission-document"
 
 export interface OutboundClient {
@@ -9,7 +10,7 @@ export interface OutboundClient {
   context?: string,
   contextId?: string,
   documentationDeliveryMethod?: string,
-  documents?: PostDocument[],
+  documents?: OutboundDocument[],
   fiscalIdentification?: ForeignFiscalInformation,
   headquartersAddress?: HeadquartersAddress,
   incorporationDate?: string,

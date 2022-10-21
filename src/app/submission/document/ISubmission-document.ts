@@ -24,3 +24,13 @@ interface FileDocument {
   fileType?: string
   binary?: string
 }
+
+export interface OutboundDocument {
+  purpose?: string,
+  documentType?: string,
+  receivedAt?: string,
+  validUntil?: string,
+  uniqueReference?: string,
+  archiveSource?: string,
+  format?: string
+}
