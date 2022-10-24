@@ -1,3 +1,4 @@
+import { Phone } from "../client/Client.interface";
 import { Product, Subproduct, ProductPackCommissionAttribute, ProductPackPricingAttribute, ProductPackRootAttributeProductPackKind, ProductPackAttributeProductPackKind, TerminalSupportEntityEnum, ProductPackPaymentSchemes, ProductPackAttribute } from "../commercial-offer/ICommercialOffer.interface";
 import { FiscalAddress } from "../stakeholders/IStakeholders.interface";
 import { Document } from "../submission/ISubmission.interface";
@@ -74,6 +75,10 @@ export class ShopDetailsAcquiring {
   documents?: ShopDocuments
   processorId?: string
   id?: string
+  contactPerson?: string
+  phone1?: Phone
+  phone2?: Phone
+  email?: string
 }
 
 //Interfaces auxiliares

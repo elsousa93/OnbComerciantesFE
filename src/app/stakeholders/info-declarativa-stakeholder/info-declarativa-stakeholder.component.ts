@@ -105,32 +105,32 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (info !== null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.resetContacts();
+      this.infoStakeholders.reset();
       this.pepComponent.resetForm();
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
     }
   }
 
-  resetPepForm() {
-    this.infoStakeholders.setControl('pep', new FormGroup({
-      id: new FormControl(''),
-      pep12months: new FormControl('', [Validators.required])
-    }));
-  }
+  //resetPepForm() {
+  //  this.infoStakeholders.setControl('pep', new FormGroup({
+  //    id: new FormControl(''),
+  //    pep12months: new FormControl('', [Validators.required])
+  //  }));
+  //}
 
-  resetContacts(){
-    this.infoStakeholders.setControl('contacts', new FormGroup({
-      phone: new FormGroup({
-        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.countryCode : '', Validators.required),
-        phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.phoneNumber : '', Validators.required)
-      }, { validators: [validPhoneNumber] }),
-      email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.email : '', Validators.required),
-    }));
-  }
+  //resetContacts(){
+  //  this.infoStakeholders.setControl('contacts', new FormGroup({
+  //    phone: new FormGroup({
+  //      countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.countryCode : '', Validators.required),
+  //      phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.phoneNumber : '', Validators.required)
+  //    }, { validators: [validPhoneNumber] }),
+  //    email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.email : '', Validators.required),
+  //  }));
+  //}
 
   setFormData() {
     var contacts = this.infoStakeholders.controls["contacts"];
-    if (contacts !== undefined) {
+    if (contacts != undefined || contacts != null) {
       if (contacts.get("phone").value) {
         contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.stakeholderAcquiring.phone1?.countryCode);
         contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.stakeholderAcquiring.phone1?.phoneNumber);
@@ -141,7 +141,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }
 
     var pep = this.infoStakeholders.controls["pep"];
-    if (pep !== undefined) {
+    if (pep != undefined || pep != null) {
       if (pep.get("pep12months").value) {
         pep.get("pep12months")?.get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
         pep.get("pep12months")?.get("pepCountry").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepCountry);
@@ -200,6 +200,12 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     } else {
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
     }
+
+    console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
+
+    this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+      console.log("Stakeholder atualizado ", result);
+    });
 
     this.pepComponent.resetForm();
     this.infoStakeholders.reset();

@@ -33,7 +33,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   public stores: ShopDetailsAcquiring[] = [];
   public clientID: number = 12345678;
 
-  public selectedStore = null;
+  public selectedStore: ShopDetailsAcquiring = null;
   //listValue!: FormGroup;
 
   displayedColumns: string[] = ['nameEstab', 'activityEstab', 'subActivityEstab', 'zoneEstab'];
@@ -85,16 +85,21 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
-        countryCode: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone1?.countryCode : '' /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
-        phoneNumber: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone1?.phoneNumber : '')
+        countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
+        phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber)
       }, {validators : validPhoneNumber}),
       telephone: this.formBuilder.group({
-        countryCode: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone2?.countryCode : ''), //telefone
-        phoneNumber: new FormControl(this.client?.contacts != null ? this.client?.contacts?.phone2?.phoneNumber : '')
+        countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
+        phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber)
       }, { validators: validPhoneNumber }),
-      email: new FormControl(this.client?.contacts != null ? this.client?.contacts?.email : '', Validators.required),
+      email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.required),
     });
-    
+
+    this.listValue.get("cellphone").valueChanges.subscribe(val => {
+      console.log('Val ', val);
+      console.log("Form do cellphone ", this.listValue.get("cellphone"));
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -122,16 +127,22 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   submit() {
-    if (this.listValue.valid) { 
-      //this.selectedStore.cellphoneIndic = this.listValue.value.cellphoneCountryCode;
-      //this.selectedStore.cellphoneNumber = this.listValue.value.cellphoneNumber;
-      //this.selectedStore.emailContact = this.listValue.value.email;
+    if (this.listValue.valid) {
+      this.selectedStore.email = this.listValue.get("email").value;
+      this.selectedStore.phone1.countryCode = this.listValue.get("cellphone").get("countryCode").value;
+      this.selectedStore.phone1.phoneNumber = this.listValue.get("cellphone").get("phoneNumber").value;
+      this.selectedStore.phone2.countryCode = this.listValue.get("telephone").get("countryCode").value;
+      this.selectedStore.phone2.phoneNumber = this.listValue.get("telephone").get("phoneNumber").value;
+
       let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
       storedForm.store = this.selectedStore;
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
+      console.log("Estrutura dos dados da Loja ", this.selectedStore);
+
       this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
         if (this.currentIdx < (this.storesLength - 1)) {
+          console.log("Loja atualizada ", result);
           this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
           this.onActivate();
         } else {
@@ -148,11 +159,11 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    this.listValue.get("cellphone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.countryCode : ''); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
-    this.listValue.get("cellphone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone1?.phoneNumber : '');
-    this.listValue.get("telephone").get("countryCode").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.countryCode : '');
-    this.listValue.get("telephone").get("phoneNumber").setValue((this.client?.contacts != null) ? this.client.contacts?.phone2?.phoneNumber : '');
-    this.listValue.get("email").setValue((this.client.contacts != null) ? this.client?.contacts?.email : '');
+    this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
+    this.listValue.get("cellphone").get("phoneNumber").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber);
+    this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode);
+    this.listValue.get("telephone").get("phoneNumber").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber);
+    this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
     if (this.returned == 'consult')
       this.listValue.disable();
   }
