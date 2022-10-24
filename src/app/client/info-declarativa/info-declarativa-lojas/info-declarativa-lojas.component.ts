@@ -10,7 +10,7 @@ import { Istore, ShopDetailsAcquiring } from '../../../store/IStore.interface';
 import { StoreService } from '../../../store/store.service';
 import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
-import { Client } from '../../Client.interface';
+import { Client, Phone } from '../../Client.interface';
 import { ClientService } from '../../client.service';
 import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
@@ -87,19 +87,33 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       cellphone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
         phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber)
-      }, {validators : validPhoneNumber}),
+      }, { validators: [validPhoneNumber, Validators.required] }),
       telephone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
         phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber)
-      }, { validators: validPhoneNumber }),
+      }, { validators: [validPhoneNumber, Validators.required] }),
       email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.required),
     });
 
     this.listValue.get("cellphone").valueChanges.subscribe(val => {
-      console.log('Val ', val);
-      console.log("Form do cellphone ", this.listValue.get("cellphone"));
+      if (val) {
+        this.listValue.get("telephone").setValidators(null);
+      } else {
+        this.listValue.get("telephone").setValidators(Validators.required);
+      }
+      this.listValue.get("telephone").updateValueAndValidity();
+      console.log('Valor do form ', this.listValue);
     });
 
+    this.listValue.get("telephone").valueChanges.subscribe(val => {
+      if (val) {
+        this.listValue.get("cellphone").setValidators(null);
+      } else {
+        this.listValue.get("cellphone").setValidators(Validators.required);
+      }
+      this.listValue.get("cellphone").updateValueAndValidity();
+      console.log('Valor do form 1', this.listValue);
+    });
   }
 
   ngOnDestroy(): void {
@@ -129,6 +143,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   submit() {
     if (this.listValue.valid) {
       this.selectedStore.email = this.listValue.get("email").value;
+
+      this.selectedStore.phone1 = new Phone();
+      this.selectedStore.phone2 = new Phone();
+
       this.selectedStore.phone1.countryCode = this.listValue.get("cellphone").get("countryCode").value;
       this.selectedStore.phone1.phoneNumber = this.listValue.get("cellphone").get("phoneNumber").value;
       this.selectedStore.phone2.countryCode = this.listValue.get("telephone").get("countryCode").value;

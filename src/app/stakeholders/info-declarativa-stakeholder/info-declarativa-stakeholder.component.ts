@@ -182,21 +182,21 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     var pep = this.infoStakeholders.get("pep");
 
     if (pep.get("pep12months").value) {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pep12months").get("kind").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pep12months").get("pepType").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pep12months").get("pepCountry").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pep12months").get("pepSince").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pep12months").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
     } else if (pep.get("pepFamiliarOf").value) {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pepFamiliarOf").get("kind").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepFamiliarOf").get("pepType").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamiliarOf").get("pepFamilyRelation").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;//pep.get("pepFamiliarOf").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
     } else if (pep.get("pepRelations").value) {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pepRelations").get("kind").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepRelations").get("pepType").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepRelations").get("pepTypeOfRelation").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS//pep.get("pepRelations").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
     } else if (pep.get("pepPoliticalPublicJobs").value) {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = pep.get("pepPoliticalPublicJobs").get("kind").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepPoliticalPublicJobs").get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pepPoliticalPublicJobs").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
     } else {
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
     }

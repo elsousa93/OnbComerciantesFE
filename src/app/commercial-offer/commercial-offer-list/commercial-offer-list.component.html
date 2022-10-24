@@ -126,7 +126,7 @@
 
                  <div class="row">
                    <!-- PAYMENT SCHEMES -->
-                   <div class="col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="paymentSchemes.kind == 'simple'">
+                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="paymentSchemes.kind == 'simple'">
                      <div class="row">
                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{paymentSchemes.description}}</p>
                        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of paymentSchemes.attributes">
@@ -141,12 +141,12 @@
                    </div>
 
                    <!-- ATRIBUTOS DO PACOTE -->
-                   <div class="col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
+                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
                      <div class="row">
                        <div class="row" *ngIf="group.kind == 'simple'">
-                         <p class="titulo-form-simples mb-1" wappler-command="editContent">{{group.description}}</p>
+                         <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{group.description}}</p>
                          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0" *ngFor="let attribute of group.attributes">
-                           <span class="navbar-text text-start ">
+                           <span class="navbar-text text-start align-self-start">
                              <div class="form-check" *ngIf="attribute.isVisible">
                                <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
                                <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
@@ -155,7 +155,7 @@
                                    <div *ngFor="let bundle of attribute.bundles" formGroupName="{{'formGroupBundle' + bundle.id}}">
                                      <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
                                      <div *ngIf="bundle.kind == 'simple'">
-                                       <p class="titulo-form-simples mb-1" wappler-command="editContent">{{bundle.description}}</p><!--{{bundle.description}}-->
+                                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{bundle.description}}</p><!--{{bundle.description}}-->
                                        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0" *ngFor="let bundleAttr of bundle.attributes">
                                          <span class="navbar-text text-start align-self-start">
                                            <div class="form-check" *ngIf="bundleAttr.isVisible">
