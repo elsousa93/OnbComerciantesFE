@@ -253,4 +253,14 @@ export class PepComponent implements OnInit {
     }
     this.logger.debug(this.form);    
   }
+
+  resetForm() {
+    this.isVisiblePepFamiliarOf = undefined;
+    this.isVisiblePepRelations = undefined;
+    this.isVisiblePepPoliticalPublicJobs = undefined;
+
+    this.form.removeControl('pepFamiliarOf');
+    this.form.removeControl('pepRelations');
+    this.form.removeControl('pepPoliticalPublicJobs');
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface'
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 import { KindPep } from 'src/app/pep/IPep.interface';
+import { PepComponent } from '../../pep/pep.component';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -47,6 +48,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   returned: string;
   currentIdx: number = 0;
   infoStakeholders: FormGroup;
+
+  @ViewChild(PepComponent) pepComponent: PepComponent;
 
   ngAfterViewInit() {
   }
@@ -103,7 +106,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
       this.resetContacts();
-      this.resetPepForm();
+      this.pepComponent.resetForm();
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
     }
   }
@@ -198,6 +201,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
     }
 
-
+    this.pepComponent.resetForm();
+    this.infoStakeholders.reset();
   }
 }

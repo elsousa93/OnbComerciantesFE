@@ -482,11 +482,9 @@ export class CommercialOfferListComponent implements OnInit {
     });
 
     this.form.addControl("formGroupPayment" + this.paymentSchemes.id, group);
-    console.log("form com os checkboxes: ", this.form);
   }
 
   getAttributeValue(formGroup: string, formControl: string) {
-    console.log('GET ATTRIBUTE VALUE ', this.form.get(formGroup)?.get(formControl)?.value);
     return this.form.get(formGroup)?.get(formControl)?.value;
   }
 
