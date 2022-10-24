@@ -14,6 +14,7 @@ import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-decla
 import { LoggerService } from 'src/app/logger.service';
 import { IPep, KindPep } from 'src/app/pep/IPep.interface';
 import { PepComponent } from '../../pep/pep.component';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -48,8 +49,15 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   returned: string;
   currentIdx: number = 0;
   infoStakeholders: FormGroup;
+  stakesLength: number;
 
   @ViewChild(PepComponent) pepComponent: PepComponent;
+
+  updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
+
+  emitUpdatedStakeholder(info) {
+    this.updatedStakeholderEvent = info;
+  }
 
   ngAfterViewInit() {
   }
@@ -194,13 +202,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;//pep.get("pepFamiliarOf").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";//pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
     } else if (pep.get("pepRelations").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS//pep.get("pepRelations").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";//pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
     } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pepPoliticalPublicJobs").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
     } else {
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
     }
@@ -208,10 +219,20 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
 
     this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-      console.log("Stakeholder atualizado ", result);
+      if (this.currentIdx < (this.stakesLength - 1)) {
+        this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
+        console.log("Stakeholder atualizado ", result);
+      } else {
+        this.data.updateData(false, 6, 3);
+        this.route.navigate(['info-declarativa-lojas']);
+      }
     });
 
     this.pepComponent.resetForm();
     this.infoStakeholders.reset();
+  }
+
+  getStakesListLength(value) {
+    this.stakesLength = value;
   }
 }
