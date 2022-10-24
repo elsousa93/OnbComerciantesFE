@@ -255,6 +255,7 @@ export class PepComponent implements OnInit {
   }
 
   resetForm() {
+    this.isVisiblePep12months = undefined;
     this.isVisiblePepFamiliarOf = undefined;
     this.isVisiblePepRelations = undefined;
     this.isVisiblePepPoliticalPublicJobs = undefined;
