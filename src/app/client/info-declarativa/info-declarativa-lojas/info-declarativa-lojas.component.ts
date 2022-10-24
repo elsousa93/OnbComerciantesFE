@@ -87,31 +87,31 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       cellphone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
         phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber, Validators.required)
-      }, { validators: [Validators.required, validPhoneNumber] }),
+      }, { validators: validPhoneNumber}),
       telephone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
         phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber, Validators.required)
-      }, { validators: [Validators.required, validPhoneNumber] }),
+      }, { validators: validPhoneNumber }),
       email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.required),
     });
 
     this.listValue.get("cellphone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      if (val.phoneNumber != null || val.phoneNumber != "") {
-        this.listValue.get("telephone").setValidators(null);
+      if (val != null && val != "") {
+        this.listValue.get("telephone").get("phoneNumber").setValidators(null);
       } else {
-        this.listValue.get("telephone").setValidators(Validators.required);
+        this.listValue.get("telephone").get("phoneNumber").setValidators(Validators.required);
       }
-      this.listValue.get("telephone").updateValueAndValidity();
+      this.listValue.get("telephone").get("phoneNumber").updateValueAndValidity();
       console.log('Valor do form ', this.listValue);
     });
 
     this.listValue.get("telephone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      if (val.phoneNumber != null || val.phoneNumber != "") {
-        this.listValue.get("cellphone").setValidators(null);
+      if (val != null && val != "") {
+        this.listValue.get("cellphone").get("phoneNumber").setValidators(null);
       } else {
-        this.listValue.get("cellphone").setValidators(Validators.required);
+        this.listValue.get("cellphone").get("phoneNumber").setValidators(Validators.required);
       }
-      this.listValue.get("cellphone").updateValueAndValidity();
+      this.listValue.get("cellphone").get("phoneNumber").updateValueAndValidity();
       console.log('Valor do form 1', this.listValue);
     });
   }
