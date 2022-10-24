@@ -98,8 +98,8 @@ export class CommercialOfferListComponent implements OnInit {
         id: "lkm",
         isReadOnly: true,
         isVisible: true,
-        originalValue: 2,
-        value: 4
+        originalValue: 2
+        //value: 4
      }]
     },
     quantity: 1,
@@ -272,6 +272,9 @@ export class CommercialOfferListComponent implements OnInit {
 
   //utilizado para mostrar os valores no PACOTE COMERCIAL
   getPackDetails() {
+    this.paymentSchemes = null;
+    this.groupsList = [];
+
     this.productPack.productCode = this.currentStore.productCode;
     this.productPack.subproductCode = this.currentStore.subproductCode;
 

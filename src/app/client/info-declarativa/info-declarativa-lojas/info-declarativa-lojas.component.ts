@@ -15,7 +15,7 @@ import { ClientService } from '../../client.service';
 import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
-import { Observable, of, Subscription } from 'rxjs';
+import { distinctUntilChanged, Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -86,32 +86,32 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
-        phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber)
-      }, { validators: [validPhoneNumber, Validators.required] }),
+        phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber, Validators.required)
+      }, { validators: validPhoneNumber}),
       telephone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
-        phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber)
-      }, { validators: [validPhoneNumber, Validators.required] }),
+        phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber, Validators.required)
+      }, { validators: validPhoneNumber}),
       email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.required),
     });
 
-    this.listValue.get("cellphone").valueChanges.subscribe(val => {
-      if (val) {
-        this.listValue.get("telephone").setValidators(null);
+    this.listValue.get("cellphone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val.phoneNumber != null || val.phoneNumber != "") {
+        this.listValue.get("telephone").get("phoneNumber").setValidators(null);
       } else {
-        this.listValue.get("telephone").setValidators(Validators.required);
+        this.listValue.get("telephone").get("phoneNumber").setValidators(Validators.required);
       }
-      this.listValue.get("telephone").updateValueAndValidity();
+      this.listValue.get("telephone").get("phoneNumber").updateValueAndValidity();
       console.log('Valor do form ', this.listValue);
     });
 
-    this.listValue.get("telephone").valueChanges.subscribe(val => {
-      if (val) {
-        this.listValue.get("cellphone").setValidators(null);
+    this.listValue.get("telephone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val.phoneNumber != null || val.phoneNumber != "") {
+        this.listValue.get("cellphone").get("phoneNumber").setValidators(null);
       } else {
-        this.listValue.get("cellphone").setValidators(Validators.required);
+        this.listValue.get("cellphone").get("phoneNumber").setValidators(Validators.required);
       }
-      this.listValue.get("cellphone").updateValueAndValidity();
+      this.listValue.get("cellphone").get("phoneNumber").updateValueAndValidity();
       console.log('Valor do form 1', this.listValue);
     });
   }

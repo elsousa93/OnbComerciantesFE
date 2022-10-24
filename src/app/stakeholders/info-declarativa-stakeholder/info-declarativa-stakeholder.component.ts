@@ -12,7 +12,7 @@ import { StakeholderService } from '../stakeholder.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
-import { KindPep } from 'src/app/pep/IPep.interface';
+import { IPep, KindPep } from 'src/app/pep/IPep.interface';
 import { PepComponent } from '../../pep/pep.component';
 
 @Component({
@@ -180,21 +180,22 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }
 
     var pep = this.infoStakeholders.get("pep");
+    this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
 
-    if (pep.get("pep12months").value) {
+    if (pep.get("pep12months").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pep12months").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
-    } else if (pep.get("pepFamiliarOf").value) {
+    } else if (pep.get("pepFamiliarOf").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;//pep.get("pepFamiliarOf").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
-    } else if (pep.get("pepRelations").value) {
+    } else if (pep.get("pepRelations").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS//pep.get("pepRelations").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
-    } else if (pep.get("pepPoliticalPublicJobs").value) {
+    } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pepPoliticalPublicJobs").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
     } else {
