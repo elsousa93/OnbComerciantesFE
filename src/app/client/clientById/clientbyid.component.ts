@@ -527,6 +527,8 @@ export class ClientByIdComponent implements OnInit {
             },
           }
 
+          clientToInsert["documents"] = client.documents;
+
           this.clientContext.clientExists = true;
           this.clientContext.setClient(clientToInsert);
 
