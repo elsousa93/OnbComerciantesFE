@@ -50,7 +50,7 @@
 
 
             <p class="titulo-form-simples mb-1">{{'client.mediaTransactions'|translate}}*</p>
-            <input minlength="2" maxlength="100" formControlName="transactionsAverage" name="transactionsAverage"
+            <input formControlName="transactionsAverage" name="transactionsAverage"
               type="number" (keypress)="numericOnly($event)" id="transactionsAverage" class="form-control campo_form" [readonly]="returned == 'consult'">
             <div class="alert alert-danger"
               *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">

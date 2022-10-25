@@ -184,11 +184,11 @@ export class CountrysComponent implements OnInit {
       });
     }
 
-    //Chamada à API para receber todos os Paises
-    this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
-      this.countryList = result;
-      this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-    }, error => this.logger.debug(error)));
+    ////Chamada à API para receber todos os Paises
+    //this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
+    //  this.countryList = result;
+    //  this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+    //}, error => this.logger.debug(error)));
 
     this.getClientContextValues();
   }
@@ -245,6 +245,13 @@ export class CountrysComponent implements OnInit {
       this.franchises = result;
       this.franchises = this.franchises.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }));
+
+    //Chamada à API para receber todos os Paises
+    this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
+      this.countryList = result;
+      this.countryList = this.countryList.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    }, error => this.logger.debug(error)));
+
   }
 
   changeFormStructure(newForm: FormGroup){
@@ -256,11 +263,11 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.changeFormStructure(new FormGroup({
-        expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
-        transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        expectableAnualInvoicing: new FormControl(this.client.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/ , Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+        services: new FormControl(this.client?.knowYourSales?.servicesOrProductsSold[0]/*, disabled: true */, Validators.required),
+        transactionsAverage: new FormControl(this.client.knowYourSales.transactionsAverage/*, disabled: true */, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : this.client?.documentationDeliveryMethod),
+        preferenceDocuments: new FormControl((this.client?.documentationDeliveryMethod == "viaDigital") ? 'Portal' : 'Mail'),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -284,13 +291,14 @@ export class CountrysComponent implements OnInit {
       //  NIPCGroup: new FormControl('')
       //});
       this.editCountries(true);
+      //this.form.get("services").disable();
     } else {
       this.changeFormStructure(new FormGroup({
-        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl('', Validators.required),
-        transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
-        associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
+        expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client?.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+        services: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0]/*, disabled: true */, Validators.required),
+        transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client?.knowYourSales?.transactionsAverage/*, disabled: true */, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : (this.client?.documentationDeliveryMethod == "viaDigital") ? 'Portal' : 'Mail'),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -299,6 +307,12 @@ export class CountrysComponent implements OnInit {
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
       }));
+
+      if (this.returned != null) {
+        this.editCountries(false);
+      } else {
+        this.editCountries(true);
+      }
       //this.form = new FormGroup({
       //  expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
       //  services: new FormControl('', Validators.required),
@@ -314,11 +328,12 @@ export class CountrysComponent implements OnInit {
       //  NIPCGroup: new FormControl('')
       //});
     }
+    this.formCountrysReady.emit(this.form);
   }
 
   initializeForm() {
     console.log("form inicializado");
-    this.form = new FormGroup({
+    this.changeFormStructure(new FormGroup({
       expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
       services: new FormControl('', Validators.required),
       transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -331,7 +346,21 @@ export class CountrysComponent implements OnInit {
       inputAsia: new FormControl(this.inputTypeAsia),
       franchiseName: new FormControl(''),
       NIPCGroup: new FormControl('')
-    });
+    }));
+    //this.form = new FormGroup({
+    //  expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+    //  services: new FormControl('', Validators.required),
+    //  transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+    //  associatedWithGroupOrFranchise: new FormControl(false, Validators.required),
+    //  preferenceDocuments: new FormControl('', Validators.required),
+    //  inputEuropa: new FormControl(this.inputEuropa),
+    //  inputAfrica: new FormControl(this.inputAfrica),
+    //  inputAmerica: new FormControl(this.inputAmericas),
+    //  inputOceania: new FormControl(this.inputOceania),
+    //  inputAsia: new FormControl(this.inputTypeAsia),
+    //  franchiseName: new FormControl(''),
+    //  NIPCGroup: new FormControl('')
+    //});
 
     
 
@@ -663,8 +692,8 @@ export class CountrysComponent implements OnInit {
     this.route.navigate(["/"]);
   }
 
-  editCountries(clientExists: boolean) {
-    if (clientExists) {
+  editCountries(normalSubmssion: boolean) {
+    if (normalSubmssion) {
       this.client.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
         this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
           this.contPais.push(result);
@@ -704,6 +733,12 @@ export class CountrysComponent implements OnInit {
     var context = this;
 
     this.clientExists = this.clientContext.clientExists;
+    this.tipologia = this.clientContext.tipologia;
+    this.NIFNIPC = this.clientContext.getNIFNIPC();
+    this.clientId = this.clientContext.clientId;
+    this.processId = this.clientContext.processId;
+    this.comprovativoCC = this.clientContext.comprovativoCC;
+    this.crc = this.clientContext.crc;
 
     this.clientContext.currentClient.subscribe(result => {
       context.client = result;

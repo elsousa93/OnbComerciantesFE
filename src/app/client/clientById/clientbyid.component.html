@@ -94,7 +94,7 @@
                             <td>
                               <span>
                                 <img src="assets/images/search_blue.svg"
-                                     (click)="b64toBlob(docum.uniqueReference, 'application/pdf', 512)"
+                                     (click)="getClientDocumentImage(docum.uniqueReference, docum.format)"
                                      style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                               </span>
                             </td>
