@@ -72,8 +72,8 @@
                 <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
                     data-bs-parent="#accordionFlushExample">
                   <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
-                    <p class="titulo-form-simples" *ngIf="client.documents == null || client.documents.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
-                    <div class="table-responsive mt-5 mb-5 pb-5">
+                    <p class="titulo-form-simples" *ngIf="clientDocs == null || clientDocs.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
+                    <div class="table-responsive mt-5 mb-5 pb-5" *ngIf="clientDocs == null || clientDocs.length == 0">
                       <table class="table">
                         <thead class="text-primary table-primary">
                           <tr class="table-white text-primary">
@@ -86,7 +86,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let docum of client['documents']">
+                          <tr *ngFor="let docum of clientDocs">
                             <td class="text-primary text-center">{{docum.documentType}}</td>
                             <td class="text-primary text-center">{{docum.receivedAt}}</td>
                             <!--Não sei o que equivale a este campo nos documents-->

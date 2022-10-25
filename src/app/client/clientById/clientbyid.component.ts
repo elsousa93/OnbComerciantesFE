@@ -24,8 +24,9 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
-import { IStakeholders, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { IStakeholders, OutboundDocument, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
 import { AuthService } from '../../services/auth.service';
+import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -155,6 +156,7 @@ export class ClientByIdComponent implements OnInit {
   formCountryIsValid: boolean = false;
   countriesListValid: boolean = false;
 
+  clientDocs: OutboundDocument;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -527,6 +529,15 @@ export class ClientByIdComponent implements OnInit {
             },
           }
 
+          clientToInsert.businessGroup = {
+            type: client.context,
+            branch: client.contextId
+          }
+
+          clientToInsert["documents"] = client.documents;
+          this.clientDocs = client.documents;
+
+          console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
           this.clientContext.clientExists = true;
           this.clientContext.setClient(clientToInsert);

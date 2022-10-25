@@ -178,7 +178,7 @@ export class CountrysComponent implements OnInit {
           this.setAssociatedWith(false);
         }
 
-        this.editCountries();
+        this.editCountries(false);
         this.updateValues();
 
       });
@@ -190,6 +190,7 @@ export class CountrysComponent implements OnInit {
       this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
 
+    this.getClientContextValues();
   }
 
   updateValues() {
@@ -259,7 +260,7 @@ export class CountrysComponent implements OnInit {
         services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
-        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
+        preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : this.client?.documentationDeliveryMethod),
         inputEuropa: new FormControl(this.inputEuropa),
         inputAfrica: new FormControl(this.inputAfrica),
         inputAmerica: new FormControl(this.inputAmericas),
@@ -268,6 +269,7 @@ export class CountrysComponent implements OnInit {
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
       });
+      this.editCountries(true);
     } else {
       this.form = new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
@@ -426,6 +428,7 @@ export class CountrysComponent implements OnInit {
     this.lstCountry.splice(0, this.lstCountry.length);
     this.lstCountry1.splice(0, this.lstCountry1.length);
     this.lstCountry2.splice(0, this.lstCountry2.length);
+    this.lstCountry3.splice(0, this.lstCountry3.length);
 
     this.valueInput();
     var count = 0;
@@ -632,13 +635,23 @@ export class CountrysComponent implements OnInit {
     this.route.navigate(["/"]);
   }
 
-  editCountries() {
-    this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
-      this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
-        this.contPais.push(result);
-        this.inserirText(null);
-      }));
-    });
+  editCountries(clientExists: boolean) {
+    if (clientExists) {
+      this.client.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
+        this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
+          this.contPais.push(result);
+          this.inserirText(null);
+        }));
+      });
+    } else {
+      this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
+        this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
+          this.contPais.push(result);
+          this.inserirText(null);
+        }));
+      });
+    }
+    this.emitteCountrySize();
   }
 
   loadClientDocument(documentReference) {
@@ -657,5 +670,27 @@ export class CountrysComponent implements OnInit {
 
   emitteCountrySize() {
     this.countryIsValid.emit((this.countryList.length > 0));
+  }
+
+  getClientContextValues() {
+    var context = this;
+
+    this.clientExists = this.clientContext.clientExists;
+
+    this.clientContext.currentClient.subscribe(result => {
+      context.client = result;
+
+      this.insertValues();
+
+      if (context.client.businessGroup.type.toLowerCase() == "holding") {
+        this.setAssociatedWith(true);
+        this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+      }
+      if (context.client.businessGroup.type.toLowerCase() == "franchise") {
+        this.setAssociatedWith(true);
+        this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+      }
+
+    });
   }
 }
