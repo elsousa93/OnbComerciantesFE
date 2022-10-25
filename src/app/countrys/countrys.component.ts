@@ -255,7 +255,7 @@ export class CountrysComponent implements OnInit {
   insertValues() {
 
     if (this.clientExists) {
-      this.form = new FormGroup({
+      this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
         transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -268,10 +268,24 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      });
+      }));
+      //this.form = new FormGroup({
+      //  expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+      //  services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
+      //  transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+      //  associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
+      //  preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : this.client?.documentationDeliveryMethod),
+      //  inputEuropa: new FormControl(this.inputEuropa),
+      //  inputAfrica: new FormControl(this.inputAfrica),
+      //  inputAmerica: new FormControl(this.inputAmericas),
+      //  inputOceania: new FormControl(this.inputOceania),
+      //  inputAsia: new FormControl(this.inputTypeAsia),
+      //  franchiseName: new FormControl(''),
+      //  NIPCGroup: new FormControl('')
+      //});
       this.editCountries(true);
     } else {
-      this.form = new FormGroup({
+      this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl('', Validators.required),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
@@ -284,7 +298,21 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
-      });
+      }));
+      //this.form = new FormGroup({
+      //  expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+      //  services: new FormControl('', Validators.required),
+      //  transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+      //  associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
+      //  preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
+      //  inputEuropa: new FormControl(this.inputEuropa),
+      //  inputAfrica: new FormControl(this.inputAfrica),
+      //  inputAmerica: new FormControl(this.inputAmericas),
+      //  inputOceania: new FormControl(this.inputOceania),
+      //  inputAsia: new FormControl(this.inputTypeAsia),
+      //  franchiseName: new FormControl(''),
+      //  NIPCGroup: new FormControl('')
+      //});
     }
   }
 

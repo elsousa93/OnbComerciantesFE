@@ -156,7 +156,7 @@ export class ClientByIdComponent implements OnInit {
   formCountryIsValid: boolean = false;
   countriesListValid: boolean = false;
 
-  clientDocs: OutboundDocument;
+  clientDocs: OutboundDocument[] = null;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
