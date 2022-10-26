@@ -715,21 +715,21 @@ export class CountrysComponent implements OnInit {
     var context = this;
 
     this.clientExists = this.clientContext.clientExists;
-    this.tipologia = this.clientContext.tipologia;
+    //this.tipologia = this.clientContext.tipologia;
     //this.NIFNIPC = this.clientContext.getNIFNIPC();
-    this.clientId = this.clientContext.clientId;
-    this.processId = this.clientContext.processId;
-    this.comprovativoCC = this.clientContext.comprovativoCC;
-    this.crc = this.clientContext.crc;
+    //this.clientId = this.clientContext.clientId;
+    //this.processId = this.clientContext.processId;
+    //this.comprovativoCC = this.clientContext.comprovativoCC;
+    //this.crc = this.clientContext.crc;
 
-    context.getCurrentClientAsync().then(val => {
+    this.getCurrentClientAsync().then(val => {
       context.insertValues();
 
-      if (context.client.businessGroup.type.toLowerCase() == "holding") {
+      if (context.client.businessGroup.type == "Holding") {
         context.setAssociatedWith(true);
         context.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
       }
-      if (context.client.businessGroup.type.toLowerCase() == "franchise") {
+      if (context.client.businessGroup.type == "Franchising") {
         context.setAssociatedWith(true);
         context.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
       }

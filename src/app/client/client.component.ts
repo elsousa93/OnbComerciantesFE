@@ -637,6 +637,8 @@ export class ClientComponent implements OnInit {
     this.okCC = false;
     this.notFound = false;
     this.showSeguinte = false;
+
+    this.activateButtons(!this.showENI);
   }
 
   changeDocType() {
