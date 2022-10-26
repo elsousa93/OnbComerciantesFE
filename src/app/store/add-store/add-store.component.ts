@@ -449,48 +449,45 @@ export class AddStoreComponent implements OnInit {
   numericOnly(event): boolean {
     var ASCIICode = (event.which) ? event.which : event.keyCode;
 
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode!=45)
       return false;
     return true;
   }
 
-  GetCountryByZipCodeTest(e: boolean) {
-    if (this.numericOnly(e)) {
-      this.subzonesShopping = null;
-      var currentCountry = this.formStores.get('countryStore').value;
-      this.logger.debug("Pais escolhido atual");
+  GetCountryByZipCodeTest() {
+    this.subzonesShopping = null;
+    var currentCountry = this.formStores.get('countryStore').value;
+    this.logger.debug("Pais escolhido atual");
 
-      if (currentCountry === 'PT') {
-        this.lockLocality = true;
-        var zipcode = this.formStores.value['zipCodeStore'];
-        if (zipcode.length === 8) {
-          var zipCode = zipcode.split('-');
+    if (currentCountry === 'PT') {
+      this.lockLocality = true;
+      var zipcode = this.formStores.value['zipCodeStore'];
+      if (zipcode.length === 8) {
+        var zipCode = zipcode.split('-');
 
-          this.tableData.GetAddressByZipCodeTeste(Number(zipCode[0]), Number(zipCode[1])).then(success => {
-            var address = success.result;
-            var addressToShow = address[0];
+        this.tableData.GetAddressByZipCodeTeste(Number(zipCode[0]), Number(zipCode[1])).then(success => {
+          var address = success.result;
+          var addressToShow = address[0];
 
-            this.formStores.get('addressStore').setValue(addressToShow.address);
-            this.formStores.get('countryStore').setValue(addressToShow.country);
-            this.formStores.get('localeStore').setValue(addressToShow.postalArea);
+          this.formStores.get('addressStore').setValue(addressToShow.address);
+          this.formStores.get('countryStore').setValue(addressToShow.country);
+          this.formStores.get('localeStore').setValue(addressToShow.postalArea);
 
-            this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
-              console.log("sucesso subzones nearby: ", result);
-              this.subzonesShopping = result;
-              this.formStores.updateValueAndValidity();
-            }, error => {
-              console.log("erro na subzone: ", error);
-            })
-
+          this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
+            console.log("sucesso subzones nearby: ", result);
+            this.subzonesShopping = result;
+            this.formStores.updateValueAndValidity();
           }, error => {
-            console.log("error no codigo postal: ", error);
-          });
-        }
-      } else {
-        this.lockLocality = false;
-      }
-    }
+            console.log("erro na subzone: ", error);
+          })
 
+        }, error => {
+          console.log("error no codigo postal: ", error);
+        });
+      }
+    } else {
+      this.lockLocality = false;
+    }
   }
 
   canEditLocality() {
