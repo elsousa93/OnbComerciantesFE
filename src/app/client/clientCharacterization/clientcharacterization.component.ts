@@ -408,15 +408,19 @@ export class ClientCharacterizationComponent implements OnInit {
     this.getCurrentClientAsync().then(result => {
       //context.client = result;
 
-      if (this.tipologia == 'Company') {
+      if (this.tipologia == 'Company' || this.tipologia == 'Corporate') {
         this.isCommercialSociety = false;
         this.collectCRC = false;
         this.initializeFormControlOther();
       }
-      if (this.tipologia == 'ENI') {
+      if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
         this.isCommercialSociety = false;
         this.collectCRC = false;
         this.initializeENI();
+      }
+
+      if (this.client.merchantRegistrationId != null || this.client.merchantRegistrationId != "") {
+        this.DisableNIFNIPC = true;
       }
 
       this.hasCRC = (JSON.stringify(this.client.incorporationStatement) !== '{}' && this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
