@@ -64,7 +64,7 @@ export enum State {
     CONTRACT_ACCEPTANCE = "ContractAcceptance",
     STANDARD_INDUSTRY_CLASSIFICATION_CHOICE = "StandardIndustryClassificationChoice",
     RISK_ASSESSMENT = "RiskAssessment",
-    ELIGIBILITY_ASSESSMENT = "ElegibilityAssessment"
+    ELIGIBILITY_ASSESSMENT = "EligibilityAssessment"
 }
 
 export enum StateResultDiscriminatorEnum {
@@ -72,5 +72,5 @@ export enum StateResultDiscriminatorEnum {
     CONTRACT_ACCEPTANCE_MODEL = "ContractAcceptanceModel",
     STANDARD_INDUSTRY_CLASSIFICATION_MODEL = "StandardIndustryClassificationModel",
     RISK_ASSESSMENT = "RiskAssessment",
-    ELIGIBILITY_ASSESSMENT = "ElegibilityAssessment"
+    ELIGIBILITY_ASSESSMENT = "EligibilityAssessment"
 }

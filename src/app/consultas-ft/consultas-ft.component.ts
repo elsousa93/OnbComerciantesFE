@@ -91,7 +91,7 @@ export class ConsultasFTComponent implements OnInit{
         this.state = "StandardIndustryClassificationChoice"
         break;
       case "eligibility":
-        this.state = "ElegibilityAssessment"
+        this.state = "EligibilityAssessment"
         break;
       case "risk":
         this.state = "RiskAssessment"
