@@ -243,7 +243,7 @@ export class ClientComponent implements OnInit {
 
   newClient: Client = {
     "clientId": "",
-    "fiscalId": "22181900000011",
+    "fiscalId": "",
     "id": "",
     "companyName": "J SILVESTRE LIMITADA",
     "commercialName": "CAFE CENTRAL",
@@ -497,6 +497,7 @@ export class ClientComponent implements OnInit {
               "ZIPCode": c.headquartersAddress.postalCode,
               "locality": c.headquartersAddress.postalArea,
               "country": c.headquartersAddress.country,
+              //"fiscalId": c.fiscalId
             }
             context.notFound = false;
 
@@ -649,6 +650,7 @@ export class ClientComponent implements OnInit {
     var NIFNIPC = null;
     if (selectedClient.documentationDeliveryMethod === '0502' || selectedClient.documentationDeliveryMethod === '0501') {
       NIFNIPC = selectedClient.clientId;
+      //
     }
 
     if (selectedClient.documentationDeliveryMethod === '1001') {
