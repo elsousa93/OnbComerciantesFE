@@ -26,6 +26,7 @@ export class DevolucaoComponent implements OnInit{
 
   public processId: string;
   public process: ProcessList;
+  public processNumber: string;
 
   public issues: BusinessIssueViewModel
 
@@ -73,6 +74,7 @@ export class DevolucaoComponent implements OnInit{
   getPageInfo() {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
+      this.processNumber = result.processNumber;
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         console.log('ISSUES ', res);
         this.issues = res;

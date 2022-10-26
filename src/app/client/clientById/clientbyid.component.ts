@@ -553,7 +553,9 @@ export class ClientByIdComponent implements OnInit {
 
 
             this.updateBasicForm();
+
           }).then(result => {
+            this.countriesComponent.getClientContextValues();
             this.createSubmission();
           });
         } else {
@@ -585,14 +587,19 @@ export class ClientByIdComponent implements OnInit {
       }
 
     } else {
-      var previousClient;
-      this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
-        previousClient = result;
-      }).then(result => {
-        this.clientContext.setClient(previousClient);
+      this.getPreviousClientAsync().then(result => {
+        this.countriesComponent.getClientContextValues();
       });
     }
 
+  }
+
+  getPreviousClientAsync() {
+    return this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
+      this.clientContext.tipologia = result.merchantType;
+      this.clientContext.NIFNIPC = result.fiscalId;
+      this.clientContext.setClient(result);
+    });
   }
 
   ngOnDestroy(): void {
@@ -878,7 +885,8 @@ export class ClientByIdComponent implements OnInit {
 
       var clientToSubmit: OutboundClient
 
-      this.clientService.EditClient(submissionID, merchant).subscribe(res => {
+      //antes estava merchant 
+      this.clientService.EditClient(submissionID, client).subscribe(res => {
         console.log("resultado: ", res);
       });
 

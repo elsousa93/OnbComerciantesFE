@@ -190,7 +190,7 @@ export class CountrysComponent implements OnInit {
     //  this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     //}, error => this.logger.debug(error)));
 
-    this.getClientContextValues();
+    //this.getClientContextValues();
   }
 
   updateValues() {
@@ -276,20 +276,6 @@ export class CountrysComponent implements OnInit {
         franchiseName: new FormControl(''),
         NIPCGroup: new FormControl('')
       }));
-      //this.form = new FormGroup({
-      //  expectableAnualInvoicing: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client.knowYourSales.estimatedAnualRevenue, disabled: true }, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-      //  services: new FormControl({ value: (this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0], disabled: true }, Validators.required),
-      //  transactionsAverage: new FormControl({ value: (this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client.knowYourSales.transactionsAverage, disabled: true }, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
-      //  associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
-      //  preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : this.client?.documentationDeliveryMethod),
-      //  inputEuropa: new FormControl(this.inputEuropa),
-      //  inputAfrica: new FormControl(this.inputAfrica),
-      //  inputAmerica: new FormControl(this.inputAmericas),
-      //  inputOceania: new FormControl(this.inputOceania),
-      //  inputAsia: new FormControl(this.inputTypeAsia),
-      //  franchiseName: new FormControl(''),
-      //  NIPCGroup: new FormControl('')
-      //});
       this.editCountries(true);
       //this.form.get("services").disable();
     } else {
@@ -313,20 +299,7 @@ export class CountrysComponent implements OnInit {
       } else {
         this.editCountries(true);
       }
-      //this.form = new FormGroup({
-      //  expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : '', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-      //  services: new FormControl('', Validators.required),
-      //  transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : '', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
-      //  associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),//this.associatedWithGroupOrFranchise),
-      //  preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : ''),
-      //  inputEuropa: new FormControl(this.inputEuropa),
-      //  inputAfrica: new FormControl(this.inputAfrica),
-      //  inputAmerica: new FormControl(this.inputAmericas),
-      //  inputOceania: new FormControl(this.inputOceania),
-      //  inputAsia: new FormControl(this.inputTypeAsia),
-      //  franchiseName: new FormControl(''),
-      //  NIPCGroup: new FormControl('')
-      //});
+
     }
     this.formCountrysReady.emit(this.form);
   }
@@ -406,7 +379,7 @@ export class CountrysComponent implements OnInit {
 
     client["knowYourSales"]["estimatedAnualRevenue"] = this.form.get("expectableAnualInvoicing").value;
     client["knowYourSales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
-    client["knowYourSales"]["servicesOrProductsSold"].push(this.form.get("services").value); //
+    client["knowYourSales"]["servicesOrProductsSold"] = [this.form.get("services").value]; //
     client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPaisPreenchido.map(country => country.code);
     client["documentationDeliveryMethod"] = this.form.get("preferenceDocuments").value;
 
@@ -729,6 +702,15 @@ export class CountrysComponent implements OnInit {
     this.countryIsValid.emit((this.countryList.length > 0));
   }
 
+  getCurrentClientAsync() {
+    return new Promise(resolve => {
+      this.clientContext.currentClient.subscribe(result => {
+        this.client = result;
+        resolve(true);
+      });
+    });
+  }
+
   getClientContextValues() {
     var context = this;
 
@@ -740,20 +722,33 @@ export class CountrysComponent implements OnInit {
     this.comprovativoCC = this.clientContext.comprovativoCC;
     this.crc = this.clientContext.crc;
 
-    this.clientContext.currentClient.subscribe(result => {
-      context.client = result;
-
+    this.getCurrentClientAsync().then(val => {
       this.insertValues();
 
-      if (context.client.businessGroup.type.toLowerCase() == "holding") {
+      if (this.client.businessGroup.type.toLowerCase() == "holding") {
         this.setAssociatedWith(true);
         this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
       }
-      if (context.client.businessGroup.type.toLowerCase() == "franchise") {
+      if (this.client.businessGroup.type.toLowerCase() == "franchise") {
         this.setAssociatedWith(true);
         this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
       }
-
     });
+
+    //this.clientContext.currentClient.subscribe(result => {
+    //  this.client = result;
+
+    //  this.insertValues();
+
+    //  if (this.client.businessGroup.type.toLowerCase() == "holding") {
+    //    this.setAssociatedWith(true);
+    //    this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+    //  }
+    //  if (this.client.businessGroup.type.toLowerCase() == "franchise") {
+    //    this.setAssociatedWith(true);
+    //    this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+    //  }
+
+    //});
   }
 }
