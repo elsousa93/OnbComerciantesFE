@@ -487,6 +487,9 @@ export class AddStoreComponent implements OnInit {
       }
     } else {
       this.lockLocality = false;
+      this.formStores.get('addressStore').setValidators(null);
+      this.formStores.get('countryStore').setValidators(null);
+      this.formStores.get('localeStore').setValidators(null);
     }
   }
 
