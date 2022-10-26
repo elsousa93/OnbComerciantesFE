@@ -34,7 +34,7 @@ export class AddStoreComponent implements OnInit {
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
-  @Input() parentFormGroup : FormGroup;
+  @Input() parentFormGroup: FormGroup;
 
   //Submissao
   submissionId: string;
@@ -296,7 +296,7 @@ export class AddStoreComponent implements OnInit {
     this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
       this.logger.debug(result);
       this.activities = result;
-      this.activities = this.activities.sort((a, b) => a.activityDescription> b.activityDescription? 1 : -1); //ordenar resposta
+      this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
     }, error => {
       this.logger.debug("Deu erro");
     }));
@@ -388,7 +388,7 @@ export class AddStoreComponent implements OnInit {
 
   submit() {
     this.store.name = this.formStores.get("storeName").value;
-      this.store.manager = this.formStores.get("contactPoint").value;
+    this.store.manager = this.formStores.get("contactPoint").value;
 
     this.store.activity = this.formStores.get("activityStores").value;
     this.store.subActivity = this.formStores.get("subactivityStores").value;
@@ -455,40 +455,42 @@ export class AddStoreComponent implements OnInit {
   }
 
   GetCountryByZipCodeTest(e: boolean) {
-    this.numericOnly(e);
-    this.subzonesShopping = null;
-    var currentCountry = this.formStores.get('countryStore').value;
-    this.logger.debug("Pais escolhido atual");
+    if (this.numericOnly(e)) {
+      this.subzonesShopping = null;
+      var currentCountry = this.formStores.get('countryStore').value;
+      this.logger.debug("Pais escolhido atual");
 
-    if (currentCountry === 'PT') {
-      this.lockLocality = true;
-      var zipcode = this.formStores.value['zipCodeStore'];
-      if (zipcode.length === 8) {
-        var zipCode = zipcode.split('-');
+      if (currentCountry === 'PT') {
+        this.lockLocality = true;
+        var zipcode = this.formStores.value['zipCodeStore'];
+        if (zipcode.length === 8) {
+          var zipCode = zipcode.split('-');
 
-        this.tableData.GetAddressByZipCodeTeste(Number(zipCode[0]), Number(zipCode[1])).then(success => {
-          var address = success.result;
-          var addressToShow = address[0];
+          this.tableData.GetAddressByZipCodeTeste(Number(zipCode[0]), Number(zipCode[1])).then(success => {
+            var address = success.result;
+            var addressToShow = address[0];
 
-          this.formStores.get('addressStore').setValue(addressToShow.address);
-          this.formStores.get('countryStore').setValue(addressToShow.country);
-          this.formStores.get('localeStore').setValue(addressToShow.postalArea);
+            this.formStores.get('addressStore').setValue(addressToShow.address);
+            this.formStores.get('countryStore').setValue(addressToShow.country);
+            this.formStores.get('localeStore').setValue(addressToShow.postalArea);
 
-          this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
-            console.log("sucesso subzones nearby: ", result);
-            this.subzonesShopping = result;
-            this.formStores.updateValueAndValidity();
+            this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
+              console.log("sucesso subzones nearby: ", result);
+              this.subzonesShopping = result;
+              this.formStores.updateValueAndValidity();
+            }, error => {
+              console.log("erro na subzone: ", error);
+            })
+
           }, error => {
-            console.log("erro na subzone: ", error);
-          })
-
-        }, error => {
-          console.log("error no codigo postal: ", error);
-        });
+            console.log("error no codigo postal: ", error);
+          });
+        }
+      } else {
+        this.lockLocality = false;
       }
-    } else {
-      this.lockLocality = false;
     }
+
   }
 
   canEditLocality() {
@@ -557,16 +559,16 @@ export class AddStoreComponent implements OnInit {
     this.isComercialCentreStore = isCentre;
     if (isCentre)
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
-      if (!this.replicateAddress){
-        //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
-        this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
-          this.logger.debug(result);
-          this.subzonesShopping = result;
-          this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-        }, error => {
-          this.logger.debug("Deu erro");
-        }));
-      }
+    if (!this.replicateAddress) {
+      //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
+      this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
+        this.logger.debug(result);
+        this.subzonesShopping = result;
+        this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+      }, error => {
+        this.logger.debug("Deu erro");
+      }));
+    }
 
     else
       this.formStores.get('subZoneStore').setValidators(null);
