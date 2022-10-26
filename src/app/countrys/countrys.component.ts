@@ -197,7 +197,7 @@ export class CountrysComponent implements OnInit {
     var context = this;
     this.clientExists = this.clientContext.clientExists;
     this.tipologia = this.clientContext.tipologia;
-    this.NIFNIPC = this.clientContext.getNIFNIPC();
+    //this.NIFNIPC = this.clientContext.getNIFNIPC();
     this.clientId = this.clientContext.clientId;
     this.processId = this.clientContext.processId;
     this.comprovativoCC = this.clientContext.comprovativoCC;
@@ -716,7 +716,7 @@ export class CountrysComponent implements OnInit {
 
     this.clientExists = this.clientContext.clientExists;
     this.tipologia = this.clientContext.tipologia;
-    this.NIFNIPC = this.clientContext.getNIFNIPC();
+    //this.NIFNIPC = this.clientContext.getNIFNIPC();
     this.clientId = this.clientContext.clientId;
     this.processId = this.clientContext.processId;
     this.comprovativoCC = this.clientContext.comprovativoCC;
