@@ -208,6 +208,14 @@ export class ConsultasComponent implements OnInit{
     });
   }
 
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      return false;
+    return true;
+  }
+
   openProcess(process) {
     this.logger.debug(process);
     localStorage.setItem("processNumber", process.processNumber);
