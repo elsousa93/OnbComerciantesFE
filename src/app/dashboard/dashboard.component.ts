@@ -18,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { State } from '../queues-detail/IQueues.interface';
 import { AppComponent } from '../app.component';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { each } from 'jquery';
 
 @Component({
   selector: 'app-dashboard',
@@ -190,6 +191,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Pendentes de envio ' + result.items);
       this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
         this.incompleteProcessess = resul;
+        this.incompleteProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
         this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
         
@@ -204,6 +223,23 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Tratamento BackOffice ' + result);
       this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
         this.ongoingProcessess = resul;
+        this.ongoingProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+        });
         this.dataSourceTratamento.paginator._intl = new MatPaginatorIntl();
         this.dataSourceTratamento.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -219,6 +255,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Devolvidos BackOffice ' + result);
       this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
         this.returnedProcessess = resul;
+        this.returnedProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceDevolvidos.paginator._intl = new MatPaginatorIntl();
         this.dataSourceDevolvidos.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -233,6 +287,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Pendentes de Aceitação' + result);
       this.processService.searchProcessByState('contractAcceptance', 0, result.pagination.total).subscribe(resul => {
         this.contractAcceptanceProcessess = resul;
+        this.contractAcceptanceProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceAceitacao.paginator._intl = new MatPaginatorIntl();
         this.dataSourceAceitacao.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -247,6 +319,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.pendingSentProcessess = resul;
+        this.pendingSentProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourcePendingSent.paginator._intl = new MatPaginatorIntl();
         this.dataSourcePendingSent.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -261,6 +351,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.pendingEligibilityProcessess = resul;
+        this.pendingEligibilityProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourcePendingEligibility.paginator._intl = new MatPaginatorIntl();
         this.dataSourcePendingEligibility.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -275,6 +383,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.multipleClientesProcessess = resul;
+        this.multipleClientesProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceMultipleClients.paginator._intl = new MatPaginatorIntl();
         this.dataSourceMultipleClients.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -289,6 +415,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.DOValidationProcessess = resul;
+        this.DOValidationProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceDOValidation.paginator._intl = new MatPaginatorIntl();
         this.dataSourceDOValidation.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -303,6 +447,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.negotiationAprovalProcessess = resul;
+        this.negotiationAprovalProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceNegotiationAproval.paginator._intl = new MatPaginatorIntl();
         this.dataSourceNegotiationAproval.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -317,6 +479,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.MCCTreatmentProcessess = resul;
+        this.MCCTreatmentProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceMCCTreatment.paginator._intl = new MatPaginatorIntl();
         this.dataSourceMCCTreatment.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -331,6 +511,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.validationSIBSProcessess = resul;
+        this.validationSIBSProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceValidationSIBS.paginator._intl = new MatPaginatorIntl();
         this.dataSourceValidationSIBS.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -345,6 +543,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.riskOpinionProcessess = resul;
+        this.riskOpinionProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceRiskOpinion.paginator._intl = new MatPaginatorIntl();
         this.dataSourceRiskOpinion.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -359,6 +575,24 @@ export class DashboardComponent implements OnInit {
       this.logger.debug('Completos ' + result);
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.complianceDoubtsProcessess = resul;
+        this.complianceDoubtsProcessess.items.forEach(process => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete'){
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing'){
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance'){
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+          
+        });
         this.dataSourceComplianceDoubts.paginator._intl = new MatPaginatorIntl();
         this.dataSourceComplianceDoubts.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
