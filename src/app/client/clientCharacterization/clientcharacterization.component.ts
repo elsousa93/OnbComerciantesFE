@@ -386,7 +386,16 @@ export class ClientCharacterizationComponent implements OnInit {
 
 
     this.initializeTableInfo();
-    this.getClientContextValues();
+    //this.getClientContextValues();
+  }
+
+  getCurrentClientAsync() {
+    return new Promise(resolve => {
+      this.clientContext.currentClient.subscribe(result => {
+        this.client = result;
+        resolve(true);
+      });
+    });
   }
 
   getClientContextValues() {
@@ -396,8 +405,8 @@ export class ClientCharacterizationComponent implements OnInit {
     this.NIFNIPC = this.clientContext.getNIFNIPC();
     this.tipologia = this.clientContext.tipologia;
 
-    this.clientContext.currentClient.subscribe(result => {
-      context.client = result;
+    this.getCurrentClientAsync().then(result => {
+      //context.client = result;
 
       if (this.tipologia == 'Company') {
         this.isCommercialSociety = false;

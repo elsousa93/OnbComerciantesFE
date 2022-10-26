@@ -477,6 +477,7 @@ export class ClientByIdComponent implements OnInit {
         client.contacts = {};
 
         this.clientContext.setClient(client);
+        this.NIFNIPC = client.fiscalId;
         this.clientContext.setNIFNIPC(client.fiscalId);
         this.updateBasicForm();
 
@@ -549,13 +550,14 @@ export class ClientByIdComponent implements OnInit {
             this.clientContext.clientExists = true;
             this.clientContext.setClient(clientToInsert);
 
+            this.NIFNIPC = client.fiscalIdentification.fiscalId;
             this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
-
 
             this.updateBasicForm();
 
           }).then(result => {
             this.countriesComponent.getClientContextValues();
+            this.clientCharacterizationComponent.getClientContextValues();
             this.createSubmission();
           });
         } else {
@@ -592,6 +594,7 @@ export class ClientByIdComponent implements OnInit {
         this.clientContext.setClient(result);
       }).then(result => {
         this.countriesComponent.getClientContextValues();
+        this.clientCharacterizationComponent.getClientContextValues();
       });
     }
 
