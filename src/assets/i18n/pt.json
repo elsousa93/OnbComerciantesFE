@@ -70,7 +70,7 @@
     "search": "Pesquisar Comerciante",
     "add": "Adicionar Comerciante",
     "found": "Selecione um cliente:",
-    "find":"Cliente Existente",
+    "find": "Cliente Existente",
     "multipleClients": "Existem múltiplos clientes",
     "number": "Nº de Cliente",
     "nameSocialDesignation": "Nome/Designação Social",
@@ -116,7 +116,8 @@
     "incorrectCRC": "CRC inserido não está com o formato correto",
     "CRCNotFound": "CRC inserido não foi encontrado",
     "countryError": "Escolha pelo menos um país",
-    "documents": "Documentos do Cliente"
+    "documents": "Documentos do Cliente",
+    "CRCMatchNIF": "Código inválido para o NIPC"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",

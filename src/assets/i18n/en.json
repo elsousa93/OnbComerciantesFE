@@ -70,7 +70,7 @@
     "search": "Search Merchant",
     "add": "Add Merchant",
     "found": "Select the merchant:",
-    "find":"Existing Client",
+    "find": "Existing Client",
     "multipleClients": "There are multiple customers",
     "number": "Client Number",
     "nif": "Fiscal Identification Number",
@@ -116,7 +116,8 @@
     "incorrectCRC": "Inserted CRC does not have the correct format",
     "CRCNotFound": "Inserted CRC was not found",
     "countryError": "Choose at least one country",
-    "documents": "Merchant's Documents"
+    "documents": "Merchant's Documents",
+    "CRCMatchNIF": "Invalid code for the NIPC"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",

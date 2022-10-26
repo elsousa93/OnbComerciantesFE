@@ -79,6 +79,7 @@ export class ClientCharacterizationComponent implements OnInit {
   crcError: boolean = false;
   crcNotExists: boolean = false;
   crcIncorrect: boolean = false;
+  crcMatchNIF: boolean = false;
 
   //client: OutboundClient = {};
 
@@ -456,6 +457,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.collectCRC = undefined;
     this.crcIncorrect = false;
     this.crcNotExists = false;
+    this.crcMatchNIF = false;
 
     //var this.hasCRC = (this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
 
@@ -517,7 +519,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
         var nif = this.form.get("natJuridicaNIFNIPC").value;
         if (clientByCRC.fiscalId !== nif) {
-          this.crcIncorrect = true;
+          this.crcMatchNIF = true;
           this.crcFound = false;
           return;
         }
@@ -761,6 +763,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.collectCRC = value;
     this.crcIncorrect = false;
     this.crcNotExists = false;
+    this.crcMatchNIF = false;
     if (value == false) {
       this.crcFound = false;
       this.initializeFormControlOther();
