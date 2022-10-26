@@ -92,7 +92,7 @@
             <div class="row" id="zipcode">
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}}</p>
               <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-                (keyup)="GetCountryByZipCode()" maxlength="8" [readonly]="returned === 'consult'">
+              (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
             </div>
           </div>
           <div class="col-6">
