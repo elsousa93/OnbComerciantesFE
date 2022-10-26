@@ -459,6 +459,10 @@ export class AddStoreComponent implements OnInit {
     var currentCountry = this.formStores.get('countryStore').value;
     this.logger.debug("Pais escolhido atual");
 
+    this.formStores.get('addressStore').setValue('');
+    this.formStores.get('countryStore').setValue('');
+    this.formStores.get('localeStore').setValue('');
+
     if (currentCountry === 'PT') {
       this.lockLocality = true;
       var zipcode = this.formStores.value['zipCodeStore'];
@@ -488,7 +492,7 @@ export class AddStoreComponent implements OnInit {
     } else {
       this.lockLocality = false;
       this.formStores.get('addressStore').setValidators(null);
-      this.formStores.get('countryStore').setValidators(null);
+      this.formStores.get('zipCodeStore').setValidators(null);
       this.formStores.get('localeStore').setValidators(null);
     }
   }
