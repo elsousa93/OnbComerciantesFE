@@ -591,7 +591,7 @@ export class ClientByIdComponent implements OnInit {
       this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
         this.clientContext.tipologia = result.merchantType;
         this.NIFNIPC = result.fiscalId;
-        this.clientContext.NIFNIPC = result.fiscalId;
+        this.clientContext.setNIFNIPC(result.fiscalId);
         this.clientContext.setClient(result);
       }).then(result => {
         this.countriesComponent.getClientContextValues();

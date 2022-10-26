@@ -617,6 +617,7 @@ export class ClientComponent implements OnInit {
 
   changeListElementDocType(docType, e: any) {
     // this.activateButtons(true);
+    this.activateButtons(!this.showENI);
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
@@ -637,6 +638,7 @@ export class ClientComponent implements OnInit {
     this.okCC = false;
     this.notFound = false;
     this.showSeguinte = false;
+
   }
 
   changeDocType() {
