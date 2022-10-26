@@ -25,12 +25,12 @@
         <div class="row">
           <div class="col-xxl col-6">
             <div>
-              <p class="titulo-form-simples" for="userName">{{'auth.username'|translate}}: </p>
+              <p class="titulo-form-simples" for="userName">{{'auth.username'|translate}}: *</p>
               <input type="text" formControlName="userName" name="userName" id="userName"
                      class="form-control campo_form" />
             </div>
             <div>
-              <p class="titulo-form-simples" for="bankName">{{'auth.bankName'|translate}}: </p>
+              <p class="titulo-form-simples" for="bankName">{{'auth.bankName'|translate}}: *</p>
               <select class="form-select campo_form" formControlName="bankName" id="bankName" name="bankName">
                 <option *ngFor="let bank of banks" value={{bank.code}}>{{bank.description}}</option>
               </select>
@@ -38,12 +38,12 @@
                      class="form-control campo_form" />-->
             </div>
             <div>
-              <p class="titulo-form-simples" for="bankLocation">{{'auth.bankLocation'|translate}}: </p>
+              <p class="titulo-form-simples" for="bankLocation">{{'auth.bankLocation'|translate}}: *</p>
               <input type="text" formControlName="bankLocation" name="bankLocation" id="bankLocation"
                      class="form-control campo_form" />
             </div>
             <div>
-              <p class="titulo-form-simples" for="role">{{'auth.role'|translate}}: </p>
+              <p class="titulo-form-simples" for="role">{{'auth.role'|translate}}: *</p>
               <select formControlName="role" name="role" id="role"
                       class="form-control campo_form">
                       <option value="">{{'generalKeywords.select'|translate}}</option>
