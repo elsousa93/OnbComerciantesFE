@@ -460,7 +460,6 @@ export class AddStoreComponent implements OnInit {
     this.logger.debug("Pais escolhido atual");
 
     this.formStores.get('addressStore').setValue('');
-    this.formStores.get('countryStore').setValue('');
     this.formStores.get('localeStore').setValue('');
 
     if (currentCountry === 'PT') {

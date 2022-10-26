@@ -361,6 +361,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
 
+    this.formNewStakeholder.get('Address').setValue('');
+    this.formNewStakeholder.get('Locality').setValue('');
+
     if (currentCountry === 'PT') {
       this.lockLocality = true;
 
