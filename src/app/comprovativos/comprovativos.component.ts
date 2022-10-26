@@ -110,20 +110,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       "accountOpenedAt": "2019-06-11"
     },
     "contacts": {
-      "preferredMethod": "",
-      "preferredPeriod": {
-        "startsAt": "22:40:00.450Z",
-        "endsAt": "15:42:54.722Z"
-      },
       "phone1": {
         "countryCode": "",
         "phoneNumber": ""
       },
       "phone2": {
-        "countryCode": "",
-        "phoneNumber": ""
-      },
-      "fax": {
         "countryCode": "",
         "phoneNumber": ""
       },
@@ -221,10 +212,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   var teste = await res.blob();
                   teste.lastModifiedDate = new Date();
                   teste.name = "nome";
-  
+
                   context.file = <File>teste;
                   console.log("Ficheiro encontrado ", context.file);
-  
+
                   context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
                     context.compsToShow.push({
                       id: document.id,
@@ -239,7 +230,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     console.log("Lista de comprovativos ", context.compsToShow);
                   });
                 });
-  
+
               });
             }
 
@@ -263,61 +254,54 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
 
     this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
-      this.submission = result;
+      this.submission = result.result;
       this.logger.debug('Submission ' + result);
 
       this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
         var documents = res;
-        documents.forEach(function (value, index) {
-          var document = value;
-          context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-            console.log("imagem de um documento ", res);
-            var teste = await res.blob();
+        if (documents.length != 0) {
+          documents.forEach(function (value, index) {
+            var document = value;
+            context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
+              console.log("imagem de um documento ", res);
+              var teste = await res.blob();
 
-            teste.lastModifiedDate = new Date();
-            teste.name = "nome";
+              teste.lastModifiedDate = new Date();
+              teste.name = "nome";
 
-            context.file = <File>teste;
-            console.log("Ficheiro encontrado ", context.file);
+              context.file = <File>teste;
+              console.log("Ficheiro encontrado ", context.file);
 
-            context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
 
-              var index = context.compsToShow.findIndex(value => value.id == document.id);
-              if (index == -1) {
-                context.compsToShow.push({
-                  id: document.id,
-                  type: "pdf",
-                  expirationDate: "2024-10-10",
-                  stakeholder: "Manuel",
-                  status: "não definido",
-                  uploadDate: "2020-10-10",
-                  file: context.file,
-                  documentPurpose: val.documentPurpose
-                });
-              }
-              console.log("Lista de comprovativos ", context.compsToShow);
+                var index = context.compsToShow.findIndex(value => value.id == document.id);
+                if (index == -1) {
+                  context.compsToShow.push({
+                    id: document.id,
+                    type: "pdf",
+                    expirationDate: "2024-10-10",
+                    stakeholder: "Manuel",
+                    status: "não definido",
+                    uploadDate: "2020-10-10",
+                    file: context.file,
+                    documentPurpose: val.documentPurpose
+                  });
+                }
+                console.log("Lista de comprovativos ", context.compsToShow);
+              });
             });
           });
-        });
+        }
+
       });
 
 
 
-      this.clientService.getClientByID(result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
+      this.clientService.getClientByID(result.result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
         this.submissionClient = c;
         this.logger.debug('Cliente ' + c);
       });
-
-      this.submission.stakeholders.forEach(stake => {
-        this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-          this.logger.debug('Stakeholder ' + result);
-          var index = this.stakeholdersList.findIndex(s => s.id == result.id);
-          if (index == -1)
-            this.stakeholdersList.push(result);
-        }, error => {
-          this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
-        });
-      });
+      
 
       //this.submission.documents.forEach(document => {
       //  this.logger.debug("entrou aqui1!!!");
@@ -369,7 +353,23 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       //  this.files.push(file);
       //});
     });
+    if (this.submission.stakeholders != null) { 
+      if (this.submission.stakeholders.length != 0) {
+        this.submission.stakeholders.forEach(stake => {
+          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+            this.logger.debug('Stakeholder ' + result);
+            var index = this.stakeholdersList.findIndex(s => s.id == result.id);
+            if (index == -1)
+              this.stakeholdersList.push(result);
+          }, error => {
+            this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
+          });
+        });
+      }
+    }
   }
+
+  
 
   ngOnInit(): void {
     this.clientNr = Number(this.router.snapshot.params['id']);

@@ -232,6 +232,7 @@ export class CreateStakeholderComponent implements OnInit {
   public clientNr: number = 8875;
   public totalUrl: string = "";
   public auxUrl: string = "";
+  public selected: boolean = false;
   isShown: boolean = false;
   isFoundStakeholderShown: boolean = false;
   public flagRecolhaEletronica: boolean = true;
@@ -515,6 +516,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
     this.isShown = true;
+    this.selected = false;
 
 
     setTimeout(() => {
@@ -562,6 +564,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   selectNewStakeholder(emittedStakeholder) {
+    this.selected = true;
     this.currentStakeholder = emittedStakeholder.stakeholder;
 
     console.log("current stakeholder: ", this.currentStakeholder);
@@ -589,6 +592,7 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.foundStakeholders) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
+        stakeholderToInsert["fiscalIdentification"]["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];
           stakeholderToInsert.id = result["id"];

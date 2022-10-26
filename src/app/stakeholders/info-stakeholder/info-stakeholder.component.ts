@@ -74,4 +74,12 @@ export class InfoStakeholderComponent implements OnInit {
   changeListElement(string:string,e: any) {
     this.formContactos.get("phone").get("countryCode").setValue(e.target.value);
   }
+
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      return false;
+    return true;
+  }
 }

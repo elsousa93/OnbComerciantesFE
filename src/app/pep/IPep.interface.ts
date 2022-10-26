@@ -1,6 +1,6 @@
 import { Country, IdentificationDocument } from "../stakeholders/IStakeholders.interface";
 
-export interface IPep {
+export class IPep {
   kind: KindPep
   pepType?: string
   pepCountry?: string

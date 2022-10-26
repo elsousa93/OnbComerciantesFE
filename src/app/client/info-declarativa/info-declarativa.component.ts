@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators,  AbstractControl } from '@angular/forms';
-import { Client } from '../Client.interface'
+import { Client, Contacts, Phone } from '../Client.interface'
 import { FormBuilder } from '@angular/forms';
 import { codes } from './indicativo';
 import { EventEmitter, Output } from '@angular/core';
@@ -63,13 +63,17 @@ export class InfoDeclarativaComponent implements OnInit {
 
   setForm(client : Client){
     this.newClient = client;
-    this.listValue.get("comercialName").setValue(client.commercialName);
-    this.listValue.get("phone1").get("countryCode").setValue(client.contacts.phone1.countryCode)
-    this.listValue.get("phone1").get("phoneNumber").setValue(client.contacts.phone1.phoneNumber);
-    this.listValue.get("phone2").get("countryCode").setValue(client.contacts.phone2.countryCode);
-    this.listValue.get("phone2").get("phoneNumber").setValue(client.contacts.phone2.phoneNumber);
-    this.listValue.get("email").setValue(client.contacts.email);
-    this.listValue.get("billingEmail").setValue(client.billingEmail);
+    this.listValue.get("comercialName").setValue(client?.commercialName);
+    this.listValue.get("phone1").get("countryCode").setValue(client?.contacts?.phone1?.countryCode)
+    this.listValue.get("phone1").get("phoneNumber").setValue(client?.contacts?.phone1?.phoneNumber);
+    this.listValue.get("phone2").get("countryCode").setValue(client?.contacts?.phone2?.countryCode);
+    this.listValue.get("phone2").get("phoneNumber").setValue(client?.contacts?.phone2?.phoneNumber);
+    this.listValue.get("email").setValue(client?.contacts?.email);
+    if (client.billingEmail == null || client.billingEmail == "") {
+      this.listValue.get("billingEmail").setValue(client?.contacts?.email);
+    } else {
+      this.listValue.get("billingEmail").setValue(client?.billingEmail);
+    }
   }
 
   public subs: Subscription[] = [];
@@ -94,10 +98,8 @@ export class InfoDeclarativaComponent implements OnInit {
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
       },{validators: [validPhoneNumber]}),
-      faxCountryCode: new FormControl(this.newClient?.contacts?.fax?.countryCode),
-      faxPhoneNumber: new FormControl(this.newClient?.contacts?.fax?.phoneNumber),
       email: new FormControl(this.newClient?.contacts?.email, Validators.required),
-      billingEmail: new FormControl(this.newClient?.billingEmail)
+      billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email)
     });
     
     this.phone1 = this.listValue.get("phone1");
@@ -110,7 +112,7 @@ export class InfoDeclarativaComponent implements OnInit {
           this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
             this.logger.debug('Submissão com detalhes mais especificos ' + resul);
             this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-              this.setForm(res);
+              this.setForm(res); // n sei se aqui é res.res
             });
           });
         });
@@ -131,7 +133,6 @@ export class InfoDeclarativaComponent implements OnInit {
     this.data.updateData(false, 6, 1);
     this.returned = localStorage.getItem("returned");
     this.newClient = JSON.parse(localStorage.getItem("info-declarativa"))?.client ?? this.newClient;
-
   }
 
   ngOnDestroy(): void {
@@ -151,7 +152,13 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
   submit() {
-    if (this.returned !== 'consult') { 
+    if (this.returned != 'consult') {
+
+      this.newClient.contacts = new Contacts();
+
+      this.newClient.contacts.phone1 = new Phone();
+      this.newClient.contacts.phone2 = new Phone();
+
       this.newClient.commercialName = this.listValue.get('comercialName').value;
       this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('countryCode').value;
       this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('phoneNumber').value;
@@ -168,5 +175,13 @@ export class InfoDeclarativaComponent implements OnInit {
       });
     }
     this.router.navigate(['/info-declarativa-stakeholder']);
+  }
+
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      return false;
+    return true;
   }
 }

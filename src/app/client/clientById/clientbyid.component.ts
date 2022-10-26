@@ -24,7 +24,9 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
-import { IStakeholders, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { IStakeholders, OutboundDocument, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { AuthService } from '../../services/auth.service';
+import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -154,6 +156,9 @@ export class ClientByIdComponent implements OnInit {
   formCountryIsValid: boolean = false;
   countriesListValid: boolean = false;
 
+  clientDocs: OutboundDocument[] = null;
+
+  submissionExists: boolean = false;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -343,7 +348,7 @@ export class ClientByIdComponent implements OnInit {
   constructor(private logger: LoggerService, private datepipe: DatePipe, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService) {
 
     //Gets Tipologia from the Client component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -373,6 +378,10 @@ export class ClientByIdComponent implements OnInit {
       countrysForm: formBuilder.group({}),
       powerRepresentationForm: formBuilder.group({}),
     })
+
+    if (localStorage.getItem("submissionId") != null) {
+      this.submissionExists = true;
+    }
 
     console.log('Form do Clientbyid: ', this.form);
 
@@ -444,125 +453,153 @@ export class ClientByIdComponent implements OnInit {
 
     this.clientContext.setMerchantInfo(this.merchantInfo);
 
-    if (this.dataCC !== undefined && this.dataCC !== null) {
-      var client: AcquiringClientPost = {} as AcquiringClientPost;
-      
-      client.fiscalId = this.dataCC.nifCC;
-      client.shortName = client.legalName = this.dataCC.nameCC;
-      client.bankInformation = {};
-      client.headquartersAddress = {};
-      client.headquartersAddress.address = this.dataCC.addressCC;
-      client.headquartersAddress.country = this.dataCC.countryCC;
-      client.headquartersAddress.locality = this.dataCC.localityCC;
-      client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
-      
-      client.otherEconomicActivities = [];
+    if (!this.submissionExists) {
+      if (this.dataCC !== undefined && this.dataCC !== null) {
+        var client: AcquiringClientPost = {} as AcquiringClientPost;
 
-      client["knowYourSales"] = {};
-      client["knowYourSales"]["servicesOrProductsDestinations"] = [];
-      client["knowYourSales"]["servicesOrProductsSold"] = [];
+        client.fiscalId = this.dataCC.nifCC;
+        client.shortName = client.legalName = this.dataCC.nameCC;
+        client.bankInformation = {};
+        client.headquartersAddress = {};
+        client.headquartersAddress.address = this.dataCC.addressCC;
+        client.headquartersAddress.country = this.dataCC.countryCC;
+        client.headquartersAddress.locality = this.dataCC.localityCC;
+        client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
 
-      client.shareCapital = {};
-      client.incorporationStatement = {};
-      client.contacts = {};
+        client.otherEconomicActivities = [];
 
-      this.clientContext.setClient(client);
-      this.clientContext.setNIFNIPC(client.fiscalId);
-      this.updateBasicForm();
+        client["knowYourSales"] = {};
+        client["knowYourSales"]["servicesOrProductsDestinations"] = [];
+        client["knowYourSales"]["servicesOrProductsSold"] = [];
 
-      this.createSubmission();
-    } else {
-      
-      if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
-        this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
-          var client = result;
-          console.log("pesquisa do cliente: ", result);
+        client.shareCapital = {};
+        client.incorporationStatement = {};
+        client.contacts = {};
 
+        this.clientContext.setClient(client);
+        this.clientContext.setNIFNIPC(client.fiscalId);
+        this.updateBasicForm();
+
+        this.createSubmission();
+      } else {
+
+        if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
+          this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
+            var client = result;
+            console.log("pesquisa do cliente: ", result);
+
+            var clientToInsert: AcquiringClientPost = {};
+
+            clientToInsert.merchantRegistrationId = client.merchantRegistrationId;
+            clientToInsert.legalName = client.legalName;
+            clientToInsert.commercialName = client.commercialName;
+            clientToInsert.shortName = client.shortName;
+            clientToInsert.headquartersAddress = {
+              address: client.headquartersAddress?.address,
+              postalCode: client.headquartersAddress?.postalCode,
+              postalArea: client.headquartersAddress?.postalArea,
+              country: client.headquartersAddress?.country
+            }
+            clientToInsert.fiscalId = client.fiscalIdentification?.fiscalId;
+            clientToInsert.knowYourSales = {
+              estimatedAnualRevenue: client.sales?.annualEstimatedRevenue,
+              servicesOrProductsSold: client.sales?.productsOrServicesSold,
+              servicesOrProductsDestinations: client.sales?.productsOrServicesCountries,
+              transactionsAverage: client.sales?.transactionsAverage
+            };
+
+            clientToInsert.legalNature = client.legalNature;
+            clientToInsert.legalNature2 = client.legalNature2;
+
+            clientToInsert.incorporationStatement = client.incorporationStatement;
+            clientToInsert.shareCapital = client.shareCapital;
+            clientToInsert.byLaws = client.bylaws;
+            clientToInsert.incorporationDate = client.incorporationDate;
+            clientToInsert.mainTaxCode = client.principalTaxCode;
+            clientToInsert.otherTaxCodes = client.otherTaxCodes;
+            clientToInsert.mainEconomicActivity = client.principalEconomicActivity;
+            clientToInsert.otherEconomicActivities = client.otherEconomicActivities;
+            clientToInsert.billingEmail = client.billingEmail;
+
+
+            clientToInsert.documentationDeliveryMethod = client.documentationDeliveryMethod;
+            clientToInsert.bankInformation = client.bankingInformation;
+            clientToInsert.contacts = {
+              email: client.contacts?.email,
+              phone1: {
+                phoneNumber: client.contacts?.phone1?.phoneNumber,
+                countryCode: client.contacts?.phone1?.internationalIndicative
+              },
+              phone2: {
+                phoneNumber: client.contacts?.phone2?.phoneNumber,
+                countryCode: client.contacts?.phone2?.internationalIndicative
+              },
+            }
+
+            clientToInsert.businessGroup = {
+              type: client.context,
+              branch: client.contextId
+            }
+
+            clientToInsert["documents"] = client.documents;
+            this.clientDocs = client.documents;
+
+            console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
+
+            this.clientContext.clientExists = true;
+            this.clientContext.setClient(clientToInsert);
+
+            this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
+
+
+            this.updateBasicForm();
+
+          }).then(result => {
+            this.countriesComponent.getClientContextValues();
+            this.createSubmission();
+          });
+        } else {
+          //criar cliente aqui
+          var currentClient = this.clientContext.getClient();
           var clientToInsert: AcquiringClientPost = {};
 
-          clientToInsert.merchantRegistrationId = client.merchantRegistrationId;
-          clientToInsert.legalName = client.legalName;
-          clientToInsert.commercialName = client.commercialName;
-          clientToInsert.shortName = client.shortName;
-          clientToInsert.headquartersAddress = {
-            address: client.headquartersAddress?.address,
-            postalCode: client.headquartersAddress?.postalCode,
-            postalArea: client.headquartersAddress?.postalArea,
-            country: client.headquartersAddress?.country
-          }
-          clientToInsert.fiscalId = client.fiscalIdentification?.fiscalId;
+          clientToInsert.fiscalId = this.NIFNIPC;
+          clientToInsert.legalName = this.socialDenomination;
           clientToInsert.knowYourSales = {
-            estimatedAnualRevenue: client.sales?.annualEstimatedRevenue,
-            servicesOrProductsSold: client.sales?.productsOrServicesSold,
-            servicesOrProductsDestinations: client.sales?.productsOrServicesCountries,
-            transactionsAverage: client.sales?.transactionsAverage
-          };
-
-          clientToInsert.legalNature = client.legalNature;
-          clientToInsert.legalNature2 = client.legalNature2;
-
-          clientToInsert.incorporationStatement = client.incorporationStatement;
-          clientToInsert.shareCapital = client.shareCapital;
-          clientToInsert.byLaws = client.bylaws;
-          clientToInsert.incorporationDate = client.incorporationDate;
-          clientToInsert.mainTaxCode = client.principalTaxCode;
-          clientToInsert.otherTaxCodes = client.otherTaxCodes;
-          clientToInsert.mainEconomicActivity = client.principalEconomicActivity;
-          clientToInsert.otherEconomicActivities = client.otherEconomicActivities;
-          clientToInsert.billingEmail = client.billingEmail;
-          
-
-          clientToInsert.documentationDeliveryMethod = client.documentationDeliveryMethod;
-          clientToInsert.bankInformation = client.bankingInformation;
-          clientToInsert.contacts = {
-            email: client.contacts?.email,
-            phone1: {
-              phoneNumber: client.contacts?.phone1?.phoneNumber,
-              countryCode: client.contacts?.phone1?.internationalIndicative
-            },
-            phone2: {
-              phoneNumber: client.contacts?.phone2?.phoneNumber,
-              countryCode: client.contacts?.phone2?.internationalIndicative
-            },
+            servicesOrProductsDestinations: [],
+            servicesOrProductsSold: []
           }
+          clientToInsert.bankInformation = {}
+          clientToInsert.businessGroup = {}
+          clientToInsert.contacts = {
+            phone1: {},
+            phone2: {}
+          }
+          clientToInsert.otherEconomicActivities = [];
+          clientToInsert.otherTaxCodes = [];
+          clientToInsert.incorporationStatement = {};
+          clientToInsert.shareCapital = {};
 
-          this.clientContext.clientExists = true;
+          this.clientContext.setNIFNIPC(this.NIFNIPC);
           this.clientContext.setClient(clientToInsert);
-
-          this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
-
-          
-          this.updateBasicForm();
-        }).then(result => {
           this.createSubmission();
-        });
-      } else {
-        //criar cliente aqui
-        var currentClient = this.clientContext.getClient();
-        var clientToInsert: AcquiringClientPost = {};
-
-        clientToInsert.fiscalId = this.NIFNIPC;
-        clientToInsert.legalName = this.socialDenomination;
-        clientToInsert.knowYourSales = {
-          servicesOrProductsDestinations: [],
-          servicesOrProductsSold: []
         }
-        clientToInsert.bankInformation = {}
-        clientToInsert.businessGroup = {}
-        clientToInsert.contacts = {
-          phone1: {},
-          phone2: {}
-        }
-        clientToInsert.otherEconomicActivities = [];
-        clientToInsert.otherTaxCodes = [];
-        clientToInsert.incorporationStatement = {};
-        clientToInsert.shareCapital = {};
-
-        this.clientContext.setNIFNIPC(this.NIFNIPC);
-        this.clientContext.setClient(clientToInsert);
-        this.createSubmission();
       }
+
+    } else {
+      this.getPreviousClientAsync().then(result => {
+        this.countriesComponent.getClientContextValues();
+      });
     }
+
+  }
+
+  getPreviousClientAsync() {
+    return this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
+      this.clientContext.tipologia = result.merchantType;
+      this.clientContext.NIFNIPC = result.fiscalId;
+      this.clientContext.setClient(result);
+    });
   }
 
   ngOnDestroy(): void {
@@ -766,6 +803,14 @@ export class ClientByIdComponent implements OnInit {
       //newSubmission.startedAt = new Date().toISOString();
       newSubmission.merchant = this.clientContext.getClient();
 
+      var loginUser = this.authService.GetCurrentUser();
+
+      newSubmission.submissionUser = {
+        user: loginUser.userName,
+        branch: loginUser.bankLocation,
+        partner: loginUser.bankName
+      }
+
       var documentDelivery = newSubmission.merchant.documentationDeliveryMethod;
       var merchantType = newSubmission.merchant.merchantType;
 
@@ -840,7 +885,8 @@ export class ClientByIdComponent implements OnInit {
 
       var clientToSubmit: OutboundClient
 
-      this.clientService.EditClient(submissionID, merchant).subscribe(res => {
+      //antes estava merchant 
+      this.clientService.EditClient(submissionID, client).subscribe(res => {
         console.log("resultado: ", res);
       });
 
@@ -877,35 +923,37 @@ export class ClientByIdComponent implements OnInit {
       });
 
 
+      if (this.clientContext.isClient) { 
+        this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
+          res.forEach(value => {
+            this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+              var storeToAdd: ShopDetailsAcquiring = {
+                activity: r.activity,
+                subActivity: r.secondaryActivity,
+                address: {
+                  address: r.address.address,
+                  isInsideShoppingCenter: r.address.isInsideShoppingCenter,
+                  shoppingCenter: r.address.shoppingCenter,
+                  useMerchantAddress: r.address.sameAsMerchantAddress
+                },
+                bank: {
+                  bank: r.bankingInformation
+                },
+                name: r.name,
+                //productCode: r.product,
+                //subproductCode: r.subproduct,
+                website: r.url,
+                equipments: []
+              }
 
-      this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
-        res.forEach(value => {
-          this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").subscribe(r => {
-            var storeToAdd: ShopDetailsAcquiring = {
-              activity: r.activity,
-              subActivity: r.secondaryActivity,
-              address: {
-                address: r.address.address,
-                isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-                shoppingCenter: r.address.shoppingCenter,
-                useMerchantAddress: r.address.sameAsMerchantAddress
-              },
-              bank: {
-                bank: r.bankingInformation
-              },
-              name: r.name,
-              //productCode: r.product,
-              //subproductCode: r.subproduct,
-              website: r.url,
-              equipments: []
-            }
+              context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
 
-            context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
-
+              });
             });
           });
         });
-      });
+      }
+
     } else {
       this.route.navigate(['/stakeholders']);
     }
@@ -935,6 +983,12 @@ export class ClientByIdComponent implements OnInit {
       padding: 10px;
       text-align: center;
       border: 3px solid green;` );
+  }
+
+  getClientDocumentImage(uniqueReference: string, format: string) {
+    this.documentService.GetDocumentImageOutbound(uniqueReference, "por mudar", "por mudar", format).subscribe(result => {
+      this.b64toBlob(result.binary, 'application/pdf', 512);
+    });
   }
 
   formClientCharacterizationIsValid(formCharact) {

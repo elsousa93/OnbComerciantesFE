@@ -1,5 +1,5 @@
 <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0" style="margin-left: 150px;">
+  <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0">
       <h2 class="text-primary mt-5 ps-0 center-align">
         <span class="material-symbols-rounded icon-titulos m-align">
           <img src="assets/images/group_add_blue.svg" class="img_add">
@@ -298,8 +298,8 @@
               id="btn5a2"
               class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
               wappler-command="editContent" (click)="addStakeholder()"
-              [disabled]="((!this.formStakeholderSearch.valid || !this.formNewStakeholder.valid) && !this.foundStakeholders) || (this.foundStakeholders == false && this.isClientNrSelected) || (currentStakeholder===null && foundStakeholders) || !isSearch">
-              {{'generalKeywords.add'|translate|uppercase}}&nbsp;<img src="assets/images/add.svg"
+              [disabled]="((!this.formStakeholderSearch.valid || !this.formNewStakeholder.valid) && !this.foundStakeholders) || (this.foundStakeholders == false && this.isClientNrSelected) || (this.foundStakeholders && !this.selected)">
+              {{'generalKeywords.add'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
                 style="height: 25px !important; vertical-align: sub;" class="img_add">
             </button>
           </nav>

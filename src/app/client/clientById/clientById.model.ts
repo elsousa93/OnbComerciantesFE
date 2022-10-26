@@ -50,9 +50,9 @@ export class ClientContext{
     "processType": "Standard",
     "isClientAwaiting": true,
     "submissionUser": {
-      "user": "teste",
-      "branch": "branch01",
-      "partner": "SIBS"
+      "user": "",
+      "branch": "",
+      "partner": ""
     },
     "startedAt": new Date().toISOString(),
     "state": "Incomplete",

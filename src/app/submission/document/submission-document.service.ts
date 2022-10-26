@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmission-document';
@@ -8,9 +8,11 @@ import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmis
 })
 export class SubmissionDocumentService {
   private baseUrl;
+  private urlOutbound;
 
   constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) { 
     this.baseUrl = configuration.baseUrl;
+    this.urlOutbound = configuration.outboundUrl;
   }
 
 
@@ -41,5 +43,32 @@ export class SubmissionDocumentService {
 
   SubmissionPostDocument(submissionID: string, document: PostDocument): any {
     return this.http.post<PostDocument>(this.baseUrl + 'submission/' + submissionID + '/document/', document);
+  }
+
+  GetDocumentImageOutbound(documentReference: string, requestID: string, AcquiringUserID: string, format?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
+
+    var URI = this.urlOutbound + "api/v1/document/" + documentReference + "/image";
+
+    if (format != null && format != "")
+      URI += "?format=" + format;
+
+    var data = new Date();
+
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Request-Id': requestID,
+        'X-Acquiring-UserId': AcquiringUserID,
+      }),
+    }
+
+    if (AcquiringPartnerID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
+    if (AcquiringBranchID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    if (AcquiringProcessID !== null)
+      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+
+
+    return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 }

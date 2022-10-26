@@ -85,7 +85,26 @@ export class CommercialOfferListComponent implements OnInit {
   submissionId: string;
   processNumber: string;
 
-  storeEquipList: ShopEquipment[] = [];
+  storeEquipList: ShopEquipment[] = [{
+    communicationOwnership: "client",
+    communicationType: "teste",
+    equipmentOwnership: "client",
+    equipmentType: "equip",
+    pricing: {
+      id: "asd",
+      attribute: [{
+        description: "",
+        finalValue: 1,
+        id: "lkm",
+        isReadOnly: true,
+        isVisible: true,
+        originalValue: 2
+        //value: 4
+     }]
+    },
+    quantity: 1,
+    shopEquipmentId: "ryt"
+  }];
 
   editForm: FormGroup;
   configTerm: FormGroup;
@@ -225,7 +244,7 @@ export class CommercialOfferListComponent implements OnInit {
       attributes.forEach(function (value, idx) {
         group.addControl("formControl" + value.id, new FormControl(value.value));
 
-        if (value.bundles != undefined || value.bundles != null) {
+        if (value.bundles != undefined || value.bundles != null || value.bundles.length > 0) {
           var attributeGroup = new FormGroup({});
           var bundle = value.bundles;
 
@@ -253,6 +272,9 @@ export class CommercialOfferListComponent implements OnInit {
 
   //utilizado para mostrar os valores no PACOTE COMERCIAL
   getPackDetails() {
+    this.paymentSchemes = null;
+    this.groupsList = [];
+
     this.productPack.productCode = this.currentStore.productCode;
     this.productPack.subproductCode = this.currentStore.subproductCode;
 
@@ -373,24 +395,20 @@ export class CommercialOfferListComponent implements OnInit {
     //  commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
     //});
 
-    this.groupsList.forEach(group => {
-      var groups = this.form.get("formGroup" + group.id);
-      group.attributes.forEach(attr => {
-        if (attr.isVisible) {
-          attr.value = groups.get("formControl" + attr.id).value;
-          if (attr.value && attr.bundles.length > 0) { // se tiver sido selecionado
-            attr.bundles.forEach(bundle => {
-              var bundles = this.form.get("formGroupBundle" + bundle.id);
-              bundle.attributes.forEach(bundleAttr => { 
-                if (bundleAttr.isVisible) {
-                  bundleAttr.value = bundles.get("formControlBundle" + bundleAttr.id).value;
-                }
+    this.groupsList.forEach((group) => {
+      //var groups = this.form?.get("formGroup" + group.id);
+      group.attributes.forEach((attr) => {
+        attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
+          if (attr.value && (attr.bundles != null || attr.bundles.length > 0 )) { // se tiver sido selecionado
+            attr.bundles.forEach((bundle) => {
+              //var bundles = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id);
+              bundle.attributes.forEach((bundleAttr) => { 
+                bundleAttr.value = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
               });
-            });
+            }, this);
           }
-        }
-      });
-    });
+      }, this);
+    }, this);
 
     if (this.returned != 'consult') {
       this.currentStore.equipments = this.storeEquipList;
@@ -402,7 +420,7 @@ export class CommercialOfferListComponent implements OnInit {
         otherPackDetails: this.groupsList
       }
       console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
-      this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.shopId, this.currentStore).subscribe(result => {
+      this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
         //this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
         console.log('Loja atualizada ', this.currentStore);
       });
@@ -467,11 +485,9 @@ export class CommercialOfferListComponent implements OnInit {
     });
 
     this.form.addControl("formGroupPayment" + this.paymentSchemes.id, group);
-    console.log("form com os checkboxes: ", this.form);
   }
 
   getAttributeValue(formGroup: string, formControl: string) {
-    console.log('GET ATTRIBUTE VALUE ', this.form.get(formGroup)?.get(formControl)?.value);
     return this.form.get(formGroup)?.get(formControl)?.value;
   }
 
