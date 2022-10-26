@@ -17,6 +17,7 @@ import { ClientService } from '../../client/client.service';
 import { LoggerService } from 'src/app/logger.service';
 import { StoreService } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
+import { event } from 'jquery';
 
 
 @Component({
@@ -445,7 +446,16 @@ export class AddStoreComponent implements OnInit {
     }
   }
 
-  GetCountryByZipCodeTest() {
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      return false;
+    return true;
+  }
+
+  GetCountryByZipCodeTest(e: boolean) {
+    this.numericOnly(e);
     this.subzonesShopping = null;
     var currentCountry = this.formStores.get('countryStore').value;
     this.logger.debug("Pais escolhido atual");
