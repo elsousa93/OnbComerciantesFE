@@ -645,12 +645,12 @@ export class ClientComponent implements OnInit {
 
 
   obterSelecionado() {
+    //ONDE ESTAVA fiscalId passei para clientId
     this.logger.debug(this.clientId);
     var selectedClient = this.newClient;
     var NIFNIPC = null;
     if (selectedClient.documentationDeliveryMethod === '0502' || selectedClient.documentationDeliveryMethod === '0501') {
       NIFNIPC = selectedClient.clientId;
-      //
     }
 
     if (selectedClient.documentationDeliveryMethod === '1001') {
@@ -667,7 +667,7 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        NIFNIPC: selectedClient.fiscalId + "",
+        //NIFNIPC: selectedClient.fiscalId,
         clientExists: true,
         clientId: this.clientId,
         dataCC: this.dataCC,
