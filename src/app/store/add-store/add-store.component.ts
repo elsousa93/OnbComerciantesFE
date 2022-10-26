@@ -465,7 +465,7 @@ export class AddStoreComponent implements OnInit {
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
 
-        this.tableData.GetAddressByZipCodeTeste(Number(zipCode[0]), Number(zipCode[1])).then(success => {
+        this.tableData.GetAddressByZipCodeTeste(zipCode[0], zipCode[1]).then(success => {
           var address = success.result;
           var addressToShow = address[0];
 
