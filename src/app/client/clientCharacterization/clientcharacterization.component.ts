@@ -66,7 +66,7 @@ export class ClientCharacterizationComponent implements OnInit {
     otherEconomicActivities: [],
     mainTaxCode: '',
     otherTaxCodes: [],
-    incorporationDate: '',
+    incorporationDate: null,
     businessGroup: {},
     knowYourSales: {},
     bankInformation: {},
@@ -609,7 +609,14 @@ export class ClientCharacterizationComponent implements OnInit {
       if (CAESecondary2 !== null)
         this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
       //Paises destino
-      this.client.incorporationDate = this.form.value["constitutionDate"];
+
+      if (this.form.value["constitutionDate"] == "" || this.form.value["constitutionDate"] == null) {
+        this.client.incorporationDate = null;
+      } else {
+        this.client.incorporationDate = this.form.value["constitutionDate"];
+      }
+
+
       //this.client.crc.code = this.form.value["crcCode"];
       this.client.incorporationStatement = {
         code: this.form.value["crcCode"]

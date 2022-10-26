@@ -139,7 +139,7 @@ export class CountrysComponent implements OnInit {
           otherEconomicActivities: [],
             mainTaxCode: '',
               otherTaxCodes: [],
-                incorporationDate: '',
+                incorporationDate: null,
                   businessGroup: { },
       knowYourSales: { },
       bankInformation: { },
@@ -722,16 +722,16 @@ export class CountrysComponent implements OnInit {
     this.comprovativoCC = this.clientContext.comprovativoCC;
     this.crc = this.clientContext.crc;
 
-    this.getCurrentClientAsync().then(val => {
-      this.insertValues();
+    context.getCurrentClientAsync().then(val => {
+      context.insertValues();
 
-      if (this.client.businessGroup.type.toLowerCase() == "holding") {
-        this.setAssociatedWith(true);
-        this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+      if (context.client.businessGroup.type.toLowerCase() == "holding") {
+        context.setAssociatedWith(true);
+        context.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
       }
-      if (this.client.businessGroup.type.toLowerCase() == "franchise") {
-        this.setAssociatedWith(true);
-        this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+      if (context.client.businessGroup.type.toLowerCase() == "franchise") {
+        context.setAssociatedWith(true);
+        context.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
       }
     });
 
