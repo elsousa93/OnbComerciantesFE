@@ -496,6 +496,13 @@ export class AddStoreComponent implements OnInit {
     }
   }
 
+  clean() {
+    this.lockLocality = false;
+    this.formStores.get('addressStore').setValidators(null);
+    this.formStores.get('zipCodeStore').setValidators(null);
+    this.formStores.get('localeStore').setValidators(null);
+  }
+
   canEditLocality() {
     if (this.returned === 'consult')
       return false;
