@@ -347,11 +347,22 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     });
   }
 
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode!=45)
+      return false;
+    return true;
+  }
+
   GetCountryByZipCode() {
 
     var currentCountry = this.formNewStakeholder.get('Country').value;
 
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
+
+    this.formNewStakeholder.get('Address').setValue('');
+    this.formNewStakeholder.get('Locality').setValue('');
 
     if (currentCountry === 'PT') {
       this.lockLocality = true;
@@ -359,7 +370,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       if (zipcode != null && zipcode.length >= 8) {
         var zipCode = zipcode.split('-');
 
-        this.subs.push(this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
+        this.subs.push(this.tableData.GetAddressByZipCode(zipCode[0], zipCode[1]).subscribe(address => {
 
           var addressToShow = address[0];
 
@@ -370,6 +381,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       }
     } else {
       this.lockLocality = false;
+      this.formNewStakeholder.get('Address').setValidators(null);
+      this.formNewStakeholder.get('ZIPCode').setValidators(null);
+      this.formNewStakeholder.get('Locality').setValidators(null);
     }
     console.log('Valor do form no new-stakeholder ', this.formNewStakeholder);
   }
