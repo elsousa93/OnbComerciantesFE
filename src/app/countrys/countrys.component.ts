@@ -302,6 +302,7 @@ export class CountrysComponent implements OnInit {
 
     }
     this.formCountrysReady.emit(this.form);
+    console.log('FORM INSERT VALUES COUNTRY', this.form);
   }
 
   initializeForm() {
@@ -354,6 +355,7 @@ export class CountrysComponent implements OnInit {
     })
 
     this.formCountrysReady.emit(this.form);
+    console.log('FORM DOS COUNTRIES INICIALIZADO ', this.form);
   }
 
   newSubmission: SubmissionPostTemplate = {
