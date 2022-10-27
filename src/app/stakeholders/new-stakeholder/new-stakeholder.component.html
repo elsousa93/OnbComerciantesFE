@@ -84,8 +84,8 @@
             <div class="row" id="country">
               <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}}</p>
               <select id="streetAddressStakeholder" class="form-select campo-form-select" formControlName="Country"
-                (click)="GetCountryByZipCode()" [attr.disabled]="returned === 'consult' ? true : null">
-                <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">
+                (click)="clean()" [attr.disabled]="returned === 'consult' ? true : null">
+                <option *ngFor="let country of countries" value="{{country.code}}">
                   {{country.description}}</option>
               </select>
             </div>
