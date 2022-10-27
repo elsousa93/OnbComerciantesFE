@@ -557,7 +557,7 @@ export class ClientByIdComponent implements OnInit {
 
           }).then(result => {
             this.countriesComponent.getClientContextValues();
-            this.clientCharacterizationComponent.getClientContextValues();
+            //this.clientCharacterizationComponent.getClientContextValues();
             this.createSubmission();
           });
         } else {
@@ -596,7 +596,7 @@ export class ClientByIdComponent implements OnInit {
         this.clientContext.setClient(result);
       }).then(result => {
         this.countriesComponent.getClientContextValues();
-        this.clientCharacterizationComponent.getClientContextValues();
+        //this.clientCharacterizationComponent.getClientContextValues();
       });
     }
 
