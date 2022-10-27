@@ -197,6 +197,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   getSubmissionStakeholdersTest() {
     var context = this;
 
+    context.submissionStakeholders = [];
+
     const promises = [
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId)
     ]
