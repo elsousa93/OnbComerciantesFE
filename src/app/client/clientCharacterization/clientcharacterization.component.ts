@@ -413,6 +413,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.clientExists = this.clientContext.clientExists;
     this.NIFNIPC = this.clientContext.getNIFNIPC();
+    this.tipologia = this.clientContext.tipologia;
 
 
     this.getCurrentClientAsync().then(result => {
@@ -420,17 +421,20 @@ export class ClientCharacterizationComponent implements OnInit {
       this.hasCRC = (JSON.stringify(this.client.incorporationStatement) !== '{}' && this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
 
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
+        console.log('ENTROU IF ENI ', this.tipologia);
         this.isCommercialSociety = false;
         this.collectCRC = false;
         this.initializeENI();
       } else {
         if (this.hasCRC) {
+          console.log('ENTROU IF CRC', this.tipologia);
           this.isCommercialSociety = true;
           this.collectCRC = true;
           this.initializeBasicCRCFormControl();
           this.searchByCRC();
         } else {
           if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+            console.log('ENTROU IF EMPRESA', this.tipologia);
             this.isCommercialSociety = false;
             this.collectCRC = false;
             this.initializeFormControlOther();
