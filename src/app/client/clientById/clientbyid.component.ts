@@ -489,6 +489,8 @@ export class ClientByIdComponent implements OnInit {
         client.incorporationStatement = {};
         client.contacts = {};
 
+        client.merchantType = this.tipologia;
+
         this.clientContext.setClient(client);
         this.NIFNIPC = client.fiscalId;
         this.clientContext.setNIFNIPC(client.fiscalId);
@@ -555,6 +557,8 @@ export class ClientByIdComponent implements OnInit {
               branch: client.contextId
             }
 
+            clientToInsert.merchantType = client.merchantType;
+
             clientToInsert["documents"] = client.documents;
             this.clientDocs = client.documents;
 
@@ -594,6 +598,8 @@ export class ClientByIdComponent implements OnInit {
           clientToInsert.otherTaxCodes = [];
           clientToInsert.incorporationStatement = {};
           clientToInsert.shareCapital = {};
+
+          clientToInsert.merchantType = this.tipologia;
 
           this.clientContext.setNIFNIPC(this.NIFNIPC);
           this.clientContext.setClient(clientToInsert);
