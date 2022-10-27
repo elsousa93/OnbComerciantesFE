@@ -96,6 +96,12 @@ export class ConsultasFTComponent implements OnInit{
       case "risk":
         this.state = "RiskAssessment"
         break;
+      case "negotiationAproval":
+        this.state = "NegotiationApproval"
+        break;
+      case "compliance": 
+        this.state = "ComplianceEvaluation"
+        break;
     }
   }
 
