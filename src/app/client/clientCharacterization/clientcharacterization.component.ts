@@ -258,6 +258,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (this.form.get("natJuridicaN2").value != null && this.form.get("natJuridicaN2").value != '') {
       this.onLegalNatureSelected();
+      this.form.get("natJuridicaN2").setValue(this.client.legalNature2);
+      this.form.get("natJuridicaN2").updateValueAndValidity();
     }
 
     this.formClientCharacterizationReady.emit(this.form);
