@@ -155,7 +155,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     if (changes["currentStakeholder"]) {
       this.isStakeholderFromCC(this.currentStakeholder);
       this.isStakeholderFromCRC(this.currentStakeholder);
-      if (identificationDocument.type === 'Cartão do Cidadão') {
+      if (identificationDocument.type === '1001') {
         this.createFormCC();
       } else {
         this.initializeFormWithoutCC();
@@ -267,6 +267,14 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.showYesCC = true;
     this.showNoCC = false;
     this.flagRecolhaEletronica = true;
+
+    this.changeValueCC();
+  }
+
+  changeValueCC(){
+    if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '1001') {
+      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = 'Cartão do Cidadão'
+    }
   }
 
   submit() {
@@ -369,6 +377,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
     this.formNewStakeholder.get('Address').setValue('');
     this.formNewStakeholder.get('Locality').setValue('');
+    this.formNewStakeholder.get('ZIPCode').setValue('');
 
     if (currentCountry === 'PT') {
       this.lockLocality = true;

@@ -532,7 +532,7 @@ export class ClientComponent implements OnInit {
     });
 
     this.searchClientForm.get("docType").valueChanges.subscribe(data => {
-      if (data !== 'Cartão do Cidadão') {
+      if (data !== '1001') {
         this.searchClientForm.controls["docNumber"].setValidators([Validators.required]);
         this.searchClientForm.removeControl("flagAutCol");
       } else {
