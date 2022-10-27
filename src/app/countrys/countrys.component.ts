@@ -717,12 +717,6 @@ export class CountrysComponent implements OnInit {
     var context = this;
 
     this.clientExists = this.clientContext.clientExists;
-    //this.tipologia = this.clientContext.tipologia;
-    //this.NIFNIPC = this.clientContext.getNIFNIPC();
-    //this.clientId = this.clientContext.clientId;
-    //this.processId = this.clientContext.processId;
-    //this.comprovativoCC = this.clientContext.comprovativoCC;
-    //this.crc = this.clientContext.crc;
 
     this.getCurrentClientAsync().then(val => {
       context.insertValues();
@@ -737,20 +731,5 @@ export class CountrysComponent implements OnInit {
       }
     });
 
-    //this.clientContext.currentClient.subscribe(result => {
-    //  this.client = result;
-
-    //  this.insertValues();
-
-    //  if (this.client.businessGroup.type.toLowerCase() == "holding") {
-    //    this.setAssociatedWith(true);
-    //    this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
-    //  }
-    //  if (this.client.businessGroup.type.toLowerCase() == "franchise") {
-    //    this.setAssociatedWith(true);
-    //    this.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
-    //  }
-
-    //});
   }
 }

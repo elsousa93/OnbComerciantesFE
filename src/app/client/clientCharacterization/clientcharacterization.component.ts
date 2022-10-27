@@ -375,12 +375,13 @@ export class ClientCharacterizationComponent implements OnInit {
       //  this.initializeBasicFormControl();
     });
 
-    if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
-      this.DisableNIFNIPC = true;
-    }
-    else {
-      this.DisableNIFNIPC = null;
-    }
+    //if (this.NIFNIPC !== undefined && this.NIFNIPC !== null && this.NIFNIPC !== '') {
+    //  this.DisableNIFNIPC = true;
+    //}
+    //else {
+    //  this.DisableNIFNIPC = null;
+    //}
+    this.DisableNIFNIPC = true;
 
     this.clientId = this.clientContext.clientId;
     this.dataCC = this.clientContext.dataCC;
@@ -412,7 +413,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.hasCRC = (JSON.stringify(this.client.incorporationStatement) !== '{}' && this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
       
       if (this.hasCRC) {
-        this.isCommercialSociety = true; /////
+        this.isCommercialSociety = true;
         this.collectCRC = true;
         this.initializeBasicCRCFormControl();
         this.searchByCRC();
@@ -421,6 +422,7 @@ export class ClientCharacterizationComponent implements OnInit {
           this.isCommercialSociety = false;
           this.collectCRC = false;
           this.initializeFormControlOther();
+          this.onLegalNatureSelected();
         }
         if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
           this.isCommercialSociety = false;
@@ -429,9 +431,9 @@ export class ClientCharacterizationComponent implements OnInit {
         }
       }
 
-      if (this.client.merchantRegistrationId != null && this.client.merchantRegistrationId != "") {
-        this.DisableNIFNIPC = true;
-      }
+      //if (this.client.merchantRegistrationId != null && this.client.merchantRegistrationId != "") {
+      //  this.DisableNIFNIPC = true;
+      //}
     });
 
     this.clientContext.currentMerchantInfo.subscribe(result => {
