@@ -118,68 +118,71 @@
         <!--Com CC-->
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
-            <div class="row" id="nif">
-              <p class="titulo-form-simples">NIF</p>
-              <input id="fiscalId" class="form-control" type="text" formControlName="NIF"
-              [readonly]="selectedStakeholderIsFromCRC === true">
-            </div>
-            <div class="row" id="doctype">
-              <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
-              <input readonly name="identificationDocumentType" formControlName="documentType"
-                class="form-control campo_form">
-            </div>
-            <div class="row" id="doccountry">
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
-              <select readonly name="documentCountry" formControlName="identificationDocumentCountry"
-                class="form-control campo_form">
-                <option *ngFor="let country of countries" value={{country.code}}
-                  [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">
-                  {{country.description}}</option>
-              </select>
-            </div>
-            
-            <div class="row" id="country">
-              <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}}</p>
-              <select id="streetAddressStakeholder" class="form-select campo-form-select" formControlName="Country"
-                (click)="GetCountryByZipCode()" [attr.disabled]="returned === 'consult' ? true : null">
-                <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">
-                  {{country.description}}</option>
-              </select>
-            </div>
-            <div class="row" id="zipcode">
-              <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}}</p>
-              <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-              (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
-            </div>
+            <p class="titulo-form-simples mt-0">NIF</p>
+            <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF"
+            [readonly]="selectedStakeholderIsFromCRC === true">
           </div>
           <div class="col-6">
-            <div class="row ms-0" id="role">
-              <p class="titulo-form-simples">{{'stakeholder.role'|translate|uppercase}}</p>
-              <select id="roleStakeholder" class="form-select campo-form-select" formControlName="Role"
-                [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null"> <!-- antes era chamado o método canEditRole()-->
-                <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
-              </select>
-            </div>
-            <div class="row ms-0" id="docnumber">
-              <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
-              <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+            <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
+            <select id="roleStakeholder" class="form-select campo-form-select" formControlName="Role"
+              [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null"> <!-- antes era chamado o método canEditRole()-->
+              <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="showYesCC && !showNoCC">
+          <div class="col-6">
+            <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
+              <input readonly name="identificationDocumentType" formControlName="documentType"
                 class="form-control campo_form">
-            </div>
-            <div class="row ms-0" id="docdate">
-              <p class="titulo-form-simples">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
-              <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
-                cols="30" rows="10" class="form-control campo_form">
-            </div>
-            <div class="row ms-0" id="locale">
-              <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}}</p>
-              <input class="form-control" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
-                [readonly]="canEditLocality() === false">
-            </div>
-            <div class="row ms-0" id="address">
-              <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}}</p>
-              <input class="form-control" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
-                [readonly]="returned === 'consult'">
-            </div>
+          </div>
+          <div class="col-6">
+            <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
+            <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
+              class="form-control campo_form">
+          </div>
+        </div>
+        <div class="row" *ngIf="showYesCC && !showNoCC">
+          <div class="col-6">
+            <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
+            <select readonly name="documentCountry" formControlName="identificationDocumentCountry"
+              class="form-control campo_form">
+              <option *ngFor="let country of countries" value={{country.code}}
+                [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">
+                {{country.description}}</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
+            <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
+              cols="30" rows="10" class="form-control campo_form">
+          </div>
+        </div>
+        <div class="row" *ngIf="showYesCC && !showNoCC">
+          <div class="col-6">
+          <p class="titulo-form-simples mt-0">{{'stakeholder.country'|translate|uppercase}}</p>
+          <select id="streetAddressStakeholder" class="form-select campo-form-select" formControlName="Country"
+            (click)="GetCountryByZipCode()" [attr.disabled]="returned === 'consult' ? true : null">
+            <option *ngFor="let country of countries" value="{{country.code}}" (click)="GetCountryByZipCode()">
+              {{country.description}}</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <p class="titulo-form-simples mt-0">{{'stakeholder.locale'|translate|uppercase}}</p>
+          <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
+            [readonly]="canEditLocality() === false">
+        </div>
+        </div>
+        <div class="row" *ngIf="showYesCC && !showNoCC">
+          <div class="col-6">
+            <p class="titulo-form-simples mt-0">{{'stakeholder.postalCode'|translate|uppercase}}</p>
+            <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
+            (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
+          </div>
+          <div class="col-6">
+            <p class="titulo-form-simples mt-0">{{'stakeholder.address'|translate|uppercase}}</p>
+            <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
+              [readonly]="returned === 'consult'">
           </div>
         </div>
       </div>
