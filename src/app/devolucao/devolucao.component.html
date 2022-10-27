@@ -56,25 +56,25 @@
                   </tr>
                  </thead>
                  <tbody>
-                   <tr *ngFor="let issue of issues.process">
+                   <tr *ngFor="let issue of issues?.process">
                      <td class="text-primary text-center">Processo</td>
-                     <td class="text-primary text-start">{{issue.issueDescription}}</td>
+                     <td class="text-primary text-start">{{issue?.issueDescription}}</td>
                    </tr>
                    <tr>
-                     <td class="text-primary text-center">{{getEntityName('merchant', issues.merchant.merchant.id)}}</td>
-                     <td class="text-primary text-start">{{issues.merchant.issues[0].issueDescription}}</td>
+                     <td class="text-primary text-center">{{getEntityName('merchant', issues?.merchant?.merchant?.id)}}</td>
+                     <td class="text-primary text-start">{{issues?.merchant?.issues[0]?.issueDescription}}</td>
                    </tr>
                    <tr *ngFor="let issue of issues.stakeholders">
-                     <td class="text-primary text-center">{{getEntityName('stake', issue.stakeholder.id)}}</td>
-                     <td class="text-primary text-start">{{issue.issues[0].issueDescription}}</td>
+                     <td class="text-primary text-center">{{getEntityName('stake', issue?.stakeholder?.id)}}</td>
+                     <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                    </tr>
                    <tr *ngFor="let issue of issues.shops">
-                     <td class="text-primary text-center">{{getEntityName('shop', issue.shop.id)}}</td>
-                     <td class="text-primary text-start">{{issue.issues[0].issueDescription}}</td>
+                     <td class="text-primary text-center">{{getEntityName('shop', issue?.shop?.id)}}</td>
+                     <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                    </tr>
                    <tr *ngFor="let issue of issues.documents">
-                     <td class="text-primary text-center">{{getEntityName('document', issue.document.id)}}</td>
-                     <td class="text-primary text-start">{{issue.issues[0].issueDescription}}</td>
+                     <td class="text-primary text-center">{{getEntityName('document', issue?.document?.id)}}</td>
+                     <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                    </tr>
                  </tbody>
                </table>

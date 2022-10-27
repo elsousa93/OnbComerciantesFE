@@ -150,7 +150,7 @@ export class CountrysComponent implements OnInit {
     };
 
 
-    //this.initializeForm();
+    this.initializeForm();
 
     if (this.returned != null) {
       this.clientContext.currentMerchantInfo.subscribe(result => {
@@ -301,8 +301,6 @@ export class CountrysComponent implements OnInit {
       }
 
     }
-    this.formCountrysReady.emit(this.form);
-    console.log('FORM INSERT VALUES COUNTRY', this.form);
   }
 
   initializeForm() {

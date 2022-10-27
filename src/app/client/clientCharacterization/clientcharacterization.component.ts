@@ -215,7 +215,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
-    if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur') {
+    if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
       this.setCommercialSociety(false);
     }
 
@@ -391,11 +391,12 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientId = this.clientContext.clientId;
     this.dataCC = this.clientContext.dataCC;
 
-    if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
+    if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur' || this.tipologia === '02') {
       this.isCommercialSociety = false;
       this.collectCRC = false;
       this.initializeENI();
     }
+   
   }
 
   getCurrentClientAsync() {
@@ -418,36 +419,36 @@ export class ClientCharacterizationComponent implements OnInit {
 
       this.hasCRC = (JSON.stringify(this.client.incorporationStatement) !== '{}' && this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
 
-      if (this.hasCRC) {
-        this.isCommercialSociety = true;
-        this.collectCRC = true;
-        this.initializeBasicCRCFormControl();
-        this.searchByCRC();
+      if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
+        this.isCommercialSociety = false;
+        this.collectCRC = false;
+        this.initializeENI();
       } else {
-        if (this.tipologia == 'Company' || this.tipologia == 'Corporate') {
-          this.isCommercialSociety = false;
-          this.collectCRC = false;
-          this.initializeFormControlOther();
-        }
-        if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
-          this.isCommercialSociety = false;
-          this.collectCRC = false;
-          this.initializeENI();
+        if (this.hasCRC) {
+          this.isCommercialSociety = true;
+          this.collectCRC = true;
+          this.initializeBasicCRCFormControl();
+          this.searchByCRC();
+        } else {
+          if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+            this.isCommercialSociety = false;
+            this.collectCRC = false;
+            this.initializeFormControlOther();
+          }
         }
       }
-
     });
 
     this.clientContext.currentMerchantInfo.subscribe(result => {
       context.merchantInfo = result;
 
       if (this.returned != null) {
-        if (this.tipologia == 'Company' || this.tipologia === 'Corporate') {
+        if (this.tipologia == 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
           this.isCommercialSociety = false;
           this.collectCRC = false;
           this.initializeFormControlOther();
         }
-        if (this.tipologia == 'ENI' || this.tipologia === 'Entrepeneur') {
+        if (this.tipologia == 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
           this.isCommercialSociety = false;
           this.collectCRC = false;
           this.initializeENI();
@@ -484,7 +485,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.isCommercialSociety = true;
       this.form.get("commercialSociety").setValue(true);
     } else {
-      if (this.tipologia === 'Company' || this.tipologia === 'Corporate')
+      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01')
         this.initializeFormControlOther();
       else
         this.initializeENI();
@@ -640,7 +641,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
 
-      if (this.tipologia === 'Company' || this.tipologia === 'Corporate') {
+      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
 
         var natJuridicaN2 = this.form.value["natJuridicaN2"];
@@ -652,7 +653,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       this.client.commercialName = this.form.value["socialDenomination"];
     }
-    if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur') {
+    if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
       this.client.legalName = this.form.value["socialDenomination"];
       this.client.merchantType = '02';
       if (this.dataCC !== undefined && this.dataCC !== null) {
@@ -799,7 +800,7 @@ export class ClientCharacterizationComponent implements OnInit {
   canChangeCommercialSociety() {
     if (this.returned === 'consult')
       return false;
-    if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur')
+    if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02')
       return false;
 
     return true;

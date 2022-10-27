@@ -5,7 +5,7 @@ import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { ClientService } from '../client.service';
@@ -1007,6 +1007,10 @@ export class ClientByIdComponent implements OnInit {
   formClientCharacterizationIsValid(formCharact) {
     console.log("formulario: ", formCharact);
 
+    if (formCharact.valid) {
+      this.formClientIsValid = true;
+    }
+
     formCharact.statusChanges.subscribe(res => {
       console.log("Client Characterization estado: ", res);
       if (res === 'VALID') {
@@ -1059,8 +1063,12 @@ export class ClientByIdComponent implements OnInit {
     //})
   }
 
-  formClientCountryIsValid(formCountry) {
+  formClientCountryIsValid(formCountry: AbstractControl) {
     console.log("form country: ", formCountry);
+
+    if (formCountry.valid) {
+      this.formCountryIsValid = true;
+    }
 
     formCountry.statusChanges.subscribe(res => {
       console.log("client country estado: ", res);
