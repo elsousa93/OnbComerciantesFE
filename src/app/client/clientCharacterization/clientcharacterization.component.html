@@ -20,13 +20,13 @@
             <div class="form-check">
               <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety" type="radio"
                 [value]=true id="commercialSociety" (click)="setCommercialSociety(true)"
-                [attr.disabled]="((tipologia === 'ENI' || tipologia === 'Entrepeneur') || returned === 'consult') ? true: null">
+                [attr.disabled]="((tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02') || returned === 'consult') ? true: null">
               <label class="form-check-label radio">{{'generalKeywords.yes'|translate|uppercase}}</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety" type="radio"
                 [value]=false id="commercialSociety" (click)="setCommercialSociety(false)"
-                [attr.disabled]="((tipologia === 'ENI' || tipologia === 'Entrepeneur') || returned === 'consult') ? true: null">
+                [attr.disabled]="((tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02') || returned === 'consult') ? true: null">
               <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
             </div>
 
@@ -347,7 +347,7 @@
 
 
           <div
-            *ngIf="(isCommercialSociety == true && (tipologia === 'Company' || tipologia === 'Corporate') && collectCRC == false) || (isCommercialSociety == false && (tipologia === 'Company' || tipologia === 'Corporate'))">
+            *ngIf="(isCommercialSociety == true && (tipologia === 'Company' || tipologia === 'Corporate' || tipologia === '01') && collectCRC == false) || (isCommercialSociety == false && (tipologia === 'Company' || tipologia === 'Corporate' || tipologia === '01'))">
             <div class="bg-white col-12 col-xxl-12">
               <div class="row">
                 <div class="col-xxl col-6" style="padding-left: 30px;">
@@ -402,13 +402,13 @@
           </div>
           <!--fecha div "se NÃO for sociedade comercial"-->
           <!-- se NÃO for Sociedade Comercial e for ENI -->
-          <div *ngIf="isCommercialSociety == false && (tipologia==='ENI' || tipologia === 'Entrepeneur')">
+          <div *ngIf="isCommercialSociety == false && (tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02')">
             <div class="col-10 ms-3 me-3 ps-3 pe-3">
               <p class="titulo-form-simples" for="socialDenomination">{{'client.socialDenominationName'|translate}}:*
               </p>
               <input formControlName="socialDenomination" name="socialDenomination"
                 type="text" id="socialDenomination" class="form-control campo_form" style="width: 906px;"
-                [readonly]="returned === 'consult'">
+                [attr.disabled]="(returned === 'consult' || (tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02')) ? true : null">
             </div>
           </div>
           <!--fecha div "se NÃO for sociedade comercial"-->
