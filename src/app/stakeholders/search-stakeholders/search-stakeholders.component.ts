@@ -64,8 +64,9 @@ export class SearchStakeholdersComponent implements OnInit {
   }
 
   ngOnInit() {
+    var context = this;
     this.eventsSubscription = this.clientID.subscribe(result => {
-      this.searchStakeholders(result);
+      context.searchStakeholders(result);
     });
   }
 
@@ -143,7 +144,7 @@ export class SearchStakeholdersComponent implements OnInit {
   }
   
   ngOnChanges(){
-    this.ngOnInit();
+    // this.ngOnInit();
   }
 
 }
