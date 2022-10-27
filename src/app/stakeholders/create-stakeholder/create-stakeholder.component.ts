@@ -369,7 +369,7 @@ export class CreateStakeholderComponent implements OnInit {
     });
 
     this.formStakeholderSearch.get("documentType").valueChanges.subscribe(data => {
-      if (data !== '1001') { // Cartão do Cidadão
+      if (data !== 'Cartão do Cidadão') { // Cartão do Cidadão
         this.formStakeholderSearch.controls["documentNumber"].setValidators([Validators.required]);
         this.formStakeholderSearch.removeControl("flagAutCol");
       } else {
@@ -473,7 +473,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   changeListElementDocType(docType: string, e: any) {
     this.docType = e.target.value;
-    if (this.docType === '1001') {
+    if (this.docType === 'Cartão do Cidadão') {
       this.isCC = true;
     } else {
       this.isCC = false;
@@ -651,7 +651,7 @@ export class CreateStakeholderComponent implements OnInit {
       "fullName": this.dataCCcontents.nameCC,
       "shortName": this.dataCCcontents.nameCC,
       "identificationDocument": {
-        "type": '1001',           //FIXME "CC"
+        "type": 'Cartão do Cidadão',           //FIXME "CC"
         "number": this.dataCCcontents.cardNumberCC,
         "country": this.dataCCcontents.countryCC,
         "expirationDate": this.dataCCcontents.expiricyDateCC,
