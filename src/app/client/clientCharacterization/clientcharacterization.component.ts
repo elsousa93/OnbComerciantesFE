@@ -256,10 +256,17 @@ export class ClientCharacterizationComponent implements OnInit {
       this.form.get("natJuridicaN2").updateValueAndValidity();
     });
 
-    this.onLegalNatureSelected();
-
     this.formClientCharacterizationReady.emit(this.form);
     console.log('FORM CONTROL OTHER ', this.form);
+  }
+
+  natJuridica2Exists() {
+    var code = this.form.get("natJuridicaN2").value;
+    var index = this.legalNatureList2.findIndex(n => n.code == code);
+    if (index == -1)
+      return null;
+    else
+      return true;
   }
 
   initializeFormControlCRC() {
@@ -600,7 +607,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.documentationDeliveryMethod = 'Portal';
     else
       this.client.documentationDeliveryMethod = 'Mail';
-    if (this.isCommercialSociety) {
+    if (this.isCommercialSociety && this.collectCRC) { // adicionei o this.collectCRC
       this.client.headquartersAddress = {
         address: this.form.value["address"],
         country: this.form.value["country"],
@@ -636,9 +643,10 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
 
-      if (this.client.merchantType === 'corporation')
+      if (this.client.merchantType === 'corporation' || this.client.merchantType === 'Corporate' || this.client.merchantType === 'Company' || this.client.merchantType === '01')
         this.client.merchantType = '01';
-      else
+
+      if (this.client.merchantType === 'Entrepeneur' || this.client.merchantType === 'ENI' || this.client.merchantType === '02')
         this.client.merchantType = '02';
     } else {
 
@@ -692,7 +700,7 @@ export class ClientCharacterizationComponent implements OnInit {
       var fiscalID = value.fiscalId;
 
       var stakeholderToInsert = {
-        "fiscalId": (fiscalID !== null && fiscalID !== undefined) ? fiscalID : '',
+        "fiscalId": (fiscalID != null && fiscalID != undefined) ? fiscalID : '',
         "shortName": value.name,
         "fiscalAddress": {
           "postalCode": "",
