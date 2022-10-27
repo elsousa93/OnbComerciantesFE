@@ -664,7 +664,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
         this.client.merchantType = '01';
 
-        if (natJuridicaN2 !== null)
+        if (natJuridicaN2 != null && natJuridicaN2 != '')
           this.client.legalNature2 = this.form.value["natJuridicaN2"];
       }
       this.client.commercialName = this.form.value["socialDenomination"];

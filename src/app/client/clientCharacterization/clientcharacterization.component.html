@@ -374,8 +374,8 @@
                     <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                       class="form-control campo_form" [attr.disabled]="legalNatureList2?.length === 0 || returned === 'consult' ? true : null">
                       <!-- <option value="">{{'generalKeywords.select'|translate}}</option> -->
-                      <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}} 
-                        [attr.selected]="natJuridica2Exists()">
+                      <option *ngFor="let legalNature2 of legalNatureList2" [value]="legalNature2.code" 
+                        [attr.selected]="(merchantInfo != null && merchantInfo.legalNature2 == legalNature2.code) ? true : null">
                         {{legalNature2.description}}</option>
                     </select>
                   </div>
