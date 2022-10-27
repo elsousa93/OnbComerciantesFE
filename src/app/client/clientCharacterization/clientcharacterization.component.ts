@@ -254,6 +254,9 @@ export class ClientCharacterizationComponent implements OnInit {
         this.form.get("natJuridicaN2").clearValidators();
       this.form.get("natJuridicaN2").updateValueAndValidity();
     });
+
+    this.onLegalNatureSelected();
+
     this.formClientCharacterizationReady.emit(this.form);
     console.log('FORM CONTROL OTHER ', this.form);
   }
@@ -355,6 +358,7 @@ export class ClientCharacterizationComponent implements OnInit {
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
     this.rootForm = this.rootFormDirective.form;
     this.form = this.rootForm.get("clientCharacterizationForm");
+    this.initializeTableInfo();
   }
 
   ngOnInit(): void {
@@ -386,9 +390,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientId = this.clientContext.clientId;
     this.dataCC = this.clientContext.dataCC;
 
-
-    this.initializeTableInfo();
-    //this.getClientContextValues();
+    this.getClientContextValues();
   }
 
   getCurrentClientAsync() {
@@ -405,35 +407,29 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.clientExists = this.clientContext.clientExists;
     this.NIFNIPC = this.clientContext.getNIFNIPC();
-    this.tipologia = this.clientContext.tipologia;
+
 
     this.getCurrentClientAsync().then(result => {
-      //context.client = result;
 
       this.hasCRC = (JSON.stringify(this.client.incorporationStatement) !== '{}' && this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
-      
+
+      if (this.tipologia == 'Company' || this.tipologia == 'Corporate') {
+        this.isCommercialSociety = false;
+        this.collectCRC = false;
+        this.initializeFormControlOther();
+      }
+      if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
+        this.isCommercialSociety = false;
+        this.collectCRC = false;
+        this.initializeENI();
+      }
       if (this.hasCRC) {
         this.isCommercialSociety = true;
         this.collectCRC = true;
         this.initializeBasicCRCFormControl();
         this.searchByCRC();
-      } else { 
-        if (this.tipologia == 'Company' || this.tipologia == 'Corporate') {
-          this.isCommercialSociety = false;
-          this.collectCRC = false;
-          this.initializeFormControlOther();
-          this.onLegalNatureSelected();
-        }
-        if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
-          this.isCommercialSociety = false;
-          this.collectCRC = false;
-          this.initializeENI();
-        }
       }
 
-      //if (this.client.merchantRegistrationId != null && this.client.merchantRegistrationId != "") {
-      //  this.DisableNIFNIPC = true;
-      //}
     });
 
     this.clientContext.currentMerchantInfo.subscribe(result => {

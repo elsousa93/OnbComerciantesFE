@@ -277,7 +277,6 @@ export class CountrysComponent implements OnInit {
         NIPCGroup: new FormControl('')
       }));
       this.editCountries(true);
-      //this.form.get("services").disable();
     } else {
       this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.annualEstimatedRevenue : this.client?.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
