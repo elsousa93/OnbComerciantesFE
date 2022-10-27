@@ -104,8 +104,10 @@ export class ConsultasFTComponent implements OnInit{
         break;
       case "DOValidation":
         this.state = "OperationsEvaluation"
+        break;
       case "validationSIBS":
         this.state = "MerchantRegistration"
+        break;
     }
   }
 
