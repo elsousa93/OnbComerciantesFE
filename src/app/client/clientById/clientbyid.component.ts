@@ -375,7 +375,20 @@ export class ClientByIdComponent implements OnInit {
         crcCode: new FormControl((this.returned != null && this.merchantInfo?.incorporationStatement != undefined) ? this.merchantInfo?.incorporationStatement?.code : '', [Validators.required]), //sim
         collectCRC: new FormControl(this.collectCRC)
       }),
-      countrysForm: formBuilder.group({}),
+      countrysForm: new FormGroup({
+        expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+        services: new FormControl('', Validators.required),
+        transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
+        associatedWithGroupOrFranchise: new FormControl(false, Validators.required),
+        preferenceDocuments: new FormControl('', Validators.required),
+        inputEuropa: new FormControl(false),
+        inputAfrica: new FormControl(false),
+        inputAmerica: new FormControl(false),
+        inputOceania: new FormControl(false),
+        inputAsia: new FormControl(false),
+        franchiseName: new FormControl(''),
+        NIPCGroup: new FormControl('')
+      }),
       powerRepresentationForm: formBuilder.group({}),
     })
 
@@ -557,7 +570,7 @@ export class ClientByIdComponent implements OnInit {
 
           }).then(result => {
             this.countriesComponent.getClientContextValues();
-            //this.clientCharacterizationComponent.getClientContextValues();
+            this.clientCharacterizationComponent.getClientContextValues();
             this.createSubmission();
           });
         } else {
@@ -596,7 +609,7 @@ export class ClientByIdComponent implements OnInit {
         this.clientContext.setClient(result);
       }).then(result => {
         this.countriesComponent.getClientContextValues();
-        //this.clientCharacterizationComponent.getClientContextValues();
+        this.clientCharacterizationComponent.getClientContextValues();
       });
     }
 
@@ -1049,7 +1062,6 @@ export class ClientByIdComponent implements OnInit {
   formClientCountryIsValid(formCountry) {
     console.log("form country: ", formCountry);
 
-
     formCountry.statusChanges.subscribe(res => {
       console.log("client country estado: ", res);
       if (res === 'VALID') {
@@ -1061,9 +1073,6 @@ export class ClientByIdComponent implements OnInit {
         this.formCountryIsValid = false;
       }
     })
-
-    console.log("variavel characterization valid: ", this.formClientCharacterizationIsValid);
-    console.log("variavel country valid: ", this.formCountryIsValid);
 
   }
 
