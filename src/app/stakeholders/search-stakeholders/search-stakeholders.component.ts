@@ -144,7 +144,7 @@ export class SearchStakeholdersComponent implements OnInit {
   }
   
   ngOnChanges(){
-    this.ngOnInit();
+    // this.ngOnInit();
   }
 
 }

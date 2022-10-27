@@ -91,7 +91,7 @@
                   wappler-command="editContent">
                   {{'stores.country'|translate}} *</p>
                 <select class="form-select campo-form-select"
-                  id="countryStore" formControlName="countryStore" click="clean()">
+                  id="countryStore" formControlName="countryStore" (click)="clean()">
                   <option *ngFor="let country of countries" value={{country.code}}>
                     {{country.description}}
                   </option>
