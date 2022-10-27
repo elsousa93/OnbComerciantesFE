@@ -51,7 +51,7 @@ export class CountrysComponent implements OnInit {
   clientExists: boolean;
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
-  form: FormGroup;
+  form: AbstractControl;
 
   public map = new Map();
   public currentPage: number;
@@ -116,7 +116,7 @@ export class CountrysComponent implements OnInit {
 
   countryError: boolean;
   errorMsg: string;
-  rootForm: any;
+  rootForm: FormGroup;
 
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
@@ -150,7 +150,7 @@ export class CountrysComponent implements OnInit {
     };
 
 
-    this.initializeForm();
+    //this.initializeForm();
 
     if (this.returned != null) {
       this.clientContext.currentMerchantInfo.subscribe(result => {
@@ -238,8 +238,9 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.submissionUser.user = auth.userName;
     this.newSubmission.submissionUser.branch = auth.bankName;
     this.newSubmission.submissionUser.partner = "SIBS";
-    this.rootForm = rootFormDirective.form;
-    //this.form = this.rootForm.get("countrysForm");
+
+    this.rootForm = this.rootFormDirective.form;
+    this.form = this.rootForm.get("countrysForm");
 
     this.subs.push(this.tableInfo.GetAllFranchises().subscribe(result => {
       this.franchises = result;
@@ -713,21 +714,23 @@ export class CountrysComponent implements OnInit {
   }
 
   getClientContextValues() {
-    var context = this;
 
     this.clientExists = this.clientContext.clientExists;
 
     this.getCurrentClientAsync().then(val => {
-      context.insertValues();
+      this.insertValues();
 
-      if (context.client.businessGroup.type == "Holding") {
-        context.setAssociatedWith(true);
-        context.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+      if (this.client.businessGroup.type == "Holding") {
+        this.setAssociatedWith(true);
+        this.form.get("NIPCGroup").setValue(this.client.businessGroup.branch);
       }
-      if (context.client.businessGroup.type == "Franchising") {
-        context.setAssociatedWith(true);
-        context.form.get("NIPCGroup").setValue(context.client.businessGroup.branch);
+      if (this.client.businessGroup.type == "Franchising") {
+        this.setAssociatedWith(true);
+        this.form.get("NIPCGroup").setValue(this.client.businessGroup.branch);
       }
+
+      this.formCountrysReady.emit(this.form);
+      console.log('FORM EMITIDO DO GET CLIENT CONTEXT ', this.form);
     });
 
   }

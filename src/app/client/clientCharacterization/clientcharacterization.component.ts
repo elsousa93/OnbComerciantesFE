@@ -172,7 +172,7 @@ export class ClientCharacterizationComponent implements OnInit {
     //this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo?.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.hasCRC ? true: collectCRC)
     }));
@@ -207,11 +207,12 @@ export class ClientCharacterizationComponent implements OnInit {
     //this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
     var collectCRC = this.form.get("collectCRC")?.value;
 
-    this.form = new FormGroup({
+    this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.hasCRC ? true : null, [Validators.required])
-    });
+    }));
+
     this.form.get("natJuridicaNIFNIPC").updateValueAndValidity();
 
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur') {
@@ -390,7 +391,11 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientId = this.clientContext.clientId;
     this.dataCC = this.clientContext.dataCC;
 
-    this.getClientContextValues();
+    if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
+      this.isCommercialSociety = false;
+      this.collectCRC = false;
+      this.initializeENI();
+    }
   }
 
   getCurrentClientAsync() {
@@ -413,21 +418,22 @@ export class ClientCharacterizationComponent implements OnInit {
 
       this.hasCRC = (JSON.stringify(this.client.incorporationStatement) !== '{}' && this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null && this.client.incorporationStatement?.code !== undefined);
 
-      if (this.tipologia == 'Company' || this.tipologia == 'Corporate') {
-        this.isCommercialSociety = false;
-        this.collectCRC = false;
-        this.initializeFormControlOther();
-      }
-      if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
-        this.isCommercialSociety = false;
-        this.collectCRC = false;
-        this.initializeENI();
-      }
       if (this.hasCRC) {
         this.isCommercialSociety = true;
         this.collectCRC = true;
         this.initializeBasicCRCFormControl();
         this.searchByCRC();
+      } else {
+        if (this.tipologia == 'Company' || this.tipologia == 'Corporate') {
+          this.isCommercialSociety = false;
+          this.collectCRC = false;
+          this.initializeFormControlOther();
+        }
+        if (this.tipologia == 'ENI' || this.tipologia == 'Entrepeneur') {
+          this.isCommercialSociety = false;
+          this.collectCRC = false;
+          this.initializeENI();
+        }
       }
 
     });
