@@ -40,6 +40,8 @@ export interface CountryInformation {
 export interface LegalNature {
   code: string
   description: string
+  mandatoryDocuments: string
+  isCommercialCompany: boolean
   secondaryNatures: SecondLegalNature[]
 }
 

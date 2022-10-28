@@ -117,7 +117,8 @@
     "CRCNotFound": "Inserted CRC was not found",
     "countryError": "Choose at least one country",
     "documents": "Merchant's Documents",
-    "CRCMatchNIF": "Invalid code for the NIPC"
+    "CRCMatchNIF": "Invalid code for the NIPC",
+    "incorrectLegalNat": "The Legal Nature doesn't match the Commercial Society type"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",

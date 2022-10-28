@@ -491,6 +491,8 @@ export class ClientByIdComponent implements OnInit {
 
         client.merchantType = this.tipologia;
 
+        client.documentationDeliveryMethod = 'Portal';
+
         this.clientContext.setClient(client);
         this.NIFNIPC = client.fiscalId;
         this.clientContext.setNIFNIPC(client.fiscalId);
@@ -600,6 +602,7 @@ export class ClientByIdComponent implements OnInit {
           clientToInsert.shareCapital = {};
 
           clientToInsert.merchantType = this.tipologia;
+          clientToInsert.documentationDeliveryMethod = 'Portal';
 
           this.clientContext.setNIFNIPC(this.NIFNIPC);
           this.clientContext.setClient(clientToInsert);
@@ -853,8 +856,10 @@ export class ClientByIdComponent implements OnInit {
 
       if (documentDelivery === 'viaDigital')
         newSubmission.merchant.documentationDeliveryMethod = 'Portal';
-      else
-        newSubmission.merchant.documentationDeliveryMethod = 'Mail';
+
+      if (documentDelivery === '') { 
+        newSubmission.merchant.documentationDeliveryMethod = 'Mail'; /////////////////////////
+      }
 
       if (merchantType === 'corporation')
         newSubmission.merchant.merchantType = '01'; //'Corporate'
