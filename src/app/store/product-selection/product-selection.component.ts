@@ -26,7 +26,7 @@ export class ProductSelectionComponent implements OnInit {
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
-  public store: ShopDetailsAcquiring[] = [];
+  public store: ShopDetailsAcquiring = new ShopDetailsAcquiring();
 
   public map: Map<number, boolean>;
   public currentPage: number;

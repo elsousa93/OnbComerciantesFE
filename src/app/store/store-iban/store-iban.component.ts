@@ -78,7 +78,7 @@ export class StoreIbanComponent implements OnInit {
   /*CHANGE - Get via service from the clients */
   public commIban: string = "232323232";
   public auxIban: string = "";
-  public bank: string;
+  public bankLogin: string;
 
   /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
@@ -91,7 +91,8 @@ export class StoreIbanComponent implements OnInit {
 
   banks: Bank[];
 
-  public store: ShopDetailsAcquiring[] = [];
+  public store: ShopDetailsAcquiring = new ShopDetailsAcquiring();
+  public bank: Bank = new Bank();
 
   formStores!: FormGroup;
   returned: string
@@ -105,8 +106,8 @@ export class StoreIbanComponent implements OnInit {
     this.authService.currentUser.subscribe(result => {
 
       if (result.permissions === UserPermissions.BANCA) {
-        this.bank = this.authService.GetBank();
-        console.log('VALOR DO BANK ', this.bank);
+        this.bankLogin = this.authService.GetBank();
+        console.log('VALOR DO BANK ', this.bankLogin);
         this.updateForm();
       }
     });
