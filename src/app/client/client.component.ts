@@ -570,7 +570,7 @@ export class ClientComponent implements OnInit {
     this.nameEmitter.emit(this.displayValueSearch);
   }
 
-  toggleShowFoundClient(value: Boolean) {
+  toggleShowFoundClient(value: boolean) {
     //There is no client
     if (value == true) {
       this.showFoundClient = true

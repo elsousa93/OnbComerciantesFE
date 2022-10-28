@@ -117,7 +117,8 @@
     "CRCNotFound": "CRC inserido não foi encontrado",
     "countryError": "Escolha pelo menos um país",
     "documents": "Documentos do Cliente",
-    "CRCMatchNIF": "Código inválido para o NIPC"
+    "CRCMatchNIF": "Código inválido para o NIPC",
+    "incorrectLegalNat": "A Natureza Jurídica não corresponde com o tipo da Sociedade Comercial"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",

@@ -138,6 +138,7 @@ export class ClientCharacterizationComponent implements OnInit {
   collectCRC: boolean;
   rootForm: FormGroup;
   hasCRC: boolean;
+  legalNatError: boolean = false;
 
   @Output() formClientCharacterizationReady: EventEmitter<AbstractControl> = new EventEmitter();
 
@@ -256,8 +257,10 @@ export class ClientCharacterizationComponent implements OnInit {
       this.form.get("natJuridicaN2").updateValueAndValidity();
     });
 
+    this.onLegalNatureSelected();
+
     if (this.form.get("natJuridicaN2").value != null && this.form.get("natJuridicaN2").value != '') {
-      this.onLegalNatureSelected();
+      //this.onLegalNatureSelected();
       this.form.get("natJuridicaN2").setValue(this.client.legalNature2);
       this.form.get("natJuridicaN2").updateValueAndValidity();
     }
@@ -430,7 +433,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.collectCRC = false;
         this.initializeENI();
       } else {
-        if (this.hasCRC) {
+        if (!this.hasCRC) {
           console.log('ENTROU IF CRC', this.tipologia);
           this.isCommercialSociety = true;
           this.collectCRC = true;
@@ -439,7 +442,7 @@ export class ClientCharacterizationComponent implements OnInit {
         } else {
           if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
             console.log('ENTROU IF EMPRESA', this.tipologia);
-            this.isCommercialSociety = false;
+            this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature);
             this.collectCRC = false;
             this.initializeFormControlOther();
           }
@@ -472,6 +475,10 @@ export class ClientCharacterizationComponent implements OnInit {
     });
 
 
+  }
+
+  getIsCommercialSocietyFromLegalNature(legalNatureCode: string) {
+    return this.legalNatureList.find(ln => ln.code === legalNatureCode).isCommercialCompany;
   }
 
   ngOnDestroy(): void {
@@ -508,12 +515,20 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   onLegalNatureSelected() {
+    this.legalNatError = false;
     var exists = false;
     this.logger.debug("entrou no legalnatureselected");
 
+    var legalNatureToSearch = this.form.get('natJuridicaN1').value;
+
+    if (this.isCommercialSociety != this.getIsCommercialSocietyFromLegalNature(legalNatureToSearch)) { 
+      this.legalNatError = true;
+      return;
+    }
+
     this.logger.debug(this.legalNatureList);
     this.legalNatureList.forEach(legalNat => {
-      var legalNatureToSearch = this.form.get('natJuridicaN1').value;
+      //var legalNatureToSearch = this.form.get('natJuridicaN1').value;
       if (legalNatureToSearch == legalNat.code) {
         exists = true;
         this.legalNatureList2 = legalNat.secondaryNatures;
@@ -541,6 +556,7 @@ export class ClientCharacterizationComponent implements OnInit {
         if (clientByCRC === undefined || clientByCRC === null) {
           this.crcNotExists = true;
           this.crcFound = false;
+          return;
         }
 
         var nif = this.form.get("natJuridicaNIFNIPC").value;
