@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { Bank, ShopBankingInformation } from '../store/IStore.interface';
-import { Address, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
+import { Activity, Address, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -90,6 +90,16 @@ export class TableInfoService {
       }),
     }
     return this.http.get<EconomicActivityInformation>(this.acquiringUrl + 'merchant/economicactivity/' + code, HTTP_OPTIONS);
+  }
+
+  FilterStoreByCAE(code: string) {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<Activity>(this.acquiringUrl + 'merchant/economicactivity/' + code + '/activity', HTTP_OPTIONS);
   }
 
   GetAllLegalNatures() {
