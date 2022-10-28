@@ -193,7 +193,7 @@ export class ClientComponent implements OnInit {
   BlockNIF: boolean;
   Validations: boolean;
   DisableButtons: boolean;
-  BlockDocumentNumber: boolean = false; //if you want to read the CC NEW
+  BlockDocumentNumber: boolean = true; //if you want to read the CC NEW
   //  DocumentTypes: Array<IRefData>;
   IsInsolventCantPass: boolean;
   CCReaderPresent: boolean;
@@ -232,7 +232,7 @@ export class ClientComponent implements OnInit {
   showENI: boolean = false;
   isENI: boolean = false;
   isCC: boolean = false;
-  toShowReadCC: boolean = false;
+  toShowReadCC: boolean = true;
   documentType: boolean = false;
   toSearch: boolean = false;
   resultError: string = "";
@@ -725,7 +725,7 @@ export class ClientComponent implements OnInit {
     this.isCC = false;
     this.notFound = false;
     this.clientNr = false;
-    this.isNoDataReadable = false;
+    this.isNoDataReadable = true;
     this.toSearch = false;
     this.documentType = false;
     this.okCC = false;
