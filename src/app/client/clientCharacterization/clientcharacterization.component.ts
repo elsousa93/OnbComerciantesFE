@@ -238,7 +238,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : this.client.legalNature), //sim
+      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : this.client.legalNature, Validators.required), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
       socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
@@ -266,15 +266,6 @@ export class ClientCharacterizationComponent implements OnInit {
     console.log('FORM CONTROL OTHER ', this.form);
   }
 
-  natJuridica2Exists() {
-    var code = this.form.get("natJuridicaN2").value;
-    var index = this.legalNatureList2.findIndex(n => n.code == code);
-    if (index == -1)
-      return null;
-    else
-      return true;
-  }
-
   initializeFormControlCRC() {
     this.logger.debug("intializecrcform");
     this.logger.debug("a");
@@ -291,7 +282,7 @@ export class ClientCharacterizationComponent implements OnInit {
     //this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
 
     this.changeFormStructure(new FormGroup({
-      crcCode: new FormControl(this.client.incorporationStatement.code, [Validators.required]), //sim
+      crcCode: new FormControl(this.processClient.code /*this.client.incorporationStatement.code*/, [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl({ value: '', disabled: true/*, disabled: this.clientExists*/ }), //sim
@@ -589,6 +580,10 @@ export class ClientCharacterizationComponent implements OnInit {
         this.processClient.pdf = clientByCRC.pdf;
 
         this.processClient.code = clientByCRC.code;
+
+        this.processClient.code = crcInserted;//
+        console.log('CLIENT BY CRC VALOR ', clientByCRC.code);//
+
         this.processClient.requestId = clientByCRC.requestId;
 
         this.logger.debug("o crc chamou o initialize");
