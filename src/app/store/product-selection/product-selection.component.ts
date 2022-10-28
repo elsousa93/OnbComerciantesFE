@@ -262,7 +262,7 @@ export class ProductSelectionComponent implements OnInit {
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
-      if (val==='cardNotPresent' || val==='CARD NOT PRESENT')
+      if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='02')
         this.formStores.get('url').setValidators([Validators.required]);
       else
         this.formStores.get('url').setValidators(null);

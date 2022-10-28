@@ -83,7 +83,7 @@
                     </option>
                   </select>
                   <p class="titulo-form-simples ps-4">{{'commercialOffer.totalTerminal'|translate|uppercase}}</p>
-                  <input id="text3" formControlName="terminalAmount" name="terminalAmount" type="text"
+                  <input id="text3" formControlName="terminalAmount" name="terminalAmount" type="text" (keypress)="numericOnly($event)"
                      class="form-control campo_form ms-4">
                </div>
                <div class="mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 text-start col-5 offset-1">

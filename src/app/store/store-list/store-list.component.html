@@ -94,7 +94,7 @@
           </div>
           <div style="margin-top: 30px;">
           <button id="btn5a" [disabled]="!editStores.valid" (click)="submit((currentIdx === -1 ) ? true : false)" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-            {{(currentIdx === -1 ? 'stores.insert' : 'stores.edit')|translate|uppercase}}&nbsp;
+            {{(currentIdx === -1 ? 'stores.add' : 'stores.edit')|translate|uppercase}}&nbsp;
             <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
           </button></div>
         </div>
