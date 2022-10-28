@@ -1,10 +1,5 @@
 <form [formGroup]="formConfig" name="formConfig" id="formConfig">
-   <div class="offset-1 mt-0 mb-0 pt-0 pb-0 ps-0 pe-0 col-10">
-      <h3 class="text-primary mt-5 pb-3 ps-2 pe-2"><img src="assets/images/point_of_sale.svg"
-            class="img_add">&nbsp;{{'commercialOffer.terminalConfig'|translate|uppercase}}&nbsp;<span
-            class="material-symbols-rounded">
-         </span>
-      </h3>
+   <div>
       <div class="row">
          <div class="mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 text-start col-5">
             <p class="titulo-form-simples ps-4">{{'commercialOffer.terminalIdentification'|translate|uppercase}}
@@ -71,7 +66,7 @@
             wappler-command="editContent">{{'commercialOffer.uploadMensal'|translate|uppercase}}&nbsp;&nbsp;<img
                src="assets/images/move_up_white.svg" style="height: 25px !important; vertical-align: sub;"></button>
       </div>
-      <div class="col mt-0 mb-0 pt-5 pb-4 ps-1">
+      <div class="col mt-0 mb-0 pt-5 pb-4 ps-1" *ngIf="pricingOptions.length > 1 && pricingAttributeList.length == 0">
 
          <h5 class="text-primary m-align mt-5 pb-0 ps-3 pe-2">
             <img src="assets/images/calendar_month.svg"
@@ -81,7 +76,7 @@
          </h5>
 
          <div class="table-responsive mb-2 ps-2 pe-3"
-            *ngIf="pricingOptions.length > 1 && pricingAttributeList.length == 0">
+            >
             <table class="table table-success">
                <thead class="text-primary table-primary">
                   <tr class="table-white text-primary">
