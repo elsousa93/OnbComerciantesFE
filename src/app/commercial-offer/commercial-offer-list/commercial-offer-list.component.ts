@@ -208,6 +208,8 @@ export class CommercialOfferListComponent implements OnInit {
     this.getStoreEquipsFromSubmission();
 
     this.getPackDetails();
+    this.getCommissionsList();
+
 
     if (this.returned == 'consult')
       this.form.disable();
