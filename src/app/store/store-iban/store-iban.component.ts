@@ -78,7 +78,7 @@ export class StoreIbanComponent implements OnInit {
   /*CHANGE - Get via service from the clients */
   public commIban: string = "232323232";
   public auxIban: string = "";
-  public bank: string;
+  public bankLogin: string;
 
   /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
@@ -91,136 +91,8 @@ export class StoreIbanComponent implements OnInit {
 
   banks: Bank[];
 
-  public store: ShopDetailsAcquiring = {
-    shopId: "1",
-    name: "ShopName",
-    manager: "Manager1",
-    activity: "C",
-    subActivity: "C1",
-    supportEntity: "Entity1",
-    registrationId: "RegID",
-    address: {
-      useMerchantAddress: true,
-      address: {
-        address: "A",
-        postalCode: "B",
-        postalArea: "C",
-        country: "123"
-      },
-      isInsideShoppingCenter: true,
-      shoppingCenter: "Shopping1"
-    },
-    bank: {
-      useMerchantBank: true,
-      bank: {
-        bank: "Bank",
-        iban: "12345"
-      }
-    },
-    website: "www.google.com",
-    productCode: "345",
-    subproductCode: "324",
-    equipments: [
-      {
-        shopEquipmentId: "123",
-        communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-        equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-        communicationType: "A",
-        equipmentType: "A",
-        quantity: 0,
-        pricing: {
-          id: "123",
-          attribute: [
-            {
-              id: "A",
-              description: "A",
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            }
-          ]
-        }
-      }
-    ],
-    pack: {
-      packId: "123",
-      packDetails: [
-        {
-          id: "1234",
-          description: "123",
-          kind: "1234",
-          attributes: [
-            {
-              id: "1234",
-              description: "AAA",
-              originalValue: true,
-              finalValue: true,
-              isReadOnly: true,
-              isVisible: true,
-              isSelected: true,
-              order: 0,
-              bundles: [
-                {
-                  id: "B",
-                  description: "B",
-                  kind: ProductPackKindEnum.SIMPLE,
-                  attributes: [
-                    {
-                      id: "B123",
-                      description: "B123456",
-                      originalValue: true,
-                      finalValue: true,
-                      isReadOnly: true,
-                      isVisible: true,
-                      isSelected: true,
-                      order: 0
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      commission: {
-        commissionId: "1",
-        attribute: {
-          id: "",
-          description: "A1",
-          fixedValue: {
-            originalValue: 1,
-            finalValue: 1,
-            isReadOnly: true,
-            isVisible: true
-          },
-          maxValue: {
-            originalValue: 1,
-            finalValue: 1,
-            isReadOnly: true,
-            isVisible: true
-          },
-          minValue: {
-            originalValue: 1,
-            finalValue: 1,
-            isReadOnly: true,
-            isVisible: true
-          },
-          percentageValue: {
-            originalValue: 1,
-            finalValue: 1,
-            isReadOnly: true,
-            isVisible: true
-          }
-        }
-      }
-    },
-    documents: {
-      href: "",
-      type: "",
-      id: ""
-    }
-  } as ShopDetailsAcquiring
+  public store: ShopDetailsAcquiring = new ShopDetailsAcquiring();
+  public bank: Bank = new Bank();
 
   formStores!: FormGroup;
   returned: string
@@ -234,8 +106,8 @@ export class StoreIbanComponent implements OnInit {
     this.authService.currentUser.subscribe(result => {
 
       if (result.permissions === UserPermissions.BANCA) {
-        this.bank = this.authService.GetBank();
-        console.log('VALOR DO BANK ', this.bank);
+        this.bankLogin = this.authService.GetBank();
+        console.log('VALOR DO BANK ', this.bankLogin);
         this.updateForm();
       }
     });

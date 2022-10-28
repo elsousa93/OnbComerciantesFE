@@ -39,7 +39,6 @@ export class StoreComponent implements AfterViewInit {
 
   /*variable declaration*/
   public stores: Istore[] = [];
-  public clientID: number = 12345678;
 
   public map: Map<number, boolean>;
   public currentPage: number;
