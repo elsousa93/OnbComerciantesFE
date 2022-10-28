@@ -301,6 +301,8 @@
                   </div>
                 </div>
               </div>
+
+                </div>
 </div>
 
 
@@ -318,23 +320,17 @@
               <div class="col-xxl col-6" style="padding-left: 30px;">
                 <div>
                   <p class="titulo-form-simples" for="natJuridicaN1">{{'client.legalNature'|translate}} N1:*</p>
-                  <p *ngIf="legalNatError == true" class="titulo-form-simples">
-                    <span class="titulo-form-error" *ngIf="legalNatError == true">
-                      {{'client.incorrectLegalNat'|translate}}
-                    </span>
-                  </p>
                   <select formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
-                          class="form-control campo_form" (change)="onLegalNatureSelected()"
-                          [attr.disabled]="returned === 'consult' ? true : null">
+                    class="form-control campo_form" (change)="onLegalNatureSelected()"
+                    [attr.disabled]="returned === 'consult' ? true : null">
                     <!-- <option value="">{{'generalKeywords.select'|translate}}</option> -->
                     <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}
-                            [attr.selected]="(merchantInfo != null && merchantInfo.legalNature == legalNature.code) ? true : null">
-                      {{legalNature.description}}
-                    </option>
+                      [attr.selected]="(merchantInfo != null && merchantInfo.legalNature == legalNature.code) ? true : null">
+                      {{legalNature.description}}</option>
                   </select>
 
                   <div class="alert alert-danger"
-                       *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
+                    *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                     <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
                       {{'generalKeywords.mandatoryParameter'|translate}}
                     </div>
@@ -353,7 +349,7 @@
                 </div>
               </div>
 
-              <div class="col-xxl col-12">
+              <div class="col-xxl col-7">
                 <div>
                   <p class="titulo-form-simples" for="socialDenomination">{{'client.socialDenomination'|translate}}:*
                   </p>
