@@ -213,7 +213,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
     } else {
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = "R000";
     }
 
     console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
