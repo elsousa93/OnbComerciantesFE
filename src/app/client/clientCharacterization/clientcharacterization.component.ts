@@ -569,6 +569,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
         this.crcFound = true;
         this.crcNotExists = false;
+        this.crcMatchNIF = false;
         this.errorMsg = '';
         this.processClient.legalNature = clientByCRC.legalNature;
         this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;

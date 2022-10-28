@@ -315,7 +315,12 @@
             <div class="row">
               <div class="col-xxl col-6" style="padding-left: 30px;">
                 <div>
-                  <p class="titulo-form-simples" for="natJuridicaN1">{{'client.legalNature'|translate}} N1:*</p>
+                  <p class="titulo-form-simples" for="natJuridicaN1">
+                    {{'client.legalNature'|translate}} N1:*
+                    <span class="titulo-form-simples-erro" *ngIf="legalNatError == true">
+                      {{'client.incorrectLegalNat'|translate}}
+                    </span>
+                  </p>
                   <select formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                     class="form-control campo_form" (change)="onLegalNatureSelected()"
                     [attr.disabled]="returned === 'consult' ? true : null">
