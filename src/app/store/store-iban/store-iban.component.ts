@@ -91,7 +91,7 @@ export class StoreIbanComponent implements OnInit {
 
   banks: Bank[];
 
-  public store: ShopDetailsAcquiring = new ShopDetailsAcquiring();
+  public store: ShopDetailsAcquiring[] = [];
 
   formStores!: FormGroup;
   returned: string
