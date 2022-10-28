@@ -64,20 +64,21 @@
             <!--crc fim-->
 
             <div *ngIf="crcFound">
-              <!--*ngIf="isCommercialSociety && crcFound"-->
-              <div>
+              <p class="titulo-form-simples" for="socialDenomination">
+                {{'client.socialDenomination'|translate}}:* </p>
+              <input formControlName="socialDenomination"
+                name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
+                readonly>
+              <div class="alert alert-danger"
+                *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
+                <div
+                  *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
                 <div class="row">
                   <div class="col-xxl col-6">
-                    <div>
                       <p class="titulo-form-simples" for="natJuridicaN1">{{'client.legalNature'|translate}} N1:*</p>
-
-                      <!--<select *ngIf="!clientExists" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
-                  class="form-control campo_form"
-                  (change)="onLegalNatureSelected()" readonly>
-            <option value="">Selecione</option>
-            <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>{{legalNature.description}}</option>
-
-          </select>-->
                       <input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                         class="form-control campo_form" />
 
@@ -87,14 +88,9 @@
                           {{'generalKeywords.mandatoryParameter'|translate}}
                         </div>
                       </div>
-                    </div>
-                    <div>
+                      </div>
+                    <div class="col-xxl col-6">
                       <p class="titulo-form-simples" for="natJuridicaN2">{{'client.legalNature'|translate}} N2:*</p>
-                      <!--<select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
-                  class="form-control campo_form" readonly>
-            <option value="" selected disabled hidden>Selecione</option>
-            <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>{{legalNature2.description}}</option>
-          </select>-->
                       <input type="text" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                         class="form-control campo_form" />
 
@@ -106,161 +102,186 @@
                         </div>
                       </div>
                     </div>
-                    <div>
-                      <p class="titulo-form-simples" for="CAE1">{{'client.principalCAE'|translate}}:*</p>
-                      <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let cae of CAEsList" [value]="cae.code">
-                          {{cae.description}}
-                        </mat-option>
-                      </mat-autocomplete>
+                    </div>
+                    <div class="row">
+                      <div class="col-xxl col-6">
 
-                      <input formControlName="CAE1" name="CAE1" type="search" id="CAE1"
-                        class="form-control campo_form" readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAE1').touched && !this.form.get('CAE1').valid">
-                        <div *ngIf="this.form.get('CAE1').errors && this.form.get('CAE1').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
+                        <p class="titulo-form-simples" for="CAE1">{{'client.principalCAE'|translate}}:*</p>
+                        <mat-autocomplete #auto="matAutocomplete">
+                          <mat-option *ngFor="let cae of CAEsList" [value]="cae.code">
+                            {{cae.description}}
+                          </mat-option>
+                        </mat-autocomplete>
+  
+                        <input formControlName="CAE1" name="CAE1" type="search" id="CAE1"
+                          class="form-control campo_form" readonly>
+                        <div class="alert alert-danger"
+                          *ngIf="this.form.get('CAE1').touched && !this.form.get('CAE1').valid">
+                          <div *ngIf="this.form.get('CAE1').errors && this.form.get('CAE1').errors?.['required']">
+                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          </div>
                         </div>
+                      </div>
+                      <div class="col-xxl col-6">
+                          <p class="titulo-form-simples" for="CAE1Branch">{{'client.principalCAEBranch'|translate}}*: </p>
+    
+                          <input disabled formControlName="CAE1Branch" name="CAE1Branch"
+                            type="text" id="CAE1Branch" class="form-control campo_form" readonly>
+                          <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
+                            <div *ngIf="this.form.get('CAE1').errors">
+                              {{'client.invalidCAE'|translate}}
+                            </div>
+                            <div *ngIf="this.form.get('CAE1').valid">
+                              {{'client.invalidCAE2'|translate}}
+                            </div>
+                          </div>
+                          <div class="alert alert-danger"
+                            *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
+                            <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').errors?.['required']">
+                              {{'generalKeywords.mandatoryParameter'|translate}}
+                            </div>
+                          </div>
                       </div>
                     </div>
-                    <div>
-                      <p class="titulo-form-simples" for="CAESecondary1">{{'client.secondaryCAE'|translate}} 1: </p>
-                      <input formControlName="CAESecondary1" name="CAESecondary1"
-                        type="text" id="CAESecondary1" class="form-control campo_form" readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
-                        <div
-                          *ngIf="this.form.get('CAESecondary1').errors && this.form.get('CAESecondary1').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
+                    <div class="row">
+                      <div class="col-xxl col-6">
+                        <p class="titulo-form-simples" for="CAESecondary1">{{'client.secondaryCAE'|translate}} 1: </p>
+                        <input formControlName="CAESecondary1" name="CAESecondary1"
+                          type="text" id="CAESecondary1" class="form-control campo_form" readonly>
+                        <div class="alert alert-danger"
+                          *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
+                          <div
+                            *ngIf="this.form.get('CAESecondary1').errors && this.form.get('CAESecondary1').errors?.['required']">
+                            {{'generalKeywords.mandatoryParameter'|translate}}
+                          </div>
                         </div>
                       </div>
+                      <div class="col-xxl col-6">
+                          <p class="titulo-form-simples" for="ramoSecundario1">{{'client.secondaryCAEBranch'|translate}}
+                            1: </p>
+                          <input formControlName="CAESecondary1Branch"
+                            name="ramoSecundario1" type="text" id="ramoSecundario1" class="form-control campo_form"
+                            readonly>
+                          <div class="alert alert-danger"
+                            *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
+                            <div
+                              *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
+                              {{'generalKeywords.mandatoryParameter'|translate}}
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <div>
-                      <p class="titulo-form-simples" for="CAESecondary2">{{'client.secondaryCAE'|translate}} 2: </p>
-                      <input formControlName="CAESecondary2" name="CAESecondary2"
-                        type="text" id="CAESecondary2" class="form-control campo_form" readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAESecondary2').touched && !this.form.get('CAESecondary2').valid">
-                        <div
-                          *ngIf="this.form.get('CAESecondary2').errors && this.form.get('CAESecondary2').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
+                    <div class="row">
+                      <div class="col-xxl col-6">
+                          <p class="titulo-form-simples" for="CAESecondary2">{{'client.secondaryCAE'|translate}} 2: </p>
+                          <input formControlName="CAESecondary2" name="CAESecondary2"
+                            type="text" id="CAESecondary2" class="form-control campo_form" readonly>
+                          <div class="alert alert-danger"
+                            *ngIf="this.form.get('CAESecondary2').touched && !this.form.get('CAESecondary2').valid">
+                            <div
+                              *ngIf="this.form.get('CAESecondary2').errors && this.form.get('CAESecondary2').errors?.['required']">
+                              {{'generalKeywords.mandatoryParameter'|translate}}
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                        <div class="col-xxl col-6">
+                            <p class="titulo-form-simples" for="ramoSecundario2">{{'client.secondaryCAEBranch'|translate}}
+                              2: </p>
+                            <input formControlName="CAESecondary2Branch"
+                              name="ramoSecundario2" type="text" id="ramoSecundario2" class="form-control campo_form"
+                              readonly>
+                            <div class="alert alert-danger"
+                              *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
+                              <div
+                                *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
+                                {{'generalKeywords.mandatoryParameter'|translate}}
+                              </div>
+                            </div>
+                          </div>
                     </div>
-
-                    <div>
-                      <p class="titulo-form-simples" for="CAESecondary3">{{'client.secondaryCAE'|translate}} 3: </p>
-                      <input formControlName="CAESecondary3" name="CAESecondary3"
-                        type="text" id="CAESecondary3" class="form-control campo_form" readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAESecondary3').touched && !this.form.get('CAESecondary3').valid">
-                        <div
-                          *ngIf="this.form.get('CAESecondary3').errors && this.form.get('CAESecondary3').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
+                    <div class="row">
+                      <div class="col-xxl col-6">
+                          <p class="titulo-form-simples" for="CAESecondary3">{{'client.secondaryCAE'|translate}} 3: </p>
+                          <input formControlName="CAESecondary3" name="CAESecondary3"
+                            type="text" id="CAESecondary3" class="form-control campo_form" readonly>
+                          <div class="alert alert-danger"
+                            *ngIf="this.form.get('CAESecondary3').touched && !this.form.get('CAESecondary3').valid">
+                            <div
+                              *ngIf="this.form.get('CAESecondary3').errors && this.form.get('CAESecondary3').errors?.['required']">
+                              {{'generalKeywords.mandatoryParameter'|translate}}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <div class="col-xxl col-7">
-                    <!--<div>
-          <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:*</p>
-          <input minlength="2" maxlength="100" formControlName="natJuridicaNIFNIPC"
-                 name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC" class="form-control campo_form" readonly />
-          <div class="alert alert-danger" *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
-            <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
-              O parâmetro acima é obrigatório.
-            </div>
-          </div>
-        </div>-->
-                    <div>
-                      <p class="titulo-form-simples" for="socialDenomination">
-                        {{'client.socialDenomination'|translate}}:* </p>
-                      <input formControlName="socialDenomination"
-                        name="socialDenomination" type="text" id="socialDenomination" class="form-control campo_form"
-                        readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
-                        <div
-                          *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
+                        <div class="col-xxl col-6">
+                            <p class="titulo-form-simples" for="ramoSecundario3">{{'client.secondaryCAEBranch'|translate}}
+                              3: </p>
+                            <input formControlName="CAESecondary2Branch"
+                              name="ramoSecundario3" type="text" id="ramoSecundario3" class="form-control campo_form"
+                              readonly>
+                            <div class="alert alert-danger"
+                              *ngIf="this.form.get('CAESecondary3Branch').touched && !this.form.get('CAESecondary3Branch').valid">
+                              <div
+                                *ngIf="this.form.get('CAESecondary3Branch').errors && this.form.get('CAESecondary3Branch').errors?.['required']">
+                                {{'generalKeywords.mandatoryParameter'|translate}}
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="CAE1Branch">{{'client.principalCAEBranch'|translate}}*: </p>
-
-                      <input disabled formControlName="CAE1Branch" name="CAE1Branch"
-                        type="text" id="CAE1Branch" class="form-control campo_form" readonly>
-
-                      <!--<div *ngIf="!this.form.get('CAE1').errors">
-            <input minlength="2" maxlength="100" formControlName="CAE1Branch" name="CAE1Branch"
-                   type="text" id="CAE1Branch" class="form-control campo_form" readonly>
-          </div>-->
-                      <div class="alert alert-danger" *ngIf="this.form.get('CAE1').touched">
-                        <div *ngIf="this.form.get('CAE1').errors">
-                          {{'client.invalidCAE'|translate}}
-                        </div>
-                        <div *ngIf="this.form.get('CAE1').valid">
-                          {{'client.invalidCAE2'|translate}}
-                        </div>
-                      </div>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAE1Branch').touched && !this.form.get('CAE1Branch').valid">
-                        <div class="alert alert-danger" *ngIf="this.form.get('CAE1Branch').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="ramoSecundario1">{{'client.secondaryCAEBranch'|translate}}
-                        1: </p>
-                      <input formControlName="CAESecondary1Branch"
-                        name="ramoSecundario1" type="text" id="ramoSecundario1" class="form-control campo_form"
-                        readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
-                        <div
-                          *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="ramoSecundario2">{{'client.secondaryCAEBranch'|translate}}
-                        2: </p>
-                      <input formControlName="CAESecondary2Branch"
-                        name="ramoSecundario2" type="text" id="ramoSecundario2" class="form-control campo_form"
-                        readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAESecondary2Branch').touched && !this.form.get('CAESecondary2Branch').valid">
-                        <div
-                          *ngIf="this.form.get('CAESecondary2Branch').errors && this.form.get('CAESecondary2Branch').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <p class="titulo-form-simples" for="ramoSecundario3">{{'client.secondaryCAEBranch'|translate}}
-                        3: </p>
-                      <input formControlName="CAESecondary2Branch"
-                        name="ramoSecundario3" type="text" id="ramoSecundario3" class="form-control campo_form"
-                        readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('CAESecondary3Branch').touched && !this.form.get('CAESecondary3Branch').valid">
-                        <div
-                          *ngIf="this.form.get('CAESecondary3Branch').errors && this.form.get('CAESecondary3Branch').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                  <hr>
-                </div>
-              </div>
+                        <div class="row">
+                          <div class="col-xxl col-6">
+                              <p class="titulo-form-simples" for="paisSedeSocial">
+                                {{'client.registeredOfficeCountry'|translate}}: </p>
+                              <input formControlName="country" name="country" type="text"
+                                id="country" class="form-control campo_form" readonly> <!-- [value]="getPaisSedeSocial()" -->
+                              <div class="alert alert-danger"
+                                *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
+                                <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
+                                  {{'generalKeywords.mandatoryParameter'|translate}}
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl col-6">
+                              <div>
+                                <p class="titulo-form-simples" for="ZIPCode">{{'client.registeredOfficePostalCode'|translate}}:
+                                </p>
+                                <input formControlName="ZIPCode" name="ZIPCode" type="text"
+                                  id="ZIPCode" class="form-control campo_form" (keyup)="GetCountryByZipCode()" readonly>
+                                <div class="alert alert-danger"
+                                  *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
+                                  <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
+                                    {{'generalKeywords.mandatoryParameter'|translate}}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-xxl col-6">
+                                  <p class="titulo-form-simples" for="moradaSedeSocial">
+                                    {{'client.registeredOfficeAddress'|translate}}: </p>
+                                  <input formControlName="address" name="address" type="text"
+                                    id="address" class="form-control campo_form" rows="3" readonly>
+                                  <div class="alert alert-danger"
+                                    *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
+                                    <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
+                                      {{'generalKeywords.mandatoryParameter'|translate}}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xxl col-6">
+                                    <p class="titulo-form-simples" for="localidadeSedeSocial">
+                                      {{'client.registeredOfficeLocale'|translate}}: </p>
+                                    <input formControlName="location" name="localidadeSedeSocial"
+                                      type="text" id="localidadeSedeSocial" class="form-control campo_form" readonly>
+                                    <div class="alert alert-danger"
+                                      *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
+                                      <div
+                                        *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
+                                        {{'generalKeywords.mandatoryParameter'|translate}}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
 
 
               <div class="offset-1 bg-white col-7 col-xxl-10">
@@ -280,65 +301,11 @@
                   </div>
                 </div>
               </div>
-              <div class="bg-white col-12 col-xxl-12">
-                <!--País da Sede Social-->
-                <div class="row">
-                  <div class="col-xxl col-6">
-                    <div>
-                      <p class="titulo-form-simples" for="paisSedeSocial">
-                        {{'client.registeredOfficeCountry'|translate}}: </p>
-                      <input formControlName="country" name="country" type="text"
-                        id="country" class="form-control campo_form" readonly> <!-- [value]="getPaisSedeSocial()" -->
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('country').touched && !this.form.get('country').valid">
-                        <div *ngIf="this.form.get('country').errors && this.form.get('country').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="ZIPCode">{{'client.registeredOfficePostalCode'|translate}}:
-                      </p>
-                      <input formControlName="ZIPCode" name="ZIPCode" type="text"
-                        id="ZIPCode" class="form-control campo_form" (keyup)="GetCountryByZipCode()" readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('ZIPCode').touched && !this.form.get('ZIPCode').valid">
-                        <div *ngIf="this.form.get('ZIPCode').errors && this.form.get('ZIPCode').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xxl col-10">
-                    <div>
-                      <p class="titulo-form-simples" for="localidadeSedeSocial">
-                        {{'client.registeredOfficeLocale'|translate}}: </p>
-                      <input formControlName="location" name="localidadeSedeSocial"
-                        type="text" id="localidadeSedeSocial" class="form-control campo_form" readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('location').touched && !this.form.get('location').valid">
-                        <div
-                          *ngIf="this.form.get('location').errors && this.form.get('location').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p class="titulo-form-simples" for="moradaSedeSocial">
-                        {{'client.registeredOfficeAddress'|translate}}: </p>
-                      <input formControlName="address" name="address" type="text"
-                        id="address" class="form-control campo_form" rows="3" readonly>
-                      <div class="alert alert-danger"
-                        *ngIf="this.form.get('address').touched && !this.form.get('address').valid">
-                        <div *ngIf="this.form.get('address').errors && this.form.get('address').errors?.['required']">
-                          {{'generalKeywords.mandatoryParameter'|translate}}
-                        </div>
-                      </div>
-                    </div>
 
-                  </div>
                 </div>
-              </div>
+</div>
+
+
             </div> <!-- Fecha comercial society -->
           </div>
         </div>
@@ -407,8 +374,6 @@
             </div>
           </div>
         </div>
-        <!--fecha div "se NÃO for sociedade comercial"-->
-        <!-- se NÃO for Sociedade Comercial e for ENI -->
         <div *ngIf="isCommercialSociety == false && (tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02')">
           <div class="col-10 ms-3 me-3 ps-3 pe-3">
             <p class="titulo-form-simples" for="socialDenomination">{{'client.socialDenominationName'|translate}}:*
@@ -418,49 +383,5 @@
               [attr.disabled]="(returned === 'consult' || (tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02')) ? true : null">
           </div>
         </div>
-        <!--fecha div "se NÃO for sociedade comercial"-->
-
-
-
-        <!------------   Botões final de página -------------->
-        <!-- <div class=" bg-white col-7 col-10 mb-5 pb-0 pe-0">
-          <div class="row me-0 pe-0">
-            <hr>
-          </div>
-          <div class="row">
-            <div class="col">
-              <nav
-                class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                <span class="navbar-text align-self-center ms-0 me-0">
-                  <button id="btn5a1"
-                    class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-3 pt-3 pb-3 ps-3 pe-3"
-                    wappler-command="editContent">
-                    {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span
-                      class="material-symbols-rounded m-align">
-                      <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
-                    </span>
-                  </button>
-                </span>
-                <button id="btn5a3"
-                  class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
-                  wappler-command="editContent" (click)="redirectBeginningClient()">
-                  <span class="material-symbols-rounded m-align">
-                    <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
-                  </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
-                </button>
-                <button id="btn5a2"
-                  class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                  wappler-command="editContent">
-                  {{'generalButtons.continue'|translate|uppercase}}&nbsp;<span
-                    class="material-symbols-rounded m-align">
-                    <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
-                  </span>
-                </button>
-              </nav>
-            </div>
-          </div>
-        </div> -->
       </div>
-    </div>
-  </div>
 </form>
