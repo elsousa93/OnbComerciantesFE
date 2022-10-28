@@ -93,6 +93,10 @@ export class StoreComponent implements AfterViewInit {
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService) {
     this.baseUrl = configuration.baseUrl;
     authService.currentUser.subscribe(user => this.currentUser = user);
+    this.data.updateData(false, 3, 1);
+  }
+
+  initializeForm(){
     this.editStores = this.formBuilder.group({
       infoStores: this.formBuilder.group({
         "storeName": [''],
@@ -116,8 +120,6 @@ export class StoreComponent implements AfterViewInit {
         "subProduct": [''],
       })
     });
-
-    this.data.updateData(false, 3, 1);
   }
 
   ngOnInit(): void {
@@ -143,6 +145,7 @@ export class StoreComponent implements AfterViewInit {
 
 
   addStore() {
+    this.initializeForm();
     this.currentStore = new ShopDetailsAcquiring();
     this.currentStore.address = new ShopAddressAcquiring();
     this.currentStore.address.address = new FiscalAddress();
