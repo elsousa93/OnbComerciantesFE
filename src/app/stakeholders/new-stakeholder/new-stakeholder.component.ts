@@ -210,7 +210,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       flagRecolhaEletronica: new FormControl(false), //v
       proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.isProxy + '' : false, Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
-      Role: new FormControl(''),
+      Role: new FormControl('', Validators.required),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
@@ -257,7 +257,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       contractAssociation: new FormControl('false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != undefined ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : false, Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
-      Role: new FormControl(''),
+      Role: new FormControl('', Validators.required),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
@@ -371,14 +371,16 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   
   clean() {
-    this.lockLocality = false;
-    this.formNewStakeholder.get('Address').setValidators(null);
-    this.formNewStakeholder.get('ZIPCode').setValidators(null);
-    this.formNewStakeholder.get('Locality').setValidators(null);
+    if (this.formNewStakeholder.get('Country').value !== 'PT') {
+      this.lockLocality = false;
+      this.formNewStakeholder.get('Address').setValidators(null);
+      this.formNewStakeholder.get('ZIPCode').setValidators(null);
+      this.formNewStakeholder.get('Locality').setValidators(null);
 
-    this.formNewStakeholder.get('Address').setValue('');
-    this.formNewStakeholder.get('ZIPCode').setValue('');
-    this.formNewStakeholder.get('Locality').setValue('');
+      this.formNewStakeholder.get('Address').setValue('');
+      this.formNewStakeholder.get('ZIPCode').setValue('');
+      this.formNewStakeholder.get('Locality').setValue('');
+    }
   }
 
   GetCountryByZipCode() {
