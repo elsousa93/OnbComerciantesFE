@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AcquiringClientPost, OutboundClient } from '../Client.interface';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
@@ -747,8 +747,21 @@ export class ClientByIdComponent implements OnInit {
       this.route.navigateByUrl('/stakeholders');
     }
   }
+
   redirectBeginningClient() {
-    this.route.navigate(["/client"]);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        tipologia: this.tipologia,
+        NIFNIPC: this.NIFNIPC,
+        clientExists: this.clientExists,
+        clientId: this.clientId,
+        dataCC: this.dataCC,
+        isClient: this.isClient,
+        comprovativoCC: this.comprovativoCC,
+      }
+    };
+
+    this.route.navigate(["/client"], navigationExtras);
   }
 
   redirectHomePage() {

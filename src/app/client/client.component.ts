@@ -360,42 +360,42 @@ export class ClientComponent implements OnInit {
       this.ListaDocTypeENI = this.ListaDocTypeENI.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     })));
 
-    // this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
-    //   this.ListaDocTypeENI = result;
-    // }));
-
-    this.ngOnInit();
     this.clientsMat.sort = this.sort;
     this.initializeForm();
     this.logger.debug(this.baseUrl);
     this.data.updateData(false, 1);
-    // this.activateButtons(false);
     this.errorInput = "form-control campo_form_coment";
 
-    //if (this.returned != null) { // && this.returned !== undefined
-    //  this.logger.debug("ENTREI NO IF DO RETURNED");
-    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-    //    this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
-    //    this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-    //      this.logger.debug('Submissão com detalhes mais especificos ' + resul);
-    //      this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-    //        this.merchantInfo = res;
-    //        this.logger.debug("MERCHANT QUE FOMOS BUSCAR " + this.merchantInfo);
-    //        if (this.merchantInfo.merchantType == 'Corporate') {
-    //          this.logger.debug("O tipo é empresa");
-    //          this.tipologia = 'Corporate';
-    //          this.activateButtons(true); // se for Empresa
-    //          this.clientTypology = "true";
-    //        } else {
-    //          this.logger.debug("O tipo é ENI");
-    //          this.tipologia = 'ENI';
-    //          this.activateButtons(false); // se for ENI
-    //          this.clientTypology = "false";
-    //        }
-    //      });
-    //    });
-    //  });
-    //}
+    if (localStorage.getItem("submissionId") != null) {
+      if (this.route.getCurrentNavigation().extras.state) {
+        this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
+        //this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
+        this.newClient.clientId = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+        this.prettyPDF = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
+        this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
+        this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
+        this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
+      }
+
+      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+        this.clientTypology = 'true';
+        this.activateButtons(true);
+        this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
+        this.changeListElementDocType(null, { e: { target: { value: this.newClient.documentationDeliveryMethod } } });
+        this.searchClient();
+        this.newClientForm.get("denominacaoSocial").setValue(localStorage.getItem("clientName"));
+      }
+
+      if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
+        this.clientTypology = 'false';
+        this.activateButtons(false);
+        this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
+        this.changeListElementDocType(null, { e: { target: { value: this.newClient.documentationDeliveryMethod } } });
+        this.searchClient();
+        this.newClientForm.get("nome").setValue(localStorage.getItem("clientName"));
+      }
+
+    }
   }
 
   clientsMat = new MatTableDataSource<any>();
@@ -547,13 +547,13 @@ export class ClientComponent implements OnInit {
   createAdditionalInfoForm() {
     let NIFNIPC = this.getNIFNIPC();
     switch (this.tipologia) {
-      case "Company":
+      case "Company" || "Corporate" || "01":
         this.newClientForm = this.formBuilder.group({
           nipc: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
           denominacaoSocial: new FormControl('', Validators.required)
         });
         break;
-      case "ENI":
+      case "ENI" || "Entrepeneur" || "02":
         this.newClientForm = this.formBuilder.group({
           nif: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
           nome: new FormControl('', Validators.required)
@@ -676,6 +676,9 @@ export class ClientComponent implements OnInit {
         isClient: this.isClient
       }
     };
+
+    localStorage.setItem("documentType", selectedClient.documentationDeliveryMethod);
+
     this.logger.debug("a passar para a proxima pagina");
     this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
 
