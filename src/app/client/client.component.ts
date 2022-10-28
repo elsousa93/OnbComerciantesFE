@@ -508,7 +508,7 @@ export class ClientComponent implements OnInit {
             clientToShow.client = client;
             context.clientsToShow.push(clientToShow);
             context.logger.debug(context.clientsToShow);
-            // context.clientsMat.data = context.clientsToShow;
+            context.clientsMat.data = context.clientsToShow;
           });
           
         })
