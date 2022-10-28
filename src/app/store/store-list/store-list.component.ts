@@ -93,6 +93,8 @@ export class StoreComponent implements AfterViewInit {
   constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService) {
     this.baseUrl = configuration.baseUrl;
     authService.currentUser.subscribe(user => this.currentUser = user);
+    this.initializeForm();
+
     this.data.updateData(false, 3, 1);
   }
 

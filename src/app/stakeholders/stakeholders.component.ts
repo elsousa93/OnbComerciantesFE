@@ -266,28 +266,6 @@ export class StakeholdersComponent implements OnInit {
     }
   }
 
-  getStakeFunction() {
-    var context = this;
-    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-      result.forEach(function (value, index) {
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-          context.submissionStakeholders.push(result);
-          this.stakeService.getStakeholderByID(result.stakeholderId, 'faltarequestID', 'faltaAcquiringUserID').subscribe((result: { documents: any; stakeholderId: string | number; }) => {
-            var documents = result.documents;
-            context.allStakeholdersComprovativos[result.stakeholderId] = documents;
-            console.log("get stake by id resposnse: ", result);
-          }, error => {
-            console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
-          });
-        }, error => {
-          console.log("Erro em GetStakeholderFromSubmission: ", error);
-        });
-      });
-    }, error => {
-      console.log("Erro na Get All: ", error);
-    });
-  }
-
   setFormData() {
     var stakeForm = this.editStakes.get("stake");
     stakeForm.get("contractAssociation").setValue('false');
@@ -313,7 +291,7 @@ export class StakeholdersComponent implements OnInit {
     if(info.stakeholder != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.stakeholderId];
+      this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.id];
       setTimeout(() => this.setFormData(), 500);
     }
   }
