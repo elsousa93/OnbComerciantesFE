@@ -113,13 +113,13 @@ export class ProductSelectionComponent implements OnInit {
   initializeForm() {
     this.formStores = new FormGroup({
       solutionType: new FormControl((this.store.productCode !== null) ? this.store.productCode : '', Validators.required),
-      subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : ''),
+      subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : '', Validators.required),
       url: new FormControl((this.store.website !== null) ? this.store.website : '')
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
-      if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='02')
+      if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='Card Not Present')
         this.formStores.get('url').setValidators([Validators.required]);
       else
         this.formStores.get('url').setValidators(null);
