@@ -251,7 +251,7 @@ export class CreateStakeholderComponent implements OnInit {
   public isParticular: boolean = false;
   // public isParticularSearched: boolean = false;
   public isCC: boolean = false;
-  public isNoDataReadable: boolean;
+  public isNoDataReadable: boolean = true;
 
   public isSearch: boolean = false;
 
@@ -374,7 +374,7 @@ export class CreateStakeholderComponent implements OnInit {
         this.formStakeholderSearch.removeControl("flagAutCol");
       } else {
         this.formStakeholderSearch.controls["documentNumber"].clearValidators();
-        this.formStakeholderSearch.addControl("flagAutCol", new FormControl('', Validators.required));
+        this.formStakeholderSearch.addControl("flagAutCol", new FormControl(true, Validators.required));
         this.formStakeholderSearch.get("flagAutCol").updateValueAndValidity();
 
         let navigationExtras: NavigationExtras = {
