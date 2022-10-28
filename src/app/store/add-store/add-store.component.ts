@@ -301,12 +301,12 @@ export class AddStoreComponent implements OnInit {
       this.logger.debug("Deu erro");
     }));
 
-    this.storeService.GetAllShopProducts().subscribe(result => {
-      this.logger.debug(result);
-      this.products = result;
-    }, error => {
-      this.logger.debug("Erro");
-    });
+    //this.storeService.GetAllShopProducts().subscribe(result => {
+    //  this.logger.debug(result);
+    //  this.products = result;
+    //}, error => {
+    //  this.logger.debug("Erro");
+    //});
 
     this.tableData.GetAllCountries().subscribe(result => {
       this.countries = result;
