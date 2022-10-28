@@ -306,7 +306,7 @@ export class ClientComponent implements OnInit {
         "phoneNumber": "919654422"
       }
     },
-    "documentationDeliveryMethod": "Mail",
+    "documentationDeliveryMethod": "Portal",
     "billingEmail": "joao@silvestre.pt"
   };
 
@@ -682,6 +682,7 @@ export class ClientComponent implements OnInit {
     };
 
     localStorage.setItem("documentType", selectedClient.documentationDeliveryMethod);
+    localStorage.setItem("documentNumber", selectedClient.clientId);
 
     this.logger.debug("a passar para a proxima pagina");
     this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
@@ -760,7 +761,7 @@ export class ClientComponent implements OnInit {
 
   createNewClient() {
     var NIFNIPC = this.getNIFNIPC();
-    
+    localStorage.setItem("documentNumber", NIFNIPC);
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,

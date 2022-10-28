@@ -433,7 +433,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.collectCRC = false;
         this.initializeENI();
       } else {
-        if (!this.hasCRC) {
+        if (this.hasCRC) {
           console.log('ENTROU IF CRC', this.tipologia);
           this.isCommercialSociety = true;
           this.collectCRC = true;
@@ -558,6 +558,7 @@ export class ClientCharacterizationComponent implements OnInit {
           this.crcFound = false;
           return;
         }
+        this.crcNotExists = false;
 
         var nif = this.form.get("natJuridicaNIFNIPC").value;
         if (clientByCRC.fiscalId !== nif) {
@@ -565,11 +566,9 @@ export class ClientCharacterizationComponent implements OnInit {
           this.crcFound = false;
           return;
         }
-
+        this.crcMatchNIF = false;
 
         this.crcFound = true;
-        this.crcNotExists = false;
-        this.crcMatchNIF = false;
         this.errorMsg = '';
         this.processClient.legalNature = clientByCRC.legalNature;
         this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
@@ -596,10 +595,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
         this.processClient.pdf = clientByCRC.pdf;
 
-        this.processClient.code = clientByCRC.code;
+        //this.processClient.code = clientByCRC.code;
 
-        this.processClient.code = crcInserted;//
-        console.log('CLIENT BY CRC VALOR ', clientByCRC.code);//
+        this.processClient.code = crcInserted;
 
         this.processClient.requestId = clientByCRC.requestId;
 

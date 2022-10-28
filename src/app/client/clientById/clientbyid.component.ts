@@ -380,7 +380,7 @@ export class ClientByIdComponent implements OnInit {
         services: new FormControl('', Validators.required),
         transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(false, Validators.required),
-        preferenceDocuments: new FormControl('', Validators.required),
+        preferenceDocuments: new FormControl('Portal', Validators.required),
         inputEuropa: new FormControl(false),
         inputAfrica: new FormControl(false),
         inputAmerica: new FormControl(false),
@@ -762,7 +762,7 @@ export class ClientByIdComponent implements OnInit {
         tipologia: this.tipologia,
         NIFNIPC: this.NIFNIPC,
         clientExists: this.clientExists,
-        clientId: this.clientId,
+        clientId: localStorage.getItem("documentNumber"),//this.clientId,
         dataCC: this.dataCC,
         isClient: this.isClient,
         comprovativoCC: this.comprovativoCC,
@@ -854,12 +854,11 @@ export class ClientByIdComponent implements OnInit {
       var documentDelivery = newSubmission.merchant.documentationDeliveryMethod;
       var merchantType = newSubmission.merchant.merchantType;
 
-      if (documentDelivery === 'viaDigital')
+      if (documentDelivery === 'viaDigital' || documentDelivery === 'Portal')
         newSubmission.merchant.documentationDeliveryMethod = 'Portal';
-
-      if (documentDelivery === '') { 
-        newSubmission.merchant.documentationDeliveryMethod = 'Mail'; /////////////////////////
-      }
+      else
+        newSubmission.merchant.documentationDeliveryMethod = 'Mail';
+      
 
       if (merchantType === 'corporation')
         newSubmission.merchant.merchantType = '01'; //'Corporate'
