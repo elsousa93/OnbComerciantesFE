@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
-import { Bank, Istore, ShopDetailsAcquiring } from '../IStore.interface';
+import { Bank, Istore, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { StoreService } from '../store.service';
@@ -78,7 +78,7 @@ export class StoreIbanComponent implements OnInit {
   /*CHANGE - Get via service from the clients */
   public commIban: string = "232323232";
   public auxIban: string = "";
-  public bankLogin: string;
+  public bank: string;
 
   /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
@@ -92,7 +92,6 @@ export class StoreIbanComponent implements OnInit {
   banks: Bank[];
 
   public store: ShopDetailsAcquiring = new ShopDetailsAcquiring();
-  public bank: Bank = new Bank();
 
   formStores!: FormGroup;
   returned: string
@@ -106,8 +105,8 @@ export class StoreIbanComponent implements OnInit {
     this.authService.currentUser.subscribe(result => {
 
       if (result.permissions === UserPermissions.BANCA) {
-        this.bankLogin = this.authService.GetBank();
-        console.log('VALOR DO BANK ', this.bankLogin);
+        this.bank = this.authService.GetBank();
+        console.log('VALOR DO BANK ', this.bank);
         this.updateForm();
       }
     });
@@ -152,6 +151,8 @@ export class StoreIbanComponent implements OnInit {
   }
 
   submit() {
+    this.store.bank.bank = new ShopBankingInformation();
+
     this.store.bank.useMerchantBank = this.formStores.get("bankInformation").value;
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
 
@@ -203,6 +204,7 @@ export class StoreIbanComponent implements OnInit {
   }
 
   initializeForm() {
+    this.store.bank = new ShopBank();
     this.formStores = new FormGroup({
       supportBank: new FormControl((this.bank != null) ? this.bank : '', Validators.required),
       bankInformation: new FormControl((this.store.bank.useMerchantBank != null) ? this.store.bank.useMerchantBank : '', Validators.required),

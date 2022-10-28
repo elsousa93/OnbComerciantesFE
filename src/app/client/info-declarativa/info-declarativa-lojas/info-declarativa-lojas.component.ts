@@ -31,7 +31,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   private baseUrl: string;
 
   public stores: ShopDetailsAcquiring[] = [];
-  public clientID: number = 12345678;
 
   public selectedStore: ShopDetailsAcquiring = null;
   //listValue!: FormGroup;
