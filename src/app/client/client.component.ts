@@ -383,7 +383,9 @@ export class ClientComponent implements OnInit {
         this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
-        this.newClientForm.get("denominacaoSocial").setValue(localStorage.getItem("clientName"));
+        if (this.notFound) { 
+          this.newClientForm.get("denominacaoSocial").setValue(localStorage.getItem("clientName"));
+        }
       }
 
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
@@ -392,7 +394,9 @@ export class ClientComponent implements OnInit {
         this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
-        this.newClientForm.get("nome").setValue(localStorage.getItem("clientName"));
+        if (this.notFound) { 
+          this.newClientForm.get("nome").setValue(localStorage.getItem("clientName"));
+        }
       }
 
     }
