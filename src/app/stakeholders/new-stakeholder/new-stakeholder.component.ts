@@ -151,7 +151,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    var identificationDocument = this.currentStakeholder.stakeholderAcquiring.identificationDocument;
+    var identificationDocument = this.currentStakeholder.stakeholderAcquiring?.identificationDocument;
     if (changes["currentStakeholder"]) {
       this.isStakeholderFromCC(this.currentStakeholder);
       this.isStakeholderFromCRC(this.currentStakeholder);

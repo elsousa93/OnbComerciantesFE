@@ -210,6 +210,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
       stakeholders.forEach(function (value, index) {
         subpromises.push(context.getAllStakeholderInfo(context.submissionId, value.id));
+        this.stakeService.getStakeholderByID(value.id, 'faltarequestID', 'faltaAcquiringUserID').subscribe((result: { documents: any; stakeholderId: string | number; }) => {
+          var documents = result.documents;
+          // context.allStakeholdersComprovativos[result.stakeholderId] = documents;
+          console.log("get stake by id resposnse: ", result);
+        }, error => {
+          console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
+        });
       });
 
       const allPromisesWithErrorHandler = subpromises.map(promise =>
