@@ -381,7 +381,7 @@ export class ClientComponent implements OnInit {
         this.clientTypology = 'true';
         this.activateButtons(true);
         this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
-        this.changeListElementDocType(null, { e: { target: { value: this.newClient.documentationDeliveryMethod } } });
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
         this.newClientForm.get("denominacaoSocial").setValue(localStorage.getItem("clientName"));
       }
@@ -390,7 +390,7 @@ export class ClientComponent implements OnInit {
         this.clientTypology = 'false';
         this.activateButtons(false);
         this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
-        this.changeListElementDocType(null, { e: { target: { value: this.newClient.documentationDeliveryMethod } } });
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
         this.newClientForm.get("nome").setValue(localStorage.getItem("clientName"));
       }
