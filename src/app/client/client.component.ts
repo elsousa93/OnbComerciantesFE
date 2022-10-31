@@ -311,6 +311,8 @@ export class ClientComponent implements OnInit {
   };
 
   tipologia: string;
+  NIFNIPC: string;
+  searchedDocument: string;
 
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -369,18 +371,19 @@ export class ClientComponent implements OnInit {
     if (localStorage.getItem("submissionId") != null) {
       if (this.route.getCurrentNavigation().extras.state) {
         this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
-        //this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
-        this.newClient.clientId = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
+        this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
         this.prettyPDF = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
         this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
         this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
         this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
+        this.searchedDocument = localStorage.getItem("documentType");
       }
 
-      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
         this.clientTypology = 'true';
+        this.newClient.clientId = this.clientId;
         this.activateButtons(true);
-        this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
+        this.newClient.documentationDeliveryMethod = this.searchedDocument;
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
         if (this.notFound) { 
@@ -391,7 +394,7 @@ export class ClientComponent implements OnInit {
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         this.clientTypology = 'false';
         this.activateButtons(false);
-        this.newClient.documentationDeliveryMethod = localStorage.getItem("documentType");
+        this.newClient.documentationDeliveryMethod = this.searchedDocument;
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
         if (this.notFound) { 

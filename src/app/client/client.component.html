@@ -34,8 +34,8 @@
             </span>
             <span class="navbar-text">
               <div class="form-check">
-                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology1" type="radio"
-                  value="false" id="clientTypology1" (click)="activateButtons(false)"
+                <input class="form-check-input" required [(ngModel)]="clientTypology" name="clientTypology" type="radio"
+                  value="false" id="clientTypology" (click)="activateButtons(false)"
                   [disabled]="returned == 'consult'" />
                 <label class="form-check-label radio" for="radio3">ENI</label>
               </div>
@@ -75,7 +75,7 @@
                     <div class="col-5">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
                       <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
-                        id="documentType1" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType1" #docType1="ngModel">
+                        id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType" #docType="ngModel">
                         <option *ngFor="let docType of ListaDocTypeENI" value={{docType.code}}>
                           {{docType.description}}
                         </option>
@@ -88,8 +88,8 @@
                           {{resultError}}
                         </span>
                       </p>
-                      <input id="clientId1" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
-                        name="clientId1" #clientId1="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
+                        name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
                   </div>
