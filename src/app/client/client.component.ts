@@ -449,8 +449,6 @@ export class ClientComponent implements OnInit {
     }
 
     if ((this.newClientForm?.get("nif")?.value != '' && this.newClientForm?.get("nif")?.value != null) || (this.newClientForm?.get("nipc")?.value != '' && this.newClientForm?.get("nipc")?.value != null)) {
-      console.log('ENTREI NO GET NIFNIPC E O VALOR QUE RETORNEI FOI ', this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
-      localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
   }
@@ -770,7 +768,12 @@ export class ClientComponent implements OnInit {
 
   createNewClient() {
     var NIFNIPC = this.getNIFNIPC();
-    localStorage.setItem("documentNumber", NIFNIPC);
+    if (this.clientTypology === 'false' && !this.showFoundClient) {
+      localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
+      localStorage.setItem("documentNumber", this.newClient.clientId);
+    } else { 
+      localStorage.setItem("documentNumber", NIFNIPC);
+    }
     localStorage.setItem("documentType", this.newClient.documentationDeliveryMethod);
     let navigationExtras: NavigationExtras = {
       state: {
