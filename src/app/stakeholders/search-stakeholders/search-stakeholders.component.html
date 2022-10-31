@@ -23,5 +23,5 @@
   </mat-row>
 </mat-table>
 
-<mat-paginator #paginatorFound [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+<mat-paginator #paginatorFound [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons [hidden]="!foundStakeholders">
 </mat-paginator>
