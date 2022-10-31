@@ -385,9 +385,9 @@ export class ClientComponent implements OnInit {
         this.newClient.documentationDeliveryMethod = this.searchedDocument;
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
-        if (this.notFound) { 
-          this.newClientForm.get("denominacaoSocial").setValue(localStorage.getItem("clientName"));
-        }
+        //if (this.searchDone) { 
+        //  this.newClientForm.get("denominacaoSocial").setValue(localStorage.getItem("clientName"));
+        //}
       }
 
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
@@ -397,9 +397,9 @@ export class ClientComponent implements OnInit {
         this.newClient.documentationDeliveryMethod = this.searchedDocument;
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
-        if (this.notFound) { 
-          this.newClientForm.get("nome").setValue(localStorage.getItem("clientName"));
-        }
+        //if (this.searchDone) { 
+        //  this.newClientForm.get("nome").setValue(localStorage.getItem("clientName"));
+        //}
       }
 
     }
@@ -554,16 +554,16 @@ export class ClientComponent implements OnInit {
   createAdditionalInfoForm() {
     let NIFNIPC = this.getNIFNIPC();
     switch (this.tipologia) {
-      case "Company" || "Corporate" || "01":
+      case "Company" || "Corporate" || "01" || "corporation":
         this.newClientForm = this.formBuilder.group({
           nipc: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
-          denominacaoSocial: new FormControl('', Validators.required)
+          denominacaoSocial: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
         });
         break;
       case "ENI" || "Entrepeneur" || "02":
         this.newClientForm = this.formBuilder.group({
           nif: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
-          nome: new FormControl('', Validators.required)
+          nome: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
         });
         break;
     }
@@ -779,13 +779,8 @@ export class ClientComponent implements OnInit {
       }
     };
 
-    if (this.dataCCcontents === null || this.dataCCcontents === undefined) {
-      let clientName = ''
-      if (this.clientTypology === 'true') {
-        clientName = this.newClientForm.get("denominacaoSocial")?.value;
-      } else {
-        clientName = this.newClientForm.get("nome")?.value;
-      }
+    if (this.dataCCcontents == null || this.dataCCcontents == undefined) {
+      let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? '';
       localStorage.setItem("clientName", clientName);
     }
 
