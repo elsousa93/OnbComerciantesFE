@@ -246,7 +246,7 @@ export class AddStoreComponent implements OnInit {
   products: Product[] = [];
   subProducts: Subproduct[] = [];
 
-  lockLocality: boolean = false;
+  lockLocality: boolean = true;
 
   loadTableInfo() {
     this.tableInfo.GetAllCountries().subscribe(res => {
@@ -551,7 +551,7 @@ export class AddStoreComponent implements OnInit {
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
       activityStores: new FormControl((this.returned !== null) ? this.store.activity : '', [Validators.required]),
-      countryStore: new FormControl(''),
+      countryStore: new FormControl('Portugal'),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
       contactPoint: new FormControl(''),

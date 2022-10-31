@@ -1621,6 +1621,7 @@ mat-paginator {
   background-color:#1e66b0;
   color: white;
   position: fixed;
+  border-color: white;
   top: 135px;
   right: 108px;
 }
