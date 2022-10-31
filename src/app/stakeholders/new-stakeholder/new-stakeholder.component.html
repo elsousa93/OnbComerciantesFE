@@ -89,7 +89,7 @@
                   {{country.description}}</option>
               </select>
             </div>
-            <div class="row ms-0" id="address">
+            <div class="row" id="address">
               <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}}</p>
               <input class="form-control" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
                 [readonly]="returned === 'consult'">
@@ -103,7 +103,7 @@
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
             </div>
-            <div class="row" id="zipcode">
+            <div class="row ms-0" id="zipcode">
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}}</p>
               <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
               (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
