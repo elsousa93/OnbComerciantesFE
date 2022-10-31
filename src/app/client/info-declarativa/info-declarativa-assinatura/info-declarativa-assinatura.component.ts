@@ -70,12 +70,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       duration: 4000,
       panelClass: ['snack-bar']
     });
-    this.getSubmission();
-    this.submissionAnswer.submissionType = "DigitalComplete";
-    this.submissionAnswer.state = "Ready";
-    this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
-      console.log("Submissão terminada");
-    })
+    this.sendFinalSubmission();
+    
     this.router.navigate(["/"]);
     this.data.reset();
   }
@@ -84,9 +80,14 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.closeSubmissionModalRef?.hide();
   }
 
-  getSubmission() {
+  sendFinalSubmission() {
     this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
       this.submissionAnswer = result.result[0];
+      this.submissionAnswer.submissionType = "DigitalComplete";
+      this.submissionAnswer.state = "Ready";
+       this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
+        console.log("Submissão terminada");
+    })
     })
   }
 
