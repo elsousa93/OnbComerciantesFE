@@ -551,7 +551,7 @@ export class AddStoreComponent implements OnInit {
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
       activityStores: new FormControl((this.returned !== null) ? this.store.activity : '', [Validators.required]),
-      countryStore: new FormControl('Portugal'),
+      countryStore: new FormControl('PT'),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
       contactPoint: new FormControl(''),
