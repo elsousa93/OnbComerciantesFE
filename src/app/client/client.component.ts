@@ -689,7 +689,8 @@ export class ClientComponent implements OnInit {
         clientExists: true,
         clientId: this.clientId,
         dataCC: this.dataCC,
-        isClient: this.isClient
+        isClient: this.isClient,
+        isFromSearch: true
       }
     };
 
@@ -787,7 +788,8 @@ export class ClientComponent implements OnInit {
         clientExists: false,
         NIFNIPC: NIFNIPC + "",
         comprovativoCC: this.prettyPDF,
-        dataCC: this.dataCCcontents
+        dataCC: this.dataCCcontents,
+        isFromSearch: true
       }
     };
 
