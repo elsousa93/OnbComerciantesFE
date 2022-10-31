@@ -22,7 +22,7 @@ export class SearchStakeholdersComponent implements OnInit {
 
   private eventsSubscription: Subscription;
 
-  displayedColumns: string[] = ['select','stakeFiscalId', 'stakeName'];
+  displayedColumns: string[] = ['select','stakeNIF', 'stakeName'];
   displayedColumnsFound: string[] = ['select','stakeNumber', 'stakeName'];
 
   //Variáveis de Input
