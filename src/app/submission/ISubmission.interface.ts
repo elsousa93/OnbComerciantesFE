@@ -65,7 +65,6 @@ export interface SubmissionPutTemplate {
   processType?: string
   isClientAwaiting?: boolean
   submissionUser?: SubmissionUser
-  isComplete?: boolean
   id?: string
   bank?: string
   startedAt?: string
