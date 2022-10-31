@@ -6,11 +6,11 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from '../../../nav-menu-interna/data.service';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
-import { CountryInformation } from '../../../table-info/ITable-info.interface';
-import { TableInfoService } from '../../../table-info/table-info.service';
+import { SubmissionService } from '../../../submission/service/submission-service.service'
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SubmissionGet } from 'src/app/submission/ISubmission.interface';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -31,14 +31,15 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   public map: Map<number, boolean>;
   public currentPage: number;
+  submissionId: string;
+  processNumber: string;
   public subscription: Subscription; 
+  public submissionAnswer: SubmissionGet;
 
-  constructor(private logger : LoggerService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService) {
+  constructor(private logger : LoggerService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService) {
     this.baseUrl = configuration.baseUrl;
-    http.get<IStakeholders[]>(this.baseUrl + 'bestakeholders/GetAllStakes').subscribe(result => {
-      this.stakeholders = result;
-    }, error => console.error(error));
-
+    this.submissionId = localStorage.getItem("submissionId");
+    this.processNumber = localStorage.getItem("processNumber");
   }
 
   ngOnInit(): void {
@@ -68,12 +69,23 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       duration: 4000,
       panelClass: ['snack-bar']
     });
+    this.getSubmission();
+    this.submissionAnswer.state = "Ready";
+    this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
+      console.log("Submissão terminada");
+    })
     this.router.navigate(["/"]);
     this.data.reset();
   }
 
   declineCloseSubmission(){
     this.closeSubmissionModalRef?.hide();
+  }
+
+  getSubmission() {
+    this.submissionService.GetSubmissionByProcessNumber(this.processNumber).subscribe(result => {
+      this.submissionAnswer = result;
+    })
   }
 
 
