@@ -760,9 +760,7 @@ export class ClientByIdComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        NIFNIPC: this.NIFNIPC,
         clientExists: this.clientExists,
-        clientId: localStorage.getItem("documentNumber"),//this.clientId,
         dataCC: this.dataCC,
         isClient: this.isClient,
         comprovativoCC: this.comprovativoCC,
@@ -860,15 +858,15 @@ export class ClientByIdComponent implements OnInit {
         newSubmission.merchant.documentationDeliveryMethod = 'Mail';
       
 
-      if (merchantType === 'corporation')
+      if (merchantType === 'corporation' || merchantType === 'Corporate' || merchantType === 'Company')
         newSubmission.merchant.merchantType = '01'; //'Corporate'
       else
         newSubmission.merchant.merchantType = '02'; //'Entrepeneur'
 
-      if (this.tipologia === 'Corporate')
+      if (this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01' || this.tipologia === 'corporation')
         newSubmission.merchant.merchantType = '01';
         
-      if (this.tipologia === 'ENI') {
+      if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         newSubmission.merchant.merchantType = '02';
         var client = this.clientContext.getClient();
 

@@ -379,29 +379,31 @@ export class ClientComponent implements OnInit {
       }
 
       if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
-        this.activateButtons(true);
-        this.clientTypology = 'true';
-        this.newClient.clientId = this.clientId;
-        this.newClient.documentationDeliveryMethod = this.searchedDocument;
+        this.setClientData(true);
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
-        //if (this.searchDone) { 
-        //  this.newClientForm.get("denominacaoSocial").setValue(localStorage.getItem("clientName"));
-        //}
       }
 
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
-        this.activateButtons(false);
-        this.clientTypology = 'false';
-        this.newClient.clientId = this.clientId;
-        this.newClient.documentationDeliveryMethod = this.searchedDocument;
+        this.setClientData(false);
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
         this.searchClient();
-        //if (this.searchDone) { 
-        //  this.newClientForm.get("nome").setValue(localStorage.getItem("clientName"));
-        //}
       }
 
+    }
+  }
+
+  setClientData(bool: boolean) {
+    if (bool) {
+      this.activateButtons(bool);
+      this.clientTypology = 'true';
+      this.newClient.clientId = this.clientId;
+      this.newClient.documentationDeliveryMethod = this.searchedDocument;
+    } else {
+      this.activateButtons(bool);
+      this.clientTypology = 'false';
+      this.newClient.clientId = this.clientId;
+      this.newClient.documentationDeliveryMethod = this.searchedDocument;
     }
   }
 
@@ -774,6 +776,7 @@ export class ClientComponent implements OnInit {
     if (this.clientTypology === 'false' && !this.showFoundClient) {
       localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
       localStorage.setItem("documentNumber", this.newClient.clientId);
+      NIFNIPC = this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     } else { 
       localStorage.setItem("documentNumber", NIFNIPC);
     }
