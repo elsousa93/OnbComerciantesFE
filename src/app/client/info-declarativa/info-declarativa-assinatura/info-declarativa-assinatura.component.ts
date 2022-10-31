@@ -71,8 +71,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       panelClass: ['snack-bar']
     });
     this.getSubmission();
-    this.submissionAnswer[0].submissionType = "DigitalComplete";
-    this.submissionAnswer[0].state = "Ready";
+    this.submissionAnswer.submissionType = "DigitalComplete";
+    this.submissionAnswer.state = "Ready";
     this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
       console.log("Submissão terminada");
     })
@@ -86,7 +86,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   getSubmission() {
     this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
-      this.submissionAnswer = result;
+      this.submissionAnswer = result[0];
     })
   }
 
