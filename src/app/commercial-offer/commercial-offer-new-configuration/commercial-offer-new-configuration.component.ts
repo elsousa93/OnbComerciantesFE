@@ -53,7 +53,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   submissionId: string;
 
   packId: string;
-  productPackPricingFilter: ProductPackPricingFilter;
+  productPackPricingFilter = new ProductPackPricingFilter();
   merchantCatalog: MerchantCatalog;
   groupsList: ProductPackRootAttributeProductPackKind[] = [];
   pricingOptions: ProductPackPricingEntry[] = [];
@@ -289,14 +289,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
       if (this.edit) {
         //chamada à API para editar uma configuração
-        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.shopId, this.storeEquip).subscribe(result => {
+        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip).subscribe(result => {
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
           this.logger.debug("Update Shop Equipment From Submission Response ", result.id);
         });
       } else {
         //chamada à API para criar uma nova configuração
-        this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.currentStore.shopId, this.storeEquip).subscribe(result => {
+        this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.currentStore.id, this.storeEquip).subscribe(result => {
           this.storeEquip.shopEquipmentId = result.id;
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
