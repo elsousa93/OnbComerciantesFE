@@ -490,7 +490,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   submissionPutTeste: SubmissionPutTemplate = {
-    "submissionType": "DigitalFirstHalf",
+    "submissionType": "DigitalSecondHalf",
     "processNumber": "",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
@@ -503,7 +503,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "startedAt": "2022-10-10",
     "id": localStorage.getItem("submissionId"), //uuid
     "bank": "0800",
-    "state": "Ready"
+    "state": "Incomplete"
   }
 
   continue() {
