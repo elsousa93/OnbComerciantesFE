@@ -454,7 +454,7 @@ export class ClientComponent implements OnInit {
   searchClient() {
 
     this.logger.debug(this.newClient.clientId);
-    this.clientId = '';
+    //this.clientId = '';
     this.showSeguinte = false;
 
     var context = this;
