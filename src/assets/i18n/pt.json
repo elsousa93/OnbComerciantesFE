@@ -322,7 +322,8 @@
       "clientName": "Nome do Cliente",
       "digitalSignatureType": "Tipo de Assinatura Digital",
       "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?",
-      "title": "Selecione o tipo de assinatura digital"
+      "title": "Selecione o tipo de assinatura digital",
+      "finalSubmission": "Submissão enviada"
     }
   },
   "searches": {

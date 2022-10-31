@@ -45,7 +45,7 @@ export class ClientContext{
   currentDocuments: Observable<any>;
 
   newSubmission: SubmissionPostTemplate = {
-    "submissionType": "DigitalComplete",
+    "submissionType": "DigitalFirstHalf",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,

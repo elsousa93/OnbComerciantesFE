@@ -66,13 +66,13 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   closeSubmission() {
     this.closeSubmissionModalRef?.hide();
-    this.snackBar.open(this.translate.instant('client.find'), '', {
+    this.snackBar.open(this.translate.instant('declarativeInformation.signature.finalSubmission'), '', {
       duration: 4000,
       panelClass: ['snack-bar']
     });
     this.getSubmission();
-    this.submissionAnswer.submissionType = "DigitalComplete";
-    this.submissionAnswer.state = "Ready";
+    this.submissionAnswer[0].submissionType = "DigitalComplete";
+    this.submissionAnswer[0].state = "Ready";
     this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
       console.log("Submissão terminada");
     })

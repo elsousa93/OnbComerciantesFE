@@ -321,7 +321,8 @@
       "clientName": "Client Name",
       "digitalSignatureType": "Digital Signature Type",
       "submission": "Are you sure you want to close the submission and send it to the backoffice?",
-      "title": "Choose the digital signature type"
+      "title": "Choose the digital signature type",
+      "finalSubmission": "Submission sent"
     }
   },
   "searches": {
