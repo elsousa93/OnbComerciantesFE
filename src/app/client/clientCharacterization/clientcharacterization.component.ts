@@ -442,9 +442,9 @@ export class ClientCharacterizationComponent implements OnInit {
         } else {
           if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
             console.log('ENTROU IF EMPRESA', this.tipologia);
+            this.initializeFormControlOther();
             this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature);
             this.collectCRC = false;
-            this.initializeFormControlOther();
           }
         }
       }
