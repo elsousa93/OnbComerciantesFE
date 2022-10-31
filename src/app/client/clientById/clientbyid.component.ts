@@ -912,7 +912,7 @@ export class ClientByIdComponent implements OnInit {
     if (this.returned != 'consult') {
 
       var context = this;
-      var submissionID = this.clientContext.submissionID;
+      var submissionID = this.clientContext.submissionID ?? localStorage.getItem("submissionId");
 
       var newSubmission = this.clientContext.newSubmission;
 

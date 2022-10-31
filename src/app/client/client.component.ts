@@ -27,6 +27,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { localizedString } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-client',
@@ -525,6 +526,7 @@ export class ClientComponent implements OnInit {
         this.notFound = true;
         this.searchDone = true;
         this.createAdditionalInfoForm();
+        this.resetLocalStorage();
 
 
       }
@@ -533,7 +535,13 @@ export class ClientComponent implements OnInit {
       this.notFound = true;
       this.searchDone = true;
       this.createAdditionalInfoForm();
+      this.resetLocalStorage();
     });
+  }
+
+  resetLocalStorage() {
+    localStorage.removeItem("nif");
+    localStorage.removeItem("clientName");
   }
 
   initializeForm() {
@@ -558,18 +566,17 @@ export class ClientComponent implements OnInit {
 
   createAdditionalInfoForm() {
     let NIFNIPC = this.getNIFNIPC();
-    console.log("VALOR DO NIF AO CRIAR O FORM ", NIFNIPC)
     switch (this.tipologia) {
       case "Company" || "Corporate" || "01" || "corporation":
         this.newClientForm = this.formBuilder.group({
           nipc: new FormControl({ value: (NIFNIPC != null && NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif"), disabled: NIFNIPC }, Validators.required),
-          denominacaoSocial: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
+          denominacaoSocial: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") ?? '' : '', Validators.required)
         });
         break;
       case "ENI" || "Entrepeneur" || "02":
         this.newClientForm = this.formBuilder.group({
           nif: new FormControl({ value: (NIFNIPC != null && NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif"), disabled: NIFNIPC }, Validators.required),
-          nome: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
+          nome: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") ?? '' : '', Validators.required)
         });
         break;
     }
