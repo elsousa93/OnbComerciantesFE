@@ -173,7 +173,7 @@ export class ClientCharacterizationComponent implements OnInit {
     //this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo?.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo?.legalName : localStorage.getItem("clientName") ?? this.client?.commercialName, Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.hasCRC ? true: collectCRC)
     }));
@@ -440,7 +440,7 @@ export class ClientCharacterizationComponent implements OnInit {
           this.initializeBasicCRCFormControl();
           this.searchByCRC();
         } else {
-          if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+          if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
             console.log('ENTROU IF EMPRESA', this.tipologia);
             this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature);
             this.collectCRC = false;
