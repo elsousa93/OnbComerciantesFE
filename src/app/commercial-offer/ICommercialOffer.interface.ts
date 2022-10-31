@@ -129,7 +129,7 @@ export interface ProductPackAttribute {
   order?: number
 }
 
-export interface ProductPackPricingFilter {
+export class ProductPackPricingFilter {
   productCode?: string
   subproductCode?: string
   processorId?: string

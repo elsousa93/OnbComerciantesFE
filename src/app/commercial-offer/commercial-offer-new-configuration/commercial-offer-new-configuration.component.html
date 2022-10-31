@@ -158,7 +158,7 @@
          <button id="btn5a3" (click)="cancelConfig()" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-4 pe-4"
             wappler-command="editContent">{{'commercialOffer.cancelConfiguration'|translate|uppercase}}&nbsp;<img
                src="assets/images/close.svg" style="height: 25px !important; vertical-align: sub;"></button>
-         <button id="btn5a4" (click)="submit()" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5"
+         <button id="btn5a4" [disabled]="!formConfig.valid" (click)="submit()" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5"
             wappler-command="editContent">{{'generalKeywords.save'|translate|uppercase}}&nbsp;&nbsp;<img
                src="assets/images/save.svg" style="height: 25px !important; vertical-align: sub;"></button>
       </div>

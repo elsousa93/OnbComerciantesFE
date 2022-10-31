@@ -17,7 +17,7 @@
     <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderName}}
     </mat-cell>
   </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary"></mat-header-row>
+  <mat-header-row *matHeaderRowDef="displayedColumnsFound" class="text-primary table-primary"></mat-header-row>
   <mat-row *matRowDef="let stake; let idx = index; columns: displayedColumnsFound;"
     [ngClass]="{'row-selected': idx === currentIdx}">
   </mat-row>
