@@ -449,10 +449,10 @@ export class ClientComponent implements OnInit {
     }
 
     if ((this.newClientForm?.get("nif")?.value != '' && this.newClientForm?.get("nif")?.value != null) || (this.newClientForm?.get("nipc")?.value != '' && this.newClientForm?.get("nipc")?.value != null)) {
-      console.log('ENTREI NO GET NIFNIPC E O VALOR QUE RETORNEI FOI ', this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
-      localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
+
+    return '';
   }
 
   searchClient() {
@@ -556,16 +556,17 @@ export class ClientComponent implements OnInit {
 
   createAdditionalInfoForm() {
     let NIFNIPC = this.getNIFNIPC();
+    console.log("VALOR DO NIF AO CRIAR O FORM ", NIFNIPC)
     switch (this.tipologia) {
       case "Company" || "Corporate" || "01" || "corporation":
         this.newClientForm = this.formBuilder.group({
-          nipc: new FormControl({ value: (NIFNIPC != null || NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif") ?? '', disabled: NIFNIPC }, Validators.required),
+          nipc: new FormControl({ value: (NIFNIPC != null && NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif"), disabled: NIFNIPC }, Validators.required),
           denominacaoSocial: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
         });
         break;
       case "ENI" || "Entrepeneur" || "02":
         this.newClientForm = this.formBuilder.group({
-          nif: new FormControl({ value: (NIFNIPC != null || NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif") ?? '', disabled: NIFNIPC }, Validators.required),
+          nif: new FormControl({ value: (NIFNIPC != null && NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif"), disabled: NIFNIPC }, Validators.required),
           nome: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
         });
         break;
@@ -770,7 +771,12 @@ export class ClientComponent implements OnInit {
 
   createNewClient() {
     var NIFNIPC = this.getNIFNIPC();
-    localStorage.setItem("documentNumber", NIFNIPC);
+    if (this.clientTypology === 'false' && !this.showFoundClient) {
+      localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
+      localStorage.setItem("documentNumber", this.newClient.clientId);
+    } else { 
+      localStorage.setItem("documentNumber", NIFNIPC);
+    }
     localStorage.setItem("documentType", this.newClient.documentationDeliveryMethod);
     let navigationExtras: NavigationExtras = {
       state: {
