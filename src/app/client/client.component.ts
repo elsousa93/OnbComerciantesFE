@@ -780,7 +780,12 @@ export class ClientComponent implements OnInit {
     };
 
     if (this.dataCCcontents === null || this.dataCCcontents === undefined) {
-      let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? '';
+      let clientName = ''
+      if (this.clientTypology === 'true') {
+        clientName = this.newClientForm.get("denominacaoSocial")?.value;
+      } else {
+        clientName = this.newClientForm.get("nome")?.value;
+      }
       localStorage.setItem("clientName", clientName);
     }
 
