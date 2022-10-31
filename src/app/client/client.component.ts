@@ -431,6 +431,7 @@ export class ClientComponent implements OnInit {
       }
     }, error => this.logger.error(error));
   }
+
   getNIFNIPC() {
     if (this.newClient.documentationDeliveryMethod === '0502' || this.newClient.documentationDeliveryMethod === '0501') {
       return this.newClient.clientId;
@@ -447,7 +448,8 @@ export class ClientComponent implements OnInit {
       return this.nifCC;
     }
 
-    if (this.newClientForm?.get("nif") ?? this.newClientForm?.get("nipc")) {
+    if ((this.newClientForm?.get("nif")?.value != '' && this.newClientForm?.get("nif")?.value != null) || (this.newClientForm?.get("nipc")?.value != '' && this.newClientForm?.get("nipc")?.value != null)) {
+      console.log('ENTREI NO GET NIFNIPC E O VALOR QUE RETORNEI FOI ', this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value );
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
   }
