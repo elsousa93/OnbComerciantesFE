@@ -121,7 +121,7 @@
                    </div>
                   </div>
                   <hr>-->
-                 <ng-container *ngIf="packs.length > 0">
+                 <ng-container *ngIf="packs != null && packs?.length > 0">
                    <div *ngFor="let pack of packs">
                      <input class="form-check-input" type="radio" (click)="selectCommercialPack(pack.id)" id="pack1"/>
                      <label class="form-check-label radio" for="pack1">{{pack.description}}</label>
