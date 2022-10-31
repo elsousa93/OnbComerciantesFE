@@ -159,6 +159,7 @@ export class ClientByIdComponent implements OnInit {
   clientDocs: OutboundDocument[] = null;
 
   submissionExists: boolean = false;
+  isFromSearch: boolean = false;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -359,6 +360,7 @@ export class ClientByIdComponent implements OnInit {
       this.clientId = this.route.getCurrentNavigation().extras.state["clientId"];
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
       this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
+      this.isFromSearch = this.route.getCurrentNavigation().extras.state["isFromSearch"];
     }
 
     this.socialDenomination = localStorage.getItem("clientName");
@@ -466,7 +468,7 @@ export class ClientByIdComponent implements OnInit {
 
     this.clientContext.setMerchantInfo(this.merchantInfo);
 
-    if (!this.submissionExists) {
+    if (!this.submissionExists || this.isFromSearch) {
       if (this.dataCC !== undefined && this.dataCC !== null) {
         var client: AcquiringClientPost = {} as AcquiringClientPost;
 
@@ -610,22 +612,22 @@ export class ClientByIdComponent implements OnInit {
         }
       }
     } else {
-      this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
-        this.clientContext.tipologia = result.merchantType;
-        this.NIFNIPC = result.fiscalId;
-        this.clientContext.setNIFNIPC(result.fiscalId);
-        this.clientContext.submissionID = localStorage.getItem("submissionId");
-        this.clientContext.setClient(result);
+        this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
+          this.clientContext.tipologia = result.merchantType;
+          this.NIFNIPC = result.fiscalId;
+          this.clientContext.setNIFNIPC(result.fiscalId);
+          this.clientContext.submissionID = localStorage.getItem("submissionId");
+          this.clientContext.setClient(result);
 
-        //dados necessários para a pesquisa feita anteriormente
-        this.tipologia = result.merchantType;
-        this.clientId = result.fiscalId;
+          //dados necessários para a pesquisa feita anteriormente
+          this.tipologia = result.merchantType;
+          this.clientId = result.fiscalId;
 
-      }).then(result => {
-        this.countriesComponent.getClientContextValues();
-        this.clientCharacterizationComponent.getClientContextValues();
-      });
-    }
+        }).then(result => {
+          this.countriesComponent.getClientContextValues();
+          this.clientCharacterizationComponent.getClientContextValues();
+        });
+      }
 
   }
 
@@ -895,11 +897,13 @@ export class ClientByIdComponent implements OnInit {
         newSubmission.stakeholders.push(stakeholderToShow);
       }
 
-      this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
-        context.clientContext.submissionID = result.id;
-        localStorage.setItem("submissionId", result.id);
-        context.processNrService.changeProcessNumber(result.processNumber);
-      });
+      if (!this.submissionExists) { 
+        this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
+          context.clientContext.submissionID = result.id;
+          localStorage.setItem("submissionId", result.id);
+          context.processNrService.changeProcessNumber(result.processNumber);
+        });
+      }
     }
   }
 
