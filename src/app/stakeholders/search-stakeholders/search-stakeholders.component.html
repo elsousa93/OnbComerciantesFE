@@ -1,16 +1,27 @@
-<table class="table table-success" *ngIf="foundStakeholders">
-  <thead class="text-primary table-primary">
-    <tr class="text-center text-primary table-light">
-      <th></th>
-      <th scope="col" class="align-baseline text-primary table-white"> {{'stakeholder.fiscalID'|translate}} </th> 
-      <th scope="col" class="text-center bg-light"> {{'stakeholder.name'|translate}} </th> 
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let stake of stakeholdersToShow; let idx = index">
-      <td><input type="radio" name="stakeSearch" id="stakeSearch" (click)="selectStakeholder(stake, idx)"/></td>
-      <th scope="row" class="text-primary text-center">{{stake.stakeholderNIF}}</th>
-      <td class="text-primary text-center">{{stake.stakeholderName}}</td>
-    </tr>
-  </tbody>
-</table> 
+<mat-table [dataSource]="stakesFoundMat" class="table-responsive" [hidden]="!foundStakeholders" matSort>
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake">
+      <input type="radio" (click)="selectStakeholder(stake, idx)">
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="stakeNIF">
+    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+      {{'stakeholder.fiscalID'|translate}} </mat-header-cell>
+    <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{stake.stakeholderNIF}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="stakeName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+      {{'stakeholder.name'|translate}} </mat-header-cell>
+    <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{stake.stakeholderName}}
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary"></mat-header-row>
+  <mat-row *matRowDef="let stake; let idx = index; columns: displayedColumnsFound;"
+    [ngClass]="{'row-selected': idx === currentIdx}">
+  </mat-row>
+</mat-table>
+
+<mat-paginator #paginatorFound [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+</mat-paginator>

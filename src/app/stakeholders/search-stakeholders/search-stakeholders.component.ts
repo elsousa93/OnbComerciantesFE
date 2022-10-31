@@ -23,6 +23,7 @@ export class SearchStakeholdersComponent implements OnInit {
   private eventsSubscription: Subscription;
 
   displayedColumns: string[] = ['select','stakeFiscalId', 'stakeName'];
+  displayedColumnsFound: string[] = ['select','stakeNumber', 'stakeName'];
 
   //Variáveis de Input
   @Input() clientID: Observable<string>;
@@ -60,6 +61,15 @@ export class SearchStakeholdersComponent implements OnInit {
       this.stakesMat.paginator = pager;
       this.stakesMat.paginator._intl = new MatPaginatorIntl();
       this.stakesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+
+  stakesFoundMat = new MatTableDataSource<any>();
+  @ViewChild('paginator') set paginatorFound(pager:MatPaginator) {
+    if (pager) {
+      this.stakesFoundMat.paginator = pager;
+      this.stakesFoundMat.paginator._intl = new MatPaginatorIntl();
+      this.stakesFoundMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
 
@@ -110,6 +120,7 @@ export class SearchStakeholdersComponent implements OnInit {
             found: true,
             errorMsg: ''
           });
+          context.stakesFoundMat.data = context.stakeholdersToShow;
         });
       } else {
         console.log("sem resultados");
