@@ -6,7 +6,7 @@ import { config, Observable, Subscription } from 'rxjs';
 import { ClientService } from '../../client/client.service';
 import { Configuration, configurationToken } from '../../configuration';
 import { AuthService } from '../../services/auth.service';
-import { IStakeholders } from '../IStakeholders.interface';
+import { IStakeholders, StakeholderOutbound } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
@@ -31,11 +31,11 @@ export class SearchStakeholdersComponent implements OnInit {
   @Input() requestID?: string = "por mudar";
   //@Input() canEdit?: boolean = false; Pode vir a ser preciso
   @Input() canSelect?: boolean = true;
+  @Input() currentIdx?: number;
 
   //Output
   @Output() selectedStakeholderEmitter = new EventEmitter<{
-    stakeholder: IStakeholders,
-    idx: number
+    stakeholder: IStakeholders
   }>();
 
   @Output() searchAditionalInfoEmitter = new EventEmitter<{
@@ -144,15 +144,25 @@ export class SearchStakeholdersComponent implements OnInit {
     console.log('Efetuou a pesquisa e o valor encontrado foi ', this.stakeholdersToShow);
   }
 
-  selectStakeholder(stakeholder, index) {
+  aButtons(id: boolean, stake: StakeholderOutbound) {
     this.selectedStakeholderEmitter.emit({
-      stakeholder: stakeholder,
-      idx: index
+      stakeholder: stake
     });
-
-    this.currentStakeholder = stakeholder;
-    console.log('Current stakeholder', this.currentStakeholder);
+    if (id == true) {
+      // this.showSeguinte = true
+      this.currentStakeholder.id = stake.stakeholderId;
+    } 
   }
+
+  // selectStakeholder(stakeholder, index) {
+  //   this.selectedStakeholderEmitter.emit({
+  //     stakeholder: stakeholder,
+  //     idx: index
+  //   });
+
+  //   this.currentStakeholder = stakeholder;
+  //   console.log('Current stakeholder', this.currentStakeholder);
+  // }
   
   ngOnChanges(){
     // this.ngOnInit();

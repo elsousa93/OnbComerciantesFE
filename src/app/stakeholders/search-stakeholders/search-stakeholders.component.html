@@ -3,18 +3,18 @@
     <mat-header-cell *matHeaderCellDef>
     </mat-header-cell>
     <mat-cell *matCellDef="let stake">
-      <input type="radio" (click)="selectStakeholder(stake, idx)">
+      <input type="radio" (click)="aButtons(true, stake)">
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="stakeNIF">
     <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
       {{'stakeholder.fiscalID'|translate}} </mat-header-cell>
-    <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{stake.stakeholderNIF}} </mat-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderNIF}} </mat-cell>
   </ng-container>
   <ng-container matColumnDef="stakeName">
     <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
       {{'stakeholder.name'|translate}} </mat-header-cell>
-    <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{stake.stakeholderName}}
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderName}}
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary"></mat-header-row>

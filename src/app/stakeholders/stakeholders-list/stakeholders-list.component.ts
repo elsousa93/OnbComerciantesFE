@@ -62,6 +62,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
 
+
   @Input() insertStakeholderEvent?: Observable<IStakeholders>;
   @Input() updatedStakeholderEvent?: Observable<{ stake: IStakeholders, idx: number }>;
 
