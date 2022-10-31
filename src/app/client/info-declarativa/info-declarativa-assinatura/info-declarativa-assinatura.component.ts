@@ -11,6 +11,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubmissionGet } from 'src/app/submission/ISubmission.interface';
+import { ProcessNumberService } from 'src/app/nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -36,10 +37,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public subscription: Subscription; 
   public submissionAnswer: SubmissionGet;
 
-  constructor(private logger : LoggerService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService) {
+  constructor(private logger : LoggerService, private processNrService: ProcessNumberService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService) {
     this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem("submissionId");
-    this.processNumber = localStorage.getItem("processNumber");
+    this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
   }
 
   ngOnInit(): void {
