@@ -113,6 +113,7 @@ export class CommercialOfferListComponent implements OnInit {
   paymentSchemes: ProductPackAttributeProductPackKind;
 
   packs: ProductPackEntry[];
+  isPackSelected: boolean = false;
 
   getPacoteComercial() {
     console.log("loja selecionada: ", this.currentStore);
@@ -267,6 +268,7 @@ export class CommercialOfferListComponent implements OnInit {
       });
       context.form.addControl("formGroup" + value.id, group);
     });
+    this.isPackSelected = true;
     console.log("form com os checkboxes: ", this.form);
   }
 
