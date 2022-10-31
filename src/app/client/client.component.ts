@@ -312,6 +312,7 @@ export class ClientComponent implements OnInit {
 
   tipologia: string;
   searchedDocument: string;
+  firstTime: boolean = true;
 
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -623,7 +624,10 @@ export class ClientComponent implements OnInit {
 
   changeListElementDocType(docType, e: any) {
     // this.activateButtons(true);
-    this.activateButtons(!this.showENI);
+    if (localStorage.getItem("submissionId") == null || !this.firstTime)
+      this.activateButtons(!this.showENI);
+    
+    this.firstTime = false;
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
