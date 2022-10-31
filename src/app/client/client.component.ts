@@ -765,6 +765,7 @@ export class ClientComponent implements OnInit {
   createNewClient() {
     var NIFNIPC = this.getNIFNIPC();
     localStorage.setItem("documentNumber", NIFNIPC);
+    localStorage.setItem("documentType", this.newClient.documentationDeliveryMethod);
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
