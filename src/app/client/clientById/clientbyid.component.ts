@@ -897,7 +897,7 @@ export class ClientByIdComponent implements OnInit {
         newSubmission.stakeholders.push(stakeholderToShow);
       }
 
-      if (!this.isFromSearch) { 
+      if (!this.submissionExists) { 
         this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
           context.clientContext.submissionID = result.id;
           localStorage.setItem("submissionId", result.id);
