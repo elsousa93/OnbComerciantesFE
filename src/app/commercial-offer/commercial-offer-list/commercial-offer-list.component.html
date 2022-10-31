@@ -121,10 +121,15 @@
                    </div>
                   </div>
                   <hr>-->
+                 <ng-container *ngIf="packs.length > 0">
+                   <div *ngFor="let pack of packs">
+                     <input class="form-check-input" type="radio" (click)="selectCommercialPack(pack.id)" id="pack1"/>
+                     <label class="form-check-label radio" for="pack1">{{pack.description}}</label>
+                   </div>
+                 </ng-container>
 
 
-
-                 <div class="row">
+                 <div class="row" *ngIf="packs.length === 1 || ">
                    <!-- PAYMENT SCHEMES -->
                    <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="paymentSchemes.kind == 'simple'">
                      <div class="row">

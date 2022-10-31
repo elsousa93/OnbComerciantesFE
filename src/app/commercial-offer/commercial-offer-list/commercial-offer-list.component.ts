@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { MerchantCatalog, Product, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { MerchantCatalog, Product, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
@@ -111,6 +111,8 @@ export class CommercialOfferListComponent implements OnInit {
 
   isNewConfig: boolean;
   paymentSchemes: ProductPackAttributeProductPackKind;
+
+  packs: ProductPackEntry[];
 
   getPacoteComercial() {
     console.log("loja selecionada: ", this.currentStore);
@@ -238,6 +240,9 @@ export class CommercialOfferListComponent implements OnInit {
 
   addFormGroups() {
     var context = this;
+    this.groupsList.forEach(function (value, idx) {
+      context.form.removeControl('formGroup' + value.id);
+    });
 
     this.groupsList.forEach(function (value, idx) {
       var group = new FormGroup({});
@@ -295,16 +300,22 @@ export class CommercialOfferListComponent implements OnInit {
     var context = this;
 
     this.COService.OutboundGetPacks(this.productPack).then(result => {
-      result.result.forEach(pack => {
-        this.COService.OutboundGetPackDetails(pack.id, this.productPack).then(res => {
-          context.paymentSchemes = res.result.paymentSchemes;
-          context.addPaymentFormGroups();
-          res.result.otherGroups.forEach(group => {
-            context.groupsList.push(group);
-          });
-          context.addFormGroups();
-        });
+      this.packs = result.result;
+      if (this.packs.length === 0) {
+        this.selectCommercialPack(this.packs[0].id);
+      }
+    });
+  }
+
+  selectCommercialPack(packId: string) {
+    var context = this;
+    this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
+      context.paymentSchemes = res.result.paymentSchemes;
+      context.addPaymentFormGroups();
+      res.result.otherGroups.forEach(group => {
+        context.groupsList.push(group);
       });
+      context.addFormGroups();
     });
   }
 
@@ -481,6 +492,8 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   addPaymentFormGroups() {
+    this.form.removeControl("formGroupPayment" + this.paymentSchemes.id);
+
     var group = new FormGroup({});
     this.paymentSchemes.attributes.forEach(function (value, idx) {
       group.addControl('formControlPayment' + value.id, new FormControl(value.value));
