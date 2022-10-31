@@ -449,7 +449,8 @@ export class ClientComponent implements OnInit {
     }
 
     if ((this.newClientForm?.get("nif")?.value != '' && this.newClientForm?.get("nif")?.value != null) || (this.newClientForm?.get("nipc")?.value != '' && this.newClientForm?.get("nipc")?.value != null)) {
-      console.log('ENTREI NO GET NIFNIPC E O VALOR QUE RETORNEI FOI ', this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value );
+      console.log('ENTREI NO GET NIFNIPC E O VALOR QUE RETORNEI FOI ', this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
+      localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
   }
@@ -558,13 +559,13 @@ export class ClientComponent implements OnInit {
     switch (this.tipologia) {
       case "Company" || "Corporate" || "01" || "corporation":
         this.newClientForm = this.formBuilder.group({
-          nipc: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
+          nipc: new FormControl({ value: (NIFNIPC != null || NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif") ?? '', disabled: NIFNIPC }, Validators.required),
           denominacaoSocial: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
         });
         break;
       case "ENI" || "Entrepeneur" || "02":
         this.newClientForm = this.formBuilder.group({
-          nif: new FormControl({ value: NIFNIPC, disabled: NIFNIPC }, Validators.required),
+          nif: new FormControl({ value: (NIFNIPC != null || NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif") ?? '', disabled: NIFNIPC }, Validators.required),
           nome: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") : '', Validators.required)
         });
         break;
