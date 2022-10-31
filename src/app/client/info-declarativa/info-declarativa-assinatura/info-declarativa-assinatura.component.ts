@@ -86,7 +86,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   getSubmission() {
     this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
-      this.submissionAnswer = result[0];
+      this.submissionAnswer = result.result[0];
     })
   }
 
