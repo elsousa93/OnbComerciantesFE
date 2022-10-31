@@ -89,10 +89,10 @@
                   {{country.description}}</option>
               </select>
             </div>
-            <div class="row" id="zipcode">
-              <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}}</p>
-              <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-              (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
+            <div class="row ms-0" id="address">
+              <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}}</p>
+              <input class="form-control" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
+                [readonly]="returned === 'consult'">
             </div>
           </div>
           <div class="col-6">
@@ -103,16 +103,17 @@
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
             </div>
+            <div class="row" id="zipcode">
+              <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}}</p>
+              <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
+              (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
+            </div>
             <div class="row ms-0" id="locale">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}}</p>
               <input class="form-control" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
                 [readonly]="canEditLocality() === false">
             </div>
-            <div class="row ms-0" id="address">
-              <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}}</p>
-              <input class="form-control" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
-                [readonly]="returned === 'consult'">
-            </div>
+
           </div>
         </div>
         <!--Com CC-->

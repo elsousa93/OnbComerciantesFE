@@ -67,60 +67,58 @@
 
             <div class="row">
               <div class="col-5">
-                
+
                 <p class="titulo-form-simples mb-3">
                   {{'stores.replicateAddress'|translate}}
                 </p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light"><span class="navbar-text">
-                    <div class="form-check"><input class="form-check-input" type="radio"
-                        formControlName="replicate" [value]=true id="replicate" name="replicate"
-                        (click)="chooseAddress(true)"><label class="form-check-label radio pe-5" for="replicateAddress"
-                        >{{'generalKeywords.yes'|translate|uppercase}}</label>                     
-                      </div>
+                    <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicate"
+                        [value]=true id="replicate" name="replicate" (click)="chooseAddress(true)"><label
+                        class="form-check-label radio pe-5"
+                        for="replicateAddress">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                    </div>
                   </span><span class="navbar-text">
-                    <div class="form-check"><input class="form-check-input" type="radio"
-                        formControlName="replicate" [value]=false id="replicate" name="replicate"
-                        (click)="chooseAddress(false)"><label class="form-check-label radio" for="replicateAddress"
-                        >{{'generalKeywords.no'|translate|uppercase}}</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" formControlName="replicate"
+                        [value]=false id="replicate" name="replicate" (click)="chooseAddress(false)"><label
+                        class="form-check-label radio"
+                        for="replicateAddress">{{'generalKeywords.no'|translate|uppercase}}</label></div>
                   </span></nav>
               </div>
             </div>
             <div class="row" *ngIf="!replicateAddress">
               <div class="col-5">
-                <p  class="titulo-form-simples"
-                  wappler-command="editContent">
+                <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.country'|translate}} *</p>
-                <select class="form-select campo-form-select"
-                  id="countryStore" formControlName="countryStore" (click)="clean()">
+                <select class="form-select campo-form-select" id="countryStore" formControlName="countryStore"
+                  (click)="clean()">
                   <option *ngFor="let country of countries" value={{country.code}}>
                     {{country.description}}
                   </option>
                 </select>
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples"
-                  wappler-command="editContent">
-                  {{'stores.locale'|translate}} *</p>
-                <input formControlName="localeStore" id="text5"
-                  name="text4" type="text" class="form-control campo_form" [readonly]="canEditLocality() === false">
-              </div>
-            </div>
-            <div class="row"  *ngIf="!replicateAddress">
-              <div class="col-5">
-                <p class="titulo-form-simples"
-                  wappler-command="editContent">
+                <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.postalCode'|translate}} * </p>
-                <input formControlName="zipCodeStore" id="text4"
-                  name="text3" type="text" class="form-control campo_form" maxlength="8"
-                  (keyup)="GetCountryByZipCodeTest()" (keypress)="numericOnly($event)">
+                <input formControlName="zipCodeStore" id="text4" name="text3" type="text"
+                  class="form-control campo_form" maxlength="8" (keyup)="GetCountryByZipCodeTest()"
+                  (keypress)="numericOnly($event)">
+              </div>
+
+            </div>
+            <div class="row" *ngIf="!replicateAddress">
+              <div class="col-5">
+                <p class="titulo-form-simples" wappler-command="editContent">
+                  {{'stores.address'|translate}} *</p>
+                <input formControlName="addressStore" id="text5" name="text4" type="text"
+                  class="form-control campo_form">
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples"
-                  wappler-command="editContent">
-                  {{'stores.address'|translate}} *</p>
-                <input formControlName="addressStore" id="text5"
-                  name="text4" type="text" class="form-control campo_form">
+                <p class="titulo-form-simples" wappler-command="editContent">
+                  {{'stores.locale'|translate}} *</p>
+                <input formControlName="localeStore" id="text5" name="text4" type="text" class="form-control campo_form"
+                  [readonly]="canEditLocality() === false">
               </div>
+
             </div>
             <div class="row">
               <div class="col-5">
