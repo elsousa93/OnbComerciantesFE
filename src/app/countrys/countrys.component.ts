@@ -357,7 +357,7 @@ export class CountrysComponent implements OnInit {
   }
 
   newSubmission: SubmissionPostTemplate = {
-    "submissionType": "DigitalComplete",
+    "submissionType": "DigitalFirstHalf",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,
