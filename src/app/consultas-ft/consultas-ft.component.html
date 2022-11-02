@@ -15,7 +15,7 @@
         <div class="row ms-0 me-0">
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
             <p class="titulo-form-simples mt-0">{{'searches.processNumber'|translate}}</p><input id="text8" name="text5"
-              type="text" class="form-control campo_form" formControlName="processNumber">
+            type="number" (keypress)="numericOnly($event)" class="form-control campo_form" formControlName="processNumber">
             <p class="titulo-form-simples">{{'searches.state'|translate}}</p>
             <select id="select1" disabled class="form-select  campo_form" formControlName="state">
               <option selected value="">{{ 'homepage.' + queueName|translate}}</option>
@@ -32,7 +32,7 @@
             </option>
             </select>
             <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p><input id="text3" name="text3"
-              type="text" class="form-control campo_form" formControlName="documentNumber">
+            type="number" (keypress)="numericOnly($event)" class="form-control campo_form" formControlName="documentNumber">
             <p class="titulo-form-simples mb-1">{{'searches.orderDateUntil'|translate|uppercase}}</p><input id="text2"
               name="text2" type="date" class="form-control campo_form" formControlName="processDateEnd">
             <p class="titulo-form-simples"></p>

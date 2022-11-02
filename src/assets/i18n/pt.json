@@ -256,6 +256,7 @@
     "moreDetail": "Mais Detalhe",
     "cardType": "Tipo de Cartão",
     "clientType": "Tipo de Cliente",
+    "commercialPackType": "Tipo de Pacote Comercial",
     "terminalConfig": "Configurações de Terminais",
     "terminalIdentification": "Identificação de Configuração",
     "terminalType": "Tipo Terminal",

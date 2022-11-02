@@ -15,6 +15,8 @@ import { BankInformation } from 'src/app/client/Client.interface';
 import { TableInfoService } from 'src/app/table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
+import { ComprovativosTemplate } from 'src/app/comprovativos/IComprovativos.interface';
 
 
 @Component({
@@ -43,6 +45,7 @@ export class StoreIbanComponent implements OnInit {
 
   public isIBANConsidered: boolean = null;
   public IBANToShow: { tipo: string, dataDocumento: string };
+  public ibansToShow: ComprovativosTemplate[] = [];
   public result: any;
   localUrl: any;
 
@@ -87,6 +90,7 @@ export class StoreIbanComponent implements OnInit {
   public idisabled: boolean = false;
 
   files?: File[] = [];
+  fileToDelete?: File;
   supportBank?: string = "";
 
   banks: Bank[];
@@ -94,10 +98,11 @@ export class StoreIbanComponent implements OnInit {
   public store: ShopDetailsAcquiring = new ShopDetailsAcquiring();
 
   formStores!: FormGroup;
+  submissionId: string;
   returned: string
   edit: boolean = false;
 
-  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
     this.initializeForm();
@@ -120,6 +125,8 @@ export class StoreIbanComponent implements OnInit {
 
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
+    this.files = [];    
+    this.submissionId = localStorage.getItem("submissionId")
     //this.initializeForm();
 
 
@@ -165,9 +172,31 @@ export class StoreIbanComponent implements OnInit {
     this.route.navigate(['add-store-product'], navigationExtras);
   }
 
+  onDelete(file: File, documentID) {
+    this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
+      console.log("Sucesso a apagar um documento: ", sucess.msg);
+    }, error => {
+      console.log("Erro a apagar um ficheiro: ", error.msg);
+    });
+
+    this.fileToDelete = file;
+
+    const index1 = this.ibansToShow.findIndex(value => value.file == this.fileToDelete);
+    if (index1 > -1)
+      this.ibansToShow.splice(index1, 1);
+
+    const index = this.files.indexOf(this.fileToDelete);
+    if (index > -1) {
+      this.files.splice(index, 1);
+    }
+
+    this.fileToDelete = null;
+
+  }
+  
   selectFile(event: any) {
     this.files = [];
-    this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento: "01-08-2022" }
+    this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy') }
     this.newStore.id = 1;
     this.newStore.iban = "teste";
     const files = <File[]>event.target.files;
@@ -186,6 +215,14 @@ export class StoreIbanComponent implements OnInit {
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
+            this.ibansToShow.push({
+              expirationDate: 'desconhecido',
+              stakeholder: 'desconhecido',
+              status: 'desconhecido',
+              type: 'pdf',
+              uploadDate: 'desconhecido',
+              file: file
+            });
             this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
               duration: 4000,
               panelClass: ['snack-bar']

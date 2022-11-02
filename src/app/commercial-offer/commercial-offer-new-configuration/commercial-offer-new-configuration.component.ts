@@ -52,10 +52,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   edit: boolean;
   submissionId: string;
 
-  packId: string;
   productPackPricingFilter = new ProductPackPricingFilter();
-  merchantCatalog: MerchantCatalog;
-  groupsList: ProductPackRootAttributeProductPackKind[] = [];
   pricingOptions: ProductPackPricingEntry[] = [];
   pricingAttributeList: ProductPackPricingAttribute[] = [];
 
@@ -65,6 +62,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() isNewConfig: boolean;
   @Input() currentStore: ShopDetailsAcquiring;
   @Input() storeEquip: ShopEquipment;
+  @Input() packId: string;
+  @Input() merchantCatalog: MerchantCatalog;
+  @Input() groupsList: ProductPackRootAttributeProductPackKind[];
 
   @Output() changedStoreEvent = new EventEmitter<boolean>();
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
@@ -77,31 +77,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.allTerminals = result;
       this.allTerminals = this.allTerminals.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }));
-
-    // this.tableInfo.GetTenantTerminals().subscribe(result => {
-    //   this.allTerminals = result;
-    // });
   }
 
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private rootFormGroup: FormGroupDirective) {
     this.baseUrl = configuration.baseUrl;
-    
-    //if (this.route.getCurrentNavigation()?.extras?.state) {
-    //  this.store = this.route.getCurrentNavigation().extras.state["store"];
-    //  this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"]; //CASO SEJA PARA EDITAR UMA CONFIGURAÇÃO
-    //  this.packId = this.route.getCurrentNavigation().extras.state["packId"];
-    //  this.merchantCatalog = this.route.getCurrentNavigation().extras.state["merchantCatalog"];
-    //  this.groupsList = this.route.getCurrentNavigation().extras.state["groupsList"];
 
-    //  if (this.storeEquip != undefined)
-    //    this.edit = true;
-    //}
-
-    
-
-    //this.ngOnInit();
     
     this.data.updateData(false, 5, 2);
   }
@@ -206,9 +188,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
     this.productPackPricingFilter = {
-      processorId: this.currentStore.processorId,
-      productCode: this.packId,
-      subproductCode: "",
+      processorId: this.currentStore.pack.processorId,
+      productCode: this.currentStore.productCode,
+      subproductCode: this.currentStore.subproductCode,
       merchant: this.merchantCatalog,
       packAttributes: this.groupsList,
       store: {
@@ -219,11 +201,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         supportBank: this.currentStore.supportEntity
       },
       equipment: {
-        communicationOwnership: CommunicationOwnershipTypeEnum[this.storeEquip.communicationOwnership] as CommunicationOwnershipTypeEnum,
-        communicationType: this.storeEquip.communicationType,
-        equipmentOwnership: EquipmentOwnershipTypeEnum[this.storeEquip.equipmentOwnership] as EquipmentOwnershipTypeEnum,
-        equipmentType: this.storeEquip.equipmentType,
-        quantity: this.storeEquip.quantity
+        communicationOwnership: CommunicationOwnershipTypeEnum[this.formConfig.get("communicationOwnership").value] as CommunicationOwnershipTypeEnum,
+        communicationType: this.formConfig.get('communicationType').value,
+        equipmentOwnership: EquipmentOwnershipTypeEnum[this.formConfig.get("terminalProperty").value] as EquipmentOwnershipTypeEnum,
+        equipmentType: this.formConfig.get('terminalType').value,
+        quantity: this.formConfig.get('terminalAmount').value
       }
     }
 

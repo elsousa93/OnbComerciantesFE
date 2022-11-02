@@ -59,7 +59,7 @@
                            </span>
                         </nav>
                      </div>
-                     <div class="col-7 ms-0 me-0 ps-3 pe-0" *ngIf="replicateProducts">
+                     <div class="col-7 ms-0 me-0 ps-3 pe-0" *ngIf="replicate">
                         <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.selectStore'|translate}}:</p>
                         <input select="" id="select1" class="form-select  campo_form" formControlName="store">
                         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
@@ -122,9 +122,15 @@
                   </div>
                   <hr>-->
                  <ng-container *ngIf="packs != null && packs?.length > 0">
+                  <p class="titulo-form-simples align-self-start" wappler-command="editContent">{{'commercialOffer.commercialPackType'|translate}}</p>
                    <div *ngFor="let pack of packs">
-                     <input class="form-check-input" type="radio" (click)="selectCommercialPack(pack.id)" id="{{pack.id}}" name="packs"/>
-                     <label class="form-check-label radio" for="{{pack.id}}">{{pack.description}}</label>
+                    <span class="navbar-text text-primary">
+                      <div class="form-check">
+                        <input class="form-check-input" formControlName="productPackKind" type="radio" (click)="selectCommercialPack(pack.id)" value={{pack.id}} name="packs"/>
+                        <label class="form-check-label radio pe-5" for={{pack.id}}>{{pack.description}}</label>
+                      </div>
+                     
+                    </span>
                    </div>
                  </ng-container>
 
@@ -310,7 +316,7 @@
                    </div>
                  </div>
                  <ng-container *ngIf="isNewConfig != null && currentStore != null">
-                   <app-commercial-offer-new-configuration [currentStore]="currentStore" [isNewConfig]="isNewConfig" [storeEquip]="storeEquip" (changedStoreEvent)="changedStoreEvent($event)" (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>
+                   <app-commercial-offer-new-configuration [currentStore]="currentStore" [isNewConfig]="isNewConfig" [storeEquip]="storeEquip" [packId]="packId" [merchantCatalog]="merchantCatalog" [groupsList]="groupsList" (changedStoreEvent)="changedStoreEvent($event)" (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>
                  </ng-container>
                 </div>
             </div>

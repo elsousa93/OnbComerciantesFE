@@ -250,6 +250,7 @@
     "EATUnicre": "Is the Terminal Support Entity (TSE) from Unicre?",
     "registrationTerminalNumber": "Registration SIBS Terminal Number",
     "commercialPack": "Comercial Pack",
+    "commercialPackType": "Comercial Pack Type",
     "traditional": "Traditional",
     "lessDetail": "Less Detail",
     "moreDetail": "More Detail",
