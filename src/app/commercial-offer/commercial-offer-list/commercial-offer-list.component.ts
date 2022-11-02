@@ -63,7 +63,7 @@ export class CommercialOfferListComponent implements OnInit {
   storeEquipColumns: string[] = ['equipmentOwnership', 'equipmentType', 'communicationType', 'quantity', 'monthlyFee', 'delete', 'edit'];
 
   currentUser: User = {};
-  replicateProducts: boolean;
+  replicate: boolean;
   disableNewConfiguration: boolean;
   public storeEquip: ShopEquipment;
   public returned: string;
@@ -231,7 +231,7 @@ export class CommercialOfferListComponent implements OnInit {
     //  configTerm: this.formBuilder.group({})
     //});
     this.form = new FormGroup({
-      replicateProducts: new FormControl(this.replicateProducts, [Validators.required]),
+      replicateProducts: new FormControl(this.replicate, [Validators.required]),
       store: new FormControl(''),
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
       terminalRegistrationNumber: new FormControl(''),
@@ -315,6 +315,7 @@ export class CommercialOfferListComponent implements OnInit {
     var context = this;
     this.packId = packId;
     context.groupsList=[];
+    context.paymentSchemes=null;
     this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
       context.paymentSchemes = res.result.paymentSchemes;
       context.addPaymentFormGroups();
@@ -389,7 +390,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   changeReplicateProducts(bool: boolean) {
-    this.replicateProducts = bool;
+    this.replicate = bool;
   }
 
   createNewConfiguration() {
