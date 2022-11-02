@@ -181,7 +181,7 @@ export class CommercialOfferListComponent implements OnInit {
         this.storeEquipList.push(result);
       });
     }
-    this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.shopId).subscribe(result => {
+    this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).subscribe(result => {
       this.storeEquipList.push(result);
       this.loadStoreEquips(this.storeEquipList);
     });
@@ -273,10 +273,11 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   addCommissionFormGroups() {
+    var group = new FormGroup({});
     this.commissionAttributeList.forEach(function (value, idx) {
-      var group = new FormGroup({});
       group.addControl("commission" + value.id, new FormControl(value.id));
     });
+    this.form.addControl("commission", group);
   }
 
   //utilizado para mostrar os valores no PACOTE COMERCIAL
@@ -324,8 +325,8 @@ export class CommercialOfferListComponent implements OnInit {
   //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
   getCommissionsList() {
     this.commissionFilter = {
-      productCode: this.form.get("productPackKind").value,
-      subproductCode: this.form.get("").value,
+      productCode: this.currentStore.productCode,
+      subproductCode: this.currentStore.subproductCode,
       merchant: this.merchantCatalog,
       store: {
         activity: this.currentStore.activity,
@@ -350,7 +351,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   chooseCommission(commisionId: string) {
-    var productCode = this.form.get("productPackKind").value;
+    var productCode = this.currentStore.productCode;
     this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
       res.result.attributes.forEach(attr => {
         this.commissionAttributeList.push(attr);
