@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -337,5 +337,14 @@ export class StoreComponent implements AfterViewInit {
         window.clearInterval(scrollToTop);
       }
     }, 16);
+  }
+
+  goToStakeholders() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        editStakeInfo: true
+      }
+    }
+    this.route.navigate(['/stakeholders'], navigationExtras);
   }
 }

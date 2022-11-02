@@ -266,7 +266,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
-    this.flagRecolhaEletronica = true;
+    //this.flagRecolhaEletronica = true;
 
     this.changeValueCC();
   }

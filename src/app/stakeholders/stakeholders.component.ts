@@ -38,9 +38,14 @@ export class StakeholdersComponent implements OnInit {
 
   insertStakeholderEvent: Observable<IStakeholders>;
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
+  previousStakeholderEvent: Observable<number>;
 
   emitUpdatedStakeholder(info) {
     this.updatedStakeholderEvent = info;
+  }
+
+  emitPreviousStakeholder(idx) {
+    this.previousStakeholderEvent = idx;
   }
 
   emitInsertedStake(stake) {
@@ -112,6 +117,10 @@ export class StakeholdersComponent implements OnInit {
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
     private comprovativoService: ComprovativosService) {
 
+    if (this.route.getCurrentNavigation().extras.state) {
+      this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
+    }
+
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
     this.editStakes = this.fb.group({
@@ -143,7 +152,11 @@ export class StakeholdersComponent implements OnInit {
   }
 
   refreshPage() {
-    this.editStakeInfo = null;
+    if ((this.currentIdx - 1) >= 0) {
+      this.emitPreviousStakeholder(of(this.currentIdx));
+    } else {
+      this.editStakeInfo = null;
+    }
   }
 
   changeDataReadable(readable: boolean) {

@@ -43,6 +43,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.emitSelectedStakeholder(this.submissionStakeholders[nextIdx], nextIdx);
       });
     }
+    if (changes["previousStakeholderEvent"]) {
+      this.previousStakeholderEvent?.subscribe(result => {
+        if (result > 0) { 
+          var prevIdx = result - 1;
+          this.emitSelectedStakeholder(this.submissionStakeholders[prevIdx], prevIdx);
+        }
+      })
+    }
   }
  
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
@@ -65,6 +73,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   @Input() insertStakeholderEvent?: Observable<IStakeholders>;
   @Input() updatedStakeholderEvent?: Observable<{ stake: IStakeholders, idx: number }>;
+  @Input() previousStakeholderEvent?: Observable<number>;
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
