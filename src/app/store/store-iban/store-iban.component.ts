@@ -45,7 +45,7 @@ export class StoreIbanComponent implements OnInit {
 
   public isIBANConsidered: boolean = null;
   public IBANToShow: { tipo: string, dataDocumento: string };
-  public ibansToShow: ComprovativosTemplate[] = [];
+  public ibansToShow: [{ tipo: string, dataDocumento: string, file: File }];
   public result: any;
   localUrl: any;
 
@@ -216,11 +216,8 @@ export class StoreIbanComponent implements OnInit {
             reader.readAsDataURL(files[i]);
             this.files.push(file);
             this.ibansToShow.push({
-              expirationDate: 'desconhecido',
-              stakeholder: 'desconhecido',
-              status: 'desconhecido',
-              type: 'pdf',
-              uploadDate: 'desconhecido',
+              tipo: 'pdf',
+              dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
               file: file
             });
             this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
