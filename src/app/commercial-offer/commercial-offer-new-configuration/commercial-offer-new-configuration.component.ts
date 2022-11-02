@@ -53,7 +53,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   submissionId: string;
 
   productPackPricingFilter = new ProductPackPricingFilter();
-  merchantCatalog: MerchantCatalog;
   groupsList: ProductPackRootAttributeProductPackKind[] = [];
   pricingOptions: ProductPackPricingEntry[] = [];
   pricingAttributeList: ProductPackPricingAttribute[] = [];
@@ -65,6 +64,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() currentStore: ShopDetailsAcquiring;
   @Input() storeEquip: ShopEquipment;
   @Input() packId: string;
+  @Input() merchantCatalog: MerchantCatalog;
 
   @Output() changedStoreEvent = new EventEmitter<boolean>();
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
@@ -206,9 +206,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
     this.productPackPricingFilter = {
-      processorId: this.currentStore.processorId,
-      productCode: this.packId,
-      subproductCode: "",
+      processorId: this.currentStore.pack.processorId,
+      productCode: this.currentStore.productCode,
+      subproductCode: this.currentStore.subproductCode,
       merchant: this.merchantCatalog,
       packAttributes: this.groupsList,
       store: {

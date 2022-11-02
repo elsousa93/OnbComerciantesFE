@@ -315,7 +315,7 @@
                    </div>
                  </div>
                  <ng-container *ngIf="isNewConfig != null && currentStore != null">
-                   <app-commercial-offer-new-configuration [currentStore]="currentStore" [isNewConfig]="isNewConfig" [storeEquip]="storeEquip" [packId]="packId" (changedStoreEvent)="changedStoreEvent($event)" (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>
+                   <app-commercial-offer-new-configuration [currentStore]="currentStore" [isNewConfig]="isNewConfig" [storeEquip]="storeEquip" [packId]="packId" [merchantCatalog]="merchantCatalog" (changedStoreEvent)="changedStoreEvent($event)" (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>
                  </ng-container>
                 </div>
             </div>

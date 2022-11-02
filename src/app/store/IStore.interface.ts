@@ -73,7 +73,6 @@ export class ShopDetailsAcquiring {
   product?: Product
   subProduct?: Subproduct 
   documents?: ShopDocuments
-  processorId?: string
   id?: string
   contactPerson?: string
   phone1?: Phone
