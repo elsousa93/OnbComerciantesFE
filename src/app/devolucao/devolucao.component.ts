@@ -41,23 +41,25 @@ export class DevolucaoComponent implements OnInit{
   }
 
   getEntityName(entity: string, id: string) {
-    if (entity == 'merchant') {
-      this.clientService.GetClientByIdOutbound(id).then(res => {
-        return res.legalName;
-      });
-    }
-    if (entity == 'stake') {
-      this.stakeholderService.getStakeholderByID(id, "por mudar", "por mudar").then(res => {
-        return res.shortName;
-      });
-    }
-    if (entity == 'shop') {
-      this.storeService.getProcessShopDetails(this.processId, id).subscribe(res => {
-        return res.name;
-      });
-    }
-    if (entity == 'document') {
-      return id;
+    if (id != null) { 
+      if (entity == 'merchant') {
+        this.clientService.GetClientByIdOutbound(id).then(res => {
+          return res.legalName;
+        });
+      }
+      if (entity == 'stake') {
+        this.stakeholderService.getStakeholderByID(id, "por mudar", "por mudar").then(res => {
+          return res.shortName;
+        });
+      }
+      if (entity == 'shop') {
+        this.storeService.getProcessShopDetails(this.processId, id).subscribe(res => {
+          return res.name;
+        });
+      }
+      if (entity == 'document') {
+        return id;
+      }
     }
   }
 
