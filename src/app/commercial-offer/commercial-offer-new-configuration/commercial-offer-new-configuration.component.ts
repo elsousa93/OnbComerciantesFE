@@ -53,7 +53,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   submissionId: string;
 
   productPackPricingFilter = new ProductPackPricingFilter();
-  groupsList: ProductPackRootAttributeProductPackKind[] = [];
   pricingOptions: ProductPackPricingEntry[] = [];
   pricingAttributeList: ProductPackPricingAttribute[] = [];
 
@@ -65,6 +64,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() storeEquip: ShopEquipment;
   @Input() packId: string;
   @Input() merchantCatalog: MerchantCatalog;
+  @Input() groupsList: ProductPackRootAttributeProductPackKind[];
 
   @Output() changedStoreEvent = new EventEmitter<boolean>();
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
@@ -77,31 +77,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.allTerminals = result;
       this.allTerminals = this.allTerminals.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }));
-
-    // this.tableInfo.GetTenantTerminals().subscribe(result => {
-    //   this.allTerminals = result;
-    // });
   }
 
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private rootFormGroup: FormGroupDirective) {
     this.baseUrl = configuration.baseUrl;
-    
-    //if (this.route.getCurrentNavigation()?.extras?.state) {
-    //  this.store = this.route.getCurrentNavigation().extras.state["store"];
-    //  this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"]; //CASO SEJA PARA EDITAR UMA CONFIGURAÇÃO
-    //  this.packId = this.route.getCurrentNavigation().extras.state["packId"];
-    //  this.merchantCatalog = this.route.getCurrentNavigation().extras.state["merchantCatalog"];
-    //  this.groupsList = this.route.getCurrentNavigation().extras.state["groupsList"];
 
-    //  if (this.storeEquip != undefined)
-    //    this.edit = true;
-    //}
-
-    
-
-    //this.ngOnInit();
     
     this.data.updateData(false, 5, 2);
   }
