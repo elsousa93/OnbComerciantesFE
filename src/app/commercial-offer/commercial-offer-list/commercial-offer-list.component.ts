@@ -84,6 +84,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   submissionId: string;
   processNumber: string;
+  packId: string;
 
   storeEquipList: ShopEquipment[] = [{
     communicationOwnership: "client",
@@ -312,6 +313,8 @@ export class CommercialOfferListComponent implements OnInit {
 
   selectCommercialPack(packId: string) {
     var context = this;
+    this.packId = packId;
+    context.groupsList=[];
     this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
       context.paymentSchemes = res.result.paymentSchemes;
       context.addPaymentFormGroups();

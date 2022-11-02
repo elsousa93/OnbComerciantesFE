@@ -52,7 +52,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   edit: boolean;
   submissionId: string;
 
-  packId: string;
   productPackPricingFilter = new ProductPackPricingFilter();
   merchantCatalog: MerchantCatalog;
   groupsList: ProductPackRootAttributeProductPackKind[] = [];
@@ -65,6 +64,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() isNewConfig: boolean;
   @Input() currentStore: ShopDetailsAcquiring;
   @Input() storeEquip: ShopEquipment;
+  @Input() packId: string;
 
   @Output() changedStoreEvent = new EventEmitter<boolean>();
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
