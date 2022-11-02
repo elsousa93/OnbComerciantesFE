@@ -209,11 +209,13 @@ export class StoreComponent implements AfterViewInit {
   }
 
   deleteStore() {
-    if (this.currentStore !== null) {
+    if (this.currentStore != null) {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
         console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
         this.resetForm();
         this.emitRemovedStore(this.currentStore);
+        this.currentStore = null;
+        this.currentIdx = -2;
       });
     }
   }
@@ -277,6 +279,7 @@ export class StoreComponent implements AfterViewInit {
           this.emitInsertedStore(this.currentStore);
           this.resetForm();
           this.currentStore = null;
+          this.currentIdx = -2;
         });
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
