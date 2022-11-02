@@ -219,11 +219,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         supportBank: this.currentStore.supportEntity
       },
       equipment: {
-        communicationOwnership: CommunicationOwnershipTypeEnum[this.storeEquip.communicationOwnership] as CommunicationOwnershipTypeEnum,
-        communicationType: this.storeEquip.communicationType,
-        equipmentOwnership: EquipmentOwnershipTypeEnum[this.storeEquip.equipmentOwnership] as EquipmentOwnershipTypeEnum,
-        equipmentType: this.storeEquip.equipmentType,
-        quantity: this.storeEquip.quantity
+        communicationOwnership: CommunicationOwnershipTypeEnum[this.formConfig.get("communicationOwnership").value] as CommunicationOwnershipTypeEnum,
+        communicationType: this.formConfig.get('communicationType').value,
+        equipmentOwnership: EquipmentOwnershipTypeEnum[this.formConfig.get("terminalProperty").value] as EquipmentOwnershipTypeEnum,
+        equipmentType: this.formConfig.get('terminalType').value,
+        quantity: this.formConfig.get('terminalAmount').value
       }
     }
 
