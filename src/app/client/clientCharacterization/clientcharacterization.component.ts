@@ -521,11 +521,13 @@ export class ClientCharacterizationComponent implements OnInit {
 
     var legalNatureToSearch = this.form.get('natJuridicaN1').value;
 
-    if (this.isCommercialSociety != this.getIsCommercialSocietyFromLegalNature(legalNatureToSearch)) { 
-      this.legalNatError = true;
-      return;
+    if (legalNatureToSearch!="") {
+      if (this.isCommercialSociety != this.getIsCommercialSocietyFromLegalNature(legalNatureToSearch)) { 
+        this.legalNatError = true;
+        return;
+      }
     }
-
+    
     this.logger.debug(this.legalNatureList);
     this.legalNatureList.forEach(legalNat => {
       //var legalNatureToSearch = this.form.get('natJuridicaN1').value;
