@@ -16,6 +16,7 @@ import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
 import { distinctUntilChanged, Observable, of, Subscription } from 'rxjs';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -176,14 +177,21 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
+    
+    this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.getCountryInternationalCallingCode(this.client?.contacts?.phone1?.countryCode)); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
     this.listValue.get("cellphone").get("phoneNumber").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber);
-    this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode);
+    this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.getCountryInternationalCallingCode(this.client?.contacts?.phone2?.countryCode));
     this.listValue.get("telephone").get("phoneNumber").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber);
     this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
     if (this.returned == 'consult')
       this.listValue.disable();
   }
+  getCountryInternationalCallingCode(country: string) {
+    this.subs.push(this.tableInfo.GetCountryById(country).subscribe(result => {
+      return result.internationalCallingCode;
+    }, error => this.logger.debug(error)));
+  }
+  
 
   onActivate() {
     let scrollToTop = window.setInterval(() => {
