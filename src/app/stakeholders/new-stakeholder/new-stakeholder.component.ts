@@ -266,7 +266,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
-    //this.flagRecolhaEletronica = true;
+    //this.flagRecolhaEletronica = true; este é o valor que mete o campo disabled
 
     this.changeValueCC();
   }

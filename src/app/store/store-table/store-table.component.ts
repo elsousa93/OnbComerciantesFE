@@ -36,6 +36,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
       equipments: []
   };
   @Input() currentIdx?: number;
+  @Input() previousStoreEvent?: Observable<number>;
 
   //Variáveis que vão retornar informação
   @Output() selectedStoreEmitter = new EventEmitter<{
@@ -99,6 +100,14 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.updatedStoreEvent.subscribe(result => {
         var nextIdx = result.idx + 1;
         this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
+      });
+    }
+    if (changes["previousStoreEvent"] && this.previousStoreEvent != null) {
+      this.previousStoreEvent.subscribe(result => {
+        if (result > 0) {
+          var prevIdx = result - 1;
+          this.emitSelectedStore(this.storesList[prevIdx], prevIdx);
+        }
       });
     }
   }

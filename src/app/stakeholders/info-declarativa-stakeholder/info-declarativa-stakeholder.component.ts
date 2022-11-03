@@ -54,6 +54,11 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   @ViewChild(PepComponent) pepComponent: PepComponent;
 
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
+  previousStakeholderEvent: Observable<number>;
+
+  emitPreviousStakeholder(idx) {
+    this.previousStakeholderEvent = idx;
+  }
 
   emitUpdatedStakeholder(info) {
     this.updatedStakeholderEvent = info;
@@ -234,5 +239,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   getStakesListLength(value) {
     this.stakesLength = value;
+  }
+
+  goToInfoDeclarativa() {
+    if ((this.currentIdx - 1) >= 0) {
+      this.emitPreviousStakeholder(of(this.currentIdx));
+    } else {
+      this.route.navigate(['/info-declarativa']);
+    }
   }
 }

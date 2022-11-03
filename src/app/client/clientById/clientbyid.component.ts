@@ -406,7 +406,7 @@ export class ClientByIdComponent implements OnInit {
     } else {
       this.updateBasicForm();
     }
-    this.initializeTableInfo();
+    //this.initializeTableInfo();
 
     if (this.returned != null) {
       this.getMerchantInfo().then(result => {

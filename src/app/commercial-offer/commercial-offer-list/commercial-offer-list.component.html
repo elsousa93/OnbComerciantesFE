@@ -16,7 +16,7 @@
         <h2 class="text-primary mt-5 pb-2 ps-0 m-align">       <!--ps-2-->
           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.titleOffer'|translate}}
         </h2>
-            <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"></app-store-table>
+            <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)" [previousStoreEvent]="previousStoreEvent"></app-store-table>
      </div>
 
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
@@ -412,7 +412,7 @@
                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
                      wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
                         style="height: 25px !important; vertical-align: sub;"></button><button
-                     [routerLink]="['/comprovativos']" id="btn5a1"
+                     (click)="goToComprovativos()" id="btn5a1"
                      class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                      wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
                         style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
