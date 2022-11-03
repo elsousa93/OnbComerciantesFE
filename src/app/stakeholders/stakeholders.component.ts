@@ -170,7 +170,7 @@ export class StakeholdersComponent implements OnInit {
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
-
+    this.clickButton = true;
   }
 
   //Modal que pergunta se tem o PIN da Morada
@@ -265,12 +265,7 @@ export class StakeholdersComponent implements OnInit {
 
     });
   }
-
-  refreshDiv() {
-    location.reload();
-    this.ngOnInit();
-  }
-
+  
   deleteStakeholder(stakeholder) {
     if (this.returned !== 'consult') {
       this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.id).subscribe(s => {
