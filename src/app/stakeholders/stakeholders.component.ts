@@ -143,7 +143,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectAddStakeholder() {
-    this.clickButton = true;
+    this.clickButton = false;
     this.editStakeInfo = false;
   }
 

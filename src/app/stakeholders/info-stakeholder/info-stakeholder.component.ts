@@ -69,6 +69,8 @@ export class InfoStakeholderComponent implements OnInit {
       }, { validators: [validPhoneNumber] }),
       email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', Validators.required),
     })
+
+    this.phone = this.formContactos.get("phone");
   }
 
   changeListElement(string:string,e: any) {
