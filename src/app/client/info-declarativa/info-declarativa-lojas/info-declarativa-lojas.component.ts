@@ -84,7 +84,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
-        countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode /* Quando for adicionado a possibilidade de inserir os contactos de uma Loja na acquiringAPI */), //telemovel
+        countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode), 
         phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber, Validators.required)
       }, { validators: validPhoneNumber}),
       telephone: this.formBuilder.group({
