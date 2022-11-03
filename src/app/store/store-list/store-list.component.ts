@@ -21,6 +21,10 @@ import { AddStoreComponent } from '../add-store/add-store.component';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { StoreIbanComponent } from '../store-iban/store-iban.component';
+import { PostDocument } from '../../submission/document/ISubmission-document';
+import { ComprovativosComponent } from '../../comprovativos/comprovativos.component';
+import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
+import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 
 @Component({
   selector: 'app-store-list',
@@ -84,6 +88,7 @@ export class StoreComponent implements AfterViewInit {
 
   currentUser: User = {};
   previousStoreEvent: Observable<number>;
+  public ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -93,7 +98,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService) {
     this.baseUrl = configuration.baseUrl;
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
@@ -284,6 +289,7 @@ export class StoreComponent implements AfterViewInit {
           this.resetForm();
           this.currentStore = null;
           this.currentIdx = -2;
+          this.addDocumentToShop();
         });
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
@@ -292,6 +298,7 @@ export class StoreComponent implements AfterViewInit {
              this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
              this.resetForm();
              this.onActivate();
+             this.addDocumentToShop();
            } else {
              this.data.updateData(true, 3);
              this.route.navigate(['comprovativos']);
@@ -356,5 +363,32 @@ export class StoreComponent implements AfterViewInit {
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
+  }
+
+  getUploadedFiles(info) {
+    this.ibansToShow = info.ibansToShow;
+  }
+
+  addDocumentToShop() {
+    if (this.ibansToShow.length > 0) { 
+      this.comprovativoService.readBase64(this.ibansToShow[0].file).then((data) => {
+        var docToSend: PostDocument = {
+          "documentType": "1001",
+          "documentPurpose": "BankAccount",
+          "file": {
+            "fileType": "PDF",
+            "binary": data.split(',')[1]
+          },
+          "validUntil": "2022-07-20T11:03:13.001Z",
+          "data": {}
+        }
+        this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), this.currentStore.id, docToSend).subscribe(result => {
+          this.currentStore.bank.bank.iban = result.id;
+          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(res => {
+            console.log('LOJA ATUALIZADA ', res);
+          });
+        });
+      })
+    }
   }
 }

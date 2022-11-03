@@ -174,4 +174,8 @@ export class StoreService {
     return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment', newShopEquipment);
   }
 
+  addDocumentToShop(submissionId: string, shopId: string, ) {
+
+  }
+
 }
