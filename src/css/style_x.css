@@ -1618,10 +1618,9 @@ mat-paginator {
 }
 
 .snack-bar {
-  background-color:#1e66b0;
-  color: white;
+  background-color:white;
   position: fixed;
-  border-color: white;
+  border-color: #1e66b0;
   border-style: solid;
   border-width: 2px;
   top: 135px;
