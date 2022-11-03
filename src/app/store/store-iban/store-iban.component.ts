@@ -45,7 +45,7 @@ export class StoreIbanComponent implements OnInit {
 
   public isIBANConsidered: boolean = null;
   public IBANToShow: { tipo: string, dataDocumento: string };
-  public ibansToShow: [{ tipo: string, dataDocumento: string, file: File }];
+  public ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
   public result: any;
   localUrl: any;
 
@@ -173,11 +173,13 @@ export class StoreIbanComponent implements OnInit {
   }
 
   onDelete(file: File, documentID) {
-    this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
-      console.log("Sucesso a apagar um documento: ", sucess.msg);
-    }, error => {
-      console.log("Erro a apagar um ficheiro: ", error.msg);
-    });
+    if (documentID != null) { 
+      this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
+        console.log("Sucesso a apagar um documento: ", sucess.msg);
+      }, error => {
+        console.log("Erro a apagar um ficheiro: ", error.msg);
+      });
+    }
 
     this.fileToDelete = file;
 
@@ -218,7 +220,8 @@ export class StoreIbanComponent implements OnInit {
             this.ibansToShow.push({
               tipo: 'pdf',
               dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-              file: file
+              file: file,
+              id: null
             });
             this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
               duration: 4000,
@@ -261,6 +264,11 @@ export class StoreIbanComponent implements OnInit {
       border: 3px solid green;
       `);
 
+  }
+
+  removeFiles() {
+    this.files = [];
+    this.ibansToShow = [];
   }
 
 }

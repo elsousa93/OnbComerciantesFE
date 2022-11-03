@@ -20,6 +20,7 @@ import { ProductSelectionComponent } from '../product-selection/product-selectio
 import { AddStoreComponent } from '../add-store/add-store.component';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
+import { StoreIbanComponent } from '../store-iban/store-iban.component';
 
 @Component({
   selector: 'app-store-list',
@@ -77,6 +78,7 @@ export class StoreComponent implements AfterViewInit {
 
   @ViewChild(ProductSelectionComponent) productSelectionComponent: ProductSelectionComponent;
   @ViewChild(AddStoreComponent) addStoreComponent: AddStoreComponent;
+  @ViewChild(StoreIbanComponent) storeIbanComponent: StoreIbanComponent;
 
   products: any = [];
 
@@ -217,6 +219,7 @@ export class StoreComponent implements AfterViewInit {
         this.emitRemovedStore(this.currentStore);
         this.currentStore = null;
         this.currentIdx = -2;
+        this.storeIbanComponent.removeFiles();
       });
     }
   }
@@ -285,17 +288,14 @@ export class StoreComponent implements AfterViewInit {
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
-          // if (this.currentIdx < (this.storesLength - 1)) {
-          //   this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-          //   this.onActivate();
-          //   this.resetForm();
-          // } else {
-          //   this.data.updateData(true, 3);
-          //   this.route.navigate(['comprovativos']);
-          // }
-          this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-          this.resetForm();
-          this.currentStore = null;
+           if (this.currentIdx < (this.storesLength - 1)) {
+             this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+             this.resetForm();
+             this.onActivate();
+           } else {
+             this.data.updateData(true, 3);
+             this.route.navigate(['comprovativos']);
+           }
         });
       }
     } else {
@@ -311,6 +311,7 @@ export class StoreComponent implements AfterViewInit {
     this.productSelectionComponent.clearSubProducts();
     this.addStoreComponent.chooseAddress(true);
     this.closeAccordion();
+    this.storeIbanComponent.removeFiles();
   }
 
   emitUpdatedStore(info) {
