@@ -163,13 +163,13 @@ export class ClientByIdComponent implements OnInit {
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
-    this.subs.push(this.tableInfo.GetAllLegalNatures().subscribe(result => {
-      this.legalNatureList = result;
-      this.logger.debug("FETCH LEGAL NATURES");
-      this.logger.debug(result);
-      this.logger.debug(this.legalNatureList);
-      this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
-    }, error => this.logger.error(error)));
+    //this.subs.push(this.tableInfo.GetAllLegalNatures().subscribe(result => {
+    //  this.legalNatureList = result;
+    //  this.logger.debug("FETCH LEGAL NATURES");
+    //  this.logger.debug(result);
+    //  this.logger.debug(this.legalNatureList);
+    //  this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
+    //}, error => this.logger.error(error)));
   }
 
   updateBasicForm() {

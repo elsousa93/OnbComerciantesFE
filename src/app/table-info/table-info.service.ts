@@ -104,14 +104,14 @@ export class TableInfoService {
   }
 
   GetAllLegalNatures() {
-
+    var url = this.acquiringUrl + 'merchant/legalnature';
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Accept-Language': this.currentLanguage,
 
       }),
     }
-    return this.http.get<LegalNature[]>(this.acquiringUrl + 'merchant/legalnature', HTTP_OPTIONS);
+    return this.API.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS);
   }
 
   GetAllStakeholderRoles() {
