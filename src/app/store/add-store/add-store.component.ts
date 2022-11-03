@@ -442,6 +442,10 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValidators(null);
       this.formStores.get('countryStore').setValidators(null);
       this.formStores.get('zipCodeStore').setValidators(null);
+      this.formStores.get('localeStore').setValue('');
+      this.formStores.get('addressStore').setValue('');
+      this.formStores.get('countryStore').setValue('');
+      this.formStores.get('zipCodeStore').setValue('');
       this.formStores.updateValueAndValidity();
     }
   }
