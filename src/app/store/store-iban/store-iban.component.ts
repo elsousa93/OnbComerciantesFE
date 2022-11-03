@@ -45,7 +45,7 @@ export class StoreIbanComponent implements OnInit {
 
   public isIBANConsidered: boolean = null;
   public IBANToShow: { tipo: string, dataDocumento: string };
-  public ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
+  @Input() ibansToShow?: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
   public result: any;
   localUrl: any;
 
@@ -101,6 +101,7 @@ export class StoreIbanComponent implements OnInit {
   submissionId: string;
   returned: string
   edit: boolean = false;
+
 
   constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
