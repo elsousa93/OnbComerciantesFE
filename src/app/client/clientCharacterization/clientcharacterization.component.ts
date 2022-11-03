@@ -549,6 +549,7 @@ export class ClientCharacterizationComponent implements OnInit {
     var crcInserted = this.form.get('crcCode').value;
     var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
     if (!crcFormat.test(crcInserted)) {
+      this.form.get("crcCode").setErrors({ 'incorrect': true });
       this.crcIncorrect = true;
       this.crcFound = false;
       return;
@@ -557,6 +558,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcService.getCRC(crcInserted, '001').subscribe({
       next: clientByCRC => {
         if (clientByCRC === undefined || clientByCRC === null) {
+          this.form.get("crcCode").setErrors({ 'incorrect': true });
           this.crcNotExists = true;
           this.crcFound = false;
           return;
@@ -565,11 +567,17 @@ export class ClientCharacterizationComponent implements OnInit {
 
         var nif = this.form.get("natJuridicaNIFNIPC").value;
         if (clientByCRC.fiscalId !== nif) {
+          this.form.get("crcCode").setErrors({ 'incorrect': true });
           this.crcMatchNIF = true;
           this.crcFound = false;
           return;
         }
         this.crcMatchNIF = false;
+
+        if (this.form.get("crcCode").hasError("incorrect")) {
+          this.form.get("crcCode").setErrors(null);
+          console.log('ENTREI NO IF DO FORM TER ERROS ', this.form);
+        }
 
         this.crcFound = true;
         this.errorMsg = '';
