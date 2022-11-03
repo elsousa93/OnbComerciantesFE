@@ -150,13 +150,14 @@ export class ClientCharacterizationComponent implements OnInit {
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
-    this.subs.push(this.tableInfo.GetAllLegalNatures().subscribe(result => {
-      this.legalNatureList = result;
+    this.tableInfo.GetAllLegalNatures().then(result => {
+      this.legalNatureList = result.result;
       this.logger.debug("FETCH LEGAL NATURES");
       this.logger.debug(result);
       this.logger.debug(this.legalNatureList);
+    }).then(val => {
       this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
-    }, error => this.logger.error(error)));
+    });
   }
 
   updateBasicForm() {
@@ -443,7 +444,7 @@ export class ClientCharacterizationComponent implements OnInit {
           if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
             console.log('ENTROU IF EMPRESA', this.tipologia);
             this.initializeFormControlOther();
-            setTimeout(() => this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature) , 100);
+            this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature);
             this.collectCRC = false;
           }
         }
