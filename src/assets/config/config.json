@@ -10,5 +10,5 @@
   "mockacoUrl": "http://localhost/Mockaco/",
   "clientID": "4bd86de7-5640-4048-887e-7ecb6cedb01d",
   "clientSecret": "SIBS123456",
-  "baseUrlCC": "http://localhost:12000/BackendPortalaaaaaaaa"
+  "baseUrlCC": "https://shwbs3.tservices.sibspteste/GatewayApp/backendportalacquiring/"
 }
