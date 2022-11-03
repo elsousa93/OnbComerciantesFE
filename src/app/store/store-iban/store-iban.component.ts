@@ -125,7 +125,7 @@ export class StoreIbanComponent implements OnInit {
 
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
-    this.files = [];    
+    //this.files = [];    
     this.submissionId = localStorage.getItem("submissionId")
     //this.initializeForm();
 
@@ -187,17 +187,17 @@ export class StoreIbanComponent implements OnInit {
     if (index1 > -1)
       this.ibansToShow.splice(index1, 1);
 
-    const index = this.files.indexOf(this.fileToDelete);
-    if (index > -1) {
-      this.files.splice(index, 1);
-    }
+    //const index = this.files.indexOf(this.fileToDelete);
+    //if (index > -1) {
+    //  this.files.splice(index, 1);
+    //}
 
     this.fileToDelete = null;
-
+    console.log('LISTA DE FILES DEPOIS ELIMINAR ', this.ibansToShow);
   }
   
   selectFile(event: any) {
-    this.files = [];
+    //this.files = [];
     this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy') }
     this.newStore.id = 1;
     this.newStore.iban = "teste";
@@ -216,9 +216,9 @@ export class StoreIbanComponent implements OnInit {
               this.localUrl = event.target.result;
             }
             reader.readAsDataURL(files[i]);
-            this.files.push(file);
+            //this.files.push(file);
             this.ibansToShow.push({
-              tipo: 'pdf',
+              tipo: 'Comprovativo de IBAN',
               dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
               file: file,
               id: null
@@ -233,7 +233,8 @@ export class StoreIbanComponent implements OnInit {
         }
       }
     }
-    this.logger.debug(this.files);
+    this.logger.debug(this.ibansToShow);
+    console.log('LISTA DE FILES DEPOIS ANEXAR ', this.ibansToShow);
   }
 
   isIBAN(isIBANConsidered: boolean) {
@@ -267,7 +268,7 @@ export class StoreIbanComponent implements OnInit {
   }
 
   removeFiles() {
-    this.files = [];
+    //this.files = [];
     this.ibansToShow = [];
   }
 
