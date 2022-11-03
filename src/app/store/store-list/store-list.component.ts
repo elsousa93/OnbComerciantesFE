@@ -25,6 +25,7 @@ import { PostDocument } from '../../submission/document/ISubmission-document';
 import { ComprovativosComponent } from '../../comprovativos/comprovativos.component';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-store-list',
@@ -98,7 +99,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService) {
+  constructor(http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe) {
     this.baseUrl = configuration.baseUrl;
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
@@ -205,6 +206,23 @@ export class StoreComponent implements AfterViewInit {
       var bankStores = this.editStores.controls["bankStores"];
       bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
       bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
+
+      if (!this.currentStore.bank.useMerchantBank) {
+        this.documentService.GetDocumentImage(this.submissionId, this.currentStore.bank.bank.iban).then(async (res) => {
+          console.log("imagem de um documento ", res);
+          var teste = await res.blob();
+
+          teste.lastModifiedDate = new Date();
+          teste.name = "Comprovativo de IBAN";
+
+          this.ibansToShow.push({
+            dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+            file: teste,
+            id: this.currentStore.bank.bank.iban,
+            tipo: "Comprovativo de IBAN"
+          });
+        });
+      }
 
 
       var productStores = this.editStores.controls["productStores"];
