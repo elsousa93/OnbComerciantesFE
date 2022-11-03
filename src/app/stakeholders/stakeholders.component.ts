@@ -306,7 +306,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   submit() {
-    this.clickButton = false;
+    this.clickButton = null;
     var stakeForm = this.editStakes.controls["stake"];
     if (this.returned != 'consult') {
       if (this.editStakes.controls["stake"].valid) {

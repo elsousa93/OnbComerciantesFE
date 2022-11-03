@@ -70,17 +70,6 @@
                         </div>
                       </div>
 
-                      <div class="row">
-                        <div class="col-12">
-                          <p class="titulo-form-simples mt-0">EMAIL*</p>
-                          <input #emailClient name="email" type="text" id="emailClient" class="form-control"
-                              formControlName="email">
-                          <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
-                            {{'errorMessages.isRequired'|translate}}
-                          </div>
-                        </div>
-                      </div>
-
                       <div class="row" formGroupName="telephone">
                         <div class="col-4">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate}}:</p>
@@ -102,7 +91,16 @@
                         </div>
                       </div>
 
-                      <p class="titulo-form-simples"></p>
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="titulo-form-simples mt-0">EMAIL*</p>
+                          <input #emailClient name="email" type="text" id="emailClient" class="form-control"
+                              formControlName="email">
+                          <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
+                            {{'errorMessages.isRequired'|translate}}
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                   </div>
