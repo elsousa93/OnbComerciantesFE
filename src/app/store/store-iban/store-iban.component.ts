@@ -234,6 +234,7 @@ export class StoreIbanComponent implements OnInit {
       }
     }
     this.logger.debug(this.ibansToShow);
+    event.target.files = null;
     console.log('LISTA DE FILES DEPOIS ANEXAR ', this.ibansToShow);
   }
 
