@@ -81,6 +81,7 @@ export class StoreComponent implements AfterViewInit {
   products: any = [];
 
   currentUser: User = {};
+  previousStoreEvent: Observable<number>;
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -340,11 +341,19 @@ export class StoreComponent implements AfterViewInit {
   }
 
   goToStakeholders() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        editStakeInfo: true
+    if ((this.currentIdx - 1) >= 0) {
+      this.emitPreviousStore(of(this.currentIdx));
+    } else {
+      let navigationExtras: NavigationExtras = {
+        state: {
+          editStakeInfo: true
+        }
       }
+      this.route.navigate(['/stakeholders'], navigationExtras);
     }
-    this.route.navigate(['/stakeholders'], navigationExtras);
+  }
+
+  emitPreviousStore(idx) {
+    this.previousStoreEvent = idx;
   }
 }

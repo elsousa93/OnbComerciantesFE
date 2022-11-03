@@ -41,7 +41,7 @@
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
                 <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false
-                                       (selectedStakeholderEmitter)="selectStakeholder($event)" [updatedStakeholderEvent]="updatedStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)"></app-stakeholders-list>
+                                       (selectedStakeholderEmitter)="selectStakeholder($event)" [updatedStakeholderEvent]="updatedStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)" [previousStakeholderEvent]="previousStakeholderEvent"></app-stakeholders-list>
               </div>
               
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
@@ -97,7 +97,7 @@
                               wappler-command="editContent">
                         {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">
                       </button>
-                      <button id="btn5a4" [routerLink]="['/info-declarativa']"
+                      <button id="btn5a4" (click)="goToInfoDeclarativa()"
                               class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                               wappler-command="editContent">
                         <img src="assets/images/arrow_back_ios_white.svg"

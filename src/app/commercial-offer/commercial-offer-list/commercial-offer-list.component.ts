@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
@@ -115,6 +115,12 @@ export class CommercialOfferListComponent implements OnInit {
 
   packs: ProductPackEntry[];
   isPackSelected: boolean = false;
+
+  previousStoreEvent: Observable<number>;
+
+  emitPreviousStore(idx) {
+    this.previousStoreEvent = idx;
+  }
 
   getPacoteComercial() {
     console.log("loja selecionada: ", this.currentStore);
@@ -513,4 +519,11 @@ export class CommercialOfferListComponent implements OnInit {
     return this.form.get(formGroup)?.get(formControl)?.value;
   }
 
+  goToComprovativos() {
+    if ((this.currentIdx - 1) >= 0) {
+      this.emitPreviousStore(of(this.currentIdx));
+    } else {
+      this.route.navigate(['/comprovativos']);
+    }
+  }
 }
