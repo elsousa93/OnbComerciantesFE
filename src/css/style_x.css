@@ -1623,6 +1623,7 @@ mat-paginator {
   color: #1e66b0;
   border-color: #1e66b0;
   border-style: solid;
+  font-weight: bold;
   border-width: 2px;
   top: 135px;
   right: 108px;

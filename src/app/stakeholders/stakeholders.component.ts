@@ -90,7 +90,7 @@ export class StakeholdersComponent implements OnInit {
   isFoundStakeholderShown: boolean = false;
   public flagRecolhaEletronica: boolean = true;
   public poppy?: any;
-  public clickButton: boolean = false;
+  public clickButton: boolean = true;
 
   formStakeholderSearch: FormGroup;
 
@@ -143,7 +143,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectAddStakeholder() {
-    this.clickButton = null;
+    this.clickButton = false;
     this.editStakeInfo = false;
   }
 
