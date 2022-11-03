@@ -71,4 +71,8 @@ export class SubmissionDocumentService {
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
+
+  SubmissionPostDocumentToShop(submissionID: string, shopId: string, newDoc: PostDocument) {
+    return this.http.post<SimplifiedDocument>(this.baseUrl + 'submission/' + submissionID + '/merchant/' + 'shop/' + shopId + '/document', newDoc);
+  }
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
@@ -194,6 +194,7 @@ export class StoreIbanComponent implements OnInit {
 
     this.fileToDelete = null;
     console.log('LISTA DE FILES DEPOIS ELIMINAR ', this.ibansToShow);
+    this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
   }
   
   selectFile(event: any) {
@@ -234,8 +235,8 @@ export class StoreIbanComponent implements OnInit {
       }
     }
     this.logger.debug(this.ibansToShow);
-    event.target.files = null;
     console.log('LISTA DE FILES DEPOIS ANEXAR ', this.ibansToShow);
+    this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
   }
 
   isIBAN(isIBANConsidered: boolean) {
@@ -272,5 +273,9 @@ export class StoreIbanComponent implements OnInit {
     //this.files = [];
     this.ibansToShow = [];
   }
+
+  @Output() fileEmitter = new EventEmitter<{
+    ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string }[]
+  }>();
 
 }
