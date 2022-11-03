@@ -74,7 +74,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
       this.client = result;
       this.getCountryInternationalCallingCode1();
-      this.getCountryInternationalCallingCode1();
+      this.getCountryInternationalCallingCode2();
     });
 
 
