@@ -49,6 +49,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   emitInsertedStake(stake) {
+    this.clickButton = true;
     this.insertStakeholderEvent = stake;
     this.editStakeInfo = null;
   }
