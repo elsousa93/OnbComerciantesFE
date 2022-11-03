@@ -326,6 +326,7 @@ export class CreateStakeholderComponent implements OnInit {
         this.formNewStakeholder.get("nipc").addValidators(Validators.required);
         this.formNewStakeholder.get("socialDenomination").addValidators(Validators.required);
         this.formNewStakeholder.updateValueAndValidity();
+        console.log('FORM APOS NÃO ENCONTRAR STAKE NIPC', this.formNewStakeholder);
         break;
       case true:
         let nif = this.formStakeholderSearch.get("documentType").value === "0501" ?
@@ -343,6 +344,7 @@ export class CreateStakeholderComponent implements OnInit {
         this.formNewStakeholder.get("name").addValidators(Validators.required);
         this.formNewStakeholder.get("nif").addValidators(Validators.required);
         this.formNewStakeholder.updateValueAndValidity();
+        console.log('FORM APOS NÃO ENCONTRAR STAKE NIF', this.formNewStakeholder);
         break;
 
     }
