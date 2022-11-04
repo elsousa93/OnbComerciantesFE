@@ -26,6 +26,10 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["insertStakeholderEvent"]) {
       this.insertStakeholderEvent?.subscribe(result => {
+        // result as any;
+        if (result.fiscalId === null) {
+          result.fiscalId = (result as any).fiscalIdentification.fiscalId;
+        }
         var stakeToInsert = {
           stakeholderAcquiring: result,
           stakeholderOutbound: undefined,
