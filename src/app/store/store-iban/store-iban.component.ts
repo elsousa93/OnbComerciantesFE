@@ -173,9 +173,9 @@ export class StoreIbanComponent implements OnInit {
     this.route.navigate(['add-store-product'], navigationExtras);
   }
 
-  onDelete(file: File, documentID) {
-    if (documentID != null) { 
-      this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
+  onDelete(file: File) {
+    if (file[0] != null) { 
+      this.tableInfo.deleteDocument(this.submissionId, 0).then(sucess => {
         console.log("Sucesso a apagar um documento: ", sucess.msg);
       }, error => {
         console.log("Erro a apagar um ficheiro: ", error.msg);
@@ -200,7 +200,7 @@ export class StoreIbanComponent implements OnInit {
   }
   
   selectFile(event: any) {
-    //this.files = [];
+    this.files = [];
     this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy') , file: file, id: "0"}
     this.newStore.id = 1;
     this.newStore.iban = "teste";
@@ -219,9 +219,7 @@ export class StoreIbanComponent implements OnInit {
               this.localUrl = event.target.result;
             }
             reader.readAsDataURL(files[i]);
-            //this.files.push(file);
-            this.IBANToShow.dataDocumento = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-            this.IBANToShow.tipo = this.translate.instant('supportingDocuments.checklistModal.IBAN');
+            this.files.push(file);
             this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
               duration: 4000,
               panelClass: ['snack-bar']
