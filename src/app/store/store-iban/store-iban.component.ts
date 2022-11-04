@@ -246,7 +246,7 @@ export class StoreIbanComponent implements OnInit {
     this.formStores = new FormGroup({
       supportBank: new FormControl((this.bank != null) ? this.bank : '', Validators.required),
       bankInformation: new FormControl((this.store.bank.useMerchantBank != null) ? this.store.bank.useMerchantBank : '', Validators.required),
-      bankIban: new FormControl((this.store.bank.bank.iban != null) ? this.store.bank.bank.iban : '')
+      bankIban: new FormControl((this.store.bank?.bank.iban != null) ? this.store.bank.bank.iban : '')
     });
   }
 
@@ -272,9 +272,5 @@ export class StoreIbanComponent implements OnInit {
     //this.files = [];
     this.IBANToShow = null;
   }
-
-  @Output() fileEmitter = new EventEmitter<{
-    ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string }[]
-  }>();
 
 }
