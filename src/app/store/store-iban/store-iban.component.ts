@@ -6,17 +6,14 @@ import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { Bank, Istore, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { StoreService } from '../store.service';
 import { AuthService } from '../../services/auth.service';
 import { UserPermissions } from '../../userPermissions/user-permissions';
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
-import { BankInformation } from 'src/app/client/Client.interface';
 import { TableInfoService } from 'src/app/table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { ComprovativosTemplate } from 'src/app/comprovativos/IComprovativos.interface';
 
 
 @Component({
@@ -40,12 +37,10 @@ export class StoreIbanComponent implements OnInit {
 
   /*variable declarations*/
   public stroreId: number = 0;
-  //store: Istore = { id: -1 } as Istore
-  public clientID: number = 12345678;
 
   public isIBANConsidered: boolean = null;
-  public IBANToShow: { tipo: string, dataDocumento: string };
-  @Input() ibansToShow?: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
+  public IBANToShow: { tipo: string, dataDocumento: string, file: File, id: string };
+  // @Input() ibansToShow?: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
   public result: any;
   localUrl: any;
 
@@ -103,7 +98,7 @@ export class StoreIbanComponent implements OnInit {
   edit: boolean = false;
 
 
-  constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
     this.initializeForm();
@@ -162,6 +157,11 @@ export class StoreIbanComponent implements OnInit {
     this.store.bank.bank = new ShopBankingInformation();
 
     this.store.bank.useMerchantBank = this.formStores.get("bankInformation").value;
+    if (!this.store.bank.useMerchantBank) {
+      this.formStores.get("bankIban").addValidators(Validators.required);
+      this.formStores.get("bankIban").updateValueAndValidity();
+      this.store.bank.bank.iban = this.formStores.get("bankIban").value;
+    }
     this.store.bank.bank.bank = this.formStores.get("supportBank").value;
 
     var navigationExtras: NavigationExtras = {
@@ -173,9 +173,9 @@ export class StoreIbanComponent implements OnInit {
     this.route.navigate(['add-store-product'], navigationExtras);
   }
 
-  onDelete(file: File, documentID) {
-    if (documentID != null) { 
-      this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
+  onDelete(file: File) {
+    if (file[0] != null) { 
+      this.tableInfo.deleteDocument(this.submissionId, 0).then(sucess => {
         console.log("Sucesso a apagar um documento: ", sucess.msg);
       }, error => {
         console.log("Erro a apagar um ficheiro: ", error.msg);
@@ -183,10 +183,11 @@ export class StoreIbanComponent implements OnInit {
     }
 
     this.fileToDelete = file;
+    this.IBANToShow = null;
 
-    const index1 = this.ibansToShow.findIndex(value => value.file == this.fileToDelete);
-    if (index1 > -1)
-      this.ibansToShow.splice(index1, 1);
+    // const index1 = this.ibansToShow.findIndex(value => value.file == this.fileToDelete);
+    // if (index1 > -1)
+    //   this.ibansToShow.splice(index1, 1);
 
     //const index = this.files.indexOf(this.fileToDelete);
     //if (index > -1) {
@@ -194,13 +195,13 @@ export class StoreIbanComponent implements OnInit {
     //}
 
     this.fileToDelete = null;
-    console.log('LISTA DE FILES DEPOIS ELIMINAR ', this.ibansToShow);
-    this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
+    // console.log('LISTA DE FILES DEPOIS ELIMINAR ', this.ibansToShow);
+    // this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
   }
   
   selectFile(event: any) {
-    //this.files = [];
-    this.IBANToShow = { tipo: "Comprovativo de IBAN", dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy') }
+    this.files = [];
+    this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy') , file: file, id: "0"}
     this.newStore.id = 1;
     this.newStore.iban = "teste";
     const files = <File[]>event.target.files;
@@ -218,13 +219,7 @@ export class StoreIbanComponent implements OnInit {
               this.localUrl = event.target.result;
             }
             reader.readAsDataURL(files[i]);
-            //this.files.push(file);
-            this.ibansToShow.push({
-              tipo: 'Comprovativo de IBAN',
-              dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-              file: file,
-              id: null
-            });
+            this.files.push(file);
             this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
               duration: 4000,
               panelClass: ['snack-bar']
@@ -235,9 +230,9 @@ export class StoreIbanComponent implements OnInit {
         }
       }
     }
-    this.logger.debug(this.ibansToShow);
-    console.log('LISTA DE FILES DEPOIS ANEXAR ', this.ibansToShow);
-    this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
+    // this.logger.debug(this.ibansToShow);
+    // console.log('LISTA DE FILES DEPOIS ANEXAR ', this.ibansToShow);
+    // this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
   }
 
   isIBAN(isIBANConsidered: boolean) {
@@ -249,6 +244,7 @@ export class StoreIbanComponent implements OnInit {
     this.formStores = new FormGroup({
       supportBank: new FormControl((this.bank != null) ? this.bank : '', Validators.required),
       bankInformation: new FormControl((this.store.bank.useMerchantBank != null) ? this.store.bank.useMerchantBank : '', Validators.required),
+      bankIban: new FormControl((this.store.bank?.bank?.iban != null) ? this.store.bank.bank.iban : '')
     });
   }
 
@@ -272,11 +268,7 @@ export class StoreIbanComponent implements OnInit {
 
   removeFiles() {
     //this.files = [];
-    this.ibansToShow = [];
+    this.IBANToShow = null;
   }
-
-  @Output() fileEmitter = new EventEmitter<{
-    ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string }[]
-  }>();
 
 }

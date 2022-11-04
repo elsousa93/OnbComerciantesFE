@@ -51,16 +51,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let iban of ibansToShow">
-            <td class="text-primary text-center">{{iban.tipo}}</td>
-            <td class="text-primary text-center">{{iban.dataDocumento}}</td>
+          <tr *ngIf="IBANToShow !== undefined">
+            <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
+            <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
             <td>
               <span>
                 <img src="assets/images/search_blue.svg"
-                     (click)="openFile(iban.file)"
+                     (click)="openFile(files[0])"
                      style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                      <img src="assets/images/delete_blue.svg"
-                      (click)="onDelete(iban.file, iban.id)"
+                      (click)="onDelete(files[0])"
                       style="height: 25px !important; vertical-align: sub; cursor: pointer;">
               </span>
             </td>
