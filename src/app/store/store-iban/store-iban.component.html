@@ -41,7 +41,7 @@
       </div>
       <div *ngIf="formStores.get('bankInformation').value === false" class="col-5 ms-0 me-0 ps-5 pe-0">
       <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.attachIBAN'|translate}}</p>
-      <div class="table-responsive mb-2">
+      <div formControlName="bankIban" class="table-responsive mb-2">
         <table class="table">
         <thead class="text-primary table-primary">
           <tr class="table-white text-primary">
