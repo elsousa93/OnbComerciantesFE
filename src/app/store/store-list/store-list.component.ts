@@ -316,15 +316,12 @@ export class StoreComponent implements AfterViewInit {
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
-           if (this.currentIdx < (this.storesLength - 1)) {
+           
              this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
              this.resetForm();
              this.onActivate();
              this.addDocumentToShop();
-           } else {
              this.data.updateData(true, 3);
-             this.route.navigate(['comprovativos']);
-           }
         });
       }
     } else {
