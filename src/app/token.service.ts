@@ -52,9 +52,12 @@ export class TokenService {
     })
   }
 
-  getLoginTokenInfo(token) : Promise<any> {
+  getLoginTokenInfo(token): Promise<any> {
+    var object = {
+      token: token
+    }
     var URI = this.neyondBackURL + 'BEToken/GetToken';
-    return this.http.post(URI, token).toPromise();
+    return this.http.post(URI, object).toPromise();
   }
 
 }
