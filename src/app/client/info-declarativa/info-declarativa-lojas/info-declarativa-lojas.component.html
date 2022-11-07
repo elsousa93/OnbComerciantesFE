@@ -66,7 +66,7 @@
                                  class="form-control" formControlName="phoneNumber">
                           <div class="alert alert-danger"
                                *ngIf="cellphone.touched && !cellphone.valid || cellphone.value && !cellphone.value">
-                               {{'errorMessages.isRequired'|translate}}
+                               {{'errorMessages.invalidPhone'|translate}}
                           </div>
                         </div>
                       </div>
