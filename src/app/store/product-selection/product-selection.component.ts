@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
@@ -35,6 +35,7 @@ export class ProductSelectionComponent implements OnInit {
   formStores!: FormGroup;
   returned: string
   edit: boolean = false;
+  url: AbstractControl;
 
   public isCardPresent: boolean = false;
   public isCardNotPresent: boolean = false;
@@ -116,6 +117,8 @@ export class ProductSelectionComponent implements OnInit {
       subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : '', Validators.required),
       url: new FormControl((this.store.website !== null) ? this.store.website : '', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")])
     });
+
+    this.url = this.formStores.get("url");
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
