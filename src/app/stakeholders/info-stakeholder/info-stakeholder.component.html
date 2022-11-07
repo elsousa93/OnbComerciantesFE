@@ -10,6 +10,7 @@
                             <select class="form-select" #phone1CountryCode formControlName="countryCode"
                                 (click)="changeListElement(phone1CountryCode, $event)" id="countryCode"
                                 [attr.disabled]="returned === 'consult' ? true : null">
+                                <option></option>
                                 <option *ngFor="let country of internationalCallingCodes"
                                     value={{country.internationalCallingCode}}
                                     [attr.selected]="(country.internationalCallingCode != '' && currentStakeholder != null && currentStakeholder.phone1 != null && currentStakeholder.phone1?.countryCode == country.internationalCallingCode) ? true : null">

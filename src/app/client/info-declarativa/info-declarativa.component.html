@@ -54,6 +54,7 @@
                       <div class="col-4">
                         <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate|uppercase}}:</p>
                         <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
+                          <option></option>
                           <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone1?.countryCode != undefined && merchantInfo.contacts?.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <!-- <div class="alert alert-danger" *ngIf="phone1CountryCode.value && !phone1CountryCode.value">
@@ -76,6 +77,7 @@
                       <div class="col-4">
                         <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate|uppercase}}:</p>
                         <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
+                          <option></option>
                           <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone2?.countryCode != undefined && merchantInfo.contacts?.phone2?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
                         </select>
                         <!-- <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
@@ -97,7 +99,7 @@
                       <div class="col-12">
                         <p class="titulo-form-simples mt-0">EMAIL*</p>
                         <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty)">
+                        <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid">
                           {{'errorMessages.isRequired'|translate}}
                         </div>
                         <div class="alert alert-danger" *ngIf="emailValid.errors?.['email']">
@@ -109,6 +111,9 @@
                       <div class="col-12">
                         <p class="titulo-form-simples mt-0">{{'declarativeInformation.invoicingEmail'|translate|uppercase}}</p>
                         <input #billingEmail name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail" [readonly]="returned === 'consult'">
+                        <div class="alert alert-danger" *ngIf="emailValid.errors?.['billingEmail']">
+                          {{'errorMessages.invalidEmail'|translate}}
+                        </div>
                       </div>
                     </div>
                     <p class="titulo-form-simples"></p>

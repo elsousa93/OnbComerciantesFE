@@ -98,7 +98,7 @@ export class InfoDeclarativaComponent implements OnInit {
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
       },{validators: [validPhoneNumber]}),
-      email: new FormControl(this.newClient?.contacts?.email, Validators.email),
+      email: new FormControl(this.newClient?.contacts?.email, [Validators.required, Validators.email]),
       billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, Validators.email)
     });
     

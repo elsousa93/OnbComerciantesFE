@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -46,6 +46,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   listValue!: FormGroup;
   currentIdx: number = 0;
+  cellphone: AbstractControl;
+  telephone: AbstractControl;
 
   client: Client;
   returned: string;
@@ -98,6 +100,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       }, { validators: validPhoneNumber }),
       email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.email),
     });
+
+    this.cellphone = this.listValue.get("cellphone");
+    this.telephone = this.listValue.get("telephone");
 
     this.listValue.get("cellphone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
       if (val != null && val != "") {

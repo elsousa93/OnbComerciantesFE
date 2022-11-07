@@ -53,7 +53,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   initializeForm() {
     this.form = new FormGroup({
       language: new FormControl('', Validators.required),
-      signature: new FormControl(true, Validators.required)
+      signature: new FormControl('1', Validators.required)
     });
   }
 

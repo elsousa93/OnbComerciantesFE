@@ -84,7 +84,7 @@
                   <p class="titulo-form-simples"></p>
                 </div>
               </div>
-              <h4 class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
+              <h4 *ngIf="!isVisible" class="text-primary mt-3 ps-0"><img src="assets/images/app_registration.svg"
                   style="height: 25px !important; vertical-align: bottom;">&nbsp;{{'declarativeInformation.signature.title'|translate|uppercase}}
               </h4>
             </div>
