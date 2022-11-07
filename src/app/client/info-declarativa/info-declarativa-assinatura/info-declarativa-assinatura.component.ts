@@ -21,7 +21,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class InfoDeclarativaAssinaturaComponent implements OnInit {
   private baseUrl: string;
-  isVisible: any;
+  isVisible: boolean = true;
   stakeholders: IStakeholders[] = [];
   representativesSelected: String[] = [];
   form: FormGroup;
@@ -86,6 +86,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   declineCloseSubmission() {
     this.closeSubmissionModalRef?.hide();
+  }
+
+  choosePaper(paper: boolean) {
+    this.isVisible = paper;
   }
 
   sendFinalSubmission() {

@@ -135,6 +135,10 @@ export class InfoDeclarativaComponent implements OnInit {
     this.newClient = JSON.parse(localStorage.getItem("info-declarativa"))?.client ?? this.newClient;
   }
 
+  get emailValid() {
+    return this.listValue.get('email');
+  }
+
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }

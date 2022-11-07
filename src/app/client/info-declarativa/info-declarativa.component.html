@@ -97,7 +97,10 @@
                       <div class="col-12">
                         <p class="titulo-form-simples mt-0">EMAIL*</p>
                         <input #emailClient name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid">
+                        <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty)">
+                          {{'errorMessages.isRequired'|translate}}
+                        </div>
+                        <div class="alert alert-danger" *ngIf="emailValid.errors?.['email']">
                           {{'errorMessages.invalidEmail'|translate}}
                         </div>
                       </div>

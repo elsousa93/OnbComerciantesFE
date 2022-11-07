@@ -115,7 +115,7 @@ export class ProductSelectionComponent implements OnInit {
     this.formStores = new FormGroup({
       solutionType: new FormControl((this.store.productCode !== null) ? this.store.productCode : '', Validators.required),
       subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : '', Validators.required),
-      url: new FormControl((this.store.website !== null) ? this.store.website : '')
+      url: new FormControl((this.store.website !== null) ? this.store.website : '', Validators.email)
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'

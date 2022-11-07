@@ -73,6 +73,10 @@ export class InfoStakeholderComponent implements OnInit {
     this.phone = this.formContactos.get("phone");
   }
 
+    get emailValid() {
+    return this.formContactos.get('email');
+  }
+
   changeListElement(string:string,e: any) {
     this.formContactos.get("phone").get("countryCode").setValue(e.target.value);
   }

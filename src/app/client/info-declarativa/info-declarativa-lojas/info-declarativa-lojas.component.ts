@@ -120,6 +120,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     });
   }
 
+  get emailValid() {
+    return this.listValue.get('email');
+  }
+  
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }
