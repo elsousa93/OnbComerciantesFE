@@ -51,7 +51,7 @@
            <div class="alert alert-danger" *ngIf="urlValid.errors?.['email']">
             {{'errorMessages.invalidUrl'|translate}}
           </div>
-          <div class="alert alert-danger" *ngIf="!isURLFilled">
+          <div class="alert alert-danger" *ngIf="isCardNotPresent &&!isURLFilled">
             {{'errorMessages.isRequired'|translate}}
           </div>
         <nav *ngIf="!edit"

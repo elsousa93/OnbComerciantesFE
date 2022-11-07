@@ -63,17 +63,17 @@
                       <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <span class="navbar-text">
                           <div class="form-check">
-                            <input class="form-check-input" id="opt1" [value]="1" (click)="choosePaper(true)"
+                            <input class="form-check-input" id="opt1" [value]="1" (click)="choosePaper(true)" formControlName="signature"
                              name="isVisible" type="radio" />
-                            <label class="form-check-label radio pe-5" formControlName="signature"
+                            <label class="form-check-label radio pe-5" 
                               for="radio8">{{'declarativeInformation.signature.paperSignature'|translate|uppercase}}&nbsp;</label>
                           </div>
                         </span>
                         <span class="navbar-text">
                           <div class="form-check">
-                            <input class="form-check-input" id="opt2" [value]="0" (click)="choosePaper(false)"
+                            <input class="form-check-input" id="opt2" [value]="0" (click)="choosePaper(false)" formControlName="signature"
                              name="isVisible" type="radio" />
-                            <label class="form-check-label radio" formControlName="signature"
+                            <label class="form-check-label radio" 
                               for="radio8">{{'declarativeInformation.signature.digitalSignature'|translate|uppercase}}</label>
                           </div>
                         </span>
