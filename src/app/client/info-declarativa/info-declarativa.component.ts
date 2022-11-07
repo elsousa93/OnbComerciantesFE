@@ -13,7 +13,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { ClientService } from '../client.service';
 import { XhrFactory } from '@angular/common';
 import { Configuration, configurationToken } from 'src/app/configuration';
-import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
+import { infoDeclarativaForm, validPhoneNumber, validEmail } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 
 @Component({
@@ -98,8 +98,8 @@ export class InfoDeclarativaComponent implements OnInit {
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
       },{validators: [validPhoneNumber]}),
-      email: new FormControl(this.newClient?.contacts?.email, Validators.required),
-      billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email)
+      email: new FormControl(this.newClient?.contacts?.email, {validators: [validEmail]}),
+      billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, {validators: [validEmail]})
     });
     
     this.phone1 = this.listValue.get("phone1");

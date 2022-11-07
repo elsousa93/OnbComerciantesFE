@@ -12,7 +12,7 @@ import { CountryInformation } from '../../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../../table-info/table-info.service';
 import { Client, Phone } from '../../Client.interface';
 import { ClientService } from '../../client.service';
-import { infoDeclarativaForm, validPhoneNumber } from '../info-declarativa.model';
+import { infoDeclarativaForm, validPhoneNumber, validEmail } from '../info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
 import { distinctUntilChanged, Observable, of, Subscription } from 'rxjs';
@@ -96,7 +96,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
         phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber, Validators.required)
       }, { validators: validPhoneNumber }),
-      email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.required),
+      email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, {validators: [validEmail]}),
     });
 
     this.listValue.get("cellphone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {

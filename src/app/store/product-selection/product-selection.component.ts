@@ -12,6 +12,7 @@ import { } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, Product, ProductOutbound } from '../../commercial-offer/ICommercialOffer.interface';
 import { SubProduct } from '../../table-info/ITable-info.interface';
 import { CommercialOfferService } from '../../commercial-offer/commercial-offer.service';
+import { validUrl } from '../store.model';
 
 
 @Component({
@@ -114,7 +115,7 @@ export class ProductSelectionComponent implements OnInit {
     this.formStores = new FormGroup({
       solutionType: new FormControl((this.store.productCode !== null) ? this.store.productCode : '', Validators.required),
       subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : '', Validators.required),
-      url: new FormControl((this.store.website !== null) ? this.store.website : '')
+      url: new FormControl((this.store.website !== null) ? this.store.website : '', {validators: [validUrl]})
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'

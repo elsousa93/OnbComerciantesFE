@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Configuration, configurationToken } from 'src/app/configuration';
-import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
+import { infoDeclarativaForm, validEmail, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 import { CountryInformation } from 'src/app/table-info/ITable-info.interface';
 import { Subscription } from 'rxjs';
@@ -67,7 +67,7 @@ export class InfoStakeholderComponent implements OnInit {
         countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : '', Validators.required),
         phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : '', Validators.required)
       }, { validators: [validPhoneNumber] }),
-      email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', Validators.required),
+      email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', {validators: [validEmail]})
     })
 
     this.phone = this.formContactos.get("phone");

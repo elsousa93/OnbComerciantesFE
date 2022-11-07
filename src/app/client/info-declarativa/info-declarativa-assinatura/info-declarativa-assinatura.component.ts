@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubmissionGet } from 'src/app/submission/ISubmission.interface';
 import { ProcessNumberService } from 'src/app/nav-menu-presencial/process-number.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -25,6 +26,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   isVisible: any;
   stakeholders: IStakeholders[] = [];
   representativesSelected: String[] = [];
+  form: FormGroup;
 
   closeSubmissionModalRef: BsModalRef | undefined;
 
@@ -34,10 +36,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public currentPage: number;
   submissionId: string;
   processNumber: string;
-  public subscription: Subscription; 
+  public subscription: Subscription;
   public submissionAnswer: SubmissionGet;
 
-  constructor(private logger : LoggerService, private processNrService: ProcessNumberService, private http: HttpClient,@Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService) {
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService) {
     this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
@@ -46,7 +48,15 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.data.updateData(false, 6,4);
+    this.data.updateData(false, 6, 4);
+    this.initializeForm();
+  }
+
+  initializeForm() {
+    this.form = new FormGroup({
+      language: new FormControl('', Validators.required),
+      signature: new FormControl('', Validators.required)
+    });
   }
 
   changeRepresentativeSelected(event) {
@@ -71,24 +81,27 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       panelClass: ['snack-bar']
     });
     this.sendFinalSubmission();
-    
+
     this.router.navigate(["/"]);
     this.data.reset();
   }
 
-  declineCloseSubmission(){
+  declineCloseSubmission() {
     this.closeSubmissionModalRef?.hide();
   }
 
   sendFinalSubmission() {
-    this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
-      this.submissionAnswer = result.result[0];
-      this.submissionAnswer.submissionType = "DigitalComplete";
-      this.submissionAnswer.state = "Ready";
-       this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
-        console.log("Submissão terminada");
-    })
-    })
+    if (this.form.valid) {
+      this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
+        this.submissionAnswer = result.result[0];
+        this.submissionAnswer.submissionType = "DigitalComplete";
+        this.submissionAnswer.state = "Ready";
+        this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
+          console.log("Submissão terminada");
+        })
+      })
+    }
+
   }
 
 

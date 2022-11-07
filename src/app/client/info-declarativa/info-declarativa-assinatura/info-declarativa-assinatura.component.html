@@ -35,6 +35,7 @@
             aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
         </li>
       </ul>
+      <form [formGroup]="form" (ngSubmit)="sendFinalSubmission()">
       <div class="tab-content" id="navTabs1_content">
         <div class="container-fluid mt-0 ps-3 pe-3">
           <div class="row">
@@ -49,7 +50,7 @@
                   <div class="row">
                     <div class="col-4">
                       <p class="titulo-form-simples mt-0">{{'declarativeInformation.signature.language'|translate}}</p>
-                      <select class="form-select">
+                      <select class="form-select" formControlName="language">
                         <option selected value="Português">Português</option>
                         <option value="-">-</option>
                       </select>
@@ -64,7 +65,7 @@
                           <div class="form-check">
                             <input class="form-check-input" id="opt1" [value]="1" [(ngModel)]="isVisible"
                               #opt1="ngModel" name="isVisible" type="radio" [checked]="isSelected" />
-                            <label class="form-check-label radio pe-5"
+                            <label class="form-check-label radio pe-5" formControlName="signature"
                               for="radio8">{{'declarativeInformation.signature.paperSignature'|translate|uppercase}}&nbsp;</label>
                           </div>
                         </span>
@@ -72,7 +73,7 @@
                           <div class="form-check">
                             <input class="form-check-input" id="opt2" [value]="0" [(ngModel)]="isVisible"
                               #opt2="ngModel" name="isVisible" type="radio" [checked]="!isSelected" />
-                            <label class="form-check-label radio"
+                            <label class="form-check-label radio" formControlName="signature"
                               for="radio8">{{'declarativeInformation.signature.digitalSignature'|translate|uppercase}}</label>
                           </div>
                         </span>
@@ -120,11 +121,6 @@
                 </table>
               </div>
               <ng-template #closeSubmissionModal>
-                <!-- <div style="margin: auto;width: 520px;padding: 10px;text-align: center; background-color: white; border-radius: 0.3rem; margin-left: -40px;">
-       <p>Após efetuar a primeira submissão, o BackOffice irá reiniciar a recolha de informação existente nos documentos comprovativos, não sendo possível alterações aos dados inseridos. Deverá continuar com a jornada de cliente, avançando para a oferta comercial e posteriormente com o preenchimento da Informação Declarativa.</p>
-       <button type="button" class="btn btn-primary" (click)="back()">{{'generalKeywords.back'|translate|uppercase}}</button>
-       <button type="button" class="btn btn-primary" style="margin-left: 10px;" (click)="continue()">Continuar</button>
-    </div> -->
                 <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
                   <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
                     <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
@@ -197,3 +193,4 @@
           </div>
         </div>
       </div>
+    </form>
