@@ -99,7 +99,7 @@
                           <div class="alert alert-danger" *ngIf="emailClient.touched && !emailClient.valid">
                             {{'errorMessages.isRequired'|translate}}
                           </div>
-                          <div class="alert alert-danger" *ngIf="(email.touched || email.dirty) && !email.valid && email.errors.hasOwnProperty('invalidEmail')">
+                          <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid && emailClient.errors.hasOwnProperty('invalidEmail')">
                             {{'errorMessages.invalidEmail'|translate}}
                           </div>
                         </div>
