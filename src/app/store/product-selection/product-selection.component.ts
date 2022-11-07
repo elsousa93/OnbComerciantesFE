@@ -122,11 +122,14 @@ export class ProductSelectionComponent implements OnInit {
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
       if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='Card Not Present') {
         this.formStores.get('url').setValidators([Validators.required, Validators.email]);
-        this.url = this.formStores.get("url");
       } else
         this.formStores.get('url').setValidators(null);
       this.formStores.get('url').updateValueAndValidity();
     });
+  }
+
+  get urlValid() {
+    return this.formStores.get('url');
   }
   
   submit() {
