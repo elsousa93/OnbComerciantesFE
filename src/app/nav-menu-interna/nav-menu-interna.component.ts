@@ -137,23 +137,49 @@ export class NavMenuInternaComponent implements OnInit {
     alert(this.item.name);
   }
 
-  //Redirecionar para as páginas - contemplar sessão
-  goToStakeholders() {
-    this.route.navigate(['stakeholders/']);
-  }
-  goToComprovativos() {
-    this.route.navigate(['comprovativos']);
-  }
-  goToStores() {
-    this.route.navigate(['store']);
-  }
-  goToInfoDeclarativa() {
-    this.route.navigate(['info-declarativa']);
-  }
-  goToComercialOffer() {
-    this.route.navigate(['app-commercial-offer-list']);
+  goToAppDevolucao() {
+    if (this.currentPage > 0) {
+      this.route.navigate(['/app-devolucao']);
+    }
   }
 
+  goToCliente() {
+    if (this.currentPage > 1) {
+      this.route.navigate(['client']);
+    }
+  }
+
+  //Redirecionar para as páginas - contemplar sessão
+  goToStakeholders() {
+    if (this.currentPage > 2) {
+      this.route.navigate(['stakeholders/']);
+    }
+  }
+
+  goToStores() {
+    if(this.currentPage > 3) {
+      this.route.navigate(['store-comp']);
+    }
+    
+  }
+
+  goToComprovativos() {
+    if (this.currentPage > 4) {
+      this.route.navigate(['comprovativos']);
+    }
+  }
+
+  goToInfoDeclarativa() {
+    if(this.currentPage > 6) {
+      this.route.navigate(['info-declarativa']);
+    }
+  }
+
+  goToComercialOffer() {
+    if (this.currentPage > 5) {
+      this.route.navigate(['commercial-offert-list']);
+    }
+  }
 
   public autohide() {
     var currentScrollPos = window.pageYOffset;
