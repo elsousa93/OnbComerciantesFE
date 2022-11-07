@@ -111,7 +111,7 @@
                       <div class="col-12">
                         <p class="titulo-form-simples mt-0">{{'declarativeInformation.invoicingEmail'|translate|uppercase}}</p>
                         <input #billingEmail name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger" *ngIf="emailValid.errors?.['billingEmail']">
+                        <div class="alert alert-danger" *ngIf="billingValid.errors?.['email']">
                           {{'errorMessages.invalidEmail'|translate}}
                         </div>
                       </div>

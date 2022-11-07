@@ -123,7 +123,7 @@ export class ProductSelectionComponent implements OnInit {
       if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='Card Not Present') {
         this.formStores.get('url').setValidators([Validators.required, Validators.email]);
       } else
-        this.formStores.get('url').setValidators(null);
+        this.formStores.get('url').setValidators(Validators.email);
       this.formStores.get('url').updateValueAndValidity();
     });
   }
