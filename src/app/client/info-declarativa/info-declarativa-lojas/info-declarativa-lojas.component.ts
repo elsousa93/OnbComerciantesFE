@@ -46,8 +46,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   listValue!: FormGroup;
   currentIdx: number = 0;
-  phone1Number: AbstractControl;
-  phone2Number: AbstractControl;
+  phone1PhoneNumber: AbstractControl;
+  phone2PhoneNumber: AbstractControl;
 
   client: Client;
   returned: string;
@@ -100,8 +100,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       }, { validators: validPhoneNumber }),
       email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.email),
     });
-    this.phone1Number = this.listValue.get("cellphone").get("phoneNumber");
-    this.phone2Number = this.listValue.get("telephone").get("phoneNumber");
+    this.phone1PhoneNumber = this.listValue.get("cellphone").get("phoneNumber");
+    this.phone2PhoneNumber = this.listValue.get("telephone").get("phoneNumber");
 
     this.listValue.get("cellphone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
       if (val != null && val != "") {
