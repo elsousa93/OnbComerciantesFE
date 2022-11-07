@@ -35,7 +35,7 @@
             aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
         </li>
       </ul>
-      <form [formGroup]="form" (ngSubmit)="sendFinalSubmission()">
+      <form [formGroup]="form">
       <div class="tab-content" id="navTabs1_content">
         <div class="container-fluid mt-0 ps-3 pe-3">
           <div class="row">
@@ -64,7 +64,7 @@
                         <span class="navbar-text">
                           <div class="form-check">
                             <input class="form-check-input" id="opt1" [value]="1" [(ngModel)]="isVisible"
-                              #opt1="ngModel" name="isVisible" type="radio" [checked]="isSelected" />
+                              #opt1="ngModel" name="isVisible" type="radio" />
                             <label class="form-check-label radio pe-5" formControlName="signature"
                               for="radio8">{{'declarativeInformation.signature.paperSignature'|translate|uppercase}}&nbsp;</label>
                           </div>
@@ -72,7 +72,7 @@
                         <span class="navbar-text">
                           <div class="form-check">
                             <input class="form-check-input" id="opt2" [value]="0" [(ngModel)]="isVisible"
-                              #opt2="ngModel" name="isVisible" type="radio" [checked]="!isSelected" />
+                              #opt2="ngModel" name="isVisible" type="radio" />
                             <label class="form-check-label radio" formControlName="signature"
                               for="radio8">{{'declarativeInformation.signature.digitalSignature'|translate|uppercase}}</label>
                           </div>

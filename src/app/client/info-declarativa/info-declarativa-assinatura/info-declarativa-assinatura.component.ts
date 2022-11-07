@@ -21,8 +21,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class InfoDeclarativaAssinaturaComponent implements OnInit {
   private baseUrl: string;
-
-  isSelected: boolean = true;
   isVisible: any;
   stakeholders: IStakeholders[] = [];
   representativesSelected: String[] = [];
@@ -55,7 +53,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   initializeForm() {
     this.form = new FormGroup({
       language: new FormControl('', Validators.required),
-      signature: new FormControl('', Validators.required)
+      signature: new FormControl(true, Validators.required)
     });
   }
 
