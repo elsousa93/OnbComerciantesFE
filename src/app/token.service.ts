@@ -57,14 +57,8 @@ export class TokenService {
       token: token
     }
 
-    const HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded' 
-      }),
-    }
-
     var URI = this.neyondBackURL + 'BEToken/GetToken';
-    return this.http.post(URI, object, HTTP_OPTIONS).toPromise();
+    return this.http.post(URI, object).toPromise();
   }
 
 }
