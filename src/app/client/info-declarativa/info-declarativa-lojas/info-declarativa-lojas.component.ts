@@ -96,7 +96,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
         phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber, Validators.required)
       }, { validators: validPhoneNumber }),
-      email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, {validators: [validEmail]}),
+      email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.email),
     });
 
     this.listValue.get("cellphone").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {

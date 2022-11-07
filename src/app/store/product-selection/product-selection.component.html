@@ -48,7 +48,7 @@
       <div>
         <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url"
           (change)="URLFilled(true)" id="url" name="url" type="text" #url class="form-control campo_form">
-          <div class="alert alert-danger" *ngIf="(url.touched || url.dirty) && !url.valid && url.errors.hasOwnProperty('invalidUrl')">
+           <div class="alert alert-danger" *ngIf="(url.touched || url.dirty) && !url.valid">
             {{'errorMessages.invalidUrl'|translate}}
           </div>
         <nav *ngIf="!edit"
