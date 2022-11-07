@@ -93,11 +93,11 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       cellphone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode), 
         phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber, Validators.required)
-      }, { validators: validPhoneNumber}),
+      }, {validators: [validPhoneNumber]}),
       telephone: this.formBuilder.group({
         countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
         phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber, Validators.required)
-      }, { validators: validPhoneNumber }),
+      }, {validators: [validPhoneNumber]}),
       email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, Validators.email),
     });
     this.phone1PhoneNumber = this.listValue.get("cellphone").get("phoneNumber");

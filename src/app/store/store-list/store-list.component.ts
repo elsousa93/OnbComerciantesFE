@@ -171,7 +171,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   updateContactPoint() {
-    this.currentStore.manager = this.submissionClient.legalName;
+    this.currentStore.contactPerson = this.submissionClient.legalName;
     this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
     this.editStores.controls["infoStores"].get("contactPoint").updateValueAndValidity();
   }
@@ -281,7 +281,7 @@ export class StoreComponent implements AfterViewInit {
       this.currentStore.name = infoStores.get("storeName").value;
       this.currentStore.activity = infoStores.get("activityStores").value;
       this.currentStore.subActivity = infoStores.get("subactivityStore").value;
-      this.currentStore.manager = infoStores.get("contactPoint").value;
+      this.currentStore.contactPerson = infoStores.get("contactPoint").value;
 
       var bankStores = this.editStores.controls["bankStores"];
 

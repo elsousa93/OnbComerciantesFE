@@ -388,7 +388,7 @@ export class AddStoreComponent implements OnInit {
 
   submit() {
     this.store.name = this.formStores.get("storeName").value;
-    this.store.manager = this.formStores.get("contactPoint").value;
+    this.store.contactPerson = this.formStores.get("contactPoint").value;
 
     this.store.activity = this.formStores.get("activityStores").value;
     this.store.subActivity = this.formStores.get("subactivityStores").value;

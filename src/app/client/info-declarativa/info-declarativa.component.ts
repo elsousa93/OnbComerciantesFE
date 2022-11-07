@@ -99,7 +99,7 @@ export class InfoDeclarativaComponent implements OnInit {
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
       },{validators: [validPhoneNumber]}),
       email: new FormControl(this.newClient?.contacts?.email, [Validators.required, Validators.email]),
-      billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, [Validators.email])
+      billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, Validators.email)
     });
     
     this.phone1 = this.listValue.get("phone1");
