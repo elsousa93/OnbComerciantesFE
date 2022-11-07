@@ -492,6 +492,8 @@
   "errorMessages": {
     "bothFieldsPhone": "Both fields are required",
     "invalidPhone": "Phone number is invalid",
+    "invalidEmail": "Email is invalid",
+    "invalidurl": "URL is invalid",
     "isRequired": "is required"
   }
 }
