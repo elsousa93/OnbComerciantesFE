@@ -320,11 +320,12 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       this.packs = result.result;
+      this.getCommissionsList();
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
-        this.getCommissionsList();
       }
     });
+    
   }
 
   selectCommercialPack(packId: string) {
