@@ -218,7 +218,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.getStoreEquipsFromSubmission();
 
     this.getPackDetails();
-    this.getCommissionsList();
+    
 
 
     if (this.returned == 'consult')
@@ -324,6 +324,7 @@ export class CommercialOfferListComponent implements OnInit {
         this.selectCommercialPack(this.packs[0].id);
       }
     });
+    this.getCommissionsList();
   }
 
   selectCommercialPack(packId: string) {

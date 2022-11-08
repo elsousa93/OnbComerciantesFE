@@ -891,7 +891,7 @@ export class ClientByIdComponent implements OnInit {
         }
 
         var stakeholderToShow: StakeholdersProcess = client as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
-         stakeholderToShow.fiscalId = client.fiscalIdentification?.fiscalId;
+         stakeholderToShow.fiscalId = client.fiscalId;
          stakeholderToShow.name = client.legalName;
 
         newSubmission.stakeholders.push(stakeholderToShow);
