@@ -478,6 +478,17 @@ export class ClientComponent implements OnInit {
       context.clientsToShow = [];
       this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
+        if (clients.length===1){
+          context.snackBar.open(context.translate.instant('client.find'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+          });
+        } else {
+          context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+            });
+        }
         context.resultError = "";
         clients.forEach(function (value, index) {
           context.logger.debug(value);
@@ -488,19 +499,6 @@ export class ClientComponent implements OnInit {
             client: Client,
             isClient: boolean
           }
-
-          if (clients.length===1){
-            context.snackBar.open(context.translate.instant('client.find'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-            });
-          } else {
-            context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-              });
-          }
-
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
             context.logger.debug(c);
             var client = {
