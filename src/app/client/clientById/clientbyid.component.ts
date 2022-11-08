@@ -873,13 +873,13 @@ export class ClientByIdComponent implements OnInit {
         var client = this.clientContext.getClient();
 
       var stakeholder: IStakeholders = client as IStakeholders; //Formato a ser enviado à API
-        stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
+        stakeholder.fiscalId = client.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
         stakeholder.shortName = client.legalName;
         stakeholder.fiscalAddress = client.headquartersAddress;
         console.log("CC Data: ", this.dataCC);
-        if (this.dataCC !== undefined && this.dataCC !== null && this.dataCC !== {}) {
+        if (this.dataCC !== undefined && this.dataCC !== null) {
           stakeholder.identificationDocument = {
             type: '1001',
             country: this.clientContext.dataCC.countryCC,

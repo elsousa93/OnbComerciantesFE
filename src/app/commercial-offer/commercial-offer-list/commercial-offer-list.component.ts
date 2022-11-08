@@ -346,6 +346,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionFilter = {
       productCode: this.currentStore.productCode,
       subproductCode: this.currentStore.subproductCode,
+      processorId: this.packs[0].processors[0],
       merchant: this.merchantCatalog,
       store: {
         activity: this.currentStore.activity,

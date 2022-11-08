@@ -161,6 +161,7 @@ export interface ProductPackPricingAttribute {
 export interface ProductPackCommissionFilter {
   productCode?: string
   subproductCode?: string
+  processorId: string
   merchant?: MerchantCatalog
   store?: StoreCatalog
   packAttributes?: ProductPackRootAttributeProductPackKind[]
