@@ -322,9 +322,9 @@ export class CommercialOfferListComponent implements OnInit {
       this.packs = result.result;
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
+        this.getCommissionsList();
       }
     });
-    this.getCommissionsList();
   }
 
   selectCommercialPack(packId: string) {
