@@ -54,15 +54,19 @@ export class AuthComponent implements OnInit {
     user.authTime = (new Date()).toLocaleString('pt-PT');
 
     this.token.getLoginToken().then(result => {
-      user.loginToken = result.access_token;
+      user.token = result.access_token;
       this.authService.changeUser(user);
-    }).then(res => {
-      this.token.getAccessToken().then(result => {
-        user.token = result.access_token;
-        this.authService.changeUser(user);
-        this.router.navigate(['/']);
-      });
+      this.router.navigate(['/']);
     });
+
+      //this.authService.changeUser(user);
+    //}).then(res => {
+    //  this.token.getAccessToken().then(re => {
+    //    user.token = re.access_token;
+    //    this.authService.changeUser(user);
+    //    this.router.navigate(['/']);
+    //  });
+    //});
   }
 
   noToken() {
