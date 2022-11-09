@@ -566,7 +566,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcIncorrect = false;
     this.crcService.getCRC(crcInserted, '001').subscribe({
       next: clientByCRC => {
-        if (clientByCRC == undefined || clientByCRC == null) {
+        if (clientByCRC === undefined || clientByCRC === null) {
           this.form.get("crcCode").setErrors({ 'incorrect': true });
           this.crcNotExists = true;
           this.crcFound = false;
@@ -584,8 +584,9 @@ export class ClientCharacterizationComponent implements OnInit {
         this.crcMatchNIF = false;
 
         if (this.form.get("crcCode").hasError("incorrect")) {
+          console.log('ENTREI NO IF DO FORM TER ERROS ANTES', this.form);
           this.form.get("crcCode").setErrors(null);
-          console.log('ENTREI NO IF DO FORM TER ERROS ', this.form);
+          console.log('ENTREI NO IF DO FORM TER ERROS DEPOIS', this.form);
         }
 
         this.crcFound = true;
