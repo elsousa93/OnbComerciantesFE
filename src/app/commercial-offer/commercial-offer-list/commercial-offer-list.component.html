@@ -124,6 +124,7 @@
                  <ng-container *ngIf="packs != null && packs?.length > 0">
                   <p class="titulo-form-simples align-self-start" wappler-command="editContent">{{'commercialOffer.commercialPackType'|translate}}</p>
                    <div *ngFor="let pack of packs">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <span class="navbar-text text-primary">
                       <div class="form-check">
                         <input class="form-check-input" formControlName="productPackKind" type="radio" (click)="selectCommercialPack(pack.id)" value={{pack.id}} name="packs"/>
@@ -131,6 +132,7 @@
                       </div>
                      
                     </span>
+                  </nav>
                    </div>
                  </ng-container>
 
