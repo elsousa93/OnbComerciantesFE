@@ -12,6 +12,7 @@ export interface Configuration {
     mockacoUrl: string,
   tokenUrl: string,
   clientID: string,
+  loginClientID: string,
   clientSecret: string
 }
 export const configurationToken = new InjectionToken('Configuration');
