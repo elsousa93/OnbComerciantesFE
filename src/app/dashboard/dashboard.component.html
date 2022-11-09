@@ -380,7 +380,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.merchant?.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
                   <ng-container matColumnDef="clientName">
