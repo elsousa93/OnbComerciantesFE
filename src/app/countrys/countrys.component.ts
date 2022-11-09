@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { CountryInformation, Franchise } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -274,8 +274,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl(''),
-        NIPCGroup: new FormControl('')
+        franchiseName: new FormControl(this.client?.businessGroup.type == 'Franchise' ? this.client?.businessGroup.branch : null),
+        NIPCGroup: new FormControl(this.client?.businessGroup.type == 'Group' ? this.client?.businessGroup.branch : '')
       }));
       this.editCountries(true);
     } else {
@@ -299,30 +299,31 @@ export class CountrysComponent implements OnInit {
       } else {
         this.editCountries(true);
       }
-
     }
 
     
 
-    this.form.get("franchiseName").valueChanges.subscribe(v => {
-      if (v !== '') {
+    this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
+      if (v != "" && v != null) {
         this.isAssociatedWithFranchise = true;
         this.form.get("franchiseName").setValidators(Validators.required);
+        this.form.get("NIPCGroup").setValidators(null);
       } else {
         this.isAssociatedWithFranchise = undefined;
-        this.form.get("franchiseName").setValidators(null);
+        //this.form.get("franchiseName").setValidators(null);
       }
-    })
+    });
 
-    this.form.get("NIPCGroup").valueChanges.subscribe(v => {
-      if (v !== null) {
+    this.form.get("NIPCGroup").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
+      if (v != "" && v != null) {
         this.isAssociatedWithFranchise = false;
         this.form.get("NIPCGroup").setValidators(Validators.required);
+        this.form.get("franchiseName").setValidators(null);
       } else {
         this.isAssociatedWithFranchise = undefined;
-        this.form.get("NIPCGroup").setValidators(null);
+        //this.form.get("NIPCGroup").setValidators(null);
       }
-    })
+    });
 
 
   }
@@ -340,7 +341,7 @@ export class CountrysComponent implements OnInit {
       inputAmerica: new FormControl(this.inputAmericas),
       inputOceania: new FormControl(this.inputOceania),
       inputAsia: new FormControl(this.inputTypeAsia),
-      franchiseName: new FormControl(''),
+      franchiseName: new FormControl(null),
       NIPCGroup: new FormControl('')
     }));
     //this.form = new FormGroup({
@@ -360,25 +361,27 @@ export class CountrysComponent implements OnInit {
 
     
 
-    this.form.get("franchiseName").valueChanges.subscribe(v => {
-      if (v !== '') {
+    this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
+      if (v != "" && v != null) {
         this.isAssociatedWithFranchise = true;
         this.form.get("franchiseName").setValidators(Validators.required);
+        this.form.get("NIPCGroup").setValidators(null);
       } else {
         this.isAssociatedWithFranchise = undefined;
-        this.form.get("franchiseName").setValidators(null);
+        //this.form.get("franchiseName").setValidators(null);
       }
-    })
+    });
 
-    this.form.get("NIPCGroup").valueChanges.subscribe(v => {
-      if (v !== null) {
+    this.form.get("NIPCGroup").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
+      if (v != "" && v != null) {
         this.isAssociatedWithFranchise = false;
         this.form.get("NIPCGroup").setValidators(Validators.required);
+        this.form.get("franchiseName").setValidators(null);
       } else {
         this.isAssociatedWithFranchise = undefined;
-        this.form.get("NIPCGroup").setValidators(null);
+        //this.form.get("NIPCGroup").setValidators(null);
       }
-    })
+    });
 
     this.formCountrysReady.emit(this.form);
     console.log('FORM DOS COUNTRIES INICIALIZADO ', this.form);
@@ -456,6 +459,12 @@ export class CountrysComponent implements OnInit {
 
   setAssociatedWith(value: boolean) {
     this.associatedWithGroupOrFranchise = value;
+
+    if (value) {
+      this.form.get("franchiseName").setValidators(Validators.required);
+      this.form.get("NIPCGroup").setValidators(Validators.required);
+    }
+
   }
 
   onCountryChange(country) {

@@ -8,6 +8,6 @@
   "authTokenUrl": "http://localhost:10000/connect/token",
   "outboundUrl": "http://localhost:12000/OutboundAPI/",
   "mockacoUrl": "http://localhost/Mockaco/",
-  "clientID": "4bd86de7-5640-4048-887e-7ecb6cedb01d",
+  "clientID": "d6a8b4e2-580f-43f0-a877-c9965fd1551c",
   "clientSecret": "SIBS123456"
 }

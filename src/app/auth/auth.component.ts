@@ -47,7 +47,7 @@ export class AuthComponent implements OnInit {
 
     var user: User = {};
 
-    user.userName = this.authForm.get('userName').value;
+    //user.userName = this.authForm.get('userName').value;
     user.bankName = this.authForm.get('bankName').value;
     user.bankLocation = this.authForm.get('bankLocation').value;
     user.permissions = this.authForm.get('role').value;
@@ -55,18 +55,13 @@ export class AuthComponent implements OnInit {
 
     this.token.getLoginToken().then(result => {
       user.token = result.access_token;
-      this.authService.changeUser(user);
-      this.router.navigate(['/']);
+      this.token.getLoginTokenInfo(user.token).then(res => {
+        user.userName = res.name;
+        this.authService.changeUser(user);
+        this.router.navigate(['/']);
+      });
     });
 
-      //this.authService.changeUser(user);
-    //}).then(res => {
-    //  this.token.getAccessToken().then(re => {
-    //    user.token = re.access_token;
-    //    this.authService.changeUser(user);
-    //    this.router.navigate(['/']);
-    //  });
-    //});
   }
 
   noToken() {
