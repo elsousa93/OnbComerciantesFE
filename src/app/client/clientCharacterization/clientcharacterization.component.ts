@@ -584,9 +584,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.crcMatchNIF = false;
 
         if (this.form.get("crcCode").hasError("incorrect")) {
-          console.log('ENTREI NO IF DO FORM TER ERROS ANTES', this.form);
           this.form.get("crcCode").setErrors(null);
-          console.log('ENTREI NO IF DO FORM TER ERROS DEPOIS', this.form);
         }
 
         this.crcFound = true;
@@ -628,6 +626,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }, error: (error) => {
         this.crcNotExists = true;
         this.crcFound = false;
+        this.form.get("crcCode").setErrors({ 'incorrect': true });
       }
     });
   }

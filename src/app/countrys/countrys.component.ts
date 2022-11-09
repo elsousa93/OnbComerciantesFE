@@ -274,8 +274,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl(''),
-        NIPCGroup: new FormControl('')
+        franchiseName: new FormControl(this.client?.businessGroup.type == 'Franchise' ? this.client?.businessGroup.branch : null),
+        NIPCGroup: new FormControl(this.client?.businessGroup.type == 'Group' ? this.client?.businessGroup.branch : '')
       }));
       this.editCountries(true);
     } else {
@@ -341,7 +341,7 @@ export class CountrysComponent implements OnInit {
       inputAmerica: new FormControl(this.inputAmericas),
       inputOceania: new FormControl(this.inputOceania),
       inputAsia: new FormControl(this.inputTypeAsia),
-      franchiseName: new FormControl(''),
+      franchiseName: new FormControl(null),
       NIPCGroup: new FormControl('')
     }));
     //this.form = new FormGroup({
