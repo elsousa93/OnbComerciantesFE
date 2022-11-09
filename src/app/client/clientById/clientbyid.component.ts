@@ -577,7 +577,9 @@ export class ClientByIdComponent implements OnInit {
             this.updateBasicForm();
 
           }).then(result => {
-            this.countriesComponent.getClientContextValues();
+            if (!this.clientContext.isClient) { 
+              this.countriesComponent.getClientContextValues();
+            }
             this.clientCharacterizationComponent.getClientContextValues();
             this.createSubmission();
           });
@@ -624,7 +626,9 @@ export class ClientByIdComponent implements OnInit {
           this.clientId = result.fiscalId;
 
         }).then(result => {
-          this.countriesComponent.getClientContextValues();
+          if (!this.clientContext.isClient) {
+            this.countriesComponent.getClientContextValues();
+          }
           this.clientCharacterizationComponent.getClientContextValues();
         });
       }
