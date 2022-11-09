@@ -641,6 +641,9 @@ export class DashboardComponent implements OnInit {
     this.dataService.updateData(null, null, null);
     this.processNrService.changeProcessNumber(null);
 
+    console.log('Token ', this.authService.GetLoginToken());
+
+    console.log("VALORES DO USER " , this.currentUser);
     this.tokenService.getLoginTokenInfo(this.currentUser.loginToken).then(result => {
       console.log('RESULTADO DA CHAMADA AO NOSSO BACKEND PARA OBTER OS DADOS DO TOKEN ', result);
     });
