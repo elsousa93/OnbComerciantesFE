@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { CountryInformation, ShoppingCenter } from '../../table-info/ITable-info.interface';
+import { Activity, CountryInformation, ShoppingCenter } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
@@ -231,6 +231,7 @@ export class AddStoreComponent implements OnInit {
   public idisabledContact: boolean = false;
 
   activities: ShopActivities[] = [];
+  activity: Activity;
   subzonesShopping: ShoppingCenter[] = [];
 
   returned: string;
@@ -293,13 +294,25 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
-      this.logger.debug(result);
-      this.activities = result;
-      this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
-    }, error => {
-      this.logger.debug("Deu erro");
-    }));
+    // if (this.submissionClient.mainEconomicActivity != null || this.submissionClient.otherEconomicActivities != null) {
+    //   this.subs.push(this.tableInfo.FilterStoreByCAE(this.submissionClient.mainEconomicActivity).subscribe(result => {
+    //     this.logger.debug(result);
+    //     this.activity = result;
+    //     this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
+    //   }, error => {
+    //     this.logger.debug("Deu erro");
+    //   }));
+      
+    // } else {
+      this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
+        this.logger.debug(result);
+        this.activities = result;
+        this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
+      }, error => {
+        this.logger.debug("Deu erro");
+      }));
+    // }
+
 
     //this.storeService.GetAllShopProducts().subscribe(result => {
     //  this.logger.debug(result);
