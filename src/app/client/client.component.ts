@@ -502,19 +502,19 @@ export class ClientComponent implements OnInit {
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
             context.logger.debug(c);
             var client = {
-              "clientId": c.merchantId,
-              "commercialName": c.commercialName,
-              "address": c.headquartersAddress.address,
-              "ZIPCode": c.headquartersAddress.postalCode,
-              "locality": c.headquartersAddress.postalArea,
-              "country": c.headquartersAddress.country,
+              "clientId": c.result.merchantId,
+              "commercialName": c.result.commercialName,
+              "address": c.result.headquartersAddress.address,
+              "ZIPCode": c.result.headquartersAddress.postalCode,
+              "locality": c.result.headquartersAddress.postalArea,
+              "country": c.result.headquartersAddress.country,
               //"fiscalId": c.fiscalId
             }
             clientToShow.client = client;
-
             context.clientsToShow.push(clientToShow);
             context.logger.debug(context.clientsToShow);
             context.clientsMat.data = context.clientsToShow;
+
           }).then(res => {
             context.notFound = false;
 

@@ -68,7 +68,7 @@ export class ClientService {
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }
 
-  getClientByID(clientID: string, requestID: string, AcquiringUserID:string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
+  getClientByID(clientID: string, requestID: string, AcquiringUserID:string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string) {
     var URI = this.urlOutbound + "api/v1/merchant/" + clientID;
 
     var data = new Date();
