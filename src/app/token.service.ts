@@ -65,7 +65,7 @@ export class TokenService {
         'Authorization': 'Basic ' + secret
       })
     };
-    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
+    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials' + '&claim-username=' + 'joao', HTTP_OPTIONS_AUTH).toPromise();
   }
 
   getLoginTokenInfo(token): Promise<any> {

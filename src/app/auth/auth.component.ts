@@ -55,16 +55,13 @@ export class AuthComponent implements OnInit {
 
     this.token.getLoginToken().then(result => {
       user.loginToken = result.access_token;
-
       this.authService.changeUser(user);
-    });
-
-    this.token.getAccessToken().then(result => {
-      user.token = result.access_token;
-
-       this.authService.changeUser(user);
-
-       this.router.navigate(['/']);
+    }).then(res => {
+      this.token.getAccessToken().then(result => {
+        user.token = result.access_token;
+        this.authService.changeUser(user);
+        this.router.navigate(['/']);
+      });
     });
   }
 
