@@ -420,31 +420,31 @@ export class ClientByIdComponent implements OnInit {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
           this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
             this.merchantInfo = res;
-            if (this.clientExists == undefined || this.clientExists == null) {
-              if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-                this.clientExists = true;
-              } else {
-                this.clientExists = false;
-              }
-            }
-            if (this.NIFNIPC === undefined) {
-              this.NIFNIPC = this.merchantInfo.fiscalId;
-            }
-            if (this.merchantInfo.incorporationStatement !== null) {
-              this.isCommercialSociety = true;
-              this.collectCRC = true;
-            } else {
-              if (this.merchantInfo.legalNature !== "") {
-                this.isCommercialSociety = false;
-                this.collectCRC = false;
-                this.tipologia === 'Company';
-              } else {
-                this.isCommercialSociety = false;
-                this.collectCRC = false;
-                this.tipologia === 'ENI';
-              }
-            }
-            resolve(null);
+            resolve(this.merchantInfo);
+            //if (this.clientExists == undefined || this.clientExists == null) {
+            //  if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
+            //    this.clientExists = true;
+            //  } else {
+            //    this.clientExists = false;
+            //  }
+            //}
+            //if (this.NIFNIPC === undefined) {
+            //  this.NIFNIPC = this.merchantInfo.fiscalId;
+            //}
+            //if (this.merchantInfo.incorporationStatement !== null) {
+            //  this.isCommercialSociety = true;
+            //  this.collectCRC = true;
+            //} else {
+            //  if (this.merchantInfo.legalNature !== "") {
+            //    this.isCommercialSociety = false;
+            //    this.collectCRC = false;
+            //    this.tipologia === 'Company';
+            //  } else {
+            //    this.isCommercialSociety = false;
+            //    this.collectCRC = false;
+            //    this.tipologia === 'ENI';
+            //  }
+            //}
           });
       });
     });
@@ -466,154 +466,155 @@ export class ClientByIdComponent implements OnInit {
       this.isClient
     );
 
-    this.clientContext.setMerchantInfo(this.merchantInfo);
 
-    if (!this.submissionExists || this.isFromSearch) {
-      if (this.dataCC !== undefined && this.dataCC !== null) {
-        var client: AcquiringClientPost = {} as AcquiringClientPost;
 
-        client.fiscalId = this.dataCC.nifCC;
-        client.shortName = client.legalName = this.dataCC.nameCC;
-        client.bankInformation = {};
-        client.headquartersAddress = {};
-        client.headquartersAddress.address = this.dataCC.addressCC;
-        client.headquartersAddress.country = this.dataCC.countryCC;
-        client.headquartersAddress.locality = this.dataCC.localityCC;
-        client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
+    if (this.returned == null) {
+      if (!this.submissionExists || this.isFromSearch) {
+        if (this.dataCC !== undefined && this.dataCC !== null) {
+          var client: AcquiringClientPost = {} as AcquiringClientPost;
 
-        client.otherEconomicActivities = [];
+          client.fiscalId = this.dataCC.nifCC;
+          client.shortName = client.legalName = this.dataCC.nameCC;
+          client.bankInformation = {};
+          client.headquartersAddress = {};
+          client.headquartersAddress.address = this.dataCC.addressCC;
+          client.headquartersAddress.country = this.dataCC.countryCC;
+          client.headquartersAddress.locality = this.dataCC.localityCC;
+          client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
 
-        client["knowYourSales"] = {};
-        client["knowYourSales"]["servicesOrProductsDestinations"] = [];
-        client["knowYourSales"]["servicesOrProductsSold"] = [];
+          client.otherEconomicActivities = [];
 
-        client.shareCapital = {};
-        client.incorporationStatement = {};
-        client.contacts = {};
+          client["knowYourSales"] = {};
+          client["knowYourSales"]["servicesOrProductsDestinations"] = [];
+          client["knowYourSales"]["servicesOrProductsSold"] = [];
 
-        client.merchantType = this.tipologia;
+          client.shareCapital = {};
+          client.incorporationStatement = {};
+          client.contacts = {};
 
-        client.documentationDeliveryMethod = 'Portal';
+          client.merchantType = this.tipologia;
 
-        this.clientContext.setClient(client);
-        this.NIFNIPC = client.fiscalId;
-        this.clientContext.setNIFNIPC(client.fiscalId);
-        this.updateBasicForm();
+          client.documentationDeliveryMethod = 'Portal';
 
-        this.createSubmission();
-      } else {
+          this.clientContext.setClient(client);
+          this.NIFNIPC = client.fiscalId;
+          this.clientContext.setNIFNIPC(client.fiscalId);
+          this.updateBasicForm();
 
-        if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
-          this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
-            var client = result;
-            console.log("pesquisa do cliente: ", result);
+          this.createSubmission();
+        } else {
 
+          if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
+            this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
+              var client = result;
+              console.log("pesquisa do cliente: ", result);
+
+              var clientToInsert: AcquiringClientPost = {};
+
+              clientToInsert.merchantRegistrationId = client.merchantRegistrationId;
+              clientToInsert.legalName = client.legalName;
+              clientToInsert.commercialName = client.commercialName;
+              clientToInsert.shortName = client.shortName;
+              clientToInsert.headquartersAddress = {
+                address: client.headquartersAddress?.address,
+                postalCode: client.headquartersAddress?.postalCode,
+                postalArea: client.headquartersAddress?.postalArea,
+                country: client.headquartersAddress?.country
+              }
+              clientToInsert.fiscalId = client.fiscalIdentification?.fiscalId;
+              clientToInsert.knowYourSales = {
+                estimatedAnualRevenue: client.sales?.annualEstimatedRevenue,
+                servicesOrProductsSold: client.sales?.productsOrServicesSold,
+                servicesOrProductsDestinations: client.sales?.productsOrServicesCountries,
+                transactionsAverage: client.sales?.transactionsAverage
+              };
+
+              clientToInsert.legalNature = client.legalNature;
+              clientToInsert.legalNature2 = client.legalNature2;
+
+              clientToInsert.incorporationStatement = client.incorporationStatement;
+              clientToInsert.shareCapital = client.shareCapital;
+              clientToInsert.byLaws = client.bylaws;
+              clientToInsert.incorporationDate = client.incorporationDate;
+              clientToInsert.mainTaxCode = client.principalTaxCode;
+              clientToInsert.otherTaxCodes = client.otherTaxCodes;
+              clientToInsert.mainEconomicActivity = client.principalEconomicActivity;
+              clientToInsert.otherEconomicActivities = client.otherEconomicActivities;
+              clientToInsert.billingEmail = client.billingEmail;
+
+
+              clientToInsert.documentationDeliveryMethod = client.documentationDeliveryMethod;
+              clientToInsert.bankInformation = client.bankingInformation;
+              clientToInsert.contacts = {
+                email: client.contacts?.email,
+                phone1: {
+                  phoneNumber: client.contacts?.phone1?.phoneNumber,
+                  countryCode: client.contacts?.phone1?.internationalIndicative
+                },
+                phone2: {
+                  phoneNumber: client.contacts?.phone2?.phoneNumber,
+                  countryCode: client.contacts?.phone2?.internationalIndicative
+                },
+              }
+
+              clientToInsert.businessGroup = {
+                type: client.context,
+                branch: client.contextId
+              }
+
+              clientToInsert.merchantType = client.merchantType;
+
+              clientToInsert["documents"] = client.documents;
+              this.clientDocs = client.documents;
+
+              console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
+
+              this.clientContext.clientExists = true;
+              this.clientContext.setClient(clientToInsert);
+
+              this.NIFNIPC = client.fiscalIdentification.fiscalId;
+              this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
+
+              this.updateBasicForm();
+
+            }).then(result => {
+              if (!this.clientContext.isClient) {
+                this.countriesComponent.getClientContextValues();
+              }
+              this.clientCharacterizationComponent.getClientContextValues();
+              this.createSubmission();
+            });
+          } else {
+            //criar cliente aqui
+            var currentClient = this.clientContext.getClient();
             var clientToInsert: AcquiringClientPost = {};
 
-            clientToInsert.merchantRegistrationId = client.merchantRegistrationId;
-            clientToInsert.legalName = client.legalName;
-            clientToInsert.commercialName = client.commercialName;
-            clientToInsert.shortName = client.shortName;
-            clientToInsert.headquartersAddress = {
-              address: client.headquartersAddress?.address,
-              postalCode: client.headquartersAddress?.postalCode,
-              postalArea: client.headquartersAddress?.postalArea,
-              country: client.headquartersAddress?.country
-            }
-            clientToInsert.fiscalId = client.fiscalIdentification?.fiscalId;
+            clientToInsert.fiscalId = this.NIFNIPC;
+            clientToInsert.legalName = this.socialDenomination;
             clientToInsert.knowYourSales = {
-              estimatedAnualRevenue: client.sales?.annualEstimatedRevenue,
-              servicesOrProductsSold: client.sales?.productsOrServicesSold,
-              servicesOrProductsDestinations: client.sales?.productsOrServicesCountries,
-              transactionsAverage: client.sales?.transactionsAverage
-            };
-
-            clientToInsert.legalNature = client.legalNature;
-            clientToInsert.legalNature2 = client.legalNature2;
-
-            clientToInsert.incorporationStatement = client.incorporationStatement;
-            clientToInsert.shareCapital = client.shareCapital;
-            clientToInsert.byLaws = client.bylaws;
-            clientToInsert.incorporationDate = client.incorporationDate;
-            clientToInsert.mainTaxCode = client.principalTaxCode;
-            clientToInsert.otherTaxCodes = client.otherTaxCodes;
-            clientToInsert.mainEconomicActivity = client.principalEconomicActivity;
-            clientToInsert.otherEconomicActivities = client.otherEconomicActivities;
-            clientToInsert.billingEmail = client.billingEmail;
-
-
-            clientToInsert.documentationDeliveryMethod = client.documentationDeliveryMethod;
-            clientToInsert.bankInformation = client.bankingInformation;
+              servicesOrProductsDestinations: [],
+              servicesOrProductsSold: []
+            }
+            clientToInsert.bankInformation = {}
+            clientToInsert.businessGroup = {}
             clientToInsert.contacts = {
-              email: client.contacts?.email,
-              phone1: {
-                phoneNumber: client.contacts?.phone1?.phoneNumber,
-                countryCode: client.contacts?.phone1?.internationalIndicative
-              },
-              phone2: {
-                phoneNumber: client.contacts?.phone2?.phoneNumber,
-                countryCode: client.contacts?.phone2?.internationalIndicative
-              },
+              phone1: {},
+              phone2: {}
             }
+            clientToInsert.otherEconomicActivities = [];
+            clientToInsert.otherTaxCodes = [];
+            clientToInsert.incorporationStatement = {};
+            clientToInsert.shareCapital = {};
 
-            clientToInsert.businessGroup = {
-              type: client.context,
-              branch: client.contextId
-            }
+            clientToInsert.merchantType = this.tipologia;
+            clientToInsert.documentationDeliveryMethod = 'Portal';
 
-            clientToInsert.merchantType = client.merchantType;
-
-            clientToInsert["documents"] = client.documents;
-            this.clientDocs = client.documents;
-
-            console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
-
-            this.clientContext.clientExists = true;
+            this.clientContext.setNIFNIPC(this.NIFNIPC);
             this.clientContext.setClient(clientToInsert);
-
-            this.NIFNIPC = client.fiscalIdentification.fiscalId;
-            this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
-
-            this.updateBasicForm();
-
-          }).then(result => {
-            if (!this.clientContext.isClient) { 
-              this.countriesComponent.getClientContextValues();
-            }
-            this.clientCharacterizationComponent.getClientContextValues();
             this.createSubmission();
-          });
-        } else {
-          //criar cliente aqui
-          var currentClient = this.clientContext.getClient();
-          var clientToInsert: AcquiringClientPost = {};
-
-          clientToInsert.fiscalId = this.NIFNIPC;
-          clientToInsert.legalName = this.socialDenomination;
-          clientToInsert.knowYourSales = {
-            servicesOrProductsDestinations: [],
-            servicesOrProductsSold: []
           }
-          clientToInsert.bankInformation = {}
-          clientToInsert.businessGroup = {}
-          clientToInsert.contacts = {
-            phone1: {},
-            phone2: {}
-          }
-          clientToInsert.otherEconomicActivities = [];
-          clientToInsert.otherTaxCodes = [];
-          clientToInsert.incorporationStatement = {};
-          clientToInsert.shareCapital = {};
-
-          clientToInsert.merchantType = this.tipologia;
-          clientToInsert.documentationDeliveryMethod = 'Portal';
-
-          this.clientContext.setNIFNIPC(this.NIFNIPC);
-          this.clientContext.setClient(clientToInsert);
-          this.createSubmission();
         }
-      }
-    } else {
+      } else {
         this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
           this.clientContext.tipologia = result.merchantType;
           this.NIFNIPC = result.fiscalId;
@@ -632,6 +633,13 @@ export class ClientByIdComponent implements OnInit {
           this.clientCharacterizationComponent.getClientContextValues();
         });
       }
+    } else {
+      this.clientContext.setMerchantInfo(this.merchantInfo);
+      this.clientContext.setClient(this.merchantInfo);
+      this.countriesComponent.getClientContextValues();
+      this.clientCharacterizationComponent.getClientContextValues();
+    }
+
 
   }
 
