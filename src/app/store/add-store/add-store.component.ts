@@ -509,6 +509,11 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValue('');
       this.formStores.get('zipCodeStore').setValue('');
       this.formStores.get('localeStore').setValue('');
+    } else {
+      this.lockLocality = true;
+      this.formStores.get('addressStore').addValidators(Validators.required);
+      this.formStores.get('zipCodeStore').addValidators(Validators.required);
+      this.formStores.get('localeStore').addValidators(Validators.required);
     }
   }
 

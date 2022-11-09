@@ -163,10 +163,13 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   getStoreEquipsFromSubmission() {
-    this.storeEquipList = [];
+    this.storeEquipList = null;
     if (this.returned != null) {
       this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.shopId).subscribe(result => {
-        this.storeEquipList.push(result);
+        if (result !== null){
+          this.storeEquipList.push(result);
+        }
+        
       });
     }
     this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).subscribe(result => {
@@ -193,7 +196,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.getStoreEquipsFromSubmission();
 
     this.getPackDetails();
-    this.getCommissionsList();
+    
 
 
     if (this.returned == 'consult')
@@ -295,10 +298,12 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       this.packs = result.result;
+      this.getCommissionsList();
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
       }
     });
+    
   }
 
   selectCommercialPack(packId: string) {
@@ -321,6 +326,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionFilter = {
       productCode: this.currentStore.productCode,
       subproductCode: this.currentStore.subproductCode,
+      processorId: this.packs[0].processors[0],
       merchant: this.merchantCatalog,
       store: {
         activity: this.currentStore.activity,
