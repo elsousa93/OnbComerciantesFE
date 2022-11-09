@@ -54,7 +54,7 @@ export class TokenService {
 
   async getLoginToken(): Promise<any> {
 
-    var clientID = this.configuration.loginClientID;
+    var clientID = this.configuration.clientID;
     var clientSecret = this.configuration.clientSecret;
 
     var secret = btoa(clientID + ":" + clientSecret);

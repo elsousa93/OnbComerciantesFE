@@ -37,10 +37,6 @@ export class AuthService implements OnDestroy {
     return this.dataSource.getValue().token;
   }
 
-  GetLoginToken() {
-    return this.dataSource.getValue().loginToken;
-  }
-
   GetCurrentUser() {
     return this.dataSource.getValue();
   }
