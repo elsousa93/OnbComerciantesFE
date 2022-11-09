@@ -13,7 +13,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { ClientService } from '../client.service';
 import { XhrFactory } from '@angular/common';
 import { Configuration, configurationToken } from 'src/app/configuration';
-import { infoDeclarativaForm, validPhoneNumber, validEmail } from 'src/app/client/info-declarativa/info-declarativa.model';
+import { infoDeclarativaForm, validPhoneNumber, validEmail, validPhoneAndMobileNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 
 @Component({
@@ -93,11 +93,11 @@ export class InfoDeclarativaComponent implements OnInit {
       phone1: this.formBuilder.group({
         countryCode: new FormControl(this.newClient?.contacts?.phone1?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone1?.phoneNumber),
-      },{validators: [validPhoneNumber]}),
+      },{validators: [validPhoneAndMobileNumber]}),
       phone2: this.formBuilder.group({
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
-      },{validators: [validPhoneNumber]}),
+      },{validators: [validPhoneAndMobileNumber]}),
       email: new FormControl(this.newClient?.contacts?.email, [Validators.required, Validators.email]),
       billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, [Validators.email])
     });
