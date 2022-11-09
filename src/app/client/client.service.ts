@@ -73,22 +73,23 @@ export class ClientService {
 
     var data = new Date();
     //'Request-Date': data.toISOString(),
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Request-Id': requestID,
-        'X-Acquiring-UserId': AcquiringUserID
-      }),
-    }
+    //var HTTP_OPTIONS = {
+    //  headers: new HttpHeaders({
+    //    'Request-Id': requestID,
+    //    'X-Acquiring-UserId': AcquiringUserID
+    //  }),
+    //}
 
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+    //if (AcquiringPartnerID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
+    //if (AcquiringBranchID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    //if (AcquiringProcessID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
 
-    return this.http.get<any>(URI, HTTP_OPTIONS);
+    //return this.http.get<any>(URI, HTTP_OPTIONS);
+    return this.API.callAPIOutbound(HttpMethod.GET, URI, "por mudar", "por mudar", requestID, AcquiringUserID);
   }
 
   /////////////////////

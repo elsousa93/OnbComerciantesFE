@@ -621,10 +621,10 @@ export class ClientCharacterizationComponent implements OnInit {
         this.logger.debug("o crc chamou o initialize");
         this.initializeFormControlCRC();
 
-      }, error: (error) => {
+      }/*, error: (error) => {
         this.crcNotExists = true;
         this.crcFound = false;
-      }
+      }*/
     });
   }
   getCrcCode() {

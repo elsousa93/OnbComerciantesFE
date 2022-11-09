@@ -475,23 +475,23 @@ export class ClientComponent implements OnInit {
 
       
       this.logger.debug(context.clientsToShow);
-      context.clientsToShow = [];
+      context2.clientsToShow = [];
       this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
         if (clients.length===1){
-          context.snackBar.open(context.translate.instant('client.find'), '', {
+          context2.snackBar.open(context.translate.instant('client.find'), '', {
           duration: 4000,
           panelClass: ['snack-bar']
           });
         } else {
-          context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
+          context2.snackBar.open(context.translate.instant('client.multipleClients'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
             });
         }
-        context.resultError = "";
+        context2.resultError = "";
         clients.forEach(function (value, index) {
-          context.logger.debug(value);
+          context2.logger.debug(value);
           var clientToShow = {
             client: undefined,
             isClient: value.isClient
@@ -499,8 +499,8 @@ export class ClientComponent implements OnInit {
             client: Client,
             isClient: boolean
           }
-          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
-            context.logger.debug(c);
+          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
+            context2.logger.debug(c);
             var client = {
               "clientId": c.merchantId,
               "commercialName": c.commercialName,
@@ -510,15 +510,16 @@ export class ClientComponent implements OnInit {
               "country": c.headquartersAddress.country,
               //"fiscalId": c.fiscalId
             }
-            context.notFound = false;
-
             clientToShow.client = client;
-            context.clientsToShow.push(clientToShow);
-            context.logger.debug(context.clientsToShow);
-            context.clientsMat.data = context.clientsToShow;
+          }).then(res => {
+            context2.notFound = false;
+
+            context2.clientsToShow.push(clientToShow);
+            context2.logger.debug(context2.clientsToShow);
+            context2.clientsMat.data = context2.clientsToShow;
           });
-          
-        })
+
+        });
       } else {
         this.showFoundClient = false;
         this.notFound = true;
