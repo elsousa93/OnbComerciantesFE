@@ -10,7 +10,7 @@ import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular
 import { StoreService } from '../../store/store.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
-import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductPackPricingFilter, TerminalSupportEntityEnum, MerchantCatalog, ProductPackRootAttributeProductPackKind, ProductPackPricingEntry, ProductPackPricingAttribute } from '../../commercial-offer/ICommercialOffer.interface';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductPackPricingFilter, TerminalSupportEntityEnum, MerchantCatalog, ProductPackRootAttributeProductPackKind, ProductPackPricingEntry, ProductPackPricingAttribute, ProductPackEntry } from '../../commercial-offer/ICommercialOffer.interface';
 import { CommercialOfferService } from '../commercial-offer.service';
 
 
@@ -63,6 +63,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() currentStore: ShopDetailsAcquiring;
   @Input() storeEquip: ShopEquipment;
   @Input() packId: string;
+  @Input() packs: ProductPackEntry[];
   @Input() merchantCatalog: MerchantCatalog;
   @Input() groupsList: ProductPackRootAttributeProductPackKind[];
 
@@ -188,7 +189,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
     this.productPackPricingFilter = {
-      processorId: this.currentStore.pack.processorId,
+      processorId: this.packs[0].processors[0],
       productCode: this.currentStore.productCode,
       subproductCode: this.currentStore.subproductCode,
       merchant: this.merchantCatalog,
