@@ -49,15 +49,15 @@ export class ClientSearchComponent implements OnInit {
         context.foundClients = true;
         clients.forEach(function (value, index) {
           context.logger.debug(value);
-          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").subscribe(c => {
+          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
             context.logger.debug(c);
             var client = {
-              "clientId": c.merchantId,
-              "commercialName": c.commercialName,
-              "address": c.headquartersAddress.address,
-              "ZIPCode": c.headquartersAddress.postalCode,
-              "locality": c.headquartersAddress.postalArea,
-              "country": c.headquartersAddress.country,
+              "clientId": c.result.merchantId,
+              "commercialName": c.result.commercialName,
+              "address": c.result.headquartersAddress.address,
+              "ZIPCode": c.result.headquartersAddress.postalCode,
+              "locality": c.result.headquartersAddress.postalArea,
+              "country": c.result.headquartersAddress.country,
             }
             context.clientsToShow.push(client);
             context.logger.debug(context.clientsToShow);

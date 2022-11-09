@@ -236,9 +236,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
           });
 
-          this.clientService.getClientByID(resul.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
-            this.submissionClient = c;
-            this.logger.debug('Cliente ' + c);
+          this.clientService.getClientByID(resul.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(c => {
+            this.submissionClient = c.result;
+            this.logger.debug('Cliente ' + c.result);
           });
 
           this.submission.stakeholders.forEach(stake => {
@@ -297,9 +297,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
 
 
-      this.clientService.getClientByID(result.result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(c => {
-        this.submissionClient = c;
-        this.logger.debug('Cliente ' + c);
+      this.clientService.getClientByID(result.result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(c => {
+        this.submissionClient = c.result;
+        this.logger.debug('Cliente ' + c.result);
       });
       
 

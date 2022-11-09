@@ -551,6 +551,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
 
   searchByCRC() {
+    this.crcIncorrect = false;
+    this.crcNotExists = false;
+    this.crcMatchNIF = false;
 
     var crcInserted = this.form.get('crcCode').value;
     var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
