@@ -475,23 +475,23 @@ export class ClientComponent implements OnInit {
 
       
       this.logger.debug(context.clientsToShow);
-      context2.clientsToShow = [];
+      context.clientsToShow = [];
       this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
         if (clients.length===1){
-          context2.snackBar.open(context.translate.instant('client.find'), '', {
+          context.snackBar.open(context.translate.instant('client.find'), '', {
           duration: 4000,
           panelClass: ['snack-bar']
           });
         } else {
-          context2.snackBar.open(context.translate.instant('client.multipleClients'), '', {
+          context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
             });
         }
-        context2.resultError = "";
+        context.resultError = "";
         clients.forEach(function (value, index) {
-          context2.logger.debug(value);
+          context.logger.debug(value);
           var clientToShow = {
             client: undefined,
             isClient: value.isClient
@@ -500,7 +500,7 @@ export class ClientComponent implements OnInit {
             isClient: boolean
           }
           context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
-            context2.logger.debug(c);
+            context.logger.debug(c);
             var client = {
               "clientId": c.merchantId,
               "commercialName": c.commercialName,
@@ -511,12 +511,13 @@ export class ClientComponent implements OnInit {
               //"fiscalId": c.fiscalId
             }
             clientToShow.client = client;
-          }).then(res => {
-            context2.notFound = false;
 
-            context2.clientsToShow.push(clientToShow);
-            context2.logger.debug(context2.clientsToShow);
-            context2.clientsMat.data = context2.clientsToShow;
+            context.clientsToShow.push(clientToShow);
+            context.logger.debug(context.clientsToShow);
+            context.clientsMat.data = context.clientsToShow;
+          }).then(res => {
+            context.notFound = false;
+
           });
 
         });
@@ -526,8 +527,6 @@ export class ClientComponent implements OnInit {
         this.searchDone = true;
         this.createAdditionalInfoForm();
         this.resetLocalStorage();
-
-
       }
     }, error => {
       context.showFoundClient = false;
