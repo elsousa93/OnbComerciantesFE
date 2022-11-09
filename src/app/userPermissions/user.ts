@@ -7,4 +7,5 @@ export interface User {
   permissions?: UserPermissions,
   token?: string,
   authTime?: string,
+  loginToken?: string
 }

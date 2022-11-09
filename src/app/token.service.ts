@@ -52,6 +52,22 @@ export class TokenService {
     })
   }
 
+  async getLoginToken(): Promise<any> {
+
+    var clientID = this.configuration.loginClientID;
+    var clientSecret = this.configuration.clientSecret;
+
+    var secret = btoa(clientID + ":" + clientSecret);
+
+    const HTTP_OPTIONS_AUTH = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + secret
+      })
+    };
+    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
+  }
+
   getLoginTokenInfo(token): Promise<any> {
     var object = {
       token: token
