@@ -301,6 +301,8 @@ export class CountrysComponent implements OnInit {
       }
 
     }
+
+    //fazer o if aqui
   }
 
   initializeForm() {
@@ -339,16 +341,20 @@ export class CountrysComponent implements OnInit {
     this.form.get("franchiseName").valueChanges.subscribe(v => {
       if (v !== '') {
         this.isAssociatedWithFranchise = true;
+        this.form.get("franchiseName").setValidators(Validators.required);
       } else {
         this.isAssociatedWithFranchise = undefined;
+        this.form.get("franchiseName").setValidators(null);
       }
     })
 
     this.form.get("NIPCGroup").valueChanges.subscribe(v => {
       if (v !== null) {
         this.isAssociatedWithFranchise = false;
+        this.form.get("NIPCGroup").setValidators(Validators.required);
       } else {
         this.isAssociatedWithFranchise = undefined;
+        this.form.get("NIPCGroup").setValidators(null);
       }
     })
 

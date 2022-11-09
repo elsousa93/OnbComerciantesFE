@@ -86,26 +86,7 @@ export class CommercialOfferListComponent implements OnInit {
   processNumber: string;
   packId: string;
 
-  storeEquipList: ShopEquipment[] = [{
-    communicationOwnership: "client",
-    communicationType: "teste",
-    equipmentOwnership: "client",
-    equipmentType: "equip",
-    pricing: {
-      id: "asd",
-      attribute: [{
-        description: "",
-        finalValue: 1,
-        id: "lkm",
-        isReadOnly: true,
-        isVisible: true,
-        originalValue: 2
-        //value: 4
-     }]
-    },
-    quantity: 1,
-    shopEquipmentId: "ryt"
-  }];
+  storeEquipList: ShopEquipment[];
 
   editForm: FormGroup;
   configTerm: FormGroup;
@@ -194,16 +175,10 @@ export class CommercialOfferListComponent implements OnInit {
     });
   }
 
-  //loadStores(storesValues: ShopDetailsAcquiring[]) {
-  //  this.storesOfferMat = new MatTableDataSource(storesValues);
-  //  this.storesOfferMat.paginator = this.paginator;
-  //}
-
   loadStoreEquips(storeEquipValues: ShopEquipment[]) {
     this.storeEquipMat.data = storeEquipValues;
     this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
-
   }
 
   selectStore(info) {

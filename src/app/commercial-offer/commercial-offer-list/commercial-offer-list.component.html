@@ -288,7 +288,7 @@
                      <ng-container matColumnDef="delete">
                        <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
                        <mat-cell *matCellDef="let storeEquip">
-                         <span (click)="deleteConfiguration(storeEquip)" class="material-symbols-rounded delete-icon" [ngStyle]="{'cursor': (returned != 'consult') ? 'pointer' : ''}">
+                         <span [hidden]="storeEquip == null" (click)="deleteConfiguration(storeEquip)" class="material-symbols-rounded delete-icon" [ngStyle]="{'cursor': (returned != 'consult') ? 'pointer' : ''}">
                            <img src="assets/images/delete_blue.svg">
                          </span>
                        </mat-cell>
@@ -296,7 +296,7 @@
                      <ng-container matColumnDef="edit">
                        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                        <mat-cell *matCellDef="let storeEquip">
-                         <span (click)="editConfiguration(storeEquip)" class="material-symbols-rounded edit-icon" [ngStyle]="{'cursor': (returned != 'consult') ? 'pointer' : ''}">
+                         <span [hidden]="storeEquip == null" (click)="editConfiguration(storeEquip)" class="material-symbols-rounded edit-icon" [ngStyle]="{'cursor': (returned != 'consult') ? 'pointer' : ''}">
                            <img src="assets/images/edit_square.svg" title="Edit">
                          </span>
                        </mat-cell>
