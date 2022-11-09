@@ -387,7 +387,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.merchant.name }} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.merchant?.name }} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
