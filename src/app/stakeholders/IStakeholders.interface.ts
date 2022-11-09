@@ -31,7 +31,6 @@ export interface IStakeholders {
   birthDate?: string
   pep?: IPep
   id?: string
-  stakeholderId?: string
   clientId?: string
 }
 
