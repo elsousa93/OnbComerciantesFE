@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { delay, of, Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Bank } from '../store/IStore.interface';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -18,6 +19,8 @@ export class AuthComponent implements OnInit {
 
   authForm: FormGroup;
 
+  tokenSubscription = new Subscription();
+  timeout;
 
   //Informação das tabelas
   roles: role[] = roles; //roles é uma const
@@ -47,16 +50,23 @@ export class AuthComponent implements OnInit {
 
     var user: User = {};
 
-    //user.userName = this.authForm.get('userName').value;
+    user.userName = this.authForm.get('userName').value;
     user.bankName = this.authForm.get('bankName').value;
     user.bankLocation = this.authForm.get('bankLocation').value;
     user.permissions = this.authForm.get('role').value;
     user.authTime = (new Date()).toLocaleString('pt-PT');
 
-    this.token.getLoginToken().then(result => {
+    //fazer um if para quando o utilizador for unicre ou banca conseguir realizar o login neste portal, caso contrario não deve ser possível
+
+    this.token.getLoginToken(user.userName, user.bankName, user.bankLocation).then(result => {
       user.token = result.access_token;
+
       this.token.getLoginTokenInfo(user.token).then(res => {
+        console.log('VALORES DO TOKEN ', res);
         user.userName = res.name;
+        this.timeout = new Date(result.exp * 1000);
+        console.log('TIMEOUT DO TOKEN ', this.timeout);
+        this.expirationCounter(this.timeout);
         this.authService.changeUser(user);
         this.router.navigate(['/']);
       });
@@ -104,6 +114,19 @@ export class AuthComponent implements OnInit {
       bankLocation: new FormControl('', Validators.required),
       role: new FormControl('', Validators.required)
     })
+  }
+
+  expirationCounter(timeout) {
+    this.tokenSubscription.unsubscribe();
+    this.tokenSubscription = of(null).pipe(delay(timeout)).subscribe((expired) => {
+      console.log('EXPIRED!!');
+      this.logout();
+    });
+  }
+
+  logout() {
+    localStorage.removeItem('auth');
+    this.authService.reset();
   }
 
 }

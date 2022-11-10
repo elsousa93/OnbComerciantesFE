@@ -78,6 +78,7 @@ import { ClientCharacterizationComponent } from './client/clientCharacterization
 import { RepresentationPowerListComponent } from './client/representation-power/representation-power-list/representation-power-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { InterceptorModule } from './interceptor/interceptor.module';
 
 registerLocaleData(localePT);
 
@@ -149,6 +150,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FormsModule,
     MaterialModule,
     BrowserAnimationsModule,
+    InterceptorModule,
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },

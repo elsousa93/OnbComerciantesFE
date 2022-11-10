@@ -52,7 +52,7 @@ export class TokenService {
     })
   }
 
-  async getLoginToken(): Promise<any> {
+  async getLoginToken(username?: string, bank?: string, bankLocation?: string): Promise<any> {
 
     var clientID = this.configuration.clientID;
     var clientSecret = this.configuration.clientSecret;
@@ -65,7 +65,7 @@ export class TokenService {
         'Authorization': 'Basic ' + secret
       })
     };
-    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
+    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials&claim-username=' + username + '&claim-bank=' + bank + '&claim-bankLocation=' + bankLocation, HTTP_OPTIONS_AUTH).toPromise();
   }
 
   getLoginTokenInfo(token): Promise<any> {
