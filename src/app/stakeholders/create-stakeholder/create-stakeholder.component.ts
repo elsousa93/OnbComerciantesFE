@@ -268,6 +268,11 @@ export class CreateStakeholderComponent implements OnInit {
   returned: string;
   isClientNrSelected: boolean = false;
 
+  incorrectNIFSize: boolean = false;
+  incorrectNIF: boolean = false;
+  incorrectCCSize: boolean = false;
+  incorrectCC: boolean = false;
+
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
     private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
@@ -691,4 +696,135 @@ export class CreateStakeholderComponent implements OnInit {
     });
   }
 
+
+  numericOnly(event): boolean {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      return false;
+    return true;
+  }
+
+  validateNIF(nif: string): boolean {
+    this.incorrectNIFSize = false;
+    this.incorrectNIF = false;
+    if (nif != '') {
+      if (nif.length != 9) {
+        this.incorrectNIFSize = true;
+        return false;
+      }
+      if (!['1', '2', '3'].includes(nif.substr(0, 1))) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      const total = Number(nif[0]) * 9 + Number(nif[1]) * 8 + Number(nif[2]) * 7 + Number(nif[3]) * 6 + Number(nif[4]) * 5 + Number(nif[5]) * 4 + Number(nif[6]) * 3 + Number(nif[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nif[8]) !== comparador) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      return Number(nif[8]) === comparador;
+    }
+  }
+
+  validateNIPC(nipc: string): boolean {
+    this.incorrectNIFSize = false;
+    this.incorrectNIF = false;
+    if (nipc != '') {
+      if (nipc.length != 9) {
+        this.incorrectNIFSize = true;
+        return false;
+      }
+      if (!['5', '6', '8', '9'].includes(nipc.substr(0, 1))) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      const total = Number(nipc[0]) * 9 + Number(nipc[1]) * 8 + Number(nipc[2]) * 7 + Number(nipc[3]) * 6 + Number(nipc[4]) * 5 + Number(nipc[5]) * 4 + Number(nipc[6]) * 3 + Number(nipc[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nipc[8]) !== comparador) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      return Number(nipc[8]) === comparador;
+    }
+  }
+
+  ValidateNumeroDocumentoCC(numeroDocumento: string) {
+    this.incorrectCC = false;
+    this.incorrectCCSize = false;
+    var sum = 0;
+    var secondDigit = false;
+
+    if (numeroDocumento.length != 12) {
+      this.incorrectCCSize = true;
+      return false;
+    }
+
+    for (var i = numeroDocumento.length - 1; i >= 0; --i) {
+      var valor = this.GetNumberFromChar(numeroDocumento[i]);
+      if (secondDigit) {
+        valor *= 2;
+        if (valor > 9)
+          valor -= 9;
+      }
+      sum += valor;
+      secondDigit = !secondDigit;
+    }
+
+    if (sum % 10 != 0) {
+      this.incorrectCC = true;
+      return false;
+    }
+
+    return (sum % 10) == 0;
+  }
+
+  GetNumberFromChar(letter: string) {
+    switch (letter) {
+      case '0': return 0;
+      case '1': return 1;
+      case '2': return 2;
+      case '3': return 3;
+      case '4': return 4;
+      case '5': return 5;
+      case '6': return 6;
+      case '7': return 7;
+      case '8': return 8;
+      case '9': return 9;
+      case 'A': return 10;
+      case 'B': return 11;
+      case 'C': return 12;
+      case 'D': return 13;
+      case 'E': return 14;
+      case 'F': return 15;
+      case 'G': return 16;
+      case 'H': return 17;
+      case 'I': return 18;
+      case 'J': return 19;
+      case 'K': return 20;
+      case 'L': return 21;
+      case 'M': return 22;
+      case 'N': return 23;
+      case 'O': return 24;
+      case 'P': return 25;
+      case 'Q': return 26;
+      case 'R': return 27;
+      case 'S': return 28;
+      case 'T': return 29;
+      case 'U': return 30;
+      case 'V': return 31;
+      case 'W': return 32;
+      case 'X': return 33;
+      case 'Y': return 34;
+      case 'Z': return 35;
+    }
+  }
 }

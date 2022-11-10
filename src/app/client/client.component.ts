@@ -319,9 +319,9 @@ export class ClientComponent implements OnInit {
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild(MatSort) sort: MatSort;
-  
 
-  displayedColumns: string[] = ['select','clientNumber', 'commercialName', 'address' ,'ZIPCode', 'locale', 'country'];
+
+  displayedColumns: string[] = ['select', 'clientNumber', 'commercialName', 'address', 'ZIPCode', 'locale', 'country'];
 
   selectedClient: {
     client?: Client,
@@ -348,6 +348,8 @@ export class ClientComponent implements OnInit {
 
   incorrectNIFSize: boolean = false;
   incorrectNIF: boolean = false;
+  incorrectCCSize: boolean = false;
+  incorrectCC: boolean = false;
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
@@ -360,10 +362,10 @@ export class ClientComponent implements OnInit {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListaDocType = result;
-      this.ListaDocType = this.ListaDocType.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.ListaDocType = this.ListaDocType.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
       this.ListaDocTypeENI = result;
-      this.ListaDocTypeENI = this.ListaDocTypeENI.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.ListaDocTypeENI = this.ListaDocTypeENI.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     })));
 
     this.clientsMat.sort = this.sort;
@@ -384,13 +386,13 @@ export class ClientComponent implements OnInit {
 
       if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
         this.setClientData(true);
-        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
         this.searchClient();
       }
 
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         this.setClientData(false);
-        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } } );
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
         this.searchClient();
       }
 
@@ -412,7 +414,7 @@ export class ClientComponent implements OnInit {
   }
 
   clientsMat = new MatTableDataSource<any>();
-  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+  @ViewChild('paginator') set paginator(pager: MatPaginator) {
     if (pager) {
       this.clientsMat.paginator = pager;
       this.clientsMat.paginator._intl = new MatPaginatorIntl();
@@ -476,21 +478,21 @@ export class ClientComponent implements OnInit {
 
       var context2 = this;
 
-      
+
       this.logger.debug(context.clientsToShow);
       context.clientsToShow = [];
       this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
-        if (clients.length===1){
+        if (clients.length === 1) {
           context.snackBar.open(context.translate.instant('client.find'), '', {
-          duration: 4000,
-          panelClass: ['snack-bar']
+            duration: 4000,
+            panelClass: ['snack-bar']
           });
         } else {
           context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
             duration: 4000,
             panelClass: ['snack-bar']
-            });
+          });
         }
         context.resultError = "";
         clients.forEach(function (value, index) {
@@ -640,7 +642,7 @@ export class ClientComponent implements OnInit {
     // this.activateButtons(true);
     if (localStorage.getItem("submissionId") == null || !this.firstTime)
       this.activateButtons(!this.showENI);
-    
+
     this.firstTime = false;
 
     this.toggleShowFoundClient(false);
@@ -653,7 +655,7 @@ export class ClientComponent implements OnInit {
       this.isCC = false;
       this.clientNr = false;
     }
-    if (this.docType === '1010'){ // Nº de cliente
+    if (this.docType === '1010') { // Nº de cliente
       this.clientNr = true;
     } else {
       this.clientNr = false;
@@ -786,7 +788,7 @@ export class ClientComponent implements OnInit {
       localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
       localStorage.setItem("documentNumber", this.newClient.clientId);
       NIFNIPC = this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
-    } else { 
+    } else {
       localStorage.setItem("documentNumber", NIFNIPC);
     }
     localStorage.setItem("documentType", this.newClient.documentationDeliveryMethod);
@@ -844,7 +846,7 @@ export class ClientComponent implements OnInit {
         this.incorrectNIFSize = true;
         return false;
       }
-      if (!['1', '2', '3', '5', '6', '8'].includes(nif.substr(0, 1)) && !['45', '70', '71', '72', '77', '79', '90', '91', '98', '99'].includes(nif.substr(0, 2))){
+      if (!['1', '2', '3'].includes(nif.substr(0, 1))) {
         this.incorrectNIF = true;
         return false;
       }
@@ -859,6 +861,103 @@ export class ClientComponent implements OnInit {
       }
 
       return Number(nif[8]) === comparador;
+    }
+  }
+
+  validateNIPC(nipc: string): boolean {
+    this.incorrectNIFSize = false;
+    this.incorrectNIF = false;
+    if (nipc != '') {
+      if (nipc.length != 9) {
+        this.incorrectNIFSize = true;
+        return false;
+      }
+      if (!['5', '6', '8', '9'].includes(nipc.substr(0, 1))) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      const total = Number(nipc[0]) * 9 + Number(nipc[1]) * 8 + Number(nipc[2]) * 7 + Number(nipc[3]) * 6 + Number(nipc[4]) * 5 + Number(nipc[5]) * 4 + Number(nipc[6]) * 3 + Number(nipc[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nipc[8]) !== comparador) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      return Number(nipc[8]) === comparador;
+    }
+  }
+
+  ValidateNumeroDocumentoCC(numeroDocumento: string) {
+    this.incorrectCC = false;
+    this.incorrectCCSize = false;
+    var sum = 0; 
+    var secondDigit = false;
+
+    if (numeroDocumento.length != 12) { 
+      this.incorrectCCSize = true;
+      return false;
+    }
+
+    for (var i = numeroDocumento.length - 1; i >= 0; --i){ 
+      var valor = this.GetNumberFromChar(numeroDocumento[i]);
+      if (secondDigit) {
+        valor *= 2;
+        if (valor > 9)
+          valor -= 9;
+      }
+      sum += valor;
+      secondDigit = !secondDigit;
+    }
+
+    if (sum % 10 != 0) {
+      this.incorrectCC = true;
+      return false;
+    }
+
+    return (sum % 10) == 0;
+  }
+
+  GetNumberFromChar(letter: string) {
+    switch (letter) {
+      case '0': return 0;
+      case '1': return 1;
+      case '2': return 2;
+      case '3': return 3;
+      case '4': return 4;
+      case '5': return 5;
+      case '6': return 6;
+      case '7': return 7;
+      case '8': return 8;
+      case '9': return 9;
+      case 'A': return 10;
+      case 'B': return 11;
+      case 'C': return 12;
+      case 'D': return 13;
+      case 'E': return 14;
+      case 'F': return 15;
+      case 'G': return 16;
+      case 'H': return 17;
+      case 'I': return 18;
+      case 'J': return 19;
+      case 'K': return 20;
+      case 'L': return 21;
+      case 'M': return 22;
+      case 'N': return 23;
+      case 'O': return 24;
+      case 'P': return 25;
+      case 'Q': return 26;
+      case 'R': return 27;
+      case 'S': return 28;
+      case 'T': return 29;
+      case 'U': return 30;
+      case 'V': return 31;
+      case 'W': return 32;
+      case 'X': return 33;
+      case 'Y': return 34;
+      case 'Z': return 35;
     }
   }
 }

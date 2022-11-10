@@ -83,12 +83,15 @@
                     </div>
                     <div class="col-5">
                       <p class="titulo-form-simples">
-                        {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
-                          class="titulo-form-simples-erro">
-                          {{resultError}}
+                        {{'searches.documentNumber'|translate}}:*
+                        <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+                          {{'client.incorrectCC'|translate}}
+                        </span>
+                        <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
+                          {{'client.incorrectCCSize'|translate}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" (keyup)="ValidateNumeroDocumentoCC(clientId.value)" [(ngModel)]="newClient.clientId"
                         name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
@@ -183,7 +186,7 @@
                           {{'client.incorrectNIFSize'|translate}}
                         </span>
                       </p>
-                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nipc.value)" id="nipc" class="form-control"
+                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" id="nipc" class="form-control"
                         formControlName="nipc">
                     </div>
                     <div class="col-6">
@@ -197,7 +200,7 @@
                   <span class="navbar-text me-2">
                     <button *ngIf="!showFoundClient && searchDone && !isCC && !clientNr" id="btn5a2"
                       (click)="createNewClient()" class="btn botao_branco" wappler-command="editContent"
-                      [disabled]="!newClientForm.valid">
+                      [disabled]="!newClientForm.valid || incorrectNIFSize || incorrectNIF">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
                     </button>
