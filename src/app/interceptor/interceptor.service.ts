@@ -11,8 +11,6 @@ export class Interceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(request);
-
     if (request.headers.get('Authorization') == null) {
       request = request.clone({
         setHeaders: {
@@ -20,19 +18,7 @@ export class Interceptor implements HttpInterceptor {
         }
       });
     }
-
     return next.handle(request);
-
-    //return next.handle(request).pipe(
-    //  catchError((err) => {
-    //    if (err && err.status == 401) {
-    //      localStorage.removeItem('auth');
-    //      this.authService.reset();
-    //    } else {
-    //      return next.handle(request);
-    //    }
-    //  })
-    //);
   }
 
 }
