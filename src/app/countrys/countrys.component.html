@@ -167,7 +167,7 @@
             <p class="titulo-form-simples mt-0">{{'client.franchiseName'|translate|uppercase}}</p>
             <select class="form-select  campo_form" formControlName="franchiseName" name="franchiseName"
               id="franchiseName"
-              [attr.disabled]="returned == 'consult' || clientExists || isAssociatedWithFranchise == false ? 'disabled' :  null ">
+              [attr.disabled]="returned == 'consult' || isAssociatedWithFranchise == false ? 'disabled' :  null ">
               <option value=""></option>
               <option *ngFor="let franchise of franchises" value={{franchise.code}}>{{franchise.description}} </option>
             </select>
@@ -182,7 +182,7 @@
           <div class="col-6 ms-0 me-0 ps-5 pe-0" *ngIf="associatedWithGroupOrFranchise == true">
             <p class="titulo-form-simples mt-0">NIPC GRUPO</p>
             <input class="form-control campo_form" formControlName="NIPCGroup" name="NIPCGroup" type="text"
-              id="NIPCGroup" [readonly]="clientExists || isAssociatedWithFranchise || returned == 'consult'">
+              id="NIPCGroup" [readonly]="isAssociatedWithFranchise || returned == 'consult'">
             <div class="alert alert-danger"
               *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
               <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
