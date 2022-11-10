@@ -267,7 +267,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
         case 'stakeholderAcquiring.fiscalId': return item.stakeholderAcquiring.fiscalId;
 
-        case 'stakeholderAcquiring.stakeholderId': return item.stakeholderAcquiring.clientId;
+        case 'stakeholderAcquiring.clientId': return item.stakeholderAcquiring.clientId;
 
         case 'stakeholderAcquiring.isProxy': return item.stakeholderAcquiring.isProxy;
 
