@@ -151,8 +151,16 @@
                   <div class="col-12 ms-0 me-0 pe-0">
                     <div class="row">
                       <div class="col-5">
-                        <p class="titulo-form-simples">{{'client.nif'|translate}}:*</p>
-                        <input name="nif" type="text" (keypress)="numericOnly($event)" id="nif" class="form-control"
+                        <p class="titulo-form-simples">
+                          {{'client.nif'|translate}}:*
+                          <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+                            {{'client.incorrectNIF'|translate}}
+                          </span>
+                          <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
+                            {{'client.incorrectNIFSize'|translate}}
+                          </span>
+                        </p>
+                        <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)" id="nif" class="form-control"
                           formControlName="nif">
                       </div>
                       <div class="col-5">
@@ -166,8 +174,16 @@
                 <div class="col-12 ms-0 me-0 pe-0" *ngIf="!showENI && !clientNr && !isCC">
                   <div class="row">
                     <div class="col-6">
-                      <p class="titulo-form-simples">{{'client.nipc'|translate}}:*</p>
-                      <input name="nipc" type="text" (keypress)="numericOnly($event)" id="nipc" class="form-control"
+                      <p class="titulo-form-simples">
+                        {{'client.nipc'|translate}}:*
+                        <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+                          {{'client.incorrectNIF'|translate}}
+                        </span>
+                        <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
+                          {{'client.incorrectNIFSize'|translate}}
+                        </span>
+                      </p>
+                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nipc.value)" id="nipc" class="form-control"
                         formControlName="nipc">
                     </div>
                     <div class="col-6">

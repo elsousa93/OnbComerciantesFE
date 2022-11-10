@@ -346,6 +346,9 @@ export class ClientComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
+  incorrectNIFSize: boolean = false;
+  incorrectNIF: boolean = false;
+
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
@@ -833,5 +836,29 @@ export class ClientComponent implements OnInit {
     return true;
   }
 
+  validateNIF(nif: string): boolean {
+    this.incorrectNIFSize = false;
+    this.incorrectNIF = false;
+    if (nif != '') {
+      if (nif.length != 9) {
+        this.incorrectNIFSize = true;
+        return false;
+      }
+      if (!['1', '2', '3', '5', '6', '8'].includes(nif.substr(0, 1)) && !['45', '70', '71', '72', '77', '79', '90', '91', '98', '99'].includes(nif.substr(0, 2))){
+        this.incorrectNIF = true;
+        return false;
+      }
 
+      const total = Number(nif[0]) * 9 + Number(nif[1]) * 8 + Number(nif[2]) * 7 + Number(nif[3]) * 6 + Number(nif[4]) * 5 + Number(nif[5]) * 4 + Number(nif[6]) * 3 + Number(nif[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nif[8]) !== comparador) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      return Number(nif[8]) === comparador;
+    }
+  }
 }

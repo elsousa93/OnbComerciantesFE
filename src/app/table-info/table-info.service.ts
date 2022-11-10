@@ -100,7 +100,7 @@ export class TableInfoService {
 
       }),
     }
-    return this.http.get<Activity>(this.acquiringUrl + 'merchant/economicactivity/' + code + '/activity', HTTP_OPTIONS);
+    return this.http.get<Activity[]>(this.acquiringUrl + 'merchant/economicactivity/' + code + '/activity', HTTP_OPTIONS);
   }
 
   GetAllLegalNatures() {

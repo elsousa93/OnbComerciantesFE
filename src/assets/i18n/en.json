@@ -118,7 +118,9 @@
     "countryError": "Choose at least one country",
     "documents": "Merchant's Documents",
     "CRCMatchNIF": "Invalid code for the NIPC",
-    "incorrectLegalNat": "The Legal Nature doesn't match the Commercial Society type"
+    "incorrectLegalNat": "The Legal Nature doesn't match the Commercial Society type",
+    "incorrectNIF": "The inserted NIF is incorrect",
+    "incorrectNIFSize": "The NIF must consist of 9 digits"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",

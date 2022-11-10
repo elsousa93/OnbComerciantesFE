@@ -118,7 +118,9 @@
     "countryError": "Escolha pelo menos um país",
     "documents": "Documentos do Cliente",
     "CRCMatchNIF": "Código inválido para o NIPC",
-    "incorrectLegalNat": "A Natureza Jurídica não corresponde com o tipo da Sociedade Comercial"
+    "incorrectLegalNat": "A Natureza Jurídica não corresponde com o tipo da Sociedade Comercial",
+    "incorrectNIF": "O NIF inserido está incorreto",
+    "incorrectNIFSize": "O NIF tem de ser constituído por 9 dígitos"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",

@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { Activity, CountryInformation, ShoppingCenter } from '../../table-info/ITable-info.interface';
+import { Activity, CountryInformation, ShoppingCenter, SubActivity } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
@@ -231,8 +231,11 @@ export class AddStoreComponent implements OnInit {
   public idisabledContact: boolean = false;
 
   activities: ShopActivities[] = [];
-  activity: Activity;
+  activity: Activity[] = [];
+  subActivity: SubActivity[] = [];
   subzonesShopping: ShoppingCenter[] = [];
+
+  clientHasCAE: boolean = false;
 
   returned: string;
 
@@ -294,16 +297,18 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    // if (this.submissionClient.mainEconomicActivity != null || this.submissionClient.otherEconomicActivities != null) {
-    //   this.subs.push(this.tableInfo.FilterStoreByCAE(this.submissionClient.mainEconomicActivity).subscribe(result => {
-    //     this.logger.debug(result);
-    //     this.activity = result;
-    //     this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
-    //   }, error => {
-    //     this.logger.debug("Deu erro");
-    //   }));
-      
-    // } else {
+    if (this.submissionClient.mainEconomicActivity != null || this.submissionClient.otherEconomicActivities != null) {
+      this.clientHasCAE = true;
+      this.subs.push(this.tableInfo.FilterStoreByCAE(this.submissionClient.mainEconomicActivity).subscribe(result => {
+      this.logger.debug(result);
+      this.activity = result;
+      this.activity = this.activity.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+
+      }, error => {
+        this.logger.debug("Deu erro");
+      }));
+    } else {
+      this.clientHasCAE = false;
       this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
         this.logger.debug(result);
         this.activities = result;
@@ -311,7 +316,7 @@ export class AddStoreComponent implements OnInit {
       }, error => {
         this.logger.debug("Deu erro");
       }));
-    // }
+     }
 
 
     //this.storeService.GetAllShopProducts().subscribe(result => {
@@ -616,16 +621,30 @@ export class AddStoreComponent implements OnInit {
   }
 
   onActivitiesSelected() {
-    var exists = false;
-    this.activities.forEach(act => {
-      var actToSearch = this.formStores.get('activityStores').value;
-      if (actToSearch == act.activityCode) {
-        exists = true;
-        this.subActivities = act.subActivities;
+    if (!this.clientHasCAE) {
+      var exists = false;
+      this.activities.forEach(act => {
+        var actToSearch = this.formStores.get('activityStores').value;
+        if (actToSearch == act.activityCode) {
+          exists = true;
+          this.subActivities = act.subActivities;
+        }
+      })
+      if (!exists) {
+        this.subActivities = [];
       }
-    })
-    if (!exists) {
-      this.subActivities = [];
+    } else {
+      var exists = false;
+      this.activity.forEach(act => {
+        var actToSearch = this.formStores.get('activityStores').value;
+        if (actToSearch == act.code) {
+          exists = true;
+          this.subActivity = act.subActivities;
+        }
+      })
+      if (!exists) {
+        this.subActivity = [];
+      }
     }
   }
 
