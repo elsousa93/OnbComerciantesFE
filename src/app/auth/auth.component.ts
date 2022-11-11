@@ -63,9 +63,9 @@ export class AuthComponent implements OnInit {
 
       this.token.getLoginTokenInfo(user.token).then(res => {
         console.log('VALORES DO TOKEN ', res);
-        ////user.userName = res["ext-username"];
-        ////user.bankName = res["ext-bank"];
-        ////user.bankLocation = res["ext-bankLocation"];
+        user.userName = res.name;
+        user.bankName = res["ext-bank"];
+        user.bankLocation = res["ext-bankLocation"];
         this.timeout = new Date(res.exp * 1000);
         this.expirationCounter(this.timeout);
         this.authService.changeUser(user);
