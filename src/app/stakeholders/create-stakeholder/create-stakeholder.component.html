@@ -75,7 +75,7 @@
               <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
                 {{'client.incorrectNIPC'|translate}}
               </span>
-              <input [readonly]="isCC && isNoDataReadable" #stakeholderNumber (keyup)="checkValidationType(stakeholderNumber.value)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
+              <input [readonly]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
                      style="padding: .200rem;" type="text" class="form-control campo_form" formControlName="documentNumber">
             </div>
           </div>
