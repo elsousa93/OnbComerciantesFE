@@ -841,11 +841,14 @@ export class ClientComponent implements OnInit {
   }
 
   numericOnly(event): boolean {
-    var ASCIICode = (event.which) ? event.which : event.keyCode;
+    if (this.docType === '0501' || this.docType === '0502') {
+      var ASCIICode = (event.which) ? event.which : event.keyCode;
 
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
-      return false;
-    return true;
+      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+      return true;
+    }
+    //return true;
   }
 
   checkValidationType(str: string) {

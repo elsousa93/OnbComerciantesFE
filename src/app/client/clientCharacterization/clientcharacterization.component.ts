@@ -683,10 +683,10 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
 
-      if (this.client.merchantType === 'corporation' || this.client.merchantType === 'Corporate' || this.client.merchantType === 'Company' || this.client.merchantType === '01')
+      if (this.tipologia === 'corporation' || this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01')
         this.client.merchantType = '01';
 
-      if (this.client.merchantType === 'Entrepeneur' || this.client.merchantType === 'ENI' || this.client.merchantType === '02')
+      if (this.tipologia === 'Entrepeneur' || this.tipologia === 'ENI' || this.tipologia === '02')
         this.client.merchantType = '02';
     } else {
 

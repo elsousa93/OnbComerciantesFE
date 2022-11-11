@@ -20,10 +20,10 @@ export interface Activity {
   subActivities?: SubActivity[]
 }
 
-export interface SubActivity {
-  code?: string
-  description?: string
-}
+//export interface SubActivity {
+//  code?: string
+//  description?: string
+//}
 
 export interface EconomicActivityInformation{
   code: string

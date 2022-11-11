@@ -124,7 +124,7 @@
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId"
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId"
                         name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
@@ -196,7 +196,7 @@
                             {{'client.incorrectNIFSize'|translate}}
                           </span>
                         </p>
-                        <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(nif.value)" id="nif" class="form-control"
+                        <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)" id="nif" class="form-control"
                           formControlName="nif">
                       </div>
                       <div class="col-5">
@@ -219,7 +219,7 @@
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
-                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(nipc.value)" id="nipc" class="form-control"
+                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" id="nipc" class="form-control"
                         formControlName="nipc">
                     </div>
                     <div class="col-6">

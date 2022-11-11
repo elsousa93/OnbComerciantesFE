@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { Activity, CountryInformation, ShoppingCenter, SubActivity } from '../../table-info/ITable-info.interface';
+import { Activity, CountryInformation, ShopActivity, ShoppingCenter, SubActivity } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
@@ -231,7 +231,7 @@ export class AddStoreComponent implements OnInit {
   public idisabledContact: boolean = false;
 
   activities: ShopActivities[] = [];
-  activity: Activity[] = [];
+  activity: ShopActivities[] = [];
   subActivity: SubActivity[] = [];
   subzonesShopping: ShoppingCenter[] = [];
 
@@ -297,12 +297,13 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    if (this.submissionClient?.mainEconomicActivity != null) {
+    if (this.submissionClient?.mainEconomicActivity != null && this.submissionClient?.mainEconomicActivity != "") {
+      var code = this.submissionClient?.mainEconomicActivity.split('-')[0];
       this.clientHasCAE = true;
-      this.subs.push(this.tableInfo.FilterStoreByCAE(this.submissionClient.mainEconomicActivity).subscribe(result => {
+      this.subs.push(this.tableInfo.FilterStoreByCAE(code).subscribe(result => {
       this.logger.debug(result);
-      this.activity = result;
-      this.activity = this.activity.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+        this.activity = result;
+        this.activity = this.activity.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
 
       }, error => {
         this.logger.debug("Deu erro");
@@ -637,7 +638,7 @@ export class AddStoreComponent implements OnInit {
       var exists = false;
       this.activity.forEach(act => {
         var actToSearch = this.formStores.get('activityStores').value;
-        if (actToSearch == act.code) {
+        if (actToSearch == act.activityCode) {
           exists = true;
           this.subActivity = act.subActivities;
         }

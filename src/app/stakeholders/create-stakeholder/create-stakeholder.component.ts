@@ -704,11 +704,14 @@ export class CreateStakeholderComponent implements OnInit {
 
 
   numericOnly(event): boolean {
-    var ASCIICode = (event.which) ? event.which : event.keyCode;
+    if (this.docType === '0501' || this.docType === '0502') {
+      var ASCIICode = (event.which) ? event.which : event.keyCode;
 
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
-      return false;
-    return true;
+      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+      return true;
+    }
+    //return false;
   }
 
   checkValidationType(str: string) {
@@ -776,42 +779,40 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   ValidateNumeroDocumentoCC(numeroDocumento: string) {
-    if (this.docType == '1001') {
-      this.incorrectCC = false;
-      this.incorrectCCSize = false;
-      this.incorrectCCFormat = false;
-      var sum = 0;
-      var secondDigit = false;
+    this.incorrectCC = false;
+    this.incorrectCCSize = false;
+    this.incorrectCCFormat = false;
+    var sum = 0;
+    var secondDigit = false;
 
-      if (numeroDocumento.length != 12) {
-        this.incorrectCCSize = true;
-        return false;
-      }
-
-      var ccFormat = /^[\d]{8}?\d([A-Z]{2}\d)?$/g;
-      if (!ccFormat.test(numeroDocumento)) {
-        this.incorrectCCFormat = true;
-        return false;
-      }
-
-      for (var i = numeroDocumento.length - 1; i >= 0; --i) {
-        var valor = this.GetNumberFromChar(numeroDocumento[i]);
-        if (secondDigit) {
-          valor *= 2;
-          if (valor > 9)
-            valor -= 9;
-        }
-        sum += valor;
-        secondDigit = !secondDigit;
-      }
-
-      if (sum % 10 != 0) {
-        this.incorrectCC = true;
-        return false;
-      }
-
-      return (sum % 10) == 0;
+    if (numeroDocumento.length != 12) {
+      this.incorrectCCSize = true;
+      return false;
     }
+
+    var ccFormat = /^[\d]{8}?\d([A-Z]{2}\d)?$/g;
+    if (!ccFormat.test(numeroDocumento)) {
+      this.incorrectCCFormat = true;
+      return false;
+    }
+
+    for (var i = numeroDocumento.length - 1; i >= 0; --i) {
+      var valor = this.GetNumberFromChar(numeroDocumento[i]);
+      if (secondDigit) {
+        valor *= 2;
+        if (valor > 9)
+          valor -= 9;
+      }
+      sum += valor;
+      secondDigit = !secondDigit;
+    }
+
+    if (sum % 10 != 0) {
+      this.incorrectCC = true;
+      return false;
+    }
+
+    return (sum % 10) == 0;
   }
 
   GetNumberFromChar(letter: string) {
