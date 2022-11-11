@@ -69,7 +69,13 @@
               <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
                 {{'client.incorrectNIFSize'|translate}}
               </span>
-              <input [readonly]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
+              <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
+                {{'client.incorrectNIPCSize'|translate}}
+              </span>
+              <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+                {{'client.incorrectNIPC'|translate}}
+              </span>
+              <input [readonly]="isCC && isNoDataReadable" #stakeholderNumber (keyup)="checkValidationType(stakeholderNumber.value)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
                      style="padding: .200rem;" type="text" class="form-control campo_form" formControlName="documentNumber">
             </div>
           </div>
@@ -130,11 +136,11 @@
               <div class="col-md-6">
                 <p class="titulo-form-simples">
                   {{'client.nipc'|translate|uppercase}}:
-                  <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
-                    {{'client.incorrectNIF'|translate}}
+                  <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
+                    {{'client.incorrectNIPCSize'|translate}}
                   </span>
-                  <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
-                    {{'client.incorrectNIFSize'|translate}}
+                  <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+                    {{'client.incorrectNIPC'|translate}}
                   </span>
                 </p>
                 <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="checkValidationType(nipc.value)" type="text" class="form-control campo_form" formControlName="nipc">
@@ -299,7 +305,7 @@
             id="btn5a2"
             class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
             wappler-command="editContent" (click)="addStakeholder()"
-            [disabled]="(this.foundStakeholders===null || (this.foundStakeholders===false && !this.formNewStakeholder.valid) || (this.foundStakeholders===true && !this.selected)) || incorrectNIFSize || incorrectNIF">
+            [disabled]="(this.foundStakeholders===null || (this.foundStakeholders===false && !this.formNewStakeholder.valid) || (this.foundStakeholders===true && !this.selected)) || incorrectNIFSize || incorrectNIF || incorrectNIPCSize || incorrectNIPC || incorrectCC || incorrectCCSize || incorrectCCFormat">
             {{'generalKeywords.add'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
               style="height: 25px !important; vertical-align: sub;" class="img_add">
           </button>

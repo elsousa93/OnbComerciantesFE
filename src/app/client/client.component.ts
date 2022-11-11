@@ -348,6 +348,8 @@ export class ClientComponent implements OnInit {
 
   incorrectNIFSize: boolean = false;
   incorrectNIF: boolean = false;
+  incorrectNIPCSize: boolean = false;
+  incorrectNIPC: boolean = false;
   incorrectCCSize: boolean = false;
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
@@ -764,6 +766,8 @@ export class ClientComponent implements OnInit {
     this.incorrectCCFormat = false;
     this.incorrectNIF = false;
     this.incorrectNIFSize = false;
+    this.incorrectNIPCSize = false;
+    this.incorrectNIPC = false;
     if (id == true) {
       this.showENI = false;
       this.isENI = false;
@@ -883,15 +887,15 @@ export class ClientComponent implements OnInit {
   }
 
   validateNIPC(nipc: string): boolean {
-    this.incorrectNIFSize = false;
-    this.incorrectNIF = false;
+    this.incorrectNIPCSize = false;
+    this.incorrectNIPC = false;
     if (nipc != '') {
       if (nipc.length != 9) {
-        this.incorrectNIFSize = true;
+        this.incorrectNIPCSize = true;
         return false;
       }
       if (!['5', '6', '8', '9'].includes(nipc.substr(0, 1))) {
-        this.incorrectNIF = true;
+        this.incorrectNIPC = true;
         return false;
       }
 
@@ -900,7 +904,7 @@ export class ClientComponent implements OnInit {
       const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
 
       if (Number(nipc[8]) !== comparador) {
-        this.incorrectNIF = true;
+        this.incorrectNIPC = true;
         return false;
       }
 

@@ -123,7 +123,9 @@
     "incorrectNIFSize": "O NIF tem de ser constituído por 9 dígitos",
     "incorrectCC": "O Nº do Cartão de Cidadão inserido está incorreto",
     "incorrectCCSize": "O Nº do Cartão de Cidadão tem de ser constituído por 12 dígitos",
-    "incorrectCCFormat": "O formato do Nº do Cartão de Cidadão está errado"
+    "incorrectCCFormat": "O formato do Nº do Cartão de Cidadão está errado",
+    "incorrectNIPC": "O NIPC inserido está incorreto",
+    "incorrectNIPCSize": "O NIPC tem de ser constituído por 9 dígitos"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",

@@ -123,7 +123,9 @@
     "incorrectNIFSize": "The NIF must consist of 9 digits",
     "incorrectCC": "The inserted Citizen Card is incorrect",
     "incorrectCCSize": "The Citizen Card must consist of 12 digits",
-    "incorrectCCFormat": "The inserted Citizen Card's format is incorrect"
+    "incorrectCCFormat": "The inserted Citizen Card's format is incorrect",
+    "incorrectNIPC": "The inserted NIPC is incorrect",
+    "incorrectNIPCSize": "The NIPC must consist of 9 digits"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",

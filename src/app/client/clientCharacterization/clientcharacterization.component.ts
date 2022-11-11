@@ -641,8 +641,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (delivery === 'viaDigital')
       this.client.documentationDeliveryMethod = 'Portal';
-    else
-      this.client.documentationDeliveryMethod = 'Mail';
+    //else
+    //  this.client.documentationDeliveryMethod = 'Mail';
+
     if (this.isCommercialSociety && this.collectCRC) { // adicionei o this.collectCRC
       this.client.headquartersAddress = {
         address: this.form.value["address"],
@@ -654,12 +655,15 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.otherEconomicActivities = [];
 
       var CAESecondary1 = (this.form.value["CAESecondary1"]);
-      var CAESecondary2 = (this.form.value["CAESecondary1"]);
+      var CAESecondary2 = (this.form.value["CAESecondary2"]);
+      var CAESecondary3 = (this.form.value["CAESecondary3"]);
 
       if (CAESecondary1 !== null)
         this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
       if (CAESecondary2 !== null)
         this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
+      if (CAESecondary3 !== null)
+        this.client.otherEconomicActivities.push(this.form.value["CAESecondary3"]);
       //Paises destino
 
       if (this.form.value["constitutionDate"] == "" || this.form.value["constitutionDate"] == null) {

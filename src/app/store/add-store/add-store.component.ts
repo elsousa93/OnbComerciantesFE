@@ -297,7 +297,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    if (this.submissionClient?.mainEconomicActivity != null || this.submissionClient?.otherEconomicActivities != null) {
+    if (this.submissionClient?.mainEconomicActivity != null) {
       this.clientHasCAE = true;
       this.subs.push(this.tableInfo.FilterStoreByCAE(this.submissionClient.mainEconomicActivity).subscribe(result => {
       this.logger.debug(result);
