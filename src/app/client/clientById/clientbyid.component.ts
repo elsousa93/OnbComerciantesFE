@@ -466,8 +466,6 @@ export class ClientByIdComponent implements OnInit {
       this.isClient
     );
 
-
-
     if (this.returned == null) {
       if (!this.submissionExists || this.isFromSearch) {
         if (this.dataCC !== undefined && this.dataCC !== null) {
@@ -908,6 +906,8 @@ export class ClientByIdComponent implements OnInit {
 
         newSubmission.stakeholders.push(stakeholderToShow);
       }
+
+      this.clientContext.setClient(newSubmission.merchant);
 
       if (!this.submissionExists) { 
         this.submissionService.InsertSubmission(newSubmission).subscribe(result => {

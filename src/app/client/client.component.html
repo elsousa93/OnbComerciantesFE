@@ -58,12 +58,15 @@
                     <div class="col-5">
                       <p class="titulo-form-simples">
                         <!--Nº de documento-->
-                        {{'searches.documentNumber'|translate}}:* <span [class]="errorMsg"
-                          class="titulo-form-simples-erro">
-                          {{resultError}}
+                        {{'searches.documentNumber'|translate}}:*
+                        <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+                          {{'client.incorrectCC'|translate}}
+                        </span>
+                        <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
+                          {{'client.incorrectCCSize'|translate}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
+                      <input id="clientId" type="text" (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
                         name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
                     </div>
                   </div>
@@ -90,8 +93,11 @@
                         <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
                           {{'client.incorrectCCSize'|translate}}
                         </span>
+                        <span class="titulo-form-error" *ngIf="incorrectCCFormat" class="titulo-form-simples-erro">
+                          {{'client.incorrectCCFormat'|translate}}
+                        </span>
                       </p>
-                      <input id="clientId" type="text" (keypress)="numericOnly($event)" (keyup)="ValidateNumeroDocumentoCC(clientId.value)" [(ngModel)]="newClient.clientId"
+                      <input id="clientId" type="text" (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId"
                         name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
@@ -136,7 +142,7 @@
                   class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                   <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
                     <button
-                      [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0"
+                      [disabled]="newClient.clientId?.length === 0 || newClient.documentationDeliveryMethod?.length === 0 || incorrectNIF || incorrectNIFSize || incorrectCC || incorrectCCSize"
                       id="btn5a2" class="btn botao_azul" (click)="searchClient()" wappler-command="editContent">
                       {{'client.search'|translate|uppercase}}&nbsp;&nbsp;
                       <img src="assets/images/person_search.svg" class="img_btn">
@@ -163,7 +169,7 @@
                             {{'client.incorrectNIFSize'|translate}}
                           </span>
                         </p>
-                        <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)" id="nif" class="form-control"
+                        <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(nif.value)" id="nif" class="form-control"
                           formControlName="nif">
                       </div>
                       <div class="col-5">
@@ -186,7 +192,7 @@
                           {{'client.incorrectNIFSize'|translate}}
                         </span>
                       </p>
-                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" id="nipc" class="form-control"
+                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(nipc.value)" id="nipc" class="form-control"
                         formControlName="nipc">
                     </div>
                     <div class="col-6">
@@ -200,7 +206,7 @@
                   <span class="navbar-text me-2">
                     <button *ngIf="!showFoundClient && searchDone && !isCC && !clientNr" id="btn5a2"
                       (click)="createNewClient()" class="btn botao_branco" wappler-command="editContent"
-                      [disabled]="!newClientForm.valid || incorrectNIFSize || incorrectNIF">
+                      [disabled]="!newClientForm.valid || incorrectNIFSize || incorrectNIF || incorrectCC || incorrectCCSize">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
                     </button>

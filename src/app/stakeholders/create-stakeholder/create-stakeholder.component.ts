@@ -272,6 +272,7 @@ export class CreateStakeholderComponent implements OnInit {
   incorrectNIF: boolean = false;
   incorrectCCSize: boolean = false;
   incorrectCC: boolean = false;
+  incorrectCCFormat: boolean = false;
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
@@ -497,11 +498,12 @@ export class CreateStakeholderComponent implements OnInit {
 
   resetSearchStakeholder() {
     this.isShown = false;
-    this.foundStakeholders = null; 
-    //this.formNewStakeholder.get("nif")?.setValue("");
-    //this.formNewStakeholder.get("nipc")?.setValue("");
-    //this.formNewStakeholder.get("nif")?.updateValueAndValidity();
-    //this.formNewStakeholder.get("nipc")?.updateValueAndValidity();
+    this.foundStakeholders = null;
+    this.incorrectCC = false;
+    this.incorrectCCSize = false;
+    this.incorrectNIF = false;
+    this.incorrectNIFSize = false;
+    this.incorrectCCFormat = false;
     this.formStakeholderSearch.get("documentNumber").setValue("");
     this.formStakeholderSearch.get("documentNumber").updateValueAndValidity();
   }
@@ -705,6 +707,18 @@ export class CreateStakeholderComponent implements OnInit {
     return true;
   }
 
+  checkValidationType(str: string) {
+    if (this.docType === '1001')
+      this.ValidateNumeroDocumentoCC(str);
+
+    if (this.docType === '0501')
+      this.validateNIF(str)
+
+    if (this.docType === '0502')
+      this.validateNIPC(str)
+
+  }
+
   validateNIF(nif: string): boolean {
     this.incorrectNIFSize = false;
     this.incorrectNIF = false;
@@ -758,33 +772,42 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   ValidateNumeroDocumentoCC(numeroDocumento: string) {
-    this.incorrectCC = false;
-    this.incorrectCCSize = false;
-    var sum = 0;
-    var secondDigit = false;
+    if (this.docType == '1001') {
+      this.incorrectCC = false;
+      this.incorrectCCSize = false;
+      this.incorrectCCFormat = false;
+      var sum = 0;
+      var secondDigit = false;
 
-    if (numeroDocumento.length != 12) {
-      this.incorrectCCSize = true;
-      return false;
-    }
-
-    for (var i = numeroDocumento.length - 1; i >= 0; --i) {
-      var valor = this.GetNumberFromChar(numeroDocumento[i]);
-      if (secondDigit) {
-        valor *= 2;
-        if (valor > 9)
-          valor -= 9;
+      if (numeroDocumento.length != 12) {
+        this.incorrectCCSize = true;
+        return false;
       }
-      sum += valor;
-      secondDigit = !secondDigit;
-    }
 
-    if (sum % 10 != 0) {
-      this.incorrectCC = true;
-      return false;
-    }
+      var ccFormat = /^[\d]{8}?\d([A-Z]{2}\d)?$/g;
+      if (!ccFormat.test(numeroDocumento)) {
+        this.incorrectCCFormat = true;
+        return false;
+      }
 
-    return (sum % 10) == 0;
+      for (var i = numeroDocumento.length - 1; i >= 0; --i) {
+        var valor = this.GetNumberFromChar(numeroDocumento[i]);
+        if (secondDigit) {
+          valor *= 2;
+          if (valor > 9)
+            valor -= 9;
+        }
+        sum += valor;
+        secondDigit = !secondDigit;
+      }
+
+      if (sum % 10 != 0) {
+        this.incorrectCC = true;
+        return false;
+      }
+
+      return (sum % 10) == 0;
+    }
   }
 
   GetNumberFromChar(letter: string) {

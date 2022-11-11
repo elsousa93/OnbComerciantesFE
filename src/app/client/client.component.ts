@@ -350,6 +350,7 @@ export class ClientComponent implements OnInit {
   incorrectNIF: boolean = false;
   incorrectCCSize: boolean = false;
   incorrectCC: boolean = false;
+  incorrectCCFormat: boolean = false;
 
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
     @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
@@ -758,6 +759,11 @@ export class ClientComponent implements OnInit {
     this.newClientForm = null;
     this.showSeguinte = false;
     this.errorInput = 'form-control campo_form_coment';
+    this.incorrectCC = false;
+    this.incorrectCCSize = false;
+    this.incorrectCCFormat = false;
+    this.incorrectNIF = false;
+    this.incorrectNIFSize = false;
     if (id == true) {
       this.showENI = false;
       this.isENI = false;
@@ -838,6 +844,18 @@ export class ClientComponent implements OnInit {
     return true;
   }
 
+  checkValidationType(str: string) {
+    if (this.docType === '1001')
+      this.ValidateNumeroDocumentoCC(str);
+
+    if (this.docType === '0501')
+      this.validateNIF(str)
+
+    if (this.docType === '0502')
+      this.validateNIPC(str)
+
+  }
+
   validateNIF(nif: string): boolean {
     this.incorrectNIFSize = false;
     this.incorrectNIF = false;
@@ -893,11 +911,18 @@ export class ClientComponent implements OnInit {
   ValidateNumeroDocumentoCC(numeroDocumento: string) {
     this.incorrectCC = false;
     this.incorrectCCSize = false;
+    this.incorrectCCFormat = false;
     var sum = 0; 
     var secondDigit = false;
 
     if (numeroDocumento.length != 12) { 
       this.incorrectCCSize = true;
+      return false;
+    }
+
+    var ccFormat = /^[\d]{8}?\d([A-Z]{2}\d)?$/g;
+    if (!ccFormat.test(numeroDocumento)) {
+      this.incorrectCCFormat = true;
       return false;
     }
 

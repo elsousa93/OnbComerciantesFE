@@ -689,7 +689,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
 
-      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+      if (this.tipologia === 'corporation' || this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
 
         var natJuridicaN2 = this.form.value["natJuridicaN2"];

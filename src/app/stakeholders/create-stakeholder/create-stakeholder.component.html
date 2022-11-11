@@ -60,7 +60,10 @@
               <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
                 {{'client.incorrectCCSize'|translate}}
               </span>
-              <input [readonly]="isCC && isNoDataReadable" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
+              <span class="titulo-form-error" *ngIf="incorrectCCFormat" class="titulo-form-simples-erro">
+                {{'client.incorrectCCFormat'|translate}}
+              </span>
+              <input [readonly]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
                      style="padding: .200rem;" type="text" class="form-control campo_form" formControlName="documentNumber">
             </div>
           </div>
@@ -128,7 +131,7 @@
                     {{'client.incorrectNIFSize'|translate}}
                   </span>
                 </p>
-                <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" type="text" class="form-control campo_form" formControlName="nipc">
+                <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="checkValidationType(nipc.value)" type="text" class="form-control campo_form" formControlName="nipc">
               </div>
               <div class="col-md-6">
                 <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
@@ -150,7 +153,7 @@
                   {{'client.incorrectNIFSize'|translate}}
                 </span>
               </p>
-              <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)" class="form-control campo_form" formControlName="nif">
+              <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(nif.value)" class="form-control campo_form" formControlName="nif">
 
             </div>
             <div class="col-md-6">
