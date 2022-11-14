@@ -91,7 +91,7 @@ export class CreateStakeholderComponent implements OnInit {
   public countryCC = null;
   public localityCC = null;
 
-  public foundCC = false;
+  public foundCC: boolean = false;
   public okCC = false;
   public dadosCC: Array<string> = []; //apagar
   public addressReading = null;
@@ -492,6 +492,7 @@ export class CreateStakeholderComponent implements OnInit {
   resetSearchStakeholder() {
     this.isShown = false;
     this.foundStakeholders = null;
+    this.foundCC = false;
     this.incorrectCC = false;
     this.incorrectCCSize = false;
     this.incorrectNIF = false;
@@ -594,6 +595,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   clearForm() {
     this.isShown = false;
+    this.foundCC = false;
     this.foundStakeholders = null;
     this.formNewStakeholder.reset();
     this.formStakeholderSearch.reset();

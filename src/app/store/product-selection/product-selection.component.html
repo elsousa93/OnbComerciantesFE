@@ -47,7 +47,7 @@
       
       <div>
         <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url"
-          (change)="URLFilled(true)" id="url" name="url" type="text" class="form-control campo_form" #url>
+          (change)="URLFilled(true)" id="url" name="url" type="text" class="form-control campo_form" [pattern]="urlRegex" #url>
            <div class="alert alert-danger" *ngIf="urlValid.errors?.['pattern']">
             {{'errorMessages.invalidUrl'|translate}}
           </div>
