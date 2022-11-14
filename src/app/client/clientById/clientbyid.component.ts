@@ -508,7 +508,7 @@ export class ClientByIdComponent implements OnInit {
               console.log("pesquisa do cliente: ", result);
 
               var clientToInsert: AcquiringClientPost = {};
-
+              clientToInsert.clientId = client.merchantId;
               clientToInsert.merchantRegistrationId = client.merchantRegistrationId;
               clientToInsert.legalName = client.legalName;
               clientToInsert.commercialName = client.commercialName;
