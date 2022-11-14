@@ -291,6 +291,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       const index = this.submissionStakeholders.indexOf(stakeholder);
       this.submissionStakeholders.splice(index, 1);
       this.loadStakeholders(this.submissionStakeholders);
+      this.listLengthEmitter.emit(this.submissionStakeholders.length);
     }, error => {
       console.log("error: ", error);
     });

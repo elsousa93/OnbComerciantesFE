@@ -22,10 +22,12 @@ export class DataService {
   //número da página em que estamos atualmente
   private dataPage = new BehaviorSubject(0);
   private dataSubPage = new BehaviorSubject(0);
+  private updateComprovativos = new BehaviorSubject(false);
 
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
   currentSubPage = this.dataSubPage.asObservable();
+  updatedComprovativos = this.updateComprovativos.asObservable(); 
 
   constructor(private logger : LoggerService, ) { }
 
@@ -53,6 +55,11 @@ export class DataService {
     this.logger.debug("SubPage change "+value);
     this.dataSubPage.next(value);
   }
+
+  changeUpdatedComprovativos(value: boolean) {
+    this.updateComprovativos.next(value);
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(new Map().set(1, undefined)
     .set(2, undefined)
