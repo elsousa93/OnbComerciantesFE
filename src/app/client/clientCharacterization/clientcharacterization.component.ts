@@ -174,7 +174,7 @@ export class ClientCharacterizationComponent implements OnInit {
     //this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo?.legalName : localStorage.getItem("clientName") ?? this.client?.commercialName, Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo?.legalName : localStorage.getItem("clientName") ?? this.client?.commercialName ?? this.dataCC?.nameCC, Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.hasCRC ? true: collectCRC)
     }));
