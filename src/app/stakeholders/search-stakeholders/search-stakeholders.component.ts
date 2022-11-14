@@ -100,17 +100,19 @@ export class SearchStakeholdersComponent implements OnInit {
           var stake = res;
 
           stake.forEach(function (value, idx) {
-            var stakeInfo = value.result;
-            stakeholder = {
-              "stakeholderNumber": stakeInfo.stakeholderId,
-              "stakeholderName": stakeInfo.shortName,
-              "stakeholderNIF": stakeInfo.fiscalIdentification.fiscalId,
-              "elegible": "elegivel",
-              "associated": "SIM"
-            } as IStakeholders;
+            if (value != null) {
+              var stakeInfo = value.result;
+              stakeholder = {
+                "stakeholderNumber": stakeInfo.stakeholderId,
+                "stakeholderName": stakeInfo.shortName,
+                "stakeholderNIF": stakeInfo.fiscalIdentification.fiscalId,
+                "elegible": "elegivel",
+                "associated": "SIM"
+              } as IStakeholders;
 
-            context.stakeholdersToShow.push(stakeholder);
-            console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
+              context.stakeholdersToShow.push(stakeholder);
+              console.log('Lista de stakeholdersToShow depois de adicionar o stake ', context.stakeholdersToShow);
+            }
           });
         }, error => {
           console.log('ocorreu um erro');
