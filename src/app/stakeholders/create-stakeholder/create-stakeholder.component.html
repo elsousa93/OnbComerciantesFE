@@ -311,7 +311,7 @@
             id="btn5a2"
             class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
             wappler-command="editContent" (click)="addStakeholder()"
-            [disabled]="(this.foundStakeholders===null || (this.foundStakeholders===false && !this.formNewStakeholder.valid) || (this.foundStakeholders===true && !this.selected)) || incorrectNIFSize || incorrectNIF || incorrectNIPCSize || incorrectNIPC || incorrectCC || incorrectCCSize || incorrectCCFormat">
+            [disabled]="(this.foundStakeholders===null || (this.foundStakeholders===false && !this.formNewStakeholder.valid) || (this.foundStakeholders===true && !this.selected)) || this.foundCC === false || incorrectNIFSize || incorrectNIF || incorrectNIPCSize || incorrectNIPC || incorrectCC || incorrectCCSize || incorrectCCFormat">
             {{'generalKeywords.add'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
               style="height: 25px !important; vertical-align: sub;" class="img_add">
           </button>
