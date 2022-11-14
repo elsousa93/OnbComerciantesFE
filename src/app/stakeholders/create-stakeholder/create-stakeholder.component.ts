@@ -89,6 +89,7 @@ export class CreateStakeholderComponent implements OnInit {
   public countryCC = null;
   public localityCC = null;
 
+  public foundCC = false;
   public okCC = false;
   public dadosCC: Array<string> = []; //apagar
   public addressReading = null;
@@ -108,7 +109,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    this.foundStakeholders = true;
+    this.foundCC = true;
     this.logger.debug("okCC valor: " + this.okCC);
   }
   setAddressFalse() {
