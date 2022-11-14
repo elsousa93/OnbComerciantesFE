@@ -125,7 +125,8 @@
     "incorrectCCSize": "O Nº do Cartão de Cidadão tem de ser constituído por 12 dígitos",
     "incorrectCCFormat": "O formato do Nº do Cartão de Cidadão está errado",
     "incorrectNIPC": "O NIPC inserido está incorreto",
-    "incorrectNIPCSize": "O NIPC tem de ser constituído por 9 dígitos"
+    "incorrectNIPCSize": "O NIPC tem de ser constituído por 9 dígitos",
+    "sameNIPC": "O NIPC não pode coincidir com o da empresa"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",

@@ -31,6 +31,8 @@ import { TableInfoService } from 'src/app/table-info/table-info.service';
 import { UserTypes } from 'src/app/table-info/ITable-info.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { Client } from '../../client/Client.interface';
+import { ClientService } from '../../client/client.service';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -276,11 +278,13 @@ export class CreateStakeholderComponent implements OnInit {
   incorrectCCSize: boolean = false;
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
+  submissionClient: Client;
+  sameNIPC: boolean = false;
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
     private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
-    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective) {
+    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective, private clientService: ClientService) {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListDocTypeE = result;
@@ -292,26 +296,7 @@ export class CreateStakeholderComponent implements OnInit {
 
     this.initializeForm();
 
-    //this.logger.debug("foi buscar bem ao localstorage?");
-    //this.logger.debug(this.submissionId);
-
-    this.ngOnInit();
-
-    var context = this;
-/*    this.initializeForm();*/
-    //stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).subscribe(result => {
-    //  result.forEach(function (value, index) {
-    //    this.logger.debug(value);
-    //    context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(result => {
-    //      this.logger.debug(result);
-    //      context.submissionStakeholders.push(result);
-    //    }, error => {
-    //      this.logger.debug(error);
-    //    });
-    //  });
-    //}, error => {
-    //  this.logger.debug(error);
-    //});
+    //this.ngOnInit();
 
   }
 
@@ -444,7 +429,11 @@ export class CreateStakeholderComponent implements OnInit {
         this.formStakeholderSearch.disable();
         this.formNewStakeholder.disable();
       }
-    } 
+    }
+
+    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+      this.submissionClient = client;
+    });
   }
 
   ngOnDestroy(): void {
@@ -529,6 +518,13 @@ export class CreateStakeholderComponent implements OnInit {
       return false;
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
+
+    if (this.submissionClient.fiscalId === this.stakeholderNumber) { 
+      console.log('Stake tem o mesmo id na pesquisa');
+      this.sameNIPC = true;
+      return false;
+    }
+
     this.isShown = true;
     this.selected = false;
 
@@ -639,16 +635,20 @@ export class CreateStakeholderComponent implements OnInit {
         "phone2": {},
         "shortName": this.formNewStakeholder.get("name")?.value!='' ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
       }
-      this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-        stakeholderToInsert.id = result["id"];
-        this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-          duration: 4000,
-          panelClass: ['snack-bar']
+      if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
+        this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+          stakeholderToInsert.id = result["id"];
+          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+          this.emitInsertedStake(of(stakeholderToInsert));
+          this.clearForm();
+          this.route.navigate(['/stakeholders/']);
         });
-        this.emitInsertedStake(of(stakeholderToInsert));
-        this.clearForm();
-        this.route.navigate(['/stakeholders/']);
-      });
+      } else {
+        console.log('Não foi possível adicionar o interveniente, pois tem o mesmo NIPC que a empresa');
+      }
     }
   }
   /**

@@ -75,6 +75,9 @@
               <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
                 {{'client.incorrectNIPC'|translate}}
               </span>
+              <span class="titulo-form-error" *ngIf="sameNIF" class="titulo-form-simples-erro">
+                {{'client.sameNIF'|translate}}
+              </span>
               <input [readonly]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
                      style="padding: .200rem;" type="text" class="form-control campo_form" formControlName="documentNumber">
             </div>
@@ -141,6 +144,9 @@
                   </span>
                   <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
                     {{'client.incorrectNIPC'|translate}}
+                  </span>
+                  <span class="titulo-form-error" *ngIf="sameNIPC" class="titulo-form-simples-erro">
+                    {{'client.sameNIPC'|translate}}
                   </span>
                 </p>
                 <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" type="text" class="form-control campo_form" formControlName="nipc">
