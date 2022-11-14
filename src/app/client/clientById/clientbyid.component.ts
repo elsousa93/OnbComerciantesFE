@@ -472,7 +472,7 @@ export class ClientByIdComponent implements OnInit {
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
           client.fiscalId = this.dataCC.nifCC;
-          client.shortName = client.legalName = this.dataCC.nameCC;
+          client.shortName = client.legalName = client.commercialName =  this.dataCC.nameCC;
           client.bankInformation = {};
           client.headquartersAddress = {};
           client.headquartersAddress.address = this.dataCC.addressCC;
