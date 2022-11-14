@@ -8,7 +8,7 @@ export class IPep {
   degreeOfRelatedness?: string
   businessPartnership?: string
 }
-export interface Address {
+export class Address {
   address?: string
   postalCode?: string
   postalArea?: string
