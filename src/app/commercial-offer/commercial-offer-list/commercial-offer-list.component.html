@@ -376,22 +376,22 @@
 
                          <td class="text-primary text-center" *ngIf="commission.minValue.isReadOnly">{{commission.minValue.originalValue}}</td>
                          <td class="text-primary text-center" *ngIf="!commission.minValue.isReadOnly">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMin" value="{{commission.minValue.originalValue}}" />
+                           <input type="number" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMin" value="{{commission.minValue.originalValue}}" />
                          </td>
 
                          <td class="text-primary text-center" *ngIf="commission.maxValue.isReadOnly">{{commission.maxValue.originalValue}}</td>
                          <td class="text-primary text-center" *ngIf="!commission.maxValue.isReadOnly">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMax" value="{{commission.maxValue.originalValue}}" />
+                           <input type="number" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMax" value="{{commission.maxValue.originalValue}}" />
                          </td>
 
                          <td class="text-primary text-center" *ngIf="commission.fixedValue.isReadOnly">{{commission.fixedValue.originalValue}}</td>
                          <td class="text-primary text-center" *ngIf="!commission.fixedValue.isReadOnly">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionFixed" value="{{commission.fixedValue.originalValue}}" />
+                           <input type="number" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionFixed" value="{{commission.fixedValue.originalValue}}" />
                          </td>
 
                          <td class="text-primary text-center" *ngIf="commission.percentageValue.isReadOnly">{{commission.percentageValue.originalValue}}</td>
                          <td class="text-primary text-center" *ngIf="!commission.percentageValue.isReadOnly">
-                           <input type="text" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionPercentage" value="{{commission.percentageValue.originalValue}}" />
+                           <input type="number" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionPercentage" value="{{commission.percentageValue.originalValue}}" />
                          </td>
                        </tr>
                      </tbody>

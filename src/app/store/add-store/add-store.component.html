@@ -44,7 +44,6 @@
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}</p>
                 <select class="form-select campo-form-select" id="activityStores" formControlName="activityStores">
-                  <option value=""></option>
                   <option *ngFor="let activity of activities" value={{activity.activityCode}}>
                     {{activity.activityDescription}}
                   </option>
@@ -54,7 +53,6 @@
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}</p>
                 <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
                 <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
-                  <option value=""></option>
                   <option *ngFor="let subActivity of subActivities" value={{subActivity.subActivityCode}}>
                     {{subActivity.subActivityDescription}}
                   </option>

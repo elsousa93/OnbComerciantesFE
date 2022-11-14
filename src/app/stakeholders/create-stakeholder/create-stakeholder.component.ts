@@ -112,7 +112,6 @@ export class CreateStakeholderComponent implements OnInit {
   setOkCC() {
     this.okCC = true;
     this.foundCC = true;
-    this.foundStakeholders = true;
     this.logger.debug("okCC valor: " + this.okCC);
   }
   setAddressFalse() {
