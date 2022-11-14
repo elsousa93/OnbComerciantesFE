@@ -711,6 +711,7 @@ export class ClientCharacterizationComponent implements OnInit {
       if (this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;
         this.client.fiscalId = this.dataCC.nifCC;
+        this.client.legalName = this.dataCC.nameCC;
       }
 
     }
