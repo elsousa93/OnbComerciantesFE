@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubmissionGet } from 'src/app/submission/ISubmission.interface';
 import { ProcessNumberService } from 'src/app/nav-menu-presencial/process-number.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -23,6 +24,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   private baseUrl: string;
   isVisible: boolean = true;
   stakeholders: IStakeholders[] = [];
+  submissionStakeholders: IStakeholders[] = [];
   representativesSelected: String[] = [];
   form: FormGroup;
 
@@ -37,10 +39,27 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public subscription: Subscription;
   public submissionAnswer: SubmissionGet;
 
-  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService) {
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
+
+    var context = this;
+
+    this.stakeholderService.GetAllStakeholdersFromSubmissionTest(this.submissionId).then(result => {
+
+      var stakeholders = result.result;
+
+      stakeholders.forEach(function (value, index) {
+        context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, value.id).then(res => {
+          console.log("stakeholder adicionado com sucesso");
+          context.submissionStakeholders.push(res);
+        }, error => {
+          console.log("Erro a adicionar stakeholder");
+        });
+      });
+    }, error => {
+    });
   }
 
   ngOnInit(): void {
