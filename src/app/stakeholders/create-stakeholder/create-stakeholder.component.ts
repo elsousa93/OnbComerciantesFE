@@ -33,6 +33,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
+import { Address } from '../../pep/IPep.interface';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -612,10 +613,7 @@ export class CreateStakeholderComponent implements OnInit {
         stakeholderToInsert["stakeholderId"] = this.currentStakeholder["stakeholderNumber"];
         stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
 
-        stakeholderToInsert["fiscalAddress"]["address"] = stakeholderToInsert["address"]["address"];
-        stakeholderToInsert["fiscalAddress"]["postalCode"] = stakeholderToInsert["address"]["postalCode"];
-        stakeholderToInsert["fiscalAddress"]["country"] = stakeholderToInsert["address"]["country"];
-        stakeholderToInsert["fiscalAddress"]["locality"] = stakeholderToInsert["address"]["locality"];
+        stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];

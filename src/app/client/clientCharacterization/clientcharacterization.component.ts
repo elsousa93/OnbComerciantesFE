@@ -242,7 +242,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : this.client.legalNature, Validators.required), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
-      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName") ?? this.client.commercialName, disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '')) }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(false)
     }));
