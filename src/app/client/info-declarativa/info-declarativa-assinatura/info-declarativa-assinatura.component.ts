@@ -53,7 +53,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       stakeholders.forEach(function (value, index) {
         context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, value.id).then(res => {
           console.log("stakeholder adicionado com sucesso");
-          context.submissionStakeholders.push(res);
+          context.submissionStakeholders.push(res.result);
         }, error => {
           console.log("Erro a adicionar stakeholder");
         });

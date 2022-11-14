@@ -102,8 +102,7 @@
                   </thead>
                   <tbody>
                     <tr class="clickable" *ngFor="let stakeholder of stakeholders">
-                      <td class="text-primary text-center align-middle">{{stakeholder.fiscalId == undefined ? "-" :
-                        stakeholder.fiscalId}}</td>
+                      <td class="text-primary text-center align-middle">{{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}}</td>
                       <td class="text-primary text-center align-middle"> - </td>
                       <td class="text-primary text-center align-middle">
                         <select *ngIf="!isVisible">
