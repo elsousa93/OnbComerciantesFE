@@ -119,11 +119,12 @@ export class ProductSelectionComponent implements OnInit {
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
       if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='Card Not Present') {
-        this.formStores.get('url').setValidators([Validators.required, Validators.email]);
+        this.formStores.get('url').setValidators([Validators.required, Validators.pattern(urlRegex)]);
       } else
-        this.formStores.get('url').setValidators(Validators.email);
+        this.formStores.get('url').setValidators(Validators.pattern(urlRegex));
       this.formStores.get('url').updateValueAndValidity();
     });
   }
