@@ -499,6 +499,7 @@ export class CreateStakeholderComponent implements OnInit {
     this.incorrectCCFormat = false;
     this.incorrectNIPCSize = false;
     this.incorrectNIPC = false;
+    this.sameNIPC = false;
     this.formStakeholderSearch.get("documentNumber").setValue("");
     this.formStakeholderSearch.get("documentNumber").updateValueAndValidity();
   }
@@ -515,6 +516,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   searchStakeholder() {
     this.isSearch = false;
+    this.sameNIPC = false;
     if (this.formStakeholderSearch.invalid)
       return false;
 
@@ -599,6 +601,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   addStakeholder() {
+    this.sameNIPC = false;
     console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').then(stakeholder => {
@@ -648,7 +651,7 @@ export class CreateStakeholderComponent implements OnInit {
           this.route.navigate(['/stakeholders/']);
         });
       } else {
-        console.log('Não foi possível adicionar o interveniente, pois tem o mesmo NIPC que a empresa');
+        this.sameNIPC = true;
       }
     }
   }
