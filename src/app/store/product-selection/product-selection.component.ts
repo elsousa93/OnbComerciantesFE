@@ -88,6 +88,7 @@ export class ProductSelectionComponent implements OnInit {
   }
 
   chooseSolutionAPI(productDescription: any) {
+    this.formStores.get('subProduct').setValue('');
     this.products.forEach(Prod => {
       var subProductToSearch = productDescription;
       if (subProductToSearch == Prod.name) {
@@ -114,9 +115,9 @@ export class ProductSelectionComponent implements OnInit {
 
   initializeForm() {
     this.formStores = new FormGroup({
-      solutionType: new FormControl((this.store.productCode !== null) ? this.store.productCode : '', Validators.required),
-      subProduct: new FormControl((this.store.subproductCode !== null) ? this.store.subproductCode : '', Validators.required),
-      url: new FormControl((this.store.website !== null) ? this.store.website : '', Validators.email)
+      solutionType: new FormControl((this.store.productCode != null) ? this.store.productCode : '', Validators.required),
+      subProduct: new FormControl((this.store.subproductCode != null) ? this.store.subproductCode : '', Validators.required),
+      url: new FormControl((this.store.website != null) ? this.store.website : '', Validators.email)
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'

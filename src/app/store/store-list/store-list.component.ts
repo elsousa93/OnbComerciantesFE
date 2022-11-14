@@ -158,7 +158,7 @@ export class StoreComponent implements AfterViewInit {
 
 
   addStore() {
-    // this.initializeForm();
+    this.resetForm();
     this.currentStore = new ShopDetailsAcquiring();
     this.currentStore.address = new ShopAddressAcquiring();
     this.currentStore.address.address = new FiscalAddress();
