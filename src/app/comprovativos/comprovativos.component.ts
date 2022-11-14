@@ -172,6 +172,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   stakeholdersList: any[] = [];
 
   public returned: string;
+  updatedComps: boolean;
   ///////////////////////
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
@@ -376,6 +377,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.updatedComprovativos.subscribe(updatedComps => this.updatedComps = updatedComps);
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(true, 4, 1);
@@ -527,19 +529,20 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       })
     });
 
-    if (this.returned !== null) {
-      this.logger.debug("Entrei no if dos comprovativos quando faço o submit ");
-      this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
-      this.logger.debug("Objeto com os valores atualizados " + this.submissionPutTeste);
+    if (!this.updatedComps) {
+      if (this.returned != null) {
+        this.logger.debug("Entrei no if dos comprovativos quando faço o submit ");
+        this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
+        this.logger.debug("Objeto com os valores atualizados " + this.submissionPutTeste);
+      }
+
+      this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
+        this.logger.debug('Editar sub ' + result);
+        this.data.updateData(true, 4);
+        this.data.changeUpdatedComprovativos(true);
+        this.route.navigate(['/commercial-offert-list']);
+      });
     }
-
-    this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
-      this.logger.debug('Editar sub ' + result);
-      this.data.updateData(true, 4);
-      this.route.navigate(['/commercial-offert-list']);
-    });
-
-
 
   }
 
