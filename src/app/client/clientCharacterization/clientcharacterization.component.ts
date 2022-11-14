@@ -517,6 +517,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   onLegalNatureSelected() {
+    this.legalNatureList2 = [];
     this.legalNatError = false;
     var exists = false;
     this.logger.debug("entrou no legalnatureselected");
@@ -545,9 +546,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description > b.description ? 1 : -1);
       }
     })
-    if (!exists) {
-      this.legalNatureList2 = [];
-    }
+
   }
 
 
