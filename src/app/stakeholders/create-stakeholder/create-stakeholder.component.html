@@ -145,9 +145,6 @@
                   <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
                     {{'client.incorrectNIPC'|translate}}
                   </span>
-                  <span class="titulo-form-error" *ngIf="sameNIPC" class="titulo-form-simples-erro">
-                    {{'client.sameNIPC'|translate}}
-                  </span>
                 </p>
                 <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" type="text" class="form-control campo_form" formControlName="nipc">
               </div>
