@@ -39,9 +39,9 @@
         </div>
       </div>
       </div>
-      <div *ngIf="formStores.get('bankInformation').value === false" class="col-5 ms-0 me-0 ps-5 pe-0">
+      <div *ngIf="isIBANConsidered === false" class="col-5 ms-0 me-0 ps-5 pe-0">
       <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.attachIBAN'|translate}}</p>
-      <div formControlName="bankIban" class="table-responsive mb-2">
+      <div class="table-responsive mb-2">
         <table class="table">
         <thead class="text-primary table-primary">
           <tr class="table-white text-primary">
@@ -51,7 +51,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngIf="IBANToShow !== undefined && IBANToShow !== null">
+          <tr *ngIf="IBANToShow != undefined && IBANToShow != null">
             <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
             <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
             <td>

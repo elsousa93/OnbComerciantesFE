@@ -69,7 +69,7 @@ export class InfoDeclarativaComponent implements OnInit {
     this.listValue.get("phone2").get("countryCode").setValue(client?.contacts?.phone2?.countryCode);
     this.listValue.get("phone2").get("phoneNumber").setValue(client?.contacts?.phone2?.phoneNumber);
     this.listValue.get("email").setValue(client?.contacts?.email);
-    if (client.billingEmail == null || client.billingEmail == "") {
+    if (client?.billingEmail == null || client?.billingEmail == "") {
       this.listValue.get("billingEmail").setValue(client?.contacts?.email);
     } else {
       this.listValue.get("billingEmail").setValue(client?.billingEmail);
