@@ -120,7 +120,7 @@ export class ProductSelectionComponent implements OnInit {
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
-    this.urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    this.urlRegex = /^((http|https|ftp|www):\/\/)?([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)(\.)([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]+)/g;
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
       if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='Card Not Present') {
         this.formStores.get('url').setValidators([Validators.required, Validators.pattern(this.urlRegex)]);
