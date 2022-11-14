@@ -3,7 +3,7 @@
     <mat-header-cell *matHeaderCellDef>
     </mat-header-cell>
     <mat-cell *matCellDef="let stake">
-      <input type="radio" (click)="aButtons(true, stake)">
+      <input type="radio" name="stake.stakeholderName" (click)="aButtons(true, stake)">
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="stakeNIF">

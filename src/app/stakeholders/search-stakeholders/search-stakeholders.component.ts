@@ -93,7 +93,7 @@ export class SearchStakeholdersComponent implements OnInit {
           subpromises.push(context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar"));
         });
         const allPromisesWithErrorHandler = subpromises.map(promise =>
-          promise.catch(error => error)
+          promise.catch(error => null)
          );
 
         Promise.all(allPromisesWithErrorHandler).then(res => {
