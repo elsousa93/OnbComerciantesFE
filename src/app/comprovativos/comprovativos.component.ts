@@ -542,6 +542,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.data.changeUpdatedComprovativos(true);
         this.route.navigate(['/commercial-offert-list']);
       });
+    } else {
+      this.route.navigate(['/commercial-offert-list']);
     }
 
   }
