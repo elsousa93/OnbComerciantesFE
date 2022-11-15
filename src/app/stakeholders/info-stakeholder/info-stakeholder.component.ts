@@ -70,7 +70,7 @@ export class InfoStakeholderComponent implements OnInit {
       }, { validators: [validPhoneNumber] }),
       email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', Validators.email)
     })
-
+    this.rootFormGroup.form.setControl('contacts', this.formContactos);
     this.phone = this.formContactos.get("phone");
   }
 
@@ -91,9 +91,6 @@ export class InfoStakeholderComponent implements OnInit {
   }
 
   resetForm() {
-    this.formContactos.get("phone").get("countryCode").setValue('');
-    this.formContactos.get("phone").get("phoneNumber").setValue('');
-    this.formContactos.get("email").setValue('');
-    this.formContactos.updateValueAndValidity();
+    this.initializeForm();
   }
 }

@@ -90,11 +90,7 @@ export class PepComponent implements OnInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(false, 6, 3);
 
-    this.form = new FormGroup({
-      id: new FormControl(''),
-      pep12months: new FormControl('', [Validators.required])
-    });
-
+    this.initForm();
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('pep', this.form);
       this.edit = true;
@@ -105,6 +101,14 @@ export class PepComponent implements OnInit {
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
+  }
+
+  initForm() {
+    this.form = new FormGroup({
+      id: new FormControl(''),
+      pep12months: new FormControl('', [Validators.required])
+    });
+    this.rootFormGroup.form.setControl('pep', this.form);
   }
 
   ngOnDestroy(): void {
@@ -132,9 +136,9 @@ export class PepComponent implements OnInit {
         if (this.isVisiblePepRelations) {
           this.form.removeControl('pepTypeOfRelation');
         }
-        if (this.isVisiblePepPoliticalPublicJobs) {
-          this.form.removeControl('pepPoliticalPublicJobDesignation');
-        }
+        //if (this.isVisiblePepPoliticalPublicJobs) {
+        //  this.form.removeControl('pepPoliticalPublicJobDesignation');
+        //}
 
         this.isVisiblePepFamiliarOf = undefined;
         this.isVisiblePepRelations = undefined;
@@ -162,9 +166,9 @@ export class PepComponent implements OnInit {
         if (this.isVisiblePepRelations) {
           this.form.removeControl('pepTypeOfRelation');
         }
-        if (this.isVisiblePepPoliticalPublicJobs) {
-          this.form.removeControl('pepPoliticalPublicJobDesignation');
-        }
+        //if (this.isVisiblePepPoliticalPublicJobs) {
+        //  this.form.removeControl('pepPoliticalPublicJobDesignation');
+        //}
 
         this.isVisiblePepRelations = undefined;
         this.isVisiblePepPoliticalPublicJobs = undefined;
@@ -259,18 +263,30 @@ export class PepComponent implements OnInit {
   }
 
   resetForm() {
+    //if (this.isVisiblePep12months) {
+    //  this.form.removeControl('pepCountry');
+    //  this.form.removeControl('pepSinceWhen');
+    //  this.form.removeControl('pepType');
+    //}
+    //if (this.isVisiblePepFamiliarOf) {
+    //  this.form.removeControl('pepFamilyRelation');
+    //}
+    //if (this.isVisiblePepRelations) {
+    //  this.form.removeControl('pepTypeOfRelation');
+    //}
+    //if (this.isVisiblePepPoliticalPublicJobs) {
+    //  this.form.removeControl('pepType');
+    //}
+
+    //this.form.removeControl('pepFamiliarOf');
+    //this.form.removeControl('pepRelations');
+    //this.form.removeControl('pepPoliticalPublicJobs');
+    this.initForm();
+
     this.isVisiblePep12months = undefined;
     this.isVisiblePepFamiliarOf = undefined;
     this.isVisiblePepRelations = undefined;
     this.isVisiblePepPoliticalPublicJobs = undefined;
 
-    this.form.removeControl('pepFamiliarOf');
-    this.form.removeControl('pepRelations');
-    this.form.removeControl('pepPoliticalPublicJobs');
-    this.form.removeControl('pepType');
-    this.form.removeControl('pepCountry');
-    this.form.removeControl('pepSinceWhen');
-    this.form.removeControl('pepTypeOfRelation');
-    this.form.removeControl('pepFamilyRelation');
   }
 }

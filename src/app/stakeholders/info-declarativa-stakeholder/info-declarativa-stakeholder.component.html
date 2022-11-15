@@ -45,7 +45,7 @@
               </div>
               
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <ng-container *ngIf="currentStakeholder !== null || currentIdx === -1" [formGroup]="infoStakeholders">
+                <ng-container *ngIf="currentStakeholder != null" [formGroup]="infoStakeholders">
                   <div class="accordion1 accordion-flush" id="accordionFlushExample">
                     <div class="accordion1-item">
                       <h2 class="accordion1-header" id="flush-headingOne">

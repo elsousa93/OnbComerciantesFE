@@ -73,7 +73,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.baseUrl = configuration.baseUrl;
 
 
-    this.ngOnInit();
+    //this.ngOnInit();
     this.infoStakeholders = this.formBuilder.group({
       contacts: this.formBuilder.group({
       }),
@@ -200,8 +200,6 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       if (this.currentIdx < (this.stakesLength - 1)) {
         this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
         console.log("Stakeholder atualizado ", result);
-        this.pepComponent.resetForm();
-        this.infoStakeComponent.resetForm();
       } else {
         this.data.updateData(false, 6, 3);
         this.route.navigate(['info-declarativa-lojas']);
