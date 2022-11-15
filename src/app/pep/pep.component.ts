@@ -32,7 +32,7 @@ export class PepComponent implements OnInit {
     private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {      
       this.baseUrl = configuration.baseUrl;
 
-      this.ngOnInit();
+      //this.ngOnInit();
 
       this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
         this.Countries = result;
@@ -115,6 +115,7 @@ export class PepComponent implements OnInit {
   onChangeValues(event: any) {  
     var stringToBool = (event.target.value === 'true' ? true : false);
     if (event.target.name == 'pep12months') {
+      this.form.get("pep12months").setValue(event.target.value);
       this.isVisiblePep12months = stringToBool;
       if (stringToBool) {
         //se algum dos valores das perguntas a baixo estava assinalado como "Sim" e depois selecionamos
@@ -151,6 +152,7 @@ export class PepComponent implements OnInit {
       }
     }
     if (event.target.name == 'pepFamiliarOf') {
+      this.form.get("pepFamiliarOf").setValue(event.target.value);
       this.isVisiblePepFamiliarOf = stringToBool;
       if (stringToBool) {
 
@@ -177,6 +179,7 @@ export class PepComponent implements OnInit {
       }
     }
     if (event.target.name == 'pepRelations') {
+      this.form.get("pepRelations").setValue(event.target.value);
       this.isVisiblePepRelations = stringToBool;
       if (stringToBool) {
 
@@ -196,6 +199,7 @@ export class PepComponent implements OnInit {
       }
     }
     if (event.target.name == 'pepPoliticalPublicJobs') {
+      this.form.get("pepPoliticalPublicJobs").setValue(event.target.value);
       this.isVisiblePepPoliticalPublicJobs = stringToBool;
       if (stringToBool) {
         this.form.addControl('pepType', new FormControl('', [Validators.required]));

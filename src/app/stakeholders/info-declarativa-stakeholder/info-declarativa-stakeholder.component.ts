@@ -123,30 +123,26 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (stake.pep != undefined || stake.pep != null) {
       if (stake.pep.kind === KindPep.PEP && (stake.pep.pepCountry != null && stake.pep.pepCountry != '')) {
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pep12months' } });
-        pep.get("pep12months")?.get("pepType").setValue(stake.pep?.pepType);
-        pep.get("pep12months")?.get("pepCountry").setValue(stake.pep?.pepCountry);
-        pep.get("pep12months")?.get("pepSinceWhen").setValue(stake.pep?.pepSince);
-        pep.get("pep12months")?.get("kind").setValue(KindPep.PEP);
+        pep.get("pepType").setValue(stake.pep?.pepType);
+        pep.get("pepCountry").setValue(stake.pep?.pepCountry);
+        pep.get("pepSinceWhen").setValue(stake.pep?.pepSince);
       } else if (stake.pep.kind === KindPep.FAMILY) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepFamiliarOf' } });
-        pep.get("pepFamiliarOf")?.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta "pepRelations"
-        pep.get("pepFamiliarOf")?.get("pepFamilyRelation").setValue(stake.pep?.degreeOfRelatedness);
-        pep.get("pepFamiliarOf")?.get("kind").setValue(KindPep.FAMILY);
+        pep.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta "pepRelations"
+        pep.get("pepFamilyRelation").setValue(stake.pep?.degreeOfRelatedness);
       } else if (stake.pep.kind === KindPep.BUSINESS) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
-        pep.get("pepRelations")?.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
-        pep.get("pepRelations")?.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
-        pep.get("pepRelations")?.get("kind").setValue(KindPep.BUSINESS);
-      } else if (pep.get("pepPoliticalPublicJobs").value) {
+        pep.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
+        pep.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
+      } else if (stake.pep.kind === KindPep.PEP && (stake.pep.pepCountry == null || stake.pep.pepCountry == '')) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepPoliticalPublicJobs' } });
-        pep.get("pepPoliticalPublicJobs")?.get("pepType").setValue(stake.pep?.pepType);
-        pep.get("pepPoliticalPublicJobs")?.get("kind").setValue(KindPep.PEP);
+        pep.get("pepType").setValue(stake.pep?.pepType);
       } else {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
