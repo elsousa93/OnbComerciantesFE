@@ -158,7 +158,7 @@ export class StoreComponent implements AfterViewInit {
 
 
   addStore() {
-    if (this.storesLength > 0) {
+    if (this.storesLength > 0 && this.currentStore == null) {
       this.resetForm();
     }
     this.currentStore = new ShopDetailsAcquiring();

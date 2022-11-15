@@ -722,7 +722,9 @@ export class ClientComponent implements OnInit {
   changeDataReadable(readable: boolean) {
     this.isNoDataReadable = readable;
     this.toSearch = false;
-    this.okCC = false;
+    if (readable === false) {
+      this.okCC = false;
+    }
     this.toShowReadCC = readable;
     this.BlockDocumentNumber = readable;
   }

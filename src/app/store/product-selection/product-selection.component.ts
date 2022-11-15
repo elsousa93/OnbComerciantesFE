@@ -148,6 +148,7 @@ export class ProductSelectionComponent implements OnInit {
   }
 
   clearSubProducts() {
+    this.formStores.get("solutionType").setValue('');
     this.exists = false;
     this.subProducts = [];
   }

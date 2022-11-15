@@ -280,11 +280,15 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   addCommissionFormGroups() {
-    var group = new FormGroup({});
+    var valueGroup = new FormGroup({});
+    var context = this;
     this.commissionAttributeList.forEach(function (value, idx) {
-      group.addControl("commission" + value.id, new FormControl(value.id));
+      valueGroup.addControl("commissionMin", new FormControl(value.minValue.originalValue));
+      valueGroup.addControl("commissionMax", new FormControl(value.maxValue.originalValue));
+      valueGroup.addControl("commissionFixed", new FormControl(value.fixedValue.originalValue));
+      valueGroup.addControl("commissionPercentage", new FormControl(value.percentageValue.originalValue));
+      context.form.addControl("commission" + value.id, valueGroup);
     });
-    this.form.addControl("commission", group);
   }
 
   //utilizado para mostrar os valores no PACOTE COMERCIAL
