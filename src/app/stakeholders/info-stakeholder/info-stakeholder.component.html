@@ -12,8 +12,7 @@
                                 [attr.disabled]="returned === 'consult' ? true : null">
                                 <option></option>
                                 <option *ngFor="let country of internationalCallingCodes"
-                                    value={{country.internationalCallingCode}}
-                                    [attr.selected]="(country.internationalCallingCode != '' && currentStakeholder != null && currentStakeholder.phone1 != null && currentStakeholder.phone1?.countryCode == country.internationalCallingCode) ? true : null">
+                                    value={{country.internationalCallingCode}}>
                                     {{country.description}} ({{country.internationalCallingCode}}) </option>
                             </select>
                         </div>
