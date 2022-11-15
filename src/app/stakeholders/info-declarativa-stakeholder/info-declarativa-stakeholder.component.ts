@@ -79,23 +79,6 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       })
     });
 
-    var context = this;
-
-    this.stakeholderService.GetAllStakeholdersFromSubmissionTest(this.submissionId).then(result => {
-
-      var stakeholders = result.result;
-
-      stakeholders.forEach(function (value, index) {
-        context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, value.id).then(res => {
-          console.log("stakeholder adicionado com sucesso");
-          context.submissionStakeholders.push(res);
-        }, error => {
-          console.log("Erro a adicionar stakeholder");
-        });
-      });
-    }, error => {
-    });
-
   }
 
   ngOnInit(): void {
@@ -110,71 +93,65 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.displayValueSearch = val;
   }
 
-  clickRow(stake: any) {
-    this.selectedStakeholder = stake;
-  }
-
   selectStakeholder(info) {
-    if (info !== null) {
+    if (info != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.infoStakeholders.reset();
-      this.pepComponent.resetForm();
-      setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
+      //this.infoStakeholders.reset();
+      //this.pepComponent.resetForm();
+      setTimeout(() => this.setFormData(), 500);
     }
   }
-
-  //resetPepForm() {
-  //  this.infoStakeholders.setControl('pep', new FormGroup({
-  //    id: new FormControl(''),
-  //    pep12months: new FormControl('', [Validators.required])
-  //  }));
-  //}
-
-  //resetContacts(){
-  //  this.infoStakeholders.setControl('contacts', new FormGroup({
-  //    phone: new FormGroup({
-  //      countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.countryCode : '', Validators.required),
-  //      phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.phone1?.phoneNumber : '', Validators.required)
-  //    }, { validators: [validPhoneNumber] }),
-  //    email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.stakeholderAcquiring.email : '', Validators.required),
-  //  }));
-  //}
 
   setFormData() {
     this.pepComponent.resetForm();
     this.infoStakeholders.reset();
 
     var contacts = this.infoStakeholders.controls["contacts"];
-    if (contacts != undefined || contacts != null) {
-      if (contacts.get("phone").value) {
-        contacts.get("phone").get("countryCode").setValue(this.currentStakeholder.stakeholderAcquiring.phone1?.countryCode);
-        contacts.get("phone").get("phoneNumber").setValue(this.currentStakeholder.stakeholderAcquiring.phone1?.phoneNumber);
-      }
-      if (contacts.get("email").value) {
-        contacts.get("email").setValue(this.currentStakeholder.stakeholderAcquiring.email);
-      }
+    var stake = this.currentStakeholder.stakeholderAcquiring;
+
+    if (stake.phone1 != undefined || stake.phone1 != null) {
+      contacts.get("phone").get("countryCode").setValue(stake.phone1?.countryCode);
+      contacts.get("phone").get("phoneNumber").setValue(stake.phone1?.phoneNumber);
     }
 
+    if (stake.email != '' && stake.email != null) {
+      contacts.get("email").setValue(stake.email);
+    }
+    
     var pep = this.infoStakeholders.controls["pep"];
-    if (pep != undefined || pep != null) {
-      if (pep.get("pep12months").value) {
-        pep.get("pep12months")?.get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
-        pep.get("pep12months")?.get("pepCountry").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepCountry);
-        pep.get("pep12months")?.get("pepSinceWhen").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepSince);
+    if (stake.pep != undefined || stake.pep != null) {
+      if (stake.pep.kind === KindPep.PEP) {
+        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pep12months' } });
+        pep.get("pep12months")?.get("pepType").setValue(stake.pep?.pepType);
+        pep.get("pep12months")?.get("pepCountry").setValue(stake.pep?.pepCountry);
+        pep.get("pep12months")?.get("pepSinceWhen").setValue(stake.pep?.pepSince);
         pep.get("pep12months")?.get("kind").setValue(KindPep.PEP);
-      } else if (pep.get("pepFamiliarOf").value) {
-        pep.get("pepRelations")?.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta
-        pep.get("pepFamiliarOf")?.get("pepFamilyRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.degreeOfRelatedness);
+      } else if (stake.pep.kind === KindPep.FAMILY) {
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
+        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepFamiliarOf' } });
+        pep.get("pepFamiliarOf")?.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta "pepRelations"
+        pep.get("pepFamiliarOf")?.get("pepFamilyRelation").setValue(stake.pep?.degreeOfRelatedness);
         pep.get("pepFamiliarOf")?.get("kind").setValue(KindPep.FAMILY);
-      } else if (pep.get("pepRelations").value) {
+      } else if (stake.pep.kind === KindPep.BUSINESS) {
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
+        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
         pep.get("pepRelations")?.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
-        pep.get("pepRelations")?.get("pepTypeOfRelation").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.businessPartnership);
+        pep.get("pepRelations")?.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
         pep.get("pepRelations")?.get("kind").setValue(KindPep.BUSINESS);
       } else if (pep.get("pepPoliticalPublicJobs").value) {
-        pep.get("pepPoliticalPublicJobs")?.get("pepType").setValue(this.currentStakeholder.stakeholderAcquiring.pep?.pepType);
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
+        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepPoliticalPublicJobs' } });
+        pep.get("pepPoliticalPublicJobs")?.get("pepType").setValue(stake.pep?.pepType);
         pep.get("pepPoliticalPublicJobs")?.get("kind").setValue(KindPep.PEP);
       } else {
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepPoliticalPublicJobs' } });
         pep.get("pepType").setValue("R000"); // O Cliente não exerce qualquer cargo público em território nacional e paralelamente não é uma pessoa politicamente exposta
       }
     }
@@ -227,14 +204,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       if (this.currentIdx < (this.stakesLength - 1)) {
         this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
         console.log("Stakeholder atualizado ", result);
+        this.pepComponent.resetForm();
+        this.infoStakeholders.reset();
       } else {
         this.data.updateData(false, 6, 3);
         this.route.navigate(['info-declarativa-lojas']);
       }
     });
 
-    this.pepComponent.resetForm();
-    this.infoStakeholders.reset();
+    //this.pepComponent.resetForm();
+    //this.infoStakeholders.reset();
   }
 
   getStakesListLength(value) {
