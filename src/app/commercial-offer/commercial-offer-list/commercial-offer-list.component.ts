@@ -52,6 +52,7 @@ export class CommercialOfferListComponent implements OnInit {
   public currentPage : number;
   public currentStore: ShopDetailsAcquiring = null;
   public currentIdx: number = 0;
+  public commissionId: string = "";
 
   public products: Product[];
 
@@ -204,16 +205,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   resetValues() {
-    this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
-      if (result.result.length == 1) {
-        this.commissionOptions.push(result.result[0]);
-        this.chooseCommission(result.result[0].id);
-      } else {
-        result.result.forEach(options => {
-          this.commissionOptions.push(options);
-        });
-      }
-    });
+    this.chooseCommission(this.commissionId);
   }
 
   initializeForm() {
@@ -332,6 +324,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.packId = packId;
     context.groupsList=[];
     context.paymentSchemes=null;
+    this.form.get("productPackKind").setValue(packId);
     this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
       context.paymentSchemes = res.result.paymentSchemes;
       context.addPaymentFormGroups();
@@ -372,7 +365,9 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   chooseCommission(commisionId: string) {
+    this.commissionId = commisionId;
     var productCode = this.currentStore.productCode;
+    this.commissionAttributeList = [];
     this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
       res.result.attributes.forEach(attr => {
         this.commissionAttributeList.push(attr);
