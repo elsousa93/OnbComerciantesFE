@@ -189,7 +189,7 @@
                    </div>
                    <!-- MAIS DETALHES -->
                    <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3">
-                     <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                     <span class="navbar-text me-2 align-self-center ms-0 me-0" *ngIf="paymentSchemes.kind == 'advanced'">
                        <button id="btn5a"
                                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                                wappler-command="editContent" (click)="changeShowMore()">

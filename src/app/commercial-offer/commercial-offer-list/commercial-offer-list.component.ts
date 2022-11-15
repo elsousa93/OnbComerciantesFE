@@ -164,7 +164,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   getStoreEquipsFromSubmission() {
-    this.storeEquipList = null;
+    this.storeEquipList = [];
     if (this.returned != null) {
       this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.shopId).subscribe(result => {
         if (result !== null){
