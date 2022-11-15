@@ -35,7 +35,7 @@ export class InfoStakeholderComponent implements OnInit {
 
   constructor(private logger : LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
 
-    this.ngOnInit();
+    //this.ngOnInit();
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
@@ -88,5 +88,12 @@ export class InfoStakeholderComponent implements OnInit {
     if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
       return false;
     return true;
+  }
+
+  resetForm() {
+    this.formContactos.get("phone").get("countryCode").setValue('');
+    this.formContactos.get("phone").get("phoneNumber").setValue('');
+    this.formContactos.get("email").setValue('');
+    this.formContactos.updateValueAndValidity();
   }
 }

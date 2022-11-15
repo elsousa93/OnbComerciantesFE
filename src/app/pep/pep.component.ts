@@ -267,5 +267,10 @@ export class PepComponent implements OnInit {
     this.form.removeControl('pepFamiliarOf');
     this.form.removeControl('pepRelations');
     this.form.removeControl('pepPoliticalPublicJobs');
+    this.form.removeControl('pepType');
+    this.form.removeControl('pepCountry');
+    this.form.removeControl('pepSinceWhen');
+    this.form.removeControl('pepTypeOfRelation');
+    this.form.removeControl('pepFamilyRelation');
   }
 }

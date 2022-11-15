@@ -15,6 +15,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { IPep, KindPep } from 'src/app/pep/IPep.interface';
 import { PepComponent } from '../../pep/pep.component';
 import { Observable, of } from 'rxjs';
+import { InfoStakeholderComponent } from '../info-stakeholder/info-stakeholder.component';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -52,6 +53,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   stakesLength: number;
 
   @ViewChild(PepComponent) pepComponent: PepComponent;
+  @ViewChild(InfoStakeholderComponent) infoStakeComponent: InfoStakeholderComponent;
 
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
   previousStakeholderEvent: Observable<number>;
@@ -97,15 +99,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (info != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      //this.infoStakeholders.reset();
-      //this.pepComponent.resetForm();
       setTimeout(() => this.setFormData(), 500);
     }
   }
 
   setFormData() {
     this.pepComponent.resetForm();
-    this.infoStakeholders.reset();
+    this.infoStakeComponent.resetForm();
 
     var contacts = this.infoStakeholders.controls["contacts"];
     var stake = this.currentStakeholder.stakeholderAcquiring;
@@ -201,15 +201,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
         console.log("Stakeholder atualizado ", result);
         this.pepComponent.resetForm();
-        this.infoStakeholders.reset();
+        this.infoStakeComponent.resetForm();
       } else {
         this.data.updateData(false, 6, 3);
         this.route.navigate(['info-declarativa-lojas']);
       }
     });
 
-    //this.pepComponent.resetForm();
-    //this.infoStakeholders.reset();
   }
 
   getStakesListLength(value) {
