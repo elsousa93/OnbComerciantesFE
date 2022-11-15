@@ -181,12 +181,12 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
     } else if (pep.get("pepFamiliarOf").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;//pep.get("pepFamiliarOf").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;//pep.get("pepFamiliarOf").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";//pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
     } else if (pep.get("pepRelations").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;//pep.get("pepRelations").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;//pep.get("pepRelations").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";//pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
