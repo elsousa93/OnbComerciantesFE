@@ -203,6 +203,19 @@ export class CommercialOfferListComponent implements OnInit {
       this.form.disable();
   }
 
+  resetValues() {
+    this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
+      if (result.result.length == 1) {
+        this.commissionOptions.push(result.result[0]);
+        this.chooseCommission(result.result[0].id);
+      } else {
+        result.result.forEach(options => {
+          this.commissionOptions.push(options);
+        });
+      }
+    });
+  }
+
   initializeForm() {
     //this.editForm = this.formBuilder.group({
     //  form: this.formBuilder.group({
