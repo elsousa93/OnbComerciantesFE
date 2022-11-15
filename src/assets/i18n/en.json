@@ -257,6 +257,7 @@
     "selectStore": "Select the store that you want to consider the same information as the products (Representation Store)",
     "EATUnicre": "Is the Terminal Support Entity (TSE) from Unicre?",
     "registrationTerminalNumber": "Registration SIBS Terminal Number",
+    "reset": "Reset original values",
     "commercialPack": "Comercial Pack",
     "commercialPackType": "Comercial Pack Type",
     "traditional": "Traditional",
