@@ -610,6 +610,11 @@ export class CreateStakeholderComponent implements OnInit {
         stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
 
         stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
+        stakeholderToInsert["phone1"] = {
+          countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
+          phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
+        }
+        stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];
