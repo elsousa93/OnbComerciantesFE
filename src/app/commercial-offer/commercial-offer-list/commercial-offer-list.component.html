@@ -139,7 +139,7 @@
 
                  <div class="row" *ngIf="isPackSelected">
                    <!-- PAYMENT SCHEMES -->
-                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="paymentSchemes.kind == 'simple'">
+                   <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="paymentSchemes?.kind == 'simple'">
                      <div class="row">
                        <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">{{paymentSchemes.description}}</p>
                        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of paymentSchemes.attributes">

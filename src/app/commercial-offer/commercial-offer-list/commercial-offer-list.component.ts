@@ -367,6 +367,7 @@ export class CommercialOfferListComponent implements OnInit {
   chooseCommission(commisionId: string) {
     this.commissionId = commisionId;
     var productCode = this.currentStore.productCode;
+    this.commissionAttributeList = [];
     this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
       res.result.attributes.forEach(attr => {
         this.commissionAttributeList.push(attr);
