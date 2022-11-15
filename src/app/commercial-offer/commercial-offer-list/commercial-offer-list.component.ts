@@ -164,7 +164,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   getStoreEquipsFromSubmission() {
-    this.storeEquipList = [];
+    this.storeEquipList = null;
     if (this.returned != null) {
       this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.shopId).subscribe(result => {
         if (result !== null){
@@ -174,8 +174,11 @@ export class CommercialOfferListComponent implements OnInit {
       });
     }
     this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).subscribe(result => {
-      this.storeEquipList.push(result);
-      this.loadStoreEquips(this.storeEquipList);
+      if (result != null) {
+        this.storeEquipList = [];
+        this.storeEquipList.push(result);
+        this.loadStoreEquips(this.storeEquipList);
+      }
     });
   }
 
@@ -205,6 +208,13 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   resetValues() {
+    var context = this;
+    this.commissionAttributeList.forEach(function (value, idx) {
+      context.form.get("commission" + value.id).get("commissionMin").setValue(value.minValue.originalValue);
+      context.form.get("commission" + value.id).get("commissionMax").setValue(value.maxValue.originalValue);
+      context.form.get("commission" + value.id).get("commissionFixed").setValue(value.fixedValue.originalValue);
+      context.form.get("commission" + value.id).get("commissionPercentage").setValue(value.percentageValue.originalValue);
+    });
     this.chooseCommission(this.commissionId);
   }
 

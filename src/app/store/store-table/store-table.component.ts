@@ -3,7 +3,7 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SubmissionService } from '../../submission/service/submission-service.service';
-import { ShopActivities, ShopDetailsAcquiring, ShopSubActivities } from '../IStore.interface';
+import { Bank, ShopActivities, ShopDetailsAcquiring, ShopSubActivities } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { TranslateService } from '@ngx-translate/core';
@@ -61,6 +61,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   activities: ShopActivities[];
   subActivities: ShopSubActivities[];
 
+  banks: Bank[];
+
   constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService, private tableInfo: TableInfoService) {
     this.fetchActivities();
   }
@@ -71,6 +73,11 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     }, error => {
 
     }));
+    this.subs.push(this.tableInfo.GetBanks().subscribe(result => {
+      this.banks = result;
+    }, error => {
+
+    }))
   }
 
   getActivityDescription(activityCode) {
@@ -84,6 +91,10 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   getSubActivityDescription(subActivityCode) {
     return this.subActivities.find(s => s.subActivityCode == subActivityCode).subActivityDescription;
+  }
+
+  getBank(bankCode) {
+    return this.banks?.find(b => b.code == bankCode)?.description;
   }
 
   storesMat = new MatTableDataSource<ShopDetailsAcquiring>();

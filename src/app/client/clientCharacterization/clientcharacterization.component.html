@@ -10,12 +10,6 @@
           <p class="titulo-form-simples" for="natJuridicaNIFNIPC">NIF/NIPC:*</p>
           <input formControlName="natJuridicaNIFNIPC" name="natJuridicaNIFNIPC" type="text" id="natJuridicaNIFNIPC"
             class="form-control campo_form" [attr.disabled]="DisableNIFNIPC" />
-          <!--<div class="alert alert-danger"
-     *ngIf="this.form.get('natJuridicaNIFNIPC').touched && !this.form.get('natJuridicaNIFNIPC').valid">
-  <div *ngIf="this.form.get('natJuridicaNIFNIPC').errors && this.form.get('natJuridicaNIFNIPC').errors?.['required']">
-    O parâmetro acima é obrigatório.
-  </div>
-</div>-->
           <p class="titulo-form-simples">{{'client.isCommercialSociety'|translate}}*</p>
           <div class="form-check">
             <input class="form-check-input" name="commercialSociety" formControlName="commercialSociety" type="radio"
@@ -82,25 +76,25 @@
                       <input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                         class="form-select campo-form-select"  />
 
-                      <div class="alert alert-danger"
+                      <!--<div class="alert alert-danger"
                         *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                         <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
                           {{'generalKeywords.mandatoryParameter'|translate}}
                         </div>
-                      </div>
+                      </div>-->
                       </div>
                     <div class="col-xxl col-6">
                       <p class="titulo-form-simples" for="natJuridicaN2">{{'client.legalNature'|translate}} N2:*</p>
                       <input type="text" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                        class="form-select campo-form-select"  />
 
-                      <div class="alert alert-danger"
+                      <!--<div class="alert alert-danger"
                         *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
                         <div
                           *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
                           {{'generalKeywords.mandatoryParameter'|translate}}
                         </div>
-                      </div>
+                      </div>-->
                     </div>
                     </div>
                     <div class="row">
@@ -330,12 +324,12 @@
                       {{legalNature.description}}</option>
                   </select>
 
-                  <div class="alert alert-danger"
+                  <!--<div class="alert alert-danger"
                     *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
                     <div *ngIf="this.form.get('natJuridicaN1').hasError('required')">
                       {{'generalKeywords.mandatoryParameter'|translate}}
                     </div>
-                  </div>
+                  </div>-->
                 </div>
                 <div>
                   <p class="titulo-form-simples" for="natJuridicaN2">{{'client.legalNature'|translate}} N2:*</p>

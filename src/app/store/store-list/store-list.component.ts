@@ -158,7 +158,7 @@ export class StoreComponent implements AfterViewInit {
 
 
   addStore() {
-    if (this.storesLength > 0 && this.currentStore == null) {
+    if (this.storesLength > 0 && this.currentStore != null) {
       this.resetForm();
     }
     this.currentStore = new ShopDetailsAcquiring();
@@ -194,7 +194,7 @@ export class StoreComponent implements AfterViewInit {
       infoStores.get("storeName").setValue(this.currentStore.name);
       infoStores.get("activityStores").setValue(this.currentStore.activity);
       infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
-      infoStores.get("contactPoint").setValue(this.currentStore.manager);
+      infoStores.get("contactPoint").setValue(this.currentStore.contactPerson);
       infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
       infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
       infoStores.get("replicate").setValue(this.currentStore.address.useMerchantAddress);

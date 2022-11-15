@@ -41,7 +41,7 @@
                   <div class="row ps-2">
                      <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
                         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-                        <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'commercialOffer.replicate'|translate}}</p>
+                        <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'commercialOffer.replicate'|translate}}*</p>
                         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
                            <span class="navbar-text">
                               <div class="form-check">
@@ -60,7 +60,7 @@
                         </nav>
                      </div>
                      <div class="col-7 ms-0 me-0 ps-3 pe-0" *ngIf="replicate">
-                        <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.selectStore'|translate}}:</p>
+                        <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.selectStore'|translate}}*:</p>
                         <select id="select1" class="form-select  campo_form" formControlName="store">
                             <option value="-">-</option>
                           </select>
@@ -69,7 +69,7 @@
 
                      <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
                         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-                        <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'commercialOffer.EATUnicre'|translate}}</p>
+                        <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'commercialOffer.EATUnicre'|translate}}*</p>
                         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
                            <span class="navbar-text">
                               <div class="form-check">
@@ -88,7 +88,7 @@
                         </nav>
                      </div>
                      <div *ngIf="!isUnicre" class="col-7 ms-0 me-0 ps-3 pe-0">
-                        <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.registrationTerminalNumber'|translate}}:</p>
+                        <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.registrationTerminalNumber'|translate}}*:</p>
                         <input id="text1" name="terminalRegistrationNumber" formControlName="terminalRegistrationNumber" type="number" (keypress)="numericOnly($event)" class="form-control campo_form">
                         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                      </div>
@@ -124,7 +124,7 @@
                   </div>
                   <hr>-->
                  <ng-container *ngIf="packs != null && packs?.length > 0">
-                  <p class="titulo-form-simples align-self-start" wappler-command="editContent">{{'commercialOffer.commercialPackType'|translate}}</p>
+                  <p class="titulo-form-simples align-self-start" wappler-command="editContent">{{'commercialOffer.commercialPackType'|translate}}*</p>
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <span *ngFor="let pack of packs" class="navbar-text text-primary">
                       <div class="form-check">

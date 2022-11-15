@@ -18,13 +18,13 @@
       <div>
       <div class="row ps-2">
         <div class="col-5 ms-0 me-0 ps-5 pe-0">
-        <p class="titulo-form-simples" wappler-command="editContent">{{'stores.supportBank'|translate}}</p>
+        <p class="titulo-form-simples" wappler-command="editContent">{{'stores.supportBank'|translate}}*</p>
 
         <select class="form-select campo_form" #supportBank formControlName="supportBank" id="supportBank" name="supportBank">
           <option *ngFor="let bank of banks" value={{bank.code}}>{{bank.description}}</option>
         </select>
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-        <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.infoClientBank'|translate}}</p>
+        <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.infoClientBank'|translate}}*</p>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5"><span class="navbar-text">
           <div class="form-check">
             <input class="form-check-input" formControlName="bankInformation" (click)="isIBAN(true)" type="radio" [value]=true id="bankInformation1" name="bankInformation">
@@ -40,7 +40,7 @@
       </div>
       </div>
       <div *ngIf="isIBANConsidered === false" class="col-5 ms-0 me-0 ps-5 pe-0">
-      <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.attachIBAN'|translate}}</p>
+      <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.attachIBAN'|translate}}*</p>
       <div class="table-responsive mb-2">
         <table class="table">
         <thead class="text-primary table-primary">

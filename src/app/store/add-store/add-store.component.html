@@ -24,7 +24,7 @@
           <div class="col-12 ms-0 me-0 ps-5 pe-0">
             <div class="row">
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.name'|translate}}</p>
+                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.name'|translate}}*</p>
                 <input formControlName="storeName" id="text2" name="text2" type="text" class="form-control campo_form">
                 <div class="alert alert-danger"
                      *ngIf="this.formStores.get('storeName').touched && !this.formStores.get('storeName').valid">
@@ -34,7 +34,7 @@
                 </div>
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.contactPointName'|translate}}</p>
+                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.contactPointName'|translate}}*</p>
                 <input formControlName="contactPoint" id="text5" name="contactPoint" type="text"
                        class="form-control campo_form">
               </div>
@@ -42,7 +42,7 @@
 
             <div class="row" *ngIf="!clientHasCAE">
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}</p>
+                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}*</p>
                 <select class="form-select campo-form-select" id="activityStores" formControlName="activityStores">
                   <option *ngFor="let activity of activities" value={{activity.activityCode}}>
                     {{activity.activityDescription}}
@@ -50,7 +50,7 @@
                 </select>
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}</p>
+                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
                 <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
                 <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
                   <option *ngFor="let subActivity of subActivities" value={{subActivity.subActivityCode}}>
@@ -63,19 +63,17 @@
 
             <div class="row" *ngIf="clientHasCAE">
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}</p>
+                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}*</p>
                 <select class="form-select campo-form-select" id="activityStores" formControlName="activityStores">
-                  <option value=""></option>
                   <option *ngFor="let activity of activity" value={{activity.activityCode}}>
                     {{activity.activityDescription}}
                   </option>
                 </select>
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}</p>
+                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
                 <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
                 <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
-                  <option value=""></option>
                   <option *ngFor="let subActivity of subActivity" value={{subActivity.subActivityCode}}>
                     {{subActivity.subActivityDescription}}
                   </option>
@@ -89,7 +87,7 @@
               <div class="col-5">
 
                 <p class="titulo-form-simples mb-3">
-                  {{'stores.replicateAddress'|translate}}
+                  {{'stores.replicateAddress'|translate}}*
                 </p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                   <span class="navbar-text">
@@ -149,7 +147,7 @@
             <div class="row">
               <div class="col-5">
                 <p class="titulo-form-simples mb-3" wappler-command="editContent">
-                  {{'stores.shoppingCenter'|translate}}
+                  {{'stores.shoppingCenter'|translate}}*
                 </p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                   <span class="navbar-text">
@@ -174,11 +172,10 @@
               <div class="col-5">
                 <p *ngIf="formStores.get('commercialCenter').value" class="titulo-form-simples"
                    wappler-command="editContent">
-                  {{'stores.subZone'|translate}}
+                  {{'stores.subZone'|translate}}*
                 </p>
                 <select *ngIf="formStores.get('commercialCenter').value" class="form-select campo-form-select"
                         id="subZoneStore" formControlName="subZoneStore">
-                  <option value=""></option>
                   <option *ngFor="let subzone of subzonesShopping" value={{subzone.code}}>
                     {{subzone.description}}
                   </option>
