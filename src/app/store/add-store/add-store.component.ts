@@ -105,8 +105,8 @@ export class AddStoreComponent implements OnInit {
               {
                 id: "A",
                 description: "A",
-                originalValue: 1,
-                finalValue: 1,
+                //originalValue: 1,
+                //finalValue: 1,
                 isReadOnly: true,
                 isVisible: true
               }

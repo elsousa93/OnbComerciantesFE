@@ -18,6 +18,8 @@ import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ClientService } from '../../client/client.service';
+import { TableInfoService } from '../../table-info/table-info.service';
+import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -87,7 +89,7 @@ export class CommercialOfferListComponent implements OnInit {
   processNumber: string;
   packId: string;
 
-  storeEquipList: ShopEquipment[];
+  storeEquipList: ShopEquipment[] = [];
 
   editForm: FormGroup;
   configTerm: FormGroup;
@@ -99,6 +101,11 @@ export class CommercialOfferListComponent implements OnInit {
   isPackSelected: boolean = false;
 
   previousStoreEvent: Observable<number>;
+  storesLength: number = 0;
+  public subs: Subscription[] = [];
+
+  allCommunications: TenantCommunication[] = [];
+  allTerminals: TenantTerminal[] = [];
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
@@ -114,10 +121,12 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder) {
+
+  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.baseUrl;
     this.storeEquipMat = new MatTableDataSource<ShopEquipment>();
     this.ngOnInit();
+    this.loadReferenceData();
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
@@ -164,19 +173,23 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   getStoreEquipsFromSubmission() {
-    this.storeEquipList = null;
+    this.storeEquipList = [];
     if (this.returned != null) {
       this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.shopId).subscribe(result => {
-        if (result !== null){
+        if (result != null){
           this.storeEquipList.push(result);
         }
         
       });
     }
     this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).subscribe(result => {
-      if (result != null) {
+      if (result.length > 0) {
         this.storeEquipList = [];
-        this.storeEquipList.push(result);
+        result.forEach(res => {
+          this.storeService.getShopEquipmentFromSubmission(this.submissionId, this.currentStore.id, res.id).subscribe(r => {
+            this.storeEquipList.push(r);
+          });
+        });
         this.loadStoreEquips(this.storeEquipList);
       }
     });
@@ -390,6 +403,10 @@ export class CommercialOfferListComponent implements OnInit {
     });
   }
 
+  getStoresListLength(length) {
+    this.storesLength = length;
+  }
+
   setFormData() {
     //setValue(null) - são valores que ainda não conseguimos ir buscar
     this.form.get("replicateProducts").setValue(null);
@@ -467,8 +484,14 @@ export class CommercialOfferListComponent implements OnInit {
       }
       console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
-        //this.logger.debug('Atualização da Loja com o Id ', this.currentStore.shopId);
         console.log('Loja atualizada ', this.currentStore);
+        if (this.currentIdx < (this.storesLength - 1)) {
+
+        } else {
+          this.data.updateData(true, 5);
+          this.route.navigate(['info-declarativa']);
+        }
+
       });
     }
   }
@@ -521,7 +544,9 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   storeEquipEvent(value) {
-    this.getStoreEquipsFromSubmission();
+    this.storeEquipList.push(value);
+    this.loadStoreEquips(this.storeEquipList);
+    //this.getStoreEquipsFromSubmission();
   }
 
   addPaymentFormGroups() {
@@ -545,5 +570,23 @@ export class CommercialOfferListComponent implements OnInit {
     } else {
       this.route.navigate(['/comprovativos']);
     }
+  }
+
+  loadReferenceData() {
+    this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
+      this.allCommunications = result;
+      this.allCommunications = this.allCommunications.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    }), this.tableInfo.GetTenantTerminals().subscribe(result => {
+      this.allTerminals = result;
+      this.allTerminals = this.allTerminals.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    }));
+  }
+
+  getTerminalDesc(code: number) {
+    return this.allTerminals.find(term => term.code == code).description;
+  }
+
+  getCommunicationDesc(code: number) {
+    return this.allCommunications.find(comm => comm.code == code).description;
   }
 }

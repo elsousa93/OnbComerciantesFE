@@ -188,6 +188,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
+    this.pricingOptions = [];
     this.productPackPricingFilter = {
       processorId: this.packs[0].processors[0],
       productCode: this.currentStore.productCode,
@@ -222,22 +223,37 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
   }
 
+
+
   //ao escolher uma mensalidade, é carregado os valors associados a essa mensalidade escolhida
   chooseMensalidade(id: string) {
+    this.pricingAttributeList = [];
     if (this.formConfig.valid) {
       this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
         res.result.attributes.forEach(attr => {
           this.pricingAttributeList.push(attr);
         });
+        this.addPricingForm();
       });
-      this.formConfig.valueChanges.subscribe(value => {
-        if (value) { //se algum valor do form for alterado, é preciso carregar as mensalidades novamente e as que já existiam são limpas
-          this.pricingOptions = [];
-          this.pricingAttributeList = [];
-          this.loadMensalidades();
-        }
-      });
+      //this.formConfig.valueChanges.subscribe(value => {
+      //  if (value) { //se algum valor do form for alterado, é preciso carregar as mensalidades novamente e as que já existiam são limpas
+      //    this.pricingOptions = [];
+      //    this.pricingAttributeList = [];
+      //    this.loadMensalidades();
+      //  }
+      //});
     }
+  }
+
+  addPricingForm() {
+    var context = this;
+    var valueGroup = new FormGroup({});
+    this.pricingAttributeList.forEach(function (value, idx) {
+      valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
+      valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value));
+      valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
+      context.formConfig.addControl("formGroupPricing" + value.id, valueGroup);
+    });
   }
 
   numericOnly(event): boolean {
@@ -255,20 +271,21 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.storeEquip.communicationOwnership = this.formConfig.get("communicationOwnership").value;
       this.storeEquip.equipmentType = this.formConfig.get("terminalType").value;
       this.storeEquip.communicationType = this.formConfig.get("communicationType").value;
-      this.storeEquip.quantity = this.formConfig.get("terminalAmount").value;
+      this.storeEquip.quantity = Number(this.formConfig.get("terminalAmount").value);
 
       this.pricingAttributeList.forEach(attr => {
         var group = this.formConfig.controls["formGroupPricing" + attr.id];
-        if (!attr.isReadOnly && attr.isVisible) {
+        if (!attr.isReadOnly) {
           attr.originalValue = group.get("formControlPricingOriginal" + attr.id).value;
-          group.get("formControlPricingDiscount" + attr.id); //não existe variável para este valor
+          attr.value = group.get("formControlPricingDiscount" + attr.id).value; //não existe variável para este valor
           attr.finalValue = group.get("formControlPricingFinal" + attr.id).value;
         }
       });
 
-      this.storeEquip.pricing = {
-        attribute: this.pricingAttributeList
-      }
+      this.storeEquip.pricing = {}
+      this.storeEquip.pricing.attribute = this.pricingAttributeList[0];
+
+      console.log('Valor do store equip ', this.storeEquip);
 
       if (this.edit) {
         //chamada à API para editar uma configuração
@@ -280,7 +297,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       } else {
         //chamada à API para criar uma nova configuração
         this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.currentStore.id, this.storeEquip).subscribe(result => {
-          this.storeEquip.shopEquipmentId = result.id;
+          this.storeEquip.id = result.id;
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
           this.logger.debug("Add Shop Equipment To Submission Response ", result.id);

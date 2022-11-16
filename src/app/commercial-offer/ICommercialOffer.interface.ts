@@ -145,6 +145,7 @@ export interface ProductPackPricingEntry {
 }
 
 export interface ProductPackPricing {
+  id?: string
   attributes?: ProductPackPricingAttribute[]
 }
 

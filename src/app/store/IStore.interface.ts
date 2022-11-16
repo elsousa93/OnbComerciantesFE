@@ -156,6 +156,7 @@ interface ShopDocuments {
 }
 
 export interface ShopEquipment {
+  id?: string
   shopEquipmentId?: string
   communicationOwnership?: string //CommunicationOwnershipTypeEnum
   equipmentOwnership?: string //EquipmentOwnershipTypeEnum
@@ -167,7 +168,7 @@ export interface ShopEquipment {
 
 interface ShopProductPackPricingViewModel {
   id?: string
-  attribute?: ProductPackPricingAttribute[]
+  attribute?: ProductPackPricingAttribute
 }
 
 export enum CommunicationOwnershipTypeEnum {

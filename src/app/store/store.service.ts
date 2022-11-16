@@ -163,7 +163,11 @@ export class StoreService {
   }
 
   getShopEquipmentConfigurationsFromSubmission(submissionId: string, shopId: string) {
-    return this.http.get<ShopEquipment>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment');
+    return this.http.get<SimplifiedReference[]>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment');
+  }
+
+  getShopEquipmentFromSubmission(submissionId: string, shopId: string, equipId: string) {
+    return this.http.get<ShopEquipment>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId);
   }
 
   addShopEquipmentConfigurationsToSubmission(submissionId: string, shopId: string, newShopEquipment: ShopEquipment) {

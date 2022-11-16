@@ -193,10 +193,8 @@ export class StoreComponent implements AfterViewInit {
       console.log("FORM INFO STORES AO SELECIONAR UMA LOJA ", this.editStores);
       infoStores.get("storeName").setValue(this.currentStore.name);
       infoStores.get("activityStores").setValue(this.currentStore.activity);
-      infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
       infoStores.get("contactPoint").setValue(this.currentStore.contactPerson);
       infoStores.get("subactivityStore").setValue(this.currentStore.subActivity);
-      infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
       infoStores.get("replicate").setValue(this.currentStore.address.useMerchantAddress);
 
       if (!this.currentStore.address.useMerchantAddress) {
@@ -205,7 +203,13 @@ export class StoreComponent implements AfterViewInit {
         infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
         infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
         infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+      } else {
+        this.addStoreComponent.chooseAddress(true);
       }
+
+      infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+      this.addStoreComponent.comercialCentre(this.currentStore.address.isInsideShoppingCenter);
+      infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
 
       var bankStores = this.editStores.controls["bankStores"];
       bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
@@ -318,11 +322,15 @@ export class StoreComponent implements AfterViewInit {
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
-          this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-          this.resetForm();
-          this.onActivate();
-          this.addDocumentToShop();
-          this.data.updateData(true, 3);
+          if (this.currentIdx < (this.storesLength - 1)) {
+            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+            this.resetForm();
+            this.onActivate();
+            this.addDocumentToShop();
+          } else {
+            this.data.updateData(true, 3);
+            this.route.navigate(['comprovativos']);
+          }
         });
       }
     } else {

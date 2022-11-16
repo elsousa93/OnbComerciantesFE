@@ -168,13 +168,13 @@
                 </nav>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="isComercialCentreStore">
               <div class="col-5">
-                <p *ngIf="formStores.get('commercialCenter').value" class="titulo-form-simples"
+                <p class="titulo-form-simples"
                    wappler-command="editContent">
                   {{'stores.subZone'|translate}}*
                 </p>
-                <select *ngIf="formStores.get('commercialCenter').value" class="form-select campo-form-select"
+                <select class="form-select campo-form-select"
                         id="subZoneStore" formControlName="subZoneStore">
                   <option *ngFor="let subzone of subzonesShopping" value={{subzone.code}}>
                     {{subzone.description}}

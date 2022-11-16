@@ -16,7 +16,7 @@
         <h2 class="text-primary mt-5 pb-2 ps-0 m-align">       <!--ps-2-->
           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.titleOffer'|translate}}
         </h2>
-            <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)" [previousStoreEvent]="previousStoreEvent"></app-store-table>
+            <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)" [previousStoreEvent]="previousStoreEvent" (listLengthEmitter)="getStoresListLength($event)"></app-store-table>
      </div>
 
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
@@ -107,33 +107,33 @@
                   </button>
                </h2>
                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                  data-bs-parent="#accordionFlushExample">
+                    data-bs-parent="#accordionFlushExample">
                  <!--<div class="row ps-2" *ngFor="let product of products">
-                   <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
-                     <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-                     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
-                       <span class="navbar-text">
-                         <div class="form-check">
-                           <input class="form-check-input" type="radio" value={{product.code}} id="radio3" formControlName="productPackKind" name="productPackKind" (click)="getPackDetails()">
-                           <label class="form-check-label radio pe-5" for="radio3" 
-                                  wappler-command="editContent">{{product.name}}</label>
-                         </div>
-                       </span>
-                     </nav>
-                   </div>
-                  </div>
-                  <hr>-->
+    <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
+      <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
+        <span class="navbar-text">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value={{product.code}} id="radio3" formControlName="productPackKind" name="productPackKind" (click)="getPackDetails()">
+            <label class="form-check-label radio pe-5" for="radio3"
+                   wappler-command="editContent">{{product.name}}</label>
+          </div>
+        </span>
+      </nav>
+    </div>
+   </div>
+   <hr>-->
+                 <p class="titulo-form-simples pb-4" wappler-command="editContent">{{'commercialOffer.commercialPackType'|translate}}*:</p>
                  <ng-container *ngIf="packs != null && packs?.length > 0">
-                  <p class="titulo-form-simples align-self-start" wappler-command="editContent">{{'commercialOffer.commercialPackType'|translate}}*</p>
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <span *ngFor="let pack of packs" class="navbar-text text-primary">
-                      <div class="form-check">
-                        <input class="form-check-input" formControlName="productPackKind" type="radio" (click)="selectCommercialPack(pack.id)" value={{pack.id}} name="packs"/>
-                        <label class="form-check-label radio pe-5" for={{pack.id}}>{{pack.description}}</label>
-                      </div>
-                     
-                    </span>
-                  </nav>
+                   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                     <span *ngFor="let pack of packs" class="navbar-text text-primary">
+                       <div class="form-check">
+                         <input class="form-check-input" formControlName="productPackKind" type="radio" (click)="selectCommercialPack(pack.id)" value={{pack.id}} name="packs" />
+                         <label class="form-check-label radio pe-5" for={{pack.id}}>{{pack.description}}</label>
+                       </div>
+
+                     </span>
+                   </nav>
                  </ng-container>
 
 
@@ -260,7 +260,7 @@
                      <span class="material-symbols-outlined icon-accordion">
                         <img src="assets/images/point_of_sale.svg" />
                      </span>
-                     &nbsp;&nbsp;{{'commercialOffer.terminalConfig'|translate|uppercase}}*
+                     &nbsp;&nbsp;{{'commercialOffer.terminalConfig'|translate|uppercase}}
                   </button>
                </h2>
                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
@@ -273,11 +273,11 @@
                      </ng-container>
                      <ng-container matColumnDef="equipmentType">
                        <mat-header-cell *matHeaderCellDef mat-sort-header>  {{'commercialOffer.terminalType'|translate|uppercase}} </mat-header-cell>
-                       <mat-cell *matCellDef="let storeEquip"> {{storeEquip.equipmentType}} </mat-cell>
+                       <mat-cell *matCellDef="let storeEquip"> {{getTerminalDesc(storeEquip.equipmentType)}} </mat-cell>
                      </ng-container>
                      <ng-container matColumnDef="communicationType">
                        <mat-header-cell *matHeaderCellDef mat-sort-header>  {{'commercialOffer.communicationType'|translate|uppercase}} </mat-header-cell>
-                       <mat-cell *matCellDef="let storeEquip"> {{storeEquip.communicationType}} </mat-cell>
+                       <mat-cell *matCellDef="let storeEquip"> {{getCommunicationDesc(storeEquip.communicationType)}} </mat-cell>
                      </ng-container>
                      <ng-container matColumnDef="quantity">
                        <mat-header-cell *matHeaderCellDef mat-sort-header>  {{'commercialOffer.number'|translate|uppercase}} </mat-header-cell>
