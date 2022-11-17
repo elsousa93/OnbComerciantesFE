@@ -10,15 +10,13 @@
     <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
       {{'stakeholder.clientNumber'|translate}}
     </mat-header-cell>
-    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderId}} </mat-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderNumber}} </mat-cell>
   </ng-container>
   <ng-container matColumnDef="stakeName">
     <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
       {{'stakeholder.name'|translate}}
     </mat-header-cell>
-    <mat-cell *matCellDef="let stake" style="display: inline-grid;">
-      {{stake.stakeholderName}}
-    </mat-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;">{{stake.stakeholderName}}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="address">
     <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
