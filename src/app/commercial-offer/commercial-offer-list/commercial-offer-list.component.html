@@ -373,25 +373,17 @@
                        <tr *ngFor="let commission of commissionAttributeList" formGroupName="{{'commission' + commission.id}}">
                          <td class="text-primary text-center">Tarifa</td>
                          <td class="text-primary text-center">{{commission.description}}</td>
-
-                         <td class="text-primary text-center">{{commission.minValue.originalValue}}</td>
                          <td class="text-primary text-center">
-                           <input type="number" [readonly]="commission.minValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMin" value="{{commission.minValue.value}}" />
+                           <input type="number" [readonly]="commission.minValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMin" value={{commission.minValue.value}} />
                          </td>
-
-                         <td class="text-primary text-center">{{commission.maxValue.originalValue}}</td>
                          <td class="text-primary text-center">
-                           <input type="number" [readonly]="commission.maxValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMax" value="{{commission.maxValue.value}}" />
+                           <input type="number" [readonly]="commission.maxValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionMax" value={{commission.maxValue.value}} />
                          </td>
-
-                         <td class="text-primary text-center">{{commission.fixedValue.originalValue}}</td>
                          <td class="text-primary text-center">
-                           <input type="number" [readonly]="commission.fixedValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionFixed" value="{{commission.fixedValue.value}}" />
+                           <input type="number" [readonly]="commission.fixedValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionFixed" value={{commission.fixedValue.value}} />
                          </td>
-
-                         <td class="text-primary text-center">{{commission.percentageValue.originalValue}}</td>
                          <td class="text-primary text-center">
-                           <input type="number" [readonly]="commission.percentageValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionPercentage" value="{{commission.percentageValue.value}}" />
+                           <input type="number" [readonly]="commission.percentageValue.isReadOnly" (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0" formControlName="commissionPercentage" value={{commission.percentageValue.value}} />
                          </td>
                        </tr>
                      </tbody>
