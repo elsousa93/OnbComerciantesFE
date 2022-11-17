@@ -6,20 +6,55 @@
       <input type="radio" name="stake.stakeholderName" (click)="aButtons(true, stake)">
     </mat-cell>
   </ng-container>
-  <ng-container matColumnDef="stakeNIF">
+  <ng-container matColumnDef="stakeID">
     <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
-      {{'stakeholder.fiscalID'|translate}} </mat-header-cell>
-    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderNIF}} </mat-cell>
+      {{'stakeholder.clientNumber'|translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderId}} </mat-cell>
   </ng-container>
   <ng-container matColumnDef="stakeName">
     <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
-      {{'stakeholder.name'|translate}} </mat-header-cell>
-    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderName}}
+      {{'stakeholder.name'|translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;">
+      {{stake.stakeholderName}}
     </mat-cell>
   </ng-container>
+  <ng-container matColumnDef="address">
+    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+      {{'stakeholder.address'|translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.address?.address}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="ZIPCode">
+    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+      {{'stakeholder.postalCode'|translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.address?.postalCode}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="locale">
+    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+      {{'stakeholder.locale'|translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.address?.postalArea}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="country">
+    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+      {{'stakeholder.country'|translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.address?.country}} </mat-cell>
+  </ng-container>
+  <!--<ng-container matColumnDef="stakeNIF">
+    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+      {{'stakeholder.fiscalID'|translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderNIF}} </mat-cell>
+  </ng-container>-->
+
+
   <mat-header-row *matHeaderRowDef="displayedColumnsFound" class="text-primary table-primary"></mat-header-row>
   <mat-row *matRowDef="let stake; let idx = index; columns: displayedColumnsFound;"
-    [ngClass]="{'row-selected': idx === currentIdx}">
+           [ngClass]="{'row-selected': idx === currentIdx}">
   </mat-row>
 </mat-table>
 

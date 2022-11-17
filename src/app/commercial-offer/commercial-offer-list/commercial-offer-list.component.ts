@@ -450,21 +450,19 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
-    //this.commissionAttributeList.forEach(commission => {
-    //  var currentValue = this.form.get("commission" + commission.id);
-    //  commission.minValue.finalValue = currentValue.get("commissionMin").value;
-    //  commission.maxValue.finalValue = currentValue.get("commissionMax").value;
-    //  commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
-    //  commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
-    //});
+    this.commissionAttributeList.forEach(commission => {
+      var currentValue = this.form.get("commission" + commission.id);
+      commission.minValue.finalValue = currentValue.get("commissionMin").value;
+      commission.maxValue.finalValue = currentValue.get("commissionMax").value;
+      commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
+      commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
+    });
 
     this.groupsList.forEach((group) => {
-      //var groups = this.form?.get("formGroup" + group.id);
       group.attributes.forEach((attr) => {
         attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
           if (attr.value && (attr.bundles != null || attr.bundles.length > 0 )) { // se tiver sido selecionado
             attr.bundles.forEach((bundle) => {
-              //var bundles = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id);
               bundle.attributes.forEach((bundleAttr) => { 
                 bundleAttr.value = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
               });
@@ -505,7 +503,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   deleteConfiguration(shopEquipment: ShopEquipment) {
-    if (this.returned != 'consult') { 
+    if (this.returned != 'consult') {
     //CHAMADA À API QUE REMOVE UMA CONFUGURAÇÃO DE UM TERMINAL
     }
   }

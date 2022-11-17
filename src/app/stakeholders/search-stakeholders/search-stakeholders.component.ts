@@ -23,7 +23,7 @@ export class SearchStakeholdersComponent implements OnInit {
   private eventsSubscription: Subscription;
 
   displayedColumns: string[] = ['select','stakeFiscalId', 'stakeName'];
-  displayedColumnsFound: string[] = ['select','stakeNIF', 'stakeName'];
+  displayedColumnsFound: string[] = ['select', 'stakeID', 'stakeNIF', 'stakeName', 'address', 'ZIPCode', 'locale', 'country'];
 
   //Variáveis de Input
   @Input() clientID: Observable<string>;

@@ -282,7 +282,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         }
       });
 
-      this.storeEquip.pricing = {}
+      this.storeEquip.pricing = {};
       this.storeEquip.pricing.attribute = this.pricingAttributeList[0];
 
       console.log('Valor do store equip ', this.storeEquip);

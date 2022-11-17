@@ -102,8 +102,8 @@
                   </thead>
                   <tbody>
                     <tr class="clickable" *ngFor="let stakeholder of submissionStakeholders">
-                      <td class="text-primary text-center align-middle">{{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}}</td>
-                      <td class="text-primary text-center align-middle"> - </td>
+                      <td class="text-primary text-center align-middle"> {{stakeholder.shortName}} </td>
+                      <td class="text-primary text-center align-middle"> {{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}} </td>
                       <td class="text-primary text-center align-middle">
                         <select *ngIf="!isVisible">
                           <option>OTP</option>

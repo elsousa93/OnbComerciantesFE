@@ -10,7 +10,7 @@ import { SubmissionService } from '../../../submission/service/submission-servic
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SubmissionGet } from 'src/app/submission/ISubmission.interface';
+import { SubmissionGet, SubmissionGetTemplate, SubmissionPutTemplate } from 'src/app/submission/ISubmission.interface';
 import { ProcessNumberService } from 'src/app/nav-menu-presencial/process-number.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
@@ -37,7 +37,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   submissionId: string;
   processNumber: string;
   public subscription: Subscription;
-  public submissionAnswer: SubmissionGet;
+  public submissionAnswer: SubmissionGetTemplate;
 
   constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.baseUrl = configuration.baseUrl;
@@ -113,14 +113,42 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   sendFinalSubmission() {
     if (this.form.valid) {
-      this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
-        this.submissionAnswer = result.result[0];
-        this.submissionAnswer.submissionType = "DigitalComplete";
-        this.submissionAnswer.state = "Ready";
-        this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
+      this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
+        this.submissionAnswer = result.result;
+
+        var submissionToSend = {
+          submissionType: "DigitalComplete",
+          processNumber: this.submissionAnswer.processNumber,
+          processKind: this.submissionAnswer.processKind,
+          processType: this.submissionAnswer.processType,
+          signType: this.isVisible ? "Manual" : "Digital",
+          isClientAwaiting: this.submissionAnswer.isClientAwaiting,
+          submissionUser: this.submissionAnswer.submissionUser,
+          id: this.submissionAnswer.id,
+          bank: this.submissionAnswer.bank,
+          state: "Ready"
+        }
+
+        this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
           console.log("Submissão terminada");
-        })
-      })
+        });
+
+      });
+      //this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
+      //  this.submissionAnswer = result.result[0];
+      //  this.submissionAnswer.submissionType = "DigitalComplete";
+      //  this.submissionAnswer.state = "Ready";
+      //  this.submissionAnswer.submissionUser = {
+      //    user: "",
+      //    branch: "",
+      //    partner: ""
+      //  };
+      //  this.submissionAnswer.bank = "";
+        
+      //  this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
+      //    console.log("Submissão terminada");
+      //  })
+      //})
     }
 
   }
