@@ -328,6 +328,7 @@ export class StoreComponent implements AfterViewInit {
             this.onActivate();
             this.addDocumentToShop();
           } else {
+            this.currentStore = null;
             this.data.updateData(true, 3);
             this.route.navigate(['comprovativos']);
           }
