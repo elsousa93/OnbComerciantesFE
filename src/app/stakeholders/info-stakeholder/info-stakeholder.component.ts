@@ -39,7 +39,9 @@ export class InfoStakeholderComponent implements OnInit {
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
-      this.internationalCallingCodes = this.internationalCallingCodes.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.internationalCallingCodes = this.internationalCallingCodes.sort(function (a, b) {
+        return a.description.localeCompare(b.description, 'pt-PT');
+      }); //ordenar resposta
     });
 
   }
