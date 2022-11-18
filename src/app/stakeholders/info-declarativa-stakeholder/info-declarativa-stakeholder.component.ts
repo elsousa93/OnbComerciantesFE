@@ -99,8 +99,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (info != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.getCountryInternationalCallingCode();
-      setTimeout(() => this.setFormData(), 500);
+      this.getCountryInternationalCallingCode().then(result => {
+        setTimeout(() => this.setFormData(), 500);
+      });
     }
   }
 
@@ -122,7 +123,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     
     var pep = this.infoStakeholders.controls["pep"];
     if (stake.pep != undefined || stake.pep != null) {
-      if (stake.pep.kind.toLowerCase() === KindPep.PEP && (stake.pep.pepCountry != null && stake.pep.pepCountry != '')) {
+      if (stake.pep.kind.toLowerCase() === KindPep.PEP && (stake.pep.pepSince != '01-01-0001' || stake.pep.pepSince != null)) {
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pep12months' } });
         pep.get("pepType").setValue(stake.pep?.pepType);
         pep.get("pepCountry").setValue(stake.pep?.pepCountry);
@@ -138,13 +139,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
         //pep.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
         pep.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
-      } else if (stake.pep.kind.toLowerCase() === KindPep.PEP && (stake.pep.pepCountry == null || stake.pep.pepCountry == '')) {
+      } else if (stake.pep.kind.toLowerCase() === KindPep.PEP) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepPoliticalPublicJobs' } });
         pep.get("pepType").setValue(stake.pep?.pepType);
-      } else if (stake.pep.kind == null || stake.pep.pepType === 'R000') {
+      } else {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
@@ -236,13 +237,15 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   getCountryInternationalCallingCode() {
-    if (this.currentStakeholder.stakeholderAcquiring.phone1.countryCode != null && !this.currentStakeholder.stakeholderAcquiring.phone1.countryCode.startsWith("+")) {
-      this.tableInfo.GetCountryById(this.currentStakeholder.stakeholderAcquiring.phone1.countryCode).subscribe(result => {
-        if (result != null) { 
-          this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
-        }
-      }, error => this.logger.debug(error));
-    }
-
+    return new Promise(resolve => {
+      if (this.currentStakeholder.stakeholderAcquiring.phone1.countryCode != null && !this.currentStakeholder.stakeholderAcquiring.phone1.countryCode.startsWith("+")) {
+        this.tableInfo.GetCountryById(this.currentStakeholder.stakeholderAcquiring.phone1.countryCode).subscribe(result => {
+          if (result != null) {
+            this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
+          }
+          resolve(true);
+        }, error => this.logger.debug(error));
+      }
+    });
   }
 }
