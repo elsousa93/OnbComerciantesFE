@@ -123,7 +123,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     
     var pep = this.infoStakeholders.controls["pep"];
     if (stake.pep != undefined || stake.pep != null) {
-      if (stake.pep.kind.toLowerCase() === KindPep.PEP && (stake.pep.pepSince != '01-01-0001' || stake.pep.pepSince != null)) {
+      if (stake.pep.kind.toLowerCase() === KindPep.PEP && (stake.pep.pepSince != '0001-01-01' || stake.pep.pepSince != null)) {
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pep12months' } });
         pep.get("pepType").setValue(stake.pep?.pepType);
         pep.get("pepCountry").setValue(stake.pep?.pepCountry);
@@ -238,13 +238,15 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   getCountryInternationalCallingCode() {
     return new Promise(resolve => {
-      if (this.currentStakeholder.stakeholderAcquiring.phone1.countryCode != null && !this.currentStakeholder.stakeholderAcquiring.phone1.countryCode.startsWith("+")) {
-        this.tableInfo.GetCountryById(this.currentStakeholder.stakeholderAcquiring.phone1.countryCode).subscribe(result => {
+      if (this.currentStakeholder.stakeholderAcquiring?.phone1?.countryCode != null && !this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode.startsWith("+")) {
+        this.tableInfo.GetCountryById(this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode).subscribe(result => {
           if (result != null) {
             this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
           }
           resolve(true);
-        }, error => this.logger.debug(error));
+        }, error => resolve(false));
+      } else {
+        resolve(false);
       }
     });
   }
