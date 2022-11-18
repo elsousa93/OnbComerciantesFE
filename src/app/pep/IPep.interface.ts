@@ -19,5 +19,6 @@ export class Address {
 export enum KindPep {
   PEP = "pep",
   FAMILY = "family",
-  BUSINESS = "business"
+  BUSINESS = "business",
+  NONE = ""
 }

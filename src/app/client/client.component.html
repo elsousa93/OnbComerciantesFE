@@ -59,25 +59,25 @@
                       <p class="titulo-form-simples">
                         <!--Nº de documento-->
                         {{'searches.documentNumber'|translate}}:*
-                        <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCC && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCC'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCSize && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCCSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCFormat" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCFormat && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCCFormat'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIF && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIF'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIFSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIPCSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIPC && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
@@ -102,25 +102,25 @@
                     <div class="col-5">
                       <p class="titulo-form-simples">
                         {{'searches.documentNumber'|translate}}:*
-                        <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCC && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCC'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCSize && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCCSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCFormat" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCFormat && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCCFormat'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIF && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIF'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIFSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIPCSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIPC && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
