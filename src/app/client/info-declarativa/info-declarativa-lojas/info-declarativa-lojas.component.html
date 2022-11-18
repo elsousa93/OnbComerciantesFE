@@ -78,7 +78,7 @@
                             <option></option>
                             <option *ngFor="let country of internationalCallingCodes" [value]='country.internationalCallingCode' >{{country.description}} ({{country.internationalCallingCode}}) </option>
                           </select>
-                          <div class="alert alert-danger" *ngIf="telephone.value && !phone2CountryCode.value">
+                          <div class="alert alert-danger" *ngIf="telephone.value && !telephone.value">
                             {{'errorMessages.isRequired'|translate}}
                           </div>
                         </div>
@@ -87,7 +87,7 @@
                           <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="phoneNumber" type="text" id="phone2PhoneNumber"
                                  class="form-control" formControlName="phoneNumber">
                           <div class="alert alert-danger"
-                               *ngIf="telephone.touched && !telephone.valid || phone2CountryCode.value && !telephone.value">
+                               *ngIf="telephone.touched && !telephone.valid || telephone.value && !telephone.value">
                                {{'errorMessages.isRequired'|translate}}
                           </div>
                         </div>

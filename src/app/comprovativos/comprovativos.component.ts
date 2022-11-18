@@ -462,11 +462,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   firstSubmission() {
-    if (!this.updatedComps) 
+    if (!this.updatedComps) { 
       this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
-    else
+    } else { 
       this.data.updateData(true, 4);
       this.route.navigate(['/commercial-offert-list']);
+    }
   }
 
   confirmDelete() {

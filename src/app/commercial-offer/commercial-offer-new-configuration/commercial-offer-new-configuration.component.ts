@@ -179,7 +179,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   updateFormData() {
-    this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership);
+    this.formConfig.get("name").setValue(this.storeEquip.equipmentOwnership);
     this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
     this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
     this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);

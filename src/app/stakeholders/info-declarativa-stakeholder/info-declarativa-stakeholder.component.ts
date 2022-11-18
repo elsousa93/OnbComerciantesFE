@@ -183,27 +183,27 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";//pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
     } else if (pep.get("pepRelations").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;//pep.get("pepRelations").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";//pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pepPoliticalPublicJobs").get("kind").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     } else {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = null;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "R000";
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     }

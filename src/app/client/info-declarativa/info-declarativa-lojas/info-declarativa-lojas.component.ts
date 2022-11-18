@@ -192,9 +192,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   setForm() {
     
-    this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client.contacts.phone1.countryCode); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
+    this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
     this.listValue.get("cellphone").get("phoneNumber").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber);
-    this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client.contacts.phone2.countryCode);
+    this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode);
     this.listValue.get("telephone").get("phoneNumber").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber);
     this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
     if (this.returned == 'consult')
