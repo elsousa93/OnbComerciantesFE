@@ -36,7 +36,9 @@ export class PepComponent implements OnInit {
 
       this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
         this.Countries = result;
-        this.Countries = this.Countries.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+        this.Countries = this.Countries.sort(function (a, b) {
+          return a.description.localeCompare(b.description, 'pt-PT');
+        }); //ordenar resposta
       }),this.tableInfo.GetAllPEPTypes().subscribe(result => {
         result.forEach(element => {
           if (element.code.startsWith('P')){
