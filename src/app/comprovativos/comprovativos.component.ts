@@ -23,6 +23,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from '../table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -195,7 +196,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService) {
+    private modalService: BsModalService, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService) {
 
     this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
@@ -495,8 +496,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   submissionPutTeste: SubmissionPutTemplate = {
-    "submissionType": "DigitalSecondHalf",
-    "processNumber": "",
+    "submissionType": "DigitalFirstHalf",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,
@@ -527,11 +527,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       })
     });
 
-    if (this.returned != null) {
-      this.logger.debug("Entrei no if dos comprovativos quando faço o submit ");
-      this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
-      this.logger.debug("Objeto com os valores atualizados " + this.submissionPutTeste);
+    var loginUser = this.authService.GetCurrentUser();
+
+    this.submissionPutTeste.submissionUser = {
+      user: loginUser.userName,
+      branch: loginUser.bankLocation,
+      partner: loginUser.bankName 
     }
+
+    this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
 
     this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
       this.logger.debug('Editar sub ' + result);
