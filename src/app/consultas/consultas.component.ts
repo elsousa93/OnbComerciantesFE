@@ -188,7 +188,7 @@ export class ConsultasComponent implements OnInit{
 
           return {
             processNumber: process.processNumber,
-            nipc: process.merchant.fiscalId,
+            nipc: Number(process.merchant.fiscalId),
             nome: process.merchant.name,
             estado: process.state
           };
