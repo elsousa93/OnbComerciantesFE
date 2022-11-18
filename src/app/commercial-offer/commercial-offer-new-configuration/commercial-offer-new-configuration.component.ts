@@ -148,15 +148,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   initializeForm() {
     this.formConfig = new FormGroup({
-      name: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership : '', Validators.required),
+      name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : '', Validators.required),
       terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
       communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership : '', Validators.required),
       terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
       communicationType: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationType : '', Validators.required),
       terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : '', Validators.required),
       //adicionar um form para o preço
+      
     });
-
     this.disableForm();
 
     this.formConfig.get("terminalProperty").valueChanges.subscribe(val => {
@@ -179,7 +179,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   updateFormData() {
-    this.formConfig.get("name").setValue(this.storeEquip.equipmentOwnership);
+    this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId);
     this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
     this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
     this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
@@ -267,6 +267,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   submit() {
     if (this.formConfig.valid) {
       this.storeEquip = {};
+      this.storeEquip.shopEquipmentId = this.formConfig.get("name").value;
       this.storeEquip.equipmentOwnership = this.formConfig.get("terminalProperty").value;
       this.storeEquip.communicationOwnership = this.formConfig.get("communicationOwnership").value;
       this.storeEquip.equipmentType = this.formConfig.get("terminalType").value;

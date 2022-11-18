@@ -269,7 +269,7 @@
                    <mat-table [dataSource]="storeEquipMat" class="table" matSort #storeEquipSort="matSort">
                      <ng-container matColumnDef="equipmentOwnership">
                        <mat-header-cell *matHeaderCellDef mat-sort-header>  {{'commercialOffer.terminalIdentification'|translate|uppercase}} </mat-header-cell>
-                       <mat-cell *matCellDef="let storeEquip"> {{storeEquip.equipmentOwnership}} </mat-cell>
+                       <mat-cell *matCellDef="let storeEquip"> {{storeEquip.shopEquipmentId}} </mat-cell>
                      </ng-container>
                      <ng-container matColumnDef="equipmentType">
                        <mat-header-cell *matHeaderCellDef mat-sort-header>  {{'commercialOffer.terminalType'|translate|uppercase}} </mat-header-cell>

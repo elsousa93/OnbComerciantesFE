@@ -99,6 +99,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (info != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
+      this.getCountryInternationalCallingCode();
       setTimeout(() => this.setFormData(), 500);
     }
   }
@@ -172,40 +173,40 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
 
     if (pep.get("pep12months").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pep12months").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
       this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     } else if (pep.get("pepFamiliarOf").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;//pep.get("pepFamiliarOf").get("kind").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";//pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";
       this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
       //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
     } else if (pep.get("pepRelations").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;//pep.get("pepRelations").get("kind").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";//pep.get("pepType").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;
+      this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";
       this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
       //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;//pep.get("pepPoliticalPublicJobs").get("kind").value;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
       //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     } else {
       this.currentStakeholder.stakeholderAcquiring.pep.kind = null;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "R000";
-      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
+      //this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
       //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
-      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
+      ////this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
+      ////this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     }
 
     console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
@@ -232,5 +233,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     } else {
       this.route.navigate(['/info-declarativa']);
     }
+  }
+
+  getCountryInternationalCallingCode() {
+    if (this.currentStakeholder.stakeholderAcquiring.phone1.countryCode != null) {
+      this.tableInfo.GetCountryById(this.currentStakeholder.stakeholderAcquiring.phone1.countryCode).subscribe(result => {
+        if (result != null) { 
+          this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
+        }
+      }, error => this.logger.debug(error));
+    }
+
   }
 }
