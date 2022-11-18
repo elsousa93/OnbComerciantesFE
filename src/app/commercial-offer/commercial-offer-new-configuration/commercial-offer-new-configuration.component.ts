@@ -113,6 +113,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
           this.formConfig.get("communicationOwnership").setValue("self");
           this.formConfig.get("communicationOwnership").disable();
+          this.formConfig.updateValueAndValidity();
         } else {
           //slide 97, não percebi qual é a exceção que deve ser feita
         }
@@ -160,7 +161,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.disableForm();
 
     this.formConfig.get("terminalProperty").valueChanges.subscribe(val => {
-      if (val === 'acquirer') {
+      if (val === 'self') {
         this.formConfig.get('communicationOwnership').setValidators([Validators.required]);
         this.formConfig.get('terminalType').setValidators([Validators.required]);
         this.formConfig.get('communicationType').setValidators([Validators.required]);
