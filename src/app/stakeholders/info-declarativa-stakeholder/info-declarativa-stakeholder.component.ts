@@ -236,7 +236,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   getCountryInternationalCallingCode() {
-    if (this.currentStakeholder.stakeholderAcquiring.phone1.countryCode != null) {
+    if (this.currentStakeholder.stakeholderAcquiring.phone1.countryCode != null && !this.currentStakeholder.stakeholderAcquiring.phone1.countryCode.startsWith("+")) {
       this.tableInfo.GetCountryById(this.currentStakeholder.stakeholderAcquiring.phone1.countryCode).subscribe(result => {
         if (result != null) { 
           this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
