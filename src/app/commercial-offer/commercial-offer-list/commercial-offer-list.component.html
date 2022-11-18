@@ -285,7 +285,7 @@
                      </ng-container>
                      <ng-container matColumnDef="monthlyFee">
                        <mat-header-cell *matHeaderCellDef mat-sort-header>  {{'commercialOffer.mensal'|translate|uppercase}} <br /> ({{'commercialOffer.TPA'|translate|uppercase}}) </mat-header-cell>
-                       <mat-cell *matCellDef="let storeEquip"> {{storeEquip.quantity}} </mat-cell>
+                       <mat-cell *matCellDef="let storeEquip"> {{storeEquip.pricing.finalValue}} </mat-cell>
                      </ng-container>
                      <ng-container matColumnDef="delete">
                        <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
