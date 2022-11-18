@@ -112,19 +112,16 @@ export class StoreIbanComponent implements OnInit {
       }
     });
 
-    this.tableInfo.GetBanks().subscribe(result => {
-      this.banks = result;
-      this.banks = this.banks.sort((a, b) => a.description > b.description? 1 : -1); //ordenar resposta
-    });
-
   }
 
   ngOnInit(): void {
-    this.returned = localStorage.getItem("returned");
-    //this.files = [];    
-    this.submissionId = localStorage.getItem("submissionId")
-    //this.initializeForm();
+    this.tableInfo.GetBanks().subscribe(result => {
+      this.banks = result;
+      this.banks = this.banks.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    });
 
+    this.returned = localStorage.getItem("returned");
+    this.submissionId = localStorage.getItem("submissionId")
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('bankStores', this.formStores);

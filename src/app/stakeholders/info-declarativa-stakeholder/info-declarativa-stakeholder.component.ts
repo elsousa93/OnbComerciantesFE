@@ -130,13 +130,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepFamiliarOf' } });
-        pep.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta "pepRelations"
+        //pep.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta "pepRelations"
         pep.get("pepFamilyRelation").setValue(stake.pep?.degreeOfRelatedness);
       } else if (stake.pep.kind.toLowerCase() === KindPep.BUSINESS) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
-        pep.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
+        //pep.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
         pep.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
       } else if (stake.pep.kind.toLowerCase() === KindPep.PEP && (stake.pep.pepCountry == null || stake.pep.pepCountry == '')) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
@@ -149,7 +149,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepPoliticalPublicJobs' } });
-        pep.get("pepType").setValue("R000"); // O Cliente não exerce qualquer cargo público em território nacional e paralelamente não é uma pessoa politicamente exposta
+        //pep.get("pepType").setValue("R000"); // O Cliente não exerce qualquer cargo público em território nacional e paralelamente não é uma pessoa politicamente exposta
       }
     }
   }
