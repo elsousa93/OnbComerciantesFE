@@ -280,7 +280,7 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
         this.currentStore.address.isInsideShoppingCenter = true;
       } else {
-        this.currentStore.address.shoppingCenter = "";
+        this.currentStore.address.shoppingCenter = null; //
         this.currentStore.address.isInsideShoppingCenter = false;
       }
 
