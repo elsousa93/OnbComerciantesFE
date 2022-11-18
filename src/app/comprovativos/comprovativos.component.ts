@@ -258,51 +258,49 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       this.submission = result.result;
       this.logger.debug('Submission ' + result);
 
-      this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
-        var documents = res;
-        if (documents.length != 0) {
-          documents.forEach(function (value, index) {
-            var document = value;
-            context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-              console.log("imagem de um documento ", res);
-              var teste = await res.blob();
+      this.clientService.GetClientByIdAcquiring(this.submissionId).then(c => {
+        this.submissionClient = c;
+        this.logger.debug('Cliente ' + c);
 
-              teste.lastModifiedDate = new Date();
-              teste.name = "nome";
 
-              context.file = <File>teste;
-              console.log("Ficheiro encontrado ", context.file);
+        this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
+          var documents = res;
+          if (documents.length != 0) {
+            documents.forEach(function (value, index) {
+              var document = value;
+              context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
+                console.log("imagem de um documento ", res);
+                var teste = await res.blob();
 
-              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+                teste.lastModifiedDate = new Date();
+                teste.name = "nome";
 
-                var index = context.compsToShow.findIndex(value => value.id == document.id);
-                if (index == -1) {
-                  context.compsToShow.push({
-                    id: document.id,
-                    type: "pdf",
-                    expirationDate: "2024-10-10",
-                    stakeholder: "Manuel",
-                    status: "não definido",
-                    uploadDate: "2020-10-10",
-                    file: context.file,
-                    documentPurpose: val.documentPurpose
-                  });
-                }
-                console.log("Lista de comprovativos ", context.compsToShow);
+                context.file = <File>teste;
+                console.log("Ficheiro encontrado ", context.file);
+
+                context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+
+                  var index = context.compsToShow.findIndex(value => value.id == document.id);
+                  if (index == -1) {
+                    context.compsToShow.push({
+                      id: document.id,
+                      type: "pdf",
+                      expirationDate: "2024-10-10",
+                      stakeholder: context.submissionClient.legalName,
+                      status: "não definido",
+                      uploadDate: "2020-10-10",
+                      file: context.file,
+                      documentPurpose: val.documentPurpose
+                    });
+                  }
+                  console.log("Lista de comprovativos ", context.compsToShow);
+                });
               });
             });
-          });
-        }
+          }
 
+        });
       });
-
-
-
-      this.clientService.getClientByID(result.result.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(c => {
-        this.submissionClient = c.result;
-        this.logger.debug('Cliente ' + c.result);
-      });
-      
 
       //this.submission.documents.forEach(document => {
       //  this.logger.debug("entrou aqui1!!!");
@@ -464,7 +462,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   firstSubmission() {
-    this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
+    if (!this.updatedComps) 
+      this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
+    else
+      this.data.updateData(true, 4);
+      this.route.navigate(['/commercial-offert-list']);
   }
 
   confirmDelete() {
@@ -529,22 +531,18 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       })
     });
 
-    if (!this.updatedComps) {
-      if (this.returned != null) {
-        this.logger.debug("Entrei no if dos comprovativos quando faço o submit ");
-        this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
-        this.logger.debug("Objeto com os valores atualizados " + this.submissionPutTeste);
-      }
-
-      this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
-        this.logger.debug('Editar sub ' + result);
-        this.data.updateData(true, 4);
-        this.data.changeUpdatedComprovativos(true);
-        this.route.navigate(['/commercial-offert-list']);
-      });
-    } else {
-      this.route.navigate(['/commercial-offert-list']);
+    if (this.returned != null) {
+      this.logger.debug("Entrei no if dos comprovativos quando faço o submit ");
+      this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
+      this.logger.debug("Objeto com os valores atualizados " + this.submissionPutTeste);
     }
+
+    this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
+      this.logger.debug('Editar sub ' + result);
+      this.data.updateData(true, 4);
+      this.data.changeUpdatedComprovativos(true);
+      this.route.navigate(['/commercial-offert-list']);
+    });
 
   }
 

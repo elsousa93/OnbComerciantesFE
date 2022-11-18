@@ -136,9 +136,9 @@ export class PepComponent implements OnInit {
         if (this.isVisiblePepRelations) {
           this.form.removeControl('pepTypeOfRelation');
         }
-        //if (this.isVisiblePepPoliticalPublicJobs) {
-        //  this.form.removeControl('pepPoliticalPublicJobDesignation');
-        //}
+        if (this.isVisiblePepPoliticalPublicJobs) {
+          this.form.removeControl('pepType');
+        }
 
         this.isVisiblePepFamiliarOf = undefined;
         this.isVisiblePepRelations = undefined;
@@ -152,6 +152,9 @@ export class PepComponent implements OnInit {
         this.form.addControl('pepCountry', new FormControl('', [Validators.required]));
         this.form.addControl('pepSinceWhen', new FormControl('', [Validators.required]));
       } else {
+        this.form.removeControl('pepType');
+        this.form.removeControl('pepCountry');
+        this.form.removeControl('pepSinceWhen');
         this.form.addControl('pepFamiliarOf', new FormControl('', [Validators.required]));
       }
     }
@@ -166,9 +169,9 @@ export class PepComponent implements OnInit {
         if (this.isVisiblePepRelations) {
           this.form.removeControl('pepTypeOfRelation');
         }
-        //if (this.isVisiblePepPoliticalPublicJobs) {
-        //  this.form.removeControl('pepPoliticalPublicJobDesignation');
-        //}
+        if (this.isVisiblePepPoliticalPublicJobs) {
+          this.form.removeControl('pepType');
+        }
 
         this.isVisiblePepRelations = undefined;
         this.isVisiblePepPoliticalPublicJobs = undefined;
