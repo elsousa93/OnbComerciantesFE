@@ -850,7 +850,7 @@ export class ClientByIdComponent implements OnInit {
     if (this.returned != 'consult') { 
       var context = this;
       var newSubmission = this.clientContext.newSubmission;
-      //newSubmission.startedAt = new Date().toISOString();
+      newSubmission.startedAt = new Date().toISOString();
       newSubmission.merchant = this.clientContext.getClient();
 
       var loginUser = this.authService.GetCurrentUser();

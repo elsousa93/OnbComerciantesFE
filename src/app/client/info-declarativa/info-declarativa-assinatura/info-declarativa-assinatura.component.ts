@@ -126,7 +126,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
           submissionUser: this.submissionAnswer.submissionUser,
           id: this.submissionAnswer.id,
           bank: this.submissionAnswer.bank,
-          state: "Ready"
+          state: "Ready",
+          startedAt: new Date().toISOString()
         }
 
         this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {

@@ -41,7 +41,7 @@
                   {{'declarativeInformation.stakeholder.pep.country'|translate}}:*</p>
                 <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepCountry"
                   name="pepCountry" id="pepCountry">
-                  <option *ngFor="let country of Countries" value={{country.code}}>
+                  <option *ngFor="let country of Countries" [value]="country.code">
                     {{country.description}} </option>
                 </select>
                 <p class="titulo-form-simples"></p>
@@ -78,7 +78,7 @@
                     {{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*</p>
                   <select (change)="checkSelectedFamiliar()" class="form-select" formControlName="pepFamilyRelation"
                     name="pepFamilyRelation" id="pepFamilyRelation">
-                    <option *ngFor="let kinship of stakeholdersKinships" value={{kinship.code}}>{{kinship.description}}
+                    <option *ngFor="let kinship of stakeholdersKinships" [value]="kinship.code">{{kinship.description}}
                     </option>
                   </select>
                 </div>
@@ -116,7 +116,7 @@
                 </p>
                 <select (change)="checkSelectedRelations()" class="form-select" formControlName="pepTypeOfRelation"
                   name="pepTypeOfRelation" id="pepTypeOfRelation">
-                  <option *ngFor="let cr of corporateRelations" value={{cr.code}}>{{cr.description}} </option>
+                  <option *ngFor="let cr of corporateRelations" [value]="cr.code">{{cr.description}} </option>
                 </select>
               </div>
             </div>
@@ -151,7 +151,7 @@
                 <p class="form-check-label titulo-form-simples mt-0" for="pepType">
                   {{'declarativeInformation.stakeholder.pep.role'|translate}}:*</p>
                 <select class="form-select" formControlName="pepType" name="pepType" id="pepType">
-                  <option *ngFor="let pep of PEPTypesC" value={{pep.code}}>{{pep.description}} </option>
+                  <option *ngFor="let pep of PEPTypesC" [value]="pep.code">{{pep.description}} </option>
                 </select>
               </div>
             </div>

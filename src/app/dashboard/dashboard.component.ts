@@ -639,6 +639,7 @@ export class DashboardComponent implements OnInit {
     });
     this.dataService.changeData(new Map());
     this.dataService.updateData(null, null, null);
+    this.dataService.changeUpdatedComprovativos(false);
     this.processNrService.changeProcessNumber(null);
 
     console.log("VALORES DO USER " , this.currentUser);

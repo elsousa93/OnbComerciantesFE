@@ -499,11 +499,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,
-    "submissionUser": {
-      "user": "joao.silvestre",
-      "branch": "",
-      "partner": ""
-    },
     "startedAt": "2022-10-10",
     "id": localStorage.getItem("submissionId"), //uuid
     "bank": "0800",
