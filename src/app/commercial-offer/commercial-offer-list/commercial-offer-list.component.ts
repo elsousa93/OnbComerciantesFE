@@ -306,10 +306,10 @@ export class CommercialOfferListComponent implements OnInit {
     var valueGroup = new FormGroup({});
     var context = this;
     this.commissionAttributeList.forEach(function (value, idx) {
-      valueGroup.addControl("commissionMin", new FormControl(value.minValue.originalValue));
-      valueGroup.addControl("commissionMax", new FormControl(value.maxValue.originalValue));
-      valueGroup.addControl("commissionFixed", new FormControl(value.fixedValue.originalValue));
-      valueGroup.addControl("commissionPercentage", new FormControl(value.percentageValue.originalValue));
+      valueGroup.addControl("commissionMin", new FormControl(value.minValue.value));
+      valueGroup.addControl("commissionMax", new FormControl(value.maxValue.value));
+      valueGroup.addControl("commissionFixed", new FormControl(value.fixedValue.value));
+      valueGroup.addControl("commissionPercentage", new FormControl(value.percentageValue.value));
       context.form.addControl("commission" + value.id, valueGroup);
     });
   }
