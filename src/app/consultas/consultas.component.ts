@@ -187,10 +187,10 @@ export class ConsultasComponent implements OnInit{
           }
 
           return {
-            processNumber: process.processNumber,
-            nipc: Number(process.merchant.fiscalId),
-            nome: process.merchant.name,
-            estado: process.state
+            processNumber: process?.processNumber,
+            nipc: Number(process?.merchant?.fiscalId),
+            nome: process?.merchant?.name,
+            estado: process?.state
           };
         })
         if (processesArray.length == 0) {

@@ -139,7 +139,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
         //pep.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
         pep.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
-      } else if (stake.pep.kind.toLowerCase() === KindPep.PEP) {
+      } else if (stake.pep.kind.toLowerCase() === KindPep.PEP && stake.pep.pepSince == '0001-01-01') {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
@@ -202,7 +202,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       //this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = null;
       //this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = null;
     } else {
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = null;
+      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
       this.currentStakeholder.stakeholderAcquiring.pep.pepType = "R000";
       //this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = null;
       //this.currentStakeholder.stakeholderAcquiring.pep.pepSince = null;
