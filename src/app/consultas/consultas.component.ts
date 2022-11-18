@@ -188,8 +188,8 @@ export class ConsultasComponent implements OnInit{
 
           return {
             processNumber: process.processNumber,
-            nipc: 529463466,
-            nome: "EMPRESA UNIPESSOAL TESTES",
+            nipc: process.merchant.fiscalId,
+            nome: process.merchant.name,
             estado: process.state
           };
         })
