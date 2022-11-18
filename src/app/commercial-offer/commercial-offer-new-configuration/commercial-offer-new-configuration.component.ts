@@ -148,12 +148,12 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   initializeForm() {
     this.formConfig = new FormGroup({
-      name: new FormControl(''),
-      terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership : '', Validators.required),
-      communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership : ''),
-      terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : ''),
-      communicationType: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationType : ''),
-      terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : ''),
+      name: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership : '', Validators.required),
+      terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
+      communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership : '', Validators.required),
+      terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
+      communicationType: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationType : '', Validators.required),
+      terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : '', Validators.required),
       //adicionar um form para o preço
     });
 
