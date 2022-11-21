@@ -664,6 +664,8 @@ export class DashboardComponent implements OnInit {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourcePendentes.filter = filterValue;
+
+    console.log(this.dataSourcePendentes);
   }
 
   applyFilter1(filterValue: string) {
