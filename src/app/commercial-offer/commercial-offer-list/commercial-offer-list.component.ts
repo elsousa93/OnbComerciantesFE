@@ -347,7 +347,7 @@ export class CommercialOfferListComponent implements OnInit {
     context.groupsList=[];
     context.paymentSchemes=null;
     this.form.get("productPackKind").setValue(packId);
-    if ((this.currentStore.pack.otherPackDetails == null || this.currentStore.pack.otherPackDetails.length == 0) && this.currentStore.pack.paymentSchemes == null) {
+    if ((this.currentStore.pack?.otherPackDetails == null || this.currentStore.pack?.otherPackDetails.length == 0) && this.currentStore.pack?.paymentSchemes == null) {
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
         context.paymentSchemes = res.result.paymentSchemes;
         context.addPaymentFormGroups();
@@ -384,7 +384,7 @@ export class CommercialOfferListComponent implements OnInit {
       packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
     }
 
-    if (this.currentStore.pack.commission == null) {
+    if (this.currentStore.pack?.commission == null) {
       this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
         if (result.result.length == 1) {
           this.commissionOptions.push(result.result[0]);
@@ -436,7 +436,7 @@ export class CommercialOfferListComponent implements OnInit {
       this.disableNewConfiguration = true;
     }
 
-    this.form.get("productPackKind").setValue(this.currentStore.pack.packId);
+    this.form.get("productPackKind").setValue(this.currentStore.pack?.packId);
   }
 
   onCickContinue() {
