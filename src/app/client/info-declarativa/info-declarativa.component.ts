@@ -195,4 +195,10 @@ export class InfoDeclarativaComponent implements OnInit {
       return false;
     return true;
   }
+
+  focusOutEvent(event: any) {
+    if (!this.emailValid.errors?.['email']) {
+      this.listValue.get('billingEmail').setValue(event.target.value);
+    }
+  }
 }
