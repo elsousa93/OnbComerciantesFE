@@ -44,6 +44,8 @@ export class ConsultasComponent implements OnInit{
   public url: string;
   public search: boolean = false;
 
+  public endDate: string = "";
+
   baseUrl = '';
 
   ListaDocType;
@@ -97,6 +99,10 @@ export class ConsultasComponent implements OnInit{
       processDateStart: new FormControl(''), 
       processDateEnd: new FormControl('')
     });
+  }
+
+  callEndDate(){
+    this.endDate = this.form.get('processDateStart').value;
   }
 
   submitSearch() {

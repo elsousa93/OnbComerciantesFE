@@ -280,16 +280,17 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                 console.log("Ficheiro encontrado ", context.file);
 
                 context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+                  const now = new Date();
 
                   var index = context.compsToShow.findIndex(value => value.id == document.id);
                   if (index == -1) {
                     context.compsToShow.push({
                       id: document.id,
                       type: "pdf",
-                      expirationDate: "2024-10-10",
+                      expirationDate: document.validUntil,
                       stakeholder: context.submissionClient.legalName,
                       status: "não definido",
-                      uploadDate: "2020-10-10",
+                      uploadDate: now.toLocaleDateString(),
                       file: context.file,
                       documentPurpose: val.documentPurpose
                     });

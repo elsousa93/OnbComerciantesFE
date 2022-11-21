@@ -18,7 +18,7 @@
                         </div>
                         <div class="col">
                             <p class="titulo-form-simples mt-0">
-                                {{'declarativeInformation.cellPhone'|translate|uppercase}}/{{'declarativeInformation.phone'|translate|uppercase}}:*
+                                {{'declarativeInformation.cellPhone'|translate|uppercase}}:*
                             </p>
                             <input (keypress)="numericOnly($event)" #phone1 name="phoneNumber" type="text" id="phoneNumber" class="form-control" 
                                 formControlName="phoneNumber" [readonly]="returned === 'consult'">
