@@ -128,7 +128,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         pep.get("pepType").setValue(stake.pep?.pepType);
         pep.get("pepCountry").setValue(stake.pep?.pepCountry);
         pep.get("pepSinceWhen").setValue(stake.pep?.pepSince);
-      } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY) {
+      } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY && stake.pep.degreeOfRelatedness != null && stake.pep.degreeOfRelatedness != '') {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepFamiliarOf' } });
         //pep.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta "pepRelations"
@@ -145,7 +145,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepPoliticalPublicJobs' } });
         pep.get("pepType").setValue(stake.pep?.pepType);
-      } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY && stake.pep.pepSince == '0001-01-01') {
+      } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY && (stake.pep.pepSince == '0001-01-01' || stake.pep.degreeOfRelatedness == null || stake.pep.degreeOfRelatedness == '')) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
