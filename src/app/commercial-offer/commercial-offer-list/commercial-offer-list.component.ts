@@ -31,7 +31,7 @@ export class CommercialOfferListComponent implements OnInit {
   selectedPack: ShopProductPack = null;
 
   //storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
-  storeEquipMat!: MatTableDataSource<ShopEquipment>;
+  storeEquipMat = new MatTableDataSource<ShopEquipment>();
 
   form: FormGroup;
   private baseUrl: string;
@@ -117,14 +117,13 @@ export class CommercialOfferListComponent implements OnInit {
 
   ngAfterViewInit() {
     //this.storesOfferMat.paginator = this.paginator;
-    this.storeEquipMat.paginator = this.storeEquipPaginator;
+    //this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
 
   constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder, private tableInfo: TableInfoService) {
     this.baseUrl = configuration.baseUrl;
-    this.storeEquipMat = new MatTableDataSource<ShopEquipment>();
     this.ngOnInit();
     this.loadReferenceData();
 
@@ -213,8 +212,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.getStoreEquipsFromSubmission();
 
     this.getPackDetails();
-    
-
 
     if (this.returned == 'consult')
       this.form.disable();
@@ -332,18 +329,16 @@ export class CommercialOfferListComponent implements OnInit {
       supportBank: this.currentStore.supportEntity
     }
 
-    console.log('Product pack enviado para a API ', this.productPack);
-
-    var context = this;
-
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       this.packs = result.result;
       this.getCommissionsList();
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
+      } else if ((this.currentStore.pack.otherPackDetails.length != 0 && this.currentStore.pack.otherPackDetails != null) && this.currentStore.pack.paymentSchemes != null) {
+        this.selectCommercialPack(this.currentStore.pack.packId);
       }
     });
-    
+  
   }
 
   selectCommercialPack(packId: string) {
@@ -352,14 +347,24 @@ export class CommercialOfferListComponent implements OnInit {
     context.groupsList=[];
     context.paymentSchemes=null;
     this.form.get("productPackKind").setValue(packId);
-    this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
-      context.paymentSchemes = res.result.paymentSchemes;
+    if ((this.currentStore.pack.otherPackDetails == null || this.currentStore.pack.otherPackDetails.length == 0) && this.currentStore.pack.paymentSchemes == null) {
+      this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
+        context.paymentSchemes = res.result.paymentSchemes;
+        context.addPaymentFormGroups();
+        res.result.otherGroups.forEach(group => {
+          context.groupsList.push(group);
+        });
+        context.addFormGroups();
+      });
+    } else {
+      context.paymentSchemes = this.currentStore.pack.paymentSchemes;
       context.addPaymentFormGroups();
-      res.result.otherGroups.forEach(group => {
+      this.currentStore.pack.otherPackDetails.forEach(group => {
         context.groupsList.push(group);
       });
       context.addFormGroups();
-    });
+    }
+
   }
 
   //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
@@ -379,28 +384,39 @@ export class CommercialOfferListComponent implements OnInit {
       packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
     }
 
-    this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
-      if (result.result.length == 1) {
-        this.commissionOptions.push(result.result[0]);
-        this.chooseCommission(result.result[0].id);
-      } else {
-        result.result.forEach(options => {
-          this.commissionOptions.push(options);
-        });
-      }
-    });
+    if (this.currentStore.pack.commission == null) {
+      this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
+        if (result.result.length == 1) {
+          this.commissionOptions.push(result.result[0]);
+          this.chooseCommission(result.result[0].id);
+        } else {
+          result.result.forEach(options => {
+            this.commissionOptions.push(options);
+          });
+        }
+      });
+    } else {
+      this.chooseCommission(this.currentStore.pack.commission.commissionId);
+    }
   }
 
   chooseCommission(commisionId: string) {
     this.commissionId = commisionId;
     var productCode = this.currentStore.productCode;
     this.commissionAttributeList = [];
-    this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
-      res.result.attributes.forEach(attr => {
+    if (this.currentStore.pack.commission == null) {
+      this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
+        res.result.attributes.forEach(attr => {
+          this.commissionAttributeList.push(attr);
+        });
+        this.addCommissionFormGroups();
+      });
+    } else {
+      this.currentStore.pack.commission.attributes.forEach(attr => {
         this.commissionAttributeList.push(attr);
       });
       this.addCommissionFormGroups();
-    });
+    }
   }
 
   getStoresListLength(length) {
@@ -420,7 +436,7 @@ export class CommercialOfferListComponent implements OnInit {
       this.disableNewConfiguration = true;
     }
 
-    this.form.get("productPackKind").setValue(null);
+    this.form.get("productPackKind").setValue(this.currentStore.pack.packId);
   }
 
   onCickContinue() {
@@ -484,7 +500,7 @@ export class CommercialOfferListComponent implements OnInit {
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
         console.log('Loja atualizada ', this.currentStore);
         if (this.currentIdx < (this.storesLength - 1)) {
-
+          
         } else {
           this.data.updateData(true, 5);
           this.route.navigate(['info-declarativa']);
