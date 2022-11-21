@@ -642,6 +642,10 @@ export class DashboardComponent implements OnInit {
     this.dataService.changeUpdatedComprovativos(false);
     this.processNrService.changeProcessNumber(null);
 
+    this.dataSourcePendentes.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
     console.log("VALORES DO USER " , this.currentUser);
     //this.tokenService.getLoginTokenInfo(this.currentUser.token).then(result => {
     //  console.log('RESULTADO DA CHAMADA AO NOSSO BACKEND PARA OBTER OS DADOS DO TOKEN ', result);
@@ -661,8 +665,8 @@ export class DashboardComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    // filterValue = filterValue.trim(); // Remove whitespace
+    // filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourcePendentes.filter = filterValue;
   }
 
