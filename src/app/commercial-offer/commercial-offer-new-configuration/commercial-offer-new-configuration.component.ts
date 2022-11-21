@@ -239,7 +239,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   chooseMensalidade(id: string) {
     this.pricingAttributeList = [];
     if (this.formConfig.valid) {
-      if (this.storeEquip.pricing == null) {
+      if (this.storeEquip?.pricing == null) {
         this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
           res.result.attributes.forEach(attr => {
             this.pricingAttributeList.push(attr);
