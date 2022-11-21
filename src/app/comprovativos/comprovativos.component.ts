@@ -24,11 +24,13 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-comprovativos',
-  templateUrl: './comprovativos.component.html'
+  templateUrl: './comprovativos.component.html',
+  providers: [DatePipe]
 })
 export class ComprovativosComponent implements OnInit, AfterViewInit {
   private baseUrl: string;
@@ -196,7 +198,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
-    private modalService: BsModalService, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService) {
+    private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService) {
 
     this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
