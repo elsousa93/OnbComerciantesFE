@@ -283,7 +283,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
                 context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
                   const now = new Date();
-                  let latest_date =this.datepipe.transform(now, 'dd-MM-yyyy');
+                  var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
 
                   var index = context.compsToShow.findIndex(value => value.id == document.id);
                   if (index == -1) {
