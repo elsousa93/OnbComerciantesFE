@@ -155,7 +155,6 @@ export class DashboardComponent implements OnInit {
   validationSIBSProcessess: ProcessGet;
   riskOpinionProcessess: ProcessGet;
   complianceDoubtsProcessess: ProcessGet;
-  teste: any;
 
   incompleteCount: number;
   ongoingCount: number;
@@ -219,9 +218,6 @@ export class DashboardComponent implements OnInit {
         this.incompleteCount = result.pagination.total;
       });
     });
-
-    
-    this.teste = this.dataSourcePendentes;
 
     //Tratamento BackOffice
     this.processService.searchProcessByState('Ongoing', 0, 1).subscribe(result => {
@@ -665,17 +661,9 @@ export class DashboardComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    this.teste = this.TesteApply(filterValue);
-    // filterValue = filterValue.trim(); // Remove whitespace
-    // filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    // return this.dataSourcePendentes.filter(option => option.toLowerCase().includes(filterValue));
-
-    // console.log(this.dataSourcePendentes);
-  }
-
-  TesteApply(value: string) {
-    let filter = value.toLowerCase();
-    return this.teste.filter(option => option.toLowerCase().startsWith(filter));
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSourcePendentes.filter = filterValue;
   }
 
   applyFilter1(filterValue: string) {
