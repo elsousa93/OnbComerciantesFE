@@ -105,19 +105,17 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   disableForm() {
-    if (this.currentStore.productCode.toLowerCase() == "Card Present" || this.currentStore.productCode.toLowerCase() == "cardpresent") {
+    if (this.currentStore.productCode.toLowerCase() == "card present" || this.currentStore.productCode.toLowerCase() == "cardpresent") {
       if (this.currentStore.supportEntity.toLowerCase() == "acquirer") { //caso o ETA seja UNICRE
         if (this.currentStore.subproductCode.toLowerCase() == "easy" || this.currentStore.subproductCode.toLowerCase() == "Easy") {
           this.formConfig.get("terminalProperty").setValue("self");
-          //this.formConfig.controls["terminalProperty"].disable();
-          var terminalProperty = this.formConfig.get("terminalProperty") as FormControl;
-          terminalProperty.disable();
+          this.formConfig.get("terminalProperty").disable();
 
           this.formConfig.get("communicationOwnership").setValue("self");
-          var communicationOwnership = this.formConfig.get("communicationOwnership") as FormControl;
-          communicationOwnership.disable();
-          //this.formConfig.controls["communicationOwnership"].disable();
+          this.formConfig.controls["communicationOwnership"].disable();
+
           this.formConfig.updateValueAndValidity();
+
           console.log('FORM CONFIG ', this.formConfig);
         } else {
           //slide 97, não percebi qual é a exceção que deve ser feita
