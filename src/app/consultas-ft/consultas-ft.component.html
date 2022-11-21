@@ -20,7 +20,7 @@
             <select id="select1" disabled class="form-select  campo_form" formControlName="state">
               <option selected value="">{{ 'homepage.' + queueName|translate}}</option>
             </select>
-            <p class="titulo-form-simples mb-1">{{'searches.orderDateFrom'|translate|uppercase}}</p><input id="text1"
+            <p class="titulo-form-simples mb-1">{{'searches.orderDateFrom'|translate|uppercase}}</p><input id="text1" (change)="callEndDate()"
               name="text1" type="date" class="form-control campo_form" formControlName="processDateStart">
             <p class="titulo-form-simples"></p>
           </div>

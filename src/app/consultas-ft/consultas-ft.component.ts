@@ -60,6 +60,8 @@ export class ConsultasFTComponent implements OnInit{
   public search: boolean;
   public url: string;
 
+  public endDate: string = "";
+
   baseUrl = '';
 
   ListaDocType;
@@ -83,6 +85,10 @@ export class ConsultasFTComponent implements OnInit{
 
     this.chooseState();
     this.initializeForm();
+  }
+
+  callEndDate(){
+    this.endDate = this.form.get('processDateStart').value;
   }
 
   chooseState() {

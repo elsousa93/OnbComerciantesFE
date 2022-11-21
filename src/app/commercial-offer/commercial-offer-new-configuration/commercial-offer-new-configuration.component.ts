@@ -215,7 +215,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     }
 
     this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-      if (this.storeEquip.pricing == null) {
+      if (this.storeEquip?.pricing == null) {
         if (result.result.length == 1) {
           this.pricingOptions.push(result.result[0]);
           this.chooseMensalidade(result.result[0].id);
