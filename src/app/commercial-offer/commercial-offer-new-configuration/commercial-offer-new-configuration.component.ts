@@ -115,8 +115,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
           this.formConfig.controls["communicationOwnership"].disable();
 
           this.formConfig.updateValueAndValidity();
-
-          console.log('FORM CONFIG ', this.formConfig);
         } else {
           //slide 97, não percebi qual é a exceção que deve ser feita
         }
