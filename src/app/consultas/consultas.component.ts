@@ -44,8 +44,6 @@ export class ConsultasComponent implements OnInit{
   public url: string;
   public search: boolean = false;
 
-  public endDate: string = "";
-
   baseUrl = '';
 
   ListaDocType;
@@ -122,8 +120,6 @@ export class ConsultasComponent implements OnInit{
       var processDocNumber = this.form.get('documentNumber').value;
       var processDateStart = this.form.get('processDateStart').value;
       var processDateUntil = this.form.get('processDateEnd').value;
-
-      this.endDate = processDateStart;
 
       var encodedCode = encodeURIComponent(processNumber);
       this.url = this.baseUrl + 'process?';
