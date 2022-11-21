@@ -186,6 +186,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
     this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
     this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity);
+    this.loadMensalidades();
   }
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
@@ -214,13 +215,20 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     }
 
     this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-      if (result.result.length == 1) {
-        this.pricingOptions.push(result.result[0]);
-        this.chooseMensalidade(result.result[0].id);
+      if (this.storeEquip.pricing == null) {
+        if (result.result.length == 1) {
+          this.pricingOptions.push(result.result[0]);
+          this.chooseMensalidade(result.result[0].id);
+        } else {
+          result.result.forEach(options => {
+            this.pricingOptions.push(options);
+          });
+        }
       } else {
         result.result.forEach(options => {
           this.pricingOptions.push(options);
         });
+        this.chooseMensalidade(this.storeEquip.pricing.id);
       }
     });
   }
@@ -231,12 +239,17 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   chooseMensalidade(id: string) {
     this.pricingAttributeList = [];
     if (this.formConfig.valid) {
-      this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
-        res.result.attributes.forEach(attr => {
-          this.pricingAttributeList.push(attr);
+      if (this.storeEquip.pricing == null) {
+        this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
+          res.result.attributes.forEach(attr => {
+            this.pricingAttributeList.push(attr);
+          });
+          this.addPricingForm();
         });
+      } else {
+        this.pricingAttributeList.push(this.storeEquip.pricing.attribute);
         this.addPricingForm();
-      });
+      }
       //this.formConfig.valueChanges.subscribe(value => {
       //  if (value) { //se algum valor do form for alterado, é preciso carregar as mensalidades novamente e as que já existiam são limpas
       //    this.pricingOptions = [];
