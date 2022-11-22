@@ -970,8 +970,8 @@ export class ClientByIdComponent implements OnInit {
         }
       });
 
-      var documents = this.clientContext.newSubmission.documents;
-      documents.forEach(function (value, idx) {
+      // var documents = this.clientContext.newSubmission.documents;
+      context.clientDocs.forEach(function (value, idx) {
         context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
           console.log("adicionou documento: ", result);
         });
