@@ -646,6 +646,54 @@ export class DashboardComponent implements OnInit {
       return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
     }
 
+    this.dataSourceTratamento.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceDevolvidos.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceAceitacao.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourcePendingSent.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourcePendingEligibility.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceMultipleClients.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceDOValidation.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceNegotiationAproval.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceMCCTreatment.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceValidationSIBS.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceRiskOpinion.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
+    this.dataSourceComplianceDoubts.filterPredicate = function (record, filterValue) {
+      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+    }
+
     console.log("VALORES DO USER " , this.currentUser);
     //this.tokenService.getLoginTokenInfo(this.currentUser.token).then(result => {
     //  console.log('RESULTADO DA CHAMADA AO NOSSO BACKEND PARA OBTER OS DADOS DO TOKEN ', result);
@@ -665,80 +713,54 @@ export class DashboardComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    // filterValue = filterValue.trim(); // Remove whitespace
-    // filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourcePendentes.filter = filterValue;
   }
 
   applyFilter1(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceTratamento.filter = filterValue;
   }
 
   applyFilterDevolvidos(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceDevolvidos.filter = filterValue;
   }
 
   applyFilterAceitacao(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceAceitacao.filter = filterValue;
   }
 
   applyFilterPendingSent(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourcePendingSent.filter = filterValue;
   }
 
   applyFilterPendingEligibility(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourcePendingEligibility.filter = filterValue;
   }
 
   applyFilterMultipleClients(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceMultipleClients.filter = filterValue;
   }
 
   applyFilterDOValidation(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceDOValidation.filter = filterValue;
   }
 
   applyFilterNegotiationAproval(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceNegotiationAproval.filter = filterValue;
   }
 
   applyFilterMCCTreatment(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceMCCTreatment.filter = filterValue;
   }
 
   applyFilterValidationSIBS(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceValidationSIBS.filter = filterValue;
   }
 
   applyFilterRiskOpinion(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceRiskOpinion.filter = filterValue;
   }
 
   applyFilterComplianceDoubts(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSourceComplianceDoubts.filter = filterValue;
   }
 
