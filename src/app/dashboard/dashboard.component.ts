@@ -643,55 +643,55 @@ export class DashboardComponent implements OnInit {
     this.processNrService.changeProcessNumber(null);
 
     this.dataSourcePendentes.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceTratamento.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceDevolvidos.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceAceitacao.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourcePendingSent.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourcePendingEligibility.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceMultipleClients.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceDOValidation.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceNegotiationAproval.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceMCCTreatment.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceValidationSIBS.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceRiskOpinion.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     this.dataSourceComplianceDoubts.filterPredicate = function (record, filterValue) {
-      return record.processNumber.trim().toLowerCase() == filterValue.trim().toLowerCase();
+      return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
     console.log("VALORES DO USER " , this.currentUser);
