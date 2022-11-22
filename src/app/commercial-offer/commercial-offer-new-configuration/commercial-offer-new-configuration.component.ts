@@ -49,6 +49,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   public currentPage: number;
 
   formConfig: FormGroup;
+  pricingForm: FormGroup;
   edit: boolean;
   submissionId: string;
 
@@ -97,7 +98,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.currentStore = changes["currentStore"].currentValue;
     }
     if (changes["isNewConfig"]) {
-
+      this.isNewConfig = changes["isNewConfig"].currentValue;
     }
     if (changes["storeEquip"]) {
       if (changes["storeEquip"].previousValue != null) {
@@ -161,6 +162,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       //adicionar um form para o preço
       
     });
+
+    this.pricingForm = new FormGroup({});
+
     this.disableForm();
 
     this.formConfig.get("terminalProperty").valueChanges.subscribe(val => {
@@ -182,15 +186,18 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
 
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      console.log('val ', val);
       if (this.formConfig.valid && this.firstTime) {
         this.firstTime = false;
-      }else if (this.formConfig.valid && !this.firstTime) {
+      } else if (this.formConfig.valid && !this.firstTime) {
+        this.pricingOptions = [];
+        this.pricingAttributeList = [];
         this.loadMensalidades();
-      }else if (!this.formConfig.valid && !this.firstTime) {
+      } else if (!this.formConfig.valid && !this.firstTime) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
-    })
+    });
   }
 
   updateFormData() {
@@ -280,7 +287,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
       valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value));
       valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
-      context.formConfig.addControl("formGroupPricing" + value.id, valueGroup);
+      context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
     });
   }
 
@@ -303,7 +310,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.storeEquip.quantity = Number(this.formConfig.get("terminalAmount").value);
 
       this.pricingAttributeList.forEach(attr => {
-        var group = this.formConfig.controls["formGroupPricing" + attr.id];
+        var group = this.pricingForm.controls["formGroupPricing" + attr.id];
         if (!attr.isReadOnly) {
           attr.originalValue = group.get("formControlPricingOriginal" + attr.id).value;
           attr.value = group.get("formControlPricingDiscount" + attr.id).value; //não existe variável para este valor
@@ -317,6 +324,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       console.log('Valor do store equip ', this.storeEquip);
 
       if (this.isNewConfig == false) {
+        console.log('EDITAR STORE EQUIP');
         //chamada à API para editar uma configuração
         this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip.id, this.storeEquip).subscribe(result => {
           this.changedStoreEvent.emit(true);
