@@ -216,15 +216,11 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendentes.data = this.incompleteProcessess.items;
         this.dataSourcePendentes.sortingDataAccessor = (item, property) => {
           switch (property) {
-            case 'processNumber': return item.processNumber;
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
 
-            case 'merchant.fiscalId': return item.merchant.fiscalId;
+            case 'merchant.name': return item.merchant?.name;
 
-            case 'merchant.name': return item.merchant.name;
-
-            case 'startedAt': return item["startedAt"];
-
-            case 'state': return item.state;
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property];
           }
@@ -260,6 +256,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceTratamento.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceTratamento.data = this.ongoingProcessess.items;
+        this.dataSourceTratamento.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId.toLocaleLowerCase();
+
+            case 'merchant.name': return item.merchant?.name.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceTratamento.sort = this.empTbSortWithObject;
         this.ongoingCount = result.pagination.total;
       });
