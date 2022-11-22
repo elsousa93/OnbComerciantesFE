@@ -218,9 +218,9 @@ export class DashboardComponent implements OnInit {
           switch (property) {
             case 'processNumber': return item.processNumber;
 
-            case 'fiscalId': return item.merchant.fiscalId;
+            case 'merchant.fiscalId': return item.merchant.fiscalId;
 
-            case 'name': return item.merchant.name;
+            case 'merchant.name': return item.merchant.name;
 
             case 'startedAt': return item["startedAt"];
 

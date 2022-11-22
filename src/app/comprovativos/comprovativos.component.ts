@@ -295,7 +295,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                       status: "não definido",
                       uploadDate: latest_date,
                       file: context.file,
-                      documentPurpose: val.documentPurpose
+                      documentPurpose: val.documentPurpose,
+                      documentType: val.documentType
                     });
                   }
                   console.log("Lista de comprovativos ", context.compsToShow);
