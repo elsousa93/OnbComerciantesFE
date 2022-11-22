@@ -280,18 +280,18 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.fiscalId }} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.name }} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.merchant.name }} </mat-cell>
                   </ng-container>
                   <!-- Data Processo Column -->
                   <ng-container matColumnDef="requestDate">
@@ -376,14 +376,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant?.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -464,14 +464,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -553,14 +553,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -647,14 +647,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -736,14 +736,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -834,14 +834,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -931,14 +931,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -1028,14 +1028,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -1126,14 +1126,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -1223,14 +1223,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -1320,14 +1320,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>
@@ -1417,14 +1417,14 @@
                     <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
                   </ng-container>
                   <!-- NIPC Column -->
-                  <ng-container matColumnDef="nipc">
+                  <ng-container matColumnDef="merchant.fiscalId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       NIPC
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{ row.merchant.fiscalId }} </mat-cell>
                   </ng-container>
                   <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="clientName">
+                  <ng-container matColumnDef="merchant.name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.clientName'|translate|uppercase}}
                     </mat-header-cell>

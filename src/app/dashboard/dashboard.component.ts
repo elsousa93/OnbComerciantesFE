@@ -126,8 +126,8 @@ export class DashboardComponent implements OnInit {
 
   state = State;
 
-  displayedColumns = ['processNumber', 'nipc', 'clientName', 'requestDate','state', 'buttons'];
-  displayedColumnsQueues = ['processNumber', 'nipc', 'clientName', 'requestDate','state', 'assigned', 'buttons'];
+  displayedColumns = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'requestDate','state', 'buttons'];
+  displayedColumnsQueues = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'requestDate','state', 'assigned', 'buttons'];
 
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -214,6 +214,21 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
         
         this.dataSourcePendentes.data = this.incompleteProcessess.items;
+        this.dataSourcePendentes.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'processNumber': return item.processNumber;
+
+            case 'fiscalId': return item.merchant.fiscalId;
+
+            case 'name': return item.merchant.name;
+
+            case 'startedAt': return item["startedAt"];
+
+            case 'state': return item.state;
+
+            default: return item[property];
+          }
+        }
         this.dataSourcePendentes.sort = this.empTbSort;
         this.incompleteCount = result.pagination.total;
       });

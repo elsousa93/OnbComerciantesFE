@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
@@ -178,6 +178,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.formConfig.get('communicationType').updateValueAndValidity();
       this.formConfig.get('terminalAmount').updateValueAndValidity();
     });
+
+    this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      console.log('val ', val);
+      if (this.formConfig.valid && val) {
+        this.loadMensalidades();
+      }
+    })
   }
 
   updateFormData() {
