@@ -322,7 +322,7 @@ export class StoreComponent implements AfterViewInit {
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
-          if (this.currentIdx < (this.storesLength - 1)) {
+          if (this.currentIdx < this.storesLength) {
             this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
             this.resetForm();
             this.onActivate();

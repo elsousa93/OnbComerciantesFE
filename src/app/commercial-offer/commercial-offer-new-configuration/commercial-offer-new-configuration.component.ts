@@ -184,11 +184,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
       if (this.formConfig.valid && this.firstTime) {
         this.firstTime = false;
-      }
-      if (this.formConfig.valid && !this.firstTime) {
+      }else if (this.formConfig.valid && !this.firstTime) {
         this.loadMensalidades();
-      }
-      if (!this.formConfig.valid && !this.firstTime) {
+      }else if (!this.formConfig.valid && !this.firstTime) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
@@ -318,9 +316,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
       console.log('Valor do store equip ', this.storeEquip);
 
-      if (this.edit) {
+      if (this.isNewConfig == false) {
         //chamada à API para editar uma configuração
-        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip).subscribe(result => {
+        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip.id, this.storeEquip).subscribe(result => {
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
           this.logger.debug("Update Shop Equipment From Submission Response ", result.id);

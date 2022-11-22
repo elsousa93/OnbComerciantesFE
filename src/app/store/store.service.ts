@@ -176,8 +176,8 @@ export class StoreService {
     return this.http.post<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment', newShopEquipment);
   }
 
-  updateShopEquipmentConfigurationsInSubmission(submissionId: string, shopId: string, newShopEquipment: ShopEquipment) {
-    return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment', newShopEquipment);
+  updateShopEquipmentConfigurationsInSubmission(submissionId: string, shopId: string, equipId: string, newShopEquipment: ShopEquipment) {
+    return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId, newShopEquipment);
   }
 
   addDocumentToShop(submissionId: string, shopId: string, ) {
