@@ -224,10 +224,10 @@ export class CommercialOfferListComponent implements OnInit {
   resetValues() {
     var context = this;
     this.commissionAttributeList.forEach(function (value, idx) {
-      context.form.get("commission" + value.id).get("commissionMin").setValue(value.minValue.originalValue);
-      context.form.get("commission" + value.id).get("commissionMax").setValue(value.maxValue.originalValue);
-      context.form.get("commission" + value.id).get("commissionFixed").setValue(value.fixedValue.originalValue);
-      context.form.get("commission" + value.id).get("commissionPercentage").setValue(value.percentageValue.originalValue);
+      context.form.get("commission" + value.id).get("commissionMin").setValue(value.minValue.value);
+      context.form.get("commission" + value.id).get("commissionMax").setValue(value.maxValue.value);
+      context.form.get("commission" + value.id).get("commissionFixed").setValue(value.fixedValue.value);
+      context.form.get("commission" + value.id).get("commissionPercentage").setValue(value.percentageValue.value);
     });
     this.chooseCommission(this.commissionId);
   }

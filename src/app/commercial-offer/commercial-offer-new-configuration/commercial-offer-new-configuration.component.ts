@@ -70,6 +70,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Output() changedStoreEvent = new EventEmitter<boolean>();
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
 
+  firstTime: boolean = true;
+
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
       this.allCommunications = result;
@@ -180,9 +182,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
 
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      console.log('val ', val);
-      if (this.formConfig.valid && val) {
+      if (this.formConfig.valid && this.firstTime) {
+        this.firstTime = false;
+      }
+      if (this.formConfig.valid && !this.firstTime) {
         this.loadMensalidades();
+      }
+      if (!this.formConfig.valid && !this.firstTime) {
+        this.pricingOptions = [];
+        this.pricingAttributeList = [];
       }
     })
   }

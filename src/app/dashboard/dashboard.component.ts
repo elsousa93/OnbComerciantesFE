@@ -218,11 +218,11 @@ export class DashboardComponent implements OnInit {
           switch (property) {
             case 'merchant.fiscalId': return item.merchant?.fiscalId;
 
-            case 'merchant.name': return item.merchant?.name;
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
             case 'startedAt': return new Date(item["startedAt"]);
 
-            default: return item[property];
+            default: return item[property].toLocaleLowerCase();
           }
         }
         this.dataSourcePendentes.sort = this.empTbSort;
@@ -300,6 +300,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceDevolvidos.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceDevolvidos.data = this.returnedProcessess.items;
+        this.dataSourceDevolvidos.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
         this.returnedCount = result.pagination.total;
       });
@@ -332,6 +343,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceAceitacao.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceAceitacao.data = this.contractAcceptanceProcessess.items;
+        this.dataSourceAceitacao.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
         this.contractAcceptanceCount = result.pagination.total;
       });
@@ -364,6 +386,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendingSent.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourcePendingSent.data = this.pendingSentProcessess.items;
+        this.dataSourcePendingSent.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourcePendingSent.sort = this.empTbSortPendingSent;
         this.pendingSentCount = result.pagination.total;
       });
@@ -396,6 +429,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourcePendingEligibility.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourcePendingEligibility.data = this.pendingEligibilityProcessess.items;
+        this.dataSourcePendingEligibility.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourcePendingEligibility.sort = this.empTbSortPendingEligibility;
         this.pendingEligibilityCount = result.pagination.total;
       });
@@ -428,6 +472,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceMultipleClients.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceMultipleClients.data = this.multipleClientesProcessess.items;
+        this.dataSourceMultipleClients.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceMultipleClients.sort = this.empTbSortMultipleClients;
         this.multipleClientesCount = result.pagination.total;
       });
@@ -460,6 +515,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceDOValidation.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceDOValidation.data = this.DOValidationProcessess.items;
+        this.dataSourceDOValidation.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceDOValidation.sort = this.empTbSortDOValidation;
         this.DOValidationCount = result.pagination.total;
       });
@@ -492,6 +558,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceNegotiationAproval.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceNegotiationAproval.data = this.negotiationAprovalProcessess.items;
+        this.dataSourceNegotiationAproval.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceNegotiationAproval.sort = this.empTbSortNegotiationAproval;
         this.negotiationAprovalCount = result.pagination.total;
       });
@@ -524,6 +601,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceMCCTreatment.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceMCCTreatment.data = this.MCCTreatmentProcessess.items;
+        this.dataSourceMCCTreatment.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceMCCTreatment.sort = this.empTbSortMCCTreatment;
         this.MCCTreatmentCount = result.pagination.total;
       });
@@ -556,6 +644,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceValidationSIBS.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceValidationSIBS.data = this.validationSIBSProcessess.items;
+        this.dataSourceValidationSIBS.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceValidationSIBS.sort = this.empTbSortValidationSIBS;
         this.validationSIBSCount = result.pagination.total;
       });
@@ -588,6 +687,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceRiskOpinion.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceRiskOpinion.data = this.riskOpinionProcessess.items;
+        this.dataSourceRiskOpinion.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceRiskOpinion.sort = this.empTbSortRiskOpinion;
         this.riskOpinionCount = result.pagination.total;
       });
@@ -620,6 +730,17 @@ export class DashboardComponent implements OnInit {
         this.dataSourceComplianceDoubts.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
         this.dataSourceComplianceDoubts.data = this.complianceDoubtsProcessess.items;
+        this.dataSourceComplianceDoubts.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+            case 'startedAt': return new Date(item["startedAt"]);
+
+            default: return item[property].toLocaleLowerCase();
+          }
+        }
         this.dataSourceComplianceDoubts.sort = this.empTbSortComplianceDoubts;
         this.complianceDoubtsCount = result.pagination.total;
       });

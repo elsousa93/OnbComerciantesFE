@@ -151,7 +151,24 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   selectStore(info) {
     this.selectedStore = info.store;
     this.currentIdx = info.idx;
-    this.setForm();
+    this.getCountryInternationalCallingCode().then(result => {
+      setTimeout(() => this.setForm(), 500);
+    });
+  }
+
+  getCountryInternationalCallingCode() {
+    return new Promise(resolve => {
+      if (this.selectedStore?.phone1?.countryCode != null && !this.selectedStore?.phone1?.countryCode.startsWith("+")) {
+        this.tableInfo.GetCountryById(this.selectedStore?.phone1?.countryCode).subscribe(result => {
+          if (result != null) {
+            this.selectedStore.phone1.countryCode = result.internationalCallingCode;
+          }
+          resolve(true);
+        }, error => resolve(false));
+      } else {
+        resolve(false);
+      }
+    });
   }
 
   submit() {
@@ -191,7 +208,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    
     this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
     this.listValue.get("cellphone").get("phoneNumber").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber);
     this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode);
