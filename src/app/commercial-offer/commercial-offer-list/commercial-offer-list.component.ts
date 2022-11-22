@@ -187,10 +187,14 @@ export class CommercialOfferListComponent implements OnInit {
         list.forEach(res => {
           this.storeService.getShopEquipmentFromSubmission(this.submissionId, this.currentStore.id, res.id).then(r => {
             this.storeEquipList.push(r.result);
+          }).then(res => {
+            
           });
         });
-        this.loadStoreEquips(this.storeEquipList);
+        //this.loadStoreEquips(this.storeEquipList);
       }
+    }).then(res => {
+      this.loadStoreEquips(this.storeEquipList);
     });
   }
 
@@ -334,8 +338,7 @@ export class CommercialOfferListComponent implements OnInit {
       this.getCommissionsList();
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
-      } else if (this.currentStore.pack?.otherPackDetails?.length != 0 && this.currentStore.pack?.paymentSchemes != null) {
-        console.log('ENTREI NO IF DO COMMERCIAL PACK');
+      } else if ((this.currentStore.pack?.otherPackDetails?.length != 0 && this.currentStore.pack?.otherPackDetails != null) && this.currentStore.pack?.paymentSchemes != null) {
         this.selectCommercialPack(this.currentStore.pack.packId);
       }
     });
@@ -348,8 +351,7 @@ export class CommercialOfferListComponent implements OnInit {
     context.groupsList=[];
     context.paymentSchemes=null;
     this.form.get("productPackKind").setValue(packId);
-    if (this.currentStore.pack?.otherPackDetails?.length == 0 && this.currentStore.pack?.paymentSchemes == null) {
-      console.log("ENTREI NO IF DO SELECT COMERCIAL PACK");
+    if (this.currentStore.pack == null) {
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
         context.paymentSchemes = res.result.paymentSchemes;
         context.addPaymentFormGroups();
@@ -386,7 +388,7 @@ export class CommercialOfferListComponent implements OnInit {
       packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
     }
 
-    if (this.currentStore.pack?.commission == null) {
+    if (this.currentStore.pack == null) {
       this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
         if (result.result.length == 1) {
           this.commissionOptions.push(result.result[0]);
@@ -406,7 +408,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionId = commisionId;
     var productCode = this.currentStore.productCode;
     this.commissionAttributeList = [];
-    if (this.currentStore.pack?.commission == null) {
+    if (this.currentStore.pack == null) {
       this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
         res.result.attributes.forEach(attr => {
           this.commissionAttributeList.push(attr);
