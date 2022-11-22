@@ -253,7 +253,7 @@ export class ClientByIdComponent implements OnInit {
     var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();
     this.logger.debug("data formatada");
     var separated = b.split('-');
-    var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+    var formatedDate = separated[2] + "-" + separated[0] + "-" + separated[1];
     this.logger.debug(formatedDate);
     //var date = formatDate(this.processClient.capitalStock.date, 'MM-dd-yyyy', 'en-US');
     var branch1 = '';
