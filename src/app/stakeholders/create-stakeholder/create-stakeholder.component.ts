@@ -34,6 +34,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
 import { Address } from '../../pep/IPep.interface';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -675,6 +676,10 @@ export class CreateStakeholderComponent implements OnInit {
     this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
     this.isCC = true;
 
+    var dateCC = this.dataCCcontents.expiricyDateCC;
+    var separated = dateCC.split(' ');
+    var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+
     var stakeholderToInsert: IStakeholders = {
       "fiscalId": this.dataCCcontents.nifCC,
       "fullName": this.dataCCcontents.nameCC,
@@ -683,7 +688,7 @@ export class CreateStakeholderComponent implements OnInit {
         "type": '1001',           //FIXME "CC"
         "number": this.dataCCcontents.cardNumberCC,
         "country": this.dataCCcontents.countryCC,
-        "expirationDate": this.dataCCcontents.expiricyDateCC,
+        "expirationDate": new Date(formatedDate).toISOString(),
         "checkDigit": null     //FIXME
       },
       "fiscalAddress": {
