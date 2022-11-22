@@ -178,15 +178,15 @@ export class CommercialOfferListComponent implements OnInit {
         if (result != null){
           this.storeEquipList.push(result);
         }
-        
       });
     }
-    this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).subscribe(result => {
-      if (result.length > 0) {
-        this.storeEquipList = [];
-        result.forEach(res => {
-          this.storeService.getShopEquipmentFromSubmission(this.submissionId, this.currentStore.id, res.id).subscribe(r => {
-            this.storeEquipList.push(r);
+
+    this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
+      var list = result.result;
+      if (list.length > 0) {
+        list.forEach(res => {
+          this.storeService.getShopEquipmentFromSubmission(this.submissionId, this.currentStore.id, res.id).then(r => {
+            this.storeEquipList.push(r.result);
           });
         });
         this.loadStoreEquips(this.storeEquipList);
@@ -334,7 +334,8 @@ export class CommercialOfferListComponent implements OnInit {
       this.getCommissionsList();
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
-      } else if ((this.currentStore.pack?.otherPackDetails.length != 0 && this.currentStore.pack?.otherPackDetails != null) && this.currentStore.pack?.paymentSchemes != null) {
+      } else if (this.currentStore.pack?.otherPackDetails?.length != 0 && this.currentStore.pack?.paymentSchemes != null) {
+        console.log('ENTREI NO IF DO COMMERCIAL PACK');
         this.selectCommercialPack(this.currentStore.pack.packId);
       }
     });
@@ -347,7 +348,8 @@ export class CommercialOfferListComponent implements OnInit {
     context.groupsList=[];
     context.paymentSchemes=null;
     this.form.get("productPackKind").setValue(packId);
-    if ((this.currentStore.pack?.otherPackDetails == null || this.currentStore.pack?.otherPackDetails.length == 0) && this.currentStore.pack?.paymentSchemes == null) {
+    if (this.currentStore.pack?.otherPackDetails?.length == 0 && this.currentStore.pack?.paymentSchemes == null) {
+      console.log("ENTREI NO IF DO SELECT COMERCIAL PACK");
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
         context.paymentSchemes = res.result.paymentSchemes;
         context.addPaymentFormGroups();

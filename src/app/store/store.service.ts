@@ -163,11 +163,13 @@ export class StoreService {
   }
 
   getShopEquipmentConfigurationsFromSubmission(submissionId: string, shopId: string) {
-    return this.http.get<SimplifiedReference[]>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment');
+    var url = this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment';
+    return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
 
   getShopEquipmentFromSubmission(submissionId: string, shopId: string, equipId: string) {
-    return this.http.get<ShopEquipment>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId);
+    var url = this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId;
+    return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
 
   addShopEquipmentConfigurationsToSubmission(submissionId: string, shopId: string, newShopEquipment: ShopEquipment) {

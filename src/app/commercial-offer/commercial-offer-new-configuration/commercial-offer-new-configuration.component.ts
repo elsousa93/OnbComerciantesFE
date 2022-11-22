@@ -215,7 +215,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     }
 
     this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-      if (this.storeEquip?.pricing == null) {
+      if (this.storeEquip?.pricing == null || (this.storeEquip?.pricing?.id == "" || this.storeEquip?.pricing?.id == null)) {
         if (result.result.length == 1) {
           this.pricingOptions.push(result.result[0]);
           this.chooseMensalidade(result.result[0].id);
@@ -239,7 +239,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   chooseMensalidade(id: string) {
     this.pricingAttributeList = [];
     if (this.formConfig.valid) {
-      if (this.storeEquip?.pricing == null) {
+      if (this.storeEquip?.pricing == null || (this.storeEquip?.pricing?.id == "" || this.storeEquip?.pricing?.id == null)) {
         this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
           res.result.attributes.forEach(attr => {
             this.pricingAttributeList.push(attr);
