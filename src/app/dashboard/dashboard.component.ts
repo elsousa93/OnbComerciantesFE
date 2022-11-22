@@ -126,8 +126,8 @@ export class DashboardComponent implements OnInit {
 
   state = State;
 
-  displayedColumns = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'requestDate','state', 'buttons'];
-  displayedColumnsQueues = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'requestDate','state', 'assigned', 'buttons'];
+  displayedColumns = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt','state', 'buttons'];
+  displayedColumnsQueues = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt','state', 'assigned', 'buttons'];
 
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -258,9 +258,9 @@ export class DashboardComponent implements OnInit {
         this.dataSourceTratamento.data = this.ongoingProcessess.items;
         this.dataSourceTratamento.sortingDataAccessor = (item, property) => {
           switch (property) {
-            case 'merchant.fiscalId': return item.merchant?.fiscalId.toLocaleLowerCase();
+            case 'merchant.fiscalId': return item.merchant?.fiscalId;
 
-            case 'merchant.name': return item.merchant?.name.toLocaleLowerCase();
+            case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
             case 'startedAt': return new Date(item["startedAt"]);
 
