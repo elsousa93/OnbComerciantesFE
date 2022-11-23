@@ -62,7 +62,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() parentFormGroup: FormGroup;
   @Input() isNewConfig: boolean;
   @Input() currentStore: ShopDetailsAcquiring;
-  @Input() storeEquip: ShopEquipment = {};
+  @Input() storeEquip: ShopEquipment;
   @Input() packId: string;
   @Input() packs: ProductPackEntry[];
   @Input() merchantCatalog: MerchantCatalog;
@@ -72,6 +72,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
 
   firstTime: boolean = true;
+  selectedMensalidadeId: string = "";
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
@@ -264,6 +265,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   //ao escolher uma mensalidade, é carregado os valors associados a essa mensalidade escolhida
   chooseMensalidade(id: string) {
+    this.selectedMensalidadeId = id;
     this.pricingAttributeList = [];
     if (this.formConfig.valid) {
       if (this.storeEquip?.pricing == null || (this.storeEquip?.pricing?.id == "" || this.storeEquip?.pricing?.id == null)) {
@@ -301,6 +303,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   submit() {
     if (this.formConfig.valid) {
+
+      if (this.isNewConfig == true) {
+        this.storeEquip = {};
+      }
       this.storeEquip.shopEquipmentId = this.formConfig.get("name").value;
       this.storeEquip.equipmentOwnership = this.formConfig.get("terminalProperty").value;
       this.storeEquip.communicationOwnership = this.formConfig.get("communicationOwnership").value;
@@ -318,7 +324,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       });
 
       this.storeEquip.pricing = {};
-      this.storeEquip.pricing.attribute = this.pricingAttributeList[0];
+      this.storeEquip.pricing.id = this.selectedMensalidadeId;
+      this.storeEquip.pricing.attribute = this.pricingAttributeList.find(attr => attr.id == this.selectedMensalidadeId);
 
       console.log('Valor do store equip ', this.storeEquip);
 

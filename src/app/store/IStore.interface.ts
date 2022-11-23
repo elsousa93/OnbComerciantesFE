@@ -155,7 +155,7 @@ interface ShopDocuments {
   href?: string
 }
 
-export interface ShopEquipment {
+export class ShopEquipment {
   id?: string
   shopEquipmentId?: string
   communicationOwnership?: string //CommunicationOwnershipTypeEnum
