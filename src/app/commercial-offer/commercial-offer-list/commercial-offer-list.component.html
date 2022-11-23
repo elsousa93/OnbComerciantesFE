@@ -152,7 +152,7 @@
                        </nav>
                      </div>
                    </div>
-                   </div>
+
                    <!-- ATRIBUTOS DO PACOTE -->
                    <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
                      <div class="row">
@@ -161,7 +161,7 @@
                          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0" *ngFor="let attribute of group.attributes">
                            <span class="navbar-text text-start align-self-start">
                              <div class="form-check" *ngIf="attribute.isVisible">
-                              <input *ngIf="attribute.aggregatorId!==null" class="form-check-input" name="aggregatorId" type="radio" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null">
+                              <input *ngIf="attribute.aggregatorId!==null" class="form-check" name="aggregatorId" type="radio" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null">
                                  <input *ngIf="attribute.aggregatorId===null" class="form-check-input" name="aggregatorId" type="checkbox" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null">
                                <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                                <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
@@ -189,7 +189,6 @@
                      </div>
                    </div>
                    <!-- MAIS DETALHES -->
-                   <div class="row" *ngIf="isPackSelected">
                    <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3" *ngIf="paymentSchemes !== null">
                      <span class="navbar-text me-2 align-self-center ms-0 me-0"> <!--*ngIf="paymentSchemes?.kind == 'advanced'"-->
                        <button id="btn5a"
@@ -223,7 +222,7 @@
                              <!-- LISTAR OS ATRIBUTOS -->
                              <span class="navbar-text text-start align-self-start">
                                <div class="form-check" *ngIf="attribute.isVisible">
-                                 <input *ngIf="attribute.aggregatorId!==null" class="form-check-input" name="aggregatorId" type="radio" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null">
+                                 <input *ngIf="attribute.aggregatorId!==null" class="form-check" name="aggregatorId" type="radio" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null">
                                  <input *ngIf="attribute.aggregatorId===null" class="form-check-input" name="aggregatorId" type="checkbox" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null">
                                  <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                                  <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
