@@ -240,7 +240,7 @@
                   <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3" *ngIf="paymentSchemes !== null">
                     <span class="navbar-text me-2 align-self-center ms-0 me-0">
                       <!--*ngIf="paymentSchemes?.kind == 'advanced'"-->
-                      <button id="btn5a" style="margin-bottom: 10px"
+                      <button id="btn5a" style="margin-bottom: 10px !important"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                         wappler-command="editContent" (click)="changeShowMore()">
                         <img
@@ -275,7 +275,7 @@
                           </nav>
                         </div>
                       </div>
-                      <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList"
+                      <div class="align-self-start mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList"
                         formGroupName="{{'formGroup' + group.id}}">
                         <div class="row">
                           <div class="row" *ngIf="group.kind == 'advanced'">
