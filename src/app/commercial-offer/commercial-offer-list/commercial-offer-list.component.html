@@ -152,9 +152,7 @@
                        </nav>
                      </div>
                    </div>
-                   
-                 </div>
-
+                   </div>
                    <!-- ATRIBUTOS DO PACOTE -->
                    <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
                      <div class="row">
@@ -191,6 +189,7 @@
                      </div>
                    </div>
                    <!-- MAIS DETALHES -->
+                   <div class="row" *ngIf="isPackSelected">
                    <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3" *ngIf="paymentSchemes !== null">
                      <span class="navbar-text me-2 align-self-center ms-0 me-0"> <!--*ngIf="paymentSchemes?.kind == 'advanced'"-->
                        <button id="btn5a"
@@ -253,6 +252,7 @@
                        </div>
                      </ng-container>
                    </div>
+                 </div>
 
                </div>
             </div>
