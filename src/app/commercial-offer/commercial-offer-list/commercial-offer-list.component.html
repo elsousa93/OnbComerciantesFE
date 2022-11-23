@@ -240,7 +240,7 @@
                   <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3" *ngIf="paymentSchemes !== null">
                     <span class="navbar-text me-2 align-self-center ms-0 me-0">
                       <!--*ngIf="paymentSchemes?.kind == 'advanced'"-->
-                      <button id="btn5a"
+                      <button id="btn5a" style="margin-bottom: 10px"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                         wappler-command="editContent" (click)="changeShowMore()">
                         <img
@@ -251,7 +251,7 @@
                     </span>
                     <ng-container *ngIf="showMore">
 
-                      <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0"
+                      <div class="align-self-start mt-0 ms-0 me-0 pt-0 ps-3 pe-0"
                         *ngIf="paymentSchemes?.kind == 'advanced'">
                         <div class="row">
                           <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
