@@ -62,7 +62,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() parentFormGroup: FormGroup;
   @Input() isNewConfig: boolean;
   @Input() currentStore: ShopDetailsAcquiring;
-  @Input() storeEquip: ShopEquipment;
+  @Input() storeEquip: ShopEquipment = {};
   @Input() packId: string;
   @Input() packs: ProductPackEntry[];
   @Input() merchantCatalog: MerchantCatalog;
@@ -154,7 +154,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   initializeForm() {
     this.formConfig = new FormGroup({
       name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : '', Validators.required),
-      terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
+      terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership : '', Validators.required),
       communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership : '', Validators.required),
       terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
       communicationType: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationType : '', Validators.required),
@@ -207,12 +207,12 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   updateFormData() {
-    this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId);
-    this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership);
-    this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
-    this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
-    this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
-    this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity);
+    //this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId);
+    //this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership);
+    //this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
+    //this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
+    //this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
+    //this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity);
     this.loadMensalidades();
   }
 
@@ -301,7 +301,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   submit() {
     if (this.formConfig.valid) {
-      this.storeEquip = {};
       this.storeEquip.shopEquipmentId = this.formConfig.get("name").value;
       this.storeEquip.equipmentOwnership = this.formConfig.get("terminalProperty").value;
       this.storeEquip.communicationOwnership = this.formConfig.get("communicationOwnership").value;
