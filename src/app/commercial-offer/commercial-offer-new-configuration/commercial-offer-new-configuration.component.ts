@@ -141,13 +141,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.storeEquip.communicationOwnership = this.storeEquip.communicationOwnership.toLocaleLowerCase();
       this.updateFormData();
     }
-    //if (this.rootFormGroup.form != null) {
-    //  this.rootFormGroup.form.setControl('configTerm', this.formConfig);
-
-    //  if (this.returned == 'consult') {
-    //    this.formConfig.disable();
-    //  }
-    //}
   }
 
   ngOnDestroy(): void {
@@ -156,7 +149,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   initializeForm() {
     this.formConfig = new FormGroup({
-      name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : '', Validators.required),
+      name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : ''/*, Validators.required*/),
       terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership.toLocaleLowerCase() : '', Validators.required),
       communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership.toLocaleLowerCase() : '', Validators.required),
       terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
@@ -201,20 +194,23 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   checkFormValid() {
-    if (this.formConfig.get("terminalProperty").value != "" && this.formConfig.get("communicationOwnership").value != "" && this.formConfig.get("terminalType").value != "" && this.formConfig.get("communicationType").value != "" && this.formConfig.get("terminalAmount").value != null)
+    if (this.formConfig.get("terminalProperty").value != "" && this.formConfig.get("communicationOwnership").value != "" && this.formConfig.get("terminalType").value != "" && this.formConfig.get("communicationType").value != "" && this.formConfig.get("terminalAmount").value != null && this.formConfig.get("name").value != "")
       return true;
     else
       return false;
   }
 
   updateFormData() {
+    if (this.formConfig.valid) {
+      this.loadMensalidades();
+    }
     //this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId);
     //this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership);
     //this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
     //this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
     //this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
     //this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity);
-    this.loadMensalidades();
+    //this.loadMensalidades();
   }
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
