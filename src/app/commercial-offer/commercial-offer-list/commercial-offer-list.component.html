@@ -220,7 +220,8 @@
                              <!-- LISTAR OS ATRIBUTOS -->
                              <span class="navbar-text text-start align-self-start">
                                <div class="form-check" *ngIf="attribute.isVisible">
-                                 <input class="attribute.aggregatorId!=='null' ? form-check : form-check-input" name="{{'formControl' + attribute.id}}" type="attribute.aggregatorId!=='null' ? radio : checkbox" id="{{'formControl' + attribute.id}}" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
+                                 <input *ngIf="attribute.aggregatorId!==null" class="form-check" name="{{'formControl' + attribute.id}}" type="radio" id="{{'formControl' + attribute.id}}" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
+                                 <input *ngIf="attribute.aggregatorId===null" class="form-check-input" name="{{'formControl' + attribute.id}}" type="checkbox" id="{{'formControl' + attribute.id}}" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
                                  <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                                  <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                    <ng-container *ngIf="attribute.bundles.length > 0">
