@@ -281,12 +281,21 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   addPricingForm() {
     var context = this;
     var valueGroup = new FormGroup({});
-    this.pricingAttributeList.forEach(function (value, idx) {
-      valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
-      valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value));
-      valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
-      context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
-    });
+    if (this.isNewConfig) {
+      this.pricingAttributeList.forEach(function (value, idx) {
+        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value));
+        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
+        context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
+      });
+    } else {
+      this.pricingAttributeList.forEach(function (value, idx) {
+        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.finalValue));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.finalValue));
+        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.finalValue));
+        context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
+      });
+    }
   }
 
   numericOnly(event): boolean {
