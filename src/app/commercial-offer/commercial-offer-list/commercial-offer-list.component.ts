@@ -572,7 +572,7 @@ export class CommercialOfferListComponent implements OnInit {
 
     var group = new FormGroup({});
     this.paymentSchemes.attributes.forEach(function (value, idx) {
-      group.addControl('formControlPayment' + value.id, new FormControl(value.value));
+      group.addControl('formControlPayment' + value.id, new FormControl(value.isSelected));
     });
 
     this.form.addControl("formGroupPayment" + this.paymentSchemes.id, group);
