@@ -208,6 +208,8 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   selectStore(info) {
+    this.storeEquipList = [];
+
     this.currentStore = info.store;
     this.currentIdx = info.idx;
 
@@ -330,7 +332,7 @@ export class CommercialOfferListComponent implements OnInit {
       this.getCommissionsList();
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
-      } else if ((this.currentStore.pack?.otherPackDetails?.length != 0 && this.currentStore.pack?.otherPackDetails != null) && this.currentStore.pack?.paymentSchemes != null) {
+      } else if (this.currentStore.pack != null) {
         this.selectCommercialPack(this.currentStore.pack.packId);
       }
     });
