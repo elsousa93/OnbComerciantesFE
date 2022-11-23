@@ -191,10 +191,8 @@ export class CommercialOfferListComponent implements OnInit {
             this.loadStoreEquips(this.storeEquipList);
           });
         });
-        //this.loadStoreEquips(this.storeEquipList);
       }
     }).then(res => {
-      //this.loadStoreEquips(this.storeEquipList);
     });
   }
 
@@ -233,24 +231,13 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   initializeForm() {
-    //this.editForm = this.formBuilder.group({
-    //  form: this.formBuilder.group({
-    //    replicateProducts: new FormControl(this.replicateProducts, [Validators.required]),
-    //    store: new FormControl(''),
-    //    isUnicre: new FormControl(this.isUnicre, [Validators.required]),
-    //    terminalRegistrationNumber: new FormControl(''),
-    //    productPackKind: new FormControl('', [Validators.required]),
-    //  }),
-    //  configTerm: this.formBuilder.group({})
-    //});
     this.form = new FormGroup({
       replicateProducts: new FormControl(this.replicate, [Validators.required]),
       store: new FormControl(''),
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
       terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
-    })
-
+    });
   }
 
   addFormGroups() {
@@ -562,7 +549,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   storeEquipEvent(value) {
-    //this.storeEquipList.push(value);
+    this.isNewConfig = null;
     this.getStoreEquipsFromSubmission();
     this.loadStoreEquips(this.storeEquipList);
   }
