@@ -344,12 +344,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   cancelConfig() {
-    //let navigationExtras: NavigationExtras = {
-    //  state: {
-    //    store: this.currentStore,
-    //  }
-    //}
-    //this.route.navigate(['commercial-offert-list'], navigationExtras);
+    this.pricingOptions = [];
+    this.pricingAttributeList = [];
     this.changedStoreEvent.emit(true);
   }
 }
