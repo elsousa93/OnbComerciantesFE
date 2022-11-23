@@ -307,6 +307,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       if (this.isNewConfig == true) {
         this.storeEquip = {};
       }
+
       this.storeEquip.shopEquipmentId = this.formConfig.get("name").value;
       this.storeEquip.equipmentOwnership = this.formConfig.get("terminalProperty").value;
       this.storeEquip.communicationOwnership = this.formConfig.get("communicationOwnership").value;
@@ -325,7 +326,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
       this.storeEquip.pricing = {};
       this.storeEquip.pricing.id = this.selectedMensalidadeId;
-      this.storeEquip.pricing.attribute = this.pricingAttributeList.find(attr => attr.id == this.selectedMensalidadeId);
+      this.storeEquip.pricing.attribute = this.pricingAttributeList[0];
 
       console.log('Valor do store equip ', this.storeEquip);
 
