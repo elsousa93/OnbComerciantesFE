@@ -149,7 +149,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   initializeForm() {
     this.formConfig = new FormGroup({
-      name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : ''/*, Validators.required*/),
+      name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : '', Validators.required),
       terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership.toLocaleLowerCase() : '', Validators.required),
       communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership.toLocaleLowerCase() : '', Validators.required),
       terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
@@ -259,7 +259,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
 
 
-  //ao escolher uma mensalidade, é carregado os valors associados a essa mensalidade escolhida
+  //ao escolher uma mensalidade, é carregado os valores associados a essa mensalidade escolhida
   chooseMensalidade(id: string) {
     this.selectedMensalidadeId = id;
     this.pricingAttributeList = [];
