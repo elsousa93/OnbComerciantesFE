@@ -137,6 +137,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.loadReferenceData();
     this.initializeForm();
     if (this.isNewConfig == false) {
+      this.storeEquip.equipmentOwnership = this.storeEquip.equipmentOwnership.toLocaleLowerCase();
+      this.storeEquip.communicationOwnership = this.storeEquip.communicationOwnership.toLocaleLowerCase();
       this.updateFormData();
     }
     //if (this.rootFormGroup.form != null) {
@@ -155,13 +157,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   initializeForm() {
     this.formConfig = new FormGroup({
       name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : '', Validators.required),
-      terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership : '', Validators.required),
-      communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership : '', Validators.required),
+      terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership.toLocaleLowerCase() : '', Validators.required),
+      communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership.toLocaleLowerCase() : '', Validators.required),
       terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
       communicationType: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationType : '', Validators.required),
-      terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : '', Validators.required),
-      //adicionar um form para o preço
-      
+      terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : '', Validators.required)
     });
 
     this.pricingForm = new FormGroup({});
