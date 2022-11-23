@@ -499,6 +499,7 @@ export class CommercialOfferListComponent implements OnInit {
         console.log('Loja atualizada ', this.currentStore);
         if (this.currentIdx < (this.storesLength - 1)) {
           this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+          this.closeAccordion();
         } else {
           this.data.updateData(true, 5);
           this.route.navigate(['info-declarativa']);
@@ -506,6 +507,17 @@ export class CommercialOfferListComponent implements OnInit {
 
       });
     }
+  }
+
+  closeAccordion() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton1").className = "accordion1-button collapsed";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton2").className = "accordion1-button collapsed";
+    document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton3").className = "accordion1-button collapsed";
+    document.getElementById("flush-collapseFour").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton4").className = "accordion1-button collapsed";
   }
 
   emitUpdatedStore(info) {
