@@ -127,11 +127,11 @@
         <tr class="text-center align-middle" *ngFor="let pricing of pricingAttributeList"
             formGroupName="{{'formGroupPricing' + pricing.id}}">
 
-          <td class="text-primary text-center pt-0 pb-0">{{pricing.description}}</td>
+          <td class="text-primary text-center pt-0 pb-0" *ngIf="pricing.isVisible">{{pricing.description}}</td>
 
 
           <!--<td class="text-primary text-center pt-0 pb-0" *ngIf="pricing.isReadOnly === true">{{pricing.originalValue}}</td>-->
-        <td class="text-primary text-center pt-0 pb-0">
+        <td class="text-primary text-center pt-0 pb-0" *ngIf="pricing.isVisible">
           <!-- *ngIf="!pricing.isReadOnly" -->
           <input id="text2" name="text2" type="text"
                  class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="€0,00"
@@ -139,7 +139,7 @@
                  value="{{pricing.originalValue}}" [attr.disabled]="pricing.isReadOnly ? true : null">
         </td>
 
-          <td class="text-center align-middle texto_centrado">
+          <td class="text-center align-middle texto_centrado" *ngIf="pricing.isVisible">
             <input id="text2" name="text2" type="text"
                    class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="€0,00"
                    formControlName="{{'formControlPricingDiscount'+ pricing.id}}" [attr.disabled]="pricing.isReadOnly ? true : null">
@@ -148,7 +148,7 @@
           <!--<td class="text-primary text-center pt-0 pb-0" *ngIf="pricing.isReadOnly === true">
             {{pricing.finalValue}}
           </td>-->
-          <td class="text-primary text-center pt-0 pb-0">
+          <td class="text-primary text-center pt-0 pb-0" *ngIf="pricing.isVisible">
             <!-- *ngIf="!pricing.isReadOnly" -->
             <input id="text2" name="text2" type="text"
                    class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="€0,00"
