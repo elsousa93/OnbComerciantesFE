@@ -101,6 +101,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   packs: ProductPackEntry[];
   isPackSelected: boolean = false;
+  userBanca: boolean = false;
 
   previousStoreEvent: Observable<number>;
   storesLength: number = 0;
@@ -139,10 +140,12 @@ export class CommercialOfferListComponent implements OnInit {
     this.initializeForm();
 
     if (this.currentUser.permissions == UserPermissions.BANCA) {
+      this.userBanca = true;
       this.form.get("isUnicre").setValue(false);
       this.form.get("isUnicre").disable();
       this.changeUnicre(false);
     } else {
+      this.userBanca = false;
       this.form.get("isUnicre").setValue(true);
       this.changeUnicre(true);
     }
@@ -494,7 +497,7 @@ export class CommercialOfferListComponent implements OnInit {
       console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
         console.log('Loja atualizada ', this.currentStore);
-        if (this.currentIdx < (this.storesLength)) {
+        if (this.currentIdx < (this.storesLength - 1)) {
           this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
         } else {
           this.data.updateData(true, 5);
