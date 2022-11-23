@@ -135,7 +135,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.currentStore);
     this.loadReferenceData();
     this.initializeForm();
-    if (this.storeEquip != null) {
+    if (this.isNewConfig == false) {
       this.updateFormData();
     }
     //if (this.rootFormGroup.form != null) {
@@ -186,14 +186,19 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
 
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      console.log('first time ', this.firstTime);
       console.log('val ', val);
       if (this.formConfig.valid && this.firstTime) {
+        console.log('FOR É VALIDO E FIRST TIME ');
         this.firstTime = false;
       } else if (this.formConfig.valid && !this.firstTime) {
+        console.log('O FORM É VÁLIDO ', this.formConfig.valid);
+        console.log('FORM ', this.formConfig);
         this.pricingOptions = [];
         this.pricingAttributeList = [];
         this.loadMensalidades();
       } else if (!this.formConfig.valid && !this.firstTime) {
+        console.log('O FORM NÃO É VALIDO ', this.formConfig.valid);
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
