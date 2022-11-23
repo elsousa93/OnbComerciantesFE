@@ -17,7 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Process {
   processNumber: string;
-  nipc: number;
+  nipc: string;
   nome: string;
   estado: string;
 }
@@ -194,7 +194,7 @@ export class ConsultasComponent implements OnInit{
 
           return {
             processNumber: process?.processNumber,
-            nipc: Number(process?.merchant?.fiscalId),
+            nipc: process?.merchant?.fiscalId,
             nome: process?.merchant?.name,
             estado: process?.state
           };
