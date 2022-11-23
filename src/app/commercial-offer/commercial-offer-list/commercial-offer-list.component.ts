@@ -448,16 +448,10 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   createNewConfiguration() {
+    if (this.isNewConfig || this.isNewConfig == false) {
+      this.isNewConfig = null;
+    }
     this.isNewConfig = true;
-    //let navigationExtras: NavigationExtras = {
-    //  state: {
-    //    store: this.currentStore,
-    //    packId: this.form.get("productPackKind").value,
-    //    merchantCatalog: this.merchantCatalog,
-    //    packAttributes: this.groupsList
-    //  }
-    //}
-    //this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
   }
 
   submit() {
@@ -525,7 +519,12 @@ export class CommercialOfferListComponent implements OnInit {
 
   editConfiguration(shopEquipment: ShopEquipment) {
     if (this.returned != 'consult') {
+      if (this.isNewConfig || this.isNewConfig == false) { 
+        this.isNewConfig = null;
+      }
+
       this.isNewConfig = false;
+
       this.storeEquip = shopEquipment;
       //let navigationExtras: NavigationExtras = {
       //  state: {
