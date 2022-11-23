@@ -562,9 +562,9 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   storeEquipEvent(value) {
-    this.storeEquipList.push(value);
+    //this.storeEquipList.push(value);
+    this.getStoreEquipsFromSubmission();
     this.loadStoreEquips(this.storeEquipList);
-    //this.getStoreEquipsFromSubmission();
   }
 
   addPaymentFormGroups() {

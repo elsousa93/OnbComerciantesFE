@@ -60,10 +60,10 @@
             </select>
          </div>
       </div>
-     </form>
+</form>
 <form [formGroup]="pricingForm" name="pricingForm" id="pricingForm">
   <div class="col mt-0 mb-0 pt-5 pb-4 ps-1">
-    <button id="btn5a2" [disabled]="!formConfig.valid" type="button" (click)="loadMensalidades()" class="btn botao_azul btn-lg mt-2 ms-1 me-1"
+    <button id="btn5a2" [disabled]="!formConfig.valid" (click)="loadMensalidades()" class="btn botao_azul btn-lg mt-2 ms-1 me-1"
             wappler-command="editContent">
       {{'commercialOffer.uploadMensal'|translate|uppercase}}&nbsp;&nbsp;<img src="assets/images/move_up_white.svg" style="height: 25px !important; vertical-align: sub;">
     </button>
