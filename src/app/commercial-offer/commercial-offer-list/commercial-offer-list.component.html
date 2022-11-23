@@ -220,7 +220,7 @@
                              <!-- LISTAR OS ATRIBUTOS -->
                              <span class="navbar-text text-start align-self-start">
                                <div class="form-check" *ngIf="attribute.isVisible">
-                                 <input class="form-check-input" type="checkbox" id="input1" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" checked="attribute.isSelected">
+                                 <input class="form-check-input" name="attribute.id" type="attribute.aggregatorId ? radio : checkbox" id="input1" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" checked="attribute.isSelected">
                                  <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                                  <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                    <ng-container *ngIf="attribute.bundles.length > 0">
