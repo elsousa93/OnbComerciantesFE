@@ -549,7 +549,6 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   storeEquipEvent(value) {
-    this.isNewConfig = null;
     this.getStoreEquipsFromSubmission();
     this.loadStoreEquips(this.storeEquipList);
   }
