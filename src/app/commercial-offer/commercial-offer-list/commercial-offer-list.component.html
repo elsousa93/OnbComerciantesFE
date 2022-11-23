@@ -145,7 +145,7 @@
                        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let attribute of paymentSchemes.attributes" formGroupName="{{'formGroupPayment' + paymentSchemes.id}}">
                          <span class="navbar-text text-start align-self-start">
                            <div class="form-check" *ngIf="attribute.isVisible">
-                             <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}" [value]="attribute.value" name="{{'formControlPayment' + attribute.id}}" formControlName="{{'formControlPayment' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [attr.checked]="attribute.isSelected ? true : false">
+                             <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}" [value]="attribute.isSelected" name="{{'formControlPayment' + attribute.id}}" formControlName="{{'formControlPayment' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [attr.checked]="attribute.isSelected ? true : false">
                              <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                            </div>
                          </span>
@@ -161,7 +161,7 @@
                          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0" *ngFor="let attribute of group.attributes">
                            <span class="navbar-text text-start align-self-start">
                              <div class="form-check" *ngIf="attribute.isVisible">
-                               <input class="form-check-input" type="checkbox" id="{{'formControl' + attribute.id}}" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="false">
+                               <input class="form-check-input" type="checkbox" id="{{'formControl' + attribute.id}}" [value]="false" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="false">
                                <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                                <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                  <ng-container *ngIf="attribute.bundles.length > 0">
@@ -205,7 +205,7 @@
                            <!-- LISTAR OS ATRIBUTOS-->
                            <span class="navbar-text text-start align-self-start">
                              <div class="form-check" *ngIf="attribute.isVisible">
-                               <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}" [value]="attribute.value" name="{{'formControlPayment' + attribute.id}}" formControlName="{{'formControlPayment' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
+                               <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}" [value]="attribute.isSelected" name="{{'formControlPayment' + attribute.id}}" formControlName="{{'formControlPayment' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
                                <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                              </div>
                            </span>
@@ -220,8 +220,8 @@
                              <!-- LISTAR OS ATRIBUTOS -->
                              <span class="navbar-text text-start align-self-start">
                                <div class="form-check" *ngIf="attribute.isVisible">
-                                 <input *ngIf="attribute.aggregatorId!==null" class="form-check" name="{{'formControl' + attribute.id}}" type="radio" id="{{'formControl' + attribute.id}}" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
-                                 <input *ngIf="attribute.aggregatorId===null" class="form-check-input" name="{{'formControl' + attribute.id}}" type="checkbox" id="{{'formControl' + attribute.id}}" [value]="attribute.value" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
+                                 <input *ngIf="attribute.aggregatorId!==null" class="form-check" name="{{'formControl' + attribute.id}}" type="radio" id="{{'formControl' + attribute.id}}" [value]="attribute.isSelected" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
+                                 <input *ngIf="attribute.aggregatorId===null" class="form-check-input" name="{{'formControl' + attribute.id}}" type="checkbox" id="{{'formControl' + attribute.id}}" [value]="attribute.isSelected" name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}" [attr.disabled]="attribute.isReadOnly ? true : null" [checked]="attribute.isSelected">
                                  <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                                  <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                    <ng-container *ngIf="attribute.bundles.length > 0">
@@ -232,7 +232,7 @@
                                          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngFor="let bundleAttr of bundle.attributes">
                                            <span class="navbar-text text-start align-self-start">
                                              <div class="form-check" *ngIf="bundleAttr.isVisible">
-                                               <input class="form-check-input" type="checkbox" id="{{'formControl' + bundleAttr.id}}" [value]="bundleAttr.value" formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}" [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected">
+                                               <input class="form-check-input" type="checkbox" id="{{'formControl' + bundleAttr.id}}" [value]="bundleAttr.isSelected" formControlName="{{'formControlBundle' + bundleAttr.id}}" name="{{'formControl' + bundleAttr.id}}" [attr.disabled]="bundleAttr.isReadOnly ? true : null" [checked]="bundleAttr.isSelected">
                                                <label class="form-check-label texto_check_box" for="input1">{{bundleAttr.description}}</label>
                                              </div>
                                            </span>
