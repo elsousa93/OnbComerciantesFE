@@ -186,19 +186,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
 
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      console.log('first time ', this.firstTime);
-      console.log('val ', val);
       if (((this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && this.checkFormValid())) && this.firstTime) {
-        console.log('FOR É VALIDO E FIRST TIME ');
         this.firstTime = false;
       } else if (((this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && this.checkFormValid())) && !this.firstTime) {
-        console.log('O FORM É VÁLIDO ', this.formConfig.valid);
-        console.log('FORM ', this.formConfig);
         this.pricingOptions = [];
         this.pricingAttributeList = [];
         this.loadMensalidades();
       } else if (((!this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && !this.checkFormValid())) && !this.firstTime) {
-        console.log('O FORM NÃO É VALIDO ', this.formConfig.valid);
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
@@ -214,6 +208,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   updateFormData() {
     this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId);
+    this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership);
     this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
     this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
     this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
@@ -282,13 +277,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         this.pricingAttributeList.push(this.storeEquip.pricing.attribute);
         this.addPricingForm();
       }
-      //this.formConfig.valueChanges.subscribe(value => {
-      //  if (value) { //se algum valor do form for alterado, é preciso carregar as mensalidades novamente e as que já existiam são limpas
-      //    this.pricingOptions = [];
-      //    this.pricingAttributeList = [];
-      //    this.loadMensalidades();
-      //  }
-      //});
     }
   }
 
