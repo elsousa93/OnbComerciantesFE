@@ -188,13 +188,13 @@ export class CommercialOfferListComponent implements OnInit {
           this.storeService.getShopEquipmentFromSubmission(this.submissionId, this.currentStore.id, res.id).then(r => {
             this.storeEquipList.push(r.result);
           }).then(res => {
-            
+            this.loadStoreEquips(this.storeEquipList);
           });
         });
         //this.loadStoreEquips(this.storeEquipList);
       }
     }).then(res => {
-      this.loadStoreEquips(this.storeEquipList);
+      //this.loadStoreEquips(this.storeEquipList);
     });
   }
 
