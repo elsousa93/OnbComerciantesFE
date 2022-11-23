@@ -167,7 +167,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
     this.disableForm();
 
-    this.formConfig.get("terminalProperty").valueChanges.subscribe(val => {
+    this.formConfig.get("terminalProperty").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
       if (val === 'self') {
         this.formConfig.get('communicationOwnership').setValidators([Validators.required]);
         this.formConfig.get('terminalType').setValidators([Validators.required]);
@@ -188,21 +188,28 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
       console.log('first time ', this.firstTime);
       console.log('val ', val);
-      if (this.formConfig.valid && this.firstTime) {
+      if (((this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && this.checkFormValid())) && this.firstTime) {
         console.log('FOR É VALIDO E FIRST TIME ');
         this.firstTime = false;
-      } else if (this.formConfig.valid && !this.firstTime) {
+      } else if (((this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && this.checkFormValid())) && !this.firstTime) {
         console.log('O FORM É VÁLIDO ', this.formConfig.valid);
         console.log('FORM ', this.formConfig);
         this.pricingOptions = [];
         this.pricingAttributeList = [];
         this.loadMensalidades();
-      } else if (!this.formConfig.valid && !this.firstTime) {
+      } else if (((!this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && !this.checkFormValid())) && !this.firstTime) {
         console.log('O FORM NÃO É VALIDO ', this.formConfig.valid);
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
     });
+  }
+
+  checkFormValid() {
+    if (this.formConfig.get("terminalProperty").value != "" && this.formConfig.get("communicationOwnership").value != "" && this.formConfig.get("terminalType").value != "" && this.formConfig.get("communicationType").value != "" && this.formConfig.get("terminalAmount").value != null)
+      return true;
+    else
+      return false;
   }
 
   updateFormData() {
