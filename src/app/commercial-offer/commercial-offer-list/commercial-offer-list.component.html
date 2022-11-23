@@ -19,7 +19,7 @@
           <!--ps-2-->
           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.titleOffer'|translate}}
         </h2>
-        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true
+        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [updatedStoreEvent]="updatedStoreEvent"
           [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"
           [previousStoreEvent]="previousStoreEvent" (listLengthEmitter)="getStoresListLength($event)"></app-store-table>
       </div>

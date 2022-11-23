@@ -61,6 +61,8 @@ export class CommercialOfferListComponent implements OnInit {
   public isUnicre: boolean;
   public geographyChecked: boolean = false;
 
+  updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
+
   displayedColumns: string[] = ['nameEstab', 'activityEstab', 'subActivityEstab', 'bank', 'terminalNumber', 'product'];
 
   storeEquipColumns: string[] = ['equipmentOwnership', 'equipmentType', 'communicationType', 'quantity', 'monthlyFee', 'delete', 'edit'];
@@ -424,6 +426,8 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (!this.form.get("isUnicre").value) {
       this.form.get("terminalRegistrationNumber").setValue(null);
+      this.form.get("terminalRegistrationNumber").addValidators(Validators.required);
+      this.form.updateValueAndValidity();
       this.disableNewConfiguration = true;
     }
 
@@ -490,8 +494,8 @@ export class CommercialOfferListComponent implements OnInit {
       console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
         console.log('Loja atualizada ', this.currentStore);
-        if (this.currentIdx < (this.storesLength - 1)) {
-          
+        if (this.currentIdx < (this.storesLength)) {
+          this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
         } else {
           this.data.updateData(true, 5);
           this.route.navigate(['info-declarativa']);
@@ -499,6 +503,10 @@ export class CommercialOfferListComponent implements OnInit {
 
       });
     }
+  }
+
+  emitUpdatedStore(info) {
+    this.updatedStoreEvent = info;
   }
 
   changeShowMore() {
