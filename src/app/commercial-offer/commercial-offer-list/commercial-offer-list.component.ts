@@ -264,7 +264,7 @@ export class CommercialOfferListComponent implements OnInit {
       var attributes = value.attributes;
 
       attributes.forEach(function (value, idx) {
-        group.addControl("formControl" + value.id, new FormControl(value.value));
+        group.addControl("formControl" + value.id, new FormControl(value.isSelected));
 
         if (value.bundles != undefined || value.bundles != null || value.bundles.length > 0) {
           var attributeGroup = new FormGroup({});
@@ -274,7 +274,7 @@ export class CommercialOfferListComponent implements OnInit {
             var bundleAttributes = value.attributes;
 
             bundleAttributes.forEach(function (value, idx) {
-              attributeGroup.addControl("formControlBundle" + value.id, new FormControl(value.value));
+              attributeGroup.addControl("formControlBundle" + value.id, new FormControl(value.isSelected));
             });
             group.addControl("formGroupBundle" + value.id, attributeGroup);
           });
