@@ -420,32 +420,11 @@ export class ClientByIdComponent implements OnInit {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
           this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
             this.merchantInfo = res;
+          }).then(value => {
             resolve(this.merchantInfo);
-            //if (this.clientExists == undefined || this.clientExists == null) {
-            //  if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null) {
-            //    this.clientExists = true;
-            //  } else {
-            //    this.clientExists = false;
-            //  }
-            //}
-            //if (this.NIFNIPC === undefined) {
-            //  this.NIFNIPC = this.merchantInfo.fiscalId;
-            //}
-            //if (this.merchantInfo.incorporationStatement !== null) {
-            //  this.isCommercialSociety = true;
-            //  this.collectCRC = true;
-            //} else {
-            //  if (this.merchantInfo.legalNature !== "") {
-            //    this.isCommercialSociety = false;
-            //    this.collectCRC = false;
-            //    this.tipologia === 'Company';
-            //  } else {
-            //    this.isCommercialSociety = false;
-            //    this.collectCRC = false;
-            //    this.tipologia === 'ENI';
-            //  }
-            //}
           });
+      }).then(value => {
+
       });
     });
   }
@@ -971,11 +950,13 @@ export class ClientByIdComponent implements OnInit {
       });
 
       // var documents = this.clientContext.newSubmission.documents;
-      context.clientDocs.forEach(function (value, idx) {
-        context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-          console.log("adicionou documento: ", result);
+      if (context.clientDocs != null) { 
+        context.clientDocs.forEach(function (value, idx) {
+          context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
+            console.log("adicionou documento: ", result);
+          });
         });
-      });
+      }
 
 
       if (this.clientContext.isClient) { 

@@ -152,37 +152,37 @@ export class CountrysComponent implements OnInit {
 
     this.initializeForm();
 
-    if (this.returned != null) {
-      this.clientContext.currentMerchantInfo.subscribe(result => {
-        this.merchantInfo = result;
+    //if (this.returned != null) {
+    //  this.clientContext.currentMerchantInfo.subscribe(result => {
+    //    this.merchantInfo = result;
 
-        if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
-          this.form.get("preferenceDocuments").setValue("viaDigital");
-        } else {
-          this.form.get("preferenceDocuments").setValue("Mail");
-        }
+    //    if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
+    //      this.form.get("preferenceDocuments").setValue("viaDigital");
+    //    } else {
+    //      this.form.get("preferenceDocuments").setValue("Mail");
+    //    }
 
-        if (this.merchantInfo.businessGroup != null) {
-          if (this.merchantInfo.businessGroup.type === 'Franchise') {
-            this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
-            this.setAssociatedWith(true);
-          }
-          if (this.merchantInfo.businessGroup.type === 'Group') {
-            this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
-            this.setAssociatedWith(true);
-          }
-          if (this.merchantInfo.businessGroup.type === 'Isolated') {
-            this.setAssociatedWith(false);
-          }
-        } else {
-          this.setAssociatedWith(false);
-        }
+    //    if (this.merchantInfo.businessGroup != null) {
+    //      if (this.merchantInfo.businessGroup.type === 'Franchise') {
+    //        this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
+    //        this.setAssociatedWith(true);
+    //      }
+    //      if (this.merchantInfo.businessGroup.type === 'Group') {
+    //        this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
+    //        this.setAssociatedWith(true);
+    //      }
+    //      if (this.merchantInfo.businessGroup.type === 'Isolated') {
+    //        this.setAssociatedWith(false);
+    //      }
+    //    } else {
+    //      this.setAssociatedWith(false);
+    //    }
 
-        this.editCountries(false);
-        this.updateValues();
+    //    this.editCountries(false);
+    //    this.updateValues();
 
-      });
-    }
+    //  });
+    //}
 
     ////Chamada à API para receber todos os Paises
     //this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {

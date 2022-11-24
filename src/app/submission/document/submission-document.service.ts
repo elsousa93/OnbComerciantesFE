@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmission-document';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class SubmissionDocumentService {
   private baseUrl;
   private urlOutbound;
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) { 
+  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService) { 
     this.baseUrl = configuration.baseUrl;
     this.urlOutbound = configuration.outboundUrl;
   }
@@ -30,7 +31,8 @@ export class SubmissionDocumentService {
       method: "GET",
       headers: {
         "Accept": "application/pdf",
-        "Content-type": "application/pdf"
+        "Content-type": "application/pdf",
+        "Authorization": 'Bearer ' + this.authService.GetToken()
       }
     });
     //return this.http.get<any>(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
