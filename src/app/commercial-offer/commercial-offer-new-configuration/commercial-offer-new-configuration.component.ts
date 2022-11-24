@@ -162,7 +162,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.disableForm();
 
     this.formConfig.get("terminalProperty").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      if (val === 'self') {
+      if (val.toLocaleLowerCase() === 'self') {
         this.formConfig.get('communicationOwnership').setValidators([Validators.required]);
         this.formConfig.get('terminalType').setValidators([Validators.required]);
         this.formConfig.get('communicationType').setValidators([Validators.required]);
@@ -180,13 +180,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
 
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      if (((this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && this.checkFormValid())) && this.firstTime) {
+      if (((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid())) && this.firstTime) {
         this.firstTime = false;
-      } else if (((this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && this.checkFormValid())) && !this.firstTime) {
+      } else if (((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid())) && !this.firstTime) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
         this.loadMensalidades();
-      } else if (((!this.formConfig.valid && val.terminalProperty === 'self') || (val.terminalProperty === 'client' && !this.checkFormValid())) && !this.firstTime) {
+      } else if (((!this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && !this.checkFormValid())) && !this.firstTime) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
@@ -202,6 +202,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   updateFormData() {
     if (this.formConfig.valid) {
+      this.pricingOptions = [];
+      this.pricingAttributeList = [];
       this.loadMensalidades();
     }
     //this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId);
@@ -264,7 +266,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.selectedMensalidadeId = id;
     this.pricingAttributeList = [];
     if (this.formConfig.valid) {
-      if (this.storeEquip?.pricing == null || (this.storeEquip?.pricing?.id == "" || this.storeEquip?.pricing?.id == null)) {
+      if (this.storeEquip?.pricing == null) {
         this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
           res.result.attributes.forEach(attr => {
             this.pricingAttributeList.push(attr);
