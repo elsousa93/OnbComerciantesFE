@@ -209,6 +209,11 @@ export class CommercialOfferListComponent implements OnInit {
 
   selectStore(info) {
     this.storeEquipList = [];
+    this.packs = [];
+    this.paymentSchemes = null;
+    this.groupsList = [];
+    this.commissionOptions = []
+    this.commissionAttributeList = [];
 
     this.currentStore = info.store;
     this.currentIdx = info.idx;
@@ -484,7 +489,9 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.returned != 'consult') {
       this.currentStore.equipments = this.storeEquipList;
       this.currentStore.pack = {
+        packId: this.packId,
         commission: {
+          commissionId: this.commissionId,
           attributes: this.commissionAttributeList
         },
         paymentSchemes: this.paymentSchemes,

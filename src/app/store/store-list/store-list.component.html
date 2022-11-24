@@ -71,7 +71,7 @@
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                    data-bs-parent="#accordionFlushExample">
-                <app-store-iban [parentFormGroup] = "editStores.get('bankStores')"></app-store-iban>
+                <app-store-iban [parentFormGroup] = "editStores.get('bankStores')" [IBANToShow]="ibansToShow" (fileEmitter)="getFile($event)"></app-store-iban>
               </div>
             </div>
 

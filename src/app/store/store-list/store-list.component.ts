@@ -90,7 +90,7 @@ export class StoreComponent implements AfterViewInit {
 
   currentUser: User = {};
   previousStoreEvent: Observable<number>;
-  public ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
+  public ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string };
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -217,19 +217,20 @@ export class StoreComponent implements AfterViewInit {
 
       if (!this.currentStore.bank.useMerchantBank) {
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
-        this.documentService.GetDocumentImage(this.submissionId, this.currentStore.bank.bank.iban).then(async (res) => {
+        this.documentService.GetDocumentImage(this.submissionId, this.currentStore.documents.id).then(async (res) => {
           console.log("imagem de um documento ", res);
-          var teste = await res.blob();
+          var file = await res.blob();
 
-          teste.lastModifiedDate = new Date();
-          teste.name = this.translate.instant('supportingDocuments.checklistModal.IBAN');
+          file.lastModifiedDate = new Date();
+          file.name = this.translate.instant('supportingDocuments.checklistModal.IBAN');
 
-          this.ibansToShow.push({
+          this.ibansToShow = {
             dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-            file: teste,
-            id: this.currentStore.bank.bank.iban,
+            file: file,
+            id: this.currentStore.documents.id,
             tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN')
-          });
+          };
+
         });
       }
 
@@ -293,8 +294,9 @@ export class StoreComponent implements AfterViewInit {
 
       this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
       this.currentStore.bank.useMerchantBank = bankStores.get("bankInformation").value;
-      if (!this.currentStore.bank.useMerchantBank) 
+      if (!this.currentStore.bank.useMerchantBank) {
         this.currentStore.bank.bank.iban = bankStores.get("bankIban").value;
+      }
 
       var productStores = this.editStores.controls["productStores"];
 
@@ -398,8 +400,12 @@ export class StoreComponent implements AfterViewInit {
     this.ibansToShow = info.ibansToShow;
   }
 
+  getFile(info) {
+    this.ibansToShow = info;
+  }
+
   addDocumentToShop() {
-    if (this.ibansToShow.length > 0) { 
+    if (this.ibansToShow != null) { 
       this.comprovativoService.readBase64(this.ibansToShow[0].file).then((data) => {
         var docToSend: PostDocument = {
           "documentType": "1001",
@@ -412,7 +418,9 @@ export class StoreComponent implements AfterViewInit {
           "data": {}
         }
         this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), this.currentStore.id, docToSend).subscribe(result => {
-          this.currentStore.bank.bank.iban = result.id;
+          this.currentStore.documents.id = result.id;
+          this.currentStore.documents.href = result.href;
+          this.currentStore.documents.type = result.type;
           this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(res => {
             console.log('LOJA ATUALIZADA ', res);
           });

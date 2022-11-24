@@ -276,11 +276,11 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcCode = this.form.get("crcCode").value;
     this.logger.debug(this.processClient.capitalStock.date);
     var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();
-    this.logger.debug("data formatada");
-    var separated = b.split('-');
-    var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+    var formatedDate = formatDate(b, 'yyyy-MM-dd', 'pt_PT');
+    //var separated = b.split('-');
+    //var formatedDate = separated[2] + "-" + separated[0] + "-" + separated[1];
     var branch1 = '';
-
+    
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
     //this.hasCRC = (this.client.incorporationStatement !== null && this.client.incorporationStatement !== undefined && this.client.incorporationStatement?.code !== '' && this.client.incorporationStatement?.code !== null);

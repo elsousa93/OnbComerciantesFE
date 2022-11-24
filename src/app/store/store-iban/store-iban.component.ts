@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
@@ -25,7 +25,7 @@ import { DatePipe } from '@angular/common';
 //This component allows to edit the iban field from the store. THere are two options
 //1. Use the iban from the cient.
 //2. Insert a new iban for the store
-export class StoreIbanComponent implements OnInit {
+export class StoreIbanComponent implements OnInit, OnChanges {
   @Input() parentFormGroup : FormGroup;
 
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
@@ -39,7 +39,7 @@ export class StoreIbanComponent implements OnInit {
   public stroreId: number = 0;
 
   public isIBANConsidered: boolean = null;
-  public IBANToShow: { tipo: string, dataDocumento: string, file: File, id: string };
+  @Input() public IBANToShow: { tipo: string, dataDocumento: string, file: File, id: string };
   // @Input() ibansToShow?: { tipo: string, dataDocumento: string, file: File, id: string }[] = [];
   public result: any;
   localUrl: any;
@@ -97,6 +97,7 @@ export class StoreIbanComponent implements OnInit {
   returned: string
   edit: boolean = false;
 
+  @Output() fileEmitter = new EventEmitter<{ tipo: string, dataDocumento: string, file: File, id: string }>();
 
   constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
@@ -112,6 +113,12 @@ export class StoreIbanComponent implements OnInit {
       }
     });
 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["IBANToShow"] && changes["IBANToShow"].currentValue != null) {
+      this.IBANToShow = changes["IBANToShow"].currentValue;
+    }
   }
 
   ngOnInit(): void {
@@ -135,6 +142,8 @@ export class StoreIbanComponent implements OnInit {
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
   }
+
+
 
   /*Controles the radio button changes*/
   radoChangehandler(event: any) {
@@ -171,14 +180,13 @@ export class StoreIbanComponent implements OnInit {
   }
 
   onDelete(file: File) {
-    if (file[0] != null) { 
-      this.tableInfo.deleteDocument(this.submissionId, 0).then(sucess => {
+    if (this.IBANToShow.id != "0") {
+      this.tableInfo.deleteDocument(this.submissionId, this.IBANToShow.id).then(sucess => {
         console.log("Sucesso a apagar um documento: ", sucess.msg);
       }, error => {
         console.log("Erro a apagar um ficheiro: ", error.msg);
       });
     }
-
     this.fileToDelete = file;
     this.IBANToShow = null;
 
@@ -198,17 +206,17 @@ export class StoreIbanComponent implements OnInit {
   
   selectFile(event: any) {
     this.files = [];
-    this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy') , file: file, id: "0"}
     this.newStore.id = 1;
     this.newStore.iban = "teste";
     const files = <File[]>event.target.files;
+    this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'), file: files[0], id: "0" }
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-      this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', this.newStore.id);
-      if (this.result != null) {
+      //this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', this.newStore.id);
+      //if (this.result != null) {
         if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
           if (event.target.files && files[i]) {
             var reader = new FileReader();
@@ -225,11 +233,9 @@ export class StoreIbanComponent implements OnInit {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
         }
-      }
+      //}
     }
-    // this.logger.debug(this.ibansToShow);
-    // console.log('LISTA DE FILES DEPOIS ANEXAR ', this.ibansToShow);
-    // this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
+    this.fileEmitter.emit({ tipo: this.IBANToShow.tipo, dataDocumento: this.IBANToShow.dataDocumento, file: this.IBANToShow.file, id: this.IBANToShow.id });
   }
 
   isIBAN(isIBANConsidered: boolean) {

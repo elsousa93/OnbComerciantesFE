@@ -324,7 +324,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         var group = this.pricingForm.controls["formGroupPricing" + attr.id];
         if (!attr.isReadOnly) {
           attr.originalValue = group.get("formControlPricingOriginal" + attr.id).value;
-          attr.value = group.get("formControlPricingDiscount" + attr.id).value; // formControlPricingDiscount
+          attr.value = group.get("formControlPricingDiscount" + attr.id).value; 
           attr.finalValue = group.get("formControlPricingFinal" + attr.id).value;
         }
       });
