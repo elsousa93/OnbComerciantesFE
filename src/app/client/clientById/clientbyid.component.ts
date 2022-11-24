@@ -411,6 +411,7 @@ export class ClientByIdComponent implements OnInit {
     if (this.returned != null) {
       this.getMerchantInfo().then(result => {
         console.log('Result do getMerchantInfo: ', result);
+        //this.isClient = result.; COMO SABER QUE O CLIENTE EXISTE
       });
     }
   }

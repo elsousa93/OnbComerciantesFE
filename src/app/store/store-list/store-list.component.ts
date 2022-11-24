@@ -405,7 +405,7 @@ export class StoreComponent implements AfterViewInit {
 
   addDocumentToShop() {
     if (this.ibansToShow != null) { 
-      this.comprovativoService.readBase64(this.ibansToShow[0].file).then((data) => {
+      this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
         var docToSend: PostDocument = {
           "documentType": "1001",
           "documentPurpose": "BankAccount",

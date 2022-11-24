@@ -86,7 +86,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 4);
-    this.selectedStore = JSON.parse(localStorage.getItem("info-declarativa"))?.store ?? this.selectedStore;
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
@@ -151,17 +150,19 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   selectStore(info) {
     this.selectedStore = info.store;
     this.currentIdx = info.idx;
-    this.getCountryInternationalCallingCode().then(result => {
-      setTimeout(() => this.setForm(), 500);
+    this.getCountryInternationalCallingCode(this.selectedStore?.phone1?.countryCode).then(result => {
+      this.getCountryInternationalCallingCode(this.selectedStore?.phone2?.countryCode).then(result => {
+        setTimeout(() => this.setForm(), 500);
+      }).then(res => { });
     });
   }
 
-  getCountryInternationalCallingCode() {
+  getCountryInternationalCallingCode(countryCode: string) {
     return new Promise(resolve => {
-      if (this.selectedStore?.phone1?.countryCode != null && !this.selectedStore?.phone1?.countryCode.startsWith("+")) {
-        this.tableInfo.GetCountryById(this.selectedStore?.phone1?.countryCode).subscribe(result => {
+      if (countryCode != null && !countryCode.startsWith("+")) {
+        this.tableInfo.GetCountryById(countryCode).subscribe(result => {
           if (result != null) {
-            this.selectedStore.phone1.countryCode = result.internationalCallingCode;
+            countryCode = result.internationalCallingCode;
           }
           resolve(true);
         }, error => resolve(false));
@@ -182,10 +183,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       this.selectedStore.phone1.phoneNumber = this.listValue.get("cellphone").get("phoneNumber").value;
       this.selectedStore.phone2.countryCode = this.listValue.get("telephone").get("countryCode").value;
       this.selectedStore.phone2.phoneNumber = this.listValue.get("telephone").get("phoneNumber").value;
-
-      let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
-      storedForm.store = this.selectedStore;
-      localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
 
       console.log("Estrutura dos dados da Loja ", this.selectedStore);
 
@@ -219,8 +216,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   // na api é alterado o indicativo para o país e nós precisamos aqui do indicativo
   getCountryInternationalCallingCode1(){
-    if (this.client.contacts.phone1.countryCode != null) {
-      this.tableInfo.GetCountryById(this.client.contacts.phone1.countryCode).subscribe(result => {
+    if (this.client?.contacts?.phone1?.countryCode != null) {
+      this.tableInfo.GetCountryById(this.client?.contacts?.phone1?.countryCode).subscribe(result => {
        this.client.contacts.phone1.countryCode = result.internationalCallingCode;
       }, error => this.logger.debug(error));
     }
@@ -228,8 +225,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   getCountryInternationalCallingCode2(){
-    if (this.client.contacts.phone1.countryCode != null) {
-      this.tableInfo.GetCountryById(this.client.contacts.phone2.countryCode).subscribe(result => {
+    if (this.client?.contacts?.phone2?.countryCode != null) {
+      this.tableInfo.GetCountryById(this.client?.contacts?.phone2?.countryCode).subscribe(result => {
         this.client.contacts.phone2.countryCode = result.internationalCallingCode;
       }, error => this.logger.debug(error));
     }
