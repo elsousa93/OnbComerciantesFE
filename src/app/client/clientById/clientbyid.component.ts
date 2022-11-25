@@ -410,25 +410,22 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.returned != null) {
       this.getMerchantInfo().then(result => {
-        console.log('Result do getMerchantInfo: ', result);
         if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null)
           this.isClient = true;
         else
           this.isClient = false;
-      });
+      }).then(res => { console.log('IS CLIENT ', this.isClient) });
     }
   }
 
   getMerchantInfo() {
     return new Promise((resolve, reject) => {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-          this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
-            this.merchantInfo = res;
-          }).then(value => {
-            resolve(this.merchantInfo);
-          });
+        this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
+          this.merchantInfo = res;
+        });
       }).then(value => {
-
+        resolve(this.merchantInfo);
       });
     });
   }
@@ -617,7 +614,7 @@ export class ClientByIdComponent implements OnInit {
     } else {
       this.clientContext.setMerchantInfo(this.merchantInfo);
       this.clientContext.setClient(this.merchantInfo);
-      if (!this.isClient) {
+      if (!this.clientContext.isClient) {
         this.countriesComponent.getClientContextValues();
       }
       this.clientCharacterizationComponent.getClientContextValues();
