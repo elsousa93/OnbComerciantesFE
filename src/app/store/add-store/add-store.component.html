@@ -176,6 +176,7 @@
                 </p>
                 <select class="form-select campo-form-select"
                         id="subZoneStore" formControlName="subZoneStore">
+                  <option hidden selected></option>
                   <option *ngFor="let subzone of subzonesShopping" value={{subzone.code}}>
                     {{subzone.description}}
                   </option>

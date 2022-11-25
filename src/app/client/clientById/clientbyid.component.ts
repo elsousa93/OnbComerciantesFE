@@ -410,24 +410,44 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.returned != null) {
       this.getMerchantInfo().then(result => {
-        if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null)
+        console.log('RESULTASO DA CHAMADA ', result);
+        if (this.merchantInfo.clientId != null) {
           this.isClient = true;
-        else
+        } else {
           this.isClient = false;
-      }).then(res => { console.log('IS CLIENT ', this.isClient) });
+        }
+      });
     }
   }
 
   getMerchantInfo() {
+    //let submission, merchant;
+
     return new Promise((resolve, reject) => {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-        this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
+        console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
+        return result;
+      }).then(resul => {
+        this.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(res => {
+          console.log('GET DA SUBMISSION PELO ID ', res);
           this.merchantInfo = res;
+          return this.merchantInfo;
         });
-      }).then(value => {
-        resolve(this.merchantInfo);
       });
     });
+
+    //return new Promise((resolve, reject) => {
+    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
+    //    submission = result;
+    //  }).then(resul => {
+    //    this.clientService.GetClientByIdAcquiring(submission.result[0].submissionId).then(res => {
+    //      merchant = res;
+    //    }).then(r => {
+    //      this.merchantInfo = merchant;
+    //      resolve(this.merchantInfo);
+    //    });
+    //  });
+    //});
   }
 
 
