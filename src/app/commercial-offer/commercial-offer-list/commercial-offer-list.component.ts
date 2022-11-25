@@ -209,9 +209,12 @@ export class CommercialOfferListComponent implements OnInit {
 
   selectStore(info) {
     this.storeEquipList = [];
+    this.loadStoreEquips(this.storeEquipList);
+    this.packId = "";
     this.packs = [];
     this.paymentSchemes = null;
     this.groupsList = [];
+    this.commissionId = "";
     this.commissionOptions = []
     this.commissionAttributeList = [];
 
@@ -305,6 +308,11 @@ export class CommercialOfferListComponent implements OnInit {
   addCommissionFormGroups() {
     var valueGroup = new FormGroup({});
     var context = this;
+
+    this.commissionAttributeList.forEach(function (value, idx) {
+      context.form.removeControl('comission' + value.id);
+    });
+
     this.commissionAttributeList.forEach(function (value, idx) {
       valueGroup.addControl("commissionMin", new FormControl(value.minValue.value));
       valueGroup.addControl("commissionMax", new FormControl(value.maxValue.value));
@@ -334,7 +342,6 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       this.packs = result.result;
-      this.getCommissionsList();
       if (this.packs.length === 0) {
         this.selectCommercialPack(this.packs[0].id);
       } else if (this.currentStore.pack != null) {
@@ -367,7 +374,7 @@ export class CommercialOfferListComponent implements OnInit {
       });
       context.addFormGroups();
     }
-
+    this.getCommissionsList();
   }
 
   //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
@@ -387,8 +394,10 @@ export class CommercialOfferListComponent implements OnInit {
       packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
     }
 
-    if (this.currentStore.pack == null) {
-      this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
+    
+    this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
+      this.commissionOptions = [];
+      if (this.currentStore.pack == null) {
         if (result.result.length == 1) {
           this.commissionOptions.push(result.result[0]);
           this.chooseCommission(result.result[0].id);
@@ -397,10 +406,14 @@ export class CommercialOfferListComponent implements OnInit {
             this.commissionOptions.push(options);
           });
         }
-      });
-    } else {
-      this.chooseCommission(this.currentStore.pack.commission.commissionId);
-    }
+      } else {
+        result.result.forEach(options => {
+          this.commissionOptions.push(options);
+        });
+        this.chooseCommission(this.currentStore.pack.commission.commissionId);
+      }
+    });
+    
   }
 
   chooseCommission(commisionId: string) {

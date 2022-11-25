@@ -73,6 +73,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   firstTime: boolean = true;
   selectedMensalidadeId: string = "";
+  firstTimeEdit: boolean = true;
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
@@ -205,19 +206,21 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.pricingOptions = [];
       this.pricingAttributeList = [];
       this.loadMensalidades();
+      this.firstTime = false;
     }
-    //this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId);
-    //this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership);
-    //this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership);
-    //this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType);
-    //this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType);
-    //this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity);
+    //this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId, {emitEvent: false});
+    //this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership, { emitEvent: false });
+    //this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership, { emitEvent: false });
+    //this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType, { emitEvent: false });
+    //this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType, { emitEvent: false });
+    //this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity, { emitEvent: false });
+    //this.pricingOptions = [];
+    //this.pricingAttributeList = [];
     //this.loadMensalidades();
   }
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
-    this.pricingOptions = [];
     this.productPackPricingFilter = {
       processorId: this.packs[0].processors[0],
       productCode: this.currentStore.productCode,
@@ -241,7 +244,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     }
 
     this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-      if (this.storeEquip?.pricing == null || (this.storeEquip?.pricing?.id == "" || this.storeEquip?.pricing?.id == null)) {
+      this.pricingOptions = [];
+      if (this.storeEquip?.pricing == null) {
         if (result.result.length == 1) {
           this.pricingOptions.push(result.result[0]);
           this.chooseMensalidade(result.result[0].id);
@@ -254,7 +258,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         result.result.forEach(options => {
           this.pricingOptions.push(options);
         });
-        this.chooseMensalidade(this.storeEquip.pricing.id);
+        if (this.firstTimeEdit) {
+          this.firstTimeEdit = false;
+          this.chooseMensalidade(this.storeEquip.pricing.id);
+        }
       }
     });
   }

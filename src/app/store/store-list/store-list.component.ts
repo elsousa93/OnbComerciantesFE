@@ -315,6 +315,7 @@ export class StoreComponent implements AfterViewInit {
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
+          this.addDocumentToShop();
           this.emitInsertedStore(this.currentStore);
           this.resetForm();
           this.currentStore = null;
@@ -324,17 +325,19 @@ export class StoreComponent implements AfterViewInit {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
           if (this.currentIdx < this.storesLength) {
+            this.addDocumentToShop();
             this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
             this.resetForm();
             this.onActivate();
           } else {
+            this.addDocumentToShop();
             this.resetForm();
             this.currentStore = null;
             this.currentIdx = -2;
           }
         });
       }
-      this.addDocumentToShop();
+
     } else {
       if (this.currentStore == null) {
         this.data.updateData(true, 3);
