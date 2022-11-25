@@ -315,7 +315,7 @@ export class StoreComponent implements AfterViewInit {
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
-          this.addDocumentToShop();
+          this.addDocumentToShop(result["id"]);
           this.emitInsertedStore(this.currentStore);
           this.resetForm();
           this.currentStore = null;
@@ -325,12 +325,12 @@ export class StoreComponent implements AfterViewInit {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
           if (this.currentIdx < this.storesLength) {
-            this.addDocumentToShop();
+            this.addDocumentToShop(this.currentStore.id);
             this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
             this.resetForm();
             this.onActivate();
           } else {
-            this.addDocumentToShop();
+            this.addDocumentToShop(this.currentStore.id);
             this.resetForm();
             this.currentStore = null;
             this.currentIdx = -2;
@@ -406,7 +406,7 @@ export class StoreComponent implements AfterViewInit {
     this.ibansToShow = info;
   }
 
-  addDocumentToShop() {
+  addDocumentToShop(storeId: string) {
     if (this.ibansToShow != null) { 
       this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
         var docToSend: PostDocument = {
@@ -419,9 +419,9 @@ export class StoreComponent implements AfterViewInit {
           "validUntil": "2022-07-20T11:03:13.001Z",
           "data": {}
         }
-        this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), this.currentStore.id, docToSend).subscribe(result => {
+        this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
           this.currentStore.bank.bank.iban = result.id;
-          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(res => {
+          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, this.currentStore).subscribe(res => {
             console.log('LOJA ATUALIZADA ', res);
           });
         });
