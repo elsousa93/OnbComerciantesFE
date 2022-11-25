@@ -411,7 +411,10 @@ export class ClientByIdComponent implements OnInit {
     if (this.returned != null) {
       this.getMerchantInfo().then(result => {
         console.log('Result do getMerchantInfo: ', result);
-        //this.isClient = result.; COMO SABER QUE O CLIENTE EXISTE
+        if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null)
+          this.isClient = true;
+        else
+          this.isClient = false;
       });
     }
   }
@@ -614,7 +617,9 @@ export class ClientByIdComponent implements OnInit {
     } else {
       this.clientContext.setMerchantInfo(this.merchantInfo);
       this.clientContext.setClient(this.merchantInfo);
-      this.countriesComponent.getClientContextValues();
+      if (!this.isClient) {
+        this.countriesComponent.getClientContextValues();
+      }
       this.clientCharacterizationComponent.getClientContextValues();
     }
 

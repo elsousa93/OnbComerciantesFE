@@ -452,29 +452,29 @@ export class ClientCharacterizationComponent implements OnInit {
       }
     });
 
-    this.clientContext.currentMerchantInfo.subscribe(result => {
-      context.merchantInfo = result;
+    //this.clientContext.currentMerchantInfo.subscribe(result => {
+    //  context.merchantInfo = result;
 
-      if (this.returned != null) {
-        if (this.tipologia == 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
-          this.isCommercialSociety = false;
-          this.collectCRC = false;
-          this.initializeFormControlOther();
-        }
-        if (this.tipologia == 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
-          this.isCommercialSociety = false;
-          this.collectCRC = false;
-          this.initializeENI();
-        }
+    //  if (this.returned != null) {
+    //    if (this.tipologia == 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+    //      this.isCommercialSociety = false;
+    //      this.collectCRC = false;
+    //      this.initializeFormControlOther();
+    //    }
+    //    if (this.tipologia == 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
+    //      this.isCommercialSociety = false;
+    //      this.collectCRC = false;
+    //      this.initializeENI();
+    //    }
 
-        if (this.merchantInfo.incorporationStatement != null) {
-          this.isCommercialSociety = true;
-          this.collectCRC = true;
-          this.initializeBasicCRCFormControl();
-          this.searchByCRC();
-        }
-      }
-    });
+    //    if (this.merchantInfo.incorporationStatement != null) {
+    //      this.isCommercialSociety = true;
+    //      this.collectCRC = true;
+    //      this.initializeBasicCRCFormControl();
+    //      this.searchByCRC();
+    //    }
+    //  }
+    //});
 
 
   }
