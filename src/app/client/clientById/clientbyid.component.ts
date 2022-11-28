@@ -406,18 +406,6 @@ export class ClientByIdComponent implements OnInit {
     } else {
       this.updateBasicForm();
     }
-    //this.initializeTableInfo();
-
-    //if (this.returned != null) {
-    //  this.getMerchantInfo().then(result => {
-    //    console.log('RESULTASO DA CHAMADA ', result);
-    //    if (this.merchantInfo.clientId != null) {
-    //      this.isClient = true;
-    //    } else {
-    //      this.isClient = false;
-    //    }
-    //  });
-    //}
   }
 
   async getMerchantInfo() {
@@ -448,11 +436,10 @@ export class ClientByIdComponent implements OnInit {
     if (this.returned != null) {
       var promise = await this.getMerchantInfo();
       console.log('Promise ', promise);
-      var context = this;
-      if (context.merchantInfo.clientId != null) {
-        context.isClient = true;
+      if (this.merchantInfo.clientId != null) {
+        this.isClient = true;
       } else {
-        context.isClient = false;
+        this.isClient = false;
       }
     }
 
@@ -476,7 +463,7 @@ export class ClientByIdComponent implements OnInit {
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
           client.fiscalId = this.dataCC.nifCC;
-          client.shortName = client.legalName = client.commercialName =  this.dataCC.nameCC;
+          client.shortName = client.legalName = client.commercialName = this.dataCC.nameCC;
           client.bankInformation = {};
           client.headquartersAddress = {};
           client.headquartersAddress.address = this.dataCC.addressCC;
@@ -635,7 +622,8 @@ export class ClientByIdComponent implements OnInit {
           this.clientCharacterizationComponent.getClientContextValues();
         });
       }
-    } else {
+    } else { 
+      this.clientContext.clientExists = false;
       this.clientContext.setMerchantInfo(this.merchantInfo);
       this.clientContext.setClient(this.merchantInfo);
       if (!this.clientContext.isClient) {

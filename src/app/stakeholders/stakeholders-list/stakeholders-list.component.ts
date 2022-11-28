@@ -189,7 +189,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         } as StakeholdersCompleteInformation
 
 
-        if (AcquiringStakeholder.fiscalId != null) {
+        if (AcquiringStakeholder.fiscalId != "") {
           context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
             stakeholderToInsert.stakeholderOutbound = res.result;
             resolve(null);
