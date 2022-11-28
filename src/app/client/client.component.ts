@@ -474,6 +474,7 @@ export class ClientComponent implements OnInit {
 
     var context = this;
     this.newClientForm = null;
+    context.clientsToShow = [];
 
     this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
       this.showFoundClient = true;
