@@ -288,9 +288,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   var index = context.compsToShow.findIndex(value => value.id == document.id);
                   if (index == -1) {
                     context.compsToShow.push({
-                      id: document.id,
+                      id: val.id,
                       type: "pdf",
-                      expirationDate: document.validUntil,
+                      expirationDate: val.validUntil,
                       stakeholder: context.submissionClient.legalName,
                       status: "não definido",
                       uploadDate: latest_date,

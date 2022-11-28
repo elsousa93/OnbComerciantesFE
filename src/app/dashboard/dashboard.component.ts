@@ -780,6 +780,7 @@ export class DashboardComponent implements OnInit {
       this.FTPermissions = getFTPermissions(a);
 
     });
+    this.dataService.reset();
     this.dataService.changeData(new Map());
     this.dataService.updateData(null, null, null);
     this.dataService.changeUpdatedComprovativos(false);

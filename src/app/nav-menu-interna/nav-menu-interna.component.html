@@ -4,7 +4,7 @@
         <nav
             class="navbar navbar-light bg-primary justify-content-around navbar-expand pt-0 pb-0 shadow justify-content-center">
             <ul class="navbar-nav mb-2 mb-lg-0 justify-content-around flex-wrap align-content-around shadow-none" *ngIf = "isHistory">
-                <li class="nav-item" [ngClass]="setListItem(0)" [ngStyle]="{'cursor': (currentPage > 0 || currentPage == 0) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(0)" [ngStyle]="{'cursor': (currentPage > 0 || currentPage == 0 || map.get(0) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(0)" [ngClass]="setImage(0)" style="height: 25px !important;"><a
                         class="nav-link" [ngClass]="setAnchor(0)" aria-current="page" (click)="goToAppDevolucao()"
                         data-bs-toggle="button">{{'acceptance.historic'|translate|uppercase}}</a>
@@ -12,7 +12,7 @@
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(1)" [ngStyle]="{'cursor': (currentPage > 1 || currentPage == 1) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(1)" [ngStyle]="{'cursor': (currentPage > 1 || currentPage == 1 || map.get(1) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(1)" [ngClass]="setImage(1)" style="height: 25px !important;" ><a
                         class="nav-link" [ngClass]="setAnchor(1)" aria-current="page" (click)="goToCliente()"
                         data-bs-toggle="button">{{'client.title'|translate|uppercase}}</a>
@@ -20,21 +20,21 @@
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(2)" [ngStyle]="{'cursor': (currentPage > 2 || currentPage == 2) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(2)" [ngStyle]="{'cursor': (currentPage > 2 || currentPage == 2 || map.get(2) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(2)" style="height: 25px !important;" [ngClass]="setImage(2)"><a
                         class="nav-link" [ngClass]="setAnchor(2)" (click)="goToStakeholders()">{{'stakeholder.title'|translate|uppercase}}</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg" class="seta_direita"  style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(3)" [ngStyle]="{'cursor': (currentPage > 3 || currentPage == 3) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(3)" [ngStyle]="{'cursor': (currentPage > 3 || currentPage == 3 || map.get(3) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(3)" style="height: 25px !important;" [ngClass]="setImage(3)"><a
                         class="nav-link" [ngClass]="setAnchor(3)" (click)="goToStores()">{{'stores.title'|translate|uppercase}}</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(4)" [ngStyle]="{'cursor': (currentPage > 4 || currentPage == 4) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(4)" [ngStyle]="{'cursor': (currentPage > 4 || currentPage == 4 || map.get(4) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(4)" [ngClass]="setImage(4)" style="height: 25px !important;"><a
                         class="nav-link" [ngClass]="setAnchor(4)" (click)="goToComprovativos()">{{'supportingDocuments.title'|translate|uppercase}}</a>
                 </li>
@@ -42,7 +42,7 @@
 
                     <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(5)" [ngStyle]="{'cursor': (currentPage > 5 || currentPage == 5) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(5)" [ngStyle]="{'cursor': (currentPage > 5 || currentPage == 5 || map.get(5) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(5)" style="height: 25px !important;" [ngClass]="setImage(5)"><a
                         class="nav-link" [ngClass]="setAnchor(5)" (click)="goToComercialOffer()">{{'commercialOffer.title'|translate|uppercase}}</a>
                 </li>
@@ -50,13 +50,13 @@
 
                     <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(6)" [ngStyle]="{'cursor': (currentPage > 6 || currentPage == 6) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(6)" [ngStyle]="{'cursor': (currentPage > 6 || currentPage == 6 || map.get(6) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(6)" style="height: 25px !important;" [ngClass]="setImage(6)"><a
                         class="nav-link" [ngClass]="setAnchor(6)" (click)="goToInfoDeclarativa()">{{'declarativeInformation.titleResume'|translate|uppercase}}</a>
                 </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 justify-content-around flex-wrap align-content-around shadow-none" *ngIf = "!isHistory">
-                <li class="nav-item" [ngClass]="setListItem(1)" [ngStyle]="{'cursor': (currentPage > 1 || currentPage == 1) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(1)" [ngStyle]="{'cursor': (currentPage > 1 || currentPage == 1 || map.get(1) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(1)" [ngClass]="setImage(1)" style="height: 25px !important;"><a
                         class="nav-link" [ngClass]="setAnchor(1)" aria-current="page" (click)="goToCliente()"
                         data-bs-toggle="button">{{'client.title'|translate|uppercase}}</a>
@@ -64,21 +64,21 @@
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg" class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(2)" [ngStyle]="{'cursor': (currentPage > 2 || currentPage == 2) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(2)" [ngStyle]="{'cursor': (currentPage > 2 || currentPage == 2 || map.get(2) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(2)" style="height: 25px !important;" [ngClass]="setImage(2)"><a
                         class="nav-link" [ngClass]="setAnchor(2)" (click)="goToStakeholders()">{{'stakeholder.title'|translate|uppercase}}</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg" class="seta_direita"  style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(3)" [ngStyle]="{'cursor': (currentPage > 3 || currentPage == 3) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(3)" [ngStyle]="{'cursor': (currentPage > 3 || currentPage == 3 || map.get(3) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(3)" style="height: 25px !important;" [ngClass]="setImage(3)"><a
                         class="nav-link" [ngClass]="setAnchor(3)" (click)="goToStores()">{{'stores.title'|translate|uppercase}}</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(4)" [ngStyle]="{'cursor': (currentPage > 4 || currentPage == 4) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(4)" [ngStyle]="{'cursor': (currentPage > 4 || currentPage == 4 || map.get(4) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(4)" class="icone-menu-secundario-inactivo" [ngClass]="setImage(4)" style="height: 25px !important;"><a
                         class="nav-link" [ngClass]="setAnchor(4)" (click)="goToComprovativos()">{{'supportingDocuments.title'|translate|uppercase}}</a>
                 </li>
@@ -86,7 +86,7 @@
 
                     <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(5)" [ngStyle]="{'cursor': (currentPage > 5 || currentPage == 5) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(5)" [ngStyle]="{'cursor': (currentPage > 5 || currentPage == 5 || map.get(5) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(5)" style="height: 25px !important;" [ngClass]="setImage(5)"><a
                         class="nav-link" [ngClass]="setAnchor(5)" (click)="goToComercialOffer()">{{'commercialOffer.title'|translate|uppercase}}</a>
                 </li>
@@ -94,7 +94,7 @@
 
                     <img src="assets/images/angle-right-solid.svg"  class="seta_direita" style="height: 30px !important;">
                 </li>
-                <li class="nav-item" [ngClass]="setListItem(6)" [ngStyle]="{'cursor': (currentPage > 6 || currentPage == 6) ? 'pointer' : 'not-allowed'}">
+                <li class="nav-item" [ngClass]="setListItem(6)" [ngStyle]="{'cursor': (currentPage > 6 || currentPage == 6 || map.get(6) != undefined) ? 'pointer' : 'not-allowed'}">
                     <img [src]="setImageSrc(6)" style="height: 25px !important;" [ngClass]="setImage(6)"><a
                         class="nav-link" [ngClass]="setAnchor(6)" (click)="goToInfoDeclarativa()">{{'declarativeInformation.titleResume'|translate|uppercase}}</a>
                 </li>

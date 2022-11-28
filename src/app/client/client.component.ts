@@ -378,14 +378,14 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     if (localStorage.getItem("submissionId") != null) {
-      if (this.route.getCurrentNavigation().extras.state) {
-        this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
-        this.searchedDocument = localStorage.getItem("documentType");
-        this.clientId = localStorage.getItem("documentNumber");
-        this.prettyPDF = this.route.getCurrentNavigation().extras.state["comprovativoCC"];
-        this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
-        this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
-      }
+      //if (this.route.getCurrentNavigation().extras.state) {
+      this.data.currentTipologia.subscribe(tipologia => this.tipologia = tipologia);//this.route.getCurrentNavigation().extras.state["tipologia"];
+      this.searchedDocument = localStorage.getItem("documentType");
+      this.clientId = localStorage.getItem("documentNumber");
+      this.data.currentComprovativoCC.subscribe(cc => this.prettyPDF = cc);//this.route.getCurrentNavigation().extras.state["comprovativoCC"];
+      this.data.currentDataCC.subscribe(data => this.dataCC = data);//this.route.getCurrentNavigation().extras.state["dataCC"];
+      this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);//this.route.getCurrentNavigation().extras.state["isClient"];
+      //}
 
       if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
         this.setClientData(true);
@@ -707,6 +707,10 @@ export class ClientComponent implements OnInit {
       }
     };
 
+    this.data.changeCurrentDataCC(this.dataCC);
+    this.data.changeCurrentIsClient(this.isClient);
+    this.data.changeCurrentTipologia(this.tipologia);
+
     localStorage.setItem("documentType", selectedClient.documentationDeliveryMethod);
     localStorage.setItem("documentNumber", selectedClient.clientId);
 
@@ -819,6 +823,10 @@ export class ClientComponent implements OnInit {
       let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? '';
       localStorage.setItem("clientName", clientName);
     }
+
+    this.data.changeCurrentDataCC(this.dataCC);
+    this.data.changeCurrentComprovativoCC(this.prettyPDF);
+    this.data.changeCurrentTipologia(this.tipologia);
 
     if (NIFNIPC !== null && NIFNIPC !== undefined)
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);

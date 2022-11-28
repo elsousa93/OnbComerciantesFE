@@ -144,39 +144,39 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   goToCliente() {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 1 || this.map.get(1) != undefined) {
       this.route.navigate(['client']);
     }
   }
 
   //Redirecionar para as páginas - contemplar sessão
   goToStakeholders() {
-    if (this.currentPage > 2) {
+    if (this.currentPage > 2 || this.map.get(2) != undefined) {
       this.route.navigate(['stakeholders/']);
     }
   }
 
   goToStores() {
-    if(this.currentPage > 3) {
+    if (this.currentPage > 3 || this.map.get(3) != undefined) {
       this.route.navigate(['store-comp']);
     }
     
   }
 
   goToComprovativos() {
-    if (this.currentPage > 4) {
+    if (this.currentPage > 4 || this.map.get(4) != undefined) {
       this.route.navigate(['comprovativos']);
     }
   }
 
   goToInfoDeclarativa() {
-    if(this.currentPage > 6) {
+    if (this.currentPage > 6 || this.map.get(6) != undefined) {
       this.route.navigate(['info-declarativa']);
     }
   }
 
   goToComercialOffer() {
-    if (this.currentPage > 5) {
+    if (this.currentPage > 5 || this.map.get(5) != undefined) {
       this.route.navigate(['commercial-offert-list']);
     }
   }

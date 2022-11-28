@@ -89,6 +89,7 @@ export class NavMenuPresencialComponent implements OnInit {
       this.logger.debug("userPermission tratada: " + a);
       this.userPermissions = getMenuPermissions(a);
     });
+
     this.tableInfo.GetBanks().subscribe(result => {
       this.banks = result;
       if (this.banks !== undefined) {

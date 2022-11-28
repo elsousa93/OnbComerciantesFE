@@ -24,10 +24,22 @@ export class DataService {
   private dataSubPage = new BehaviorSubject(0);
   private updateComprovativos = new BehaviorSubject(false);
 
+  private tipologia = new BehaviorSubject("");
+  private isClient = new BehaviorSubject(null);
+  private dataCC = new BehaviorSubject(null);
+  private comprovativoCC = new BehaviorSubject(null);
+
+
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
   currentSubPage = this.dataSubPage.asObservable();
-  updatedComprovativos = this.updateComprovativos.asObservable(); 
+  updatedComprovativos = this.updateComprovativos.asObservable();
+
+  currentTipologia = this.tipologia.asObservable();
+  currentIsClient = this.isClient.asObservable();
+  currentDataCC = this.dataCC.asObservable();
+  currentComprovativoCC = this.comprovativoCC.asObservable();
+
 
   constructor(private logger : LoggerService, ) { }
 
@@ -60,6 +72,22 @@ export class DataService {
     this.updateComprovativos.next(value);
   }
 
+  changeCurrentTipologia(value: string) {
+    this.tipologia.next(value);
+  }
+
+  changeCurrentIsClient(value: boolean) {
+    this.isClient.next(value);
+  }
+
+  changeCurrentDataCC(value: any) {
+    this.dataCC.next(value);
+  }
+
+  changeCurrentComprovativoCC(value: any) {
+    this.comprovativoCC.next(value);
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(new Map().set(1, undefined)
     .set(2, undefined)
@@ -68,7 +96,13 @@ export class DataService {
     .set(5, undefined)
     .set(6, undefined));
     this.currentData = this.dataSource.asObservable();
-
+    this.currentPage = this.dataPage.asObservable();
+    this.currentSubPage = this.dataSubPage.asObservable();
+    this.updatedComprovativos = this.updateComprovativos.asObservable();
+    this.currentTipologia = this.tipologia.asObservable();
+    this.currentIsClient = this.isClient.asObservable();
+    this.currentDataCC = this.dataCC.asObservable();
+    this.currentComprovativoCC = this.comprovativoCC.asObservable();
   }
 
   ngOnDestroy(){

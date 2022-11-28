@@ -408,41 +408,53 @@ export class ClientByIdComponent implements OnInit {
     }
     //this.initializeTableInfo();
 
-    if (this.returned != null) {
-      this.getMerchantInfo().then(result => {
-        console.log('RESULTASO DA CHAMADA ', result);
-        if (this.merchantInfo.clientId != null) {
-          this.isClient = true;
-        } else {
-          this.isClient = false;
-        }
+    //if (this.returned != null) {
+    //  this.getMerchantInfo().then(result => {
+    //    console.log('RESULTASO DA CHAMADA ', result);
+    //    if (this.merchantInfo.clientId != null) {
+    //      this.isClient = true;
+    //    } else {
+    //      this.isClient = false;
+    //    }
+    //  });
+    //}
+  }
+
+  async getMerchantInfo() {
+    try {
+      var context = this;
+      return new Promise((resolve, reject) => {
+        context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
+          console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
+          return result;
+        }).then(function (resul) {
+          context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
+            console.log('GET DA SUBMISSION PELO ID ', res);
+            context.merchantInfo = res;
+            return context.merchantInfo;
+          }).then(function (r) {
+            return r;
+          });
+        });
       });
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  getMerchantInfo() {
-    //let submission, merchant;
 
-    return new Promise((resolve, reject) => {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
-        console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
-        return result;
-      }).then(function (resul) {
-        this.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(res => {
-          console.log('GET DA SUBMISSION PELO ID ', res);
-          this.merchantInfo = res;
-          return this.merchantInfo;
-        }).then(function (res) {
-          console.log(res);
-          resolve(res);
-        });
-      });
-    });
+  async ngOnInit() {
+    if (this.returned != null) {
+      var promise = await this.getMerchantInfo();
+      console.log('Promise ', promise);
+      var context = this;
+      if (context.merchantInfo.clientId != null) {
+        context.isClient = true;
+      } else {
+        context.isClient = false;
+      }
+    }
 
-  }
-
-
-  ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 1, 2);
@@ -963,6 +975,14 @@ export class ClientByIdComponent implements OnInit {
         }
       });
 
+      if (newSubmission.documents.length > 0) { 
+        newSubmission.documents.forEach(doc => {
+          context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
+            console.log('documento adicionado: ', result);
+          });
+        });
+      }
+
       // var documents = this.clientContext.newSubmission.documents;
       if (context.clientDocs != null) { 
         context.clientDocs.forEach(function (value, idx) {
@@ -971,6 +991,8 @@ export class ClientByIdComponent implements OnInit {
           });
         });
       }
+
+
 
 
       if (this.clientContext.isClient) { 

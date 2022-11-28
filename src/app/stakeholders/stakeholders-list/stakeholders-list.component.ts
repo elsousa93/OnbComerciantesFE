@@ -189,8 +189,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         } as StakeholdersCompleteInformation
 
 
-        if (AcquiringStakeholder.id != null) {
-          context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(res => {
+        if (AcquiringStakeholder.fiscalId != null) {
+          context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, "requestID", 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
             stakeholderToInsert.stakeholderOutbound = res.result;
             resolve(null);
           }, rej => {
@@ -223,8 +223,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       var stakeholders = res[0].result;
 
       stakeholders.forEach(function (value, index) {
-        subpromises.push(context.getAllStakeholderInfo(context.submissionId, value.id));
-        context.stakeholderService.getStakeholderByID(value.id, 'faltarequestID', 'faltaAcquiringUserID').then((result: { documents: any; stakeholderId: string | number; }) => {
+        subpromises.push(context.getAllStakeholderInfo(context.submissionId, value.fiscalId));
+        context.stakeholderService.SearchStakeholderByQuery(value.fiscalId, 'faltarequestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,'faltaAcquiringUserID').then((result: { documents: any; stakeholderId: string | number; }) => {
           var documents = result.documents;
           // context.allStakeholdersComprovativos[result.stakeholderId] = documents;
           console.log("get stake by id resposnse: ", result);
