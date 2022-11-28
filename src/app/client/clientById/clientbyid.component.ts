@@ -424,30 +424,21 @@ export class ClientByIdComponent implements OnInit {
     //let submission, merchant;
 
     return new Promise((resolve, reject) => {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
         console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
         return result;
-      }).then(resul => {
+      }).then(function (resul) {
         this.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(res => {
           console.log('GET DA SUBMISSION PELO ID ', res);
           this.merchantInfo = res;
           return this.merchantInfo;
+        }).then(function (res) {
+          console.log(res);
+          resolve(res);
         });
       });
     });
 
-    //return new Promise((resolve, reject) => {
-    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-    //    submission = result;
-    //  }).then(resul => {
-    //    this.clientService.GetClientByIdAcquiring(submission.result[0].submissionId).then(res => {
-    //      merchant = res;
-    //    }).then(r => {
-    //      this.merchantInfo = merchant;
-    //      resolve(this.merchantInfo);
-    //    });
-    //  });
-    //});
   }
 
 
