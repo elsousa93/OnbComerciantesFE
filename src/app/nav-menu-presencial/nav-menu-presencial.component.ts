@@ -94,7 +94,7 @@ export class NavMenuPresencialComponent implements OnInit {
       this.banks = result;
       if (this.banks !== undefined) {
         var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
-        if (index > 0) {
+        if (index >= 0) {
           this.bank = this.banks[index].description;
         }
       }
