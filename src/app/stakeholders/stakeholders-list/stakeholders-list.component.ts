@@ -190,7 +190,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
 
         if (AcquiringStakeholder.fiscalId != null) {
-          context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, "requestID", 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
+          context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
             stakeholderToInsert.stakeholderOutbound = res.result;
             resolve(null);
           }, rej => {
@@ -223,14 +223,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       var stakeholders = res[0].result;
 
       stakeholders.forEach(function (value, index) {
-        subpromises.push(context.getAllStakeholderInfo(context.submissionId, value.fiscalId));
-        context.stakeholderService.SearchStakeholderByQuery(value.fiscalId, 'faltarequestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,'faltaAcquiringUserID').then((result: { documents: any; stakeholderId: string | number; }) => {
-          var documents = result.documents;
-          // context.allStakeholdersComprovativos[result.stakeholderId] = documents;
-          console.log("get stake by id resposnse: ", result);
-        }, error => {
-          console.log("Erro ao obter o Stakeholder pela Outbound API: ", error);
-        });
+        subpromises.push(context.getAllStakeholderInfo(context.submissionId, value.id));
       });
 
       const allPromisesWithErrorHandler = subpromises.map(promise =>

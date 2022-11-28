@@ -256,7 +256,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         });
       });
     }
-
+    
     this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
       this.submission = result.result;
       this.logger.debug('Submission ' + result);

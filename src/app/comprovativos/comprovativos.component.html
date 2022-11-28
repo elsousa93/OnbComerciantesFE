@@ -35,7 +35,7 @@
                         <tr *ngFor="let comp of compsToShow">
                            <td class="text-primary text-center text-primary">{{comp.type}}</td>
                            <td class="text-primary text-center">{{comp.stakeholder}}</td>
-                           <td class="text-primary text-center">{{comp.expirationDate}}</td>
+                           <td class="text-primary text-center">{{comp.expirationDate | date: 'dd-MM-yyyy'}}</td>
                            <td class="text-primary text-center">{{comp.uploadDate}}</td>
                            <td class="text-primary text-center">{{comp.status}}</td>
                            <td></td>

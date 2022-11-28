@@ -433,6 +433,7 @@ export class ClientByIdComponent implements OnInit {
             context.merchantInfo = res;
             return context.merchantInfo;
           }).then(function (r) {
+            resolve(r);
             return r;
           });
         });

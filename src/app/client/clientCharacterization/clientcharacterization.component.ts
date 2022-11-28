@@ -760,7 +760,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (crc != null && crc != undefined) {
       newSubmission.documents.push({
-        documentType: null, // alterar quando tivermos o enum do docType
+        documentType: "0001", // alterar quando tivermos o enum do docType
         documentPurpose: 'CompanyIdentification',
         file: {
           fileType: 'PDF',
