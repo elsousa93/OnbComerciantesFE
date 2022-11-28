@@ -410,24 +410,35 @@ export class ClientByIdComponent implements OnInit {
 
     if (this.returned != null) {
       this.getMerchantInfo().then(result => {
-        if (this.merchantInfo.clientId != "" && this.merchantInfo.clientId != null)
+        console.log('RESULTASO DA CHAMADA ', result);
+        if (this.merchantInfo.clientId != null) {
           this.isClient = true;
-        else
+        } else {
           this.isClient = false;
-      }).then(res => { console.log('IS CLIENT ', this.isClient) });
+        }
+      });
     }
   }
 
   getMerchantInfo() {
+    //let submission, merchant;
+
     return new Promise((resolve, reject) => {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-        this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
+      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
+        console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
+        return result;
+      }).then(function (resul) {
+        this.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(res => {
+          console.log('GET DA SUBMISSION PELO ID ', res);
           this.merchantInfo = res;
+          return this.merchantInfo;
+        }).then(function (res) {
+          console.log(res);
+          resolve(res);
         });
-      }).then(value => {
-        resolve(this.merchantInfo);
       });
     });
+
   }
 
 
