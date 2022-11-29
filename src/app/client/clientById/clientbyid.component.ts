@@ -709,13 +709,15 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.crcFound = false;
       }
 
+      var economicActivity = clientByCRC.economicActivity.main.split('-')[0];
+
       var clientByCRC = o;
 
       this.crcFound = true;
       this.crcNotExists = false;
       this.errorMsg = '';
       this.processClient.legalNature = clientByCRC.legalNature;
-      this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
+      this.processClient.mainEconomicActivity = economicActivity;
       this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
 
       this.processClient.fiscalId = clientByCRC.fiscalId;

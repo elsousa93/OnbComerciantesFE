@@ -590,10 +590,12 @@ export class ClientCharacterizationComponent implements OnInit {
           this.form.get("crcCode").setErrors(null);
         }
 
+        var economicActivity = clientByCRC.economicActivity.main.split('-')[0];
+
         this.crcFound = true;
         this.errorMsg = '';
         this.processClient.legalNature = clientByCRC.legalNature;
-        this.processClient.mainEconomicActivity = clientByCRC.economicActivity.main;
+        this.processClient.mainEconomicActivity = economicActivity;
         this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
 
         this.processClient.fiscalId = clientByCRC.fiscalId;
