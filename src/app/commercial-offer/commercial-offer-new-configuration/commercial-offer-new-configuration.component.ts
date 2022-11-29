@@ -293,14 +293,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     if (this.isNewConfig) {
       this.pricingAttributeList.forEach(function (value, idx) {
         valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl());
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
     } else {
       this.pricingAttributeList.forEach(function (value, idx) {
-        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.finalValue));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.finalValue));
+        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.originalValue));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value - value.finalValue));
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.finalValue));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
@@ -372,6 +372,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   calculateValue(event) {
-    console.log('EVENT ', event);
+    console.log('EVENT ', event.target.value);
+    let discount = Number(event.target.value);
+    let originalValue = this.pricingForm.get("formControlPricingOriginal" + this.selectedMensalidadeId).value;
+    this.pricingForm.get("formControlPricingFinal" + this.selectedMensalidadeId).setValue(originalValue - discount);
   }
 }

@@ -141,8 +141,8 @@
 
           <td class="text-center align-middle texto_centrado" *ngIf="pricing.isVisible">
             <input id="text2" name="text2" type="text"
-                   class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="€0,00" value="0.0"
-                   formControlName="{{'formControlPricingDiscount'+ pricing.id}}" [attr.disabled]="pricing.isReadOnly ? true : null" (blur)="calculateValue($event)">
+                   class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="€0,00"
+                   formControlName="{{'formControlPricingDiscount'+ pricing.id}}" [attr.disabled]="pricing.isReadOnly ? true : null" (change)="calculateValue($event)">
           </td>
 
           <!--<td class="text-primary text-center pt-0 pb-0" *ngIf="pricing.isReadOnly === true">
