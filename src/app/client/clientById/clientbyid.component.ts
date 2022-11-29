@@ -637,6 +637,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.clientContext.isClient = this.isClient;
       this.clientContext.setMerchantInfo(this.merchantInfo);
       this.clientContext.setClient(this.merchantInfo);
+      this.clientContext.setNIFNIPC(this.merchantInfo.fiscalId);
+      this.clientContext.tipologia = this.merchantInfo.merchantType;
       if (!this.clientContext.isClient) {
         this.countriesComponent.getClientContextValues();
       }
