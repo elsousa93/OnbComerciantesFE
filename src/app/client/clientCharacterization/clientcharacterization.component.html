@@ -26,7 +26,7 @@
 
           <div *ngIf="isCommercialSociety == true">
 
-            <p class="titulo-form-simples">{{'client.collectCRC'|translate}}</p>
+            <p class="titulo-form-simples">{{'client.collectCRC'|translate}} *</p>
             <div class="form-check">
               <input class="form-check-input" name="collectCRC" formControlName="collectCRC" type="radio" [value]=true
                 id="collectCRC" (click)="setCollectCRC(true)" [disabled]="returned === 'consult'">
@@ -41,7 +41,7 @@
 
             <!--empresa é sociedade comercial -- big div-->
             <p *ngIf="collectCRC == true" class="titulo-form-simples">
-              {{'client.CRC'|translate|uppercase}}:
+              {{'client.CRC'|translate|uppercase}} *:
               <span class="titulo-form-error" *ngIf="collectCRC == true && crcIncorrect == true" class="titulo-form-simples-erro">
                 {{'client.incorrectCRC'|translate}}
               </span>
@@ -224,7 +224,7 @@
                         <div class="row">
                           <div class="col-xxl col-6">
                               <p class="titulo-form-simples" for="paisSedeSocial">
-                                {{'client.registeredOfficeCountry'|translate}}: </p>
+                                {{'client.registeredOfficeCountry'|translate}} *: </p>
                               <input formControlName="country" name="country" type="text"
                                 id="country" class="form-control campo_form" readonly> <!-- [value]="getPaisSedeSocial()" -->
                               <div class="alert alert-danger"
@@ -236,7 +236,7 @@
                             </div>
                             <div class="col-xxl col-6">
                               <div>
-                                <p class="titulo-form-simples" for="ZIPCode">{{'client.registeredOfficePostalCode'|translate}}:
+                                <p class="titulo-form-simples" for="ZIPCode">{{'client.registeredOfficePostalCode'|translate}} *:
                                 </p>
                                 <input formControlName="ZIPCode" name="ZIPCode" type="text"
                                   id="ZIPCode" class="form-control campo_form" (keyup)="GetCountryByZipCode()" readonly>
@@ -264,7 +264,7 @@
                                 </div>
                                 <div class="col-xxl col-6">
                                     <p class="titulo-form-simples" for="localidadeSedeSocial">
-                                      {{'client.registeredOfficeLocale'|translate}}: </p>
+                                      {{'client.registeredOfficeLocale'|translate}} *: </p>
                                     <input formControlName="location" name="localidadeSedeSocial"
                                       type="text" id="localidadeSedeSocial" class="form-control campo_form" readonly>
                                     <div class="alert alert-danger"
@@ -280,7 +280,7 @@
 
               <div class="col-12">
                 <!-- Data de constituição   offset-1 bg-white col-7 col-xxl-10 //col-xxl col-6  -->
-                    <p class="titulo-form-simples">{{'client.constitutionDate'|translate}}: </p>
+                    <p class="titulo-form-simples">{{'client.constitutionDate'|translate}} *: </p>
                     <input formControlName="constitutionDate" type="date" id="constitutionDate"
                       class="form-control campo_form" readonly>
                     <div class="alert alert-danger"
