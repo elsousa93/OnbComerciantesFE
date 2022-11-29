@@ -152,11 +152,13 @@ export class CountrysComponent implements OnInit {
 
     this.initializeForm();
 
-    if (!this.clientContext.clientExists) {
-      this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
-        this.contPais.push(result);
-        this.inserirText(null);
-      }));
+    if (this.returned == null) { 
+      if (!this.clientContext.clientExists) {
+        this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
+          this.contPais.push(result);
+          this.inserirText(null);
+        }));
+      }
     }
 
 
