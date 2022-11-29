@@ -152,10 +152,15 @@ export class CountrysComponent implements OnInit {
 
     this.initializeForm();
 
-    this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
-      this.contPais.push(result);
-      this.inserirText(null);
-    }));
+    if (this.returned == null) { 
+      if (!this.clientContext.clientExists) {
+        this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
+          this.contPais.push(result);
+          this.inserirText(null);
+        }));
+      }
+    }
+
 
     //if (this.returned != null) {
     //  this.clientContext.currentMerchantInfo.subscribe(result => {
@@ -772,6 +777,14 @@ export class CountrysComponent implements OnInit {
     }
 
     this.getCurrentClientAsync().then(val => {
+
+      if (this.client?.knowYourSales?.servicesOrProductsDestinations?.length == 0) {
+        this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
+          this.contPais.push(result);
+          this.inserirText(null);
+        }));
+      }
+
       this.insertValues();
 
       if (this.client.businessGroup.type == "Holding") {

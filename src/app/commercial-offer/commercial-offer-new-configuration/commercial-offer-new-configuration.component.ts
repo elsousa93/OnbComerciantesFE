@@ -370,4 +370,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.pricingAttributeList = [];
     this.changedStoreEvent.emit(true);
   }
+
+  calculateValue(event) {
+    console.log('EVENT ', event);
+  }
 }
