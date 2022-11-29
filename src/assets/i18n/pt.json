@@ -458,6 +458,7 @@
     "back": "Voltar",
     "type": "Tipo",
     "exit": "Sair",
+    "logout": "Logout efetuado com sucesso",
     "documentDate": "Data do Documento",
     "attach": "Anexar",
     "mandatoryField": "* campo obrigatório",

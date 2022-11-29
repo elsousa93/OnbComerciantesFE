@@ -16,6 +16,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { Location } from '@angular/common';
 import { ProcessService } from '../process/process.service';
 import { Bank } from '../store/IStore.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -70,7 +71,7 @@ export class NavMenuPresencialComponent implements OnInit {
   banks: Bank[];
   bank: string;
 
-  constructor(private route: Router, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
+  constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
@@ -227,6 +228,11 @@ export class NavMenuPresencialComponent implements OnInit {
     localStorage.removeItem('auth');
     this.authService.reset();
     // this.route.navigate(['/logout']);
+
+    this.snackBar.open(this.translate.instant('generalKeywords.logout'), '', {
+      duration: 4000,
+      panelClass: ['snack-bar']
+    });
   }
 
   login() {

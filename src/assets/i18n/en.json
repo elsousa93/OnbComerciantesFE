@@ -460,6 +460,7 @@
     "attach": "Attach",
     "mandatoryField": "* mandatory field",
     "add": "Add",
+    "logout": "Successfully logged out",
     "expirationDate": "Expiration Date",
     "entryDate": "Entry Date",
     "deleteFile": "Are you sure you want to delete the file?",
