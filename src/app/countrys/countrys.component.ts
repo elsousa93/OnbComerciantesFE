@@ -760,7 +760,11 @@ export class CountrysComponent implements OnInit {
 
   getClientContextValues() {
 
-    this.clientExists = this.clientContext.clientExists;
+    if (this.returned != 'consult') {
+      this.clientExists = this.clientContext?.clientExists;
+    } else {
+      this.clientExists = false;
+    }
 
     this.getCurrentClientAsync().then(val => {
       this.insertValues();

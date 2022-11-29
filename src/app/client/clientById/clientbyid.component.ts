@@ -410,6 +410,51 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     console.log('VALOR DO CHARACTERIZATION ', this.clientCharacterizationComponent);
+
+  }
+
+  async getMerchantInfo() {
+    try {
+      var context = this;
+      return new Promise((resolve, reject) => {
+        context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
+          console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
+          return result;
+        }).then(function (resul) {
+          context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
+            console.log('GET DA SUBMISSION PELO ID ', res);
+            context.merchantInfo = res;
+            return context.merchantInfo;
+          }).then(function (r) {
+            resolve(r);
+            return r;
+          });
+        });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  async ngOnInit() {
+    var context = this;
+    if (this.returned != null) {
+      let promise = await context.getMerchantInfo();
+      console.log('Promise ', promise);
+      if (context.merchantInfo.clientId != null) {
+        context.isClient = true;
+      } else {
+        context.isClient = false;
+      }
+    }
+
+    console.log('VALOR DO IS CLIENT ', this.isClient);
+
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
+    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.data.updateData(false, 1, 2);
+
     this.clientContext = new ClientContext(
       this.tipologia,
       this.clientExists,
@@ -419,6 +464,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.dataCC,
       this.isClient
     );
+
+    console.log('VALOR DO IS CLIENT NO CLIENT CONTEXT ', this.clientContext.isClient);
 
     if (this.returned == null) {
       if (!this.submissionExists || this.isFromSearch) {
@@ -586,7 +633,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         });
       }
     } else {
-      this.clientContext.clientExists = false;
+      //this.clientContext.clientExists = false;
+      this.clientContext.isClient = this.isClient;
       this.clientContext.setMerchantInfo(this.merchantInfo);
       this.clientContext.setClient(this.merchantInfo);
       if (!this.clientContext.isClient) {
@@ -594,50 +642,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       }
       this.clientCharacterizationComponent.getClientContextValues();
     }
-  }
-
-  async getMerchantInfo() {
-    try {
-      var context = this;
-      return new Promise((resolve, reject) => {
-        context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
-          console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
-          return result;
-        }).then(function (resul) {
-          context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
-            console.log('GET DA SUBMISSION PELO ID ', res);
-            context.merchantInfo = res;
-            return context.merchantInfo;
-          }).then(function (r) {
-            resolve(r);
-            return r;
-          });
-        });
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-
-  async ngOnInit() {
-    var context = this;
-    if (this.returned != null) {
-      let promise = await context.getMerchantInfo();
-      console.log('Promise ', promise);
-      if (context.merchantInfo.clientId != null) {
-        context.isClient = true;
-      } else {
-        context.isClient = false;
-      }
-    }
-
-    this.subscription = this.data.currentData.subscribe(map => this.map = map);
-    this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.data.updateData(false, 1, 2);
-
-
-
 
     return null;
   }
