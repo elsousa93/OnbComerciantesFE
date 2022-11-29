@@ -191,7 +191,7 @@
                         <span class="navbar-text text-start align-self-start">
                           <div class="form-check" *ngIf="attribute.isVisible">
                             <input *ngIf="attribute.aggregatorId!==null" [value]="attribute.isSelected" class="form-check-input"
-                              type="radio" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}"
+                              type="radio" id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.description}}"
                               formControlName="{{'formControl' + attribute.id}}"
                               [attr.disabled]="attribute.isReadOnly ? true : null">
                             <input *ngIf="attribute.aggregatorId===null" [value]="attribute.isSelected" class="form-check-input"
@@ -291,7 +291,7 @@
                                 <div class="form-check" *ngIf="attribute.isVisible">
                                   <input *ngIf="attribute.aggregatorId!==null" class="form-check-input"
                                     type="radio" id="{{'formControl' + attribute.id}}"
-                                    name="{{'formControl' + attribute.id}}"
+                                    name="{{'formControl' + attribute.description}}"
                                     formControlName="{{'formControl' + attribute.id}}"
                                     [attr.disabled]="attribute.isReadOnly ? true : null">
                                   <input *ngIf="attribute.aggregatorId===null" class="form-check-input"
