@@ -384,12 +384,6 @@ export class CreateStakeholderComponent implements OnInit {
       }
       this.formStakeholderSearch.controls["documentNumber"].updateValueAndValidity();
     });
-
-    if (this.formStakeholderSearch.get("typology").value === "Empresa") {
-      this.formStakeholderSearch.get("docType").setValue("0502"); // Número de identificação fiscal, por default
-    } else if (this.formStakeholderSearch.get("typology").value === "Particular"){
-      this.formStakeholderSearch.get("docType").setValue("0501"); // NIF, por default
-    }
   }
 
   redirectAddStakeholder() {
@@ -495,6 +489,12 @@ export class CreateStakeholderComponent implements OnInit {
     this.stakeDocType = true;
     this.okCC = false;
     this.resetSearchStakeholder(); //
+
+    if (this.formStakeholderSearch.get("typology").value === "Empresa") {
+      this.formStakeholderSearch.get("docType").setValue("0502"); // Número de identificação fiscal, por default
+    } else if (this.formStakeholderSearch.get("typology").value === "Particular"){
+      this.formStakeholderSearch.get("docType").setValue("0501"); // NIF, por default
+    }
   }
 
   resetSearchStakeholder() {

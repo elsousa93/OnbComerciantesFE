@@ -569,14 +569,6 @@ export class ClientComponent implements OnInit {
       }
       this.searchClientForm.controls["docNumber"].updateValueAndValidity();
     });
-
-    this.searchClientForm.get("typology").valueChanges.subscribe(data => {
-      if (data === "Empresa") {
-        this.searchClientForm.get("docType").setValue("0502"); // Número de identificação fiscal, por default
-      } else if (data === "ENI"){
-        this.searchClientForm.get("docType").setValue("0501"); // NIF, por default
-      }
-    })
   }
 
   createAdditionalInfoForm() {
@@ -676,6 +668,12 @@ export class ClientComponent implements OnInit {
     this.okCC = false;
     this.notFound = false;
     this.showSeguinte = false;
+
+    if (this.searchClientForm.get("typology").value === "Empresa") {
+      this.searchClientForm.get("docType").setValue("0502"); // Número de identificação fiscal, por default
+    } else if (this.searchClientForm.get("typology").value === "ENI"){
+      this.searchClientForm.get("docType").setValue("0501"); // NIF, por default
+    }
 
   }
 
