@@ -193,7 +193,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : (this.hasCRC ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
+      crcCode: new FormControl((this.returned != null && this.merchantInfo?.incorporationStatement != undefined) ? this.merchantInfo?.incorporationStatement.code : (this.hasCRC ? this.client.incorporationStatement.code : ''), [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     }));
 
@@ -240,9 +240,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : this.client.legalNature, Validators.required), //sim
-      natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : this.client.legalNature2), //sim
-      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName") ?? this.client.commercialName, disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '')) }, Validators.required), //sim
+      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature : this.client.legalNature, Validators.required), //sim
+      natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature2 : this.client.legalNature2), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo?.legalName : localStorage.getItem("clientName") ?? this.client.commercialName, disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '')) }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(false)
     }));
@@ -410,7 +410,9 @@ export class ClientCharacterizationComponent implements OnInit {
     console.log("VALOR DO CLIENT CONTEXT ", this.clientContext);
 
     if (this.returned != null) {
-      this.getClientContextValues();
+      this.getMerchantInfoAsync().then(res => {
+        this.getClientContextValues();
+      })
     }
 
   }
@@ -421,6 +423,15 @@ export class ClientCharacterizationComponent implements OnInit {
         this.client = result;
         resolve(true);
       });
+    });
+  }
+
+  getMerchantInfoAsync() {
+    return new Promise(resolve => {
+      this.clientContext.merchantInfo.subscribe(result => {
+        this.merchantInfo = result;
+        resolve(true);
+      })
     });
   }
 

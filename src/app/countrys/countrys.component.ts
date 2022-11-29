@@ -152,6 +152,11 @@ export class CountrysComponent implements OnInit {
 
     this.initializeForm();
 
+    this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
+      this.contPais.push(result);
+      this.inserirText(null);
+    }));
+
     //if (this.returned != null) {
     //  this.clientContext.currentMerchantInfo.subscribe(result => {
     //    this.merchantInfo = result;
