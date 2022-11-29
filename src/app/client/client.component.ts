@@ -569,6 +569,12 @@ export class ClientComponent implements OnInit {
       }
       this.searchClientForm.controls["docNumber"].updateValueAndValidity();
     });
+
+    if (this.searchClientForm.get("typology").value === "Empresa") {
+      this.searchClientForm.get("docType").setValue("0502"); // Número de identificação fiscal, por default
+    } else if (this.searchClientForm.get("typology").value === "ENI"){
+      this.searchClientForm.get("docType").setValue("0501"); // NIF, por default
+    }
   }
 
   createAdditionalInfoForm() {
