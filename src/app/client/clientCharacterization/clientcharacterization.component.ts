@@ -407,8 +407,12 @@ export class ClientCharacterizationComponent implements OnInit {
       }
     });
 
-
     console.log("VALOR DO CLIENT CONTEXT ", this.clientContext);
+
+    if (this.returned != null) {
+      this.getClientContextValues();
+    }
+
   }
 
   getCurrentClientAsync() {
