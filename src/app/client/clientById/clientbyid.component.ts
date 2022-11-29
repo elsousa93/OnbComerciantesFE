@@ -437,19 +437,19 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
 
-  async ngOnInit() {
+  ngOnInit() {
     var context = this;
     if (this.returned != null) {
-      let promise = await context.getMerchantInfo();
-      console.log('Promise ', promise);
-      if (context.merchantInfo.clientId != null) {
-        context.isClient = true;
-      } else {
-        context.isClient = false;
-      }
+      (async () => {
+        let promise = await context.getMerchantInfo();
+        console.log('Promise ', promise);
+        if (context.merchantInfo.clientId != null) {
+          context.isClient = true;
+        } else {
+          context.isClient = false;
+        }
+      })
     }
-
-    console.log('VALOR DO IS CLIENT ', this.isClient);
 
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -464,8 +464,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.dataCC,
       this.isClient
     );
-
-    console.log('VALOR DO IS CLIENT NO CLIENT CONTEXT ', this.clientContext.isClient);
 
     if (this.returned == null) {
       if (!this.submissionExists || this.isFromSearch) {
