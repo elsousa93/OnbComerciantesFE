@@ -277,7 +277,7 @@ export class StakeholdersComponent implements OnInit {
 
   setFormData() {
     var stakeForm = this.editStakes.get("stake");
-    stakeForm.get("contractAssociation").setValue('false');
+    stakeForm.get("contractAssociation").setValue('true');
     stakeForm.get("flagRecolhaEletronica").setValue(false);
     stakeForm.get("proxy").setValue(this.currentStakeholder.stakeholderAcquiring.isProxy + '');
 
