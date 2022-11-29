@@ -426,9 +426,10 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionAttributeList = [];
     if (this.currentStore.pack == null) {
       this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
-        res.result.attributes.forEach(attr => {
-          this.commissionAttributeList.push(attr);
-        });
+        //res.result.attributes.forEach(attr => {
+        //  this.commissionAttributeList.push(attr);
+        //});
+        this.commissionAttributeList = res.result.attributes;
         this.addCommissionFormGroups();
       });
     } else {
