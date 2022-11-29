@@ -266,7 +266,11 @@ export class CommercialOfferListComponent implements OnInit {
       var attributes = value.attributes;
 
       attributes.forEach(function (value, idx) {
-        group.addControl("formControl" + value.id, new FormControl(value.isSelected));
+        if (value["aggregatorId"] !== null) {
+          group.addControl("formControl" + value["aggregatorId"], new FormControl(value.isSelected));
+        } else {
+          group.addControl("formControl" + value.id, new FormControl(value.isSelected));
+        }
 
         if (value.bundles != undefined || value.bundles != null || value.bundles.length > 0) {
           var attributeGroup = new FormGroup({});
@@ -274,7 +278,7 @@ export class CommercialOfferListComponent implements OnInit {
 
           bundle.forEach(function (value, idx) {
             var bundleAttributes = value.attributes;
-
+            
             bundleAttributes.forEach(function (value, idx) {
               attributeGroup.addControl("formControlBundle" + value.id, new FormControl(value.isSelected));
             });
@@ -488,7 +492,11 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr) => {
-        attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
+        if (attr["aggregatorId"] !== null) {
+          attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value;
+        } else {
+          attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
+        }
           if (attr.value && (attr.bundles != null || attr.bundles.length > 0 )) { // se tiver sido selecionado
             attr.bundles.forEach((bundle) => {
               bundle.attributes.forEach((bundleAttr) => { 

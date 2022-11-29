@@ -374,7 +374,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   calculateValue(event) {
     console.log('EVENT ', event.target.value);
     let discount = Number(event.target.value);
-    let originalValue = this.pricingForm.get("formControlPricingOriginal" + this.selectedMensalidadeId).value;
-    this.pricingForm.get("formControlPricingFinal" + this.selectedMensalidadeId).setValue(originalValue - discount);
+    let originalValue = this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingOriginal" + event.target.id).value;
+    this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingFinal" + event.target.id).setValue(originalValue - discount);
   }
 }
