@@ -237,10 +237,10 @@ export class CommercialOfferListComponent implements OnInit {
   resetValues() {
     var context = this;
     this.commissionAttributeList.forEach(function (value, idx) {
-      context.form.get("commission" + value.id).get("commissionMin").setValue(value.minValue.value);
-      context.form.get("commission" + value.id).get("commissionMax").setValue(value.maxValue.value);
-      context.form.get("commission" + value.id).get("commissionFixed").setValue(value.fixedValue.value);
-      context.form.get("commission" + value.id).get("commissionPercentage").setValue(value.percentageValue.value);
+      context.form.get("commission" + value.id).get("commissionMin" + value.id).setValue(value.minValue.value);
+      context.form.get("commission" + value.id).get("commissionMax" + value.id).setValue(value.maxValue.value);
+      context.form.get("commission" + value.id).get("commissionFixed" + value.id).setValue(value.fixedValue.value);
+      context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue(value.percentageValue.value);
     });
     this.chooseCommission(this.commissionId);
   }
@@ -318,10 +318,10 @@ export class CommercialOfferListComponent implements OnInit {
     });
 
     this.commissionAttributeList.forEach(function (value, idx) {
-      valueGroup.addControl("commissionMin", new FormControl(value.minValue.value));
-      valueGroup.addControl("commissionMax", new FormControl(value.maxValue.value));
-      valueGroup.addControl("commissionFixed", new FormControl(value.fixedValue.value));
-      valueGroup.addControl("commissionPercentage", new FormControl(value.percentageValue.value));
+      valueGroup.addControl("commissionMin" + value.id, new FormControl(value.minValue.value));
+      valueGroup.addControl("commissionMax" + value.id, new FormControl(value.maxValue.value));
+      valueGroup.addControl("commissionFixed" + value.id, new FormControl(value.fixedValue.value));
+      valueGroup.addControl("commissionPercentage" + value.id, new FormControl(value.percentageValue.value));
       context.form.addControl("commission" + value.id, valueGroup);
     });
   }
@@ -485,10 +485,10 @@ export class CommercialOfferListComponent implements OnInit {
   submit() {
     this.commissionAttributeList.forEach(commission => {
       var currentValue = this.form.get("commission" + commission.id);
-      commission.minValue.finalValue = currentValue.get("commissionMin").value;
-      commission.maxValue.finalValue = currentValue.get("commissionMax").value;
-      commission.fixedValue.finalValue = currentValue.get("commissionFixed").value;
-      commission.percentageValue.finalValue = currentValue.get("commissionPercentage").value;
+      commission.minValue.finalValue = currentValue.get("commissionMin" + commission.id).value;
+      commission.maxValue.finalValue = currentValue.get("commissionMax" + commission.id).value;
+      commission.fixedValue.finalValue = currentValue.get("commissionFixed" + commission.id).value;
+      commission.percentageValue.finalValue = currentValue.get("commissionPercentage" + commission.id).value;
     });
 
     this.groupsList.forEach((group) => {

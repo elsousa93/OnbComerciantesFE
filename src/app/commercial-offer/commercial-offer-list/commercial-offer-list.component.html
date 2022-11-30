@@ -287,7 +287,7 @@
                             <!-- LISTAR OS ATRIBUTOS -->
                             <span class="navbar-text text-start align-self-start">
                               <div class="form-check" *ngIf="attribute.isVisible">
-                                <input *ngIf="attribute.aggregatorId!==null" class="form-check-input"
+                                <input *ngIf="attribute.aggregatorId!==null" class="form-check-input" [value]="attribute.isSelected"
                                        type="radio" id="{{'formControl' + attribute.aggregatorId}}"
                                        name="{{'formControl' + attribute.aggregatorId}}"
                                        value="{{attribute.description}}"
@@ -489,25 +489,25 @@
                         <input type="number" [attr.disabled]="commission.minValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionMin"  />
+                          formControlName="{{'commissionMin' + commission.id}}"  />
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.maxValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionMax"/>
+                          formControlName="{{'commissionMax' + commission.id}}"/>
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.fixedValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionFixed" />
+                          formControlName="{{'commissionFixed' + commission.id}}" />
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.percentageValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionPercentage" />
+                          formControlName="{{'commissionPercentage' + commission.id}}" />
                       </td>
                     </tr>
                   </tbody>

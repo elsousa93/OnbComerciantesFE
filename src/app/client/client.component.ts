@@ -475,6 +475,7 @@ export class ClientComponent implements OnInit {
     var context = this;
     this.newClientForm = null;
     context.clientsToShow = [];
+    context.clientsMat.data = context.clientsToShow;
 
     this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
       this.showFoundClient = true;
@@ -482,9 +483,13 @@ export class ClientComponent implements OnInit {
 
       var context2 = this;
 
-
+      console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsToShow);
+      console.log('LISTA DENTRO DO SUBSCRIBE DATA', context.clientsMat.data);
       this.logger.debug(context.clientsToShow);
       context.clientsToShow = [];
+      context.clientsMat.data = context.clientsToShow;
+      console.log('LISTA DENTRO DO SUBSCRIBE DEPOIS DE SER LIMPA', context.clientsToShow);
+      console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsMat.data);
       this.logger.debug(context.clientsToShow);
       if (clients.length > 0) {
         if (clients.length === 1) {
