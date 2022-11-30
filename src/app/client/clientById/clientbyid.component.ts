@@ -792,7 +792,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           comprovativoCC: this.comprovativoCC,
         }
       };
-      this.route.navigate(["/client"], navigationExtras);
+
+      if (this.returned == null)
+        this.route.navigate(["/client"], navigationExtras);
+
     } else {
       this.route.navigate(["/app-devolucao/"]);
     }

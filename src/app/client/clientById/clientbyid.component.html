@@ -39,7 +39,7 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion1-item" *ngIf="clientContext?.isClient" > <!-- adicionar um ! -->
+              <div class="accordion1-item" *ngIf="!clientContext?.isClient" > <!-- adicionar um ! -->
                 <h2 class="accordion-header" id="flush-headingTwo">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" 
                           data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
@@ -149,7 +149,7 @@
                 </span>
                 <button id="btn5a3"
                         class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
-                        wappler-command="editContent" (click)="redirectBeginningClient()">
+                        wappler-command="editContent" [disabled]="returned === 'consult'" (click)="redirectBeginningClient()">
                   <span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
                   </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;

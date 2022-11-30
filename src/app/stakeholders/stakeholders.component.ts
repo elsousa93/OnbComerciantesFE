@@ -393,6 +393,10 @@ export class StakeholdersComponent implements OnInit {
       }
     });
   }
+
+  emitCanceledSearch(info) {
+    this.redirectAddStakeholder();
+  }
 }
 
 

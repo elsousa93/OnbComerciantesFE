@@ -45,9 +45,14 @@ export class CreateStakeholderComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
   @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
+  @Output() canceledSearch = new EventEmitter<boolean>();
 
   emitInsertedStake(stake) {
     this.insertedStakeSubject.emit(stake);
+  }
+
+  emitCanceledSearch(bool) {
+    this.canceledSearch.emit(bool);
   }
 
   @Input() parentFormGroup: FormGroup;
@@ -725,6 +730,10 @@ export class CreateStakeholderComponent implements OnInit {
     }, error => {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });
+  }
+
+  cancelSearch() {
+    this.emitCanceledSearch(true);
   }
 
 
