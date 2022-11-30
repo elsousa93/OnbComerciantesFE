@@ -29,12 +29,12 @@
             <p class="titulo-form-simples">{{'client.collectCRC'|translate}}*</p>
             <div class="form-check">
               <input class="form-check-input" name="collectCRC" formControlName="collectCRC" type="radio" [value]=true
-                id="collectCRC" (click)="setCollectCRC(true)" [disabled]="returned === 'consult'">
+                id="collectCRC" (click)="setCollectCRC(true)" [attr.disabled]="returned === 'consult'">
               <label class="form-check-label radio">{{'generalKeywords.yes'|translate|uppercase}}</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" name="collectCRC" formControlName="collectCRC" type="radio"
-                [value]=false id="collectCRC" (click)="setCollectCRC(false)" [disabled]="returned === 'consult'">
+                [value]=false id="collectCRC" (click)="setCollectCRC(false)" [attr.disabled]="returned === 'consult'">
               <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
             </div>
 
@@ -54,7 +54,7 @@
             </p>
             <input *ngIf="collectCRC == true" maxlength="14" formControlName="crcCode" name="crcCode" type="text"
               id="crcCode" class="form-control campo_form" (keyup)="searchByCRC()"
-              [disabled]="returned === 'consult'" />
+              [attr.disabled]="returned === 'consult'" />
             <!--crc fim-->
 
             <div *ngIf="crcFound">

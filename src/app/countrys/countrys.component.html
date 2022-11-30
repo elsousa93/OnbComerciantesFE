@@ -65,13 +65,13 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Portal"
-                    formControlName="preferenceDocuments" id="preferenceDocuments" [disabled]="returned == 'consult'">
+                    formControlName="preferenceDocuments" id="preferenceDocuments" [attr.disabled]="returned == 'consult'">
                   <label class="form-check-label radio pe-5" for="preferenceDocuments">100% DIGITAL</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Mail"
-                    formControlName="preferenceDocuments" id="preferenceDocuments" [disabled]="returned == 'consult'">
+                    formControlName="preferenceDocuments" id="preferenceDocuments" [attr.disabled]="returned == 'consult'">
                   <label class="form-check-label radio"
                     for="preferenceDocuments">{{'client.letter'|translate|uppercase}}</label>
                 </div>
@@ -85,7 +85,7 @@
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=true
                     formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
-                    (click)="setAssociatedWith(true)" [readonly]="returned == 'consult'">
+                    (click)="setAssociatedWith(true)" [attr.disabled]="returned === 'consult'">
                   <label class="form-check-label radio pe-5"
                     for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
@@ -93,7 +93,7 @@
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=false
                     formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
-                    (click)="setAssociatedWith(false)" [readonly]="returned == 'consult'">
+                    (click)="setAssociatedWith(false)" [attr.disabled]="returned === 'consult'">
                   <label class="form-check-label radio"
                     for="associatedWithGroupOrFranchise">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>

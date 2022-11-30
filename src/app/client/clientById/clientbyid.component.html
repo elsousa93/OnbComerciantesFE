@@ -39,7 +39,7 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion1-item" *ngIf="!clientContext?.isClient || returned == 'consult'">
+              <div class="accordion1-item" *ngIf="clientContext?.isClient" > <!-- adicionar um ! -->
                 <h2 class="accordion-header" id="flush-headingTwo">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" 
                           data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
@@ -53,7 +53,7 @@
                 </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                     data-bs-parent="#accordionFlushExample">
-                  <div>
+                  <div >
                     <app-countrys (formCountrysReady)="formClientCountryIsValid($event)" (countryIsValid)="countryListValidator($event)" [clientContext]="clientContext" [inline]="true"></app-countrys>
                   </div>
                 </div>

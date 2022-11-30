@@ -152,15 +152,20 @@ export class CountrysComponent implements OnInit {
 
     this.initializeForm();
 
-    if (this.returned == null) { 
+    if (this.returned == null) {
       if (!this.clientContext.clientExists) {
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
           this.contPais.push(result);
           this.inserirText(null);
         }));
       }
+    } else {
+      if (this.clientContext?.isClient) { //adicionar o !
+        this.getMerchantInfoAsync().then(res => {
+          this.getClientContextValues();
+        });
+      }
     }
-
 
     //if (this.returned != null) {
     //  this.clientContext.currentMerchantInfo.subscribe(result => {
@@ -201,6 +206,15 @@ export class CountrysComponent implements OnInit {
     //}, error => this.logger.debug(error)));
 
     //this.getClientContextValues();
+  }
+
+  getMerchantInfoAsync() {
+    return new Promise(resolve => {
+      this.clientContext.merchantInfo.subscribe(result => {
+        this.merchantInfo = result;
+        resolve(true);
+      })
+    });
   }
 
   updateValues() {
@@ -773,6 +787,7 @@ export class CountrysComponent implements OnInit {
     if (this.returned != 'consult') {
       this.clientExists = this.clientContext?.clientExists;
     } else {
+      console.log('CLIENT CONTEXT ', this.clientContext);
       this.clientExists = false;
     }
 

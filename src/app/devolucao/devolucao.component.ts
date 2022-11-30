@@ -90,9 +90,11 @@ export class DevolucaoComponent implements OnInit{
       localStorage.setItem('returned', 'edit');
       this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
     }
-    localStorage.setItem('processNumber', this.process.processNumber);
-    this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
-
+    if (localStorage.getItem('processNumber') == null) {
+      localStorage.setItem('processNumber', this.process.processNumber);
+      this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
+    }
+    this.data.updateData(true, 0);    
     this.route.navigate(['/clientbyid']);
   }
 

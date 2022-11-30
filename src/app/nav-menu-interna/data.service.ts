@@ -40,6 +40,7 @@ export class DataService {
   currentDataCC = this.dataCC.asObservable();
   currentComprovativoCC = this.comprovativoCC.asObservable();
 
+  historyStream = this.historyStream$.asObservable();
 
   constructor(private logger : LoggerService, ) { }
 
@@ -103,6 +104,7 @@ export class DataService {
     this.currentIsClient = this.isClient.asObservable();
     this.currentDataCC = this.dataCC.asObservable();
     this.currentComprovativoCC = this.comprovativoCC.asObservable();
+    this.historyStream$.next(false);
   }
 
   ngOnDestroy(){

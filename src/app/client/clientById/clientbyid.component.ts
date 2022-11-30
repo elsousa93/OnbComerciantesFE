@@ -160,6 +160,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   submissionExists: boolean = false;
   isFromSearch: boolean = false;
+  historyStream: boolean;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -453,6 +454,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
     this.data.updateData(false, 1, 2);
 
     this.clientContext = new ClientContext(
@@ -639,13 +641,14 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.clientContext.setClient(this.merchantInfo);
       this.clientContext.setNIFNIPC(this.merchantInfo.fiscalId);
       this.clientContext.tipologia = this.merchantInfo.merchantType;
-      if (!this.clientContext.isClient) {
-        this.countriesComponent.getClientContextValues();
-      }
+      console.log('CLIENT CONTEXT ', this.clientContext.isClient);
+      //if (!this.clientContext.isClient) {
+      //  this.countriesComponent.getClientContextValues();
+      //}
       //this.clientCharacterizationComponent.getClientContextValues();
     }
 
-    return null;
+    //return null;
   }
 
   ngOnDestroy(): void {
@@ -773,22 +776,26 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.representationPowerComponent.submit();
       this.updateSubmission();
     } else {
+      this.data.updateData(true, 1);
       this.route.navigateByUrl('/stakeholders');
     }
   }
 
   redirectBeginningClient() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        tipologia: this.tipologia,
-        clientExists: this.clientExists,
-        dataCC: this.dataCC,
-        isClient: this.isClient,
-        comprovativoCC: this.comprovativoCC,
-      }
-    };
-
-    this.route.navigate(["/client"], navigationExtras);
+    if (!this.historyStream) {
+      let navigationExtras: NavigationExtras = {
+        state: {
+          tipologia: this.tipologia,
+          clientExists: this.clientExists,
+          dataCC: this.dataCC,
+          isClient: this.isClient,
+          comprovativoCC: this.comprovativoCC,
+        }
+      };
+      this.route.navigate(["/client"], navigationExtras);
+    } else {
+      this.route.navigate(["/app-devolucao/"]);
+    }
   }
 
   redirectHomePage() {
@@ -1031,6 +1038,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       }
 
     } else {
+      this.data.updateData(true, 1);
       this.route.navigate(['/stakeholders']);
     }
   }
