@@ -685,6 +685,10 @@ export class CreateStakeholderComponent implements OnInit {
     var separated = dateCC.split(' ');
     var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
 
+    if (this.dataCCcontents.addressCC === "Sem PIN de morada") {
+      this.dataCCcontents.addressCC = "";
+    }
+
     var stakeholderToInsert: IStakeholders = {
       "fiscalId": this.dataCCcontents.nifCC,
       "fullName": this.dataCCcontents.nameCC,
