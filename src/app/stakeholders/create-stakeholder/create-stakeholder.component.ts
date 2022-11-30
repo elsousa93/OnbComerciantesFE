@@ -466,17 +466,14 @@ export class CreateStakeholderComponent implements OnInit {
     this.stakeholderType = e.target.value;
     if (this.stakeholderType === 'Particular') {
       this.isParticular = true;
+      this.formStakeholderSearch.get("documentType").setValue("0501"); // NIF, por default
     } else {
       this.isParticular = false;
+      this.formStakeholderSearch.get("documentType").setValue("0502"); // Número de identificação fiscal, por default
     }
     this.stakeType = true;
     this.okCC = false;
     this.resetSearchStakeholder(); //
-    if (this.stakeholderType === 'Particular') {
-      this.formStakeholderSearch.get("documentType").setValue("0501"); // NIF, por default
-    } else {
-      this.formStakeholderSearch.get("documentType").setValue("0502"); // Número de identificação fiscal, por default
-    }
   }
 
   changeListElementDocType(docType: string, e: any) {

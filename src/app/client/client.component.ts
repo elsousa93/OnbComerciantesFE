@@ -50,6 +50,8 @@ export class ClientComponent implements OnInit {
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
+  public canSearch: boolean = true;
+
   public clients: Client[] = [];
   public newClientForm: FormGroup;
   public searchClientForm: FormGroup;
@@ -474,81 +476,96 @@ export class ClientComponent implements OnInit {
 
     var context = this;
     this.newClientForm = null;
+
+
+    console.log('LISTA FORA DO SUBSCRIBE ', context.clientsToShow);
+    console.log('LISTA FORA DO SUBSCRIBE DATA', context.clientsMat.data);
+
     context.clientsToShow = [];
     context.clientsMat.data = context.clientsToShow;
 
-    this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
-      this.showFoundClient = true;
-      var clients = o;
+    console.log('LISTA FORA DO SUBSCRIBE DEPOIS DE SER LIMPA', context.clientsToShow);
+    console.log('LISTA FORA DO SUBSCRIBE DATA DEPOIS DE SER LIMPA', context.clientsMat.data);
 
-      var context2 = this;
+    if (this.canSearch) {
+      this.canSearch = false;
+      this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
+        this.showFoundClient = true;
+        var clients = o;
 
-      console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsToShow);
-      console.log('LISTA DENTRO DO SUBSCRIBE DATA', context.clientsMat.data);
-      this.logger.debug(context.clientsToShow);
-      context.clientsToShow = [];
-      context.clientsMat.data = context.clientsToShow;
-      console.log('LISTA DENTRO DO SUBSCRIBE DEPOIS DE SER LIMPA', context.clientsToShow);
-      console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsMat.data);
-      this.logger.debug(context.clientsToShow);
-      if (clients.length > 0) {
-        if (clients.length === 1) {
-          context.snackBar.open(context.translate.instant('client.find'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
+        var context2 = this;
+
+        console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsToShow);
+        console.log('LISTA DENTRO DO SUBSCRIBE DATA', context.clientsMat.data);
+        this.logger.debug(context.clientsToShow);
+        context.clientsToShow = [];
+        context.clientsMat.data = context.clientsToShow;
+        console.log('LISTA DENTRO DO SUBSCRIBE DEPOIS DE SER LIMPA', context.clientsToShow);
+        console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsMat.data);
+        this.logger.debug(context.clientsToShow);
+        if (clients.length > 0) {
+          if (clients.length === 1) {
+            context.snackBar.open(context.translate.instant('client.find'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          } else {
+            context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          }
+          context.resultError = "";
+          clients.forEach(function (value, index) {
+            context.logger.debug(value);
+            var clientToShow = {
+              client: undefined,
+              isClient: value.isClient
+            } as {
+              client: Client,
+              isClient: boolean
+            }
+            context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
+              context.logger.debug(c);
+              var client = {
+                "clientId": c.result.merchantId,
+                "commercialName": c.result.commercialName,
+                "address": c.result.headquartersAddress.address,
+                "ZIPCode": c.result.headquartersAddress.postalCode,
+                "locality": c.result.headquartersAddress.postalArea,
+                "country": c.result.headquartersAddress.country,
+                //"fiscalId": c.fiscalId
+              }
+              clientToShow.client = client;
+              context.clientsToShow.push(clientToShow);
+              context.logger.debug(context.clientsToShow);
+              context.clientsMat.data = context.clientsToShow;
+
+            }).then(res => {
+              context.notFound = false;
+              context.canSearch = true;
+            });
+
           });
         } else {
-          context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-          });
+          this.showFoundClient = false;
+          this.notFound = true;
+          this.searchDone = true;
+          this.canSearch = true;
+          this.createAdditionalInfoForm();
+          this.resetLocalStorage();
         }
-        context.resultError = "";
-        clients.forEach(function (value, index) {
-          context.logger.debug(value);
-          var clientToShow = {
-            client: undefined,
-            isClient: value.isClient
-          } as {
-            client: Client,
-            isClient: boolean
-          }
-          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
-            context.logger.debug(c);
-            var client = {
-              "clientId": c.result.merchantId,
-              "commercialName": c.result.commercialName,
-              "address": c.result.headquartersAddress.address,
-              "ZIPCode": c.result.headquartersAddress.postalCode,
-              "locality": c.result.headquartersAddress.postalArea,
-              "country": c.result.headquartersAddress.country,
-              //"fiscalId": c.fiscalId
-            }
-            clientToShow.client = client;
-            context.clientsToShow.push(clientToShow);
-            context.logger.debug(context.clientsToShow);
-            context.clientsMat.data = context.clientsToShow;
-
-          }).then(res => {
-            context.notFound = false;
-
-          });
-
-        });
-      } else {
-        this.showFoundClient = false;
+      }, error => {
+        context.showFoundClient = false;
         this.notFound = true;
         this.searchDone = true;
+        this.canSearch = true;
         this.createAdditionalInfoForm();
         this.resetLocalStorage();
-      }
-    }, error => {
-      context.showFoundClient = false;
-      this.notFound = true;
-      this.searchDone = true;
-      this.createAdditionalInfoForm();
-      this.resetLocalStorage();
-    });
+      });
+    }
+
+
   }
 
   resetLocalStorage() {
