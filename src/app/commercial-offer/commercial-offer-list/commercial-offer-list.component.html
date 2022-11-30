@@ -250,7 +250,7 @@
                     </span>
                   </div>
                 </div>
-                <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="showMore"> <!--ANTES ERA ng-container sem a class row-->
+                <ng-container *ngIf="showMore"> <!--ANTES ERA ng-container sem a class row-->
                   <ng-container 
                        *ngIf="paymentSchemes?.kind == 'advanced'">
                     <!--<div class="row">-->
@@ -280,7 +280,7 @@
                        formGroupName="{{'formGroup' + group.id}}">
                     <!--<div class="row">-->
                       <ng-container *ngIf="group.kind == 'advanced'">
-                        <div>
+                        <div class="col-3">
                         <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                           {{group.description}}
                         </p>
@@ -337,7 +337,7 @@
                   </ng-container>
 
 
-                </div>
+                </ng-container>
                 <!-- </div> -->
 
               </div>
