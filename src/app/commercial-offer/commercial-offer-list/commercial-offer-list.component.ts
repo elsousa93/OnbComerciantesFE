@@ -267,7 +267,10 @@ export class CommercialOfferListComponent implements OnInit {
 
       attributes.forEach(function (value, idx) {
         if (value["aggregatorId"] !== null) {
-          group.addControl("formControl" + value["aggregatorId"], new FormControl(value.isSelected));
+          if (value.isSelected)
+            group.addControl("formControl" + value["aggregatorId"], new FormControl(value.description));
+          else
+            group.addControl("formControl" + value["aggregatorId"], new FormControl(''));
         } else {
           group.addControl("formControl" + value.id, new FormControl(value.isSelected));
         }

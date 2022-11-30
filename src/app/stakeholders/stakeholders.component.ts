@@ -395,7 +395,8 @@ export class StakeholdersComponent implements OnInit {
   }
 
   emitCanceledSearch(info) {
-    this.redirectAddStakeholder();
+    this.clickButton = true;
+    this.editStakeInfo = null;
   }
 }
 

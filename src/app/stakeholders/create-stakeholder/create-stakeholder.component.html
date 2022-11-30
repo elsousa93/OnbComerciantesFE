@@ -122,11 +122,9 @@
           </span>
           <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
             <button id="btn5a6"
-                    class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                    wappler-command="editContent" (click)="cancelSearch()">&nbsp;
-              <img src="assets/images/close.svg" style="height: 25px !important; vertical-align: sub;"
-                   class="img_add">
-              {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                    class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="cancelSearch()">&nbsp;
+              {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg"
+              class="img_btn">
             </button>
           </span>
         </nav>
@@ -303,8 +301,9 @@
           <button [routerLink]="['/']" id="btn5a5"
                   class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
                   wappler-command="editContent">
-            {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
             <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+            {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+
           </button>
           <button id="btn5a4"
                   class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"

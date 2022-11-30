@@ -316,6 +316,7 @@ export class ClientComponent implements OnInit {
   tipologia: string;
   searchedDocument: string;
   firstTime: boolean = true;
+  defaultValue: boolean = true;
 
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -477,15 +478,8 @@ export class ClientComponent implements OnInit {
     var context = this;
     this.newClientForm = null;
 
-
-    console.log('LISTA FORA DO SUBSCRIBE ', context.clientsToShow);
-    console.log('LISTA FORA DO SUBSCRIBE DATA', context.clientsMat.data);
-
     context.clientsToShow = [];
     context.clientsMat.data = context.clientsToShow;
-
-    console.log('LISTA FORA DO SUBSCRIBE DEPOIS DE SER LIMPA', context.clientsToShow);
-    console.log('LISTA FORA DO SUBSCRIBE DATA DEPOIS DE SER LIMPA', context.clientsMat.data);
 
     if (this.canSearch) {
       this.canSearch = false;
@@ -495,13 +489,10 @@ export class ClientComponent implements OnInit {
 
         var context2 = this;
 
-        console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsToShow);
-        console.log('LISTA DENTRO DO SUBSCRIBE DATA', context.clientsMat.data);
         this.logger.debug(context.clientsToShow);
         context.clientsToShow = [];
         context.clientsMat.data = context.clientsToShow;
-        console.log('LISTA DENTRO DO SUBSCRIBE DEPOIS DE SER LIMPA', context.clientsToShow);
-        console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsMat.data);
+
         this.logger.debug(context.clientsToShow);
         if (clients.length > 0) {
           if (clients.length === 1) {
@@ -670,6 +661,7 @@ export class ClientComponent implements OnInit {
       this.activateButtons(!this.showENI);
 
     this.firstTime = false;
+    //this.defaultValue = false;
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
@@ -802,13 +794,15 @@ export class ClientComponent implements OnInit {
       this.isENI = false;
       this.tipologia = "Company";
       this.newClient.documentationDeliveryMethod = "0502";
-      this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      //this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      //this.defaultValue = true;
     } else {
       this.showENI = true;
       this.isENI = true;
       this.tipologia = "ENI";
       this.newClient.documentationDeliveryMethod = "0501";
-      this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      //this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      //this.defaultValue = true;
     }
 
     //if (this.searchClientForm.get("typology").value) {

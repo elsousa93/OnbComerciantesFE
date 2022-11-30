@@ -58,6 +58,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   pricingAttributeList: ProductPackPricingAttribute[] = [];
 
   returned: string;
+  isInvalidNumber: boolean = false;
 
   @Input() parentFormGroup: FormGroup;
   @Input() isNewConfig: boolean;
@@ -372,9 +373,34 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   calculateValue(event) {
-    console.log('EVENT ', event.target.value);
     let discount = Number(event.target.value);
     let originalValue = this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingOriginal" + event.target.id).value;
-    this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingFinal" + event.target.id).setValue(originalValue - discount);
+    let finalValue = originalValue - discount;
+    this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingFinal" + event.target.id).setValue(finalValue);
+    if (finalValue < 0) {
+      this.isInvalidNumber = true;
+    } else {
+      this.isInvalidNumber = false;
+    }
+
+  }
+
+  decimalOnly(event): boolean { // restrict e,+,-,E characters in  input type number
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
+      return false;
+    }
+
+    let discount = event.target.value;
+    let originalValue = this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingOriginal" + event.target.id).value;
+    if (discount > originalValue) {
+      this.isInvalidNumber = true;
+      return false;
+    }
+
+    this.isInvalidNumber = false;
+
+    return true;
+
   }
 }
