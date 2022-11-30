@@ -473,9 +473,9 @@ export class CreateStakeholderComponent implements OnInit {
     this.okCC = false;
     this.resetSearchStakeholder(); //
     if (this.stakeholderType === 'Particular') {
-      this.formStakeholderSearch.get("docType").setValue("0501"); // NIF, por default
+      this.formStakeholderSearch.get("documentType").setValue("0501"); // NIF, por default
     } else {
-      this.formStakeholderSearch.get("docType").setValue("0502"); // Número de identificação fiscal, por default
+      this.formStakeholderSearch.get("documentType").setValue("0502"); // Número de identificação fiscal, por default
     }
   }
 

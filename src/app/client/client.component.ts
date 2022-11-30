@@ -779,18 +779,19 @@ export class ClientComponent implements OnInit {
       this.showENI = false;
       this.isENI = false;
       this.tipologia = "Company";
-
+      this.newClient.documentationDeliveryMethod = "0502";
     } else {
       this.showENI = true;
       this.isENI = true;
       this.tipologia = "ENI";
+      this.newClient.documentationDeliveryMethod = "0501";
     }
 
-    if (this.searchClientForm.get("typology").value) {
-      this.searchClientForm.get("docType").setValue("0502"); // Número de identificação fiscal, por default
-    } else {
-      this.searchClientForm.get("docType").setValue("0501"); // NIF, por default
-    }
+    //if (this.searchClientForm.get("typology").value) {
+    //  this.searchClientForm.get("docType").setValue("0502"); // Número de identificação fiscal, por default
+    //} else {
+    //  this.searchClientForm.get("docType").setValue("0501"); // NIF, por default
+    //}
 
   }
 

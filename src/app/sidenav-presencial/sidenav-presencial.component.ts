@@ -48,7 +48,10 @@ export class SidenavPresencialComponent implements OnInit {
   }
 
   hideHistoryTab() {
-    this.dataService.historyStream$.next(false);
+    //this.dataService.historyStream$.next(false);
+    localStorage.clear();
+    this.dataService.reset();
+    this.router.navigate(["/client"]);
   }
 
   public toggleSideNav(toggled: boolean) {
