@@ -489,25 +489,25 @@
                         <input type="number" [attr.disabled]="commission.minValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionMin" value="{{commission.minValue.value}}" />
+                          formControlName="commissionMin"  />
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.maxValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionMax" value="{{commission.maxValue.value}}" />
+                          formControlName="commissionMax"/>
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.fixedValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionFixed" value="{{commission.fixedValue.value}}" />
+                          formControlName="commissionFixed" />
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.percentageValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="commissionPercentage" value="{{commission.percentageValue.value}}" />
+                          formControlName="commissionPercentage" />
                       </td>
                     </tr>
                   </tbody>

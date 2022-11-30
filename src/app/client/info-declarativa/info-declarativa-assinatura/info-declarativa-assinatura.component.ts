@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from '../../../nav-menu-interna/data.service';
@@ -65,7 +65,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.data.updateData(false, 6, 4);
+    this.data.updateData(false, 6, 3);
     this.initializeForm();
   }
 
@@ -73,6 +73,12 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.form = new FormGroup({
       language: new FormControl('', Validators.required),
       signature: new FormControl(true, Validators.required)
+    });
+
+    this.form.statusChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val === 'VALID') {
+        this.data.updateData(false, 6, 4);
+      }
     });
   }
 
