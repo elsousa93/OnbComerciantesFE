@@ -85,7 +85,7 @@
                         </div> -->
                       </div>
                       <div class="col">
-                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}} 2:</p>
+                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}}:</p>
                         <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
                         <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('invalidNumber')">
                           {{'errorMessages.invalidPhone'|translate}}

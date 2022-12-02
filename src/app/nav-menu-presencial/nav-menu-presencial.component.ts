@@ -55,6 +55,7 @@ export class NavMenuPresencialComponent implements OnInit {
   prevScrollpos: number = window.pageYOffset;
 
   processNumber: string = "";
+  returned: string = "";
   subscription: Subscription;
 
   currentPage: number = 0;
@@ -74,6 +75,9 @@ export class NavMenuPresencialComponent implements OnInit {
   constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
+    if (localStorage.getItem("returned") != null) {
+      this.returned = localStorage.getItem("returned");
+    }
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
     this.chooseLanguage(this.translate.getDefaultLang());
   }
