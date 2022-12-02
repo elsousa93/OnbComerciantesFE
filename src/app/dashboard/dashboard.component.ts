@@ -194,6 +194,8 @@ export class DashboardComponent implements OnInit {
         this.incompleteProcessess = resul;
         this.incompleteProcessess.items.forEach(process => {
 
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
             process.state = this.translate.instant('searches.incompleted');
@@ -220,7 +222,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -236,6 +238,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
         this.ongoingProcessess = resul;
         this.ongoingProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -262,7 +266,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -279,6 +283,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
         this.returnedProcessess = resul;
         this.returnedProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -306,7 +312,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -322,6 +328,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('contractAcceptance', 0, result.pagination.total).subscribe(resul => {
         this.contractAcceptanceProcessess = resul;
         this.contractAcceptanceProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -349,7 +357,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -365,6 +373,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.pendingSentProcessess = resul;
         this.pendingSentProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -392,7 +402,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -408,6 +418,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.pendingEligibilityProcessess = resul;
         this.pendingEligibilityProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -435,7 +447,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -451,6 +463,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.multipleClientesProcessess = resul;
         this.multipleClientesProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -478,7 +492,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -494,6 +508,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.DOValidationProcessess = resul;
         this.DOValidationProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -521,7 +537,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -537,6 +553,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.negotiationAprovalProcessess = resul;
         this.negotiationAprovalProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -564,7 +582,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -580,6 +598,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.MCCTreatmentProcessess = resul;
         this.MCCTreatmentProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -607,7 +627,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -623,6 +643,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.validationSIBSProcessess = resul;
         this.validationSIBSProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -650,7 +672,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -666,6 +688,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.riskOpinionProcessess = resul;
         this.riskOpinionProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -693,7 +717,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -709,6 +733,8 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
         this.complianceDoubtsProcessess = resul;
         this.complianceDoubtsProcessess.items.forEach(process => {
+
+          process.startedAt = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -736,7 +762,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
+            case 'startedAt': return new Date(item["startedAt"]);
 
             default: return item[property].toLocaleLowerCase();
           }
