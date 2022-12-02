@@ -150,7 +150,7 @@
   padding-bottom: 5px !important;*/
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  top: 59;
   z-index: 999;
 }
 
@@ -159,7 +159,7 @@
   position: fixed;
   background-color: #1e66b0;
   box-shadow: 0 0.2rem 1rem rgb(0 0 0 / 45%) !important;
-  width: 100% !important;
+  width: 101% !important;
   margin-top: -20px;
   z-index: 999;
 }

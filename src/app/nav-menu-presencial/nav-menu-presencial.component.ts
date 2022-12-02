@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
-import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
+import { AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
 import { AuthService } from '../services/auth.service';
 import { TranslationLanguage, translationLanguages } from '../translationLanguages';
@@ -23,7 +23,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   selector: 'app-nav-menu-presencial',
   templateUrl: './nav-menu-presencial.component.html',
   styleUrls: ['./nav-menu-presencial.component.css'],
-  animations: [AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo]
+  animations: [AutoHideLogo]
 })
 export class NavMenuPresencialComponent implements OnInit {
 

@@ -19,38 +19,6 @@ export const onSideNavChange = trigger('onSideNavChange', [
   transition('open => close', animate('1000ms ease-in-out')),
 ]);
 
-export const AutoHideNavbarAdjust = trigger('AutoHideNavbarAdjust', [
-  state('show',
-    style({
-      'top': '0'
-    })
-  ),
-  state('hide',
-    style({
-      'top': '-58px'
-
-    })
-  ),
-  transition('show => hide', animate('400ms ease-in-out')),
-  transition('hide => show', animate('400ms ease-in-out')),
-]);
-
-export const AutoHideClientBarAdjust = trigger('AutoHideClientBarAdjust', [
-  state('up',
-    style({
-      'top': '0'
-    })
-  ),
-  state('down',
-    style({
-      'top': '58px'
-
-    })
-  ),
-  transition('up => down', animate('400ms ease-in-out')),
-  transition('down => up', animate('400ms ease-in-out')),
-]);
-
 export const AutoHideSidenavAdjust = trigger('AutoHideSidenavAdjust', [
   state('up',
     style({

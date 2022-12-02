@@ -194,7 +194,7 @@ export class DashboardComponent implements OnInit {
         this.incompleteProcessess = resul;
         this.incompleteProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -239,7 +239,7 @@ export class DashboardComponent implements OnInit {
         this.ongoingProcessess = resul;
         this.ongoingProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -284,7 +284,7 @@ export class DashboardComponent implements OnInit {
         this.returnedProcessess = resul;
         this.returnedProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -329,7 +329,7 @@ export class DashboardComponent implements OnInit {
         this.contractAcceptanceProcessess = resul;
         this.contractAcceptanceProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -374,7 +374,7 @@ export class DashboardComponent implements OnInit {
         this.pendingSentProcessess = resul;
         this.pendingSentProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -419,7 +419,7 @@ export class DashboardComponent implements OnInit {
         this.pendingEligibilityProcessess = resul;
         this.pendingEligibilityProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -464,7 +464,7 @@ export class DashboardComponent implements OnInit {
         this.multipleClientesProcessess = resul;
         this.multipleClientesProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -509,7 +509,7 @@ export class DashboardComponent implements OnInit {
         this.DOValidationProcessess = resul;
         this.DOValidationProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -554,7 +554,7 @@ export class DashboardComponent implements OnInit {
         this.negotiationAprovalProcessess = resul;
         this.negotiationAprovalProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -599,7 +599,7 @@ export class DashboardComponent implements OnInit {
         this.MCCTreatmentProcessess = resul;
         this.MCCTreatmentProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -644,7 +644,7 @@ export class DashboardComponent implements OnInit {
         this.validationSIBSProcessess = resul;
         this.validationSIBSProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -689,7 +689,7 @@ export class DashboardComponent implements OnInit {
         this.riskOpinionProcessess = resul;
         this.riskOpinionProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
@@ -734,7 +734,7 @@ export class DashboardComponent implements OnInit {
         this.complianceDoubtsProcessess = resul;
         this.complianceDoubtsProcessess.items.forEach(process => {
 
-          process.startedAt = this.datePipe.transform(process.startedAt["startedAt"], 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete'){
