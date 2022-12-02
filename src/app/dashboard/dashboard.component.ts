@@ -220,7 +220,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -262,7 +262,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -306,7 +306,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -349,7 +349,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -392,7 +392,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -435,7 +435,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -478,7 +478,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -521,7 +521,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -564,7 +564,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -607,7 +607,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -650,7 +650,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -693,7 +693,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -736,7 +736,7 @@ export class DashboardComponent implements OnInit {
 
             case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-            case 'startedAt': return new Date(item["startedAt"]);
+            case 'startedAt': return this.datePipe.transform(new Date(item["startedAt"]), 'dd-MM-yyyy');
 
             default: return item[property].toLocaleLowerCase();
           }
@@ -767,6 +767,13 @@ export class DashboardComponent implements OnInit {
       subscribe(result => {
         this.logger.debug("Processo cancelado " + result);
       });
+  }
+
+  openProcess(process) {
+    this.logger.debug(process);
+    localStorage.setItem("processNumber", process.processNumber);
+    localStorage.setItem("returned", 'consult');
+    this.router.navigate(['/clientbyid']);
   }
 
   ngOnInit(): void {

@@ -408,8 +408,8 @@
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <a > <!-- ADICIONAR ROUTER LINK -->
-                        <span class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                      <a > 
+                        <span (click)="openProcess(row)" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
                           <img src="assets/images/search_blue.svg" title="Consult">
                         </span>
                       </a>
