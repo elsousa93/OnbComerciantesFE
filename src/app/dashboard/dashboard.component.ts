@@ -20,7 +20,6 @@ import { AppComponent } from '../app.component';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { each } from 'jquery';
 import { TokenService } from '../token.service';
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-dashboard',
