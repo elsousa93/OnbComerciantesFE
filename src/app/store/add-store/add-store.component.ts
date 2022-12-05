@@ -611,6 +611,7 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('subZoneStore').setValidators(null);
 
     if (!this.replicateAddress) {
+      this.formStores.get('replicate').setValue(false);
       //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
       this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
         this.logger.debug(result);
@@ -620,6 +621,7 @@ export class AddStoreComponent implements OnInit {
         this.logger.debug("Deu erro");
       }));
     } else {
+      this.formStores.get('replicate').setValue(true);
       if (this.submissionClient?.headquartersAddress?.postalCode != '' && this.submissionClient?.headquartersAddress?.postalCode != null) {
         var postalCode = this.submissionClient?.headquartersAddress?.postalCode.split("-", 1)[0];
         this.subs.push(this.tableInfo.GetShoppingByZipCode(Number(postalCode)).subscribe(res => {
