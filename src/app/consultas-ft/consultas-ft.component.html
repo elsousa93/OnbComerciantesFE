@@ -34,7 +34,7 @@
             <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p><input id="text3" name="text3"
             type="number" (keypress)="numericOnly($event)" class="form-control campo_form" formControlName="documentNumber">
             <p class="titulo-form-simples mb-1">{{'searches.orderDateUntil'|translate|uppercase}}</p><input id="text2"
-              name="text2" type="date" class="form-control campo_form" formControlName="processDateEnd">
+              name="text2" type="date" [min]="endDate" class="form-control campo_form" formControlName="processDateEnd">
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
