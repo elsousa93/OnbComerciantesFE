@@ -328,9 +328,9 @@ export class DashboardComponent implements OnInit {
     }
   
     if (this.FTPermissions?.acceptance) { //Pendentes de Aceitação
-      this.processService.searchProcessByState('contractAcceptance', 0, 1).subscribe(result => {
+      this.processService.searchProcessByState('ContractAcceptance', 0, 1).subscribe(result => {
         this.logger.debug('Pendentes de Aceitação' + result);
-        this.processService.searchProcessByState('contractAcceptance', 0, result.pagination.total).subscribe(resul => {
+        this.processService.searchProcessByState('ContractAcceptance', 0, result.pagination.total).subscribe(resul => {
           this.contractAcceptanceProcessess = resul;
           this.contractAcceptanceProcessess.items.forEach(process => {
 
@@ -420,9 +420,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.pendingEligibility) { //Pareceres de Eligibilidade
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('EligibilityAssessment', 0, 1).subscribe(result => {
+        this.logger.debug('EligibilityAssessment ' + result);
+        this.processService.searchProcessByState('EligibilityAssessment', 0, result.pagination.total).subscribe(resul => {
           this.pendingEligibilityProcessess = resul;
           this.pendingEligibilityProcessess.items.forEach(process => {
   
@@ -466,9 +466,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.multipleClientes) { //Múltiplos Clientes
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('ClientChoice', 0, 1).subscribe(result => {
+        this.logger.debug('ClientChoice ' + result);
+        this.processService.searchProcessByState('ClientChoice', 0, result.pagination.total).subscribe(resul => {
           this.multipleClientesProcessess = resul;
           this.multipleClientesProcessess.items.forEach(process => {
   
@@ -512,9 +512,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.DOValidation) { //Valida DO
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('OperationsEvaluation', 0, 1).subscribe(result => {
+        this.logger.debug('OperationsEvaluation ' + result);
+        this.processService.searchProcessByState('OperationsEvaluation', 0, result.pagination.total).subscribe(resul => {
           this.DOValidationProcessess = resul;
           this.DOValidationProcessess.items.forEach(process => {
   
@@ -558,9 +558,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.negotiationAproval) { //Aprovação de Negociação
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('NegotiationApproval', 0, 1).subscribe(result => {
+        this.logger.debug('NegotiationApproval ' + result);
+        this.processService.searchProcessByState('NegotiationApproval', 0, result.pagination.total).subscribe(resul => {
           this.negotiationAprovalProcessess = resul;
           this.negotiationAprovalProcessess.items.forEach(process => {
   
@@ -604,9 +604,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.MCCTreatment) { //MCC
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, 1).subscribe(result => {
+        this.logger.debug('StandardIndustryClassificationChoice ' + result);
+        this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, result.pagination.total).subscribe(resul => {
           this.MCCTreatmentProcessess = resul;
           this.MCCTreatmentProcessess.items.forEach(process => {
   
@@ -650,9 +650,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.validationSIBS) { //Validação SIBS
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('MerchantRegistration', 0, 1).subscribe(result => {
+        this.logger.debug('MerchantRegistration ' + result);
+        this.processService.searchProcessByState('MerchantRegistration', 0, result.pagination.total).subscribe(resul => {
           this.validationSIBSProcessess = resul;
           this.validationSIBSProcessess.items.forEach(process => {
   
@@ -696,9 +696,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.riskOpinion) { //Parecer de Risco
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('RiskAssessment', 0, 1).subscribe(result => {
+        this.logger.debug('RiskAssessment ' + result);
+        this.processService.searchProcessByState('RiskAssessment', 0, result.pagination.total).subscribe(resul => {
           this.riskOpinionProcessess = resul;
           this.riskOpinionProcessess.items.forEach(process => {
   
@@ -742,9 +742,9 @@ export class DashboardComponent implements OnInit {
     } 
     
     if (this.FTPermissions?.complianceDoubts) { //Dúvidas Compliance
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
+      this.processService.searchProcessByState('ComplianceEvaluation', 0, 1).subscribe(result => {
+        this.logger.debug('ComplianceEvaluation ' + result);
+        this.processService.searchProcessByState('ComplianceEvaluation', 0, result.pagination.total).subscribe(resul => {
           this.complianceDoubtsProcessess = resul;
           this.complianceDoubtsProcessess.items.forEach(process => {
   
