@@ -61,7 +61,7 @@
 
               <div class="accordion1-item" *ngIf="clientContext?.isClient || (clientDocs != null && clientDocs.length > 0)">
                 <h2 class="accordion-header" id="flush-headingFour">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" 
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" (click)="onActivate()"
                           data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
                     <span class="material-symbols-outlined icon-accordion">
                       <img src="assets/images/contact_page.svg" style="height: 33px;"/>
