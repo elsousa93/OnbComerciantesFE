@@ -234,7 +234,9 @@ export class DashboardComponent implements OnInit {
           this.incompleteCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.backOffice) { //Tratamento BackOffice
+    }
+
+    if (this.FTPermissions?.backOffice) { //Tratamento BackOffice
         this.processService.searchProcessByState('Ongoing', 0, 1).subscribe(result => {
           this.logger.debug('Tratamento BackOffice ' + result);
           this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
@@ -277,7 +279,9 @@ export class DashboardComponent implements OnInit {
             this.ongoingCount = result.pagination.total;
           });
         });
-    } else if (this.FTPermissions?.returned) { //Devolvido BackOffice
+    }
+    
+    if (this.FTPermissions?.returned) { //Devolvido BackOffice
       this.processService.searchProcessByState('Returned', 0, 1).subscribe(result => {
         this.logger.debug('Devolvidos BackOffice ' + result);
         this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
@@ -321,7 +325,9 @@ export class DashboardComponent implements OnInit {
           this.returnedCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.acceptance) { //Pendentes de Aceitação
+    }
+  
+    if (this.FTPermissions?.acceptance) { //Pendentes de Aceitação
       this.processService.searchProcessByState('contractAcceptance', 0, 1).subscribe(result => {
         this.logger.debug('Pendentes de Aceitação' + result);
         this.processService.searchProcessByState('contractAcceptance', 0, result.pagination.total).subscribe(resul => {
@@ -365,7 +371,9 @@ export class DashboardComponent implements OnInit {
           this.contractAcceptanceCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.pendingSent) { //Arquivo Fisico
+    } 
+    
+    if (this.FTPermissions?.pendingSent) { //Arquivo Fisico
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -409,7 +417,9 @@ export class DashboardComponent implements OnInit {
           this.pendingSentCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.pendingEligibility) { //Pareceres de Eligibilidade
+    } 
+    
+    if (this.FTPermissions?.pendingEligibility) { //Pareceres de Eligibilidade
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -453,7 +463,9 @@ export class DashboardComponent implements OnInit {
           this.pendingEligibilityCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.multipleClientes) { //Múltiplos Clientes
+    } 
+    
+    if (this.FTPermissions?.multipleClientes) { //Múltiplos Clientes
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -497,7 +509,9 @@ export class DashboardComponent implements OnInit {
           this.multipleClientesCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.DOValidation) { //Valida DO
+    } 
+    
+    if (this.FTPermissions?.DOValidation) { //Valida DO
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -541,7 +555,9 @@ export class DashboardComponent implements OnInit {
           this.DOValidationCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.negotiationAproval) { //Aprovação de Negociação
+    } 
+    
+    if (this.FTPermissions?.negotiationAproval) { //Aprovação de Negociação
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -585,7 +601,9 @@ export class DashboardComponent implements OnInit {
           this.negotiationAprovalCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.MCCTreatment) { //MCC
+    } 
+    
+    if (this.FTPermissions?.MCCTreatment) { //MCC
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -629,7 +647,9 @@ export class DashboardComponent implements OnInit {
           this.MCCTreatmentCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.validationSIBS) { //Validação SIBS
+    } 
+    
+    if (this.FTPermissions?.validationSIBS) { //Validação SIBS
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -673,7 +693,9 @@ export class DashboardComponent implements OnInit {
           this.validationSIBSCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.riskOpinion) { //Parecer de Risco
+    } 
+    
+    if (this.FTPermissions?.riskOpinion) { //Parecer de Risco
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
@@ -717,7 +739,9 @@ export class DashboardComponent implements OnInit {
           this.riskOpinionCount = result.pagination.total;
         });
       });
-    } else if (this.FTPermissions?.complianceDoubts) { //Dúvidas Compliance
+    } 
+    
+    if (this.FTPermissions?.complianceDoubts) { //Dúvidas Compliance
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
