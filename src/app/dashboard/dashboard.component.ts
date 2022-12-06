@@ -193,46 +193,7 @@ export class DashboardComponent implements OnInit {
     if (this.FTPermissions?.pending) {
       this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
         this.logger.debug('Pendentes de envio ' + result.items);
-        this.processService.searchProcessByState('Incomplete', 0, result.pagination.total).subscribe(resul => {
-          this.incompleteProcessess = resul;
-          this.incompleteProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
-          this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-          
-          this.dataSourcePendentes.data = this.incompleteProcessess.items;
-          this.dataSourcePendentes.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourcePendentes.sort = this.empTbSort;
-          this.incompleteCount = result.pagination.total;
-        });
+        this.incompleteCount = result.pagination.total;
       });
     }
 
@@ -786,6 +747,38 @@ export class DashboardComponent implements OnInit {
         });
       });
     }
+  }
+
+  callIncompleteCount() {
+    this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
+      this.incompleteProcessess = resul;
+      this.incompleteProcessess.items.forEach(process => {
+
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'Incomplete'){
+          process.state = this.translate.instant('searches.incompleted');
+        }         
+      });
+      this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
+      this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+      
+      this.dataSourcePendentes.data = this.incompleteProcessess.items;
+      this.dataSourcePendentes.sortingDataAccessor = (item, property) => {
+        switch (property) {
+          case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+          case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+          case 'startedAt': return new Date(item["startedAt"]);
+
+          default: return item[property].toLocaleLowerCase();
+        }
+      }
+      this.dataSourcePendentes.sort = this.empTbSort;
+      
+    });
   }
 
   FTSearch(queue: string, processId: string) {
