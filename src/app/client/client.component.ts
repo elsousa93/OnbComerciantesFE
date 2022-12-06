@@ -240,6 +240,7 @@ export class ClientComponent implements OnInit {
   toSearch: boolean = false;
   resultError: string = "";
   clientTypology: string = "";
+  searchType: string = "";
   clientNr: boolean = false;
 
   clientsToShow: { client: Client, isClient: boolean }[] = [];
@@ -320,6 +321,8 @@ export class ClientComponent implements OnInit {
 
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
+  
+  
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -483,7 +486,7 @@ export class ClientComponent implements OnInit {
 
     if (this.canSearch) {
       this.canSearch = false;
-      this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
+      this.clientService.SearchClientByQuery(this.newClient.clientId, this.searchType, "por mudar", "por mudar").subscribe(o => {
         this.showFoundClient = true;
         var clients = o;
 
@@ -665,6 +668,14 @@ export class ClientComponent implements OnInit {
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
+
+    // get search type
+    if (this.docType === '0502' || this.docType === '1010') {
+      this.searchType = "Merchant"
+    } else {
+      this.searchType = "Stakeholder"
+    }
+
     this.newClient.documentationDeliveryMethod = e.target.value;
     if (this.docType === '1001') { //código do Cartão do Cidadão
       this.isCC = true;
