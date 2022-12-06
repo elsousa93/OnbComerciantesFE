@@ -450,6 +450,7 @@ export class AddStoreComponent implements OnInit {
 
   chooseAddress(toChoose: boolean) {
     this.replicateAddress = toChoose;
+    this.formStores.get('replicate').setValue(toChoose);
     if (!toChoose) {
       this.formStores.get('localeStore').setValidators([Validators.required]);
       this.formStores.get('addressStore').setValidators([Validators.required]);
