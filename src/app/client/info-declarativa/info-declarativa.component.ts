@@ -95,7 +95,7 @@ export class InfoDeclarativaComponent implements OnInit {
       phone1: this.formBuilder.group({
         countryCode: new FormControl(this.newClient?.contacts?.phone1?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone1?.phoneNumber),
-      },{validators: [validPhoneAndMobileNumber]}),
+      },{validators: [validPhoneNumber]}),
       phone2: this.formBuilder.group({
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
