@@ -304,7 +304,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.incompleted');
         }
       });
-      this.orderProcesses(this.dataSourcePendentes);
+      this.orderProcesses(this.dataSourcePendentes, this.empTbSort);
     });
   }
 
@@ -319,7 +319,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.running');
         }
       });
-      this.orderProcesses(this.dataSourceTratamento);
+      this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject);
     });
   }
 
@@ -334,7 +334,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.returned');
         }
       });
-      this.orderProcesses(this.dataSourceDevolvidos);
+      this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos);
     });
   }
 
@@ -349,7 +349,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.contractAcceptance')
         }
       });
-      this.orderProcesses(this.dataSourceAceitacao);
+      this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao);
     });
   }
 
@@ -364,7 +364,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.completed');
         } 
       });
-      this.orderProcesses(this.dataSourcePendingSent);
+      this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent);
     });
   }
 
@@ -379,7 +379,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.eligibility');
         }
       });
-      this.orderProcesses(this.dataSourcePendingEligibility);
+      this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility);
     });
   }
 
@@ -394,7 +394,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.multipleClients');
         } 
       });
-      this.orderProcesses(this.dataSourceMultipleClients);
+      this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients);
     });
   }
 
@@ -409,7 +409,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.DOValidation');
         } 
       });
-      this.orderProcesses(this.dataSourceDOValidation);
+      this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation);
     });
   }
 
@@ -424,7 +424,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.negotiationApproval');
         } 
       });
-      this.orderProcesses(this.dataSourceNegotiationAproval);
+      this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval);
     });
   }
 
@@ -439,7 +439,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.MCCTreatment');
         } 
       });
-      this.orderProcesses(this.dataSourceMCCTreatment);
+      this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment);
     });
   }
 
@@ -454,7 +454,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.validationSIBS');
         } 
       });
-      this.orderProcesses(this.dataSourceValidationSIBS);
+      this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS);
     });
   }
 
@@ -469,7 +469,7 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.riskOpinion');
         } 
       });
-      this.orderProcesses(this.dataSourceRiskOpinion);
+      this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion);
     });
   }
 
@@ -484,11 +484,11 @@ export class DashboardComponent implements OnInit {
           process.state = this.translate.instant('searches.complianceDoubts');
         } 
       });
-      this.orderProcesses(this.dataSourceComplianceDoubts);
+      this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts);
     });
   }
 
-  orderProcesses(dataSource: MatTableDataSource<ProcessList>) {
+  orderProcesses(dataSource: MatTableDataSource<ProcessList>, sorter: MatSort) {
     dataSource.paginator._intl = new MatPaginatorIntl();
     dataSource.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
@@ -504,7 +504,7 @@ export class DashboardComponent implements OnInit {
         default: return item[property].toLocaleLowerCase();
       }
     }
-    dataSource.sort = this.empTbSort;
+    dataSource.sort = sorter;
   }
 
   FTSearch(queue: string, processId: string) {
