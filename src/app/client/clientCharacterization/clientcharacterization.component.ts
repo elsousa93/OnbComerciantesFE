@@ -727,6 +727,7 @@ export class ClientCharacterizationComponent implements OnInit {
     }
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
       this.client.legalName = this.form.value["socialDenomination"];
+      this.client.commercialName = this.form.value["socialDenomination"];
       this.client.merchantType = '02';
       if (this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;

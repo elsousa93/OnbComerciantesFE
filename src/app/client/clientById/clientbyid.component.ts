@@ -592,6 +592,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
             clientToInsert.fiscalId = this.NIFNIPC;
             clientToInsert.legalName = this.socialDenomination;
+            clientToInsert.commercialName = this.socialDenomination;
             clientToInsert.knowYourSales = {
               servicesOrProductsDestinations: [],
               servicesOrProductsSold: []
