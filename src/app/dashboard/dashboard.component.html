@@ -259,7 +259,7 @@
           </nav>
         </div>
         <div class="offset-1 col-10 mb-3 mt-4 ps-0 pe-0 ">
-          <div class="accordion1 accordion-flush" id="accordionFlushExample">
+          <div class="accordion1 accordion-flush" id="accordionFlushExample" (click)="callIncompleteCount()"> 
             <div *ngIf="FTPermissions.pending" class="accordion1-item">
               <h2 class="accordion1-header" id="flush-headingPending">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
