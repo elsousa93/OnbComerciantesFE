@@ -56,67 +56,67 @@ export class DashboardComponent implements OnInit {
   @ViewChild('empTbSortValidationSIBS') empTbSortValidationSIBS = new MatSort();
   @ViewChild('empTbSortRiskOpinion') empTbSortRiskOpinion = new MatSort();
   @ViewChild('empTbSortComplianceDoubts') empTbSortComplianceDoubts = new MatSort();
-  @ViewChild('paginatorPage') set paginatorPage(pager:MatPaginator) {
+  @ViewChild('paginatorPage') set paginatorPage(pager: MatPaginator) {
     if (pager) {
       this.dataSourcePendentes.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageSize') set paginatorPageSize(pager:MatPaginator) {
+  @ViewChild('paginatorPageSize') set paginatorPageSize(pager: MatPaginator) {
     if (pager) {
       this.dataSourceTratamento.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageDevolvidos') set paginatorPageDevolvidos(pager:MatPaginator) {
+  @ViewChild('paginatorPageDevolvidos') set paginatorPageDevolvidos(pager: MatPaginator) {
     if (pager) {
       this.dataSourceDevolvidos.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageAceitacao') set paginatorPageAceitacao(pager:MatPaginator) {
+  @ViewChild('paginatorPageAceitacao') set paginatorPageAceitacao(pager: MatPaginator) {
     if (pager) {
       this.dataSourceAceitacao.paginator = pager;
     }
   }
-  @ViewChild('paginatorPagePendingSent') set paginatorPagePendingSent(pager:MatPaginator) {
+  @ViewChild('paginatorPagePendingSent') set paginatorPagePendingSent(pager: MatPaginator) {
     if (pager) {
       this.dataSourcePendingSent.paginator = pager;
     }
   }
-  @ViewChild('paginatorPagePendingEligibility') set paginatorPagePendingEligibility(pager:MatPaginator) {
+  @ViewChild('paginatorPagePendingEligibility') set paginatorPagePendingEligibility(pager: MatPaginator) {
     if (pager) {
       this.dataSourcePendingEligibility.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageMultipleClients') set paginatorPageMultipleClients(pager:MatPaginator) {
+  @ViewChild('paginatorPageMultipleClients') set paginatorPageMultipleClients(pager: MatPaginator) {
     if (pager) {
       this.dataSourceMultipleClients.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageDOValidation') set paginatorPageDOValidation(pager:MatPaginator) {
+  @ViewChild('paginatorPageDOValidation') set paginatorPageDOValidation(pager: MatPaginator) {
     if (pager) {
       this.dataSourceDOValidation.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageNegotiationAproval') set paginatorPageNegotiationAproval(pager:MatPaginator) {
+  @ViewChild('paginatorPageNegotiationAproval') set paginatorPageNegotiationAproval(pager: MatPaginator) {
     if (pager) {
       this.dataSourceNegotiationAproval.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageMCCTreatment') set paginatorPageMCCTreatment(pager:MatPaginator) {
+  @ViewChild('paginatorPageMCCTreatment') set paginatorPageMCCTreatment(pager: MatPaginator) {
     if (pager) {
       this.dataSourceMCCTreatment.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageValidationSIBS') set paginatorPageValidationSIBS(pager:MatPaginator) {
+  @ViewChild('paginatorPageValidationSIBS') set paginatorPageValidationSIBS(pager: MatPaginator) {
     if (pager) {
       this.dataSourceValidationSIBS.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageRiskOpinion') set paginatorPageRiskOpinion(pager:MatPaginator) {
+  @ViewChild('paginatorPageRiskOpinion') set paginatorPageRiskOpinion(pager: MatPaginator) {
     if (pager) {
       this.dataSourceRiskOpinion.paginator = pager;
     }
   }
-  @ViewChild('paginatorPageComplianceDoubts') set paginatorPageComplianceDoubts(pager:MatPaginator) {
+  @ViewChild('paginatorPageComplianceDoubts') set paginatorPageComplianceDoubts(pager: MatPaginator) {
     if (pager) {
       this.dataSourceComplianceDoubts.paginator = pager;
     }
@@ -126,8 +126,8 @@ export class DashboardComponent implements OnInit {
 
   state = State;
 
-  displayedColumns = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt','state', 'buttons'];
-  displayedColumnsQueues = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt','state', 'assigned', 'buttons'];
+  displayedColumns = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt', 'state', 'buttons'];
+  displayedColumnsQueues = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt', 'state', 'assigned', 'buttons'];
 
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -174,7 +174,7 @@ export class DashboardComponent implements OnInit {
 
   nipc: string;
   name: string;
-  
+
 
   constructor(private logger: LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
@@ -197,554 +197,98 @@ export class DashboardComponent implements OnInit {
       });
     }
 
-    if (this.FTPermissions?.backOffice) { //Tratamento BackOffice
-        this.processService.searchProcessByState('Ongoing', 0, 1).subscribe(result => {
-          this.logger.debug('Tratamento BackOffice ' + result);
-          this.processService.searchProcessByState('Ongoing', 0, result.pagination.total).subscribe(resul => {
-            this.ongoingProcessess = resul;
-            this.ongoingProcessess.items.forEach(process => {
-
-              process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-              // mapear os estados para aparecer em PT ou EN
-              if (process.state === 'Incomplete'){
-                process.state = this.translate.instant('searches.incompleted');
-              } else if (process.state === 'Ongoing'){
-                process.state = this.translate.instant('searches.running');
-              } else if (process.state === 'Completed') {
-                process.state = this.translate.instant('searches.completed');
-              } else if (process.state === 'Returned') {
-                process.state = this.translate.instant('searches.returned');
-              } else if (process.state === 'Cancelled') {
-                process.state = this.translate.instant('searches.cancelled');
-              } else if (process.state === 'ContractAcceptance'){
-                process.state = this.translate.instant('searches.contractAcceptance')
-              }
-            });
-            this.dataSourceTratamento.paginator._intl = new MatPaginatorIntl();
-            this.dataSourceTratamento.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-
-            this.dataSourceTratamento.data = this.ongoingProcessess.items;
-            this.dataSourceTratamento.sortingDataAccessor = (item, property) => {
-              switch (property) {
-                case 'merchant.fiscalId': return item.merchant?.fiscalId;
-
-                case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-
-                case 'startedAt': return new Date(item["startedAt"]);
-
-                default: return item[property].toLocaleLowerCase();
-              }
-            }
-            this.dataSourceTratamento.sort = this.empTbSortWithObject;
-            this.ongoingCount = result.pagination.total;
-          });
-        });
-    }
-    
-    if (this.FTPermissions?.returned) { //Devolvido BackOffice
-      this.processService.searchProcessByState('Returned', 0, 1).subscribe(result => {
-        this.logger.debug('Devolvidos BackOffice ' + result);
-        this.processService.searchProcessByState('Returned', 0, result.pagination.total).subscribe(resul => {
-          this.returnedProcessess = resul;
-          this.returnedProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceDevolvidos.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceDevolvidos.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceDevolvidos.data = this.returnedProcessess.items;
-          this.dataSourceDevolvidos.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceDevolvidos.sort = this.empTbSortDevolvidos;
-          this.returnedCount = result.pagination.total;
-        });
+    //Tratamento BackOffice
+    if (this.FTPermissions?.backOffice) {
+      this.processService.searchProcessByState('Ongoing', 0, 1).subscribe(result => {
+        this.logger.debug('Tratamento BackOffice ' + result.items);
+        this.ongoingCount = result.pagination.total;
       });
     }
-  
-    if (this.FTPermissions?.acceptance) { //Pendentes de Aceitação
+
+    //Devolvido BackOffice
+    if (this.FTPermissions?.returned) {
+      this.processService.searchProcessByState('Returned', 0, 1).subscribe(result => {
+        this.logger.debug('Devolvidos BackOffice ' + result.items);
+        this.returnedCount = result.pagination.total;
+      });
+    }
+
+    //Pendentes de Aceitação
+    if (this.FTPermissions?.acceptance) {
       this.processService.searchProcessByState('ContractAcceptance', 0, 1).subscribe(result => {
         this.logger.debug('Pendentes de Aceitação' + result);
-        this.processService.searchProcessByState('ContractAcceptance', 0, result.pagination.total).subscribe(resul => {
-          this.contractAcceptanceProcessess = resul;
-          this.contractAcceptanceProcessess.items.forEach(process => {
-
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceAceitacao.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceAceitacao.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-
-          this.dataSourceAceitacao.data = this.contractAcceptanceProcessess.items;
-          this.dataSourceAceitacao.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-
-              case 'startedAt': return new Date(item["startedAt"]);
-
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceAceitacao.sort = this.empTbSortAceitacao;
-          this.contractAcceptanceCount = result.pagination.total;
-        });
+        this.contractAcceptanceCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.pendingSent) { //Arquivo Fisico
+    }
+
+    //Arquivo Fisico
+    if (this.FTPermissions?.pendingSent) { 
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
-        this.processService.searchProcessByState('Completed', 0, result.pagination.total).subscribe(resul => {
-          this.pendingSentProcessess = resul;
-          this.pendingSentProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourcePendingSent.paginator._intl = new MatPaginatorIntl();
-          this.dataSourcePendingSent.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourcePendingSent.data = this.pendingSentProcessess.items;
-          this.dataSourcePendingSent.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourcePendingSent.sort = this.empTbSortPendingSent;
-          this.pendingSentCount = result.pagination.total;
-        });
+        this.pendingSentCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.pendingEligibility) { //Pareceres de Eligibilidade
+    }
+
+    //Pareceres de Eligibilidade
+    if (this.FTPermissions?.pendingEligibility) { 
       this.processService.searchProcessByState('EligibilityAssessment', 0, 1).subscribe(result => {
         this.logger.debug('EligibilityAssessment ' + result);
-        this.processService.searchProcessByState('EligibilityAssessment', 0, result.pagination.total).subscribe(resul => {
-          this.pendingEligibilityProcessess = resul;
-          this.pendingEligibilityProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourcePendingEligibility.paginator._intl = new MatPaginatorIntl();
-          this.dataSourcePendingEligibility.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourcePendingEligibility.data = this.pendingEligibilityProcessess.items;
-          this.dataSourcePendingEligibility.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourcePendingEligibility.sort = this.empTbSortPendingEligibility;
-          this.pendingEligibilityCount = result.pagination.total;
-        });
+        this.pendingEligibilityCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.multipleClientes) { //Múltiplos Clientes
+    }
+
+    //Múltiplos Clientes
+    if (this.FTPermissions?.multipleClientes) { 
       this.processService.searchProcessByState('ClientChoice', 0, 1).subscribe(result => {
         this.logger.debug('ClientChoice ' + result);
-        this.processService.searchProcessByState('ClientChoice', 0, result.pagination.total).subscribe(resul => {
-          this.multipleClientesProcessess = resul;
-          this.multipleClientesProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceMultipleClients.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceMultipleClients.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceMultipleClients.data = this.multipleClientesProcessess.items;
-          this.dataSourceMultipleClients.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceMultipleClients.sort = this.empTbSortMultipleClients;
-          this.multipleClientesCount = result.pagination.total;
-        });
+        this.multipleClientesCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.DOValidation) { //Valida DO
+    }
+
+    //Valida DO
+    if (this.FTPermissions?.DOValidation) { 
       this.processService.searchProcessByState('OperationsEvaluation', 0, 1).subscribe(result => {
         this.logger.debug('OperationsEvaluation ' + result);
-        this.processService.searchProcessByState('OperationsEvaluation', 0, result.pagination.total).subscribe(resul => {
-          this.DOValidationProcessess = resul;
-          this.DOValidationProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceDOValidation.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceDOValidation.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceDOValidation.data = this.DOValidationProcessess.items;
-          this.dataSourceDOValidation.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceDOValidation.sort = this.empTbSortDOValidation;
-          this.DOValidationCount = result.pagination.total;
-        });
+        this.DOValidationCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.negotiationAproval) { //Aprovação de Negociação
+    }
+
+    //Aprovação de Negociação
+    if (this.FTPermissions?.negotiationAproval) { 
       this.processService.searchProcessByState('NegotiationApproval', 0, 1).subscribe(result => {
         this.logger.debug('NegotiationApproval ' + result);
-        this.processService.searchProcessByState('NegotiationApproval', 0, result.pagination.total).subscribe(resul => {
-          this.negotiationAprovalProcessess = resul;
-          this.negotiationAprovalProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceNegotiationAproval.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceNegotiationAproval.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceNegotiationAproval.data = this.negotiationAprovalProcessess.items;
-          this.dataSourceNegotiationAproval.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceNegotiationAproval.sort = this.empTbSortNegotiationAproval;
-          this.negotiationAprovalCount = result.pagination.total;
-        });
+        this.negotiationAprovalCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.MCCTreatment) { //MCC
+    }
+
+    //MCC
+    if (this.FTPermissions?.MCCTreatment) { 
       this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, 1).subscribe(result => {
         this.logger.debug('StandardIndustryClassificationChoice ' + result);
-        this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, result.pagination.total).subscribe(resul => {
-          this.MCCTreatmentProcessess = resul;
-          this.MCCTreatmentProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceMCCTreatment.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceMCCTreatment.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceMCCTreatment.data = this.MCCTreatmentProcessess.items;
-          this.dataSourceMCCTreatment.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceMCCTreatment.sort = this.empTbSortMCCTreatment;
-          this.MCCTreatmentCount = result.pagination.total;
-        });
+        this.MCCTreatmentCount = result.pagination.total;
       });
-    } 
-    
+    }
+
     if (this.FTPermissions?.validationSIBS) { //Validação SIBS
       this.processService.searchProcessByState('MerchantRegistration', 0, 1).subscribe(result => {
         this.logger.debug('MerchantRegistration ' + result);
-        this.processService.searchProcessByState('MerchantRegistration', 0, result.pagination.total).subscribe(resul => {
-          this.validationSIBSProcessess = resul;
-          this.validationSIBSProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceValidationSIBS.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceValidationSIBS.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceValidationSIBS.data = this.validationSIBSProcessess.items;
-          this.dataSourceValidationSIBS.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceValidationSIBS.sort = this.empTbSortValidationSIBS;
-          this.validationSIBSCount = result.pagination.total;
-        });
+        this.validationSIBSCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.riskOpinion) { //Parecer de Risco
+    }
+
+    //Parecer de Risco
+    if (this.FTPermissions?.riskOpinion) { 
       this.processService.searchProcessByState('RiskAssessment', 0, 1).subscribe(result => {
         this.logger.debug('RiskAssessment ' + result);
-        this.processService.searchProcessByState('RiskAssessment', 0, result.pagination.total).subscribe(resul => {
-          this.riskOpinionProcessess = resul;
-          this.riskOpinionProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceRiskOpinion.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceRiskOpinion.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceRiskOpinion.data = this.riskOpinionProcessess.items;
-          this.dataSourceRiskOpinion.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceRiskOpinion.sort = this.empTbSortRiskOpinion;
-          this.riskOpinionCount = result.pagination.total;
-        });
+        this.riskOpinionCount = result.pagination.total;
       });
-    } 
-    
-    if (this.FTPermissions?.complianceDoubts) { //Dúvidas Compliance
+    }
+
+    //Dúvidas Compliance
+    if (this.FTPermissions?.complianceDoubts) { 
       this.processService.searchProcessByState('ComplianceEvaluation', 0, 1).subscribe(result => {
         this.logger.debug('ComplianceEvaluation ' + result);
-        this.processService.searchProcessByState('ComplianceEvaluation', 0, result.pagination.total).subscribe(resul => {
-          this.complianceDoubtsProcessess = resul;
-          this.complianceDoubtsProcessess.items.forEach(process => {
-  
-            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-  
-            // mapear os estados para aparecer em PT ou EN
-            if (process.state === 'Incomplete'){
-              process.state = this.translate.instant('searches.incompleted');
-            } else if (process.state === 'Ongoing'){
-              process.state = this.translate.instant('searches.running');
-            } else if (process.state === 'Completed') {
-              process.state = this.translate.instant('searches.completed');
-            } else if (process.state === 'Returned') {
-              process.state = this.translate.instant('searches.returned');
-            } else if (process.state === 'Cancelled') {
-              process.state = this.translate.instant('searches.cancelled');
-            } else if (process.state === 'ContractAcceptance'){
-              process.state = this.translate.instant('searches.contractAcceptance')
-            }
-            
-          });
-          this.dataSourceComplianceDoubts.paginator._intl = new MatPaginatorIntl();
-          this.dataSourceComplianceDoubts.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-  
-          this.dataSourceComplianceDoubts.data = this.complianceDoubtsProcessess.items;
-          this.dataSourceComplianceDoubts.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'merchant.fiscalId': return item.merchant?.fiscalId;
-  
-              case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-  
-              case 'startedAt': return new Date(item["startedAt"]);
-  
-              default: return item[property].toLocaleLowerCase();
-            }
-          }
-          this.dataSourceComplianceDoubts.sort = this.empTbSortComplianceDoubts;
-          this.complianceDoubtsCount = result.pagination.total;
-        });
+        this.complianceDoubtsCount = result.pagination.total;
       });
     }
   }
@@ -753,32 +297,214 @@ export class DashboardComponent implements OnInit {
     this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
       this.incompleteProcessess = resul;
       this.incompleteProcessess.items.forEach(process => {
-
         process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
 
         // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'Incomplete'){
+        if (process.state === 'Incomplete') {
           process.state = this.translate.instant('searches.incompleted');
-        }         
-      });
-      this.dataSourcePendentes.paginator._intl = new MatPaginatorIntl();
-      this.dataSourcePendentes.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
-      
-      this.dataSourcePendentes.data = this.incompleteProcessess.items;
-      this.dataSourcePendentes.sortingDataAccessor = (item, property) => {
-        switch (property) {
-          case 'merchant.fiscalId': return item.merchant?.fiscalId;
-
-          case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
-
-          case 'startedAt': return new Date(item["startedAt"]);
-
-          default: return item[property].toLocaleLowerCase();
         }
-      }
-      this.dataSourcePendentes.sort = this.empTbSort;
-      
+      });
+      this.orderProcesses(this.dataSourcePendentes);
     });
+  }
+
+  callBackOfficeCount() {
+    this.processService.searchProcessByState('Ongoing', 0, this.ongoingCount).subscribe(resul => {
+      this.ongoingProcessess = resul;
+      this.ongoingProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'Ongoing') {
+          process.state = this.translate.instant('searches.running');
+        }
+      });
+      this.orderProcesses(this.dataSourceTratamento);
+    });
+  }
+
+  callReturnedCount() {
+    this.processService.searchProcessByState('Returned', 0, this.returnedCount).subscribe(resul => {
+      this.returnedProcessess = resul;
+      this.returnedProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'Returned') {
+          process.state = this.translate.instant('searches.returned');
+        }
+      });
+      this.orderProcesses(this.dataSourceDevolvidos);
+    });
+  }
+
+  callAcceptanceCount() {
+    this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
+      this.contractAcceptanceProcessess = resul;
+      this.contractAcceptanceProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'ContractAcceptance') {
+          process.state = this.translate.instant('searches.contractAcceptance')
+        }
+      });
+      this.orderProcesses(this.dataSourceAceitacao);
+    });
+  }
+
+  callPendingSentCount() {
+    this.processService.searchProcessByState('Completed', 0, this.pendingSentCount).subscribe(resul => {
+      this.pendingSentProcessess = resul;
+      this.pendingSentProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'Completed') {
+          process.state = this.translate.instant('searches.completed');
+        } 
+      });
+      this.orderProcesses(this.dataSourcePendingSent);
+    });
+  }
+
+  callPendingEligibilityCount() {
+    this.processService.searchProcessByState('EligibilityAssessment', 0, this.pendingEligibilityCount).subscribe(resul => {
+      this.pendingEligibilityProcessess = resul;
+      this.pendingEligibilityProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'EligibilityAssessment') {
+          process.state = this.translate.instant('searches.eligibility');
+        }
+      });
+      this.orderProcesses(this.dataSourcePendingEligibility);
+    });
+  }
+
+  callMultipleClientsCount() {
+    this.processService.searchProcessByState('ClientChoice', 0, this.multipleClientesCount).subscribe(resul => {
+      this.multipleClientesProcessess = resul;
+      this.multipleClientesProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'ClientChoice') {
+          process.state = this.translate.instant('searches.multipleClients');
+        } 
+      });
+      this.orderProcesses(this.dataSourceMultipleClients);
+    });
+  }
+
+  callDOValidationCount() {
+    this.processService.searchProcessByState('OperationsEvaluation', 0, this.DOValidationCount).subscribe(resul => {
+      this.DOValidationProcessess = resul;
+      this.DOValidationProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'OperationsEvaluation') {
+          process.state = this.translate.instant('searches.DOValidation');
+        } 
+      });
+      this.orderProcesses(this.dataSourceDOValidation);
+    });
+  }
+
+  callNegotiationApprovalCount() {
+    this.processService.searchProcessByState('NegotiationApproval', 0, this.negotiationAprovalCount).subscribe(resul => {
+      this.negotiationAprovalProcessess = resul;
+      this.negotiationAprovalProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'NegotiationApproval') {
+          process.state = this.translate.instant('searches.negotiationApproval');
+        } 
+      });
+      this.orderProcesses(this.dataSourceNegotiationAproval);
+    });
+  }
+
+  callMCCTreatmentCount() {
+    this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, this.MCCTreatmentCount).subscribe(resul => {
+      this.MCCTreatmentProcessess = resul;
+      this.MCCTreatmentProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'StandardIndustryClassificationChoice') {
+          process.state = this.translate.instant('searches.MCCTreatment');
+        } 
+      });
+      this.orderProcesses(this.dataSourceMCCTreatment);
+    });
+  }
+
+  callValidationSIBSCount() {
+    this.processService.searchProcessByState('MerchantRegistration', 0, this.validationSIBSCount).subscribe(resul => {
+      this.validationSIBSProcessess = resul;
+      this.validationSIBSProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'MerchantRegistration') {
+          process.state = this.translate.instant('searches.validationSIBS');
+        } 
+      });
+      this.orderProcesses(this.dataSourceValidationSIBS);
+    });
+  }
+
+  callRiskOpinionCount() {
+    this.processService.searchProcessByState('RiskAssessment', 0, this.riskOpinionCount).subscribe(resul => {
+      this.riskOpinionProcessess = resul;
+      this.riskOpinionProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'RiskAssessment') {
+          process.state = this.translate.instant('searches.riskOpinion');
+        } 
+      });
+      this.orderProcesses(this.dataSourceRiskOpinion);
+    });
+  }
+
+  callComplianceDoubtsCount(){
+    this.processService.searchProcessByState('ComplianceEvaluation', 0, this.complianceDoubtsCount).subscribe(resul => {
+      this.complianceDoubtsProcessess = resul;
+      this.complianceDoubtsProcessess.items.forEach(process => {
+        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+
+        // mapear os estados para aparecer em PT ou EN
+        if (process.state === 'ComplianceEvaluation') {
+          process.state = this.translate.instant('searches.complianceDoubts');
+        } 
+      });
+      this.orderProcesses(this.dataSourceComplianceDoubts);
+    });
+  }
+
+  orderProcesses(dataSource: MatTableDataSource<ProcessList>) {
+    dataSource.paginator._intl = new MatPaginatorIntl();
+    dataSource.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+
+    dataSource.data = this.incompleteProcessess.items;
+    dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'merchant.fiscalId': return item.merchant?.fiscalId;
+
+        case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
+
+        case 'startedAt': return new Date(item["startedAt"]);
+
+        default: return item[property].toLocaleLowerCase();
+      }
+    }
+    dataSource.sort = this.empTbSort;
   }
 
   FTSearch(queue: string, processId: string) {
@@ -879,7 +605,7 @@ export class DashboardComponent implements OnInit {
       return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
 
-    console.log("VALORES DO USER " , this.currentUser);
+    console.log("VALORES DO USER ", this.currentUser);
     //this.tokenService.getLoginTokenInfo(this.currentUser.token).then(result => {
     //  console.log('RESULTADO DA CHAMADA AO NOSSO BACKEND PARA OBTER OS DADOS DO TOKEN ', result);
     //});
@@ -949,38 +675,5 @@ export class DashboardComponent implements OnInit {
     this.dataSourceComplianceDoubts.filter = filterValue;
   }
 
-}
-
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    color: COLORS[Math.round(Math.random() * (COLORS.length - 1))],
-    teste: ''
-  };
-}
-
-
-
-/** Constants used to fill up our data base. */
-const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-  teste: string;
 }
 
