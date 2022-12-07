@@ -89,7 +89,7 @@ export class ProductSelectionComponent implements OnInit {
 
   chooseSolutionAPI(productDescription: any) {
     this.formStores.get('subProduct').setValue('');
-    this.products.forEach(Prod => {
+    this.products?.forEach(Prod => {
       var subProductToSearch = productDescription;
       if (subProductToSearch == Prod.name) {
         this.subProducts = Prod.subProducts;
@@ -121,7 +121,7 @@ export class ProductSelectionComponent implements OnInit {
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
-    this.urlRegex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+    this.urlRegex = '(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?';
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
       if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='Card Not Present') {
         this.formStores.get('url').setValidators([Validators.required, Validators.pattern(this.urlRegex)]);

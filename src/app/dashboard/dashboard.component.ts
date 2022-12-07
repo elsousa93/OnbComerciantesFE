@@ -294,198 +294,224 @@ export class DashboardComponent implements OnInit {
   }
 
   callIncompleteCount() {
-    this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
-      this.incompleteProcessess = resul;
-      this.incompleteProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'Incomplete') {
-          process.state = this.translate.instant('searches.incompleted');
-        }
+    if (this.incompleteCount > 0){
+      this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
+        this.incompleteProcessess = resul;
+        this.incompleteProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete') {
+            process.state = this.translate.instant('searches.incompleted');
+          }
+        });
+        this.orderProcesses(this.dataSourcePendentes, this.empTbSort);
       });
-      this.orderProcesses(this.dataSourcePendentes, this.empTbSort);
-    });
+    }
   }
 
   callBackOfficeCount() {
-    this.processService.searchProcessByState('Ongoing', 0, this.ongoingCount).subscribe(resul => {
-      this.ongoingProcessess = resul;
-      this.ongoingProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'Ongoing') {
-          process.state = this.translate.instant('searches.running');
-        }
+    if (this.ongoingCount > 0) {
+      this.processService.searchProcessByState('Ongoing', 0, this.ongoingCount).subscribe(resul => {
+        this.ongoingProcessess = resul;
+        this.ongoingProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Ongoing') {
+            process.state = this.translate.instant('searches.running');
+          }
+        });
+        this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject);
       });
-      this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject);
-    });
+    }
   }
 
   callReturnedCount() {
-    this.processService.searchProcessByState('Returned', 0, this.returnedCount).subscribe(resul => {
-      this.returnedProcessess = resul;
-      this.returnedProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'Returned') {
-          process.state = this.translate.instant('searches.returned');
-        }
+    if (this.returnedCount > 0) {
+      this.processService.searchProcessByState('Returned', 0, this.returnedCount).subscribe(resul => {
+        this.returnedProcessess = resul;
+        this.returnedProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          }
+        });
+        this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos);
       });
-      this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos);
-    });
+    }
   }
 
   callAcceptanceCount() {
-    this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
-      this.contractAcceptanceProcessess = resul;
-      this.contractAcceptanceProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'ContractAcceptance') {
-          process.state = this.translate.instant('searches.contractAcceptance')
-        }
+    if (this.contractAcceptanceCount > 0) {
+      this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
+        this.contractAcceptanceProcessess = resul;
+        this.contractAcceptanceProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'ContractAcceptance') {
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+        });
+        this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao);
       });
-      this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao);
-    });
+    }   
   }
 
   callPendingSentCount() {
-    this.processService.searchProcessByState('Completed', 0, this.pendingSentCount).subscribe(resul => {
-      this.pendingSentProcessess = resul;
-      this.pendingSentProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'Completed') {
-          process.state = this.translate.instant('searches.completed');
-        } 
+    if (this.pendingSentCount > 0) {
+      this.processService.searchProcessByState('Completed', 0, this.pendingSentCount).subscribe(resul => {
+        this.pendingSentProcessess = resul;
+        this.pendingSentProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } 
+        });
+        this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent);
       });
-      this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent);
-    });
+    }
   }
 
   callPendingEligibilityCount() {
-    this.processService.searchProcessByState('EligibilityAssessment', 0, this.pendingEligibilityCount).subscribe(resul => {
-      this.pendingEligibilityProcessess = resul;
-      this.pendingEligibilityProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'EligibilityAssessment') {
-          process.state = this.translate.instant('searches.eligibility');
-        }
+    if (this.pendingEligibilityCount > 0) {
+      this.processService.searchProcessByState('EligibilityAssessment', 0, this.pendingEligibilityCount).subscribe(resul => {
+        this.pendingEligibilityProcessess = resul;
+        this.pendingEligibilityProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'EligibilityAssessment') {
+            process.state = this.translate.instant('searches.eligibility');
+          }
+        });
+        this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility);
       });
-      this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility);
-    });
+    }
   }
 
   callMultipleClientsCount() {
-    this.processService.searchProcessByState('ClientChoice', 0, this.multipleClientesCount).subscribe(resul => {
-      this.multipleClientesProcessess = resul;
-      this.multipleClientesProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'ClientChoice') {
-          process.state = this.translate.instant('searches.multipleClients');
-        } 
+    if (this.multipleClientesCount > 0) {
+      this.processService.searchProcessByState('ClientChoice', 0, this.multipleClientesCount).subscribe(resul => {
+        this.multipleClientesProcessess = resul;
+        this.multipleClientesProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'ClientChoice') {
+            process.state = this.translate.instant('searches.multipleClients');
+          } 
+        });
+        this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients);
       });
-      this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients);
-    });
+    }
   }
 
   callDOValidationCount() {
-    this.processService.searchProcessByState('OperationsEvaluation', 0, this.DOValidationCount).subscribe(resul => {
-      this.DOValidationProcessess = resul;
-      this.DOValidationProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'OperationsEvaluation') {
-          process.state = this.translate.instant('searches.DOValidation');
-        } 
+    if (this.DOValidationCount > 0) {
+      this.processService.searchProcessByState('OperationsEvaluation', 0, this.DOValidationCount).subscribe(resul => {
+        this.DOValidationProcessess = resul;
+        this.DOValidationProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'OperationsEvaluation') {
+            process.state = this.translate.instant('searches.DOValidation');
+          } 
+        });
+        this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation);
       });
-      this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation);
-    });
+    }
   }
 
   callNegotiationApprovalCount() {
-    this.processService.searchProcessByState('NegotiationApproval', 0, this.negotiationAprovalCount).subscribe(resul => {
-      this.negotiationAprovalProcessess = resul;
-      this.negotiationAprovalProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'NegotiationApproval') {
-          process.state = this.translate.instant('searches.negotiationApproval');
-        } 
+    if (this.negotiationAprovalCount > 0) {
+      this.processService.searchProcessByState('NegotiationApproval', 0, this.negotiationAprovalCount).subscribe(resul => {
+        this.negotiationAprovalProcessess = resul;
+        this.negotiationAprovalProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'NegotiationApproval') {
+            process.state = this.translate.instant('searches.negotiationApproval');
+          } 
+        });
+        this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval);
       });
-      this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval);
-    });
+    }  
   }
 
   callMCCTreatmentCount() {
-    this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, this.MCCTreatmentCount).subscribe(resul => {
-      this.MCCTreatmentProcessess = resul;
-      this.MCCTreatmentProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'StandardIndustryClassificationChoice') {
-          process.state = this.translate.instant('searches.MCCTreatment');
-        } 
+    if (this.MCCTreatmentCount > 0) {
+      this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, this.MCCTreatmentCount).subscribe(resul => {
+        this.MCCTreatmentProcessess = resul;
+        this.MCCTreatmentProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'StandardIndustryClassificationChoice') {
+            process.state = this.translate.instant('searches.MCCTreatment');
+          } 
+        });
+        this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment);
       });
-      this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment);
-    });
+    }
   }
 
   callValidationSIBSCount() {
-    this.processService.searchProcessByState('MerchantRegistration', 0, this.validationSIBSCount).subscribe(resul => {
-      this.validationSIBSProcessess = resul;
-      this.validationSIBSProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'MerchantRegistration') {
-          process.state = this.translate.instant('searches.validationSIBS');
-        } 
+    if (this.validationSIBSCount > 0) {
+      this.processService.searchProcessByState('MerchantRegistration', 0, this.validationSIBSCount).subscribe(resul => {
+        this.validationSIBSProcessess = resul;
+        this.validationSIBSProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'MerchantRegistration') {
+            process.state = this.translate.instant('searches.validationSIBS');
+          } 
+        });
+        this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS);
       });
-      this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS);
-    });
+    }
   }
 
   callRiskOpinionCount() {
-    this.processService.searchProcessByState('RiskAssessment', 0, this.riskOpinionCount).subscribe(resul => {
-      this.riskOpinionProcessess = resul;
-      this.riskOpinionProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'RiskAssessment') {
-          process.state = this.translate.instant('searches.riskOpinion');
-        } 
+    if (this.riskOpinionCount > 0) {
+      this.processService.searchProcessByState('RiskAssessment', 0, this.riskOpinionCount).subscribe(resul => {
+        this.riskOpinionProcessess = resul;
+        this.riskOpinionProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'RiskAssessment') {
+            process.state = this.translate.instant('searches.riskOpinion');
+          } 
+        });
+        this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion);
       });
-      this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion);
-    });
+    }
   }
 
   callComplianceDoubtsCount(){
-    this.processService.searchProcessByState('ComplianceEvaluation', 0, this.complianceDoubtsCount).subscribe(resul => {
-      this.complianceDoubtsProcessess = resul;
-      this.complianceDoubtsProcessess.items.forEach(process => {
-        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
-
-        // mapear os estados para aparecer em PT ou EN
-        if (process.state === 'ComplianceEvaluation') {
-          process.state = this.translate.instant('searches.complianceDoubts');
-        } 
+    if (this.complianceDoubtsCount > 0) {
+      this.processService.searchProcessByState('ComplianceEvaluation', 0, this.complianceDoubtsCount).subscribe(resul => {
+        this.complianceDoubtsProcessess = resul;
+        this.complianceDoubtsProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+  
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'ComplianceEvaluation') {
+            process.state = this.translate.instant('searches.complianceDoubts');
+          } 
+        });
+        this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts);
       });
-      this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts);
-    });
+    }
   }
 
   orderProcesses(dataSource: MatTableDataSource<ProcessList>, sorter: MatSort) {
