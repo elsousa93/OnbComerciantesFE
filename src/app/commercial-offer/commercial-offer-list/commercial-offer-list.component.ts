@@ -216,7 +216,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.groupsList = [];
     this.commissionId = "";
     this.commissionOptions = []
-    this.commissionAttributeList = [];
 
     this.currentStore = info.store;
     this.currentIdx = info.idx;
