@@ -56,7 +56,7 @@ export class NavMenuPresencialComponent implements OnInit {
 
   processNumber: string = "";
   subscription: Subscription;
-
+  returned: string = "";
   currentPage: number = 0;
   currentSubPage: number = 0;
   progressImage: string;
@@ -141,6 +141,7 @@ export class NavMenuPresencialComponent implements OnInit {
 
   updateProgress() {
     if (localStorage.getItem("returned")!=null) {
+      this.returned = localStorage.getItem("returned");
       this.currentPage = 0;
       this.currentSubPage = 0;
       this.processNumber = localStorage.getItem("processNumber");
