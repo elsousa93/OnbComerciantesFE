@@ -102,12 +102,7 @@ export class NavMenuPresencialComponent implements OnInit {
     });
 
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
-    if (localStorage.getItem("returned")!=null) {
-      this.currentPage = 0;
-      this.currentSubPage = 0;
-      this.processNumber = localStorage.getItem("processNumber");
-      this.updateProgress();
-    } else {
+
       this.dataService.currentPage.subscribe((currentPage) => {
         this.currentPage = currentPage;
         if (this.currentPage != 0 && this.currentPage != null) {
@@ -129,9 +124,7 @@ export class NavMenuPresencialComponent implements OnInit {
           this.toggleNavEvent.emit(this.isToggle);
         }
         this.updateProgress();
-      });
-    }
-    
+      });    
 
     var prevScrollpos = window.pageYOffset;
 
@@ -147,6 +140,11 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   updateProgress() {
+    if (localStorage.getItem("returned")!=null) {
+      this.currentPage = 0;
+      this.currentSubPage = 0;
+      this.processNumber = localStorage.getItem("processNumber");
+    } 
     if (this.currentPage == 0 || this.currentSubPage == 0) {
       this.progressImage = undefined;
       return;
