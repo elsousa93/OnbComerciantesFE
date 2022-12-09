@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { distinctUntilChanged, Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
@@ -12,6 +12,7 @@ import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-inf
 import { TableInfoService } from '../../table-info/table-info.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductPackPricingFilter, TerminalSupportEntityEnum, MerchantCatalog, ProductPackRootAttributeProductPackKind, ProductPackPricingEntry, ProductPackPricingAttribute, ProductPackEntry } from '../../commercial-offer/ICommercialOffer.interface';
 import { CommercialOfferService } from '../commercial-offer.service';
+import { createViewChild } from '@angular/compiler/src/core';
 
 
 
@@ -71,6 +72,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   @Output() changedStoreEvent = new EventEmitter<boolean>();
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
+
+  @ViewChild('focusContent') el: any;
 
   firstTime: boolean = true;
   selectedMensalidadeId: string = "";
@@ -362,8 +365,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
           this.logger.debug("Add Shop Equipment To Submission Response ", result.id);
         });
       }
-
-    } this.onActivate();
+      this.el.nativeElement.focus();
+    }
   }
 
   onActivate() {
