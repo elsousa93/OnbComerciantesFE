@@ -367,14 +367,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   onActivate() {
-    let scrollToTop = window.setInterval(() => {
-      let pos = window.pageYOffset;
-      if (pos > 0) {
-        window.scrollTo(0, pos - 2); // how far to scroll on each step
-      } else {
-        window.clearInterval(scrollToTop);
-      }
-    }, 16);
+    let pos = window.pageYOffset;
+    if (pos > 0) {
+      window.scrollTo(0, pos - 5);
+    }
   }
   
   cancelConfig() {

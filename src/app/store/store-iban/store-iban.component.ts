@@ -240,6 +240,11 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   isIBAN(isIBANConsidered: boolean) {
     this.isIBANConsidered = isIBANConsidered;
+
+    if (!isIBANConsidered) {
+      this.formStores.get("bankIban").addValidators(Validators.required);
+      this.formStores.get("bankIban").updateValueAndValidity();
+    }
   }
 
   initializeForm() {
