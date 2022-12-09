@@ -17,7 +17,6 @@ import { Location } from '@angular/common';
 import { ProcessService } from '../process/process.service';
 import { Bank } from '../store/IStore.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { threadId } from 'worker_threads';
 
 
 @Component({
