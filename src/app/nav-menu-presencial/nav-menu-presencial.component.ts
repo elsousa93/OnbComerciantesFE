@@ -74,6 +74,7 @@ export class NavMenuPresencialComponent implements OnInit {
   constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.progressImage = undefined;
+    this.processNumber = '';
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
     this.chooseLanguage(this.translate.getDefaultLang());
@@ -147,7 +148,7 @@ export class NavMenuPresencialComponent implements OnInit {
       this.currentSubPage = 0;
       this.processNumber = localStorage.getItem("processNumber");
     } 
-    if (this.currentPage == 0 || this.currentSubPage == 0) {
+    if (this.currentPage == 0 || this.currentSubPage == 0 || this.currentPage == null) {
       this.progressImage = undefined;
       return;
     } else {
