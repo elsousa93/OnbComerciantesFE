@@ -17,6 +17,7 @@ import { Location } from '@angular/common';
 import { ProcessService } from '../process/process.service';
 import { Bank } from '../store/IStore.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { threadId } from 'worker_threads';
 
 
 @Component({
@@ -106,28 +107,35 @@ export class NavMenuPresencialComponent implements OnInit {
     });
 
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
-    this.dataService.currentPage.subscribe((currentPage) => {
-      this.currentPage = currentPage;
-      if (this.currentPage != 0 && this.currentPage != null) {
-        this.isToggle = false;
-        this.toggleNavEvent.emit(this.isToggle);
-      } else if (this.currentPage == 0 || this.currentPage == null) {
-        this.isToggle = true;
-        this.toggleNavEvent.emit(this.isToggle);
-      }
+    if (this.returned === 'consult') {
+      this.currentPage = null;
+      this.processNumber = localStorage.getItem("processNumber");
       this.updateProgress();
-    });
-    this.dataService.currentSubPage.subscribe((currentSubPage) => {
-      this.currentSubPage = currentSubPage;
-      if (this.currentSubPage != 0 && this.currentPage != null) {
-        this.isToggle = false;
-        this.toggleNavEvent.emit(this.isToggle);
-      } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
-        this.isToggle = true;
-        this.toggleNavEvent.emit(this.isToggle);
-      }
-      this.updateProgress();
-    });
+    } else {
+      this.dataService.currentPage.subscribe((currentPage) => {
+        this.currentPage = currentPage;
+        if (this.currentPage != 0 && this.currentPage != null) {
+          this.isToggle = false;
+          this.toggleNavEvent.emit(this.isToggle);
+        } else if (this.currentPage == 0 || this.currentPage == null) {
+          this.isToggle = true;
+          this.toggleNavEvent.emit(this.isToggle);
+        }
+        this.updateProgress();
+      });
+      this.dataService.currentSubPage.subscribe((currentSubPage) => {
+        this.currentSubPage = currentSubPage;
+        if (this.currentSubPage != 0 && this.currentPage != null) {
+          this.isToggle = false;
+          this.toggleNavEvent.emit(this.isToggle);
+        } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
+          this.isToggle = true;
+          this.toggleNavEvent.emit(this.isToggle);
+        }
+        this.updateProgress();
+      });
+    }
+    
 
     var prevScrollpos = window.pageYOffset;
 

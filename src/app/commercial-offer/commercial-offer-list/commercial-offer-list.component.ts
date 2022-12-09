@@ -229,6 +229,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.getStoreEquipsFromSubmission();
 
     this.getPackDetails();
+    this.resetValues();
 
     if (this.returned == 'consult')
       this.form.disable();
