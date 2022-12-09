@@ -102,8 +102,9 @@ export class NavMenuPresencialComponent implements OnInit {
     });
 
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
-    if (localStorage?.getItem("returned") === 'consult') {
+    if (localStorage.getItem("returned")!=null) {
       this.currentPage = 0;
+      this.currentSubPage = 0;
       this.processNumber = localStorage.getItem("processNumber");
       this.updateProgress();
     } else {
