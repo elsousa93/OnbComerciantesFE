@@ -368,7 +368,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   onActivate() {
     document.getElementById("btn5a4").addEventListener("click", () => {
-      document.getElementById("btn5a2").focus();  // default: {preventScroll:false}
+      document.getElementById("btn5a2").focus({preventScroll:false});  // default: {preventScroll:false}
     });
   }
   

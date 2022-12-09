@@ -52,7 +52,7 @@ export class SidenavPresencialComponent implements OnInit {
     //this.dataService.historyStream$.next(false);
     localStorage.clear();
     this.dataService.reset();
-    this.processNrService.changeProcessNumber('');
+    this.processNrService.changeProcessNumber(null);
     this.router.navigate(["/client"]);
   }
 
