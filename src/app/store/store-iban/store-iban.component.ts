@@ -225,6 +225,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
+            this.formStores.get('bankIban').setValue(file);
             this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
               duration: 4000,
               panelClass: ['snack-bar']
@@ -243,6 +244,9 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
     if (!isIBANConsidered) {
       this.formStores.get("bankIban").addValidators(Validators.required);
+      this.formStores.get("bankIban").updateValueAndValidity();
+    } else {
+      this.formStores.get("bankIban").setValidators(null);
       this.formStores.get("bankIban").updateValueAndValidity();
     }
   }
