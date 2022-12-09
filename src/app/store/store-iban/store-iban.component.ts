@@ -183,7 +183,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     if (this.IBANToShow.id != "0") {
       this.tableInfo.deleteDocument(this.submissionId, this.IBANToShow.id).then(sucess => {
         console.log("Sucesso a apagar um documento: ", sucess.msg);
-        this.formStores.get('bankIban').setValue('');
+        
       }, error => {
         console.log("Erro a apagar um ficheiro: ", error.msg);
       });
@@ -201,6 +201,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     //}
 
     this.fileToDelete = null;
+    this.formStores.get('bankIban').setValue('');
     // console.log('LISTA DE FILES DEPOIS ELIMINAR ', this.ibansToShow);
     // this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
   }

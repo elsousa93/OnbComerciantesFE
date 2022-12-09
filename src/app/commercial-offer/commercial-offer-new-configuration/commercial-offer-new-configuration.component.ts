@@ -367,10 +367,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   onActivate() {
-    let pos = window.pageYOffset;
-    if (pos > 0) {
-      window.scrollTo(0, pos - 50);
-    }
+    document.getElementById("btn5a4").addEventListener("click", () => {
+      document.getElementById("btn5a2").focus();  // default: {preventScroll:false}
+    });
   }
   
   cancelConfig() {
