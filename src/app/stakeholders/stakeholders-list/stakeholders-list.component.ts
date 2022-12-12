@@ -45,14 +45,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     if (changes["updatedStakeholderEvent"]) {
       this.updatedStakeholderEvent?.subscribe(result => {
         var nextIdx = result.idx + 1;
-        if (nextIdx >= (this.paginator.pageSize * (this.paginator.pageIndex + 1) )) {
-          this.paginator.pageIndex = this.paginator.pageIndex + 1;
+        if (nextIdx >= (this.stakesMat.paginator.pageSize * (this.stakesMat.paginator.pageIndex + 1) )) {
+          this.stakesMat.paginator.pageIndex = this.stakesMat.paginator.pageIndex + 1;
           const event: PageEvent = {
-            length: this.paginator.length,
-            pageIndex: this.paginator.pageIndex,
-            pageSize: this.paginator.pageSize
+            length: this.stakesMat.paginator.length,
+            pageIndex: this.stakesMat.paginator.pageIndex,
+            pageSize: this.stakesMat.paginator.pageSize
           };
-          this.paginator.page.next(event);
+          this.stakesMat.paginator.page.next(event);
         }
         this.emitSelectedStakeholder(this.submissionStakeholders[nextIdx], nextIdx);
       });
@@ -61,14 +61,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       this.previousStakeholderEvent?.subscribe(result => {
         if (result > 0) { 
           var prevIdx = result - 1;
-          if (prevIdx < (this.paginator.pageSize * this.paginator.pageIndex ) && this.paginator.pageIndex >= 1) {
-            this.paginator.pageIndex = this.paginator.pageIndex - 1;
+          if (prevIdx < (this.stakesMat.paginator.pageSize * this.stakesMat.paginator.pageIndex) && this.stakesMat.paginator.pageIndex >= 1) {
+            this.stakesMat.paginator.pageIndex = this.stakesMat.paginator.pageIndex - 1;
             const event: PageEvent = {
-              length: this.paginator.length,
-              pageIndex: this.paginator.pageIndex,
-              pageSize: this.paginator.pageSize
+              length: this.stakesMat.paginator.length,
+              pageIndex: this.stakesMat.paginator.pageIndex,
+              pageSize: this.stakesMat.paginator.pageSize
             };
-            this.paginator.page.next(event);
+            this.stakesMat.paginator.page.next(event);
           }
           this.emitSelectedStakeholder(this.submissionStakeholders[prevIdx], prevIdx);
         }
@@ -130,7 +130,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   }
 
   ngAfterViewInit(): void {
-    this.stakesMat.paginator = this.paginator;
+    //this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
 
@@ -298,6 +298,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }
     };
     this.stakesMat.sort = this.sort;
+    //this.stakesMat.paginator = this.paginator;
   }
 
   reloadCurrentRoute() {

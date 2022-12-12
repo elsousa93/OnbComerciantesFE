@@ -543,7 +543,7 @@ export class CreateStakeholderComponent implements OnInit {
       return false;
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
-    this.emitSameNIF(this.stakeholderNumber);
+    this.emitSameNIF(of(this.stakeholderNumber));
 
     if (this.submissionClient.fiscalId === this.stakeholderNumber) { 
       console.log('Stake tem o mesmo id na pesquisa');
