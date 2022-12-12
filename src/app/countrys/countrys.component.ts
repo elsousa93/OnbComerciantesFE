@@ -121,6 +121,7 @@ export class CountrysComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
 
     this.client = {
       clientId: '',
@@ -153,7 +154,7 @@ export class CountrysComponent implements OnInit {
     this.initializeForm();
 
     if (this.returned == null) {
-      if (!this.clientContext.clientExists) {
+      if (!this.clientContext.clientExists && this.map.get(2) == undefined) { // garantir que só adicionamos Portugal por default, se o cliente não existir E se o tabulador dos intervenientes ainda não foi visitado
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
           this.contPais.push(result);
           this.inserirText(null);

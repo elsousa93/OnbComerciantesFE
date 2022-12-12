@@ -350,7 +350,8 @@ export class CommercialOfferListComponent implements OnInit {
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       this.packs = result.result;
       if (this.packs.length === 1) {
-        this.form.get("productPackKind").setValue(this.packs[0].id);
+        //this.form.get("productPackKind").setValue(this.packs[0].id);
+        console.log('SO EXISTE 1 PACK COM O ID', this.packs);
         this.selectCommercialPack(this.packs[0].id);
       } else if (this.currentStore.pack != null) {
         this.selectCommercialPack(this.currentStore.pack.packId);
