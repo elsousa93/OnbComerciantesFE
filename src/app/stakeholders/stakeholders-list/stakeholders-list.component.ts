@@ -74,14 +74,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         }
       })
     }
-    //if (changes[""]) {
-    //  this.sameNIFEvent?.subscribe(result => {
-    //    var sameNIFStake = this.submissionStakeholders.find(stakeNIF => result === stakeNIF.stakeholderAcquiring.fiscalId);
-    //    if (sameNIFStake != undefined) {
-    //      this.sameNIFEmitter.emit(true);
-    //    }
-    //  });
-    //}
+    if (changes["sameNIFEvent"]) {
+      this.sameNIFEvent?.subscribe(result => {
+        var sameNIFStake = this.submissionStakeholders.find(stakeNIF => result === stakeNIF.stakeholderAcquiring.fiscalId);
+        if (sameNIFStake != undefined) {
+          this.sameNIFEmitter.emit(true);
+        }
+      });
+    }
   }
  
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();

@@ -46,6 +46,7 @@ export class CreateStakeholderComponent implements OnInit {
 
   @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
   @Output() canceledSearch = new EventEmitter<boolean>();
+  @Output() sameNIF = new EventEmitter<string>();
 
   emitInsertedStake(stake) {
     this.insertedStakeSubject.emit(stake);
@@ -55,10 +56,15 @@ export class CreateStakeholderComponent implements OnInit {
     this.canceledSearch.emit(bool);
   }
 
+  emitSameNIF(nif) {
+    this.sameNIF.emit(nif);
+  }
+
   @Input() parentFormGroup: FormGroup;
   @Input() sameNIFStake: boolean;
 
   modalRef: BsModalRef;
+  showSameNIFError: boolean = false;
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
@@ -289,6 +295,7 @@ export class CreateStakeholderComponent implements OnInit {
   incorrectCCFormat: boolean = false;
   submissionClient: Client;
   sameNIPC: boolean = false;
+  
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
@@ -529,14 +536,23 @@ export class CreateStakeholderComponent implements OnInit {
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
+    this.sameNIFStake = false;
+    this.showSameNIFError = false;
+
     if (this.formStakeholderSearch.invalid)
       return false;
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
+    this.emitSameNIF(this.stakeholderNumber);
 
     if (this.submissionClient.fiscalId === this.stakeholderNumber) { 
       console.log('Stake tem o mesmo id na pesquisa');
       this.sameNIPC = true;
+      return false;
+    }
+
+    if (this.sameNIFStake) {
+      this.showSameNIFError = true;
       return false;
     }
 
@@ -637,11 +653,7 @@ export class CreateStakeholderComponent implements OnInit {
             panelClass: ['snack-bar']
           });
           this.emitInsertedStake(of(stakeholderToInsert));
-
-          if (!this.sameNIFStake) { 
-            this.clearForm();
-          }
-
+          this.clearForm();
           this.route.navigate(['/stakeholders/']);
         }, error => {
         });
@@ -671,11 +683,7 @@ export class CreateStakeholderComponent implements OnInit {
             panelClass: ['snack-bar']
           });
           this.emitInsertedStake(of(stakeholderToInsert));
-
-          if (!this.sameNIFStake) {
-            this.clearForm();
-          }
-
+          this.clearForm();
           this.route.navigate(['/stakeholders/']);
         });
       } else {

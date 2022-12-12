@@ -176,7 +176,8 @@
     "area": "Area",
     "documents": "Stakeholder's Documents",
     "emptyList": "There are no stakeholders",
-    "addSuccess": "Stakeholder successfully added"
+    "addSuccess": "Stakeholder successfully added",
+    "sameNIF": "It's not possible to add an already existing stakeholder"
   },
   "stores": {
     "title": "Stores",

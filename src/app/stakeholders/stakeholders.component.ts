@@ -39,6 +39,7 @@ export class StakeholdersComponent implements OnInit {
   insertStakeholderEvent: Observable<IStakeholders>;
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
   previousStakeholderEvent: Observable<number>;
+  sameNIFEvent: Observable<string>;
 
   emitUpdatedStakeholder(info) {
     this.updatedStakeholderEvent = info;
@@ -52,6 +53,10 @@ export class StakeholdersComponent implements OnInit {
     this.clickButton = true;
     this.insertStakeholderEvent = stake;
     this.editStakeInfo = null;
+  }
+
+  emitStakeNIF(nif) {
+    this.sameNIFEvent = nif;
   }
 
   currentStakeholder: StakeholdersCompleteInformation = {};
@@ -400,8 +405,9 @@ export class StakeholdersComponent implements OnInit {
     this.editStakeInfo = null;
   }
 
-  getSameNIFEmitter(info) {
-    this.sameNIFStake = true;
+
+  isSameNIF(info) {
+    this.sameNIFStake = true
   }
 }
 

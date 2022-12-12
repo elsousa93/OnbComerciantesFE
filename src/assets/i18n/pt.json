@@ -176,7 +176,8 @@
     "area": "Área",
     "documents": "Documentos do Interveniente",
     "emptyList": "Não existem intervenientes",
-    "addSuccess": "Interveniente adicionado com sucesso"
+    "addSuccess": "Interveniente adicionado com sucesso",
+    "sameNIF": "Não é possivel adicionar um interveniente já existente"
   },
   "stores": {
     "title": "Lojas",
