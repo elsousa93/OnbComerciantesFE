@@ -155,56 +155,60 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   submit() {
-    var contacts = this.infoStakeholders.get("contacts");
+    console.log("FORM QUANDO DAMOS SUBMIT ", this.infoStakeholders);
 
-    if (contacts.get("phone").value) {
-      if (this.currentStakeholder.stakeholderAcquiring.phone1 === null){
-        this.currentStakeholder.stakeholderAcquiring.phone1 = {};
+    if (this.infoStakeholders.valid) { 
+      var contacts = this.infoStakeholders.get("contacts");
+
+      if (contacts.get("phone").value) {
+        if (this.currentStakeholder.stakeholderAcquiring.phone1 === null){
+          this.currentStakeholder.stakeholderAcquiring.phone1 = {};
+        }
+        this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
+        this.currentStakeholder.stakeholderAcquiring.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
       }
-      this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
-      this.currentStakeholder.stakeholderAcquiring.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
-    }
 
-    if (contacts.get("email").value) {
-      this.currentStakeholder.stakeholderAcquiring.email = contacts.get("email").value;
-    }
-
-    var pep = this.infoStakeholders.get("pep");
-    //this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-
-    if (pep.get("pep12months").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
-    } else if (pep.get("pepFamiliarOf").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";
-      this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
-    } else if (pep.get("pepRelations").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";
-      this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
-    } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
-      this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-      this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
-      this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
-    }
-
-    console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
-
-    this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-      if (this.currentIdx < (this.stakesLength - 1)) {
-        this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
-        console.log("Stakeholder atualizado ", result);
-      } else {
-        this.data.updateData(false, 6, 3);
-        this.route.navigate(['info-declarativa-lojas']);
+      if (contacts.get("email").value) {
+        this.currentStakeholder.stakeholderAcquiring.email = contacts.get("email").value;
       }
-    });
+
+      var pep = this.infoStakeholders.get("pep");
+      //this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+
+      if (pep.get("pep12months").value == "true") {
+        this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+        this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
+        this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+        this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
+        this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
+      } else if (pep.get("pepFamiliarOf").value == "true") {
+        this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+        this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;
+        this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";
+        this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
+      } else if (pep.get("pepRelations").value == "true") {
+        this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+        this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;
+        this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";
+        this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
+      } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
+        this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+        this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
+        this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+      }
+
+      console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
+
+      this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+        if (this.currentIdx < (this.stakesLength - 1)) {
+          this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
+          console.log("Stakeholder atualizado ", result);
+        } else {
+          this.data.updateData(false, 6, 3);
+          this.route.navigate(['info-declarativa-lojas']);
+        }
+      });
+    }
 
   }
 

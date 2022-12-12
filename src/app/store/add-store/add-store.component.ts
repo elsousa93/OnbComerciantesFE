@@ -252,11 +252,6 @@ export class AddStoreComponent implements OnInit {
 
   lockLocality: boolean = true;
 
-  loadTableInfo() {
-    this.tableInfo.GetAllCountries().subscribe(res => {
-      this.Countries = res;
-    })
-  }
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
@@ -266,7 +261,6 @@ export class AddStoreComponent implements OnInit {
     private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
 
     this.submissionId = localStorage.getItem("submissionId");
-    this.loadTableInfo();
     //this.ngOnInit();
     setTimeout(() => this.data.updateData(false, 3, 2), 0);
   }
@@ -327,9 +321,6 @@ export class AddStoreComponent implements OnInit {
     //  this.logger.debug("Erro");
     //});
 
-    this.tableData.GetAllCountries().subscribe(result => {
-      this.countries = result;
-    })
   }
 
   //When canceling the create new store feature the user must navigate back to store list

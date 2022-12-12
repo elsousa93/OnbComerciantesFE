@@ -660,11 +660,11 @@ export class ClientComponent implements OnInit {
 
   changeListElementDocType(docType, e: any) {
     // this.activateButtons(true);
-    if (localStorage.getItem("submissionId") == null || !this.firstTime)
+    if (localStorage.getItem("submissionId") == null || !this.firstTime || !this.defaultValue)
       this.activateButtons(!this.showENI);
 
     this.firstTime = false;
-    //this.defaultValue = false;
+    this.defaultValue = false;
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
@@ -805,15 +805,15 @@ export class ClientComponent implements OnInit {
       this.isENI = false;
       this.tipologia = "Company";
       this.newClient.documentationDeliveryMethod = "0502";
-      //this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
       //this.defaultValue = true;
+      //this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
     } else {
       this.showENI = true;
       this.isENI = true;
       this.tipologia = "ENI";
       this.newClient.documentationDeliveryMethod = "0501";
-      //this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
       //this.defaultValue = true;
+      //this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
     }
 
     //if (this.searchClientForm.get("typology").value) {

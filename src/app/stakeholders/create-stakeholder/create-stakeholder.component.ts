@@ -56,6 +56,7 @@ export class CreateStakeholderComponent implements OnInit {
   }
 
   @Input() parentFormGroup: FormGroup;
+  @Input() sameNIFStake: boolean;
 
   modalRef: BsModalRef;
 
@@ -472,9 +473,11 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.stakeholderType === 'Particular') {
       this.isParticular = true;
       this.formStakeholderSearch.get("documentType").setValue("0501"); // NIF, por default
-    } else {
+      this.changeListElementDocType(null, { target: { value: "0501" } });
+    } else if (this.stakeholderType === 'Empresa') {
       this.isParticular = false;
       this.formStakeholderSearch.get("documentType").setValue("0502"); // Número de identificação fiscal, por default
+      this.changeListElementDocType(null, { target: { value: "0502" } });
     }
     this.stakeType = true;
     this.okCC = false;
@@ -634,7 +637,11 @@ export class CreateStakeholderComponent implements OnInit {
             panelClass: ['snack-bar']
           });
           this.emitInsertedStake(of(stakeholderToInsert));
-          this.clearForm();
+
+          if (!this.sameNIFStake) { 
+            this.clearForm();
+          }
+
           this.route.navigate(['/stakeholders/']);
         }, error => {
         });
@@ -664,7 +671,11 @@ export class CreateStakeholderComponent implements OnInit {
             panelClass: ['snack-bar']
           });
           this.emitInsertedStake(of(stakeholderToInsert));
-          this.clearForm();
+
+          if (!this.sameNIFStake) {
+            this.clearForm();
+          }
+
           this.route.navigate(['/stakeholders/']);
         });
       } else {

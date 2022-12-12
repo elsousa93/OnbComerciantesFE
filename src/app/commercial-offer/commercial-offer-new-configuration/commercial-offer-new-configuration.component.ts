@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { distinctUntilChanged, Subscription } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
@@ -412,4 +412,5 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     return true;
 
   }
+
 }

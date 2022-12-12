@@ -113,6 +113,7 @@ export class StakeholdersComponent implements OnInit {
 
   crcStakeholders: IStakeholders[] = [];
   selectedStakeholderIsFromCRC: boolean = false;
+  sameNIFStake: boolean = false;
 
   constructor(public modalService: BsModalService,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
@@ -397,6 +398,10 @@ export class StakeholdersComponent implements OnInit {
   emitCanceledSearch(info) {
     this.clickButton = true;
     this.editStakeInfo = null;
+  }
+
+  getSameNIFEmitter(info) {
+    this.sameNIFStake = true;
   }
 }
 
