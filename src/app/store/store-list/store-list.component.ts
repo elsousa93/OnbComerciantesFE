@@ -350,6 +350,7 @@ export class StoreComponent implements AfterViewInit {
 
   resetForm() {
     this.editStores.reset();
+    this.editStores.get("infoStores").get("countryStore").setValue("PT");
     this.productSelectionComponent.clearSubProducts();
     this.addStoreComponent.chooseAddress(true);
     this.closeAccordion();

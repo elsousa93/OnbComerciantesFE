@@ -804,19 +804,26 @@ export class ClientComponent implements OnInit {
       this.showENI = false;
       this.isENI = false;
       this.tipologia = "Company";
-      this.newClient.documentationDeliveryMethod = "0502";
-      this.firstTime = true;
-      this.defaultValue = true;
-      this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+
+      if (localStorage.getItem("submissionId") == null) {
+        this.newClient.documentationDeliveryMethod = "0502";
+        this.firstTime = true;
+        this.defaultValue = true;
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      }
     } else {
       this.showENI = true;
       this.isENI = true;
       this.tipologia = "ENI";
-      this.newClient.documentationDeliveryMethod = "0501";
-      this.firstTime = true;
-      this.defaultValue = true;
-      this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+
+      if (localStorage.getItem("submissionId") == null) {
+        this.newClient.documentationDeliveryMethod = "0501";
+        this.firstTime = true;
+        this.defaultValue = true;
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      }
     }
+
   }
 
   clientId: string
