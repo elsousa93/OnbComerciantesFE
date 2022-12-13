@@ -317,11 +317,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes["sameNIFStake"].currentValue) {
+    if (changes['sameNIFStake'].currentValue === true) {
       this.isShown = false;
       this.foundStakeholders = null;
-
       this.showSameNIFError = true;
+    } else {
+      this.showSameNIFError = false;
     }
   }
 
@@ -551,6 +552,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (this.formStakeholderSearch.invalid)
       return false;
 
+    if (this.sameNIFStake) {
+      this.showSameNIFError = true;
+      return false;
+    }
+      
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
 
     this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
@@ -767,7 +773,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         return false;
       return true;
     }
-    //return false;
   }
 
   checkValidationType(str: string) {
@@ -785,6 +790,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   validateNIF(nif: string): boolean {
     this.incorrectNIFSize = false;
     this.incorrectNIF = false;
+    this.sameNIPC = false;
     if (nif != '') {
       if (nif.length != 9) {
         this.incorrectNIFSize = true;
@@ -811,6 +817,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   validateNIPC(nipc: string): boolean {
     this.incorrectNIPCSize = false;
     this.incorrectNIPC = false;
+    this.sameNIPC = false;
     if (nipc != '') {
       if (nipc.length != 9) {
         this.incorrectNIPCSize = true;

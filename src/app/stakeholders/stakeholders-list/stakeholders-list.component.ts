@@ -85,6 +85,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         var sameNIFStake = this.submissionStakeholders.find(stakeNIF => result === stakeNIF.stakeholderAcquiring.fiscalId);
         if (sameNIFStake != undefined) {
           this.sameNIFEmitter.emit(true);
+        } else {
+          this.sameNIFEmitter.emit(false);
         }
       });
     }
