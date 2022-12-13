@@ -5,7 +5,7 @@ import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
 import { NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { of, Subject, Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 import { ViewChild } from '@angular/core';
@@ -118,7 +118,7 @@ export class StakeholdersComponent implements OnInit {
 
   crcStakeholders: IStakeholders[] = [];
   selectedStakeholderIsFromCRC: boolean = false;
-  sameNIFStake: Subject<boolean>;
+  sameNIFStake: boolean = false;
 
   constructor(public modalService: BsModalService,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
@@ -407,8 +407,7 @@ export class StakeholdersComponent implements OnInit {
 
 
   isSameNIF(info) {
-    this.sameNIFStake = new Subject();
-    this.sameNIFStake.next(info);
+    this.sameNIFStake = info;
   }
 }
 

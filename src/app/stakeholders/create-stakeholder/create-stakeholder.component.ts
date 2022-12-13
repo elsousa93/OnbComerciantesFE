@@ -61,7 +61,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   @Input() parentFormGroup: FormGroup;
-  @Input() sameNIFStake: Subject<boolean>;
+  @Input() sameNIFStake: boolean;
 
   modalRef: BsModalRef;
   showSameNIFError: boolean = false;
@@ -317,16 +317,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.sameNIFStake != null) {
-      this.sameNIFStake?.subscribe(result => {
-        if (result) {
-          this.isShown = false;
-          this.foundStakeholders = null;
-          this.showSameNIFError = true;
-        } else {
-          this.showSameNIFError = false;
-        }
-      });
+    if (changes['sameNIFStake'].currentValue === true) {
+      this.isShown = false;
+      this.foundStakeholders = null;
+      this.showSameNIFError = true;
+    } else {
+      this.showSameNIFError = false;
     }
   }
 
@@ -563,8 +559,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       return false;
     }
 
-    this.sameNIFStake.next(false);
-
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
 
     this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
@@ -582,38 +576,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.isSearch = true;
     });
 
-    //var context = this;
-
-    //var documentNumberToSearch = this.formStakeholderSearch.get('documentNumber').value;
-
-    //this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  var clients = o;
-
-    //  context.isShown = true;
-
-    //  if (clients.length > 0) {
-    //    context.deactivateNotFoundForm();
-    //    context.foundStakeholders = true;
-    //    context.stakeholdersToShow = [];
-    //    clients.forEach(function (value, index) {
-    //      context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-    //        var stakeholder = {
-    //          "stakeholderNumber": c.stakeholderId,
-    //          "stakeholderName": c.shortName,
-    //          "stakeholderNIF": c.fiscalIdentification.fiscalId,
-    //          "elegible": "elegivel",
-    //          "associated": "SIM"
-    //        }
-    //        context.stakeholdersToShow.push(stakeholder);
-    //      });
-    //    })
-    //  } else {
-    //    context.initializeNotFoundForm();
-    //    context.stakeholdersToShow = [];
-    //    context.foundStakeholders = false;
-    //  }
-    //}, error => {
-    //});
   }
 
   refreshDiv() {
