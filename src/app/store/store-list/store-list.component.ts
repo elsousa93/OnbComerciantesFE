@@ -174,6 +174,7 @@ export class StoreComponent implements AfterViewInit {
 
   close() {
     this.currentStore = null;
+    this.currentIdx = -2;
   }
 
   updateContactPoint() {
