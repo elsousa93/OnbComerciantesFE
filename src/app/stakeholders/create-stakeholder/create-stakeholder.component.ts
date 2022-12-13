@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Inject, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -41,7 +41,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   templateUrl: './create-stakeholder.component.html',
   styleUrls: ['./create-stakeholder.component.css']
 })
-export class CreateStakeholderComponent implements OnInit {
+export class CreateStakeholderComponent implements OnInit, OnChanges {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
   @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
@@ -316,6 +316,16 @@ export class CreateStakeholderComponent implements OnInit {
 
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['sameNIFStake'].currentValue === true) {
+      this.isShown = false;
+      this.foundStakeholders = null;
+      this.showSameNIFError = true;
+    } else {
+      this.showSameNIFError = false;
+    }
+  }
+
   initializeNotFoundForm() {
     console.log('Não encontrou um stake ');
     switch (this.isParticular) {
@@ -542,23 +552,22 @@ export class CreateStakeholderComponent implements OnInit {
     if (this.formStakeholderSearch.invalid)
       return false;
 
-    this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
-    this.emitSameNIF(of(this.stakeholderNumber));
-
-    if (this.submissionClient.fiscalId === this.stakeholderNumber) { 
-      console.log('Stake tem o mesmo id na pesquisa');
-      this.sameNIPC = true;
-      return false;
-    }
-
     if (this.sameNIFStake) {
       this.showSameNIFError = true;
+      return false;
+    }
+      
+    this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
+
+    this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
+
+    if (this.submissionClient.fiscalId === this.stakeholderNumber) { 
+      this.sameNIPC = true;
       return false;
     }
 
     this.isShown = true;
     this.selected = false;
-
 
     setTimeout(() => {
       this.searchEvent.next(this.stakeholderNumber);
@@ -764,7 +773,6 @@ export class CreateStakeholderComponent implements OnInit {
         return false;
       return true;
     }
-    //return false;
   }
 
   checkValidationType(str: string) {
@@ -782,6 +790,7 @@ export class CreateStakeholderComponent implements OnInit {
   validateNIF(nif: string): boolean {
     this.incorrectNIFSize = false;
     this.incorrectNIF = false;
+    this.sameNIPC = false;
     if (nif != '') {
       if (nif.length != 9) {
         this.incorrectNIFSize = true;
@@ -808,6 +817,7 @@ export class CreateStakeholderComponent implements OnInit {
   validateNIPC(nipc: string): boolean {
     this.incorrectNIPCSize = false;
     this.incorrectNIPC = false;
+    this.sameNIPC = false;
     if (nipc != '') {
       if (nipc.length != 9) {
         this.incorrectNIPCSize = true;

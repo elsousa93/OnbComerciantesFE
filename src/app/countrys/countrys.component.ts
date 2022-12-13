@@ -771,7 +771,7 @@ export class CountrysComponent implements OnInit {
   }
 
   emitteCountrySize() {
-    this.countryIsValid.emit((this.countryList.length > 0));
+    this.countryIsValid.emit((this.lstPaisPreenchido.length > 0)); // antes estava countryList
   }
 
   getCurrentClientAsync() {

@@ -54,28 +54,28 @@
           <div class="row">
             <div class="col">
               <p class="titulo-form-simples">{{'stakeholder.documentNumber'|translate}}: *</p>
-              <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectCC && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCC'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectCCSize && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCCSize'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectCCFormat" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectCCFormat && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCCFormat'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIF && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIF'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIFSize'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIPCSize'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIPC && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIPC'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="sameNIPC" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="sameNIPC && !isShown" class="titulo-form-simples-erro">
                 {{'client.sameNIPC'|translate}}
               </span>
               <input [readonly]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"

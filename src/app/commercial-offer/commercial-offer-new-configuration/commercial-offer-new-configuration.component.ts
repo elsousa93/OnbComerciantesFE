@@ -275,10 +275,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   //ao escolher uma mensalidade, é carregado os valores associados a essa mensalidade escolhida
   chooseMensalidade(id: string) {
     this.selectedMensalidadeId = id;
-    this.pricingAttributeList = [];
     if (this.formConfig.valid) {
       if (this.storeEquip?.pricing == null) {
         this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
+          this.pricingAttributeList = [];
           res.result.attributes.forEach(attr => {
             this.pricingAttributeList.push(attr);
           });
