@@ -546,16 +546,19 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
-    this.showSameNIFError = false;
 
     if (this.formStakeholderSearch.invalid)
       return false;
 
-    if (this.sameNIFStake) {
-      this.showSameNIFError = true;
+    //if (this.sameNIFStake) {
+    //  this.showSameNIFError = true;
+    //  return false;
+    //}
+
+    if (this.showSameNIFError) {
       return false;
     }
-      
+
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
 
     this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
@@ -791,7 +794,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectNIF = false;
     this.sameNIPC = false;
     this.showSameNIFError = false;
-    this.sameNIFStake = false;
     if (nif != '') {
       if (nif.length != 9) {
         this.incorrectNIFSize = true;
@@ -820,7 +822,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectNIPC = false;
     this.sameNIPC = false;
     this.showSameNIFError = false;
-    this.sameNIFStake = false;
     if (nipc != '') {
       if (nipc.length != 9) {
         this.incorrectNIPCSize = true;
@@ -850,7 +851,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectCCFormat = false;
     this.showSameNIFError = false;
     this.sameNIPC = false;
-    this.sameNIFStake = false;
     var sum = 0;
     var secondDigit = false;
 
