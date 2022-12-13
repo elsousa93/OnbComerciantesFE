@@ -298,7 +298,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
         this.incompleteProcessess = resul;
         this.incompleteProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete') {
@@ -315,7 +315,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Ongoing', 0, this.ongoingCount).subscribe(resul => {
         this.ongoingProcessess = resul;
         this.ongoingProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Ongoing') {
@@ -332,7 +332,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Returned', 0, this.returnedCount).subscribe(resul => {
         this.returnedProcessess = resul;
         this.returnedProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Returned') {
@@ -349,7 +349,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
         this.contractAcceptanceProcessess = resul;
         this.contractAcceptanceProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'ContractAcceptance') {
@@ -366,7 +366,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Completed', 0, this.pendingSentCount).subscribe(resul => {
         this.pendingSentProcessess = resul;
         this.pendingSentProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Completed') {
@@ -383,7 +383,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('EligibilityAssessment', 0, this.pendingEligibilityCount).subscribe(resul => {
         this.pendingEligibilityProcessess = resul;
         this.pendingEligibilityProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'EligibilityAssessment') {
@@ -400,7 +400,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('ClientChoice', 0, this.multipleClientesCount).subscribe(resul => {
         this.multipleClientesProcessess = resul;
         this.multipleClientesProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'ClientChoice') {
@@ -417,7 +417,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('OperationsEvaluation', 0, this.DOValidationCount).subscribe(resul => {
         this.DOValidationProcessess = resul;
         this.DOValidationProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'OperationsEvaluation') {
@@ -434,7 +434,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('NegotiationApproval', 0, this.negotiationAprovalCount).subscribe(resul => {
         this.negotiationAprovalProcessess = resul;
         this.negotiationAprovalProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'NegotiationApproval') {
@@ -451,7 +451,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, this.MCCTreatmentCount).subscribe(resul => {
         this.MCCTreatmentProcessess = resul;
         this.MCCTreatmentProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'StandardIndustryClassificationChoice') {
@@ -468,7 +468,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('MerchantRegistration', 0, this.validationSIBSCount).subscribe(resul => {
         this.validationSIBSProcessess = resul;
         this.validationSIBSProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'MerchantRegistration') {
@@ -485,7 +485,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('RiskAssessment', 0, this.riskOpinionCount).subscribe(resul => {
         this.riskOpinionProcessess = resul;
         this.riskOpinionProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'RiskAssessment') {
@@ -502,7 +502,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('ComplianceEvaluation', 0, this.complianceDoubtsCount).subscribe(resul => {
         this.complianceDoubtsProcessess = resul;
         this.complianceDoubtsProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'ComplianceEvaluation') {
@@ -647,8 +647,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-
-    this.dataSourcePendentes.sort = this.empTbSort;
 
   }
 
