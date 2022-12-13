@@ -96,7 +96,13 @@
           <button id="btn5a" [disabled]="!editStores.valid" (click)="submit((currentIdx === -1 ) ? true : false)" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
             {{(currentIdx === -1 ? 'stores.add' : 'stores.edit')|translate|uppercase}}&nbsp;
             <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
-          </button></div>
+          </button>
+            <button id="btn5a6"
+                    class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent" (click)="close()">&nbsp;
+              {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg"
+              class="img_btn">
+            </button>
+         </div>
         </div>
       </ng-container>
       <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
