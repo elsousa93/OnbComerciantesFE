@@ -546,6 +546,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
+    this.sameNIFStake = false;
 
     if (this.formStakeholderSearch.invalid)
       return false;
