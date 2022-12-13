@@ -298,7 +298,7 @@ export class DashboardComponent implements OnInit {
       this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
         this.incompleteProcessess = resul;
         this.incompleteProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy');
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
   
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete') {
@@ -647,8 +647,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-
-    this.dataSourcePendentes.sort = this.empTbSort;
 
   }
 
