@@ -647,6 +647,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+
+    this.dataSourcePendentes.sort = this.empTbSort;
+
   }
 
   applyFilter(filterValue: string) {
