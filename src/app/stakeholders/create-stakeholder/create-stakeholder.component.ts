@@ -166,7 +166,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
       //Without address
       console.log("Without Address PDF");
-      this.dataCCcontents.addressCC = "Sem PIN de morada";
+      this.dataCCcontents.addressCC = " ";
       this.dataCCcontents.postalCodeCC = " ";
       this.dataCCcontents.countryCC = " ";
 
@@ -715,7 +715,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     var separated = dateCC.split(' ');
     var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
 
-    if (this.dataCCcontents.addressCC === "Sem PIN de morada") {
+    if (this.dataCCcontents.addressCC === "") {
       this.dataCCcontents.addressCC = "";
     }
 
