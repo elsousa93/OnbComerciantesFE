@@ -442,16 +442,25 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValidators([Validators.required]);
       this.formStores.get('countryStore').setValidators([Validators.required]);
       this.formStores.get('zipCodeStore').setValidators([Validators.required]);
-      this.formStores.updateValueAndValidity();
+
+      this.formStores.get('localeStore').updateValueAndValidity();
+      this.formStores.get('addressStore').updateValueAndValidity();
+      this.formStores.get('countryStore').updateValueAndValidity();
+      this.formStores.get('zipCodeStore').updateValueAndValidity();
     } else {
       this.formStores.get('localeStore').setValidators(null);
       this.formStores.get('addressStore').setValidators(null);
       this.formStores.get('countryStore').setValidators(null);
       this.formStores.get('zipCodeStore').setValidators(null);
+
       this.formStores.get('localeStore').setValue('');
       this.formStores.get('addressStore').setValue('');
       this.formStores.get('zipCodeStore').setValue('');
-      this.formStores.updateValueAndValidity();
+
+      this.formStores.get('localeStore').updateValueAndValidity();
+      this.formStores.get('addressStore').updateValueAndValidity();
+      this.formStores.get('countryStore').updateValueAndValidity();
+      this.formStores.get('zipCodeStore').updateValueAndValidity();
 
     }
   }
@@ -596,6 +605,8 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
     else
       this.formStores.get('subZoneStore').setValidators(null);
+
+    this.formStores.get('subZoneStore').updateValueAndValidity();
 
     if (!this.replicateAddress) {
       this.formStores.get('replicate').setValue(false);
