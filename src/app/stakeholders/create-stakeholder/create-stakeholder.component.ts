@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -41,7 +41,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   templateUrl: './create-stakeholder.component.html',
   styleUrls: ['./create-stakeholder.component.css']
 })
-export class CreateStakeholderComponent implements OnInit/*, OnChanges*/ {
+export class CreateStakeholderComponent implements OnInit, OnChanges {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
   @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
@@ -61,7 +61,7 @@ export class CreateStakeholderComponent implements OnInit/*, OnChanges*/ {
   }
 
   @Input() parentFormGroup: FormGroup;
- // @Input() sameNIFStake: boolean;
+  @Input() sameNIFStake: Subject<boolean>;
 
   modalRef: BsModalRef;
   showSameNIFError: boolean = false;
@@ -295,29 +295,12 @@ export class CreateStakeholderComponent implements OnInit/*, OnChanges*/ {
   incorrectCCFormat: boolean = false;
   submissionClient: Client;
   sameNIPC: boolean = false;
-
-  private _sameNIFStake: boolean;
-
-  get sameNIFStake() {
-    return this._sameNIFStake;
-  }
-
-  @Input('sameNIFStake') set sameNIFStake(value: boolean) {
-    if (value) {
-      this._sameNIFStake = value;
-      this.isShown = false;
-      this.foundStakeholders = null;
-      this.showSameNIFError = true;
-    } else {
-      this._sameNIFStake = value;
-      this.showSameNIFError = false;
-    }
-  }
+  
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
     private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
-    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective, private clientService: ClientService, private cd: ChangeDetectorRef) {
+    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective, private clientService: ClientService) {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListDocTypeE = result;
@@ -333,15 +316,19 @@ export class CreateStakeholderComponent implements OnInit/*, OnChanges*/ {
 
   }
 
-  //ngOnChanges(changes: SimpleChanges): void {
-  //  if (changes['sameNIFStake'].currentValue === true) {
-  //    this.isShown = false;
-  //    this.foundStakeholders = null;
-  //    this.showSameNIFError = true;
-  //  } else {
-  //    this.showSameNIFError = false;
-  //  }
-  //}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.sameNIFStake != null) {
+      this.sameNIFStake?.subscribe(result => {
+        if (result) {
+          this.isShown = false;
+          this.foundStakeholders = null;
+          this.showSameNIFError = true;
+        } else {
+          this.showSameNIFError = false;
+        }
+      });
+    }
+  }
 
   initializeNotFoundForm() {
     console.log('Não encontrou um stake ');
@@ -563,7 +550,6 @@ export class CreateStakeholderComponent implements OnInit/*, OnChanges*/ {
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
-    this.sameNIFStake = false;
 
     if (this.formStakeholderSearch.invalid)
       return false;
@@ -577,8 +563,7 @@ export class CreateStakeholderComponent implements OnInit/*, OnChanges*/ {
       return false;
     }
 
-    //this.sameNIFStake = false;
-    //this.cd.detectChanges();
+    this.sameNIFStake.next(false);
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
 
