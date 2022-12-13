@@ -172,6 +172,10 @@ export class StoreComponent implements AfterViewInit {
     }
   }
 
+  close() {
+    this.currentStore = null;
+  }
+
   updateContactPoint() {
     this.currentStore.contactPerson = this.submissionClient.legalName;
     this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
