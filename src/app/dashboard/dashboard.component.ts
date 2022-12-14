@@ -11,7 +11,7 @@ import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { UserPermissions, FTPermissions, getFTPermissions } from '../userPermissions/user-permissions';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../process/process.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { LoggerService } from 'src/app/logger.service';
 import { User } from '../userPermissions/user';
 import { TranslateService } from '@ngx-translate/core';
@@ -525,7 +525,7 @@ export class DashboardComponent implements OnInit {
 
         case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-        case 'startedAt': return new Date(this.datePipe.transform(item?.startedAt, 'MM-dd-yyyy'));
+        case 'startedAt': return new Date(formatDate(item?.startedAt, 'MM-dd-yyyy', 'pt-PT'));
 
         default: return item[property].toLocaleLowerCase();
       }
