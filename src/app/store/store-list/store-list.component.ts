@@ -333,7 +333,6 @@ export class StoreComponent implements AfterViewInit {
             this.addDocumentToShop(this.currentStore.id);
             this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
             this.resetForm();
-            this.onActivate();
           } else {
             this.addDocumentToShop(this.currentStore.id);
             this.resetForm();
@@ -351,6 +350,7 @@ export class StoreComponent implements AfterViewInit {
         this.route.navigate(['comprovativos']);
       }
     }
+    this.onActivate();
   }
 
   resetForm() {
