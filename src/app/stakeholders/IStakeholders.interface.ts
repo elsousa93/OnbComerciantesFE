@@ -56,7 +56,7 @@ export interface IdentificationDocument {
 export interface OutboundDocument {
   purpose?: string,
   documentType?: string,
-  receiveAt?: string,
+  receivedAt?: string,
   validUntil?: string,
   uniqueReference?: string,
   archiveSource?: string,

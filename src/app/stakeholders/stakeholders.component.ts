@@ -306,7 +306,7 @@ export class StakeholdersComponent implements OnInit {
     if(info.stakeholder != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.id];
+      this.selectedStakeholderComprovativos = this.currentStakeholder.stakeholderOutbound.document;
       setTimeout(() => this.setFormData(), 500);
     }
   }
@@ -384,9 +384,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   loadStakeholderDocument(documentReference) {
-
     this.comprovativoService.viewDocument(documentReference);
-
   }
 
   isStakeholderFromCRC(stakeholder) {
