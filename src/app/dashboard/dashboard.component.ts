@@ -525,7 +525,11 @@ export class DashboardComponent implements OnInit {
 
         case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-        case 'startedAt': return new Date(formatDate(item?.startedAt, 'MM-dd-yyyy', 'pt-PT'));
+        case 'startedAt': {
+          var split = item?.startedAt.split('-');
+          var newDate = split[1] + "-" + split[0] + "-" + split[2];
+          return new Date(this.datePipe.transform(newDate, 'MM-dd-yyyy'));
+        }
 
         default: return item[property].toLocaleLowerCase();
       }
