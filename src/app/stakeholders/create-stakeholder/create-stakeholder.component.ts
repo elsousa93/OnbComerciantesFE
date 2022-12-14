@@ -618,6 +618,16 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         }
         stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
 
+        if (stakeholderToInsert["identificationDocument"] != null) { 
+          stakeholderToInsert["identificationDocument"] = {
+            type: stakeholderToInsert["identificationDocument"]["documentType"],
+            number: stakeholderToInsert["identificationDocument"]["documentId"],
+            country: stakeholderToInsert["identificationDocument"]["documentIssuer"], 
+            expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"], 
+            checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
+          } 
+        }
+
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];
           stakeholderToInsert.id = result["id"];

@@ -82,7 +82,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }
     if (changes["sameNIFEvent"]) {
       this.sameNIFEvent?.subscribe(result => {
-        var sameNIFStake = this.submissionStakeholders.find(stakeNIF => result === stakeNIF.stakeholderAcquiring.fiscalId);
+        var sameNIFStake = this.submissionStakeholders.find(stakeNIF => result === stakeNIF.stakeholderAcquiring.fiscalId || result === stakeNIF.stakeholderAcquiring.identificationDocument?.number);
         if (sameNIFStake != undefined) {
           this.sameNIFEmitter.emit(true);
         } else {
@@ -108,6 +108,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   @Input() processNumber?: string;
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
+  @Input() isInfoDeclarativa?: boolean = false;
 
 
   @Input() insertStakeholderEvent?: Observable<IStakeholders>;
@@ -227,10 +228,16 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         } as StakeholdersCompleteInformation
 
 
-        if (AcquiringStakeholder.fiscalId != "") {
+        if (AcquiringStakeholder.fiscalId != "" && !this.isInfoDeclarativa) {
           context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
-            stakeholderToInsert.stakeholderOutbound = res.result;
-            resolve(null);
+            if (res.result.stakeholderId != null) { 
+              context.stakeholderService.getStakeholderByID(res.result.stakeholderId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
+                stakeholderToInsert.stakeholderOutbound = r.result;
+                resolve(null);
+              });
+            }
+            //stakeholderToInsert.stakeholderOutbound = res.result;
+            //resolve(null);
           }, rej => {
             console.log("não foi possivel carregar");
             resolve(null);

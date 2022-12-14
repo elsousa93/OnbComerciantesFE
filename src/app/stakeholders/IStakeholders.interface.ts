@@ -34,15 +34,24 @@ export interface IStakeholders {
   clientId?: string
 }
 
+interface FiscalIdentification {
+  fiscalId?: string,
+  issuerCountry?: string
+}
+
 export interface StakeholderOutbound {
   stakeholderId?: string,
   fullName?: string,
   shortName?: string,
+  isBeneficiary?: boolean,
+  capitalHeld?: number,
+  fiscalIdentification?: FiscalIdentification,
   address?: FiscalAddress,
   contacts?: Contacts,
   identificationDocument?: IdentificationDocument,
   birthDate?: string,
-  document?: OutboundDocument[]
+  pep?: IPep,
+  supportingDocuments?: OutboundDocument[]
 }
 
 export interface IdentificationDocument {
