@@ -81,12 +81,12 @@ export class DevolucaoComponent implements OnInit{
       this.process = result;
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);
+      this.data.updateData(true, 0);  
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         console.log('ISSUES ', res);
         this.issues = res;
       });
     });
-    this.data.updateData(true, 0);  
   }
   
   nextPage() {
