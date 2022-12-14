@@ -305,7 +305,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.incompleted');
           }
         });
-        this.orderProcesses(this.dataSourcePendentes, this.empTbSort);
+        this.orderProcesses(this.dataSourcePendentes, this.empTbSort, this.incompleteProcessess);
       });
     }
   }
@@ -322,7 +322,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.running');
           }
         });
-        this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject);
+        this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject, this.ongoingProcessess);
       });
     }
   }
@@ -339,7 +339,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.returned');
           }
         });
-        this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos);
+        this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos, this.returnedProcessess);
       });
     }
   }
@@ -356,7 +356,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.contractAcceptance')
           }
         });
-        this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao);
+        this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
       });
     }   
   }
@@ -373,7 +373,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.completed');
           } 
         });
-        this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent);
+        this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent, this.pendingSentProcessess);
       });
     }
   }
@@ -390,7 +390,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.eligibility');
           }
         });
-        this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility);
+        this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility, this.pendingEligibilityProcessess);
       });
     }
   }
@@ -407,7 +407,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.multipleClients');
           } 
         });
-        this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients);
+        this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients, this.multipleClientesProcessess);
       });
     }
   }
@@ -424,7 +424,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.DOValidation');
           } 
         });
-        this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation);
+        this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation, this.DOValidationProcessess);
       });
     }
   }
@@ -441,7 +441,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.negotiationApproval');
           } 
         });
-        this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval);
+        this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval, this.negotiationAprovalProcessess);
       });
     }  
   }
@@ -458,7 +458,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.MCCTreatment');
           } 
         });
-        this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment);
+        this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment, this.MCCTreatmentProcessess);
       });
     }
   }
@@ -475,7 +475,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.validationSIBS');
           } 
         });
-        this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS);
+        this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS, this.validationSIBSProcessess);
       });
     }
   }
@@ -492,7 +492,7 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.riskOpinion');
           } 
         });
-        this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion);
+        this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion, this.riskOpinionProcessess);
       });
     }
   }
@@ -509,16 +509,16 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.complianceDoubts');
           } 
         });
-        this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts);
+        this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts, this.complianceDoubtsProcessess);
       });
     }
   }
 
-  orderProcesses(dataSource: MatTableDataSource<ProcessList>, sorter: MatSort) {
+  orderProcesses(dataSource: MatTableDataSource<ProcessList>, sorter: MatSort, list: ProcessGet) {
     dataSource.paginator._intl = new MatPaginatorIntl();
     dataSource.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
 
-    dataSource.data = this.incompleteProcessess.items;
+    dataSource.data = list.items;
     dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'merchant.fiscalId': return item.merchant?.fiscalId;
