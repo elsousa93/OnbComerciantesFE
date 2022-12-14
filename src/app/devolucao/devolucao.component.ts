@@ -35,9 +35,7 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
-    this.logger.debug('Process Id ' + this.processId);
-
-    this.data.updateData(true, 0);    
+    this.logger.debug('Process Id ' + this.processId);  
   }
 
   getEntityName(entity: string, id: string) {
@@ -76,6 +74,7 @@ export class DevolucaoComponent implements OnInit{
       localStorage.setItem('returned', 'edit');
       this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
     }
+    this.data.updateData(true, 0);  
   }
 
   getPageInfo() {
