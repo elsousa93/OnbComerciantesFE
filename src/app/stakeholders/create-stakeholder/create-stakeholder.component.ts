@@ -550,14 +550,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (this.formStakeholderSearch.invalid)
       return false;
 
-    //if (this.sameNIFStake) {
-    //  this.showSameNIFError = true;
-    //  return false;
-    //}
-
-    if (this.showSameNIFError) {
+    if (this.showSameNIFError)
       return false;
-    }
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
 

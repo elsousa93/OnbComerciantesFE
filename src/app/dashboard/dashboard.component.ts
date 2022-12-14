@@ -525,7 +525,7 @@ export class DashboardComponent implements OnInit {
 
         case 'merchant.name': return item.merchant?.name?.toLocaleLowerCase();
 
-        case 'startedAt': return new Date(item["startedAt"]);
+        case 'startedAt': return new Date(item["startedAt"]).getTime();
 
         default: return item[property].toLocaleLowerCase();
       }
