@@ -74,7 +74,6 @@ export class DevolucaoComponent implements OnInit{
       localStorage.setItem('returned', 'edit');
       this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
     }
-    this.data.updateData(true, 0);  
   }
 
   getPageInfo() {
@@ -87,6 +86,7 @@ export class DevolucaoComponent implements OnInit{
         this.issues = res;
       });
     });
+    this.data.updateData(true, 0);  
   }
   
   nextPage() {
