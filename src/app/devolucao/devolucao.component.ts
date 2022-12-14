@@ -71,26 +71,23 @@ export class DevolucaoComponent implements OnInit{
     console.log('Process Id ', this.processId);
     var context = this;
     this.getPageInfo();
+    this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
+    if (localStorage.getItem("returned") != 'consult') {
+      localStorage.setItem('returned', 'edit');
+      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
+    }
   }
 
   getPageInfo() {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
       this.processNumber = result.processNumber;
+      localStorage.setItem('processNumber', this.processNumber);
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         console.log('ISSUES ', res);
         this.issues = res;
       });
     });
-    this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
-    if (localStorage.getItem("returned") != 'consult') {
-      localStorage.setItem('returned', 'edit');
-      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
-    }
-    if (localStorage.getItem('processNumber') == null) {
-      localStorage.setItem('processNumber', this.process.processNumber);
-      this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
-    }
   }
   
   nextPage() {
