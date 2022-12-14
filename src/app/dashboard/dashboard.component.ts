@@ -528,7 +528,7 @@ export class DashboardComponent implements OnInit {
         case 'startedAt': {
           var split = item?.startedAt.split('-');
           var newDate = split[1] + "-" + split[0] + "-" + split[2];
-          return new Date(this.datePipe.transform(newDate, 'MM-dd-yyyy'));
+          return new Date(newDate);
         }
 
         default: return item[property].toLocaleLowerCase();
