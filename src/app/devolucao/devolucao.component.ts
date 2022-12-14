@@ -69,15 +69,6 @@ export class DevolucaoComponent implements OnInit{
     this.data.historyStream$.next(true);
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
     console.log('Process Id ', this.processId);
-    this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
-    if (localStorage.getItem("returned") != 'consult') {
-      localStorage.setItem('returned', 'edit');
-      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
-    }
-    if (localStorage.getItem('processNumber') == null) {
-      localStorage.setItem('processNumber', this.process.processNumber);
-      this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
-    }
     var context = this;
     this.getPageInfo();
   }
@@ -91,6 +82,15 @@ export class DevolucaoComponent implements OnInit{
         this.issues = res;
       });
     });
+    this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
+    if (localStorage.getItem("returned") != 'consult') {
+      localStorage.setItem('returned', 'edit');
+      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
+    }
+    if (localStorage.getItem('processNumber') == null) {
+      localStorage.setItem('processNumber', this.process.processNumber);
+      this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
+    }
   }
   
   nextPage() {
