@@ -670,11 +670,7 @@ export class ClientComponent implements OnInit {
     this.docType = e.target.value;
 
     // get search type
-    if (this.docType === '0502' || this.docType === '1010') {
-      this.searchType = "Merchant"
-    } else {
-      this.searchType = "Stakeholder"
-    }
+    this.searchType = this.docType;
 
     this.newClient.documentationDeliveryMethod = e.target.value;
     if (this.docType === '1001') { //código do Cartão do Cidadão
