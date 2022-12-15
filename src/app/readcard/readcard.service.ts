@@ -276,7 +276,7 @@ export class ReadcardService {
         //novo objecto a enviar 
          let objectCCsend: FileAndDetailsCC = {
              lastModifiedDate: new Date(), 
-              expirationDate: new Date()+"", // A confirmar com a equipa de produto
+              expirationDate: new Date(ccArrayData[6]).toISOString(), // A confirmar com a equipa de produto
              name: 'comprovativoCC',
              file: result_clean
          }
