@@ -779,7 +779,7 @@ export class ClientCharacterizationComponent implements OnInit {
           fileType: 'PDF',
           binary: comprovativoCC.file
         },
-        validUntil: comprovativoCC.expirationDate, //"2022-07-13T11:10:13.420Z", //FIXME
+        validUntil: new Date(comprovativoCC.expirationDate).toISOString(), //"2022-07-13T11:10:13.420Z", //FIXME
         data: null
       })
     }
