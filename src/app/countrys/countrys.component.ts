@@ -168,45 +168,6 @@ export class CountrysComponent implements OnInit {
       }
     }
 
-    //if (this.returned != null) {
-    //  this.clientContext.currentMerchantInfo.subscribe(result => {
-    //    this.merchantInfo = result;
-
-    //    if (this.merchantInfo.documentationDeliveryMethod == 'viaDigital') {
-    //      this.form.get("preferenceDocuments").setValue("viaDigital");
-    //    } else {
-    //      this.form.get("preferenceDocuments").setValue("Mail");
-    //    }
-
-    //    if (this.merchantInfo.businessGroup != null) {
-    //      if (this.merchantInfo.businessGroup.type === 'Franchise') {
-    //        this.form.get("franchiseName").setValue(this.merchantInfo.businessGroup.branch);
-    //        this.setAssociatedWith(true);
-    //      }
-    //      if (this.merchantInfo.businessGroup.type === 'Group') {
-    //        this.form.get("NIPCGroup").setValue(this.merchantInfo.businessGroup.branch);
-    //        this.setAssociatedWith(true);
-    //      }
-    //      if (this.merchantInfo.businessGroup.type === 'Isolated') {
-    //        this.setAssociatedWith(false);
-    //      }
-    //    } else {
-    //      this.setAssociatedWith(false);
-    //    }
-
-    //    this.editCountries(false);
-    //    this.updateValues();
-
-    //  });
-    //}
-
-    ////Chamada à API para receber todos os Paises
-    //this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
-    //  this.countryList = result;
-    //  this.countryList = this.countryList.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-    //}, error => this.logger.debug(error)));
-
-    //this.getClientContextValues();
   }
 
   getMerchantInfoAsync() {
@@ -263,9 +224,8 @@ export class CountrysComponent implements OnInit {
     this.newSubmission.submissionUser.user = auth.userName;
     this.newSubmission.submissionUser.branch = auth.bankName;
     this.newSubmission.submissionUser.partner = "SIBS";
-
     this.rootForm = this.rootFormDirective.form;
-    this.form = this.rootForm.get("countrysForm");
+    //this.form = this.rootForm.get("countrysForm");
 
     this.subs.push(this.tableInfo.GetAllFranchises().subscribe(result => {
       this.franchises = result;
@@ -370,23 +330,7 @@ export class CountrysComponent implements OnInit {
       inputAsia: new FormControl(this.inputTypeAsia),
       franchiseName: new FormControl(null),
       NIPCGroup: new FormControl('')
-    }));
-    //this.form = new FormGroup({
-    //  expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-    //  services: new FormControl('', Validators.required),
-    //  transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
-    //  associatedWithGroupOrFranchise: new FormControl(false, Validators.required),
-    //  preferenceDocuments: new FormControl('', Validators.required),
-    //  inputEuropa: new FormControl(this.inputEuropa),
-    //  inputAfrica: new FormControl(this.inputAfrica),
-    //  inputAmerica: new FormControl(this.inputAmericas),
-    //  inputOceania: new FormControl(this.inputOceania),
-    //  inputAsia: new FormControl(this.inputTypeAsia),
-    //  franchiseName: new FormControl(''),
-    //  NIPCGroup: new FormControl('')
-    //});
-
-    
+    }));    
 
     this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
@@ -445,19 +389,19 @@ export class CountrysComponent implements OnInit {
 
 
     this.clientContext.setClient(client);
-    var navigationExtras: NavigationExtras = {
-      state: {
-        clientExists: this.clientExists,
-        tipologia: this.tipologia,
-        NIFNIPC: this.NIFNIPC,
-        client: this.client,
-        clientId: this.clientId,
-        processId: this.processId,
-        stakeholdersToInsert: this.stakeholdersToInsert,
-        merchantInfo: this.merchantInfo,
-        crc: this.crc
-      }
-    }
+    //var navigationExtras: NavigationExtras = {
+    //  state: {
+    //    clientExists: this.clientExists,
+    //    tipologia: this.tipologia,
+    //    NIFNIPC: this.NIFNIPC,
+    //    client: this.client,
+    //    clientId: this.clientId,
+    //    processId: this.processId,
+    //    stakeholdersToInsert: this.stakeholdersToInsert,
+    //    merchantInfo: this.merchantInfo,
+    //    crc: this.crc
+    //  }
+    //}
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {

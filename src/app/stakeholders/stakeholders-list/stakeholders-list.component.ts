@@ -234,6 +234,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
               context.stakeholderService.getStakeholderByID(res.result.stakeholderId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
                 stakeholderToInsert.stakeholderOutbound = r.result;
                 resolve(null);
+              }, rej => {
+                console.log('não existe um stakeholder com o fiscalId');
+                resolve(null);
+              }).then(res => {
+                //context.submissionStakeholders.push(stakeholderToInsert);
+                resolve(null);
               });
             }
             //stakeholderToInsert.stakeholderOutbound = res.result;

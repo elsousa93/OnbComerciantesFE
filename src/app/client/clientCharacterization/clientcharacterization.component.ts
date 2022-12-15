@@ -145,7 +145,6 @@ export class ClientCharacterizationComponent implements OnInit {
   changeFormStructure(newForm: FormGroup) {
     this.rootForm.setControl("clientCharacterizationForm", newForm);
     this.form = this.rootForm.get("clientCharacterizationForm");
-    console.log('Estrutura do form depois de ser atualizado ', this.form);
   }
 
   initializeTableInfo() {
@@ -355,7 +354,6 @@ export class ClientCharacterizationComponent implements OnInit {
     }
 
     this.formClientCharacterizationReady.emit(this.form);
-    console.log('FORM FULL CRC ', this.form);
   }
 
   initializeFormControls() {
@@ -462,39 +460,15 @@ export class ClientCharacterizationComponent implements OnInit {
         } else {
           if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
             console.log('ENTROU IF EMPRESA', this.tipologia);
-            this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature);
-            this.collectCRC = false;
-            this.initializeFormControlOther();
+            setTimeout(() => {
+              this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature)
+              this.collectCRC = false;
+              this.initializeFormControlOther();
+            }, 100); 
           }
         }
       }
     });
-
-    //this.clientContext.currentMerchantInfo.subscribe(result => {
-    //  context.merchantInfo = result;
-
-    //  if (this.returned != null) {
-    //    if (this.tipologia == 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
-    //      this.isCommercialSociety = false;
-    //      this.collectCRC = false;
-    //      this.initializeFormControlOther();
-    //    }
-    //    if (this.tipologia == 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
-    //      this.isCommercialSociety = false;
-    //      this.collectCRC = false;
-    //      this.initializeENI();
-    //    }
-
-    //    if (this.merchantInfo.incorporationStatement != null) {
-    //      this.isCommercialSociety = true;
-    //      this.collectCRC = true;
-    //      this.initializeBasicCRCFormControl();
-    //      this.searchByCRC();
-    //    }
-    //  }
-    //});
-
-
   }
 
   getIsCommercialSocietyFromLegalNature(legalNatureCode: string) {
@@ -650,6 +624,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
     });
   }
+
   getCrcCode() {
     return this.form.get('crcCode').value;
   }

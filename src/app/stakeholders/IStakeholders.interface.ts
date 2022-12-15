@@ -32,6 +32,7 @@ export interface IStakeholders {
   pep?: IPep
   id?: string
   clientId?: string
+  stakeholderId?: string
 }
 
 interface FiscalIdentification {
