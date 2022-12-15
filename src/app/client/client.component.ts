@@ -154,7 +154,7 @@ export class ClientComponent implements OnInit {
     if (this.addressReading == false) {
 
       //Without address
-      this.dataCCcontents.addressCC = "Sem PIN de morada";
+      this.dataCCcontents.addressCC = " ";
       this.dataCCcontents.postalCodeCC = " ";
       this.dataCCcontents.countryCC = " ";
 
