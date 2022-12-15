@@ -177,6 +177,26 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public returned: string;
   updatedComps: boolean;
   ///////////////////////
+  //b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
+  //  const byteCharacters = atob(b64Data);
+  //  const byteArrays = [];
+
+  //  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+  //    const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+  //    const byteNumbers = new Array(slice.length);
+  //    for (let i = 0; i < slice.length; i++) {
+  //      byteNumbers[i] = slice.charCodeAt(i);
+  //    }
+
+  //    const byteArray = new Uint8Array(byteNumbers);
+  //    byteArrays.push(byteArray);
+  //  }
+
+  //  const blob = new Blob(byteArrays, { type: contentType });
+  //  return blob;
+  //}
+
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
@@ -194,7 +214,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
 
     const blob = new Blob(byteArrays, { type: contentType });
-    return blob;
+    const blobUrl = window.URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank',
+      `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;` );
   }
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2, @Inject(configurationToken) private configuration: Configuration,
@@ -271,15 +297,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           if (documents.length != 0) {
             documents.forEach(function (value, index) {
               var document = value;
-              context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-                console.log("imagem de um documento ", res);
-                var teste = await res.blob();
+              //context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
+                //console.log("imagem de um documento ", res);
+                //var teste = await res.blob();
 
-                teste.lastModifiedDate = new Date();
-                teste.name = "nome";
+                //teste.lastModifiedDate = new Date();
+                //teste.name = "nome";
 
-                context.file = <File>teste;
-                console.log("Ficheiro encontrado ", context.file);
+                //context.file = <File>teste;
+                //console.log("Ficheiro encontrado ", context.file);
 
                 context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
                   const now = new Date();
@@ -294,14 +320,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                       stakeholder: context.submissionClient.legalName,
                       status: "não definido",
                       uploadDate: latest_date,
-                      file: context.file,
+                      file: val?.id,
                       documentPurpose: val.documentPurpose,
                       documentType: val.documentType
                     });
                   }
                   console.log("Lista de comprovativos ", context.compsToShow);
                 });
-              });
+              //});
             });
           }
 
@@ -425,19 +451,25 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     location.reload()
   }
 
+
   //mandamos uma lista dos ficheiros (for)  recebemos um ficheiro e transformamos esse ficheiro em blob e depois redirecionamos para essa página
-  search(/*url: any, imgName: any*/ file: File) {
-    let blob = new Blob([file], { type: file.type });
-    let url = window.URL.createObjectURL(blob);
+  search(file: any, format?: string) {
+    if (file instanceof File) {
+      let blob = new Blob([file], { type: file.type });
+      let url = window.URL.createObjectURL(blob);
 
-    window.open(url, '_blank',
-      `margin: auto;
-      width: 50%;
-      padding: 10px;
-      text-align: center;
-      border: 3px solid green;
-      `);
-
+      window.open(url, '_blank',
+        `margin: auto;
+        width: 50%;
+        padding: 10px;
+        text-align: center;
+        border: 3px solid green;
+        `);
+    } else {
+      this.documentService.GetDocumentImageOutbound(file, "por mudar", "por mudar", format).subscribe(result => {
+        this.b64toBlob(result.binary, 'application/pdf', 512);
+      });
+    }
   }
 
   //mandar como parametro o ficheiro ou o nome do ficheiro
@@ -450,16 +482,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     link.click();
   }
 
-  onDelete(file: File, documentID) {
-    this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
-      console.log("Sucesso a apagar um documento: ", sucess.msg);
-    }, error => {
-      console.log("Erro a apagar um ficheiro: ", error.msg);
-    });
+  onDelete(file: any, documentID) {
+    if (file instanceof File) {
+      this.files
+    } else { 
+      this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
+        console.log("Sucesso a apagar um documento: ", sucess.msg);
+      }, error => {
+        console.log("Erro a apagar um ficheiro: ", error.msg);
+      });
 
-    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
-    this.fileToDelete = file;
-
+      this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
+      this.fileToDelete = file;
+    }
 
   }
 

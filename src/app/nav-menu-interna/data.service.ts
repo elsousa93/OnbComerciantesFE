@@ -29,12 +29,13 @@ export class DataService {
   private isClient = new BehaviorSubject(null);
   private dataCC = new BehaviorSubject(null);
   private comprovativoCC = new BehaviorSubject(null);
-
+  private updateClient = new BehaviorSubject(false);
 
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
   currentSubPage = this.dataSubPage.asObservable();
   updatedComprovativos = this.updateComprovativos.asObservable();
+  updatedClient = this.updateClient.asObservable();
 
   currentTipologia = this.tipologia.asObservable();
   currentIsClient = this.isClient.asObservable();
@@ -74,6 +75,10 @@ export class DataService {
     this.updateComprovativos.next(value);
   }
 
+  changeUpdatedClient(value: boolean) {
+    this.updateClient.next(value);
+  }
+
   changeCurrentTipologia(value: string) {
     this.tipologia.next(value);
   }
@@ -106,6 +111,7 @@ export class DataService {
     this.currentIsClient = this.isClient.asObservable();
     this.currentDataCC = this.dataCC.asObservable();
     this.currentComprovativoCC = this.comprovativoCC.asObservable();
+    this.updatedClient = this.updateClient.asObservable();
     this.historyStream$.next(false);
   }
 

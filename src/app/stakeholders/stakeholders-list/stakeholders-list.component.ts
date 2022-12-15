@@ -24,9 +24,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   public submissionClient: Client;
 
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private logger: LoggerService, private submissionService: SubmissionService, private clientService: ClientService) {
-    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
-      this.submissionClient = client;
-    });
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -88,6 +86,11 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         } else {
           this.sameNIFEmitter.emit(false);
         }
+      });
+    }
+    if (!changes["isInfoDeclarativa"].currentValue) {
+      this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+        this.submissionClient = client;
       });
     }
   }

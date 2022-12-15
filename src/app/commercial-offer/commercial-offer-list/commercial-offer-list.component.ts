@@ -242,7 +242,9 @@ export class CommercialOfferListComponent implements OnInit {
       context.form.get("commission" + value.id).get("commissionFixed" + value.id).setValue(value.fixedValue.value);
       context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue(value.percentageValue.value);
     });
-    this.chooseCommission(this.commissionId);
+    if (this.commissionId != "") {
+      this.chooseCommission(this.commissionId);
+    }
   }
 
   initializeForm() {
@@ -403,8 +405,7 @@ export class CommercialOfferListComponent implements OnInit {
       packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
     }
 
-    
-    this.COService.ListProductCommercialPackCommission(this.commissionFilter.productCode, this.commissionFilter).then(result => {
+    this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
       this.commissionOptions = [];
       if (this.currentStore.pack == null) {
         if (result.result.length == 1) {
@@ -430,10 +431,7 @@ export class CommercialOfferListComponent implements OnInit {
     var productCode = this.currentStore.productCode;
     this.commissionAttributeList = [];
     if (this.currentStore.pack == null) {
-      this.COService.GetProductCommercialPackCommission(productCode, commisionId, this.commissionFilter).then(res => {
-        //res.result.attributes.forEach(attr => {
-        //  this.commissionAttributeList.push(attr);
-        //});
+      this.COService.GetProductCommercialPackCommission(this.packId, this.commissionId, this.commissionFilter).then(res => {
         this.commissionAttributeList = res.result.attributes;
         this.addCommissionFormGroups();
       });

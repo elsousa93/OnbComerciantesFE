@@ -161,6 +161,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   submissionExists: boolean = false;
   isFromSearch: boolean = false;
   historyStream: boolean;
+  updateClient: boolean;
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -455,6 +456,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
+    this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
     this.data.updateData(false, 1, 2);
 
     this.clientContext = new ClientContext(
@@ -767,7 +769,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   submit() {
-    if (this.returned != 'consult') {
+    if (this.returned != 'consult' && !this.updateClient) {
       this.clientCharacterizationComponent.submit();
 
       if (!this.clientContext.isClient)
@@ -942,6 +944,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   updateSubmission() {
 
     if (this.returned != 'consult') {
+
+      this.data.changeUpdatedClient(true);
 
       let navigationExtras: NavigationExtras = {
         state: {
