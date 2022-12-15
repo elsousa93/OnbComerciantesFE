@@ -227,11 +227,19 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           stakeholderOutbound: undefined
         } as StakeholdersCompleteInformation
 
+        var stakeholderId = "";
 
         if (AcquiringStakeholder.fiscalId != "" && !this.isInfoDeclarativa) {
           context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
-            if (res.result.stakeholderId != null) { 
-              context.stakeholderService.getStakeholderByID(res.result.stakeholderId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
+            stakeholderId = res.result[0].stakeholderId; 
+            //stakeholderToInsert.stakeholderOutbound = res.result;
+            //resolve(null);
+          }, rej => {
+            console.log("não foi possivel carregar");
+            resolve(null);
+          }).then(res => {
+            if (stakeholderId != null) {
+              context.stakeholderService.getStakeholderByID(stakeholderId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
                 stakeholderToInsert.stakeholderOutbound = r.result;
                 resolve(null);
               }, rej => {
@@ -242,12 +250,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
                 resolve(null);
               });
             }
-            //stakeholderToInsert.stakeholderOutbound = res.result;
-            //resolve(null);
-          }, rej => {
-            console.log("não foi possivel carregar");
-            resolve(null);
-          }).then(res => {
             context.submissionStakeholders.push(stakeholderToInsert);
             resolve(null);
           })
