@@ -62,24 +62,13 @@ export class AuthComponent implements OnInit {
       user.token = result.access_token;
 
       this.token.getLoginTokenInfo(user.token).then(res => {
-        if (res.active == false) {
-          user.userName = "Joao";
-          user.bankName = "BPI";
-          user.bankLocation = "Lisboa";
-          user.permissions = UserPermissions.UNICRE;
-          this.authService.changeUser(user);
-          this.router.navigate(['/']);
-        } else {
-          console.log('VALORES DO TOKEN ', res);
-          user.userName = res.name;
-          user.bankName = res["ext-bank"];
-          user.bankLocation = res["ext-bankLocation"];
-          this.timeout = new Date(res.exp * 1000);
-          this.expirationCounter(this.timeout);
-          this.authService.changeUser(user);
-          this.router.navigate(['/']);
-        }
-
+        user.userName = res.name;
+        user.bankName = res["ext-bank"];
+        user.bankLocation = res["ext-bankLocation"];
+        this.timeout = new Date(res.exp * 1000);
+        this.expirationCounter(this.timeout);
+        this.authService.changeUser(user);
+        this.router.navigate(['/']);
       });
     });
 

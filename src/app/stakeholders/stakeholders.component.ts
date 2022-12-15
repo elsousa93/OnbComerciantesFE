@@ -407,6 +407,7 @@ export class StakeholdersComponent implements OnInit {
 
 
   isSameNIF(info) {
+    this.sameNIFStake = !info;
     this.sameNIFStake = info;
   }
 }

@@ -474,6 +474,7 @@ export class CommercialOfferListComponent implements OnInit {
   changeUnicre(bool: boolean){
     this.isUnicre = bool;
     this.disableNewConfiguration = !bool;
+    this.isNewConfig = null;
   }
 
   changeReplicateProducts(bool: boolean) {

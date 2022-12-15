@@ -230,7 +230,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
         if (AcquiringStakeholder.fiscalId != "" && !this.isInfoDeclarativa) {
           context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
-            if (res.result[0].stakeholderId != null) { 
+            if (res.result[0].stakeholderId != null) {
+              stakeholderToInsert.stakeholderAcquiring.stakeholderId = res.result[0].stakeholderId;
+              stakeholderToInsert.stakeholderAcquiring.clientId = res.result[0].stakeholderId;
               context.stakeholderService.getStakeholderByID(res.result[0].stakeholderId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
                 stakeholderToInsert.stakeholderOutbound = r.result;
                 resolve(null);

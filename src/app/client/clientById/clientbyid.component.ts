@@ -979,6 +979,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             stakeholder.shortName = client.shortName;
             stakeholder.fiscalAddress = client.headquartersAddress;
             stakeholder.clientId = client.clientId;
+            stakeholder.stakeholderId = client.clientId;
             context.stakeholderService.UpdateStakeholder(submissionID, value.id, stakeholder);
           } else {
             context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {

@@ -149,6 +149,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.dataCCcontents.documentType = documentType;
     this.dataCCcontents.nifCC = nif;
     this.dataCCcontents.localityCC = postalCode.split(" ").pop();
+
+    this.emitSameNIF(of(this.dataCCcontents.nifCC));
+
     if (this.dataCCcontents.localityCC == null) {
       this.dataCCcontents.localityCC = '';
     }
@@ -324,6 +327,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.isCC = false;
       this.okCC = false;
       this.isNoDataReadable = true;
+      this.selected = false;
     } else {
       this.showSameNIFError = false;
     }
@@ -684,7 +688,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
    *  email de 14/09
    */
   addStakeholderWithCC() {
-    this.emitSameNIF(of(this.dataCCcontents.nifCC));
     //Colocar comprovativo do CC na Submissao 
     this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
     this.isCC = true;
