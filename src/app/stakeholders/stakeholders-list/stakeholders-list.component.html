@@ -22,7 +22,7 @@
     </ng-container>
     <ng-container matColumnDef="stakeholderAcquiring.stakeholderId">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{(stakeholder.stakeholderAcquiring.stakeholderId != '' && stakeholder.stakeholderAcquiring.stakeholderId != null) ? stakeholder.stakeholderAcquiring.stakeholderId : stakeholder.stakeholderAcquiring.clientId }} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{(stakeholder.stakeholderAcquiring["stakeholderId"] != '' && stakeholder.stakeholderAcquiring["stakeholderId"] != null) ? stakeholder.stakeholderAcquiring["stakeholderId"] : stakeholder.stakeholderAcquiring.clientId }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stakeholderAcquiring.isProxy">
       <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white"> {{'stakeholder.signature'|translate|uppercase}} </mat-header-cell>
