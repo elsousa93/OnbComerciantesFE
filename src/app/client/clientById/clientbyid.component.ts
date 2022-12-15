@@ -943,6 +943,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
     if (this.returned != 'consult') {
 
+      let navigationExtras: NavigationExtras = {
+        state: {
+          isClient: this.isClient
+        }
+      };
+
       var context = this;
       var submissionID = this.clientContext.submissionID ?? localStorage.getItem("submissionId");
 
@@ -953,7 +959,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
         this.data.updateData(true, 1);
-        this.route.navigateByUrl('/stakeholders');
+        this.route.navigateByUrl('/stakeholders', navigationExtras);
       });
       var client = this.clientContext.getClient();
       var merchant = this.clientContext.newSubmission.merchant;

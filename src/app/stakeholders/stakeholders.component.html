@@ -133,7 +133,7 @@
                   {{'stakeholder.add'|translate|uppercase}}&nbsp;
                   <img src="assets/images/person_add_blue.svg" class="img_btn">
                 </button>
-                <button id="btn5a4" *ngIf="clickButton !== false && editStakeInfo !== true" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" [routerLink]="['/clientbyid/']">
+                <button id="btn5a4" *ngIf="clickButton !== false && editStakeInfo !== true" class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg" wappler-command="editContent" (click)="goToClientById()">
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;" class="img_add">
                   {{'generalKeywords.back'|translate|uppercase}}&nbsp;
                 </button>

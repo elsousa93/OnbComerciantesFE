@@ -120,12 +120,15 @@ export class StakeholdersComponent implements OnInit {
   selectedStakeholderIsFromCRC: boolean = false;
   sameNIFStake: boolean = false;
 
+  isClient: boolean;
+
   constructor(public modalService: BsModalService,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
     private comprovativoService: ComprovativosService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
+      this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
     }
 
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
@@ -405,10 +408,21 @@ export class StakeholdersComponent implements OnInit {
     this.editStakeInfo = null;
   }
 
-
   isSameNIF(info) {
-    this.sameNIFStake = !info;
-    this.sameNIFStake = info;
+    this.sameNIFStake = false; //
+    setTimeout(() => {
+      this.sameNIFStake = info;
+    }, 0);
+  }
+
+  goToClientById() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        isClient: this.isClient
+      }
+    };
+
+    this.route.navigate(['/clientbyid/'], navigationExtras);
   }
 }
 
