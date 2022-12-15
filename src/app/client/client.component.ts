@@ -50,6 +50,8 @@ export class ClientComponent implements OnInit {
   //UUID
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
+  public canSearch: boolean = true;
+
   public clients: Client[] = [];
   public newClientForm: FormGroup;
   public searchClientForm: FormGroup;
@@ -238,6 +240,7 @@ export class ClientComponent implements OnInit {
   toSearch: boolean = false;
   resultError: string = "";
   clientTypology: string = "";
+  searchType: string = "";
   clientNr: boolean = false;
 
   clientsToShow: { client: Client, isClient: boolean }[] = [];
@@ -314,9 +317,12 @@ export class ClientComponent implements OnInit {
   tipologia: string;
   searchedDocument: string;
   firstTime: boolean = true;
+  defaultValue: boolean = true;
 
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
+  
+  
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -474,81 +480,86 @@ export class ClientComponent implements OnInit {
 
     var context = this;
     this.newClientForm = null;
+
     context.clientsToShow = [];
     context.clientsMat.data = context.clientsToShow;
 
-    this.clientService.SearchClientByQuery(this.newClient.clientId, "por mudar", "por mudar", "por mudar").subscribe(o => {
-      this.showFoundClient = true;
-      var clients = o;
+    if (this.canSearch) {
+      this.canSearch = false;
+      this.clientService.SearchClientByQuery(this.newClient.clientId, this.searchType, "por mudar", "por mudar").subscribe(o => {
+        this.showFoundClient = true;
+        var clients = o;
 
-      var context2 = this;
+        var context2 = this;
 
-      console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsToShow);
-      console.log('LISTA DENTRO DO SUBSCRIBE DATA', context.clientsMat.data);
-      this.logger.debug(context.clientsToShow);
-      context.clientsToShow = [];
-      context.clientsMat.data = context.clientsToShow;
-      console.log('LISTA DENTRO DO SUBSCRIBE DEPOIS DE SER LIMPA', context.clientsToShow);
-      console.log('LISTA DENTRO DO SUBSCRIBE ', context.clientsMat.data);
-      this.logger.debug(context.clientsToShow);
-      if (clients.length > 0) {
-        if (clients.length === 1) {
-          context.snackBar.open(context.translate.instant('client.find'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
+        this.logger.debug(context.clientsToShow);
+        context.clientsToShow = [];
+        context.clientsMat.data = context.clientsToShow;
+
+        this.logger.debug(context.clientsToShow);
+        if (clients.length > 0) {
+          if (clients.length === 1) {
+            context.snackBar.open(context.translate.instant('client.find'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          } else {
+            context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          }
+          context.resultError = "";
+          clients.forEach(function (value, index) {
+            context.logger.debug(value);
+            var clientToShow = {
+              client: undefined,
+              isClient: value.isClient
+            } as {
+              client: Client,
+              isClient: boolean
+            }
+            context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
+              context.logger.debug(c);
+              var client = {
+                "clientId": c.result.merchantId,
+                "commercialName": c.result.commercialName,
+                "address": c.result.headquartersAddress.address,
+                "ZIPCode": c.result.headquartersAddress.postalCode,
+                "locality": c.result.headquartersAddress.postalArea,
+                "country": c.result.headquartersAddress.country,
+                //"fiscalId": c.fiscalId
+              }
+              clientToShow.client = client;
+              context.clientsToShow.push(clientToShow);
+              context.logger.debug(context.clientsToShow);
+              context.clientsMat.data = context.clientsToShow;
+
+            }).then(res => {
+              context.notFound = false;
+              context.canSearch = true;
+            });
+
           });
         } else {
-          context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-          });
+          this.showFoundClient = false;
+          this.notFound = true;
+          this.searchDone = true;
+          this.canSearch = true;
+          this.createAdditionalInfoForm();
+          this.resetLocalStorage();
         }
-        context.resultError = "";
-        clients.forEach(function (value, index) {
-          context.logger.debug(value);
-          var clientToShow = {
-            client: undefined,
-            isClient: value.isClient
-          } as {
-            client: Client,
-            isClient: boolean
-          }
-          context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
-            context.logger.debug(c);
-            var client = {
-              "clientId": c.result.merchantId,
-              "commercialName": c.result.commercialName,
-              "address": c.result.headquartersAddress.address,
-              "ZIPCode": c.result.headquartersAddress.postalCode,
-              "locality": c.result.headquartersAddress.postalArea,
-              "country": c.result.headquartersAddress.country,
-              //"fiscalId": c.fiscalId
-            }
-            clientToShow.client = client;
-            context.clientsToShow.push(clientToShow);
-            context.logger.debug(context.clientsToShow);
-            context.clientsMat.data = context.clientsToShow;
-
-          }).then(res => {
-            context.notFound = false;
-
-          });
-
-        });
-      } else {
-        this.showFoundClient = false;
+      }, error => {
+        context.showFoundClient = false;
         this.notFound = true;
         this.searchDone = true;
+        this.canSearch = true;
         this.createAdditionalInfoForm();
         this.resetLocalStorage();
-      }
-    }, error => {
-      context.showFoundClient = false;
-      this.notFound = true;
-      this.searchDone = true;
-      this.createAdditionalInfoForm();
-      this.resetLocalStorage();
-    });
+      });
+    }
+
+
   }
 
   resetLocalStorage() {
@@ -648,14 +659,23 @@ export class ClientComponent implements OnInit {
   }
 
   changeListElementDocType(docType, e: any) {
-    // this.activateButtons(true);
-    if (localStorage.getItem("submissionId") == null || !this.firstTime)
+
+    if ((localStorage.getItem("submissionId") == null && !this.defaultValue) || !this.firstTime || !this.defaultValue)
       this.activateButtons(!this.showENI);
 
     this.firstTime = false;
+    this.defaultValue = false;
 
     this.toggleShowFoundClient(false);
     this.docType = e.target.value;
+
+    // get search type
+    if (this.docType === '0502' || this.docType === '1010') {
+      this.searchType = "Merchant"
+    } else {
+      this.searchType = "Stakeholder"
+    }
+
     this.newClient.documentationDeliveryMethod = e.target.value;
     if (this.docType === '1001') { //código do Cartão do Cidadão
       this.isCC = true;
@@ -784,19 +804,25 @@ export class ClientComponent implements OnInit {
       this.showENI = false;
       this.isENI = false;
       this.tipologia = "Company";
-      this.newClient.documentationDeliveryMethod = "0502";
+
+      if (localStorage.getItem("submissionId") == null) {
+        this.newClient.documentationDeliveryMethod = "0502";
+        this.firstTime = true;
+        this.defaultValue = true;
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      }
     } else {
       this.showENI = true;
       this.isENI = true;
       this.tipologia = "ENI";
-      this.newClient.documentationDeliveryMethod = "0501";
-    }
 
-    //if (this.searchClientForm.get("typology").value) {
-    //  this.searchClientForm.get("docType").setValue("0502"); // Número de identificação fiscal, por default
-    //} else {
-    //  this.searchClientForm.get("docType").setValue("0501"); // NIF, por default
-    //}
+      if (localStorage.getItem("submissionId") == null) {
+        this.newClient.documentationDeliveryMethod = "0501";
+        this.firstTime = true;
+        this.defaultValue = true;
+        this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
+      }
+    }
 
   }
 

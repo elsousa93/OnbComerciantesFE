@@ -121,6 +121,7 @@ export class CountrysComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
+    this.subscription = this.data.currentData.subscribe(map => this.map = map);
 
     this.client = {
       clientId: '',
@@ -152,15 +153,20 @@ export class CountrysComponent implements OnInit {
 
     this.initializeForm();
 
-    if (this.returned == null) { 
-      if (!this.clientContext.clientExists) {
+    if (this.returned == null) {
+      if (!this.clientContext.clientExists && this.map.get(2) == undefined) { // garantir que só adicionamos Portugal por default, se o cliente não existir E se o tabulador dos intervenientes ainda não foi visitado
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
           this.contPais.push(result);
           this.inserirText(null);
         }));
       }
+    } else {
+      if (!this.clientContext?.isClient) {
+        this.getMerchantInfoAsync().then(res => {
+          this.getClientContextValues();
+        });
+      }
     }
-
 
     //if (this.returned != null) {
     //  this.clientContext.currentMerchantInfo.subscribe(result => {
@@ -201,6 +207,15 @@ export class CountrysComponent implements OnInit {
     //}, error => this.logger.debug(error)));
 
     //this.getClientContextValues();
+  }
+
+  getMerchantInfoAsync() {
+    return new Promise(resolve => {
+      this.clientContext.merchantInfo.subscribe(result => {
+        this.merchantInfo = result;
+        resolve(true);
+      })
+    });
   }
 
   updateValues() {
@@ -756,7 +771,7 @@ export class CountrysComponent implements OnInit {
   }
 
   emitteCountrySize() {
-    this.countryIsValid.emit((this.countryList.length > 0));
+    this.countryIsValid.emit((this.lstPaisPreenchido.length > 0)); // antes estava countryList
   }
 
   getCurrentClientAsync() {
@@ -773,6 +788,7 @@ export class CountrysComponent implements OnInit {
     if (this.returned != 'consult') {
       this.clientExists = this.clientContext?.clientExists;
     } else {
+      console.log('CLIENT CONTEXT ', this.clientContext);
       this.clientExists = false;
     }
 

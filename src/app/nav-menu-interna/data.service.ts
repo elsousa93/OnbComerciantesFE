@@ -10,7 +10,8 @@ export class DataService {
   //map para saber o estado que deve ser mostrado em cada uma das páginas (undefined -> se a página ainda não foi visitada)
   //(false -> se foi visitada, mas o seguimento da página não foi seguido, ou seja, os campos não foram todos preenchidos): ainda n está completo
   //(true -> se foi visitada e todos os campos necessários foram preenchidos): ainda não está completo porque ainda n se sabe quais os forms que serão usados
-  private dataSource = new BehaviorSubject(new Map().set(1, undefined)
+  private dataSource = new BehaviorSubject(new Map().set(0, undefined)
+    .set(1, undefined)
     .set(2, undefined)
     .set(3, undefined)
     .set(4, undefined)
@@ -40,6 +41,7 @@ export class DataService {
   currentDataCC = this.dataCC.asObservable();
   currentComprovativoCC = this.comprovativoCC.asObservable();
 
+  historyStream = this.historyStream$.asObservable();
 
   constructor(private logger : LoggerService, ) { }
 
@@ -89,7 +91,8 @@ export class DataService {
   }
 
   reset() {
-    this.dataSource = new BehaviorSubject(new Map().set(1, undefined)
+    this.dataSource = new BehaviorSubject(new Map().set(0, undefined)
+    .set(1, undefined)
     .set(2, undefined)
     .set(3, undefined)
     .set(4, undefined)
@@ -103,6 +106,7 @@ export class DataService {
     this.currentIsClient = this.isClient.asObservable();
     this.currentDataCC = this.dataCC.asObservable();
     this.currentComprovativoCC = this.comprovativoCC.asObservable();
+    this.historyStream$.next(false);
   }
 
   ngOnDestroy(){

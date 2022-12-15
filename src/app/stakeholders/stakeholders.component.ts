@@ -39,6 +39,7 @@ export class StakeholdersComponent implements OnInit {
   insertStakeholderEvent: Observable<IStakeholders>;
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
   previousStakeholderEvent: Observable<number>;
+  sameNIFEvent: Observable<string>;
 
   emitUpdatedStakeholder(info) {
     this.updatedStakeholderEvent = info;
@@ -52,6 +53,10 @@ export class StakeholdersComponent implements OnInit {
     this.clickButton = true;
     this.insertStakeholderEvent = stake;
     this.editStakeInfo = null;
+  }
+
+  emitStakeNIF(nif) {
+    this.sameNIFEvent = nif;
   }
 
   currentStakeholder: StakeholdersCompleteInformation = {};
@@ -113,6 +118,7 @@ export class StakeholdersComponent implements OnInit {
 
   crcStakeholders: IStakeholders[] = [];
   selectedStakeholderIsFromCRC: boolean = false;
+  sameNIFStake: boolean = false;
 
   constructor(public modalService: BsModalService,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
@@ -300,7 +306,7 @@ export class StakeholdersComponent implements OnInit {
     if(info.stakeholder != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.selectedStakeholderComprovativos = this.allStakeholdersComprovativos[this.currentStakeholder.stakeholderAcquiring.id];
+      this.selectedStakeholderComprovativos = this.currentStakeholder.stakeholderOutbound.supportingDocuments;
       setTimeout(() => this.setFormData(), 500);
     }
   }
@@ -378,9 +384,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   loadStakeholderDocument(documentReference) {
-
     this.comprovativoService.viewDocument(documentReference);
-
   }
 
   isStakeholderFromCRC(stakeholder) {
@@ -392,6 +396,16 @@ export class StakeholdersComponent implements OnInit {
         context.selectedStakeholderIsFromCRC = true;
       }
     });
+  }
+
+  emitCanceledSearch(info) {
+    this.clickButton = true;
+    this.editStakeInfo = null;
+  }
+
+
+  isSameNIF(info) {
+    this.sameNIFStake = info;
   }
 }
 

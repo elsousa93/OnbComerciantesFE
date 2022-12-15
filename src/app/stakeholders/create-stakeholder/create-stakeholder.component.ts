@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Inject, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -41,18 +41,30 @@ import { FocusMonitor } from '@angular/cdk/a11y';
   templateUrl: './create-stakeholder.component.html',
   styleUrls: ['./create-stakeholder.component.css']
 })
-export class CreateStakeholderComponent implements OnInit {
+export class CreateStakeholderComponent implements OnInit, OnChanges {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
 
   @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
+  @Output() canceledSearch = new EventEmitter<boolean>();
+  @Output() sameNIF = new EventEmitter<string>();
 
   emitInsertedStake(stake) {
     this.insertedStakeSubject.emit(stake);
   }
 
+  emitCanceledSearch(bool) {
+    this.canceledSearch.emit(bool);
+  }
+
+  emitSameNIF(nif) {
+    this.sameNIF.emit(nif);
+  }
+
   @Input() parentFormGroup: FormGroup;
+  @Input() sameNIFStake: boolean;
 
   modalRef: BsModalRef;
+  showSameNIFError: boolean = false;
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
@@ -283,6 +295,7 @@ export class CreateStakeholderComponent implements OnInit {
   incorrectCCFormat: boolean = false;
   submissionClient: Client;
   sameNIPC: boolean = false;
+  
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
@@ -301,6 +314,16 @@ export class CreateStakeholderComponent implements OnInit {
 
     //this.ngOnInit();
 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['sameNIFStake'].currentValue === true) {
+      this.isShown = false;
+      this.foundStakeholders = null;
+      this.showSameNIFError = true;
+    } else {
+      this.showSameNIFError = false;
+    }
   }
 
   initializeNotFoundForm() {
@@ -466,17 +489,16 @@ export class CreateStakeholderComponent implements OnInit {
     this.stakeholderType = e.target.value;
     if (this.stakeholderType === 'Particular') {
       this.isParticular = true;
-    } else {
+      this.formStakeholderSearch.get("documentType").setValue("0501"); // NIF, por default
+      this.changeListElementDocType(null, { target: { value: "0501" } });
+    } else if (this.stakeholderType === 'Empresa') {
       this.isParticular = false;
+      this.formStakeholderSearch.get("documentType").setValue("0502"); // Número de identificação fiscal, por default
+      this.changeListElementDocType(null, { target: { value: "0502" } });
     }
     this.stakeType = true;
     this.okCC = false;
     this.resetSearchStakeholder(); //
-    if (this.stakeholderType === 'Particular') {
-      this.formStakeholderSearch.get("documentType").setValue("0501"); // NIF, por default
-    } else {
-      this.formStakeholderSearch.get("documentType").setValue("0502"); // Número de identificação fiscal, por default
-    }
   }
 
   changeListElementDocType(docType: string, e: any) {
@@ -524,13 +546,18 @@ export class CreateStakeholderComponent implements OnInit {
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
+
     if (this.formStakeholderSearch.invalid)
+      return false;
+
+    if (this.showSameNIFError)
       return false;
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
 
+    this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
+
     if (this.submissionClient.fiscalId === this.stakeholderNumber) { 
-      console.log('Stake tem o mesmo id na pesquisa');
       this.sameNIPC = true;
       return false;
     }
@@ -538,44 +565,11 @@ export class CreateStakeholderComponent implements OnInit {
     this.isShown = true;
     this.selected = false;
 
-
     setTimeout(() => {
       this.searchEvent.next(this.stakeholderNumber);
       this.isSearch = true;
     });
 
-    //var context = this;
-
-    //var documentNumberToSearch = this.formStakeholderSearch.get('documentNumber').value;
-
-    //this.stakeholderService.SearchStakeholderByQuery(documentNumberToSearch, "por mudar", this.UUIDAPI, "2").subscribe(o => {
-    //  var clients = o;
-
-    //  context.isShown = true;
-
-    //  if (clients.length > 0) {
-    //    context.deactivateNotFoundForm();
-    //    context.foundStakeholders = true;
-    //    context.stakeholdersToShow = [];
-    //    clients.forEach(function (value, index) {
-    //      context.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-    //        var stakeholder = {
-    //          "stakeholderNumber": c.stakeholderId,
-    //          "stakeholderName": c.shortName,
-    //          "stakeholderNIF": c.fiscalIdentification.fiscalId,
-    //          "elegible": "elegivel",
-    //          "associated": "SIM"
-    //        }
-    //        context.stakeholdersToShow.push(stakeholder);
-    //      });
-    //    })
-    //  } else {
-    //    context.initializeNotFoundForm();
-    //    context.stakeholdersToShow = [];
-    //    context.foundStakeholders = false;
-    //  }
-    //}, error => {
-    //});
   }
 
   refreshDiv() {
@@ -623,6 +617,16 @@ export class CreateStakeholderComponent implements OnInit {
           phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
         }
         stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
+
+        if (stakeholderToInsert["identificationDocument"] != null) { 
+          stakeholderToInsert["identificationDocument"] = {
+            type: stakeholderToInsert["identificationDocument"]["documentType"],
+            number: stakeholderToInsert["identificationDocument"]["documentId"],
+            country: stakeholderToInsert["identificationDocument"]["documentIssuer"], 
+            expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"], 
+            checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
+          } 
+        }
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];
@@ -726,6 +730,10 @@ export class CreateStakeholderComponent implements OnInit {
     });
   }
 
+  cancelSearch() {
+    this.emitCanceledSearch(true);
+  }
+
 
   numericOnly(event): boolean {
     if (this.docType === '0501' || this.docType === '0502') {
@@ -735,7 +743,6 @@ export class CreateStakeholderComponent implements OnInit {
         return false;
       return true;
     }
-    //return false;
   }
 
   checkValidationType(str: string) {
@@ -753,6 +760,8 @@ export class CreateStakeholderComponent implements OnInit {
   validateNIF(nif: string): boolean {
     this.incorrectNIFSize = false;
     this.incorrectNIF = false;
+    this.sameNIPC = false;
+    this.showSameNIFError = false;
     if (nif != '') {
       if (nif.length != 9) {
         this.incorrectNIFSize = true;
@@ -779,6 +788,8 @@ export class CreateStakeholderComponent implements OnInit {
   validateNIPC(nipc: string): boolean {
     this.incorrectNIPCSize = false;
     this.incorrectNIPC = false;
+    this.sameNIPC = false;
+    this.showSameNIFError = false;
     if (nipc != '') {
       if (nipc.length != 9) {
         this.incorrectNIPCSize = true;
@@ -806,6 +817,8 @@ export class CreateStakeholderComponent implements OnInit {
     this.incorrectCC = false;
     this.incorrectCCSize = false;
     this.incorrectCCFormat = false;
+    this.showSameNIFError = false;
+    this.sameNIPC = false;
     var sum = 0;
     var secondDigit = false;
 

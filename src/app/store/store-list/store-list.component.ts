@@ -172,6 +172,11 @@ export class StoreComponent implements AfterViewInit {
     }
   }
 
+  close() {
+    this.currentStore = null;
+    this.currentIdx = -2;
+  }
+
   updateContactPoint() {
     this.currentStore.contactPerson = this.submissionClient.legalName;
     this.editStores.controls["infoStores"].get("contactPoint").setValue(this.submissionClient.legalName);
@@ -257,7 +262,7 @@ export class StoreComponent implements AfterViewInit {
     }
   }
 
-  submit(addStore: boolean) {
+  submit(addStore: boolean, isEditButton?: boolean) {
     if (this.editStores.valid) {
       var infoStores = this.editStores.get("infoStores");
 
@@ -324,16 +329,24 @@ export class StoreComponent implements AfterViewInit {
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
-          if (this.currentIdx < this.storesLength) {
-            this.addDocumentToShop(this.currentStore.id);
-            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-            this.resetForm();
-            this.onActivate();
-          } else {
+          if (isEditButton) {
             this.addDocumentToShop(this.currentStore.id);
             this.resetForm();
             this.currentStore = null;
             this.currentIdx = -2;
+          } else { 
+            if (this.currentIdx < (this.storesLength - 1)) {
+              this.addDocumentToShop(this.currentStore.id);
+              this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+              this.resetForm();
+            } else {
+              this.addDocumentToShop(this.currentStore.id);
+              this.resetForm();
+              this.currentStore = null;
+              this.currentIdx = -2;
+              this.data.updateData(true, 3);
+              this.route.navigate(['comprovativos']);
+            }
           }
         });
       }
@@ -344,10 +357,12 @@ export class StoreComponent implements AfterViewInit {
         this.route.navigate(['comprovativos']);
       }
     }
+    this.onActivate();
   }
 
   resetForm() {
     this.editStores.reset();
+    this.editStores.get("infoStores").get("countryStore").setValue("PT");
     this.productSelectionComponent.clearSubProducts();
     this.addStoreComponent.chooseAddress(true);
     this.closeAccordion();

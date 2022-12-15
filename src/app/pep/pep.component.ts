@@ -7,6 +7,7 @@ import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pep',
@@ -27,10 +28,13 @@ export class PepComponent implements OnInit {
   corporateRelations: CorporateRelations[] = [];
   public subs: Subscription[] = [];
 
-  constructor(private logger : LoggerService, private data: DataService,
+  date: string;
+
+  constructor(private logger : LoggerService, private data: DataService, private datePipe: DatePipe,
     @Inject(configurationToken) private configuration: Configuration, 
     private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {      
       this.baseUrl = configuration.baseUrl;
+      this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 
       //this.ngOnInit();
 

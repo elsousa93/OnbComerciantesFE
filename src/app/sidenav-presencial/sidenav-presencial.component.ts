@@ -6,6 +6,7 @@ import { UserPermissions, MenuPermissions, getMenuPermissions } from '../userPer
 import { DataService } from '../nav-menu-interna/data.service';
 import { AuthService } from '../services/auth.service';
 import { User } from '../userPermissions/user';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-sidenav-presencial',
@@ -28,7 +29,7 @@ export class SidenavPresencialComponent implements OnInit {
 
   constructor( private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-    private dataService: DataService, private authService: AuthService) {
+    private dataService: DataService, private authService: AuthService, private processNrService: ProcessNumberService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -51,6 +52,7 @@ export class SidenavPresencialComponent implements OnInit {
     //this.dataService.historyStream$.next(false);
     localStorage.clear();
     this.dataService.reset();
+    this.processNrService.changeProcessNumber(null);
     this.router.navigate(["/client"]);
   }
 

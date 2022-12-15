@@ -183,6 +183,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     if (this.IBANToShow.id != "0") {
       this.tableInfo.deleteDocument(this.submissionId, this.IBANToShow.id).then(sucess => {
         console.log("Sucesso a apagar um documento: ", sucess.msg);
+        
       }, error => {
         console.log("Erro a apagar um ficheiro: ", error.msg);
       });
@@ -200,6 +201,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     //}
 
     this.fileToDelete = null;
+    this.formStores.get('bankIban').setValue('');
     // console.log('LISTA DE FILES DEPOIS ELIMINAR ', this.ibansToShow);
     // this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
   }
@@ -225,6 +227,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
+            this.formStores.get('bankIban').setValue(file);
             this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
               duration: 4000,
               panelClass: ['snack-bar']
@@ -240,6 +243,14 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   isIBAN(isIBANConsidered: boolean) {
     this.isIBANConsidered = isIBANConsidered;
+
+    if (!isIBANConsidered) {
+      this.formStores.get("bankIban").addValidators(Validators.required);
+      this.formStores.get("bankIban").updateValueAndValidity();
+    } else {
+      this.formStores.get("bankIban").setValidators(null);
+      this.formStores.get("bankIban").updateValueAndValidity();
+    }
   }
 
   initializeForm() {

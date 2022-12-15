@@ -47,7 +47,7 @@
               <option value="ClientChoice">{{'homepage.multipleClients'|translate}}</option>
               <option value="NegotiationApproval">{{'homepage.negotiationAproval'|translate}}</option>
               <option value="MerchantRegistration">{{'homepage.validationSIBS'|translate}}</option>
-              <option value="OperationsEvalution">{{'homepage.DOValidation'|translate}}</option>
+              <option value="OperationsEvaluation">{{'homepage.DOValidation'|translate}}</option>
               <option value="ComplianceEvaluation">{{'homepage.compliance'|translate}}</option>
             </select>
           </div>
@@ -59,12 +59,12 @@
         <div class="row">
           <div class="col-5">
             <p class="titulo-form-simples">{{'searches.orderDateFrom'|translate|uppercase}}</p>
-            <input id="text1" name="text1" type="date" class="form-control campo_form" (change)="callEndDate()"
+            <input id="text1" name="text1" type="date" placeholder="dd-mm-yyyy" class="form-control campo_form" (change)="callEndDate()"
               formControlName="processDateStart">
           </div>
           <div class="col-5">
             <p class="titulo-form-simples">{{'searches.orderDateUntil'|translate|uppercase}}</p>
-            <input id="text2" name="text2" type="date" [min]="endDate" class="form-control campo_form" formControlName="processDateEnd">
+            <input id="text2" name="text2" type="date" placeholder="dd-mm-yyyy" [min]="endDate" class="form-control campo_form" formControlName="processDateEnd">
           </div>
         </div>
       </div>

@@ -259,8 +259,8 @@
           </nav>
         </div>
         <div class="offset-1 col-10 mb-3 mt-4 ps-0 pe-0 ">
-          <div class="accordion1 accordion-flush" id="accordionFlushExample">
-            <div *ngIf="FTPermissions.pending" class="accordion1-item">
+          <div class="accordion1 accordion-flush" id="accordionFlushExample"> 
+            <div *ngIf="FTPermissions.pending" class="accordion1-item" (click)="callIncompleteCount()">
               <h2 class="accordion1-header" id="flush-headingPending">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapsePending" aria-expanded="false" aria-controls="flush-collapsePending">
@@ -354,7 +354,7 @@
               </div>
             </div>
 
-            <div *ngIf="FTPermissions.backOffice" class="accordion1-item">
+            <div *ngIf="FTPermissions.backOffice" class="accordion1-item" (click)="callBackOfficeCount()">
               <h2 class="accordion1-header" id="flush-headingBackOffice">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseBackOffice" aria-expanded="false"
@@ -408,8 +408,8 @@
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <a>
-                        <span class="material-symbols-rounded edit-icon" style="cursor: pointer;">
+                      <a > 
+                        <span (click)="openProcess(row)" class="material-symbols-rounded edit-icon" style="cursor: pointer;">
                           <img src="assets/images/search_blue.svg" title="Consult">
                         </span>
                       </a>
@@ -444,7 +444,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.returned" class="accordion1-item">
+            <div *ngIf="FTPermissions.returned" class="accordion1-item" (click)="callReturnedCount()">
               <h2 class="accordion1-header" id="flush-headingReturned">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseReturned" aria-expanded="false" aria-controls="flush-collapseReturned">
@@ -532,7 +532,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.acceptance" class="accordion1-item">
+            <div *ngIf="FTPermissions.acceptance" class="accordion1-item" (click)="callAcceptanceCount()">
               <h2 class="accordion1-header" id="flush-headingAcceptance">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseAcceptance" aria-expanded="false"
@@ -626,7 +626,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.pendingSent" class="accordion1-item">
+            <div *ngIf="FTPermissions.pendingSent" class="accordion1-item" (click)="callPendingSentCount()">
               <h2 class="accordion1-header" id="flush-headingPendingSent">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapsePendingSent" aria-expanded="false"
@@ -715,7 +715,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.pendingEligibility" class="accordion1-item">
+            <div *ngIf="FTPermissions.pendingEligibility" class="accordion1-item" (click)="callPendingEligibilityCount()">
               <h2 class="accordion1-header" id="flush-headingPendingEligibility">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapsePendingEligibility" aria-expanded="false"
@@ -813,7 +813,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.multipleClientes" class="accordion1-item">
+            <div *ngIf="FTPermissions.multipleClientes" class="accordion1-item" (click)="callMultipleClientsCount()">
               <h2 class="accordion1-header" id="flush-headingMultipleClients">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseMultipleClients" aria-expanded="false"
@@ -910,7 +910,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.DOValidation" class="accordion1-item">
+            <div *ngIf="FTPermissions.DOValidation" class="accordion1-item" (click)="callDOValidationCount()">
               <h2 class="accordion1-header" id="flush-headingDOValidation">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseDOValidation" aria-expanded="false"
@@ -1007,7 +1007,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.negotiationAproval" class="accordion1-item">
+            <div *ngIf="FTPermissions.negotiationAproval" class="accordion1-item" (click)="callNegotiationApprovalCount()">
               <h2 class="accordion1-header" id="flush-headingNegotiationAproval">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseNegotiationAproval" aria-expanded="false"
@@ -1105,7 +1105,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.MCCTreatment" class="accordion1-item">
+            <div *ngIf="FTPermissions.MCCTreatment" class="accordion1-item" (click)="callMCCTreatmentCount()">
               <h2 class="accordion1-header" id="flush-headingMCCTreatment">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseMCCTreatment" aria-expanded="false"
@@ -1202,7 +1202,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.validationSIBS" class="accordion1-item">
+            <div *ngIf="FTPermissions.validationSIBS" class="accordion1-item" (click)="callValidationSIBSCount()">
               <h2 class="accordion1-header" id="flush-headingValidationSIBS">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseValidationSIBS" aria-expanded="false"
@@ -1299,7 +1299,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.riskOpinion" class="accordion1-item">
+            <div *ngIf="FTPermissions.riskOpinion" class="accordion1-item" (click)="callRiskOpinionCount()">
               <h2 class="accordion1-header" id="flush-headingRiskOpinion">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseRiskOpinion" aria-expanded="false"
@@ -1396,7 +1396,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.complianceDoubts" class="accordion1-item">
+            <div *ngIf="FTPermissions.complianceDoubts" class="accordion1-item" (click)="callComplianceDoubtsCount()">
               <h2 class="accordion1-header" id="flush-headingComplianceDoubts">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseComplianceDoubts" aria-expanded="false"

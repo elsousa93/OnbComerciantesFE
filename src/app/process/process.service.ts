@@ -211,6 +211,7 @@ export interface ProcessList {
   processType: string
   processKind: string
   state: string
+  startedAt: string
   isClientAwaiting: boolean
   startedBy: StartedBy
   merchant: Merchant

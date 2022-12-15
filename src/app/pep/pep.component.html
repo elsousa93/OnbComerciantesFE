@@ -1,6 +1,5 @@
-<app-nav-menu-interna></app-nav-menu-interna>
 <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row ">
+  <div class="row">
     <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
     <div class="row ms-0 me-0">
       <form [formGroup]="form" name="form">
@@ -34,7 +33,7 @@
                 <p class="form-check-label titulo-form-simples" for="pepSinceWhen">
                   {{'declarativeInformation.stakeholder.pep.since'|translate}}:</p>
                 <input (change)="checkSelectedPEP()" formControlName="pepSinceWhen" name="pepSinceWhen"
-                  id="pepSinceWhen" type="date" class="form-control campo_form" value="">
+                  id="pepSinceWhen" type="date" [max]="date" class="form-control campo_form" value="">
               </div>
               <div class="col-6 ms-0 me-0 ps-0 pe-5">
                 <p class="form-check-label titulo-form-simples mt-0 text-start" for="pepCountry">
@@ -160,3 +159,5 @@
         </div>
       </form>
     </div>
+  </div>
+</div>

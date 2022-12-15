@@ -35,9 +35,7 @@ export class DevolucaoComponent implements OnInit{
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {
 
-    this.logger.debug('Process Id ' + this.processId);
-
-    this.data.updateData(true, 0);    
+    this.logger.debug('Process Id ' + this.processId);  
   }
 
   getEntityName(entity: string, id: string) {
@@ -71,12 +69,19 @@ export class DevolucaoComponent implements OnInit{
     console.log('Process Id ', this.processId);
     var context = this;
     this.getPageInfo();
+    this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
+    if (localStorage.getItem("returned") != 'consult') {
+      localStorage.setItem('returned', 'edit');
+      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
+    }
   }
 
   getPageInfo() {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
       this.processNumber = result.processNumber;
+      localStorage.setItem('processNumber', this.processNumber);
+      this.data.updateData(true, 0);  
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         console.log('ISSUES ', res);
         this.issues = res;
@@ -85,14 +90,7 @@ export class DevolucaoComponent implements OnInit{
   }
   
   nextPage() {
-    this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
-    if (localStorage.getItem("returned") != 'consult') {
-      localStorage.setItem('returned', 'edit');
-      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
-    }
-    localStorage.setItem('processNumber', this.process.processNumber);
-    this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
-
+    this.data.updateData(true, 0);    
     this.route.navigate(['/clientbyid']);
   }
 

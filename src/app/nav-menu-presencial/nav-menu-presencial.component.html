@@ -1,12 +1,11 @@
-<mat-toolbar class="row justify-content-around widget-toolbar me-0"
-  [@AutoHideClientBarAdjust]="isAutohide ? 'up' : 'down'">
+<mat-toolbar class="row justify-content-around widget-toolbar me-0">
   <div class="col pb-0 pt-0">
     <nav class="navbar navbar-expand navbar-widget justify-content-center pb-0 pt-0">
       <div class="navbar-nav ms-auto">
-        <h5 *ngIf="processNumber && progressImage" class="widget img"><img src="assets/images/pin.svg" style="width: 19px; padding-top: 6px !important;"></h5>
-        <a *ngIf="processNumber && progressImage" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{processNumber}}</a>
+        <h5 *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'" class="widget img"><img src="assets/images/pin.svg" style="width: 19px; padding-top: 6px !important;"></h5>
+        <a *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{processNumber}}</a>
 
-        <a *ngIf="processNumber && progressImage" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
+        <a *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
         <h5 class="widget img"><img src="assets/images/user-solid.svg"></h5>
         <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{currentUser.userName}}</a>
 
@@ -35,7 +34,7 @@
 </mat-toolbar>
 
 
-<header class="bg-dark fixed-top" [@AutoHideNavbarAdjust]="isAutohide ? 'hide' : 'show'">
+<header class="bg-dark fixed-top">
   <div class="container-fluid">
     <div class="row">
       <div class="col">

@@ -54,28 +54,28 @@
           <div class="row">
             <div class="col">
               <p class="titulo-form-simples">{{'stakeholder.documentNumber'|translate}}: *</p>
-              <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectCC && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCC'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectCCSize && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCCSize'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectCCFormat" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectCCFormat && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCCFormat'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIF && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIF'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIFSize'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIPCSize'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="incorrectNIPC && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectNIPC'|translate}}
               </span>
-              <span class="titulo-form-error" *ngIf="sameNIPC" class="titulo-form-simples-erro">
+              <span class="titulo-form-error" *ngIf="sameNIPC && !isShown" class="titulo-form-simples-erro">
                 {{'client.sameNIPC'|translate}}
               </span>
               <input [readonly]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
@@ -113,17 +113,28 @@
       <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
-            <button [disabled]="!stakeType || !stakeDocType || !(stakeholderNumber?.length > 0)" id="btn5a2"
+            <button [disabled]="!stakeType || !stakeDocType || !(stakeholderNumber?.length > 0) || incorrectNIFSize || incorrectNIF || incorrectCC || incorrectCCSize || incorrectCCFormat || incorrectNIPCSize || incorrectNIPC" id="btn5a2"
               class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;"
               (click)="searchStakeholder()">
               {{'stakeholder.search'|translate|uppercase}}&nbsp;&nbsp; <img src="assets/images/person_search.svg"
                 class="img_btn">
             </button>
-            <!--Pesquisar interveniente-->
+          </span>
+          <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
+            <button id="btn5a6"
+                    class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;" (click)="cancelSearch()">&nbsp;
+              {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg"
+              class="img_btn">
+            </button>
           </span>
         </nav>
       </div>
     </form>
+    <div *ngIf="showSameNIFError">
+      <span class="titulo-form-error" class="titulo-form-simples-erro">
+        {{'stakeholder.sameNIF'|translate}}
+      </span>
+    </div>
     <form [formGroup]="formNewStakeholder">
       <h5 *ngIf="isShown && foundStakeholders" class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h5>
       <div *ngIf="isShown" class="row container-fluid" id="divshow" style="padding-left: 0px;">
@@ -287,30 +298,32 @@
         <hr />
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <button [routerLink]="['/']" id="btn5a5"
-            class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-            wappler-command="editContent">
+                  class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                  wappler-command="editContent">
             {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
-              style="height: 25px !important; vertical-align: sub;">
+                                                                     style="height: 25px !important; vertical-align: sub;">
           </button>
           <button [routerLink]="['/']" id="btn5a5"
-            class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
-            wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
-            <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                  class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                  wappler-command="editContent">
+            <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+            {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+
+          </button>
           <button id="btn5a4"
-            class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
-            wappler-command="editContent" [routerLink]="['/clientbyid/']">
+                  class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                  wappler-command="editContent" [routerLink]="['/clientbyid/']">
             <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;"
-              class="img_add">
+                 class="img_add">
             {{'generalKeywords.back'|translate|uppercase}}&nbsp;
           </button>
-          <button
-            *ngIf="(currentStakeholder !== null && currentStakeholder !== undefined) || formStakeholderSearch.valid"
-            id="btn5a2"
-            class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
-            wappler-command="editContent" (click)="addStakeholder()"
-            [disabled]="(this.foundStakeholders===null || (this.foundStakeholders===false && !this.formNewStakeholder.valid) || (this.foundStakeholders===true && !this.selected)) || incorrectNIFSize || incorrectNIF || incorrectNIPCSize || incorrectNIPC || incorrectCC || incorrectCCSize || incorrectCCFormat">
+          <button *ngIf="(currentStakeholder !== null && currentStakeholder !== undefined) || formStakeholderSearch.valid"
+                  id="btn5a2"
+                  class="btn botao_azul center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                  wappler-command="editContent" (click)="addStakeholder()"
+                  [disabled]="(this.foundStakeholders===null || (this.foundStakeholders===false && !this.formNewStakeholder.valid) || (this.foundStakeholders===true && !this.selected)) || incorrectNIFSize || incorrectNIF || incorrectNIPCSize || incorrectNIPC || incorrectCC || incorrectCCSize || incorrectCCFormat">
             {{'generalKeywords.add'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
-              style="height: 25px !important; vertical-align: sub;" class="img_add">
+                                                                    style="height: 25px !important; vertical-align: sub;" class="img_add">
           </button>
         </nav>
       </div>

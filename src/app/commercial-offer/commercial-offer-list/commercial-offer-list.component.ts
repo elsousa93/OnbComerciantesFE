@@ -216,7 +216,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.groupsList = [];
     this.commissionId = "";
     this.commissionOptions = []
-    this.commissionAttributeList = [];
 
     this.currentStore = info.store;
     this.currentIdx = info.idx;
@@ -229,6 +228,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.getStoreEquipsFromSubmission();
 
     this.getPackDetails();
+    this.resetValues();
 
     if (this.returned == 'consult')
       this.form.disable();
@@ -267,7 +267,10 @@ export class CommercialOfferListComponent implements OnInit {
 
       attributes.forEach(function (value, idx) {
         if (value["aggregatorId"] !== null) {
-          group.addControl("formControl" + value["aggregatorId"], new FormControl(value.isSelected));
+          if (value.isSelected)
+            group.addControl("formControl" + value["aggregatorId"], new FormControl(value.description));
+          else
+            group.addControl("formControl" + value["aggregatorId"], new FormControl(''));
         } else {
           group.addControl("formControl" + value.id, new FormControl(value.isSelected));
         }
@@ -347,6 +350,8 @@ export class CommercialOfferListComponent implements OnInit {
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       this.packs = result.result;
       if (this.packs.length === 1) {
+        //this.form.get("productPackKind").setValue(this.packs[0].id);
+        console.log('SO EXISTE 1 PACK COM O ID', this.packs);
         this.selectCommercialPack(this.packs[0].id);
       } else if (this.currentStore.pack != null) {
         this.selectCommercialPack(this.currentStore.pack.packId);

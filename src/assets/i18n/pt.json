@@ -176,7 +176,8 @@
     "area": "Área",
     "documents": "Documentos do Interveniente",
     "emptyList": "Não existem intervenientes",
-    "addSuccess": "Interveniente adicionado com sucesso"
+    "addSuccess": "Interveniente adicionado com sucesso",
+    "sameNIF": "Não é possivel adicionar um interveniente já existente"
   },
   "stores": {
     "title": "Lojas",
@@ -342,6 +343,14 @@
     "processNumber": "Nº de Processo",
     "state": "Estado",
     "incompleted": "Incompleto",
+    "eligibility": "Elegibilidade",
+    "multipleClients": "Múltiplos Clientes",
+    "DOValidation":"Valida DO",
+    "negotiationApproval": "Aprovação de negociação de preçário",
+    "MCCTreatment": "Tratamento MCC",
+    "validationSIBS":"Validação matrícula SIBS",
+    "riskOpinion": "Parecer de Risco",
+    "complianceDoubts":"Dúvidas compliance",
     "running": "A decorrer",
     "completed": "Completado",
     "returned": "Retornado",

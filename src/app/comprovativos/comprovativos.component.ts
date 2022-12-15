@@ -505,7 +505,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,
-    "startedAt": "2022-10-10",
+    "startedAt": this.datepipe.transform(new Date(), "yyyy-MM-dd"),
     "id": localStorage.getItem("submissionId"), //uuid
     "bank": "0800",
     "state": "Incomplete"

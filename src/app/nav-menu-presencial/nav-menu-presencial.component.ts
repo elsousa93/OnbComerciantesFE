@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
-import { AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo } from '../animation';
+import { AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
 import { AuthService } from '../services/auth.service';
 import { TranslationLanguage, translationLanguages } from '../translationLanguages';
@@ -23,7 +23,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   selector: 'app-nav-menu-presencial',
   templateUrl: './nav-menu-presencial.component.html',
   styleUrls: ['./nav-menu-presencial.component.css'],
-  animations: [AutoHideClientBarAdjust, AutoHideNavbarAdjust, AutoHideLogo]
+  animations: [AutoHideLogo]
 })
 export class NavMenuPresencialComponent implements OnInit {
 
@@ -54,9 +54,9 @@ export class NavMenuPresencialComponent implements OnInit {
 
   prevScrollpos: number = window.pageYOffset;
 
-  processNumber: string = "";
+  processNumber: string;
   subscription: Subscription;
-
+  returned: string = "";
   currentPage: number = 0;
   currentSubPage: number = 0;
   progressImage: string;
@@ -73,6 +73,8 @@ export class NavMenuPresencialComponent implements OnInit {
 
   constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
+    this.progressImage = undefined;
+    this.processNumber = null;
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
     this.chooseLanguage(this.translate.getDefaultLang());
@@ -102,28 +104,29 @@ export class NavMenuPresencialComponent implements OnInit {
     });
 
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
-    this.dataService.currentPage.subscribe((currentPage) => {
-      this.currentPage = currentPage;
-      if (this.currentPage != 0 && this.currentPage != null) {
-        this.isToggle = false;
-        this.toggleNavEvent.emit(this.isToggle);
-      } else if (this.currentPage == 0 || this.currentPage == null) {
-        this.isToggle = true;
-        this.toggleNavEvent.emit(this.isToggle);
-      }
-      this.updateProgress();
-    });
-    this.dataService.currentSubPage.subscribe((currentSubPage) => {
-      this.currentSubPage = currentSubPage;
-      if (this.currentSubPage != 0 && this.currentPage != null) {
-        this.isToggle = false;
-        this.toggleNavEvent.emit(this.isToggle);
-      } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
-        this.isToggle = true;
-        this.toggleNavEvent.emit(this.isToggle);
-      }
-      this.updateProgress();
-    });
+
+      this.dataService.currentPage.subscribe((currentPage) => {
+        this.currentPage = currentPage;
+        if (this.currentPage != 0 && this.currentPage != null) {
+          this.isToggle = false;
+          this.toggleNavEvent.emit(this.isToggle);
+        } else if (this.currentPage == 0 || this.currentPage == null) {
+          this.isToggle = true;
+          this.toggleNavEvent.emit(this.isToggle);
+        }
+        this.updateProgress();
+      });
+      this.dataService.currentSubPage.subscribe((currentSubPage) => {
+        this.currentSubPage = currentSubPage;
+        if (this.currentSubPage != 0 && this.currentPage != null) {
+          this.isToggle = false;
+          this.toggleNavEvent.emit(this.isToggle);
+        } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
+          this.isToggle = true;
+          this.toggleNavEvent.emit(this.isToggle);
+        }
+        this.updateProgress();
+      });    
 
     var prevScrollpos = window.pageYOffset;
 
@@ -139,7 +142,15 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   updateProgress() {
-    if (this.currentPage == 0 || this.currentSubPage == 0) {
+    if (localStorage.getItem("returned")!=null) {
+      this.returned = localStorage.getItem("returned");
+      this.currentPage = 0;
+      this.currentSubPage = 0;
+      this.processNumber = localStorage.getItem("processNumber");
+    } else {
+      this.returned = "";
+    }
+    if (this.currentPage == 0 || this.currentSubPage == 0 || this.currentPage == null) {
       this.progressImage = undefined;
       return;
     } else {

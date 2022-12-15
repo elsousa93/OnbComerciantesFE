@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterViewInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subject } from 'rxjs';
 import { LoggerService } from 'src/app/logger.service';
+import { Client } from '../../client/Client.interface';
+import { ClientService } from '../../client/client.service';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
@@ -19,8 +21,12 @@ import { StakeholderService } from '../stakeholder.service';
 export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChanges {
  @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
-  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private logger: LoggerService, private submissionService: SubmissionService) {
-    // this.triggerFalseClick();
+  public submissionClient: Client;
+
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private logger: LoggerService, private submissionService: SubmissionService, private clientService: ClientService) {
+    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+      this.submissionClient = client;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -36,6 +42,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           displayName: "",
           eligibility: false
         } as StakeholdersCompleteInformation;
+        
         this.submissionStakeholders.push(stakeToInsert);
         this.listLengthEmitter.emit(this.submissionStakeholders.length);
         this.loadStakeholders(this.submissionStakeholders);
@@ -44,6 +51,15 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     if (changes["updatedStakeholderEvent"]) {
       this.updatedStakeholderEvent?.subscribe(result => {
         var nextIdx = result.idx + 1;
+        if (nextIdx >= (this.stakesMat.paginator.pageSize * (this.stakesMat.paginator.pageIndex + 1) )) {
+          this.stakesMat.paginator.pageIndex = this.stakesMat.paginator.pageIndex + 1;
+          const event: PageEvent = {
+            length: this.stakesMat.paginator.length,
+            pageIndex: this.stakesMat.paginator.pageIndex,
+            pageSize: this.stakesMat.paginator.pageSize
+          };
+          this.stakesMat.paginator.page.next(event);
+        }
         this.emitSelectedStakeholder(this.submissionStakeholders[nextIdx], nextIdx);
       });
     }
@@ -51,9 +67,28 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       this.previousStakeholderEvent?.subscribe(result => {
         if (result > 0) { 
           var prevIdx = result - 1;
+          if (prevIdx < (this.stakesMat.paginator.pageSize * this.stakesMat.paginator.pageIndex) && this.stakesMat.paginator.pageIndex >= 1) {
+            this.stakesMat.paginator.pageIndex = this.stakesMat.paginator.pageIndex - 1;
+            const event: PageEvent = {
+              length: this.stakesMat.paginator.length,
+              pageIndex: this.stakesMat.paginator.pageIndex,
+              pageSize: this.stakesMat.paginator.pageSize
+            };
+            this.stakesMat.paginator.page.next(event);
+          }
           this.emitSelectedStakeholder(this.submissionStakeholders[prevIdx], prevIdx);
         }
       })
+    }
+    if (changes["sameNIFEvent"]) {
+      this.sameNIFEvent?.subscribe(result => {
+        var sameNIFStake = this.submissionStakeholders.find(stakeNIF => result === stakeNIF.stakeholderAcquiring.fiscalId || result === stakeNIF.stakeholderAcquiring.identificationDocument?.number);
+        if (sameNIFStake != undefined) {
+          this.sameNIFEmitter.emit(true);
+        } else {
+          this.sameNIFEmitter.emit(false);
+        }
+      });
     }
   }
  
@@ -73,11 +108,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   @Input() processNumber?: string;
   @Input() canDelete?: boolean = true;
   @Input() canSelect?: boolean = true;
+  @Input() isInfoDeclarativa?: boolean = false;
 
 
   @Input() insertStakeholderEvent?: Observable<IStakeholders>;
   @Input() updatedStakeholderEvent?: Observable<{ stake: IStakeholders, idx: number }>;
   @Input() previousStakeholderEvent?: Observable<number>;
+  @Input() sameNIFEvent?: Observable<string>;
 
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
@@ -86,6 +123,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   }>();
 
   @Output() listLengthEmitter = new EventEmitter<number>();
+  @Output() sameNIFEmitter = new EventEmitter<boolean>();
 
   submissionStakeholders: StakeholdersCompleteInformation[] = [];
 
@@ -101,6 +139,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   }
 
   ngAfterViewInit(): void {
+    //this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
 
@@ -189,10 +228,16 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         } as StakeholdersCompleteInformation
 
 
-        if (AcquiringStakeholder.fiscalId != "") {
+        if (AcquiringStakeholder.fiscalId != "" && !this.isInfoDeclarativa) {
           context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658' ,"AcquiringUserID").then(res => {
-            stakeholderToInsert.stakeholderOutbound = res.result;
-            resolve(null);
+            if (res.result.stakeholderId != null) { 
+              context.stakeholderService.getStakeholderByID(res.result.stakeholderId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
+                stakeholderToInsert.stakeholderOutbound = r.result;
+                resolve(null);
+              });
+            }
+            //stakeholderToInsert.stakeholderOutbound = res.result;
+            //resolve(null);
           }, rej => {
             console.log("não foi possivel carregar");
             resolve(null);
@@ -268,6 +313,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }
     };
     this.stakesMat.sort = this.sort;
+    //this.stakesMat.paginator = this.paginator;
   }
 
   reloadCurrentRoute() {

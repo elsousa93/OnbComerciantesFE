@@ -138,7 +138,7 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   goToAppDevolucao() {
-    if (this.currentPage > 0) {
+    if (this.currentPage > 0 || this.map.get(0) != undefined) {
       this.route.navigate(['/app-devolucao']);
     }
   }
@@ -194,8 +194,8 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.historySubscription?.unsubscribe();
-    this.data.updateData(false,0,0);
+    //this.historySubscription?.unsubscribe();
+    //this.data.updateData(false,0,0);
   }
 }
 

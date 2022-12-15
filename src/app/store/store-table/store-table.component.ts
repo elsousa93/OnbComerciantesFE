@@ -109,8 +109,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["updatedStoreEvent"] && this.updatedStoreEvent != null) {
       this.updatedStoreEvent.subscribe(result => {
-        var nextIdx = result.idx + 1;
-        this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
+          var nextIdx = result.idx + 1;
+          this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
       });
     }
     if (changes["previousStoreEvent"] && this.previousStoreEvent != null) {

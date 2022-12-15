@@ -15,7 +15,7 @@ import { ClientService } from '../client.service';
 export class ClientSearchComponent implements OnInit {
   // Inputs do componente (searchType e requestID não foram desenhados ainda)
   @Input() clientID: string = "";
-  @Input() searchType?: string = "por mudar";
+  @Input() searchType?: string;
   @Input() requestID?: string = "por mudar";
   //@Input() canEdit?: boolean = false; Pode vir a ser preciso
   @Input() canSelect?: boolean = true;

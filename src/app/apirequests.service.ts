@@ -45,7 +45,7 @@ export class APIRequestsService {
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Request-Id': requestId,
+        'X-Request-Id': requestId,
         'X-Acquiring-UserId': AcquiringUserId,
         'Accept-Language': this.currentLanguage,
       }),
