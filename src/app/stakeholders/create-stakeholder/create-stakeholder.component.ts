@@ -321,6 +321,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.isShown = false;
       this.foundStakeholders = null;
       this.showSameNIFError = true;
+      this.isCC = false;
+      this.okCC = false;
+      this.isNoDataReadable = true;
     } else {
       this.showSameNIFError = false;
     }
@@ -681,6 +684,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
    *  email de 14/09
    */
   addStakeholderWithCC() {
+    this.emitSameNIF(of(this.dataCCcontents.nifCC));
     //Colocar comprovativo do CC na Submissao 
     this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
     this.isCC = true;

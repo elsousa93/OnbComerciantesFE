@@ -52,7 +52,7 @@ export class StoreService {
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Request-Id': requestID,
+        'X-Request-Id': requestID,
         'X-Acquiring-UserId': AcquiringUserID,
       }),
     }
@@ -75,7 +75,7 @@ export class StoreService {
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
-        'Request-Id': requestID,
+        'X-Request-Id': requestID,
         'X-Acquiring-UserId': AcquiringUserID,
       }),
     }
