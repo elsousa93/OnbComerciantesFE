@@ -143,7 +143,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   pageName = "";
   file?: File;
   files?: File[] = [];
-  fileToDelete?: File;
+  fileToDelete?: any;
   localUrl: any;
   fileName: any;
   urlImage: string | any;
@@ -162,7 +162,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   filename: any;
   clientId: any;
-
+  documentID: string;
 
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('checkListDocs') checkListDocs;
@@ -483,19 +483,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   onDelete(file: any, documentID) {
-    if (file instanceof File) {
-      this.files
-    } else { 
-      this.tableInfo.deleteDocument(this.submissionId, documentID).then(sucess => {
-        console.log("Sucesso a apagar um documento: ", sucess.msg);
-      }, error => {
-        console.log("Erro a apagar um ficheiro: ", error.msg);
-      });
-
-      this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
-      this.fileToDelete = file;
-    }
-
+    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
+    this.fileToDelete = file;
+    this.documentID = documentID;
   }
 
   obterOfertaComercial() {
@@ -514,17 +504,25 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   confirmDelete() {
     this.deleteModalRef?.hide();
 
-    const index1 = this.compsToShow.findIndex(value => value.file == this.fileToDelete);
-    if (index1 > -1)
-      this.compsToShow.splice(index1, 1);
+    if (this.fileToDelete instanceof File) {
+      let index = this.files.findIndex(f => f.lastModified === this.fileToDelete.lastModified);
+      let index1 = this.compsToShow.findIndex(f => f.file.lastModified === this.fileToDelete.lastModified);
 
-    const index = this.files.indexOf(this.fileToDelete);
-    if (index > -1) {
-      this.files.splice(index, 1);
+      if (index > -1)
+        this.files.splice(index, 0);
+      if (index1 > -1)
+        this.compsToShow.splice(index1, 0);
+
+    } else {
+      this.tableInfo.deleteDocument(this.submissionId, this.documentID).then(sucess => {
+        console.log("Sucesso a apagar um documento: ", sucess.msg);
+      }, error => {
+        console.log("Erro a apagar um ficheiro: ", error.msg);
+      });
     }
 
     this.fileToDelete = null;
-
+    this.documentID = "";
   }
 
   onCheckList() {
