@@ -287,10 +287,10 @@ export class StakeholdersComponent implements OnInit {
   setFormData() {
     var stakeForm = this.editStakes.get("stake");
     stakeForm.get("contractAssociation").setValue('true');
-    stakeForm.get("flagRecolhaEletronica").setValue(false);
     stakeForm.get("proxy").setValue(this.currentStakeholder.stakeholderAcquiring.isProxy + '');
 
     if (stakeForm.get("documentType") == null) {
+      stakeForm.get("flagRecolhaEletronica").setValue(false);
       stakeForm.get("NIF").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalId);
       stakeForm.get("Role").setValue("");
       stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country);
@@ -298,6 +298,7 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea);
       stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address);
     } else {
+      stakeForm.get("flagRecolhaEletronica").setValue(true);
       stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
       stakeForm.get("identificationDocumentCountry").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.country);
       stakeForm.get("identificationDocumentValidUntil").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate);

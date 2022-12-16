@@ -248,6 +248,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   stringJson: any;
 
   createFormCC() {
+
+    var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode.split(" - ")[0];
+
     this.formNewStakeholder = this.fb.group({
       flagRecolhaEletronica: new FormControl(true), //v
       documentType: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type : ''), //tirei o this.returned != null
@@ -259,21 +262,25 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
       Role: new FormControl(''),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
-      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode : '', Validators.required), //
+      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? zipcode : '', Validators.required), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
       Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
     });
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
+    this.formNewStakeholder.get('flagRecolhaEletronica').setValue(true);
     //this.flagRecolhaEletronica = true; este é o valor que mete o campo disabled
 
     this.changeValueCC();
+    this.GetCountryByZipCode();
   }
 
   changeValueCC(){
-    if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '1001') {
-      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = 'Cartão do Cidadão'
+    if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0001') {
+      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = 'Cartão do Cidadão';
+      this.formNewStakeholder.get('documentType').setValue('Cartão do Cidadão');
+
     }
   }
 
