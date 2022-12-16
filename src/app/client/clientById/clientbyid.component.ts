@@ -637,25 +637,23 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
             if (res.length > 0) {
               res.forEach(doc => {
-                context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
-                  var file = {
-                    documentType: r.documentType,
-                    receivedAt: r.receivedAt,
-                    validUntil: r.validUntil,
-                    uniqueReference: r.id,
-                    archiveSource: null,
-                  } as OutboundDocument;
-                  this.clientDocs.push(file);
-                });
+                if (doc.type === '0001') { 
+                  context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
+                    var file = {
+                      documentType: r.documentType,
+                      receivedAt: r.receivedAt,
+                      validUntil: r.validUntil,
+                      uniqueReference: r.id,
+                      archiveSource: null,
+                    } as OutboundDocument;
+                    this.clientDocs = [];
+                    this.clientDocs.push(file);
+                  });
+                }
               });
             }
           });
 
-          //if (result.clientId != "") {
-          //  this.clientService.GetClientByIdOutbound(result.clientId).then(res => {
-          //    this.clientDocs = result.documents;
-          //  });
-          //}
 
         }).then(result => {
           if (!this.clientContext.isClient) {
