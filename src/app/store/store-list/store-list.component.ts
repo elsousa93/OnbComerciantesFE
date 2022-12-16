@@ -443,6 +443,9 @@ export class StoreComponent implements AfterViewInit {
             console.log('LOJA ATUALIZADA ', res);
           });
         });
+        this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
+          console.log("Adicionei um documento à submissão: ", res);
+        })
       })
     }
   }

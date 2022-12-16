@@ -642,7 +642,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     var file = {
                       documentType: r.documentType,
                       receivedAt: r.receivedAt,
-                      validUntil: r.validUntil,
+                      validUntil: r.validUntil.toISOString(),
                       uniqueReference: r.id,
                       archiveSource: null,
                     } as OutboundDocument;
