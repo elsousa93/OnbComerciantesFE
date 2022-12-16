@@ -477,6 +477,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     if (this.returned == null) {
       if (!this.submissionExists || this.isFromSearch) {
         if (this.dataCC !== undefined && this.dataCC !== null) {
+          this.data.changeCurrentDataCC(this.dataCC);
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
           client.fiscalId = this.dataCC.nifCC;
@@ -810,6 +811,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   redirectBeginningClient() {
+    this.data.changeCurrentDataCC(this.dataCC);
     if (!this.historyStream) {
       let navigationExtras: NavigationExtras = {
         state: {

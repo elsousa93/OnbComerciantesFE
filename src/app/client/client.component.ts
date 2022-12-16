@@ -389,7 +389,7 @@ export class ClientComponent implements OnInit {
       this.searchedDocument = localStorage.getItem("documentType");
       this.clientId = localStorage.getItem("documentNumber");
       this.data.currentComprovativoCC.subscribe(cc => this.prettyPDF = cc);//this.route.getCurrentNavigation().extras.state["comprovativoCC"];
-      this.data.currentDataCC.subscribe(data => this.dataCC = data);//this.route.getCurrentNavigation().extras.state["dataCC"];
+      this.data.currentDataCC.subscribe(data => this.dataCCcontents = data);//this.route.getCurrentNavigation().extras.state["dataCC"];
       this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);//this.route.getCurrentNavigation().extras.state["isClient"];
       //}
 
@@ -402,7 +402,7 @@ export class ClientComponent implements OnInit {
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         this.setClientData(false);
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
-        if (this.dataCC == null) {
+        if (this.dataCCcontents == null) {
           this.searchClient();
         } else {
           this.setOkCC();
