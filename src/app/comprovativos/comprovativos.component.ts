@@ -508,10 +508,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       let index = this.files.findIndex(f => f.lastModified === this.fileToDelete.lastModified);
       let index1 = this.compsToShow.findIndex(f => f.file.lastModified === this.fileToDelete.lastModified);
 
-      if (index > -1)
-        this.files.splice(index, 0);
       if (index1 > -1)
         this.compsToShow.splice(index1, 0);
+
+      if (index > -1)
+        this.files.splice(index, 0);
 
     } else {
       this.tableInfo.deleteDocument(this.submissionId, this.documentID).then(sucess => {
