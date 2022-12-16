@@ -758,7 +758,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (crc != null && crc != undefined) {
       newSubmission.documents.push({
-        documentType: "2006", 
+        documentType: "0033", 
         documentPurpose: 'CompanyIdentification',
         file: {
           fileType: 'PDF',

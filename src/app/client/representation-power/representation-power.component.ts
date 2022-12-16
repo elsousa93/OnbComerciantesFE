@@ -121,7 +121,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
     if (this.crc !== null && this.crc !== undefined) {
       newSubmission.documents.push({
-        documentType: null, // alterar quando tivermos o enum do docType
+        documentType: "0033", 
         documentPurpose: 'CompanyIdentification',
         file: {
           fileType: 'PDF',
@@ -136,13 +136,13 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
     if (comprovativoCC !== null && comprovativoCC !== undefined) {
       newSubmission.documents.push({
-        documentType: null, // alterar quando tivermos o enum do docType
+        documentType: "0001", 
         documentPurpose: 'Identification',
         file: {
           fileType: 'PDF',
           binary: comprovativoCC.file
         },
-        validUntil: "2022-07-13T11:10:13.420Z", //FIXME
+        validUntil: comprovativoCC.expirationDate,
         data: null
       })
     }
