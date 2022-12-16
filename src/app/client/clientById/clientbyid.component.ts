@@ -633,20 +633,23 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
 
-          if (result.documents.length > 0) {
-            result.documents.forEach(doc => {
-              context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
-                var file = {
-                  documentType: res.documentType,
-                  receivedAt: res.receivedAt,
-                  validUntil: res.validUntil,
-                  uniqueReference: res.id,
-                  archiveSource: null,
-                } as OutboundDocument;
-                this.clientDocs.push(file);
+
+          context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
+            if (res.length > 0) {
+              res.forEach(doc => {
+                context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
+                  var file = {
+                    documentType: r.documentType,
+                    receivedAt: r.receivedAt,
+                    validUntil: r.validUntil,
+                    uniqueReference: r.id,
+                    archiveSource: null,
+                  } as OutboundDocument;
+                  this.clientDocs.push(file);
+                });
               });
-            });
-          }
+            }
+          });
 
           //if (result.clientId != "") {
           //  this.clientService.GetClientByIdOutbound(result.clientId).then(res => {
