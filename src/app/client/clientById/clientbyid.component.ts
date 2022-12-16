@@ -916,7 +916,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("CC Data: ", this.dataCC);
         if (this.dataCC !== undefined && this.dataCC !== null) {
           stakeholder.identificationDocument = {
-            type: '1001',
+            type: '0001',
             country: this.clientContext.dataCC.countryCC,
             number: this.clientContext.dataCC.nifCC,
             expirationDate: this.clientContext.dataCC.expiryDate

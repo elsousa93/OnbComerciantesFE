@@ -701,7 +701,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       "fullName": this.dataCCcontents.nameCC,
       "shortName": this.dataCCcontents.nameCC,
       "identificationDocument": {
-        "type": '1001',           //FIXME "CC"
+        "type": '0001',           
         "number": this.dataCCcontents.cardNumberCC,
         "country": this.dataCCcontents.countryCC,
         "expirationDate": new Date(formatedDate).toISOString(),

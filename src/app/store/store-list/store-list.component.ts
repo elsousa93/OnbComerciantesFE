@@ -426,7 +426,7 @@ export class StoreComponent implements AfterViewInit {
     if (this.ibansToShow != null) { 
       this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
         var docToSend: PostDocument = {
-          "documentType": "1001",
+          "documentType": "0071",
           "documentPurpose": "BankAccount",
           "file": {
             "fileType": "PDF",
