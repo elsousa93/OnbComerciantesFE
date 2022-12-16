@@ -633,11 +633,26 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
 
-          if (result.clientId != "") {
-            this.clientService.GetClientByIdOutbound(result.id,).then(res => {
-              this.clientDocs = result.documents;
+          if (result.documents.length > 0) {
+            result.documents.forEach(doc => {
+              context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
+                var file = {
+                  documentType: res.documentType,
+                  receivedAt: res.receivedAt,
+                  validUntil: res.validUntil,
+                  uniqueReference: res.id,
+                  archiveSource: null,
+                } as OutboundDocument;
+                this.clientDocs.push(file);
+              });
             });
           }
+
+          //if (result.clientId != "") {
+          //  this.clientService.GetClientByIdOutbound(result.clientId).then(res => {
+          //    this.clientDocs = result.documents;
+          //  });
+          //}
 
         }).then(result => {
           if (!this.clientContext.isClient) {
@@ -1093,10 +1108,16 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       border: 3px solid green;` );
   }
 
-  getClientDocumentImage(uniqueReference: string, format: string) {
-    this.documentService.GetDocumentImageOutbound(uniqueReference, "por mudar", "por mudar", format).subscribe(result => {
-      this.b64toBlob(result.binary, 'application/pdf', 512);
-    });
+  getClientDocumentImage(uniqueReference: string, format: string, archiveSource: string) {
+    if (archiveSource != null) {
+      this.documentService.GetDocumentImageOutbound(uniqueReference, "por mudar", "por mudar", format).subscribe(result => {
+        this.b64toBlob(result.binary, 'application/pdf', 512);
+      });
+    } else {
+      this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
+        this.b64toBlob(result.binary, 'application/pdf', 512);
+      })
+    }
   }
 
   formClientCharacterizationIsValid(formCharact) {

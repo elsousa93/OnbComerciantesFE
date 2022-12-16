@@ -27,20 +27,23 @@ export class SubmissionDocumentService {
 
   GetDocumentImage(submissionID: string, documentID: string): any {
 
-    return fetch(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
-      method: "GET",
-      headers: {
-        "Accept": "application/pdf",
-        "Content-type": "application/pdf",
-        "Authorization": 'Bearer ' + this.authService.GetToken()
-      }
-    });
+    var URI = this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image';
+    //return fetch(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
+    //  method: "GET",
+    //  headers: {
+    //    "Accept": "application/pdf",
+    //    "Content-type": "application/pdf",
+    //    "Authorization": 'Bearer ' + this.authService.GetToken()
+    //  }
+    //});
     //return this.http.get<any>(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
     //  headers: {
     //    "Accept": "application/pdf",
     //    "Content-type": "application/pdf"
     //  }
     //}); //n sei qual o tipo
+
+    return this.http.get<any>(URI);
   }
 
   SubmissionPostDocument(submissionID: string, document: PostDocument): any {

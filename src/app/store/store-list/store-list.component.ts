@@ -297,6 +297,8 @@ export class StoreComponent implements AfterViewInit {
 
       var bankStores = this.editStores.controls["bankStores"];
 
+      this.currentStore.bank = new ShopBank();
+      this.currentStore.bank.bank = new ShopBankingInformation();
       this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
       this.currentStore.bank.useMerchantBank = bankStores.get("bankInformation").value;
 
