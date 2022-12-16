@@ -273,7 +273,7 @@ export class ReadcardService {
       this.comprovativosService.readBase64(ficheiroCC).then(result => {
         var result_clean = result.split(',')[1]; //para retirar a parte inicial "data:application/pdf;base64"
 
-        var expireDate = ccArrayData[6].replace(" ", "/").split("/");
+        var expireDate = ccArrayData[6].replaceAll(" ", "/").split("/");
         var date = expireDate[1] + "/" + expireDate[0] + "/" + expireDate[2];
 
         //novo objecto a enviar 
