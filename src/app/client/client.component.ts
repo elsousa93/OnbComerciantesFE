@@ -402,7 +402,11 @@ export class ClientComponent implements OnInit {
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         this.setClientData(false);
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
-        this.searchClient();
+        if (this.dataCC == null) {
+          this.searchClient();
+        } else {
+          this.setOkCC();
+        }
       }
 
     }

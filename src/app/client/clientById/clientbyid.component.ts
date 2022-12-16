@@ -459,8 +459,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
     this.data.updateData(false, 1, 2);
 
-    if (this.updateClient)
-      this.clientId = localStorage.getItem("documentNumber");
+    //if (this.updateClient)
+    //  this.clientId = localStorage.getItem("documentNumber");
 
     this.clientContext = new ClientContext(
       this.tipologia,
@@ -628,10 +628,16 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.clientContext.setNIFNIPC(result.fiscalId);
           this.clientContext.submissionID = localStorage.getItem("submissionId");
           this.clientContext.setClient(result);
-
+          
           //dados necessários para a pesquisa feita anteriormente
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
+
+          if (result.clientId != "") {
+            this.clientService.GetClientByIdOutbound(result.id,).then(res => {
+              this.clientDocs = result.documents;
+            });
+          }
 
         }).then(result => {
           if (!this.clientContext.isClient) {
