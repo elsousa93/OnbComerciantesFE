@@ -459,6 +459,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
     this.data.updateData(false, 1, 2);
 
+    if (this.updateClient)
+      this.clientId = localStorage.getItem("documentNumber");
+
     this.clientContext = new ClientContext(
       this.tipologia,
       this.clientExists,
