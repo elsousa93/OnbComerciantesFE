@@ -273,10 +273,13 @@ export class ReadcardService {
       this.comprovativosService.readBase64(ficheiroCC).then(result => {
         var result_clean = result.split(',')[1]; //para retirar a parte inicial "data:application/pdf;base64"
 
+        var expireDate = ccArrayData[6].replace(" ", "/").split("/");
+        var date = expireDate[1] + "/" + expireDate[0] + "/" + expireDate[2];
+
         //novo objecto a enviar 
          let objectCCsend: FileAndDetailsCC = {
              lastModifiedDate: new Date(), 
-              expirationDate: new Date(ccArrayData[6]).toISOString(), // A confirmar com a equipa de produto
+              expirationDate: new Date(date).toISOString(), // A confirmar com a equipa de produto
              name: 'comprovativoCC',
              file: result_clean
          }
