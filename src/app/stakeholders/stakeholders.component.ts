@@ -12,6 +12,7 @@ import { ViewChild } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
+import { DatePipe } from '@angular/common';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -122,7 +123,7 @@ export class StakeholdersComponent implements OnInit {
 
   isClient: boolean;
 
-  constructor(public modalService: BsModalService,
+  constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
     private comprovativoService: ComprovativosService) {
 
@@ -301,7 +302,7 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("flagRecolhaEletronica").setValue(true);
       stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
       stakeForm.get("identificationDocumentCountry").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.country);
-      stakeForm.get("identificationDocumentValidUntil").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate);
+      stakeForm.get("identificationDocumentValidUntil").setValue(this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy'));
       stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
     }
   }
