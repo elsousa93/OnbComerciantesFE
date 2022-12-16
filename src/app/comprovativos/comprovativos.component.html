@@ -79,7 +79,7 @@
                            style="height: 25px !important; vertical-align: sub;" />
 
                      </label>
-                     <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event,client)"
+                     <input type="file" #fileUpload name="arquivo" id="arquivo" (change)="selectFile($event,client); fileUpload.value='';"
                         style="display: none" accept=".pdf" multiple [disabled]="returned === 'consult'">
 
                   </span>

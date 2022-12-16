@@ -444,6 +444,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         }
       }
     }
+
     this.logger.debug(this.files);
   }
 
