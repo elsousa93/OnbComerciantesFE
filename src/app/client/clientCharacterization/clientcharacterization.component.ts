@@ -758,7 +758,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (crc != null && crc != undefined) {
       newSubmission.documents.push({
-        documentType: "0001", // alterar quando tivermos o enum do docType
+        documentType: "2006", 
         documentPurpose: 'CompanyIdentification',
         file: {
           fileType: 'PDF',
@@ -773,13 +773,13 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (comprovativoCC !== null && comprovativoCC !== undefined) {
       newSubmission.documents.push({
-        documentType: "0001", // alterar quando tivermos o enum do docType
+        documentType: "0001", 
         documentPurpose: 'Identification',
         file: {
           fileType: 'PDF',
           binary: comprovativoCC.file
         },
-        validUntil: new Date(comprovativoCC.expirationDate).toISOString(), //"2022-07-13T11:10:13.420Z", //FIXME
+        validUntil: new Date(comprovativoCC.expirationDate).toISOString(), 
         data: null
       })
     }
