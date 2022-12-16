@@ -269,14 +269,18 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
+    this.formNewStakeholder.get('flagRecolhaEletronica').setValue(true);
     //this.flagRecolhaEletronica = true; este é o valor que mete o campo disabled
 
     this.changeValueCC();
+    this.GetCountryByZipCode();
   }
 
   changeValueCC(){
     if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0001') {
-      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = 'Cartão do Cidadão'
+      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = 'Cartão do Cidadão';
+      this.formNewStakeholder.get('documentType').setValue('Cartão do Cidadão');
+
     }
   }
 
