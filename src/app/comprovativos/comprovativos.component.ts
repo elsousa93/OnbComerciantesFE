@@ -316,7 +316,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     context.compsToShow.push({
                       id: val.id,
                       type: "pdf",
-                      expirationDate: val.validUntil,
+                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
                       stakeholder: context.submissionClient.legalName,
                       status: "não definido",
                       uploadDate: latest_date,
