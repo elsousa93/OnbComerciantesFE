@@ -23,6 +23,7 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 import { ClientContext } from '../clientById/clientById.model';
+import { StakeholderService } from '../../stakeholders/stakeholder.service';
 
 
 @Component({
@@ -362,7 +363,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   constructor(private logger: LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private rootFormDirective: FormGroupDirective,
-    private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService) {
+    private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService, private stakeholderService: StakeholderService) {
     this.rootForm = this.rootFormDirective.form;
     this.form = this.rootForm.get("clientCharacterizationForm");
     this.initializeTableInfo();
@@ -733,6 +734,8 @@ export class ClientCharacterizationComponent implements OnInit {
     var stakeholdersToInsert = this.clientContext.getStakeholdersToInsert();
     var crc = this.clientContext.crc;
 
+    var context = this;
+
     newSubmission.stakeholders = [];
     stakeholdersToInsert.forEach(function (value, idx) {
       console.log("stakeholder: ", value);
@@ -746,7 +749,10 @@ export class ClientCharacterizationComponent implements OnInit {
           "postalArea": "",
           "country": "",
           "address": ""
-        }
+        },
+        "capitalHeldPercentage": value.capitalHeldPercentage,
+        "isBeneficiary": value.isBeneficiary,
+        "role": value.role
       } as IStakeholders;
 
       newSubmission.stakeholders.push(stakeholderToInsert);

@@ -83,6 +83,7 @@ export class CommercialOfferListComponent implements OnInit {
     store: {}
   };
   groupsList: ProductPackRootAttributeProductPackKind[] = [];
+  finalList: ProductPackRootAttributeProductPackKind[] = [];
   commissionOptions: ProductPackPricingEntry[] = [];
   commissionFilter: ProductPackCommissionFilter;
   commissionAttributeList: ProductPackCommissionAttribute[] = [];
@@ -380,10 +381,46 @@ export class CommercialOfferListComponent implements OnInit {
     } else {
       context.paymentSchemes = this.currentStore.pack.paymentSchemes;
       context.addPaymentFormGroups();
-      this.currentStore.pack.otherPackDetails.forEach(group => {
-        context.groupsList.push(group);
+      this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
+
+        res.result.otherGroups.forEach(group => {
+          context.groupsList.push(group);
+        });
+
+        context.currentStore.pack.otherPackDetails.forEach((curr, index) => {
+          context.groupsList.forEach((value, index) => {
+            if (curr.id === value.id) {
+              curr.attributes.forEach((curr, index) => {
+                value.attributes.forEach((value, index) => {
+                  if (curr.value) {
+                    if (curr.id === value.id) {
+                      value.value = curr.value;
+                      if (curr.bundles != undefined || curr.bundles != null || curr.bundles.length > 0) {
+                        curr.bundles.forEach((curr, index) => {
+                          value.bundles.forEach((value, index) => {
+                            if (curr.id === value.id) {
+                              curr.attributes.forEach((curr, index) => {
+                                value.attributes.forEach((value, index) => {
+                                  if (curr.value) {
+                                    if (curr.id === value.id) {
+                                      value.value = curr.value;
+                                    }
+                                  }
+                                });
+                              });
+                            }
+                          });
+                        });
+                      }
+                    }
+                  }
+                })
+              });
+            }
+          });
+        });
+        context.addFormGroups();
       });
-      context.addFormGroups();
     }
     this.getCommissionsList();
   }
@@ -487,6 +524,8 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   submit() {
+    var context = this;
+
     this.commissionAttributeList.forEach(commission => {
       var currentValue = this.form.get("commission" + commission.id);
       commission.minValue.finalValue = currentValue.get("commissionMin" + commission.id).value;
@@ -495,6 +534,12 @@ export class CommercialOfferListComponent implements OnInit {
       commission.percentageValue.finalValue = currentValue.get("commissionPercentage" + commission.id).value;
     });
 
+    var group = context.form.get("formGroupPayment" + this.paymentSchemes.id);
+    this.paymentSchemes.attributes.forEach(payment => {
+      payment.value = group.get("formControlPayment" + payment.id).value;
+    });
+
+    //atualizar a lista dos pacotes comerciais com os valores selecionados no front
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr) => {
         if (attr["aggregatorId"] !== null) {
@@ -507,10 +552,52 @@ export class CommercialOfferListComponent implements OnInit {
               bundle.attributes.forEach((bundleAttr) => { 
                 bundleAttr.value = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
               });
-            }, this);
+            });
           }
-      }, this);
-    }, this);
+      });
+    });
+
+    //remover da lista dos pacotes comerciais, os grupos que não foram selecionados
+    this.groupsList.forEach((group) => {
+      group.attributes.forEach((attr, ind) => {
+        if (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "") {
+          if (attr.value !== this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
+            console.log("AGGREGATOR VALOR ERA FALSO GROUP INDEX: ", ind);
+            console.log("AGGREGATOR LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
+            var removedGroup = group.attributes.splice(ind, 1);
+            console.log("AGGREGATOR ELEMENTO RETIRADO ", removedGroup);
+            console.log("AGGREGATOR LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
+            return;
+          }
+        } else { 
+          if (attr.value === false || attr.value == undefined) {
+            console.log("VALOR ERA FALSO GROUP INDEX: ", ind);
+            console.log("LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
+            var removedGroup = group.attributes.splice(ind, 1);
+            console.log("ELEMENTO RETIRADO ", removedGroup);
+            console.log("LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
+            return;
+          } else {
+            if (attr.bundles != null || attr.bundles != undefined || attr.bundles.length > 0) {
+              attr.bundles.forEach((bundle, index) => {
+                bundle.attributes.forEach((bundleAttr, i) => {
+                  if (bundleAttr.value === false) {
+                    console.log('VALOR ERA FALSO BUNDLE INDEX: ', i);
+                    console.log("BUNDLES ANTES DE RETIRAR O ELEMENTO ", bundle.attributes);
+                    var removedBundle = bundle.attributes.splice(i, 1);
+                    console.log("BUNDLES DEPOIS DE RETIRAR O ELEMENTO ", bundle.attributes);
+                    console.log("ELEMENTO RETIRADO ", removedBundle);
+                    return;
+                  }
+                });
+              });
+            }
+          }
+        }
+      });
+    });
+
+
 
     if (this.returned != 'consult') {
       this.currentStore.equipments = this.storeEquipList;
@@ -536,6 +623,8 @@ export class CommercialOfferListComponent implements OnInit {
 
       });
     }
+
+    this.onActivate();
   }
 
   closeAccordion() {
@@ -572,20 +661,8 @@ export class CommercialOfferListComponent implements OnInit {
       if (this.isNewConfig || this.isNewConfig == false) { 
         this.isNewConfig = null;
       }
-
       this.isNewConfig = false;
-
       this.storeEquip = shopEquipment;
-      //let navigationExtras: NavigationExtras = {
-      //  state: {
-      //    store: this.currentStore,
-      //    storeEquip: shopEquipment,
-      //    packId: this.form.get("productPackKind").value,
-      //    merchantCatalog: this.merchantCatalog,
-      //    packAttributes: this.groupsList
-      //  }
-      //}
-      //this.route.navigate(['/commercial-offert-new-configuration'], navigationExtras);
     }
   }
 

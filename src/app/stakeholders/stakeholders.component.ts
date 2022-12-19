@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IStakeholders, StakeholdersCompleteInformation } from './IStakeholders.interface';
+import { IStakeholders, OutboundDocument, StakeholdersCompleteInformation } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
 import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
@@ -114,7 +114,7 @@ export class StakeholdersComponent implements OnInit {
   editStakes: FormGroup;
   editStakeInfo: boolean;
 
-  selectedStakeholderComprovativos = [];
+  selectedStakeholderComprovativos: OutboundDocument[] = [];
   stakesLength: number = null;
 
   crcStakeholders: IStakeholders[] = [];

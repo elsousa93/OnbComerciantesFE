@@ -100,14 +100,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="clickable" *ngFor="let stakeholder of submissionStakeholders">
+                    <tr class="clickable" *ngFor="let stakeholder of submissionStakeholders; let i = index;">
                       <td class="text-primary text-center align-middle"> {{stakeholder.shortName}} </td>
                       <td class="text-primary text-center align-middle"> {{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}} </td>
                       <td class="text-primary text-center align-middle">
-                        <select *ngIf="!isVisible">
-                          <option>OTP</option>
-                          <option>Chave Móvel Digital</option>
-                          <option>CC</option>
+                        <select *ngIf="!isVisible" id="{{i + ''}}" name="{{i + ''}}" formControlName="{{i + ''}}">
+                          <option value="NotSign">-</option>
+                          <option value="OneTimePassword">OTP</option>
+                          <option value="DigitalCitizenCard">Chave Móvel Digital</option>
+                          <option value="CitizenCard">CC</option>
                         </select>
                       </td>
 
@@ -189,3 +190,6 @@
         </div>
       </div>
     </form>
+  </div>
+  </div>
+</div>

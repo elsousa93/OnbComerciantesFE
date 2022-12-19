@@ -49,6 +49,7 @@ export class ConsultasComponent implements OnInit{
   baseUrl = '';
 
   ListaDocType;
+  isLengthOne: boolean = false;
 
   
   constructor(private logger: LoggerService, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, @Inject(configurationToken) private configuration: Configuration) {
@@ -117,6 +118,7 @@ export class ConsultasComponent implements OnInit{
   }
 
   searchProcess() {
+    this.isLengthOne = false;
     this.search = false;
     this.logger.debug(this.form);
     this.loadProcesses([]);
@@ -165,22 +167,23 @@ export class ConsultasComponent implements OnInit{
           panelClass: ['snack-bar']
         });
       }
-      this.processService.advancedSearch(this.url, 0, 1).subscribe(r => {
-        if (r.pagination.total > 300) {
-          this.snackBar.open(this.translate.instant('searches.search300'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-          });
-          r.pagination.total = 300;
-        }
-      this.processService.advancedSearch(this.url, 0, r.pagination.total).subscribe(result => {
-        
-        let processesArray: Process[] = result.items.map<Process>((process) => {
+    this.processService.advancedSearch(this.url, 0, 1).subscribe(r => {
+      if (r.pagination.total > 300) {
+        this.snackBar.open(this.translate.instant('searches.search300'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
+        r.pagination.total = 300;
+      }
+      if (r.pagination.total == 1) {
+        this.isLengthOne = true;
+
+        let processesArray: Process[] = r.items.map<Process>((process) => {
 
           // mapear os estados para aparecer em PT ou EN
-          if (process.state === 'Incomplete'){
+          if (process.state === 'Incomplete') {
             process.state = this.translate.instant('searches.incompleted');
-          } else if (process.state === 'Ongoing'){
+          } else if (process.state === 'Ongoing') {
             process.state = this.translate.instant('searches.running');
           } else if (process.state === 'Completed') {
             process.state = this.translate.instant('searches.completed');
@@ -188,7 +191,43 @@ export class ConsultasComponent implements OnInit{
             process.state = this.translate.instant('searches.returned');
           } else if (process.state === 'Cancelled') {
             process.state = this.translate.instant('searches.cancelled');
-          } else if (process.state === 'ContractAcceptance'){
+          } else if (process.state === 'ContractAcceptance') {
+            process.state = this.translate.instant('searches.contractAcceptance')
+          }
+
+          return {
+            processNumber: process?.processNumber,
+            nipc: process?.merchant?.fiscalId,
+            nome: process?.merchant?.name,
+            estado: process?.state
+          };
+        })
+        if (processesArray.length == 0) {
+          this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        }
+        this.loadProcesses(processesArray);
+      }
+
+      if (!this.isLengthOne) { 
+      this.processService.advancedSearch(this.url, 0, r.pagination.total).subscribe(result => {
+
+        let processesArray: Process[] = result.items.map<Process>((process) => {
+
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'Incomplete') {
+            process.state = this.translate.instant('searches.incompleted');
+          } else if (process.state === 'Ongoing') {
+            process.state = this.translate.instant('searches.running');
+          } else if (process.state === 'Completed') {
+            process.state = this.translate.instant('searches.completed');
+          } else if (process.state === 'Returned') {
+            process.state = this.translate.instant('searches.returned');
+          } else if (process.state === 'Cancelled') {
+            process.state = this.translate.instant('searches.cancelled');
+          } else if (process.state === 'ContractAcceptance') {
             process.state = this.translate.instant('searches.contractAcceptance')
           }
 
@@ -211,6 +250,11 @@ export class ConsultasComponent implements OnInit{
         this.logger.debug(error);
         this.loadProcesses([]);
       });
+    }
+    }, error => {
+      this.logger.debug("deu erro");
+      this.logger.debug(error);
+      this.loadProcesses([]);
     });
   }
 

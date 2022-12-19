@@ -172,26 +172,26 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         this.formConfig.get('terminalType').setValidators([Validators.required]);
         this.formConfig.get('communicationType').setValidators([Validators.required]);
         this.formConfig.get('terminalAmount').setValidators([Validators.required]);
-      } else {
+      } else if (val.toLocaleLowerCase() === 'client') {
         this.formConfig.get('communicationOwnership').setValidators(null);
         this.formConfig.get('terminalType').setValidators(null);
         this.formConfig.get('communicationType').setValidators(null);
         this.formConfig.get('terminalAmount').setValidators(null);
       }
-      this.formConfig.get('communicationOwnership').updateValueAndValidity();
-      this.formConfig.get('terminalType').updateValueAndValidity();
-      this.formConfig.get('communicationType').updateValueAndValidity();
-      this.formConfig.get('terminalAmount').updateValueAndValidity();
+      this.formConfig.get('communicationOwnership').updateValueAndValidity({ emitEvent: false });
+      this.formConfig.get('terminalType').updateValueAndValidity({ emitEvent: false });
+      this.formConfig.get('communicationType').updateValueAndValidity({ emitEvent: false });
+      this.formConfig.get('terminalAmount').updateValueAndValidity({ emitEvent: false });
     });
 
     this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      if (((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid())) && this.firstTime) {
+      if ((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid()) && this.firstTime === true) {
         this.firstTime = false;
-      } else if (((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid())) && !this.firstTime) {
+      } else if ((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid()) && this.firstTime === false) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
         this.loadMensalidades();
-      } else if (((!this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && !this.checkFormValid())) && !this.firstTime) {
+      } else if ((!this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && !this.checkFormValid()) && this.firstTime === false) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
