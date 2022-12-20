@@ -183,19 +183,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.formConfig.get('communicationType').updateValueAndValidity({ emitEvent: false });
       this.formConfig.get('terminalAmount').updateValueAndValidity({ emitEvent: false });
     });
-
-    this.formConfig.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-      if ((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid()) && this.firstTime === true) {
-        this.firstTime = false;
-      } else if ((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid()) && this.firstTime === false) {
-        this.pricingOptions = [];
-        this.pricingAttributeList = [];
-        //this.loadMensalidades();
-      } else if ((!this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && !this.checkFormValid()) && this.firstTime === false) {
-        this.pricingOptions = [];
-        this.pricingAttributeList = [];
-      }
-    });
   }
 
   checkFormValid() {
