@@ -190,7 +190,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       } else if ((this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && this.checkFormValid()) && this.firstTime === false) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
-        this.loadMensalidades();
+        //this.loadMensalidades();
       } else if ((!this.formConfig.valid && val.terminalProperty.toLocaleLowerCase() === 'self') || (val.terminalProperty.toLocaleLowerCase() === 'client' && !this.checkFormValid()) && this.firstTime === false) {
         this.pricingOptions = [];
         this.pricingAttributeList = [];
