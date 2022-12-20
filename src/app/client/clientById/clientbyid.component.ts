@@ -640,9 +640,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 if (doc.type === '0001') { 
                   context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
                     var file = {
-                      documentType: r.documentType,
-                      receivedAt: r.receivedAt,
-                      validUntil: r.validUntil.toISOString(),
+                      documentType: 'Cartão do Cidadão',
+                      receivedAt: this.datepipe.transform(r.receivedAt, "yyyy-MM-dd"),
+                      validUntil: this.datepipe.transform(r.validUntil, "yyyy-MM-dd"),
                       uniqueReference: r.id,
                       archiveSource: null,
                     } as OutboundDocument;
