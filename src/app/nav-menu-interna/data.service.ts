@@ -30,6 +30,7 @@ export class DataService {
   private dataCC = new BehaviorSubject(null);
   private comprovativoCC = new BehaviorSubject(null);
   private updateClient = new BehaviorSubject(false);
+  private firstTimeStake = new BehaviorSubject(true);
 
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
@@ -41,6 +42,7 @@ export class DataService {
   currentIsClient = this.isClient.asObservable();
   currentDataCC = this.dataCC.asObservable();
   currentComprovativoCC = this.comprovativoCC.asObservable();
+  currentFirstTimeStake = this.firstTimeStake.asObservable();
 
   historyStream = this.historyStream$.asObservable();
 
@@ -95,6 +97,10 @@ export class DataService {
     this.comprovativoCC.next(value);
   }
 
+  changeCurrentFirstTimeStake(value: boolean) {
+    this.firstTimeStake.next(value);
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(new Map().set(0, undefined)
     .set(1, undefined)
@@ -112,6 +118,7 @@ export class DataService {
     this.currentDataCC = this.dataCC.asObservable();
     this.currentComprovativoCC = this.comprovativoCC.asObservable();
     this.updatedClient = this.updateClient.asObservable();
+    this.currentFirstTimeStake = this.firstTimeStake.asObservable();
     this.historyStream$.next(false);
   }
 

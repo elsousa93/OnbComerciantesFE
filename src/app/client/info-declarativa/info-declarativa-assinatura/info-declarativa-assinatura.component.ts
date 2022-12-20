@@ -45,6 +45,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
 
     var context = this;
+    this.initializeForm();
+
 
     this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
 
@@ -53,6 +55,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       stakeholders.forEach(function (value, index) {
         context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
           console.log("stakeholder adicionado com sucesso");
+          context.form.addControl(index + "", new FormControl(""));
           context.submissionStakeholders.push(res);
         }, error => {
           console.log("Erro a adicionar stakeholder");
@@ -74,6 +77,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       language: new FormControl('', Validators.required),
       signature: new FormControl(true, Validators.required)
     });
+
+    //this.submissionStakeholders.forEach((stake, index) => {
+    //  this.form.addControl(index + "", new FormControl(""));
+    //});
 
     this.form.statusChanges.pipe(distinctUntilChanged()).subscribe(val => {
       if (val === 'VALID') {
@@ -119,6 +126,17 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   sendFinalSubmission() {
     if (this.form.valid) {
+      var context = this;
+      this.submissionStakeholders.forEach((stake, index) => {
+        var signType = "";
+        signType = context.form.get(index + "").value;
+        stake["signType"] = signType;
+        this.stakeholderService.UpdateStakeholder(this.submissionId, stake.id, stake).subscribe(res => {
+          console.log("Stake atualizado ", res);
+        });
+      });
+
+
       this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
         this.submissionAnswer = result.result;
 
@@ -133,7 +151,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
           id: this.submissionAnswer.id,
           bank: this.submissionAnswer.bank,
           state: "Ready",
-          startedAt: new Date().toISOString()
+          startedAt: new Date().toISOString(),
+          //: this.form.get("language").value
         }
 
         this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {

@@ -552,7 +552,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
       this.comprovativoService.readBase64(doc).then((data) => {
         var docToSend: PostDocument = {
-          "documentType": "1001",
+          "documentType": "0000", //antes estava "1001"
           "documentPurpose": "Identification",
           "file": {
             "fileType": "PDF",

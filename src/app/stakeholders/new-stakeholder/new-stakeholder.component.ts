@@ -155,7 +155,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     if (changes["currentStakeholder"]) {
       this.isStakeholderFromCC(this.currentStakeholder);
       this.isStakeholderFromCRC(this.currentStakeholder);
-      if (identificationDocument.type === '0001') {
+      if (identificationDocument != undefined && identificationDocument?.type === '0001') {
         this.createFormCC();
       } else {
         this.initializeFormWithoutCC();

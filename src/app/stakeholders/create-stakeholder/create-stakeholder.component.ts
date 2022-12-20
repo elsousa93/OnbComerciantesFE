@@ -620,10 +620,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
         stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
         stakeholderToInsert["phone1"] = {
-          countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
+          countryCode: stakeholderToInsert["contacts"]["phone1"]["countryCode"],
           phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
         }
         stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
+
+        stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
 
         if (stakeholderToInsert["identificationDocument"] != null) { 
           stakeholderToInsert["identificationDocument"] = {

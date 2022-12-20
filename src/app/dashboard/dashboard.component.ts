@@ -582,6 +582,7 @@ export class DashboardComponent implements OnInit {
     this.dataService.updateData(null, null, null);
     this.dataService.changeUpdatedComprovativos(false);
     this.dataService.changeUpdatedClient(false);
+    this.dataService.changeCurrentFirstTimeStake(true);
     this.processNrService.changeProcessNumber(null);
 
     this.dataSourcePendentes.filterPredicate = function (record, filterValue) {
