@@ -587,11 +587,7 @@ export class CommercialOfferListComponent implements OnInit {
       });
     });
 
-    this.finalList.forEach((group, index) => {
-      if (group.attributes.length == 0) {
-        context.finalList.splice(index, 1);
-      }
-    });
+    var list = this.finalList.filter(group => group.attributes.length > 0);
 
     console.log("FINAL LIST ", this.finalList);
 
@@ -646,7 +642,7 @@ export class CommercialOfferListComponent implements OnInit {
           attributes: this.commissionAttributeList
         },
         paymentSchemes: this.paymentSchemes,
-        otherPackDetails: this.finalList
+        otherPackDetails: list
       }
       console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
