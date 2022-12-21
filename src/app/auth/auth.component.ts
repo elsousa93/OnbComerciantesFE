@@ -65,7 +65,8 @@ export class AuthComponent implements OnInit {
         user.userName = res.name;
         user.bankName = res["ext-bank"];
         user.bankLocation = res["ext-bankLocation"];
-        this.timeout = new Date(res.exp * 1000);
+        console.log("DADOS DO TOKEN ", res);
+        this.timeout = new Date(/*res.exp * 1000*/).setMinutes(new Date().getMinutes() + 1);
         this.expirationCounter(this.timeout);
         this.authService.changeUser(user);
         this.router.navigate(['/']);
