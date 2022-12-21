@@ -612,7 +612,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.sameNIPC = false;
     console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
-      this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], 'por mudar', 'por mudar').then(stakeholder => {
+      this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
         stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
         stakeholderToInsert["stakeholderId"] = this.currentStakeholder["stakeholderNumber"];
