@@ -138,7 +138,7 @@
     <form [formGroup]="formNewStakeholder">
       <h5 *ngIf="isShown && foundStakeholders" class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h5>
       <div *ngIf="isShown" class="row container-fluid" id="divshow" style="padding-left: 0px;">
-        <app-search-stakeholders [clientID]="testEvent" (selectedStakeholderEmitter)="selectNewStakeholder($event)"
+        <app-search-stakeholders [clientID]="testEvent" [searchType]="docType" (selectedStakeholderEmitter)="selectNewStakeholder($event)"
           (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
       </div>
       <div *ngIf="isShown && foundStakeholders == false">

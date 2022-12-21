@@ -47,7 +47,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   @Output() insertedStakeSubject = new EventEmitter<Subject<IStakeholders>>();
   @Output() canceledSearch = new EventEmitter<boolean>();
   @Output() sameNIF = new EventEmitter<string>();
-  @Output() searchType = this.docType;
 
   emitInsertedStake(stake) {
     this.insertedStakeSubject.emit(stake);
