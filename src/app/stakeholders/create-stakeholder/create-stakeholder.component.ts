@@ -659,6 +659,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       console.log("formstakeholder: ", this.formStakeholderSearch);
       var fullName = this.formNewStakeholder.get("name")?.value != '' ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
       var nameArray = fullName.split(" ");
+      var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
       var stakeholderToInsert: IStakeholders = {
         "fiscalId": this.formNewStakeholder.get("nif")?.value!='' ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
         "identificationDocument": {
@@ -668,7 +669,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         "phone1": {},
         "phone2": {},
         "fullName": fullName,
-        "shortName": nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName
+        "shortName": shortName,
+        "contactName": shortName 
       }
       if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {

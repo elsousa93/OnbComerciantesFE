@@ -587,6 +587,12 @@ export class CommercialOfferListComponent implements OnInit {
       });
     });
 
+    this.finalList.forEach((group, index) => {
+      if (group.attributes.length == 0) {
+        context.finalList.splice(index, 1);
+      }
+    });
+
     console.log("FINAL LIST ", this.finalList);
 
     //remover da lista dos pacotes comerciais, os grupos que não foram selecionados
