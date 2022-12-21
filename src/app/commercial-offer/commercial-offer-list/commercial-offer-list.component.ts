@@ -557,36 +557,47 @@ export class CommercialOfferListComponent implements OnInit {
       });
     });
 
+    var finalGroupsList = this.groupsList.filter(group => group.attributes.filter(attr => {
+      if (attr.value) {
+        if (attr.bundles != null || attr.bundles.length > 0) {
+          attr.bundles.filter(bundle => bundle.attributes.filter(bundleAttr => bundleAttr.value))
+        }
+        return true;
+      }
+    }));
+
+    console.log("GROUPS LIST COM FILTER ", finalGroupsList);
+
     //remover da lista dos pacotes comerciais, os grupos que não foram selecionados
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr, ind) => {
         if (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "") {
           if (attr.value !== this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
-            console.log("AGGREGATOR VALOR ERA FALSO GROUP INDEX: ", ind);
-            console.log("AGGREGATOR LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
+            //console.log("AGGREGATOR VALOR ERA FALSO GROUP INDEX: ", ind);
+            //console.log("AGGREGATOR LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
             var removedGroup = group.attributes.splice(ind, 1);
-            console.log("AGGREGATOR ELEMENTO RETIRADO ", removedGroup);
-            console.log("AGGREGATOR LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
+            //console.log("AGGREGATOR ELEMENTO RETIRADO ", removedGroup);
+            //console.log("AGGREGATOR LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
             return;
           }
         } else { 
           if (attr.value === false || attr.value == undefined) {
-            console.log("VALOR ERA FALSO GROUP INDEX: ", ind);
-            console.log("LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
+            ////console.log("VALOR ERA FALSO GROUP INDEX: ", ind);
+            ////console.log("LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
             var removedGroup = group.attributes.splice(ind, 1);
-            console.log("ELEMENTO RETIRADO ", removedGroup);
-            console.log("LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
+            //console.log("ELEMENTO RETIRADO ", removedGroup);
+            //console.log("LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
             return;
           } else {
             if (attr.bundles != null || attr.bundles != undefined || attr.bundles.length > 0) {
               attr.bundles.forEach((bundle, index) => {
                 bundle.attributes.forEach((bundleAttr, i) => {
                   if (bundleAttr.value === false) {
-                    console.log('VALOR ERA FALSO BUNDLE INDEX: ', i);
-                    console.log("BUNDLES ANTES DE RETIRAR O ELEMENTO ", bundle.attributes);
+                    //console.log('VALOR ERA FALSO BUNDLE INDEX: ', i);
+                    //console.log("BUNDLES ANTES DE RETIRAR O ELEMENTO ", bundle.attributes);
                     var removedBundle = bundle.attributes.splice(i, 1);
-                    console.log("BUNDLES DEPOIS DE RETIRAR O ELEMENTO ", bundle.attributes);
-                    console.log("ELEMENTO RETIRADO ", removedBundle);
+                    //console.log("BUNDLES DEPOIS DE RETIRAR O ELEMENTO ", bundle.attributes);
+                    //console.log("ELEMENTO RETIRADO ", removedBundle);
                     return;
                   }
                 });
