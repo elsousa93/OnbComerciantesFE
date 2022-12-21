@@ -127,15 +127,19 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   sendFinalSubmission() {
     if (this.form.valid) {
       var context = this;
+
       this.submissionStakeholders.forEach((stake, index) => {
         var signType = "";
-        signType = context.form.get(index + "").value;
+        if (context.isVisible) {
+          signType = "CitizenCard";
+        } else {
+          signType = context.form.get(index + "").value;
+        }
         stake["signType"] = signType;
         this.stakeholderService.UpdateStakeholder(this.submissionId, stake.id, stake).subscribe(res => {
           console.log("Stake atualizado ", res);
         });
       });
-
 
       this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
         this.submissionAnswer = result.result;
