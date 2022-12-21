@@ -539,6 +539,9 @@ export class CommercialOfferListComponent implements OnInit {
       payment.value = group.get("formControlPayment" + payment.id).value;
     });
 
+    var finalPaymentAttributes = this.paymentSchemes.attributes.filter(payment => payment.value);
+    this.paymentSchemes.attributes = finalPaymentAttributes;
+
     //atualizar a lista dos pacotes comerciais com os valores selecionados no front
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr) => {
@@ -557,36 +560,65 @@ export class CommercialOfferListComponent implements OnInit {
       });
     });
 
+
+    var finalGroupsList = this.groupsList.filter(group => group.attributes.filter(attr => {
+      if (attr.value) {
+        if (attr.bundles != null || attr.bundles.length > 0) {
+          attr.bundles.filter(bundle => bundle.attributes.filter(bundleAttr => bundleAttr.value));
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }));
+
+    console.log("GROUPS LIST COM FILTER ", finalGroupsList);
+
+
+    this.groupsList.forEach(group => {
+      var groupList = group.attributes.filter(attr => attr.value == true || (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "" && attr.value == this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value));
+      context.finalList.push(group);
+      context.finalList.find(l => l.id == group.id).attributes = groupList;
+      group.attributes.forEach(attr => {
+        attr.bundles.forEach(bundle => {
+          var bundleList = bundle.attributes.filter(bundleAttr => bundleAttr.value == true);
+          context.finalList.find(l => l.id == group.id).attributes.find(a => a.id == attr.id).bundles.find(b => b.id == bundle.id).attributes = bundleList;
+        });
+      });
+    });
+
+    console.log("FINAL LIST ", this.finalList);
+
     //remover da lista dos pacotes comerciais, os grupos que não foram selecionados
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr, ind) => {
         if (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "") {
           if (attr.value !== this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
-            console.log("AGGREGATOR VALOR ERA FALSO GROUP INDEX: ", ind);
-            console.log("AGGREGATOR LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
+            //console.log("AGGREGATOR VALOR ERA FALSO GROUP INDEX: ", ind);
+            //console.log("AGGREGATOR LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
             var removedGroup = group.attributes.splice(ind, 1);
-            console.log("AGGREGATOR ELEMENTO RETIRADO ", removedGroup);
-            console.log("AGGREGATOR LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
+            //console.log("AGGREGATOR ELEMENTO RETIRADO ", removedGroup);
+            //console.log("AGGREGATOR LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
             return;
           }
         } else { 
           if (attr.value === false || attr.value == undefined) {
-            console.log("VALOR ERA FALSO GROUP INDEX: ", ind);
-            console.log("LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
+            ////console.log("VALOR ERA FALSO GROUP INDEX: ", ind);
+            ////console.log("LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
             var removedGroup = group.attributes.splice(ind, 1);
-            console.log("ELEMENTO RETIRADO ", removedGroup);
-            console.log("LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
+            //console.log("ELEMENTO RETIRADO ", removedGroup);
+            //console.log("LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
             return;
           } else {
             if (attr.bundles != null || attr.bundles != undefined || attr.bundles.length > 0) {
               attr.bundles.forEach((bundle, index) => {
                 bundle.attributes.forEach((bundleAttr, i) => {
                   if (bundleAttr.value === false) {
-                    console.log('VALOR ERA FALSO BUNDLE INDEX: ', i);
-                    console.log("BUNDLES ANTES DE RETIRAR O ELEMENTO ", bundle.attributes);
+                    //console.log('VALOR ERA FALSO BUNDLE INDEX: ', i);
+                    //console.log("BUNDLES ANTES DE RETIRAR O ELEMENTO ", bundle.attributes);
                     var removedBundle = bundle.attributes.splice(i, 1);
-                    console.log("BUNDLES DEPOIS DE RETIRAR O ELEMENTO ", bundle.attributes);
-                    console.log("ELEMENTO RETIRADO ", removedBundle);
+                    //console.log("BUNDLES DEPOIS DE RETIRAR O ELEMENTO ", bundle.attributes);
+                    //console.log("ELEMENTO RETIRADO ", removedBundle);
                     return;
                   }
                 });
@@ -608,7 +640,7 @@ export class CommercialOfferListComponent implements OnInit {
           attributes: this.commissionAttributeList
         },
         paymentSchemes: this.paymentSchemes,
-        otherPackDetails: this.groupsList
+        otherPackDetails: this.finalList
       }
       console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
