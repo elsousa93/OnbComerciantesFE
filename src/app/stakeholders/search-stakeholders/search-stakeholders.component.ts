@@ -27,7 +27,7 @@ export class SearchStakeholdersComponent implements OnInit {
 
   //Variáveis de Input
   @Input() clientID: Observable<string>;
-  @Input() searchType?: string = "por mudar";
+  @Input() searchType?: string;
   @Input() requestID?: string = "por mudar";
   //@Input() canEdit?: boolean = false; Pode vir a ser preciso
   @Input() canSelect?: boolean = true;
@@ -84,7 +84,7 @@ export class SearchStakeholdersComponent implements OnInit {
     console.log("A pesquisar um stakeholder");
     var context = this;
     var stakeholder = null;
-    this.stakeholderService.SearchStakeholderByQuery(clientID, "por mudar", this.UUIDAPI, "2").then(res => {
+    this.stakeholderService.SearchStakeholderByQuery(clientID, this.searchType, this.UUIDAPI, "2").then(res => {
       var clients = res.result;
       if (clients.length > 0) {
         context.stakeholdersToShow = [];
