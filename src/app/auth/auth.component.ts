@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,7 +27,7 @@ export class AuthComponent implements OnInit {
   roles: role[] = roles; //roles é uma const
   banks: Bank[];
 
-  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService) { }
+  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.generateAuthForm();
@@ -66,7 +67,8 @@ export class AuthComponent implements OnInit {
         user.bankName = res["ext-bank"];
         user.bankLocation = res["ext-bankLocation"];
         console.log("DADOS DO TOKEN ", res);
-        this.timeout = new Date(/*res.exp * 1000*/).setMinutes(new Date().getMinutes() + 1);
+        var newDate = new Date(res.exp * 1000);
+        this.timeout = newDate.getTime() - new Date().getTime();
         this.expirationCounter(this.timeout);
         this.authService.changeUser(user);
         this.router.navigate(['/']);
@@ -90,7 +92,7 @@ export class AuthComponent implements OnInit {
     user.permissions = UserPermissions.ADMIN;
     user.authTime = (new Date()).toLocaleString('pt-PT');
     user.token = ''
-    
+   
     this.authService.changeUser(user);
 
     console.log("Form da autenticação: " + this.authService);
@@ -118,11 +120,19 @@ export class AuthComponent implements OnInit {
   }
 
   expirationCounter(timeout) {
+    console.log(timeout);
+    setTimeout(() => {
+      console.log('EXPIRED!!');
+      this.logout();
+    },timeout)
+
+    console.log("TIMEOUT ", timeout);
     this.tokenSubscription.unsubscribe();
     this.tokenSubscription = of(null).pipe(delay(timeout)).subscribe((expired) => {
       console.log('EXPIRED!!');
       this.logout();
     });
+    console.log('SUBSCRIPTION ', this.tokenSubscription);
   }
 
   logout() {

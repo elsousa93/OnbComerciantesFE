@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { catchError, Observable } from 'rxjs';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators'
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
+  isRefreshing: boolean = false;
 
   constructor(private authService: AuthService) {
 
@@ -18,7 +20,31 @@ export class Interceptor implements HttpInterceptor {
         }
       });
     }
-    return next.handle(request);
+
+    return next.handle(request).pipe(
+      catchError((error) => {
+        if (
+          error instanceof HttpErrorResponse &&
+          !request.url.includes('/token') &&
+          error.status === 401
+        ) {
+          return this.handle401Error(request, next);
+        }
+
+        return throwError(() => error);
+      })
+      );
   }
 
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      localStorage.removeItem('auth');
+      this.authService.reset();
+    }
+
+    return next.handle(request);
+  }
 }
+
+
