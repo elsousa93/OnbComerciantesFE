@@ -143,7 +143,7 @@
     "updateData": "Pretende efetuar a atualização eletrónica dos dados usando o cartão de cidadão?",
     "identificationDocumentType": "Tipo de Documento de Identificação (1ª Nacionalidade)",
     "identificationDocumentCountry": "País de Documento de Identificação (1ª Nacionalidade)",
-    "identificationDocumentNumber": "Nº Documento Documento de Identificação (1ª Nacionalidade)",
+    "identificationDocumentNumber": "Nº Documento de Identificação (1ª Nacionalidade)",
     "identificationDocumentDate": "Data de Validade Doc. de Identificação (1ª Nacionalidade)",
     "birthDate": "Data de nascimento"
   },
