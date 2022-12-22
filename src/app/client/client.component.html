@@ -124,8 +124,8 @@
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (change)="clearNewForm()" (keypress)="numericOnly($event)" (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId"
-                        name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId"
+                        name="clientId" #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
 
                     </div>
                   </div>

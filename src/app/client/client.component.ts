@@ -891,7 +891,7 @@ export class ClientComponent implements OnInit {
   }
 
   clearNewForm() {
-    this.clientNr = true;
+    this.notFound = false;
     this.newClientForm = null;
   }
 
