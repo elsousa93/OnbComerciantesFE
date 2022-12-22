@@ -372,7 +372,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     let discount = Number(event.target.value);
     let originalValue = this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingOriginal" + event.target.id).value;
     let finalValue = originalValue - discount;
-    this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingFinal" + event.target.id).setValue(finalValue);
+    this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingFinal" + event.target.id).setValue(finalValue.toFixed(2));
     if (finalValue < 0) {
       this.isInvalidNumber = true;
     } else {
