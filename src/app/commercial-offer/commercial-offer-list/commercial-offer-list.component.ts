@@ -494,8 +494,8 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (!this.form.get("isUnicre").value) {
       this.form.get("terminalRegistrationNumber").setValue(null);
-      this.form.get("terminalRegistrationNumber").addValidators(Validators.required);
-      this.form.updateValueAndValidity();
+      this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
+      this.form.get("terminalRegistrationNumber").updateValueAndValidity();
       this.disableNewConfiguration = true;
     }
 
@@ -510,6 +510,12 @@ export class CommercialOfferListComponent implements OnInit {
     this.isUnicre = bool;
     this.disableNewConfiguration = !bool;
     this.isNewConfig = null;
+    if (!bool) {
+      this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
+    } else {
+      this.form.get("terminalRegistrationNumber").setValidators(null);
+    }
+    this.form.get("terminalRegistrationNumber").updateValueAndValidity();
   }
 
   changeReplicateProducts(bool: boolean) {

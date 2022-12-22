@@ -169,16 +169,22 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.formConfig.get("terminalProperty").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
       if (val.toLocaleLowerCase() === 'self') {
         this.formConfig.get('communicationOwnership').setValidators([Validators.required]);
+      } else if (val.toLocaleLowerCase() === 'client') {
+        this.formConfig.get('communicationOwnership').setValidators(null);
+      }
+      this.formConfig.get('communicationOwnership').updateValueAndValidity({ emitEvent: false });
+    });
+
+    this.formConfig.get("communicationOwnership").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val.toLocaleLowerCase() === 'self') {
         this.formConfig.get('terminalType').setValidators([Validators.required]);
         this.formConfig.get('communicationType').setValidators([Validators.required]);
         this.formConfig.get('terminalAmount').setValidators([Validators.required]);
       } else if (val.toLocaleLowerCase() === 'client') {
-        this.formConfig.get('communicationOwnership').setValidators(null);
         this.formConfig.get('terminalType').setValidators(null);
         this.formConfig.get('communicationType').setValidators(null);
         this.formConfig.get('terminalAmount').setValidators(null);
       }
-      this.formConfig.get('communicationOwnership').updateValueAndValidity({ emitEvent: false });
       this.formConfig.get('terminalType').updateValueAndValidity({ emitEvent: false });
       this.formConfig.get('communicationType').updateValueAndValidity({ emitEvent: false });
       this.formConfig.get('terminalAmount').updateValueAndValidity({ emitEvent: false });

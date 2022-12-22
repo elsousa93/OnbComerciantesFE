@@ -14,7 +14,7 @@
       </nav>
     </div>
     <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-      <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5" *ngIf="!editStakeInfo">
+      <div class="bg-white align-self-center col-12 mt-0 ms-0 me-0 pt-5"><!--*ngIf="!editStakeInfo"-->
         <div class="accordion1 accordion-flush" id="accordionFlushExample1">
           <div class="accordion1-item">
             <h2 class="accordion1-header" id="flush-headingFour">
@@ -27,7 +27,7 @@
             </h2>
             <div id="flush-collapseFour" class="accordion-collapse collapse show" aria-labelledby="flush-headingFour"
                  data-bs-parent="#accordionFlushExample1">
-              <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=false [insertStakeholderEvent]="insertStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)" [sameNIFEvent]="sameNIFEvent" (sameNIFEmitter)="isSameNIF($event)" [isInfoDeclarativa]=false>
+              <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canSelect]=editStakeInfo [canDelete]=!editStakeInfo [insertStakeholderEvent]="insertStakeholderEvent" (selectedStakeholderEmitter)="selectStake($event)" [updatedStakeholderEvent]="updatedStakeholderEvent" [previousStakeholderEvent]="previousStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)" [sameNIFEvent]="sameNIFEvent" (sameNIFEmitter)="isSameNIF($event)" [isInfoDeclarativa]=editStakeInfo>
               </app-stakeholders-list>
             </div>
           </div>
@@ -39,7 +39,7 @@
           <div class="bg-white align-self-center col-10 mt-0 pt-2 ps-0" style="width: auto;">
             <div class="accordion1 accordion-flush" id="accordionFlushExample">
 
-              <div class="accordion1-item">
+              <!--<div class="accordion1-item">
                 <h2 class="accordion1-header" id="flush-headingOne">
                   <button class="accordion1-button" type="button"
                           data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
@@ -48,13 +48,13 @@
                     </span>&nbsp;&nbsp;{{'stakeholder.title'|translate|uppercase}}
                   </button>
                 </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne">
+                <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne">-->
                   <!-- data-bs-parent="#accordionFlushExample" -->
-                  <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="selectStake($event)" [updatedStakeholderEvent]="updatedStakeholderEvent" [previousStakeholderEvent]="previousStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)" [isInfoDeclarativa]=true>
+                  <!--<app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false (selectedStakeholderEmitter)="selectStake($event)" [updatedStakeholderEvent]="updatedStakeholderEvent" [previousStakeholderEvent]="previousStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)" [isInfoDeclarativa]=true>-->
                     <!-- [canDelete]=true -->
-                  </app-stakeholders-list>
+                  <!--</app-stakeholders-list>
                 </div>
-              </div>
+              </div>-->
 
               <div class="accordion1-item">
                 <h2 class="accordion1-header" id="flush-headingTwo">

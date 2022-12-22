@@ -66,7 +66,6 @@ export class AuthComponent implements OnInit {
         user.userName = res.name;
         user.bankName = res["ext-bank"];
         user.bankLocation = res["ext-bankLocation"];
-        console.log("DADOS DO TOKEN ", res);
         var newDate = new Date(res.exp * 1000);
         this.timeout = newDate.getTime() - new Date().getTime();
         this.expirationCounter(this.timeout);
@@ -120,19 +119,18 @@ export class AuthComponent implements OnInit {
   }
 
   expirationCounter(timeout) {
-    console.log(timeout);
     setTimeout(() => {
       console.log('EXPIRED!!');
       this.logout();
     },timeout)
 
-    console.log("TIMEOUT ", timeout);
-    this.tokenSubscription.unsubscribe();
-    this.tokenSubscription = of(null).pipe(delay(timeout)).subscribe((expired) => {
-      console.log('EXPIRED!!');
-      this.logout();
-    });
-    console.log('SUBSCRIPTION ', this.tokenSubscription);
+    //console.log("TIMEOUT ", timeout);
+    //this.tokenSubscription.unsubscribe();
+    //this.tokenSubscription = of(null).pipe(delay(timeout)).subscribe((expired) => {
+    //  console.log('EXPIRED!!');
+    //  this.logout();
+    //});
+    //console.log('SUBSCRIPTION ', this.tokenSubscription);
   }
 
   logout() {

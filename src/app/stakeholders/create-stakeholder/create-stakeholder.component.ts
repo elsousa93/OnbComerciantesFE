@@ -35,6 +35,7 @@ import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
 import { Address } from '../../pep/IPep.interface';
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { PostDocument } from '../../submission/document/ISubmission-document';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -313,6 +314,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.ListDocTypeP = this.ListDocTypeP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     })));
 
+    this.showSameNIFError = false;
     this.initializeForm();
 
     //this.ngOnInit();
@@ -454,6 +456,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem("returned");
     this.data.updateData(false, 2);
+
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('searchStakes', this.formStakeholderSearch);
@@ -610,6 +613,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
   addStakeholder() {
     this.sameNIPC = false;
+    this.showSameNIFError = false;
     console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
@@ -695,18 +699,36 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
    *  email de 14/09
    */
   addStakeholderWithCC() {
-    //Colocar comprovativo do CC na Submissao 
-    this.submissionDocumentService.SubmissionPostDocument(this.submissionId, this.prettyPDF);
     this.isCC = true;
-
     var dateCC = this.dataCCcontents.expiricyDateCC;
     var separated = dateCC.split(' ');
     var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
 
+    //Colocar comprovativo do CC na Submissao
+    var documentCC: PostDocument = {
+      documentType: '0001',
+      documentPurpose: 'Identification',
+      file: {
+        binary: this.prettyPDF.file,
+        fileType: 'PDF',
+      },
+      validUntil: new Date(formatedDate).toISOString(),
+      data: null
+    };
+
+    this.submissionDocumentService.SubmissionPostDocument(this.submissionId, documentCC).subscribe(result => {
+      console.log('documento adicionado ', result);
+    });
+
+    var fullName = this.dataCCcontents.nameCC;
+    var nameArray = fullName.split(" ");
+    var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+
     var stakeholderToInsert: IStakeholders = {
       "fiscalId": this.dataCCcontents.nifCC,
-      "fullName": this.dataCCcontents.nameCC,
-      "shortName": this.dataCCcontents.nameCC,
+      "fullName": fullName,
+      "shortName": shortName,
+      "contactName": shortName,
       "identificationDocument": {
         "type": '0001',           
         "number": this.dataCCcontents.cardNumberCC,
@@ -723,13 +745,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       "phone1": {},
       "phone2": {}
     }
-
-    let navigationExtras: NavigationExtras = {
-      state: {
-        isCC: this.isCC
-      }
-    };
-
+    
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
       stakeholderToInsert.id = result["id"];
       this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
@@ -738,7 +754,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       });
       this.emitInsertedStake(of(stakeholderToInsert));
       this.clearForm();
-      this.route.navigate(['/stakeholders/']); 
     }, error => {
       this.logger.error(error, "", "Erro ao adicionar stakeholder com o CC");
     });
@@ -748,6 +763,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.emitCanceledSearch(true);
   }
 
+  clearNewForm() {
+    this.isShown = false;
+    this.foundStakeholders = null;
+    this.formNewStakeholder.reset();
+  }
 
   numericOnly(event): boolean {
     if (this.docType === '0501' || this.docType === '0502') {

@@ -890,6 +890,11 @@ export class ClientComponent implements OnInit {
     this.selectedClient.idx = clientEmitted.idx;
   }
 
+  clearNewForm() {
+    this.clientNr = true;
+    this.newClientForm = null;
+  }
+
   numericOnly(event): boolean {
     if (this.docType === '0501' || this.docType === '0502') {
       var ASCIICode = (event.which) ? event.which : event.keyCode;
