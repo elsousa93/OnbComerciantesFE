@@ -430,6 +430,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
    * @param readable
    */
   changeDataReadable(readable: boolean) {
+    if (readable) {
+      this.stakeholderNumber = '';
+      this.clearNewForm();
+    }
     this.isNoDataReadable = readable;
     if (readable === false) {
       this.okCC = readable; //W

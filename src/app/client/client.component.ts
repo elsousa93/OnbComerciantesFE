@@ -746,6 +746,11 @@ export class ClientComponent implements OnInit {
    * @param readable: true: quero ler o CC; false: não quer ler o CC
    */
   changeDataReadable(readable: boolean) {
+    if (readable) {
+      this.newClient.clientId = '';
+
+      this.clearNewForm();
+    }
     this.isNoDataReadable = readable;
     this.toSearch = false;
     if (readable === false) {
