@@ -21,9 +21,7 @@ export class SubmissionComponent implements OnInit {
 
 
   constructor(private logger : LoggerService, private router: ActivatedRoute,
-    @Inject(configurationToken) private configuration: Configuration,
     private http: HttpClient, private route: Router) {
-    this.baseUrl = configuration.baseUrl;
     this.ngOnInit();
     
    

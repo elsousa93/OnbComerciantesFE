@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { map, catchError, retryWhen, delay, take } from 'rxjs/operators';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { APIRequestsService } from '../../apirequests.service';
+import { AppConfigService } from '../../app-config.service';
 import { HttpMethod } from '../../enums/enum-data';
 import { HttpUtilService } from './http.services';
 
@@ -15,9 +16,9 @@ export class ComprovativosService {
   private baseUrl: string;
   private outboundUrl: string;
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private httpUtil: HttpUtilService, private APIRequest: APIRequestsService) {
-    this.baseUrl = configuration.baseUrl;
-    this.outboundUrl = configuration.outboundUrl;
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private httpUtil: HttpUtilService, private APIRequest: APIRequestsService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
+    this.outboundUrl = configuration.getConfig().outboundUrl;
 
     this.API_URL = this.baseUrl;
    }

@@ -215,7 +215,7 @@ export class CountrysComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService,
+  constructor(private logger: LoggerService, private authService: AuthService,
     private route: Router, private tableInfo: TableInfoService, private data: DataService, 
     private router: ActivatedRoute, private processNrService: ProcessNumberService,
     private rootFormDirective: FormGroupDirective, private comprovativoService: ComprovativosService) {

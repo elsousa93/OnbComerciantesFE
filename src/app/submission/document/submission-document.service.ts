@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { AppConfigService } from '../../app-config.service';
 import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmission-document';
 
@@ -11,9 +12,9 @@ export class SubmissionDocumentService {
   private baseUrl;
   private urlOutbound;
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private authService: AuthService) { 
-    this.baseUrl = configuration.baseUrl;
-    this.urlOutbound = configuration.outboundUrl;
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private authService: AuthService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
+    this.urlOutbound = configuration.getConfig().outboundUrl;
   }
 
 

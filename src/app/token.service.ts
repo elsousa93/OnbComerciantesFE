@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { merge, Observable, switchMap } from 'rxjs';
 import { Configuration, configurationToken } from './configuration';
 import { AuthService } from './services/auth.service';
+import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,16 @@ export class TokenService {
   private neyondBackURL: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private authService: AuthService) {
-    this.DOCASUrl = configuration.DOCASUrl;
-    this.authTokenUrl = configuration.authTokenUrl;
-    this.neyondBackURL = configuration.neyondBackUrl;
+  constructor(private router: ActivatedRoute, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private route: Router, private authService: AuthService) {
+    this.DOCASUrl = configuration.getConfig().DOCASUrl;
+    this.authTokenUrl = configuration.getConfig().authTokenUrl;
+    this.neyondBackURL = configuration.getConfig().neyondBackUrl;
   }
 
   async getAccessToken(): Promise<any> {
 
-    var clientID = this.configuration.clientID;
-    var clientSecret = this.configuration.clientSecret;
+    var clientID = this.configuration.getConfig().clientID;
+    var clientSecret = this.configuration.getConfig().clientSecret;
 
     var secret = btoa(clientID + ":" + clientSecret);
 
@@ -54,8 +55,8 @@ export class TokenService {
 
   async getLoginToken(username?: string, bank?: string, bankLocation?: string): Promise<any> {
     var URI = this.authTokenUrl + "?delegated_token=true";
-    var clientID = this.configuration.clientID;
-    var clientSecret = this.configuration.clientSecret;
+    var clientID = this.configuration.getConfig().clientID;
+    var clientSecret = this.configuration.getConfig().clientSecret;
 
     var secret = btoa(clientID + ":" + clientSecret);
 

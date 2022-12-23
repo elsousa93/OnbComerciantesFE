@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { map, catchError, retryWhen, delay, take } from 'rxjs/operators';
 import { Configuration, configurationToken } from 'src/app/configuration';
+import { AppConfigService } from '../../app-config.service';
 import { HttpUtilService } from './http.services';
 
 
@@ -14,8 +15,8 @@ export class AceitacaoService {
 
   
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private httpUtil: HttpUtilService) {
-    this.baseUrl = configuration.baseUrl;
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private httpUtil: HttpUtilService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
 
     this.API_URL = this.baseUrl;
    }

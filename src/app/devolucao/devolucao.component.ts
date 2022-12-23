@@ -30,7 +30,7 @@ export class DevolucaoComponent implements OnInit{
 
   public issues: BusinessIssueViewModel
 
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : LoggerService, private http: HttpClient,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService) {

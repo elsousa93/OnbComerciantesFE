@@ -10,6 +10,7 @@ import { translationLanguages } from './translationLanguages';
 import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from './table-info/table-info.service';
 import { HttpMethod } from './enums/enum-data';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -34,8 +35,8 @@ export class AppComponent {
   translationLanguages = translationLanguages;
 
     constructor(private logger: LoggerService, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
-
+      changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
+      console.log('O AMBIENTE É DE PRODUCAO: ', environment.production);
     //ir buscar as linguagens disponiveis. para adicionar uma nova linguagem basta adicionar à lista que se encontra no 'translationLanguages.ts'
     let langs = this.translationLanguages.map(val => {
       return val.abbreviation;

@@ -132,13 +132,11 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
-    @Inject(configurationToken) private configuration: Configuration, private route: Router, private fb: FormBuilder,
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private route: Router, private fb: FormBuilder,
     private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService,
     private submissionService: SubmissionService, private datePipe: DatePipe, private rootFormGroup: FormGroupDirective) {
 
     this.loadTableInfoData();
-    this.baseUrl = configuration.baseUrl;
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));

@@ -43,7 +43,7 @@ export class ObterPackContratualComponent implements OnInit{
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('submissionModal') submissionModal;
   
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : LoggerService, private http: HttpClient,
     private router: Router, private translate: TranslateService, private snackBar: MatSnackBar, private modalService: BsModalService, private processService: ProcessService, public aceitacao: AceitacaoService) {
 
     this.ngOnInit();

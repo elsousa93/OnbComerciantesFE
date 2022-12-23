@@ -6,6 +6,7 @@ import { LoggerService } from './logger.service';
 import { Configuration, configurationToken } from './configuration';
 import { BehaviorSubject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from './app-config.service';
 
 
 
@@ -17,7 +18,7 @@ export class APIRequestsService {
 
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, public translate: TranslateService) {
+  constructor(private logger: LoggerService, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, public translate: TranslateService) {
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });

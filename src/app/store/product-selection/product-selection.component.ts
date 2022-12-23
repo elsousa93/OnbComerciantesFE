@@ -51,8 +51,7 @@ export class ProductSelectionComponent implements OnInit {
   public cardNotPresent;
   public combinedOffer;
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
-    @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService,
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private route: Router, private data: DataService,
     private storeService: StoreService, private rootFormGroup: FormGroupDirective, private COService: CommercialOfferService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 

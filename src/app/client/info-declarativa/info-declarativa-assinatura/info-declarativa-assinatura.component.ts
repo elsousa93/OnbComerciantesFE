@@ -39,8 +39,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public subscription: Subscription;
   public submissionAnswer: SubmissionGetTemplate;
 
-  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
-    this.baseUrl = configuration.baseUrl;
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
 

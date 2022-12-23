@@ -348,7 +348,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
 
-  constructor(private logger: LoggerService, private datepipe: DatePipe, @Inject(configurationToken) private configuration: Configuration, private formBuilder: FormBuilder,
+  constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
     private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService) {

@@ -2,7 +2,7 @@ import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { environment } from './environments/environment.prod';
 import { Configuration, configurationToken } from 'src/app/configuration';
 
 
@@ -12,17 +12,18 @@ import { Configuration, configurationToken } from 'src/app/configuration';
 
 let path = environment.production ? './assets/config/config.prod.json' : './assets/config/config.json';
 
+platformBrowserDynamic().bootstrapModule(AppModule);
 
-fetch(path)
-  .then(file => file.json())
-  .then((config : Configuration) => {
-    if (environment.production){
-      enableProdMode();
-    }
-    return platformBrowserDynamic([
-      { provide: configurationToken, useValue: config },
-  ]).bootstrapModule(AppModule);
-  }).catch(err => console.log(err));
+//fetch(path)
+//  .then(file => file.json())
+//  .then((config : Configuration) => {
+//    if (environment.production){
+//      enableProdMode();
+//    }
+//    return platformBrowserDynamic([
+//      { provide: configurationToken, useValue: config },
+//  ]).bootstrapModule(AppModule);
+//  }).catch(err => console.log(err));
 
 window.addEventListener('unload', function () {
   console.log("deu unload");

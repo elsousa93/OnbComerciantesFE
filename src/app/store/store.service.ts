@@ -12,6 +12,7 @@ import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipmen
 import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
+import { AppConfigService } from '../app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,20 +21,16 @@ export class StoreService {
 
   private baseUrl: string;
   private urlOutbound: string;
-  private mockacoUrl: string;
-  private acquiringUrl: string;
 
   currentLanguage: string;
 
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService,
     private route: Router, private tableinfo: TableInfoService, private APIService: APIRequestsService) {
-    this.baseUrl = configuration.baseUrl;
-    this.urlOutbound = configuration.outboundUrl;
-    this.mockacoUrl = configuration.mockacoUrl;
-    this.acquiringUrl = configuration.acquiringAPIUrl;
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
+    this.urlOutbound = configuration.getConfig().outboundUrl;
 
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
@@ -101,7 +98,7 @@ export class StoreService {
 
       }),
     }
-    return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
+    return this.http.get<ShopActivities[]>(this.baseUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
   GetAllShopProducts() {
@@ -111,7 +108,7 @@ export class StoreService {
 
       }),
     }
-    return this.http.get<Product[]>(this.acquiringUrl + 'product', HTTP_OPTIONS);
+    return this.http.get<Product[]>(this.baseUrl + 'product', HTTP_OPTIONS);
   }
 
   getProcessShopsList(processId: string) {
@@ -125,7 +122,7 @@ export class StoreService {
   getSubmissionShopsList(submissionId: string) {
     //tentar alterar o url para o do Mockaco
     //return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop');
-    var url = this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop';
+    var url = this.baseUrl + 'submission/' + submissionId + '/merchant/shop';
 
 
     return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
@@ -137,7 +134,7 @@ export class StoreService {
   }
 
   getSubmissionShopDetails(submissionId: string, shopId: string) {
-    var url = this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId;
+    var url = this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId;
 
     return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
@@ -151,7 +148,7 @@ export class StoreService {
   }
 
   activitiesbycode(code: string): any {
-    return this.http.get(this.mockacoUrl + 'v1/config/activities/' + code);
+    return this.http.get(this.baseUrl + 'v1/config/activities/' + code);
   }
 
   subzonesNearby(zipCode: string): any {

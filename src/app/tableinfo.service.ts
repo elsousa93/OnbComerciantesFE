@@ -6,6 +6,7 @@ import { Configuration, configurationToken } from './configuration';
 import { ITableInformation } from './ITableInformation.interface';
 import { DataService } from './nav-menu-interna/data.service';
 import { LoggerService } from 'src/app/logger.service';
+import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,12 @@ export class TableinfoService {
   private baseUrl;
 
   constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient, 
-    @Inject(configurationToken) private configuration: Configuration,
+    private http: HttpClient,
+    /*@Inject(configurationToken)*/ private configuration: AppConfigService,
     private route: Router,
     private data: DataService,
     private fb: FormBuilder) { 
-      this.baseUrl = configuration.baseUrl;
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     }
 
 // To get: /api/country

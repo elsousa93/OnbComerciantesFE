@@ -30,10 +30,8 @@ export class PepComponent implements OnInit {
 
   date: string;
 
-  constructor(private logger : LoggerService, private data: DataService, private datePipe: DatePipe,
-    @Inject(configurationToken) private configuration: Configuration, 
+  constructor(private logger : LoggerService, private data: DataService, private datePipe: DatePipe, 
     private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {      
-      this.baseUrl = configuration.baseUrl;
       this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 
       //this.ngOnInit();

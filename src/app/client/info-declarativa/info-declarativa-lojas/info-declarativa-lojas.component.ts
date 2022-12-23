@@ -64,8 +64,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   public subs: Subscription[] = [];
 
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
-    this.baseUrl = configuration.baseUrl;
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
     //this.ngOnInit();
     
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {

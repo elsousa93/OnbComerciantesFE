@@ -79,6 +79,7 @@ import { RepresentationPowerListComponent } from './client/representation-power/
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { InterceptorModule } from './interceptor/interceptor.module';
+import { AppConfigService } from './app-config.service';
 
 registerLocaleData(localePT);
 
@@ -87,6 +88,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/');
 }
 
+const appInitializerFn = (appConfig: AppConfigService) => {
+  return () => {
+    return appConfig.loadAppConfig();
+  };
+};
 
 @NgModule({
   declarations: [
@@ -233,7 +239,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         }
     }),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective, AppComponent],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective, AppComponent, AppConfigService, { provide: APP_INITIALIZER, useFactory: appInitializerFn, multi: true, deps: [AppConfigService] }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

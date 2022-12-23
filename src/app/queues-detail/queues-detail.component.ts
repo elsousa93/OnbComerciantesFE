@@ -64,7 +64,7 @@ export class QueuesDetailComponent implements OnInit {
   public state: State;
   //public externalState: ExternalState;
 
-  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService) {
 
     //Gets Queue Name and processId from the Dashboard component 

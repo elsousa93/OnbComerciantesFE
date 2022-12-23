@@ -50,8 +50,7 @@ export class SearchStakeholdersComponent implements OnInit {
 
   foundStakeholders: boolean;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
-    @Inject(configurationToken) private configuration: Configuration, 
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, 
     private route: Router, private stakeholderService: StakeholderService, private authService: AuthService, private translate: TranslateService) {
   }
 

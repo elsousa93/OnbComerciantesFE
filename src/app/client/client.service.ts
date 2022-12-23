@@ -7,6 +7,7 @@ import { Client } from './Client.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
+import { AppConfigService } from '../app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,10 @@ export class ClientService {
   private baseUrl: string;
   private urlOutbound: string;
 
-  constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private API: APIRequestsService) {
-      this.baseUrl = configuration.baseUrl;
-      this.urlOutbound = configuration.outboundUrl;
+  constructor(private logger: LoggerService, private router: ActivatedRoute,
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private route: Router, private API: APIRequestsService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
+    this.urlOutbound = configuration.getConfig().outboundUrl;
 
     }
 

@@ -91,8 +91,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private rootFormGroup: FormGroupDirective) {
-    this.baseUrl = configuration.baseUrl;
+  constructor(private logger: LoggerService, http: HttpClient, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private rootFormGroup: FormGroupDirective) {
 
     
     this.data.updateData(false, 5, 2);

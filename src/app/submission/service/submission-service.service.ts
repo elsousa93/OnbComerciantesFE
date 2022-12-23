@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { APIRequestsService } from '../../apirequests.service';
+import { AppConfigService } from '../../app-config.service';
 import { HttpMethod } from '../../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../../table-info/ITable-info.interface';
 import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, SubmissionGetTemplate, SubmissionGet } from '../ISubmission.interface'
@@ -15,8 +16,8 @@ export class SubmissionService {
   currentLanguage: string;
   languageStream$ = new BehaviorSubject<string>(''); 
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private API: APIRequestsService) {
-    this.baseUrl = configuration.baseUrl;
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });

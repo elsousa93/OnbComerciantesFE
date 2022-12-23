@@ -69,10 +69,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
-    this.baseUrl = configuration.baseUrl;
-
-
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     //this.ngOnInit();
     this.infoStakeholders = this.formBuilder.group({
       contacts: this.formBuilder.group({

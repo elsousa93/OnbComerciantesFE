@@ -14,6 +14,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { AppComponent } from '../app.component';
 import { Configuration, configurationToken } from '../configuration';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AppConfigService } from '../app-config.service';
 
 interface Process {
   processNumber: string;
@@ -51,12 +52,10 @@ export class ConsultasComponent implements OnInit{
   ListaDocType;
   isLengthOne: boolean = false;
 
-  
-  constructor(private logger: LoggerService, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, @Inject(configurationToken) private configuration: Configuration) {
 
+  constructor(private logger: LoggerService, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.appComponent.toggleSideNav(false);
-
-    this.baseUrl = configuration.baseUrl;
 
     //Gets ProcessNr when search on homepage does not return results 
     if (this.route.getCurrentNavigation().extras.state) {

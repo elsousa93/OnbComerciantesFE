@@ -21,10 +21,9 @@ export class ProcessComponent implements OnInit {
   public allIncompletedProcesses: Process[] = [];
 
   constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+    private http: HttpClient,
     private route: Router,
     private ProcessService: ProcessService) {
-    this.baseUrl = configuration.baseUrl;
 
 
     this.ngOnInit();

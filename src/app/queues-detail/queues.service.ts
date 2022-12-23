@@ -12,6 +12,7 @@ import { PostDocument } from '../submission/document/ISubmission-document';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
 import { LoggerService } from '../logger.service';
+import { AppConfigService } from '../app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,9 @@ export class QueuesService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private router: ActivatedRoute, private logger: LoggerService,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService,
     private route: Router, private tableinfo: TableInfoService, private APIService: APIRequestsService) {
-    this.acquiringUrl = configuration.acquiringAPIUrl;
+    this.acquiringUrl = configuration.getConfig().acquiringAPIUrl;
 
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val

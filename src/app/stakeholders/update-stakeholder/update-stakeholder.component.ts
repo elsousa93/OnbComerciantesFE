@@ -98,10 +98,8 @@ export class UpdateStakeholderComponent implements OnInit {
 
   constructor(private logger : LoggerService, private router: ActivatedRoute,
     private http: HttpClient, 
-    @Inject(configurationToken) private configuration: Configuration,
     private route: Router,  private fb: FormBuilder) {
     //private data: DataService
-    this.baseUrl = configuration.baseUrl;
 
     this.ngOnInit();
   }

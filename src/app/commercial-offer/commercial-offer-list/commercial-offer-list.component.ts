@@ -126,8 +126,8 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
 
-  constructor(private logger: LoggerService, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder, private tableInfo: TableInfoService) {
-    this.baseUrl = configuration.baseUrl;
+  constructor(private logger: LoggerService, http: HttpClient, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder, private tableInfo: TableInfoService) {
+    
     this.ngOnInit();
     this.loadReferenceData();
 

@@ -78,8 +78,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger : LoggerService, private formBuilder: FormBuilder, 
-    @Inject(configurationToken) private configuration: Configuration, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
+  constructor(private logger : LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.ngOnInit();
 
 

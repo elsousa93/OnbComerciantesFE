@@ -99,7 +99,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   @Output() fileEmitter = new EventEmitter<{ tipo: string, dataDocumento: string, file: File, id: string }>();
 
-  constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
     this.initializeForm();

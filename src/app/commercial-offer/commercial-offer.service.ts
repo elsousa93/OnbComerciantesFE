@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
 import { APIRequestsService } from '../apirequests.service';
+import { AppConfigService } from '../app-config.service';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { TreatedResponse } from '../table-info/ITable-info.interface';
@@ -18,9 +19,9 @@ export class CommercialOfferService {
   public urlOutbound: string;
   public currentLanguage: string;
 
-  constructor(private logger: LoggerService, private apiRequest: APIRequestsService ,private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService, private translateService: TranslateService) {
-    this.baseUrl = configuration.acquiringAPIUrl;
-    this.urlOutbound = configuration.outboundUrl;
+  constructor(private logger: LoggerService, private apiRequest: APIRequestsService, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private tableInfo: TableInfoService, private translateService: TranslateService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
+    this.urlOutbound = configuration.getConfig().outboundUrl;
     this.currentLanguage = this.translateService.currentLang;
   }
 

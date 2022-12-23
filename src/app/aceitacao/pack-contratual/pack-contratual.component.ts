@@ -42,7 +42,7 @@ export class PackContratualComponent implements OnInit{
   @ViewChild('submeterPedidoModal') submeterPedidoModal;
 
   
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
+  constructor(private logger : LoggerService, private http: HttpClient,
   private route: Router,
   private router: ActivatedRoute, private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar) {
 

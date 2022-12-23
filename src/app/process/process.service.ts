@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AppConfigService } from '../app-config.service';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { ISubmission, SimplifiedReference } from '../submission/ISubmission.interface';
@@ -15,9 +16,9 @@ export class ProcessService {
 
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, @Inject(configurationToken) private configuration: Configuration) {
-      this.baseUrl = configuration.baseUrl;
-      this.urlOutbound = configuration.outboundUrl;
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
+      this.urlOutbound = configuration.getConfig().outboundUrl;
   }
 
    getAllProcessSubmissions(id) : any {

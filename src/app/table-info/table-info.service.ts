@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
+import { AppConfigService } from '../app-config.service';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { Bank, ShopBankingInformation } from '../store/IStore.interface';
@@ -18,8 +19,8 @@ export class TableInfoService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
 
-  constructor(private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, public translate: TranslateService, private API: APIRequestsService) {
-    this.acquiringUrl = configuration.acquiringAPIUrl;
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, public translate: TranslateService, private API: APIRequestsService) {
+    this.acquiringUrl = configuration.getConfig().acquiringAPIUrl;
     // this.currentLanguage = this.translate.currentLang; 
 
     this.languageStream$.subscribe((val) => {

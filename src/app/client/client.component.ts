@@ -360,14 +360,10 @@ export class ClientComponent implements OnInit {
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder,
-    @Inject(configurationToken) private configuration: Configuration, private translate: TranslateService,
+  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
     private submissionService: SubmissionService, private readCardService: ReadcardService, private snackBar: MatSnackBar) {
-
-    this.baseUrl = configuration.baseUrl;
-    this.neyondBackUrl = configuration.neyondBackUrl;
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListaDocType = result;

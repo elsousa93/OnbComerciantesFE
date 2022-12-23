@@ -362,7 +362,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.initializeBasicFormControl();
   }
 
-  constructor(private logger: LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private rootFormDirective: FormGroupDirective,
+  constructor(private logger: LoggerService, private datepipe: DatePipe, private router: ActivatedRoute, private http: HttpClient, private rootFormDirective: FormGroupDirective,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService, private processService: ProcessService, private stakeholderService: StakeholderService) {
     this.rootForm = this.rootFormDirective.form;
     this.form = this.rootForm.get("clientCharacterizationForm");

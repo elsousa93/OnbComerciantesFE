@@ -5,6 +5,7 @@ import { merge, Observable, switchMap } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { AuthService } from '../services/auth.service';
+import { AppConfigService } from '../app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,13 @@ export class CRCService {
   private authTokenUrl: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private authService: AuthService) {
-    this.DOCASUrl = configuration.DOCASUrl;
-    this.authTokenUrl = configuration.authTokenUrl
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private route: Router, private authService: AuthService) {
+    this.DOCASUrl = configuration.getConfig().DOCASUrl;
+    this.authTokenUrl = configuration.getConfig().authTokenUrl
   }
 
   async getAccessToken(): Promise<any> {
-    var secret = btoa(this.configuration.clientID + ":" + this.configuration.clientSecret);
+    var secret = btoa(this.configuration.getConfig().clientID + ":" + this.configuration.getConfig().clientSecret);
 
     const HTTP_OPTIONS_AUTH = {
       headers: new HttpHeaders({

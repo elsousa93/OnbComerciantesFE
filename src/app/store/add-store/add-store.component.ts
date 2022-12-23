@@ -255,7 +255,7 @@ export class AddStoreComponent implements OnInit {
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
-    private tableData: TableInfoService, @Inject(configurationToken) private configuration: Configuration,
+    private tableData: TableInfoService,
     private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
     private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
     private rootFormGroup: FormGroupDirective, private storeService: StoreService) {

@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from '../app.component';
 import { TableInfoService } from '../table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AppConfigService } from '../app-config.service';
 interface ProcessFT {
   processNumber: string;
   nipc: number;
@@ -66,12 +67,11 @@ export class ConsultasFTComponent implements OnInit{
 
   ListaDocType;
   
-  constructor(private logger : LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration,
-    private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent) {
-
+  constructor(private logger: LoggerService, private http: HttpClient,
+    private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService) {
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.appComponent.toggleSideNav(false);
     
-    this.baseUrl = configuration.baseUrl;
 
     //Gets Queue Name from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {

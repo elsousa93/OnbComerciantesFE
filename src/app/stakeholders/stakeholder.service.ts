@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { TableInfoService } from '../table-info/table-info.service';
 import { APIRequestsService } from '../apirequests.service';
 import { QueuesService } from '../queues-detail/queues.service';
+import { AppConfigService } from '../app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,13 +23,13 @@ export class StakeholderService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
 
-  constructor(private logger: LoggerService, private http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private tableInfo: TableInfoService, private APIService: APIRequestsService, private queuesInfo: QueuesService) {
+  constructor(private logger: LoggerService, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private tableInfo: TableInfoService, private APIService: APIRequestsService, private queuesInfo: QueuesService) {
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
 
-    this.baseUrl = configuration.acquiringAPIUrl;      
-    this.urlOutbound = configuration.outboundUrl;
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;      
+    this.urlOutbound = configuration.getConfig().outboundUrl;
   }
 
   callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {

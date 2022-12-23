@@ -33,7 +33,7 @@ export class InfoStakeholderComponent implements OnInit {
 
   @Output() nameEmitter = new EventEmitter<string>();
 
-  constructor(private logger : LoggerService, private formBuilder: FormBuilder, http: HttpClient, @Inject(configurationToken) private configuration: Configuration, private route: Router, private data: DataService, private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
+  constructor(private logger : LoggerService, private formBuilder: FormBuilder, http: HttpClient, private route: Router, private data: DataService, private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
 
     //this.ngOnInit();
 

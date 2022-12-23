@@ -31,7 +31,6 @@ export class ClientSearchComponent implements OnInit {
   clientsToShow: Client[] = [];
   
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
-    @Inject(configurationToken) private configuration: Configuration,
     private route: Router, private clientService: ClientService, private authService: AuthService) { }
 
   ngOnInit(): void {
