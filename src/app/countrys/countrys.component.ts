@@ -48,6 +48,9 @@ export class CountrysComponent implements OnInit {
   inputTypeAfrica: boolean;
   statusValue: boolean = false;
 
+  incorrectNIPCSize: boolean = false;
+  incorrectNIPC: boolean = false;
+
   clientExists: boolean;
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
@@ -402,6 +405,32 @@ export class CountrysComponent implements OnInit {
     //    crc: this.crc
     //  }
     //}
+  }
+
+  validateNIPC(nipc: string): boolean {
+    this.incorrectNIPCSize = false;
+    this.incorrectNIPC = false;
+    if (nipc != '') {
+      if (nipc.length != 9) {
+        this.incorrectNIPCSize = true;
+        return false;
+      }
+      if (!['5', '6', '8', '9'].includes(nipc.substr(0, 1))) {
+        this.incorrectNIPC = true;
+        return false;
+      }
+
+      const total = Number(nipc[0]) * 9 + Number(nipc[1]) * 8 + Number(nipc[2]) * 7 + Number(nipc[3]) * 6 + Number(nipc[4]) * 5 + Number(nipc[5]) * 4 + Number(nipc[6]) * 3 + Number(nipc[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nipc[8]) !== comparador) {
+        this.incorrectNIPC = true;
+        return false;
+      }
+
+      return Number(nipc[8]) === comparador;
+    }
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {

@@ -82,7 +82,7 @@
                         </span>
                       </p>
                       <input id="clientId" type="text" (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
-                        name="clientId" #clientId="ngModel" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+                        name="clientId" #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" [hidden]="isCC && isNoDataReadable">
                     </div>
                   </div>
                 </div>

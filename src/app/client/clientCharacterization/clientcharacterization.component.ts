@@ -347,10 +347,24 @@ export class ClientCharacterizationComponent implements OnInit {
         this.form.get("CAE1Branch").setValue(data.description);
       });
 
-    if (this.processClient.secondaryEconomicActivity !== null) {
+    if (this.processClient.secondaryEconomicActivity[0] !== null) {
       this.searchBranch(this.processClient.secondaryEconomicActivity[0].split("-")[0])
         .then((data) => {
           this.form.get("CAESecondary1Branch").setValue(data.description);
+        });
+    }
+
+    if (this.processClient.secondaryEconomicActivity[1] !== null) {
+      this.searchBranch(this.processClient.secondaryEconomicActivity[1].split("-")[0])
+        .then((data) => {
+          this.form.get("CAESecondary2Branch").setValue(data.description);
+        });
+    }
+
+    if (this.processClient.secondaryEconomicActivity[2] !== null) {
+      this.searchBranch(this.processClient.secondaryEconomicActivity[2].split("-")[0])
+        .then((data) => {
+          this.form.get("CAESecondary3Branch").setValue(data.description);
         });
     }
 
@@ -764,7 +778,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (crc != null && crc != undefined) {
       newSubmission.documents.push({
-        documentType: "0033", 
+        documentType: "0034", 
         documentPurpose: 'CompanyIdentification',
         file: {
           fileType: 'PDF',
@@ -779,7 +793,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (comprovativoCC !== null && comprovativoCC !== undefined) {
       newSubmission.documents.push({
-        documentType: "0001", 
+        documentType: "0018", 
         documentPurpose: 'Identification',
         file: {
           fileType: 'PDF',

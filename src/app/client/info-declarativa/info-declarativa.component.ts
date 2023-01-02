@@ -51,6 +51,8 @@ export class InfoDeclarativaComponent implements OnInit {
   public returned: string;
   public merchantInfo: any;
 
+  public emailRegex: string;
+
   sendToParent() {
     this.nameEmitter.emit(this.displayValueSearch);
   }
@@ -89,6 +91,8 @@ export class InfoDeclarativaComponent implements OnInit {
       }); //ordenar resposta
     }));
 
+    this.emailRegex = '((^(http|https):\\/\\/)?((www\\.)[a-zA-Z0-9]*\\.[a-z]{2,6}))\\b([-a-zA-Z0-9@:%_\\+.~#?&\\/=]*)$([-a-zA-Z0-9@:%._\\+~#?&\\/=]*)';
+
     this.listValue = this.formBuilder.group({
       comercialName: new FormControl(this.newClient?.commercialName, Validators.required),
       phone1: this.formBuilder.group({
@@ -99,7 +103,7 @@ export class InfoDeclarativaComponent implements OnInit {
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
       },{validators: [validPhoneAndMobileNumber]}),
-      email: new FormControl(this.newClient?.contacts?.email, [Validators.required, Validators.email]),
+      email: new FormControl(this.newClient?.contacts?.email, [Validators.required, Validators.pattern(this.emailRegex)]),
       billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, [Validators.email])
     });
     

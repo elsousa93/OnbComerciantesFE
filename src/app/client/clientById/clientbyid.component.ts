@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from 
 import { NavigationExtras, Router } from '@angular/router';
 import { AcquiringClientPost, OutboundClient } from '../Client.interface';
 import { continents, countriesAndContinents } from '../countriesAndContinents';
-import { EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
+import { DocumentSearchType, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -145,6 +145,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   NIFNIPC: any;
   idClient: string;
   comprovativoCC: FileAndDetailsCC;
+
+  documents: DocumentSearchType[];
 
   formIsValid: false;
 
@@ -574,6 +576,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert["documents"] = client.documents;
               this.clientDocs = client.documents;
 
+              this.getDocumentDescription(this.clientDocs);
+
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
               this.clientContext.clientExists = true;
@@ -725,6 +729,17 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     if (!exists) {
       this.legalNatureList2 = [];
     }
+  }
+
+  getDocumentDescription(docs: OutboundDocument[]) {
+    this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
+      this.documents = result;
+      this.documents.forEach(doc => {
+        if (docs[0].documentType === doc.code) {
+          docs[0].documentType = doc.description;
+        }
+      });
+    }))
   }
 
 

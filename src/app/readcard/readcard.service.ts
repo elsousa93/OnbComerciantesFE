@@ -263,7 +263,7 @@ export class ReadcardService {
           });
 
 
-      doc.save("digitalCC_NIF" + ccArrayData[10] + ".pdf"); //Download automatico do comprovativo
+      //doc.save("digitalCC_NIF" + ccArrayData[10] + ".pdf"); //Download automatico do comprovativo
       var doc_base64 = doc.output('datauristring'); //retorna base64(?)
       var splitres = doc_base64.split(',')[1];
       var doc_blob = doc.output('blob');

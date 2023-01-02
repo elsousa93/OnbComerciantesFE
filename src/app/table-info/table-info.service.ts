@@ -305,6 +305,16 @@ export class TableInfoService {
     return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'searchtype?type=' + userType, HTTP_OPTIONS);
   }
 
+  GetDocumentsDescription() {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<DocumentSearchType[]>(this.acquiringUrl + 'document-type-information', HTTP_OPTIONS);
+  }
+
   GetTenantCommunications() {
 
     var HTTP_OPTIONS = {
