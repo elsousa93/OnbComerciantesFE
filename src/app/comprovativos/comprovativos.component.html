@@ -180,40 +180,38 @@
                   <p class="ps-0">{{'supportingDocuments.checklistModal.documentsOnboarding'|translate}}</p>
                </div>
                <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-                  <p *ngIf="client" class="titulo-form-simples mt-0 pb-1 ps-3"><img
-                        src="assets/images/file-lines-solid.svg"
+                 <p class="titulo-form-simples mt-0 pb-1 ps-3"><!--*ngIf="client"-->
+                   <img src="assets/images/file-lines-solid.svg"
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toMerchant'|translate}}
-                     {{ client.companyName }}</p>
-                  <form #contactForm="ngForm">
-                     <div class="table-responsive me-2 ps-3">
-                        <table class="table table-success align-middle" *ngIf="client">
-                           <thead class="table-primary align-middle text-primary">
-                              <tr class="text-center text-primary align-middle table-primary">
-                                 <th scope="col" class="align-baseline text-primary table-white">
-                                    {{'supportingDocuments.checklistModal.name'|translate}}</th>
-                                 <th scope="col">{{'supportingDocuments.checklistModal.society'|translate}}</th>
-                                 <th scope="col">{{'supportingDocuments.checklistModal.BEF'|translate}}</th>
-                                 <th scope="col">{{'supportingDocuments.checklistModal.NIPC'|translate}}</th>
-                                 <th scope="col">{{'supportingDocuments.checklistModal.IBAN'|translate}}</th>
-                                 <th scope="col">{{'supportingDocuments.checklistModal.RCBE'|translate}}</th>
-                              </tr>
-                           </thead>
-                           <tbody class="table-light text-primary">
-                              <tr class="table-white text-primary">
-                                 <td scope="row" class="text-center text-dark">EMPRESA TESTE UNIPESSOAL</td>
-                                 <td class="text-center text-dark">{{ client.companyName }}</td>
-                                 <td class="text-center text-dark"><img src="assets/images/check-solid.svg"
-                                       style="height: 20px !important; vertical-align: sub;"></td>
-                                 <td>N/A</td>
-                                 <td class="text-center text-dark"><img src="assets/images/check-solid.svg"
-                                       style="height: 20px !important; vertical-align: sub;"></td>
-                                 <td class="text-center text-dark"><img src="assets/images/check-solid.svg"
-                                       style="height: 20px !important; vertical-align: sub;"></td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                  </form>
+                 </p><!--{{ client.companyName }}-->
+                 <form #contactForm="ngForm">
+                   <div class="table-responsive me-2 ps-3">
+                     <table class="table table-success align-middle" *ngFor="let requiredMerchantDocs of requiredDocuments.requiredDocumentPurposesMerchants"><!--*ngIf="client"-->
+                       <thead class="table-primary align-middle text-primary">
+                         <tr class="text-center text-primary align-middle table-primary" *ngFor="let merchantDocPurpose of requiredMerchantDocs.documentPurposes">
+                           <th scope="col" class="align-baseline text-primary table-white">
+                             {{'supportingDocuments.checklistModal.name'|translate}}
+                           </th>
+                           <th scope="col">{{getDocumentPurposeDescription(merchantDocPurpose.purpose)}}</th>
+                         </tr>
+                       </thead>
+                       <tbody class="table-light text-primary">
+                         <tr class="table-white text-primary" *ngFor="let merchantPurposes of requiredMerchantDocs.documentPurposes">
+                           <td scope="row" class="text-center text-dark">{{requiredMerchantDocs.entityName}}</td>
+
+                           <td class="text-center text-dark">
+                             <img *ngIf="merchantPurposes.documentState.toLocaleLowerCase() === 'exists'; else notExists" src="assets/images/check-solid.svg"
+                                  style="height: 20px !important; vertical-align: sub;">
+                             <ng-template #notExists>
+                               <img [src]="checkDocumentExists(requiredMerchantDocs.entityId, merchantPurposes ,'merchant') ? 'assets/images/check-solid.svg' : 'assets/images/close.svg'"
+                                    style="height: 20px !important; vertical-align: sub;">
+                             </ng-template>
+                           </td>
+                         </tr>
+                       </tbody>
+                     </table>
+                   </div>
+                 </form>
                </div>
                <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
                   <p class="titulo-form-simples mt-0 pb-1 ps-3">
@@ -226,31 +224,30 @@
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStakes'|translate}}
                   </p>
                   <div class="table-responsive me-2 ps-3">
-                     <table class="table table-success align-middle" *ngFor="let stake of stakeholdersList">
+                     <table class="table table-success align-middle" *ngFor="let requiredStakeholderDocs of requiredDocuments.requiredDocumentPurposesStakeholders">
                         <thead class="table-primary align-middle text-primary">
-                           <tr class="text-center text-primary align-middle table-primary">
-                              <th scope="col" class="align-baseline text-primary table-white">
-                                 {{'supportingDocuments.checklistModal.name'|translate}}</th>
-                              <th scope="col">{{'supportingDocuments.checklistModal.identificationDocument'|translate}}
-                              </th>
-                              <th scope="col">{{'supportingDocuments.checklistModal.NIF'|translate}}</th>
-                              <th scope="col">{{'supportingDocuments.checklistModal.proxy'|translate}}</th>
+                           <tr class="text-center text-primary align-middle table-primary" *ngFor="let stakeholderDocPurpose of requiredStakeholderDocs.documentPurposes">
+                              <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.checklistModal.name'|translate}}</th>
+                              <th scope="col"> {{getDocumentPurposeDescription(stakeholderDocPurpose.purpose)}}</th>
                            </tr>
                         </thead>
                         <tbody class="table-light text-primary">
-                           <tr class="table-white text-primary">
-                              <td class="text-center text-dark">{{stake.shortName}}</td>
-                              <td class="text-center text-dark"><img src="assets/images/check-solid.svg"
-                                    style="height: 20px !important; vertical-align: sub;"></td>
-                              <td class="text-center text-dark"><img src="assets/images/check-solid.svg"
-                                    style="height: 20px !important; vertical-align: sub;"></td>
-                              <td class="text-center text-dark">N/A</td>
-                           </tr>
+                          <tr class="table-white text-primary" *ngFor="let stakeholderPurposes of requiredStakeholderDocs.documentPurposes">
+                            <td scope="row" class="text-center text-dark">{{requiredStakeholderDocs.entityName}}</td>
+                            <td class="text-center text-dark">
+                              <img *ngIf="stakeholderPurposes.documentState.toLocaleLowerCase() === 'exists'; else notExists" src="assets/images/check-solid.svg"
+                                   style="height: 20px !important; vertical-align: sub;">
+                              <ng-template #notExists>
+                                <img [src]="checkDocumentExists(requiredStakeholderDocs.entityId, stakeholderPurposes ,'stakeholder') ? 'assets/images/check-solid.svg' : 'assets/images/close.svg'"
+                                     style="height: 20px !important; vertical-align: sub;">
+                              </ng-template>
+                            </td>
+                          </tr>
                         </tbody>
                      </table>
                   </div>
                </div>
-               <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-5">
+               <!--<div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-5">
                   <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg"
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStores'|translate}}
                   </p>
@@ -272,7 +269,7 @@
                         </tbody>
                      </table>
                   </div>
-               </div>
+               </div>-->
             </div>
          </div>
 

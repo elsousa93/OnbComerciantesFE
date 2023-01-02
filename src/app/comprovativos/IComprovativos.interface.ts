@@ -16,3 +16,26 @@ export interface ComprovativosTemplate {
   documentPurpose?: string,
   documentType?: string
 }
+
+export interface RequiredDocuments {
+  requiredDocumentPurposesMerchants?: RequiredDocumentPurpose[],
+  requiredDocumentPurposesStakeholders?: RequiredDocumentPurpose[],
+  requiredDocumentPurposesShops?: RequiredDocumentPurpose[]
+}
+
+export interface RequiredDocumentPurpose {
+  entityId?: string,
+  entityName?: string,
+  documentPurposes?: DocumentPurpose[]
+}
+
+export interface DocumentPurpose {
+  purpose?: string,
+  documentState?: string,
+  documentsTypeCodeFulfillPurpose?: string[]
+}
+
+export interface PurposeDocument {
+  code?: string,
+  description?: string
+}
