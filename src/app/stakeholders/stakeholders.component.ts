@@ -13,6 +13,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { DatePipe } from '@angular/common';
+import { TableInfoService } from '../table-info/table-info.service';
+import { DocumentSearchType } from '../table-info/ITable-info.interface';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -110,12 +112,14 @@ export class StakeholdersComponent implements OnInit {
   public isNoDataReadable: boolean;
 
   public returned: string;
+  public subs: Subscription[] = [];
 
   editStakes: FormGroup;
   editStakeInfo: boolean;
 
   selectedStakeholderComprovativos: OutboundDocument[] = [];
   stakesLength: number = null;
+  documents: DocumentSearchType[];
 
   crcStakeholders: IStakeholders[] = [];
   selectedStakeholderIsFromCRC: boolean = false;
@@ -125,7 +129,7 @@ export class StakeholdersComponent implements OnInit {
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
-    private comprovativoService: ComprovativosService) {
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
@@ -313,9 +317,21 @@ export class StakeholdersComponent implements OnInit {
       this.currentIdx = info.idx;
       if (this.currentStakeholder.stakeholderOutbound != undefined) {
         this.selectedStakeholderComprovativos = this.currentStakeholder.stakeholderOutbound.supportingDocuments;
+        this.getDocumentDescription(this.selectedStakeholderComprovativos);
       }
       setTimeout(() => this.setFormData(), 500);
     }
+  }
+
+  getDocumentDescription(docs: OutboundDocument[]) {
+    this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
+      this.documents = result;
+      this.documents.forEach(doc => {
+        if (docs[0].documentType === doc.code) {
+          docs[0].documentType = doc.description;
+        }
+      });
+    }))
   }
 
   submit() {

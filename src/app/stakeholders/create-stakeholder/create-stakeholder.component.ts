@@ -710,7 +710,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
     //Colocar comprovativo do CC na Submissao
     var documentCC: PostDocument = {
-      documentType: '0001',
+      documentType: '0018',
       documentPurpose: 'Identification',
       file: {
         binary: this.prettyPDF.file,
@@ -734,7 +734,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       "shortName": shortName,
       "contactName": shortName,
       "identificationDocument": {
-        "type": '0001',           
+        "type": '0018',           
         "number": this.dataCCcontents.cardNumberCC,
         "country": this.dataCCcontents.countryCC,
         "expirationDate": new Date(formatedDate).toISOString(),

@@ -78,7 +78,7 @@
               <span class="titulo-form-error" *ngIf="sameNIPC && !isShown" class="titulo-form-simples-erro">
                 {{'client.sameNIPC'|translate}}
               </span>
-              <input [readonly]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
+              <input [hidden]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
                      style="padding: .200rem;" type="text" (ngModelChange)="clearNewForm()" class="form-control campo_form" formControlName="documentNumber">
             </div>
           </div>
