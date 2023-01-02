@@ -235,9 +235,9 @@
                           <tr class="table-white text-primary" *ngFor="let stakeholderPurposes of requiredStakeholderDocs.documentPurposes">
                             <td scope="row" class="text-center text-dark">{{requiredStakeholderDocs.entityName}}</td>
                             <td class="text-center text-dark">
-                              <img *ngIf="stakeholderPurposes.documentState.toLocaleLowerCase() === 'exists'; else notExists" src="assets/images/check-solid.svg"
+                              <img *ngIf="stakeholderPurposes.documentState.toLocaleLowerCase() === 'exists'; else notExistsStake" src="assets/images/check-solid.svg"
                                    style="height: 20px !important; vertical-align: sub;">
-                              <ng-template #notExists>
+                              <ng-template #notExistsStake>
                                 <img [src]="checkDocumentExists(requiredStakeholderDocs.entityId, stakeholderPurposes ,'stakeholder') ? 'assets/images/check-solid.svg' : 'assets/images/close.svg'"
                                      style="height: 20px !important; vertical-align: sub;">
                               </ng-template>
