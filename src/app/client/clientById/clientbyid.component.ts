@@ -574,6 +574,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert["documents"] = client.documents;
               this.clientDocs = client.documents;
 
+              
+
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
               this.clientContext.clientExists = true;
