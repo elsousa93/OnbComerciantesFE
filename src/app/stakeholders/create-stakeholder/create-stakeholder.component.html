@@ -53,7 +53,7 @@
         <div class="col-5">
           <div class="row">
             <div class="col">
-              <p class="titulo-form-simples">{{'stakeholder.documentNumber'|translate}}: *</p>
+              <p [hidden]="isCC && isNoDataReadable" class="titulo-form-simples">{{'stakeholder.documentNumber'|translate}}: *</p>
               <span class="titulo-form-error" *ngIf="incorrectCC && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCC'|translate}}
               </span>

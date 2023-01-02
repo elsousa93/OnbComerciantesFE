@@ -100,7 +100,7 @@
                       </select>
                     </div>
                     <div class="col-5">
-                      <p class="titulo-form-simples">
+                      <p class="titulo-form-simples" [hidden]="isCC && isNoDataReadable">
                         {{'searches.documentNumber'|translate}}:*
                         <span class="titulo-form-error" *ngIf="incorrectCC && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCC'|translate}}
@@ -125,7 +125,7 @@
                         </span>
                       </p>
                       <input id="clientId" type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId"
-                        name="clientId" #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" [readonly]="isCC && isNoDataReadable">
+                        name="clientId" #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" [hidden]="isCC && isNoDataReadable">
 
                     </div>
                   </div>
