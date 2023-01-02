@@ -52,8 +52,7 @@
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.signature.language'|translate}}:
                             *</p>
                           <select class="form-select">
-                            <option selected value="Português">Português</option>
-                            <option value="-">-</option>
+                            <option *ngFor="let lang of contractLanguage" value={{lang.code}}>{{lang.description}}</option>
                           </select>
                         </div>
                       </div>

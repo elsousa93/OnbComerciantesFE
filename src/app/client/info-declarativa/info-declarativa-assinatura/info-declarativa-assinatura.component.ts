@@ -14,6 +14,8 @@ import { SubmissionGet, SubmissionGetTemplate, SubmissionPutTemplate } from 'src
 import { ProcessNumberService } from 'src/app/nav-menu-presencial/process-number.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
+import { TableInfoService } from '../../../table-info/table-info.service';
+import { ContractPackLanguage } from '../../../table-info/ITable-info.interface';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -38,13 +40,18 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   processNumber: string;
   public subscription: Subscription;
   public submissionAnswer: SubmissionGetTemplate;
+  public contractLanguage: ContractPackLanguage[];
 
-  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService) {
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
 
     var context = this;
     this.initializeForm();
+
+    this.tableInfoService.GetContractualPackLanguage().subscribe(result => {
+      this.contractLanguage = result;
+    });
 
 
     this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
@@ -68,7 +75,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 6, 3);
-    this.initializeForm();
+    //this.initializeForm();
   }
 
   initializeForm() {
@@ -155,7 +162,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
           bank: this.submissionAnswer.bank,
           state: "Ready",
           startedAt: new Date().toISOString(),
-          //: this.form.get("language").value
+          contractPackLanguage: this.form.get("language").value
         }
 
         this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
@@ -163,21 +170,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
         });
 
       });
-      //this.submissionService.GetSubmissionByProcessNumber(this.processNumber).then(result => {
-      //  this.submissionAnswer = result.result[0];
-      //  this.submissionAnswer.submissionType = "DigitalComplete";
-      //  this.submissionAnswer.state = "Ready";
-      //  this.submissionAnswer.submissionUser = {
-      //    user: "",
-      //    branch: "",
-      //    partner: ""
-      //  };
-      //  this.submissionAnswer.bank = "";
-        
-      //  this.submissionService.EditSubmission(this.submissionId, this.submissionAnswer).subscribe(result => {
-      //    console.log("Submissão terminada");
-      //  })
-      //})
     }
 
   }

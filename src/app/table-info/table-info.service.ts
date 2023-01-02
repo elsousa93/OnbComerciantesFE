@@ -7,7 +7,7 @@ import { AppConfigService } from '../app-config.service';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { Bank, ShopBankingInformation } from '../store/IStore.interface';
-import { Activity, Address, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
+import { Activity, Address, ContractPackLanguage, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -329,5 +329,17 @@ export class TableInfoService {
     return this.http.get<TenantTerminal[]>(this.acquiringUrl + 'tenant/terminal', HTTP_OPTIONS);
 
 
-}
+  }
+
+  GetContractualPackLanguage() {
+
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+
+    return this.http.get<ContractPackLanguage[]>(this.acquiringUrl + 'contratualpacklanguage', HTTP_OPTIONS);
+  }
 }

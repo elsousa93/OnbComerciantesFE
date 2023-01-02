@@ -146,6 +146,11 @@ export interface TenantTerminal {
   description?: string
 }
 
+export interface ContractPackLanguage {
+  code?: string
+  description?: string
+}
+
 export enum UserTypes {
   MERCHANT = "Merchant",
   STAKEHOLDER = "Stakeholder"
