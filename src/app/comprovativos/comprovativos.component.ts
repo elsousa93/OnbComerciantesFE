@@ -268,8 +268,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       context.requiredDocuments = result.result;
     });
 
-    this.comprovativoService.getAllDocumentPurposes().then(result => {
-      context.documentPurposes = result.result;
+    this.tableInfo.GetAllDocumentPurposes().subscribe(result => {
+      context.documentPurposes = result;
     })
     
     this.submissionService.GetSubmissionByID(this.submissionId).then(result => {

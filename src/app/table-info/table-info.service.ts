@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
+import { PurposeDocument } from '../comprovativos/IComprovativos.interface';
 import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { Bank, ShopBankingInformation } from '../store/IStore.interface';
@@ -351,5 +352,14 @@ export class TableInfoService {
     }
 
     return this.http.get<ContractPackLanguage[]>(this.acquiringUrl + 'contratualpacklanguage', HTTP_OPTIONS);
+  }
+
+  GetAllDocumentPurposes() {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+      }),
+    }
+    return this.http.get<PurposeDocument[]>(this.acquiringUrl + 'document-purpose', HTTP_OPTIONS);
   }
 }
