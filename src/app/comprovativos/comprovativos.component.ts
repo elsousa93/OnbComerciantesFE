@@ -17,7 +17,7 @@ import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { SubmissionGetTemplate, SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
-import { ComprovativosTemplate, IComprovativos } from './IComprovativos.interface';
+import { ComprovativosTemplate, DocumentPurpose, IComprovativos, PurposeDocument, RequiredDocuments } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
 import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -176,26 +176,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   public returned: string;
   updatedComps: boolean;
-  ///////////////////////
-  //b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
-  //  const byteCharacters = atob(b64Data);
-  //  const byteArrays = [];
 
-  //  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-  //    const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-  //    const byteNumbers = new Array(slice.length);
-  //    for (let i = 0; i < slice.length; i++) {
-  //      byteNumbers[i] = slice.charCodeAt(i);
-  //    }
-
-  //    const byteArray = new Uint8Array(byteNumbers);
-  //    byteArrays.push(byteArray);
-  //  }
-
-  //  const blob = new Blob(byteArrays, { type: contentType });
-  //  return blob;
-  //}
+  requiredDocuments: RequiredDocuments;
+  documentPurposes: PurposeDocument[];
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
@@ -280,6 +263,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         });
       });
     }
+
+    this.comprovativoService.getRequiredDocuments(this.submissionId).then(result => {
+      context.requiredDocuments = result.result;
+    });
+
+    this.comprovativoService.getAllDocumentPurposes().then(result => {
+      context.documentPurposes = result.result;
+    })
     
     this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
       this.submission = result.result;
@@ -398,6 +389,85 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getDocumentPurposeDescription(purpose: string) {
+    return this.documentPurposes.find(doc => doc.code === purpose).description;
+  }
+
+  checkDocumentExists(entityId: string, purpose: DocumentPurpose, type: string) {
+    var context = this;
+    if (type === 'merchant') { 
+      var docMerchantExists = false;
+      context.clientService.GetClientByIdOutbound(entityId).then(client => {
+        if (client.documents != null && client.documents.length > 0) {
+          for (var docs of client.documents) {
+            docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
+          }
+        }
+      }, error => {
+        return false;
+      });
+      return docMerchantExists;
+    }
+
+    if (type === 'stakeholder') {
+      var docStakeholderExists = false;
+      context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
+        var client = stake.result;
+        if (client.documents != null && client.documents.length > 0) {
+          for (var docs of client.documents) {
+            docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
+          }
+        }
+      }, error => {
+        return false;
+      });
+      return docStakeholderExists;
+    }
+
+    if (type === 'store') {
+
+    }
+
+      //this.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
+      //  merchant.documentPurposes.forEach(purpose => {
+      //    if (purpose.documentState.toLocaleLowerCase() === 'notexists') {
+      //      context.clientService.GetClientByIdOutbound(merchant.entityId).then(client => {
+      //        if (client.documents != null && client.documents.length > 0) {
+      //          client.documents.forEach(docs => {
+      //            var exists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
+      //            return exists;
+      //          });
+      //        }
+      //      }, error => {
+      //        console.log('NÃO FOI ENCONTRADO');
+      //        //se este print funcionar, retornar o valor false
+      //      });
+      //    }
+      //  });
+      //});
+    //}
+
+    //if (type === 'stakeholder') {
+    //  this.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
+    //    stakeholder.documentPurposes.forEach(purpose => {
+    //      if (purpose.documentState.toLocaleLowerCase() === 'notexists') {
+    //        context.stakeholderService.getStakeholderByID(stakeholder.entityId, "", "").then(stake => {
+    //          var client = stake.result;
+    //          if (client.documents != null && client.documents.length > 0) {
+    //            client.documents.forEach(docs => {
+    //              var exists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
+    //              return exists;
+    //            });
+    //          }
+    //        }, error => {
+    //          console.log('NÃO FOI ENCONTRADO');
+    //          //se este print funcionar, retornar o valor false
+    //        });
+    //      }
+    //    });
+    //  });
+    //}
+  }
   
 
   ngOnInit(): void {

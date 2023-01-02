@@ -1,10 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { map, catchError, retryWhen, delay, take } from 'rxjs/operators';
 import { Configuration, configurationToken } from 'src/app/configuration';
 import { APIRequestsService } from '../../apirequests.service';
 import { AppConfigService } from '../../app-config.service';
 import { HttpMethod } from '../../enums/enum-data';
+import { TreatedResponse } from '../../table-info/ITable-info.interface';
+import { PurposeDocument, RequiredDocuments } from '../IComprovativos.interface';
 import { HttpUtilService } from './http.services';
 
 
@@ -16,7 +19,14 @@ export class ComprovativosService {
   private baseUrl: string;
   private outboundUrl: string;
 
+  currentLanguage: string;
+  languageStream$ = new BehaviorSubject<string>('');
+
   constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private httpUtil: HttpUtilService, private APIRequest: APIRequestsService) {
+    this.languageStream$.subscribe((val) => {
+      this.currentLanguage = val
+    });
+
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.outboundUrl = configuration.getConfig().outboundUrl;
 
@@ -91,6 +101,50 @@ export class ComprovativosService {
 
   }
 
+  getRequiredDocuments(submissionID: string) {
+    var url = this.baseUrl + 'submission/' + submissionID + '/required-documents';
 
+    var response: TreatedResponse<RequiredDocuments> = {};
+
+    return new Promise<TreatedResponse<RequiredDocuments>>((resolve, reject) => {
+      var HTTP_OPTIONS = {
+        headers: new HttpHeaders({
+          'Accept-Language': this.currentLanguage,
+        }),
+      }
+      this.APIRequest.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        response.result = null;
+        response.msg = "Erro";
+        reject(response);
+      })
+    });
+  }
+
+  getAllDocumentPurposes() {
+    var url = this.baseUrl + 'document-purpose';
+
+    var response: TreatedResponse<PurposeDocument[]> = {};
+
+    return new Promise<TreatedResponse<PurposeDocument[]>>((resolve, reject) => {
+      var HTTP_OPTIONS = {
+        headers: new HttpHeaders({
+          'Accept-Language': this.currentLanguage,
+        }),
+      }
+      this.APIRequest.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        response.result = null;
+        response.msg = "Erro";
+        reject(response);
+      })
+    });
+  }
 
 }
