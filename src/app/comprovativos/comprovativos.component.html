@@ -200,13 +200,13 @@
                            <td scope="row" class="text-center text-dark" *ngIf="length1 == 0">{{requiredMerchantDocs.entityName}}</td>
 
                            <td class="text-center text-dark">
-                             <img *ngIf="merchantPurposes?.documentState === 'Exists'" src="assets/images/check-solid.svg"
+                             <img *ngIf="merchantPurposes?.documentState === 'Exists'" src="assets/images/check-solid-comps.svg"
                                   style="height: 20px !important; vertical-align: sub;">
 
-                             <img *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === true" src="assets/images/check-solid.svg"
+                             <img *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === true" src="assets/images/check-solid-comps.svg"
                                   style="height: 20px !important; vertical-align: sub;">
 
-                             <img *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === false" src="assets/images/close.svg"
+                             <img *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === false" src="assets/images/close-comps.svg"
                                   style="height: 20px !important; vertical-align: sub;">
                            </td>
                          </tr>
@@ -215,11 +215,15 @@
                    </div>
                  </form>
                </div>
-               <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
-                  <p class="titulo-form-simples mt-0 pb-1 ps-3">
-                     {{'supportingDocuments.checklistModal.juridicNature'|translate}}:&nbsp;</p>
+               <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0" *ngIf="submissionClient?.merchantType == '01' || submissionClient?.merchantType == 'corporation' || submissionClient?.merchantType == 'Corporate' || submissionClient?.merchantType == 'Company'">
+                 <p class="titulo-form-simples mt-0 pb-1 ps-3">
+                   {{'supportingDocuments.checklistModal.selectedLegalNature'|translate}}
+                   {{ legalNature }}
+                   {{'supportingDocuments.checklistModal.mandatoryDocuments'|translate}}:&nbsp;
+                 </p>
                   <p class="mt-0 pb-1 ps-3 caixa_azul" style="font-size: 16px;">
-                     {{'supportingDocuments.checklistModal.CRC'|translate}}</p>
+                    {{mandatoryDocs}}
+                  </p>
                </div>
                <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
                   <p class="titulo-form-simples mt-0 pb-1 ps-3"><img src="assets/images/file-lines-solid.svg"
@@ -237,13 +241,13 @@
                           <tr class="table-white text-primary" *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
                             <td scope="row" class="text-center text-dark" *ngIf="length3 == 0">{{requiredStakeholderDocs.entityName}}</td>
                             <td class="text-center text-dark">
-                              <img *ngIf="stakeholderPurposes?.documentState === 'Exists'" src="assets/images/check-solid.svg"
+                              <img *ngIf="stakeholderPurposes?.documentState === 'Exists'" src="assets/images/check-solid-comps.svg"
                                    style="height: 20px !important; vertical-align: sub;">
 
-                              <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === true" src="assets/images/check-solid.svg"
+                              <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === true" src="assets/images/check-solid-comps.svg"
                                    style="height: 20px !important; vertical-align: sub;">
 
-                              <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false" src="assets/images/close.svg"
+                              <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false" src="assets/images/close-comps.svg"
                                    style="height: 20px !important; vertical-align: sub;">
                             </td>
                           </tr>

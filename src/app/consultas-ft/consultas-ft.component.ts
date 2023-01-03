@@ -15,7 +15,6 @@ import { AppComponent } from '../app.component';
 import { TableInfoService } from '../table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from '../app-config.service';
-import { StringifyOptions } from 'querystring';
 import { DatePipe } from '@angular/common';
 interface ProcessFT {
   processNumber: string;
