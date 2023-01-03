@@ -266,6 +266,33 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     this.comprovativoService.getRequiredDocuments(this.submissionId).then(result => {
       context.requiredDocuments = result.result;
+
+      context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
+        merchant.documentPurposes.forEach(merchantDocPurposes => {
+          if (merchantDocPurposes.documentState === 'NotExists') {
+            var exists = context.checkDocumentExists(merchant.entityId, merchantDocPurposes, 'merchant');
+            merchantDocPurposes["existsOutbound"] = exists;
+          }
+        });
+      });
+
+      context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
+        stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
+          if (stakeholderDocPurposes.documentState === 'NotExists') {
+            var exists = context.checkDocumentExists(stakeholder.entityId, stakeholderDocPurposes, 'stakeholder');
+            stakeholderDocPurposes["existsOutbound"] = exists;
+          }
+        });
+      });
+
+      context.requiredDocuments.requiredDocumentPurposesShops.forEach(shop => {
+        shop.documentPurposes.forEach(shopDocPurposes => {
+          if (shopDocPurposes.documentState === 'NotExists') {
+            var exists = context.checkDocumentExists(shop.entityId, shopDocPurposes, 'shop');
+            shopDocPurposes["existsOutbound"] = exists;
+          }
+        });
+      });
     });
 
     this.tableInfo.GetAllDocumentPurposes().subscribe(result => {
@@ -409,6 +436,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         }
       }, error => {
         return false;
+      }).then(val => {
+
       });
       return docMerchantExists;
     }
@@ -428,12 +457,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         }
       }, error => {
         return false;
+      }).then(val => {
+
       });
       return docStakeholderExists;
     }
 
-    if (type === 'store') {
-
+    if (type === 'shop') {
+      return false;
     }
 
       //this.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
