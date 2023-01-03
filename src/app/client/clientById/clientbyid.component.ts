@@ -576,6 +576,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert["documents"] = client.documents;
               this.clientDocs = client.documents;
 
+              this.clientDocs.forEach(doc => {
+                this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
+                this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
+              });
+
               this.getDocumentDescription(this.clientDocs);
 
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);

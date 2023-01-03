@@ -651,8 +651,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (delivery === 'viaDigital')
       this.client.documentationDeliveryMethod = 'Portal';
-    //else
-    //  this.client.documentationDeliveryMethod = 'Mail';
+    else
+      this.client.documentationDeliveryMethod = 'Mail';
 
     if (this.isCommercialSociety && this.collectCRC) { // adicionei o this.collectCRC
       this.client.headquartersAddress = {
