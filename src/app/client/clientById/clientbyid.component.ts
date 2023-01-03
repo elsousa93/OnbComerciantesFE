@@ -577,8 +577,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               this.clientDocs = client.documents;
 
               this.clientDocs.forEach(doc => {
-                this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
-                this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
+                doc.validUntil = this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
+                doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
               });
 
               this.getDocumentDescription(this.clientDocs);
