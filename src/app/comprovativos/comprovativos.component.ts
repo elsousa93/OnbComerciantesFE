@@ -399,9 +399,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       var docMerchantExists = false;
       context.clientService.GetClientByIdOutbound(entityId).then(client => {
         if (client.documents != null && client.documents.length > 0) {
-          for (var docs of client.documents) {
-            docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
-          }
+          docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+            if (client.documents.find(elem => elem.documentType === type) == undefined) {
+              return false;
+            } else {
+              return true;
+            }
+          });
         }
       }, error => {
         return false;
@@ -414,9 +418,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
         var client = stake.result;
         if (client.documents != null && client.documents.length > 0) {
-          for (var docs of client.documents) {
-            docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
-          }
+          docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+            if (client.documents.find(elem => elem.documentType === type) == undefined) {
+              return false;
+            } else {
+              return true;
+            }
+          });
         }
       }, error => {
         return false;
