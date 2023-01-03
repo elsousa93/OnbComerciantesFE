@@ -21,7 +21,7 @@
               <option selected value="">{{ 'homepage.' + queueName|translate}}</option>
             </select>
             <p class="titulo-form-simples mb-1">{{'searches.orderDateFrom'|translate|uppercase}}</p><input id="text1" (change)="callEndDate()"
-              name="text1" type="date" class="form-control campo_form" formControlName="processDateStart">
+              name="text1" type="date" [max]="date" class="form-control campo_form" formControlName="processDateStart">
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-6 ms-0 me-0 ps-0 pe-5">

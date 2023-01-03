@@ -347,21 +347,21 @@ export class ClientCharacterizationComponent implements OnInit {
         this.form.get("CAE1Branch").setValue(data.description);
       });
 
-    if (this.processClient.secondaryEconomicActivity[0] !== null) {
+    if (this.processClient.secondaryEconomicActivity[0] !== null || this.processClient.secondaryEconomicActivity[0] !== '') {
       this.searchBranch(this.processClient.secondaryEconomicActivity[0].split("-")[0])
         .then((data) => {
           this.form.get("CAESecondary1Branch").setValue(data.description);
         });
     }
 
-    if (this.processClient.secondaryEconomicActivity[1] !== null) {
+    if (this.processClient.secondaryEconomicActivity[1] !== null || this.processClient.secondaryEconomicActivity[1] !== '') {
       this.searchBranch(this.processClient.secondaryEconomicActivity[1].split("-")[0])
         .then((data) => {
           this.form.get("CAESecondary2Branch").setValue(data.description);
         });
     }
 
-    if (this.processClient.secondaryEconomicActivity[2] !== null) {
+    if (this.processClient.secondaryEconomicActivity[2] !== null || this.processClient.secondaryEconomicActivity[2] !== '') {
       this.searchBranch(this.processClient.secondaryEconomicActivity[2].split("-")[0])
         .then((data) => {
           this.form.get("CAESecondary3Branch").setValue(data.description);
