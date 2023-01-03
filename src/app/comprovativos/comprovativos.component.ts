@@ -26,6 +26,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
 import { DatePipe } from '@angular/common';
 import { LegalNature } from '../table-info/ITable-info.interface';
+import { StoreService } from '../store/store.service';
 
 
 @Component({
@@ -211,13 +212,124 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
-    private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService) {
+    private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService) {
     this.ngOnInit();
     var context = this;
 
     this.tableInfo.GetAllLegalNatures().then(result => {
       this.legalNatures = result.result;
     });
+
+    this.tableInfo.GetAllDocumentPurposes().subscribe(result => {
+      context.documentPurposes = result;
+    });
+
+    this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
+      this.submission = result.result;
+      this.logger.debug('Submission ' + result);
+
+      this.clientService.GetClientByIdAcquiring(this.submissionId).then(c => {
+        this.submissionClient = c;
+        this.getLegalNatureDescription();
+        this.logger.debug('Cliente ' + c);
+
+
+        this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
+          var documents = res;
+          if (documents.length != 0) {
+            documents.forEach(function (value, index) {
+              var document = value;
+
+              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+                const now = new Date();
+                var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
+
+                var index = context.compsToShow.findIndex(value => value.id == document.id);
+                if (index == -1) {
+                  context.compsToShow.push({
+                    id: val.id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    stakeholder: context.submissionClient.legalName,
+                    status: "não definido",
+                    uploadDate: latest_date,
+                    file: val?.id,
+                    documentPurpose: val.documentPurpose,
+                    documentType: val.documentType
+                  });
+                }
+                console.log("Lista de comprovativos ", context.compsToShow);
+              });
+            });
+          }
+
+        });
+      });
+    });
+
+    this.comprovativoService.getRequiredDocuments(this.submissionId).then(result => {
+      context.requiredDocuments = result.result;
+
+      context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
+        merchant.documentPurposes.forEach(merchantDocPurposes => {
+          if (merchantDocPurposes.documentState === 'NotExists') {
+            this.clientService.GetClientByIdAcquiring(context.submissionId).then(client => {
+              var exists = context.checkDocumentExists(client.clientId, merchantDocPurposes, 'merchant');
+              merchantDocPurposes["existsOutbound"] = exists;
+            });
+          }
+        });
+      });
+
+      context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
+        stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
+          if (stakeholderDocPurposes.documentState === 'NotExists') {
+            context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(result => {
+              if ((result.result.stakeholderId == null || result.result.stakeholderId == "") && result.result.fiscalId != "" ) {
+                context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "1010", "por mudar", "por mudar").then(stake => {
+                  var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
+                  stakeholderDocPurposes["existsOutbound"] = exists;
+                });
+              } else {
+                var exists = context.checkDocumentExists(result.result.stakeholderId, stakeholderDocPurposes, 'stakeholder');
+                stakeholderDocPurposes["existsOutbound"] = exists;
+              }
+            });
+          }
+        });
+      });
+
+      context.requiredDocuments.requiredDocumentPurposesShops.forEach(shop => {
+        shop.documentPurposes.forEach(shopDocPurposes => {
+          if (shopDocPurposes.documentState === 'NotExists') {
+            context.shopService.getSubmissionShopDetails(context.submissionId, shop.entityId).then(result => {
+              var exists = context.checkDocumentExists(result.result.shopId, shopDocPurposes, 'shop');
+              shopDocPurposes["existsOutbound"] = exists;
+            });
+
+          }
+        });
+      });
+    }).then(val => {
+      console.log('Terminou');
+    });
+
+
+    if (this.submission.stakeholders != null) { 
+      if (this.submission.stakeholders.length != 0) {
+        this.submission.stakeholders.forEach(stake => {
+          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
+            this.logger.debug('Stakeholder ' + result);
+            var index = this.stakeholdersList.findIndex(s => s.id == result.id);
+            if (index == -1)
+              this.stakeholdersList.push(result);
+          }, error => {
+            this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
+          });
+        });
+      }
+    }
+
 
     if (this.returned != null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
@@ -272,174 +384,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.comprovativoService.getRequiredDocuments(this.submissionId).then(result => {
-      context.requiredDocuments = result.result;
-
-      context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
-        merchant.documentPurposes.forEach(merchantDocPurposes => {
-          if (merchantDocPurposes.documentState === 'NotExists') {
-            this.clientService.GetClientByIdAcquiring(context.submissionId).then(client => {
-              var exists = context.checkDocumentExists(client.clientId, merchantDocPurposes, 'merchant');
-              merchantDocPurposes["existsOutbound"] = exists;
-            });
-          }
-        });
-      });
-
-      context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
-        stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
-          if (stakeholderDocPurposes.documentState === 'NotExists') {
-            context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(result => {
-              if (result.result.stakeholderId == null || result.result.stakeholderId == "") {
-                context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "1010", "por mudar", "por mudar").then(stake => {
-                  var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
-                  stakeholderDocPurposes["existsOutbound"] = exists;
-                });
-              } else {
-                var exists = context.checkDocumentExists(result.result.stakeholderId, stakeholderDocPurposes, 'stakeholder');
-                stakeholderDocPurposes["existsOutbound"] = exists;
-              }
-            });
-          }
-        });
-      });
-
-      context.requiredDocuments.requiredDocumentPurposesShops.forEach(shop => {
-        shop.documentPurposes.forEach(shopDocPurposes => {
-          if (shopDocPurposes.documentState === 'NotExists') {
-            var exists = context.checkDocumentExists(shop.entityId, shopDocPurposes, 'shop');
-            shopDocPurposes["existsOutbound"] = exists;
-          }
-        });
-      });
-    }).then(val => {
-      console.log('Terminou');
-    });
-
-    this.tableInfo.GetAllDocumentPurposes().subscribe(result => {
-      context.documentPurposes = result;
-    });
-    
-    this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
-      this.submission = result.result;
-      this.logger.debug('Submission ' + result);
-
-      this.clientService.GetClientByIdAcquiring(this.submissionId).then(c => {
-        this.submissionClient = c;
-        this.getLegalNatureDescription();
-        this.logger.debug('Cliente ' + c);
-
-
-        this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
-          var documents = res;
-          if (documents.length != 0) {
-            documents.forEach(function (value, index) {
-              var document = value;
-              //context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-                //console.log("imagem de um documento ", res);
-                //var teste = await res.blob();
-
-                //teste.lastModifiedDate = new Date();
-                //teste.name = "nome";
-
-                //context.file = <File>teste;
-                //console.log("Ficheiro encontrado ", context.file);
-
-                context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
-                  const now = new Date();
-                  var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
-
-                  var index = context.compsToShow.findIndex(value => value.id == document.id);
-                  if (index == -1) {
-                    context.compsToShow.push({
-                      id: val.id,
-                      type: "pdf",
-                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                      stakeholder: context.submissionClient.legalName,
-                      status: "não definido",
-                      uploadDate: latest_date,
-                      file: val?.id,
-                      documentPurpose: val.documentPurpose,
-                      documentType: val.documentType
-                    });
-                  }
-                  console.log("Lista de comprovativos ", context.compsToShow);
-                });
-              //});
-            });
-          }
-
-        });
-      });
-
-      //this.submission.documents.forEach(document => {
-      //  this.logger.debug("entrou aqui1!!!");
-      //  var document = document;
-      //  var promise = documentService.GetSubmissionDocumentById(this.submissionId, document.id).toPromise();
-
-      //  promise.then((success) => {
-      //    this.logger.debug("entrou aqui2!!!!")
-      //    var currentDocument = success;
-      //    var fileImage = documentService.GetDocumentImage(this.submissionId, currentDocument.id).toPromise();
-
-      //    this.logger.debug(this.submissionId);
-      //    this.logger.debug(currentDocument.id);
-      //    this.logger.debug("----------------");
-      //    this.documentService.GetDocumentImage(this.submissionId, currentDocument.id).subscribe(result => {
-      //      this.logger.debug("entrou aqui3!!!!!!!");
-      //    });
-
-      //    //fileImage.then((success) => {
-      //    //  this.logger.debug("entrou aqui3!!!!");
-      //    //  var teste = success.arraybuffer();
-      //    //  this.logger.debug(teste);
-      //    //  //var file = success;
-      //    //  //this.logger.debug("FICHEIRO PDF");
-      //    //  //this.logger.debug(file);
-      //    //  //this.files.push(file);
-      //    //  //this.compsToShow.push({
-      //    //  //  type: currentDocument.documentType,
-      //    //  //  stakeholder: '',
-      //    //  //  expirationDate: currentDocument.validUntil,
-      //    //  //  uploadDate: '',
-      //    //  //  status: '',
-      //    //  //  file: file
-      //    //  //});
-      //    //  //this.logger.debug("comps a mostrar");
-      //    //  //this.logger.debug(this.compsToShow);
-
-      //    //}, error => {
-      //    //  this.logger.debug("deu erro!!!");
-      //    //  this.logger.debug(error);
-      //    //});
-      //  });
-
-      //  var blob = this.b64toBlob(document, 'application/pdf', 512);
-
-      //  var file = new File([blob], "crcTeste");
-      //  this.logger.debug("blob para ficheiro");
-      //  this.logger.debug(file);
-      //  this.files.push(file);
-      //});
-    });
-    if (this.submission.stakeholders != null) { 
-      if (this.submission.stakeholders.length != 0) {
-        this.submission.stakeholders.forEach(stake => {
-          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-            this.logger.debug('Stakeholder ' + result);
-            var index = this.stakeholdersList.findIndex(s => s.id == result.id);
-            if (index == -1)
-              this.stakeholdersList.push(result);
-          }, error => {
-            this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
-          });
-        });
-      }
-    }
   }
 
   getDocumentPurposeDescription(purpose: string) {
-    return this.documentPurposes.find(doc => doc.code === purpose).description;
+    return this.documentPurposes?.find(doc => doc.code === purpose)?.description;
   }
 
   checkDocumentExists(entityId: string, purpose: DocumentPurpose, type: string) {
@@ -486,48 +434,24 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
 
     if (type === 'shop') {
-      return false;
+      var docShopExists = false;
+      context.shopService.getShopInfoOutbound(context.submissionClient.clientId, entityId, "", "").then(shop => {
+        if (shop.result.supportingDocuments != null && shop.result.supportingDocuments.length > 0) {
+          docShopExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+            if (shop.result.supportingDocuments.find(elem => elem.documentType === type) == undefined) {
+              return false;
+            } else {
+              return true;
+            }
+          });
+        }
+      }, error => {
+        return false;
+      }).then(val => {
+
+      });
+      return docShopExists;
     }
-
-      //this.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
-      //  merchant.documentPurposes.forEach(purpose => {
-      //    if (purpose.documentState.toLocaleLowerCase() === 'notexists') {
-      //      context.clientService.GetClientByIdOutbound(merchant.entityId).then(client => {
-      //        if (client.documents != null && client.documents.length > 0) {
-      //          client.documents.forEach(docs => {
-      //            var exists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
-      //            return exists;
-      //          });
-      //        }
-      //      }, error => {
-      //        console.log('NÃO FOI ENCONTRADO');
-      //        //se este print funcionar, retornar o valor false
-      //      });
-      //    }
-      //  });
-      //});
-    //}
-
-    //if (type === 'stakeholder') {
-    //  this.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
-    //    stakeholder.documentPurposes.forEach(purpose => {
-    //      if (purpose.documentState.toLocaleLowerCase() === 'notexists') {
-    //        context.stakeholderService.getStakeholderByID(stakeholder.entityId, "", "").then(stake => {
-    //          var client = stake.result;
-    //          if (client.documents != null && client.documents.length > 0) {
-    //            client.documents.forEach(docs => {
-    //              var exists = purpose.documentsTypeCodeFulfillPurpose.some(type => type === docs.documentType);
-    //              return exists;
-    //            });
-    //          }
-    //        }, error => {
-    //          console.log('NÃO FOI ENCONTRADO');
-    //          //se este print funcionar, retornar o valor false
-    //        });
-    //      }
-    //    });
-    //  });
-    //}
   }
   
 
@@ -543,9 +467,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   getLegalNatureDescription() {
-    var index = this.legalNatures.findIndex(value => value.code == this.submissionClient.legalNature);
-    this.legalNature = this.legalNatures[index].description;
-    this.mandatoryDocs = this.legalNatures[index].mandatoryDocuments;
+    var index = this.legalNatures?.findIndex(value => value.code == this.submissionClient.legalNature);
+    this.legalNature = this.legalNatures[index]?.description;
+    this.mandatoryDocs = this.legalNatures[index]?.mandatoryDocuments;
   }
 
   selectFile(event: any, comp: any) {
