@@ -67,8 +67,8 @@ export class InfoStakeholderComponent implements OnInit {
   initializeForm() {
     this.formContactos = new FormGroup({
       phone: new FormGroup({
-        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : ''/*, Validators.required*/),
-        phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : ''/*, Validators.required*/)
+        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : '', Validators.required),
+        phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : '', Validators.required)
       }, { validators: [validPhoneNumber, Validators.required] }),
       email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', Validators.email)
     })
