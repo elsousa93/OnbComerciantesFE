@@ -234,19 +234,21 @@
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStakes'|translate}}
                   </p>
                   <div class="table-responsive me-2 ps-3">
-                     <table class="table table-success align-middle" *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
+                     <table class="table table-success align-middle" >
                         <thead class="table-primary align-middle text-primary">
                            <tr class="text-center text-primary align-middle table-primary" ><!--antes estava aqui-->
                               <th scope="col" class="align-baseline text-primary table-white" >{{'supportingDocuments.checklistModal.name'|translate}}</th>
-
-                              <ng-container *ngFor="let stakeholderDocPurpose of requiredStakeholderDocs?.documentPurposes; let length2 = index">
-                                <th scope="col" *ngIf="stakeholderDocPurpose?.documentState !== 'NotApplicable'"> {{getDocumentPurposeDescription(stakeholderDocPurpose.purpose)}}</th>
+                              <ng-container *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders; let length1 = index">
+                                <ng-container *ngFor="let stakeholderDocPurpose of requiredStakeholderDocs?.documentPurposes; let length2 = index">
+                                  <th scope="col" *ngIf="length1 == 0 && stakeholderDocPurpose?.documentState !== 'NotApplicable'"> {{getDocumentPurposeDescription(stakeholderDocPurpose.purpose)}}</th>
+                                </ng-container>
                               </ng-container>
                            </tr>
                         </thead>
                         <tbody class="table-light text-primary">
-                          <tr class="table-white text-primary" *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
-                            <td scope="row" class="text-center text-dark" *ngIf="length3 == 0">{{requiredStakeholderDocs.entityName}}</td>
+                          <ng-container *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
+                            <tr class="table-white text-primary" *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
+                              <td scope="row" class="text-center text-dark" *ngIf="length3 == 0">{{requiredStakeholderDocs.entityName}}</td>
                               <td class="text-center text-dark" *ngIf="stakeholderPurposes?.documentState !== 'NotApplicable'">
                                 <img *ngIf="stakeholderPurposes?.documentState === 'Exists'" src="assets/images/check-solid-comps.svg"
                                      style="height: 20px !important; vertical-align: sub;">
@@ -257,7 +259,8 @@
                                 <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false" src="assets/images/close-comps.svg"
                                      style="height: 20px !important; vertical-align: sub;">
                               </td>
-                          </tr>
+                            </tr>
+                          </ng-container>
                         </tbody>
                      </table>
                   </div>
@@ -267,22 +270,33 @@
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStores'|translate}}
                   </p>
                   <div class="table-responsive me-2 ps-3">
-                     <table class="table table-success align-middle" *ngIf="client">
-                        <thead class="table-primary align-middle text-primary">
-                           <tr class="text-center text-primary align-middle table-primary">
-                              <th scope="col" class="align-baseline text-primary table-white">
-                                 {{'supportingDocuments.checklistModal.name'|translate}}</th>
-                              <th scope="col">{{'supportingDocuments.checklistModal.IBAN'|translate}}</th>
-                           </tr>
-                        </thead>
-                        <tbody class="table-light text-primary">
-                           <tr class="table-white text-primary">
-                              <td scope="row" class="text-center text-dark">Teste1</td>
-                              <td class="text-center text-dark"><img src="assets/images/check-solid.svg"
-                                    style="height: 20px !important; vertical-align: sub;"></td>
-                           </tr>
-                        </tbody>
-                     </table>
+                    <table class="table table-success align-middle" *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
+                      <thead class="table-primary align-middle text-primary">
+                        <tr class="text-center text-primary align-middle table-primary">-->
+                          <!--antes estava aqui-->
+                          <!--<th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.checklistModal.name'|translate}}</th>
+
+                          <ng-container *ngFor="let stakeholderDocPurpose of requiredStakeholderDocs?.documentPurposes; let length2 = index">
+                            <th scope="col" *ngIf="stakeholderDocPurpose?.documentState !== 'NotApplicable'"> {{getDocumentPurposeDescription(stakeholderDocPurpose.purpose)}}</th>
+                          </ng-container>
+                        </tr>
+                      </thead>
+                      <tbody class="table-light text-primary">
+                        <tr class="table-white text-primary" *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
+                          <td scope="row" class="text-center text-dark" *ngIf="length3 == 0">{{requiredStakeholderDocs.entityName}}</td>
+                          <td class="text-center text-dark" *ngIf="stakeholderPurposes?.documentState !== 'NotApplicable'">
+                            <img *ngIf="stakeholderPurposes?.documentState === 'Exists'" src="assets/images/check-solid-comps.svg"
+                                 style="height: 20px !important; vertical-align: sub;">
+
+                            <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === true" src="assets/images/check-solid-comps.svg"
+                                 style="height: 20px !important; vertical-align: sub;">
+
+                            <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false" src="assets/images/close-comps.svg"
+                                 style="height: 20px !important; vertical-align: sub;">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                </div>-->
             </div>

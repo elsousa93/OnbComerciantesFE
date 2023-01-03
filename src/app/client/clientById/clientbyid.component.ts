@@ -1068,26 +1068,26 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
 
 
-      if (this.clientContext.isClient) { 
+      if (this.clientContext.isClient) {
         this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
           res.forEach(value => {
-            this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").subscribe(r => {
+            this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
               var storeToAdd: ShopDetailsAcquiring = {
-                activity: r.activity,
-                subActivity: r.secondaryActivity,
+                activity: r.result.activity,
+                subActivity: r.result.secondaryActivity,
                 address: {
-                  address: r.address.address,
-                  isInsideShoppingCenter: r.address.isInsideShoppingCenter,
-                  shoppingCenter: r.address.shoppingCenter,
-                  useMerchantAddress: r.address.sameAsMerchantAddress
+                  address: r.result.address.address,
+                  isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
+                  shoppingCenter: r.result.address.shoppingCenter,
+                  useMerchantAddress: r.result.address.sameAsMerchantAddress
                 },
                 bank: {
-                  bank: r.bankingInformation
+                  bank: r.result.bankingInformation
                 },
-                name: r.name,
+                name: r.result.name,
                 //productCode: r.product,
                 //subproductCode: r.subproduct,
-                website: r.url,
+                website: r.result.url,
                 equipments: []
               }
 
