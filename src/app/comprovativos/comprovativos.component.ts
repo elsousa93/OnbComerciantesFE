@@ -25,6 +25,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
 import { DatePipe } from '@angular/common';
+import { LegalNature } from '../table-info/ITable-info.interface';
 
 
 @Component({
@@ -179,6 +180,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   requiredDocuments: RequiredDocuments;
   documentPurposes: PurposeDocument[];
+  legalNatures: LegalNature[];
+  legalNature: string;
+  mandatoryDocs: string;
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
@@ -210,6 +214,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService) {
     this.ngOnInit();
     var context = this;
+
+    this.tableInfo.GetAllLegalNatures().then(result => {
+      this.legalNatures = result.result;
+    });
 
     if (this.returned != null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
@@ -271,7 +279,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         merchant.documentPurposes.forEach(merchantDocPurposes => {
           if (merchantDocPurposes.documentState === 'NotExists') {
             this.clientService.GetClientByIdAcquiring(context.submissionId).then(client => {
-              var exists = context.checkDocumentExists(client.merchantId, merchantDocPurposes, 'merchant');
+              var exists = context.checkDocumentExists(client.clientId, merchantDocPurposes, 'merchant');
               merchantDocPurposes["existsOutbound"] = exists;
             });
           }
@@ -281,9 +289,16 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
         stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
-            context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(stake => {
-              var exists = context.checkDocumentExists(stake.stakeholderId, stakeholderDocPurposes, 'stakeholder');
-              stakeholderDocPurposes["existsOutbound"] = exists;
+            context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(result => {
+              if (result.result.stakeholderId == null || result.result.stakeholderId == "") {
+                context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "1010", "por mudar", "por mudar").then(stake => {
+                  var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
+                  stakeholderDocPurposes["existsOutbound"] = exists;
+                });
+              } else {
+                var exists = context.checkDocumentExists(result.result.stakeholderId, stakeholderDocPurposes, 'stakeholder');
+                stakeholderDocPurposes["existsOutbound"] = exists;
+              }
             });
           }
         });
@@ -311,6 +326,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
       this.clientService.GetClientByIdAcquiring(this.submissionId).then(c => {
         this.submissionClient = c;
+        this.getLegalNatureDescription();
         this.logger.debug('Cliente ' + c);
 
 
@@ -526,6 +542,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.data.updateData(true, 4, 1);
   }
 
+  getLegalNatureDescription() {
+    var index = this.legalNatures.findIndex(value => value.code == this.submissionClient.legalNature);
+    this.legalNature = this.legalNatures[index].description;
+    this.mandatoryDocs = this.legalNatures[index].mandatoryDocuments;
+  }
 
   selectFile(event: any, comp: any) {
     this.compToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataValidade: "desconhecido", dataEntrada: "desconhecido", status: "Ativo" }

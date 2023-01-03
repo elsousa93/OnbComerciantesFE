@@ -244,7 +244,9 @@
         "unapplicable": "Not applicable",
         "noArchive": "Does not exist in file",
         "archive": "Already exists in file"
-      }
+      },
+      "selectedLegalNature": "For the selected Legal Nature",
+      "mandatoryDocuments": "the mandatory documents"
     },
     "documentsListEmpty": "There are no documents"
   },

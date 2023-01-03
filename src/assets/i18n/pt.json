@@ -245,7 +245,9 @@
         "unapplicable": "Não aplicável",
         "noArchive": "Não existe em arquivo",
         "archive": "Já existe em arquivo"
-      }
+      },
+      "selectedLegalNature": "Para a natureza jurídica selecionada",
+      "mandatoryDocuments": "os documentos obrigatórios"
     },
     "documentsListEmpty": "Não existem documentos"
   },
