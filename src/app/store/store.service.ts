@@ -13,6 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
 import { AppConfigService } from '../app-config.service';
+import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -64,27 +65,11 @@ export class StoreService {
     return this.http.get<ShopsListOutbound[]>(URI, HTTP_OPTIONS);
   }
 
-  getShopInfoOutbound(merchantId: string, shopId: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
+  getShopInfoOutbound(merchantId: string, shopId: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?){
 
     var URI = this.urlOutbound + 'api/v1/merchant/' + merchantId + '/shop/' + shopId;
 
-    var data = new Date();
-
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'X-Request-Id': requestID,
-        'X-Acquiring-UserId': AcquiringUserID,
-      }),
-    }
-
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
-    return this.http.get<ShopDetailsOutbound>(URI, HTTP_OPTIONS);
+    return this.APIService.callAPIOutbound(HttpMethod.GET, URI, "searchId", "searchType", "requestId", "acquiringUserId");
   }
 
 
