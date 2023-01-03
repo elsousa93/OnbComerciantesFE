@@ -15,6 +15,8 @@ import { AppComponent } from '../app.component';
 import { TableInfoService } from '../table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from '../app-config.service';
+import { StringifyOptions } from 'querystring';
+import { DatePipe } from '@angular/common';
 interface ProcessFT {
   processNumber: string;
   nipc: number;
@@ -62,15 +64,17 @@ export class ConsultasFTComponent implements OnInit{
   public url: string;
 
   public endDate: string = "";
+  public date: string;
 
   baseUrl = '';
 
   ListaDocType;
   
-  constructor(private logger: LoggerService, private http: HttpClient,
+  constructor(private logger: LoggerService, private datePipe: DatePipe, private http: HttpClient,
     private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.appComponent.toggleSideNav(false);
+    this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     
 
     //Gets Queue Name from the Dashboard component 
