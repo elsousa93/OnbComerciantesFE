@@ -414,22 +414,24 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     if (type === 'stakeholder') {
       var docStakeholderExists = false;
-      context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
-        var client = stake.result;
-        if (client.documents != null && client.documents.length > 0) {
-          docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
-            if (client.documents.find(elem => elem.documentType === type) == undefined) {
-              return false;
-            } else {
-              return true;
-            }
-          });
-        }
-      }, error => {
-        return false;
-      }).then(val => {
+      if (entityId != undefined) { 
+        context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
+          var client = stake.result;
+          if (client.documents != null && client.documents.length > 0) {
+            docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+              if (client.documents.find(elem => elem.documentType === type) == undefined) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+          }
+        }, error => {
+          return false;
+        }).then(val => {
 
-      });
+        });
+      }
       return docStakeholderExists;
     }
 
