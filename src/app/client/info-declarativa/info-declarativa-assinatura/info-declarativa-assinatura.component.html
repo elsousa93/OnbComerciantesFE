@@ -105,7 +105,6 @@
                       <td class="text-primary text-center align-middle"> {{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}} </td>
                       <td class="text-primary text-center align-middle">
                         <select *ngIf="!isVisible" id="{{i + ''}}" name="{{i + ''}}" formControlName="{{i + ''}}">
-                          <option value="NotSign">-</option>
                           <option value="OneTimePassword">OTP</option>
                           <option value="DigitalCitizenCard">Chave Móvel Digital</option>
                           <option value="CitizenCard">CC</option>

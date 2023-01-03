@@ -84,7 +84,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   } 
 
   ngOnInit(): void {
-    this.data.updateData(false, 6, 4);
+    this.data.updateData(false, 6, 3);
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
