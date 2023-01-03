@@ -270,8 +270,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
         merchant.documentPurposes.forEach(merchantDocPurposes => {
           if (merchantDocPurposes.documentState === 'NotExists') {
-            var exists = context.checkDocumentExists(merchant.entityId, merchantDocPurposes, 'merchant');
-            merchantDocPurposes["existsOutbound"] = exists;
+            this.clientService.GetClientByIdAcquiring(context.submissionId).then(client => {
+              var exists = context.checkDocumentExists(client.merchantId, merchantDocPurposes, 'merchant');
+              merchantDocPurposes["existsOutbound"] = exists;
+            });
           }
         });
       });
@@ -279,8 +281,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
         stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
-            var exists = context.checkDocumentExists(stakeholder.entityId, stakeholderDocPurposes, 'stakeholder');
-            stakeholderDocPurposes["existsOutbound"] = exists;
+            context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(stake => {
+              var exists = context.checkDocumentExists(stake.stakeholderId, stakeholderDocPurposes, 'stakeholder');
+              stakeholderDocPurposes["existsOutbound"] = exists;
+            });
           }
         });
       });
@@ -293,11 +297,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           }
         });
       });
+    }).then(val => {
+      console.log('Terminou');
     });
 
     this.tableInfo.GetAllDocumentPurposes().subscribe(result => {
       context.documentPurposes = result;
-    })
+    });
     
     this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
       this.submission = result.result;
