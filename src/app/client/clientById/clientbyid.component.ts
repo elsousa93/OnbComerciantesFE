@@ -728,7 +728,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
             if (res.length > 0) {
               res.forEach(doc => {
-                if (doc.type === '0001') { 
+                if (doc.type === '0018') { 
                   context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
                     var file = {
                       documentType: 'Cartão do Cidadão',
@@ -1053,7 +1053,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           var birthDate = this.clientContext.dataCC.birthdateCC.split(" ");
           stakeholder.birthDate = this.datepipe.transform(new Date(birthDate[2] + " " + birthDate[1] + " " + birthDate[0]), 'yyyy-MM-dd');
           stakeholder.identificationDocument = {
-            type: '0001',
+            type: '0018',
             country: this.clientContext.dataCC.countryCC,
             number: this.clientContext.dataCC.cardNumberCC,
             expirationDate: this.clientContext.dataCC.expiryDate
