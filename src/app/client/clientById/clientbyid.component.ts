@@ -1076,11 +1076,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("CC Data: ", this.dataCC);
         if (this.dataCC !== undefined && this.dataCC !== null) {
           stakeholder.signType = "DigitalCitizenCard";
-          stakeholder.birthDate = this.clientContext.dataCC.cardNumberCC;
+          stakeholder.birthDate = this.clientContext.dataCC.birthdateCC;
           stakeholder.identificationDocument = {
             type: '0001',
             country: this.clientContext.dataCC.countryCC,
-            number: this.clientContext.dataCC.nifCC,
+            number: this.clientContext.dataCC.cardNumberCC,
             expirationDate: this.clientContext.dataCC.expiryDate
           }
 
