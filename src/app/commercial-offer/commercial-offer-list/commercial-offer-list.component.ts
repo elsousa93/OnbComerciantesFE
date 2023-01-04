@@ -140,16 +140,6 @@ export class CommercialOfferListComponent implements OnInit {
 
     this.initializeForm();
 
-    if (this.currentUser.permissions == UserPermissions.BANCA) {
-      this.userBanca = true;
-      this.form.get("isUnicre").setValue(false);
-      this.form.get("isUnicre").disable();
-      this.changeUnicre(false);
-    } else {
-      this.userBanca = false;
-      this.form.get("isUnicre").setValue(true);
-      this.changeUnicre(true);
-    }
 
     //this.COService.OutboundGetProductsAvailable().then(result => {
     //  this.products = result.result;
@@ -491,6 +481,17 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
+
+    if (this.currentUser.permissions == UserPermissions.BANCA) {
+      this.userBanca = true;
+      this.form.get("isUnicre").setValue(false);
+      this.form.get("isUnicre").disable();
+      this.changeUnicre(false);
+    } else {
+      this.userBanca = false;
+      this.form.get("isUnicre").setValue(true);
+      this.changeUnicre(true);
+    }
 
     if (!this.form.get("isUnicre").value) {
       this.form.get("terminalRegistrationNumber").setValue(null);
