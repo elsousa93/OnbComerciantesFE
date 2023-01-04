@@ -1092,6 +1092,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         //stakeholderToShow.name = client.legalName;
 
         newSubmission.stakeholders.push(stakeholder);
+        this.clientContext.newSubmission = newSubmission;
       }
 
       this.clientContext.setClient(newSubmission.merchant);

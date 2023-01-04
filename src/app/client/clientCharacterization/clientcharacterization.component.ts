@@ -695,10 +695,10 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.legalName = this.form.value["socialDenomination"];
 
       if (this.tipologia === 'corporation' || this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01')
-        this.client.merchantType = '01';
+        this.client.merchantType = 'Corporate';
 
       if (this.tipologia === 'Entrepeneur' || this.tipologia === 'ENI' || this.tipologia === '02')
-        this.client.merchantType = '02';
+        this.client.merchantType = 'Entrepeneur';
     } else {
 
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
@@ -709,7 +709,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
         var natJuridicaN2 = this.form.value["natJuridicaN2"];
 
-        this.client.merchantType = '01';
+        this.client.merchantType = 'Corporate';
 
         if (natJuridicaN2 != null && natJuridicaN2 != '')
           this.client.legalNature2 = this.form.value["natJuridicaN2"];
@@ -719,7 +719,7 @@ export class ClientCharacterizationComponent implements OnInit {
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
       this.client.legalName = this.form.value["socialDenomination"];
       this.client.commercialName = this.form.value["socialDenomination"];
-      this.client.merchantType = '02';
+      this.client.merchantType = 'Entrepeneur';
       if (this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;
         this.client.fiscalId = this.dataCC.nifCC;
