@@ -565,7 +565,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
           }, error => {
             Promise.reject('não encontrou cliente');
-          }).catch(error => {
             console.log('ERRO ', error);
             client.fiscalId = this.dataCC.nifCC;
             client.shortName = client.legalName = client.commercialName = this.dataCC.nameCC;
@@ -588,8 +587,33 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.clientContext.setClient(client);
             this.NIFNIPC = client.fiscalId;
             this.clientContext.setNIFNIPC(client.fiscalId);
-            this.updateBasicForm();
-            this.createSubmission();
+            //this.updateBasicForm();
+            //this.createSubmission();
+          //}).catch(error => {
+          //  console.log('ERRO ', error);
+          //  client.fiscalId = this.dataCC.nifCC;
+          //  client.shortName = client.legalName = client.commercialName = this.dataCC.nameCC;
+          //  client.bankInformation = {};
+          //  client.headquartersAddress = {};
+          //  client.otherEconomicActivities = [];
+
+          //  client["knowYourSales"] = {};
+          //  client["knowYourSales"]["servicesOrProductsDestinations"] = [];
+          //  client["knowYourSales"]["servicesOrProductsSold"] = [];
+
+          //  client.shareCapital = {};
+          //  client.incorporationStatement = {};
+          //  client.contacts = {};
+
+          //  client.merchantType = this.tipologia;
+
+          //  client.documentationDeliveryMethod = 'Portal';
+
+          //  this.clientContext.setClient(client);
+          //  this.NIFNIPC = client.fiscalId;
+          //  this.clientContext.setNIFNIPC(client.fiscalId);
+          //  this.updateBasicForm();
+          //  this.createSubmission();
           }).then(val => {
             this.updateBasicForm();
             this.createSubmission();
