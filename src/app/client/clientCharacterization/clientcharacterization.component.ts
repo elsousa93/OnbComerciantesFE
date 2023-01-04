@@ -649,7 +649,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     var delivery = this.client.documentationDeliveryMethod;
 
-    if (delivery === 'viaDigital')
+    if (delivery === 'viaDigital' || delivery === 'Portal')
       this.client.documentationDeliveryMethod = 'Portal';
     else
       this.client.documentationDeliveryMethod = 'Mail';
@@ -687,7 +687,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.incorporationStatement = {
         code: this.form.value["crcCode"]
       }
-      this.client.legalNature = this.form.value["natJuridicaN1"];
+      //this.client.legalNature = this.form.value["natJuridicaN1"];
 
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];

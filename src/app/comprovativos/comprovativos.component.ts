@@ -306,7 +306,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               var exists = context.checkDocumentExists(result.result.shopId, shopDocPurposes, 'shop');
               shopDocPurposes["existsOutbound"] = exists;
             });
-
           }
         });
       });
