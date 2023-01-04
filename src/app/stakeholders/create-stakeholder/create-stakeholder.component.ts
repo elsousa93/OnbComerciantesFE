@@ -156,7 +156,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (this.dataCCcontents.localityCC == null) {
       this.dataCCcontents.localityCC = '';
     }
-    this.dataCCcontents.countryCC = country;
+    this.dataCCcontents.countryCC = countryIssuer;
     this.countryCC = countryIssuer; //HTML
 
     if (notes != null || notes != "") {
