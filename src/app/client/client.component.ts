@@ -256,7 +256,6 @@ export class ClientComponent implements OnInit {
       "address": "Rua da Azoia 4",
       "postalCode": "2625-236",
       "postalArea": "Povoa de Santa Iria",
-      "locality": "Lisboa",
       "country": "PT"
     },
     "merchantType": "Company",
@@ -526,7 +525,7 @@ export class ClientComponent implements OnInit {
                 "commercialName": c.result.commercialName,
                 "address": c.result.headquartersAddress.address,
                 "ZIPCode": c.result.headquartersAddress.postalCode,
-                "locality": c.result.headquartersAddress.postalArea,
+                "postalArea": c.result.headquartersAddress.postalArea,
                 "country": c.result.headquartersAddress.country,
                 //"fiscalId": c.fiscalId
               }

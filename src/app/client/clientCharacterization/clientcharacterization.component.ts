@@ -755,14 +755,18 @@ export class ClientCharacterizationComponent implements OnInit {
       console.log("stakeholder: ", value);
       var fiscalID = value.fiscalId;
 
+      //value["address"]["district"]
+      //value["address"]["city"]
+      //value["address"]["parish"]
+
       var stakeholderToInsert = {
         "fiscalId": (fiscalID != null && fiscalID != undefined) ? fiscalID : '',
         "shortName": value.name,
         "fiscalAddress": {
-          "postalCode": "",
-          "postalArea": "",
-          "country": "",
-          "address": ""
+          "postalCode": value["address"] != null ? value["address"]["postalCode"] : null,
+          "postalArea": value["address"] != null ? value["address"]["postalArea"] : null,
+          "country": value["address"] != null ? value["address"]["country"] : null,
+          "address": value["address"] != null ? value["address"]["fullAddress"]: null
         },
         "capitalHeldPercentage": value.capitalHeldPercentage,
         "isBeneficiary": value.isBeneficiary,

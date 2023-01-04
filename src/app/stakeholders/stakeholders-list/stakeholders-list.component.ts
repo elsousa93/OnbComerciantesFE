@@ -315,10 +315,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }).then(stakeholderInfo => {
         console.log("Preenchido: ", context.submissionStakeholders);
         this.dataService.changeCurrentFirstTimeStake(false);
-        this.selectedStakeholder = context.submissionStakeholders[0];
-        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
-        this.listLengthEmitter.emit(context.submissionStakeholders.length);
         this.loadStakeholders(context.submissionStakeholders);
+        this.listLengthEmitter.emit(context.submissionStakeholders.length);
+        //this.selectedStakeholder = context.submissionStakeholders[0];
+        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+        //this.listLengthEmitter.emit(context.submissionStakeholders.length);
+        //this.loadStakeholders(context.submissionStakeholders);
       });
     })
   }
