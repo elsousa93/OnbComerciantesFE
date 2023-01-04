@@ -564,7 +564,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.clientContext.setNIFNIPC(client.fiscalId);
 
           }, error => {
-            Promise.reject('não encontrou cliente');
+            //Promise.reject('não encontrou cliente');
             console.log('ERRO ', error);
             client.fiscalId = this.dataCC.nifCC;
             client.shortName = client.legalName = client.commercialName = this.dataCC.nameCC;
@@ -585,36 +585,14 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             client.documentationDeliveryMethod = 'Portal';
 
             this.clientContext.setClient(client);
-            this.NIFNIPC = client.fiscalId;
-            this.clientContext.setNIFNIPC(client.fiscalId);
-            //this.updateBasicForm();
-            //this.createSubmission();
-          //}).catch(error => {
-          //  console.log('ERRO ', error);
-          //  client.fiscalId = this.dataCC.nifCC;
-          //  client.shortName = client.legalName = client.commercialName = this.dataCC.nameCC;
-          //  client.bankInformation = {};
-          //  client.headquartersAddress = {};
-          //  client.otherEconomicActivities = [];
-
-          //  client["knowYourSales"] = {};
-          //  client["knowYourSales"]["servicesOrProductsDestinations"] = [];
-          //  client["knowYourSales"]["servicesOrProductsSold"] = [];
-
-          //  client.shareCapital = {};
-          //  client.incorporationStatement = {};
-          //  client.contacts = {};
-
-          //  client.merchantType = this.tipologia;
-
-          //  client.documentationDeliveryMethod = 'Portal';
-
-          //  this.clientContext.setClient(client);
-          //  this.NIFNIPC = client.fiscalId;
-          //  this.clientContext.setNIFNIPC(client.fiscalId);
-          //  this.updateBasicForm();
-          //  this.createSubmission();
+            this.clientContext.isClient = false;
+            this.NIFNIPC = this.dataCC.nifCC;
+            this.clientContext.setNIFNIPC(this.dataCC.nifCC);
           }).then(val => {
+            if (!this.clientContext.isClient) {
+              this.countriesComponent.getClientContextValues();
+            }
+            this.clientCharacterizationComponent.getClientContextValues();
             this.updateBasicForm();
             this.createSubmission();
           });
@@ -1094,8 +1072,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         //stakeholderToShow.name = client.legalName;
 
         newSubmission.stakeholders.push(stakeholder);
-        //this.clientContext.newSubmission = newSubmission;
+        this.clientContext.newSubmission = newSubmission;
       }
+
       this.clientContext.newSubmission = newSubmission;
       this.clientContext.setClient(newSubmission.merchant);
 

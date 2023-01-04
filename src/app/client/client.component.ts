@@ -115,6 +115,7 @@ export class ClientComponent implements OnInit {
     this.dataCCcontents = {}
 
     this.dataCCcontents.nameCC = name;
+    localStorage.setItem("clientName", name);
     this.dataCCcontents.nationalityCC = nationality;
     this.dataCCcontents.birthdateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
