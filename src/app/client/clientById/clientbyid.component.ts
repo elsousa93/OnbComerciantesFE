@@ -482,7 +482,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.data.changeCurrentDataCC(this.dataCC);
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
-          this.clientService.GetClientByIdOutbound(client.fiscalId).then(result => {
+          this.clientService.GetClientByIdOutbound(this.dataCC.nifCC).then(result => {
             client.clientId = result.merchantId;
             client.merchantRegistrationId = result.merchantRegistrationId;
             //client.legalName = result.legalName;
