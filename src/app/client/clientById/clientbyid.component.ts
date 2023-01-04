@@ -483,6 +483,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
           this.clientService.GetClientByIdOutbound(this.dataCC.nifCC).then(result => {
+            console.log('RESULTADO ', result);
             client.clientId = result.merchantId;
             client.merchantRegistrationId = result.merchantRegistrationId;
             //client.legalName = result.legalName;
@@ -562,6 +563,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.NIFNIPC = client.fiscalId;
             this.clientContext.setNIFNIPC(client.fiscalId);
 
+          }, error => {
+            Promise.reject('não encontrou cliente');
           }).catch(error => {
             console.log('ERRO ', error);
             client.fiscalId = this.dataCC.nifCC;
