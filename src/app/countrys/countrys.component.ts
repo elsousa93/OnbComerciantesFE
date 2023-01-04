@@ -159,8 +159,11 @@ export class CountrysComponent implements OnInit {
     if (this.returned == null) {
       if (!this.clientContext.clientExists && this.map.get(2) == undefined) { // garantir que só adicionamos Portugal por default, se o cliente não existir E se o tabulador dos intervenientes ainda não foi visitado
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
-          this.contPais.push(result);
-          this.inserirText(null);
+          var index = this.contPais.findIndex(elem => elem.code == result.code);
+          if (index == -1) { 
+            this.contPais.push(result);
+            this.inserirText(null);
+          }
         }));
       }
     } else {
@@ -776,11 +779,11 @@ export class CountrysComponent implements OnInit {
 
       this.insertValues();
 
-      if (this.client.businessGroup.type == "Holding") {
+      if (this.client?.businessGroup?.type == "Holding") {
         this.setAssociatedWith(true);
         this.form.get("NIPCGroup").setValue(this.client.businessGroup.branch);
       }
-      if (this.client.businessGroup.type == "Franchising") {
+      if (this.client?.businessGroup?.type == "Franchising") {
         this.setAssociatedWith(true);
         this.form.get("NIPCGroup").setValue(this.client.businessGroup.branch);
       }

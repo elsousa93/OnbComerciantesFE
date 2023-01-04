@@ -571,6 +571,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             client.bankInformation = {};
             client.headquartersAddress = {};
             client.otherEconomicActivities = [];
+            client.businessGroup = {};
 
             client["knowYourSales"] = {};
             client["knowYourSales"]["servicesOrProductsDestinations"] = [];
