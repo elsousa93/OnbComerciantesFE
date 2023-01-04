@@ -136,7 +136,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
 
     if (comprovativoCC !== null && comprovativoCC !== undefined) {
       newSubmission.documents.push({
-        documentType: "0001", 
+        documentType: "0018", 
         documentPurpose: 'Identification',
         file: {
           fileType: 'PDF',

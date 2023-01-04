@@ -153,7 +153,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     if (changes["currentStakeholder"]) {
       this.isStakeholderFromCC(this.currentStakeholder);
       this.isStakeholderFromCRC(this.currentStakeholder);
-      if (identificationDocument != undefined && identificationDocument?.type === '0001') {
+      if (identificationDocument != undefined && identificationDocument?.type === '0018') {
         this.createFormCC();
       } else {
         this.initializeFormWithoutCC();
@@ -276,7 +276,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   changeValueCC(){
-    if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0001') {
+    if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018') {
       this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = 'Cartão do Cidadão';
       this.formNewStakeholder.get('documentType').setValue('Cartão do Cidadão');
 
