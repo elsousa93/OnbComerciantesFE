@@ -483,6 +483,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
           this.clientService.GetClientByIdOutbound(this.dataCC.nifCC).then(result => {
+            console.log('RESULTADO ', result);
             client.clientId = result.merchantId;
             client.merchantRegistrationId = result.merchantRegistrationId;
             //client.legalName = result.legalName;
@@ -563,6 +564,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.clientContext.setNIFNIPC(client.fiscalId);
 
           }, error => {
+            Promise.reject('não encontrou cliente');
+          }).catch(error => {
+            console.log('ERRO ', error);
             client.fiscalId = this.dataCC.nifCC;
             client.shortName = client.legalName = client.commercialName = this.dataCC.nameCC;
             client.bankInformation = {};
@@ -586,7 +590,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.clientContext.setNIFNIPC(client.fiscalId);
             this.updateBasicForm();
             this.createSubmission();
-
           }).then(val => {
             this.updateBasicForm();
             this.createSubmission();
@@ -1067,9 +1070,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         //stakeholderToShow.name = client.legalName;
 
         newSubmission.stakeholders.push(stakeholder);
-        this.clientContext.newSubmission = newSubmission;
+        //this.clientContext.newSubmission = newSubmission;
       }
-
+      this.clientContext.newSubmission = newSubmission;
       this.clientContext.setClient(newSubmission.merchant);
 
       if (!this.submissionExists) { 

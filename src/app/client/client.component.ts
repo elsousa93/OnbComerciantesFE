@@ -130,7 +130,7 @@ export class ClientComponent implements OnInit {
     this.dataCCcontents.nss = nss;
     this.dataCCcontents.height = height;
     this.dataCCcontents.gender = gender;
-    this.dataCCcontents.countryCC = country;
+    this.dataCCcontents.countryCC = countryIssuer;
     this.countryCC = countryIssuer; //HTML
 
     var expireDate = expiryDate.replaceAll(" ", "/").split("/");
