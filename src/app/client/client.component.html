@@ -411,7 +411,7 @@
             <ng-container matColumnDef="locale">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                 {{'client.locale'|translate}} </mat-header-cell>
-              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.locality}} </mat-cell>
+              <mat-cell *matCellDef="let client" style="display: inline-grid;"> {{client.client.postalArea}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="country">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">

@@ -1076,7 +1076,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("CC Data: ", this.dataCC);
         if (this.dataCC !== undefined && this.dataCC !== null) {
           stakeholder.signType = "DigitalCitizenCard";
-          stakeholder.birthDate = this.clientContext.dataCC.birthdateCC;
+          var birthDate = this.clientContext.dataCC.birthdateCC.split(" ");
+          stakeholder.birthDate = this.datepipe.transform(new Date(birthDate[2] + birthDate[1] + birthDate[0]), 'yyyy-MM-dd');
           stakeholder.identificationDocument = {
             type: '0018',
             country: this.clientContext.dataCC.countryCC,
