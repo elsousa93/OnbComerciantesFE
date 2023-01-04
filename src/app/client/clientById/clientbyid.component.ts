@@ -559,6 +559,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
               this.clientContext.clientExists = true;
+              this.clientContext.setClient(client);
+              this.NIFNIPC = client.fiscalId;
+              this.clientContext.setNIFNIPC(client.fiscalId);
 
             }, error => {
               client.fiscalId = this.dataCC.nifCC;
@@ -586,9 +589,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               this.createSubmission();
 
             }).then(val => {
-              this.clientContext.setClient(client);
-              this.NIFNIPC = client.fiscalId;
-              this.clientContext.setNIFNIPC(client.fiscalId);
               this.updateBasicForm();
               this.createSubmission();
             });
@@ -1065,12 +1065,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         stakeholder.shortName = client.legalName;
         stakeholder.fiscalAddress = client.headquartersAddress;
         stakeholder.phone1 = {
-          countryCode: client.contacts.phone1.countryCode,
-          phoneNumber: client.contacts.phone1.phoneNumber
+          countryCode: client.contacts?.phone1?.countryCode,
+          phoneNumber: client.contacts?.phone1?.phoneNumber
         };
         stakeholder.phone2 = {
-          countryCode: client.contacts.phone2.countryCode,
-          phoneNumber: client.contacts.phone2.countryCode
+          countryCode: client.contacts?.phone2?.countryCode,
+          phoneNumber: client.contacts?.phone2?.countryCode
         };
         stakeholder.email = client.contacts.email;
         console.log("CC Data: ", this.dataCC);
