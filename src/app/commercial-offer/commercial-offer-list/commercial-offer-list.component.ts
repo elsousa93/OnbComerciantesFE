@@ -493,12 +493,12 @@ export class CommercialOfferListComponent implements OnInit {
       this.changeUnicre(true);
     }
 
-    if (!this.form.get("isUnicre").value) {
-      this.form.get("terminalRegistrationNumber").setValue(null);
-      this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
-      this.form.get("terminalRegistrationNumber").updateValueAndValidity();
-      this.disableNewConfiguration = true;
-    }
+    // if (!this.form.get("isUnicre").value) {
+    //   this.form.get("terminalRegistrationNumber").setValue(null);
+    //   this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
+    //   this.form.get("terminalRegistrationNumber").updateValueAndValidity();
+    //   this.disableNewConfiguration = true;
+    // }
 
     this.form.get("productPackKind").setValue(this.currentStore.pack?.packId);
   }
@@ -512,6 +512,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.disableNewConfiguration = !bool;
     this.isNewConfig = null;
     if (!bool) {
+      this.form.get("terminalRegistrationNumber").setValue(null);
       this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
     } else {
       this.form.get("terminalRegistrationNumber").setValidators(null);

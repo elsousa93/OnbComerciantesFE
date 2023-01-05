@@ -187,7 +187,7 @@
             <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
               {{'client.incorrectNIPC'|translate}}
             </span></p>
-            <input class="form-control campo_form" formControlName="NIPCGroup" name="NIPCGroup" type="text" (keyup)="validateNIPC($event)" (keypress)="numericOnly($event)"
+            <input #nipc class="form-control campo_form" formControlName="NIPCGroup" name="NIPCGroup" type="text" (keyup)="validateNIPC(nipc.value)" (keypress)="numericOnly($event)"
               id="NIPCGroup" [readonly]="isAssociatedWithFranchise || returned == 'consult'">
             <div class="alert alert-danger"
               *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
