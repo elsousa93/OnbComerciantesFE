@@ -61,7 +61,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       stakeholders.forEach(function (value, index) {
         context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
           console.log("stakeholder adicionado com sucesso");
-          // context.form.addControl(index + "", new FormControl(""));
+          context.form.addControl(index + "", new FormControl(null, Validators.required));
           context.submissionStakeholders.push(res);
         }, error => {
           console.log("Erro a adicionar stakeholder");
@@ -82,10 +82,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.form = new FormGroup({
       language: new FormControl('', Validators.required),
       signature: new FormControl(true, Validators.required)
-    });
-
-    this.submissionStakeholders.forEach((stake, index) => {
-     this.form.addControl(index + "", new FormControl(null, Validators.required));
     });
 
     this.form.statusChanges.pipe(distinctUntilChanged()).subscribe(val => {
