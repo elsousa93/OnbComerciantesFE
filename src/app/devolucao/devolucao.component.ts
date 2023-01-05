@@ -10,6 +10,8 @@ import { LoggerService } from 'src/app/logger.service';
 import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { StoreService } from '../store/store.service';
+import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-devolucao',
@@ -34,7 +36,7 @@ export class DevolucaoComponent implements OnInit{
   constructor(private logger : LoggerService, private http: HttpClient,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
-    private stakeholderService: StakeholderService, private storeService: StoreService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private translate: TranslateService, private datePipe: DatePipe) {
 
     this.logger.debug('Process Id ' + this.processId);  
   }
@@ -91,6 +93,22 @@ export class DevolucaoComponent implements OnInit{
 
     this.processService.getProcessHistory(this.processId).then(result => {
       this.processHistoryItems = result.result;
+      this.processHistoryItems.items.forEach(process => {
+        process.whenStarted = this.datePipe.transform(process.whenStarted, 'dd-MM-yyyy').toString();
+        if (process.processState === 'Incomplete') {
+          process.processState = this.translate.instant('searches.incompleted');
+        } else if (process.processState === 'Ongoing') {
+          process.processState = this.translate.instant('searches.running');
+        } else if (process.processState === 'Completed') {
+          process.processState = this.translate.instant('searches.completed');
+        } else if (process.processState === 'Returned') {
+          process.processState = this.translate.instant('searches.returned');
+        } else if (process.processState === 'Cancelled') {
+          process.processState = this.translate.instant('searches.cancelled');
+        } else if (process.processState === 'ContractAcceptance') {
+          process.processState = this.translate.instant('searches.contractAcceptance')
+        }
+      });
     });
   }
   
