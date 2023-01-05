@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
-import { BusinessIssueViewModel, ProcessList, ProcessService } from '../process/process.service';
+import { BusinessIssueViewModel, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
@@ -29,6 +29,7 @@ export class DevolucaoComponent implements OnInit{
   public processNumber: string;
 
   public issues: BusinessIssueViewModel
+  public processHistoryItems: SearchProcessHistory;
 
   constructor(private logger : LoggerService, private http: HttpClient,
     private route: Router, private data: DataService,
@@ -86,6 +87,10 @@ export class DevolucaoComponent implements OnInit{
         console.log('ISSUES ', res);
         this.issues = res;
       });
+    });
+
+    this.processService.getProcessHistory(this.processId).then(result => {
+      this.processHistoryItems = result.result;
     });
   }
   
