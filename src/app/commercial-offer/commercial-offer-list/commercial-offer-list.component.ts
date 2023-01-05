@@ -243,7 +243,7 @@ export class CommercialOfferListComponent implements OnInit {
       replicateProducts: new FormControl(this.replicate, [Validators.required]),
       store: new FormControl(''),
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
-      terminalRegistrationNumber: new FormControl(''),
+      terminalRegistrationNumber: new FormControl(this.currentStore.registrationId!='' ? this.currentStore.registrationId : ''),
       productPackKind: new FormControl('', [Validators.required]),
     });
   }
