@@ -16,6 +16,7 @@ import { AuthService } from '../services/auth.service';
 import { ClientContext } from '../client/clientById/clientById.model';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { AcquiringClientPost } from '../client/Client.interface';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-countrys',
@@ -310,6 +311,13 @@ export class CountrysComponent implements OnInit {
       if (v != "" && v != null) {
         this.isAssociatedWithFranchise = false;
         this.form.get("NIPCGroup").setValidators(Validators.required);
+
+        if (this.incorrectNIPC || this.incorrectNIPCSize){
+          this.form.get("NIPCGroup").setErrors({'incorrect': true});
+        } else {
+          this.form.get("NIPCGroup").setErrors(null);
+        }
+        
         this.form.get("franchiseName").setValidators(null);
       } else {
         this.isAssociatedWithFranchise = undefined;
