@@ -299,7 +299,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   incorrectCCFormat: boolean = false;
   submissionClient: Client;
   sameNIPC: boolean = false;
-  
+
+  stakesList: [] = [];
+  potentialClientIds: string[] = [];
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
@@ -592,18 +594,26 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   selectNewStakeholder(emittedStakeholder) {
+    this.potentialClientIds = [];
     this.selected = true;
     this.currentStakeholder = emittedStakeholder.stakeholder;
-
+    this.stakesList.forEach(val => {
+      if (val["stakeholderNumber"] != emittedStakeholder.stakeholder.stakeholderId) {
+        this.potentialClientIds.push(emittedStakeholder.stakeholder.stakeholderId);
+      }
+    });
+    ;
     console.log("current stakeholder: ", this.currentStakeholder);
   }
 
   searchResultNotifier(info) {
-    if (!info.found)
+    if (!info.found) {
       this.initializeNotFoundForm();
-    else
+    }
+    else { 
       this.deactivateNotFoundForm();
-
+      this.stakesList = info.stakesList;
+    }
     this.errorMsg = info.errorMsg;
   }
 
@@ -644,6 +654,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
             checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
           } 
         }
+
+        stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           //this.currentStakeholder.id = result["id"];

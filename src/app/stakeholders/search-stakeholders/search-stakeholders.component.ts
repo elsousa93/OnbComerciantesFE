@@ -40,7 +40,8 @@ export class SearchStakeholdersComponent implements OnInit {
 
   @Output() searchAditionalInfoEmitter = new EventEmitter<{
     found: boolean,
-    errorMsg?: string
+    errorMsg?: string,
+    stakesList?: IStakeholders[]
   }>();
 
   //Variáveis locais
@@ -120,7 +121,8 @@ export class SearchStakeholdersComponent implements OnInit {
           context.foundStakeholders = true;
           context.searchAditionalInfoEmitter.emit({
             found: true,
-            errorMsg: ''
+            errorMsg: '',
+            stakesList: context.stakeholdersToShow
           });
           context.stakesFoundMat.data = context.stakeholdersToShow;
         });

@@ -566,6 +566,12 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/clientbyid']);
   }
 
+  redirectToProcessStart(process) {
+    localStorage.setItem("processNumber", process.processNumber);
+    localStorage.setItem("returned", 'edit');
+    this.router.navigate(['/clientbyid']);
+  }
+
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;

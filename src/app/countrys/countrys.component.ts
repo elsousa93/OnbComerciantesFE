@@ -386,12 +386,24 @@ export class CountrysComponent implements OnInit {
 
   submit() {
     var client: AcquiringClientPost = this.clientContext.getClient() as AcquiringClientPost;
-
+    client.businessGroup = {};
     client["knowYourSales"]["estimatedAnualRevenue"] = this.form.get("expectableAnualInvoicing").value;
     client["knowYourSales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
     client["knowYourSales"]["servicesOrProductsSold"] = [this.form.get("services").value]; //
     client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPaisPreenchido.map(country => country.code);
     client["documentationDeliveryMethod"] = this.form.get("preferenceDocuments").value;
+
+    if (!this.form.get("associatedWithGroupOrFranchise").value) {
+      client.businessGroup.type = "Isolated";
+    } else {
+      if (this.form.get("franchiseName").value != "" && this.form.get("franchiseName").value != null) {
+        client.businessGroup.type = "Franchising";
+        client.businessGroup.branch = this.form.get("franchiseName").value;
+      } else {
+        client.businessGroup.type = "Holding";
+        client.businessGroup.branch = this.form.get("NIPCGroup").value;
+      }
+    }
 
 
     this.clientContext.setClient(client);
@@ -464,6 +476,7 @@ export class CountrysComponent implements OnInit {
 
   setAssociatedWith(value: boolean) {
     this.associatedWithGroupOrFranchise = value;
+    this.form.get("associatedWithGroupOrFranchise").setValue(this.associatedWithGroupOrFranchise);
     if (value) {
       this.form.get("franchiseName").setValidators(Validators.required);
       this.form.get("NIPCGroup").setValidators(Validators.required);
@@ -475,6 +488,7 @@ export class CountrysComponent implements OnInit {
     }
     this.form.get("franchiseName").updateValueAndValidity();
     this.form.get("NIPCGroup").updateValueAndValidity();
+    this.form.get("associatedWithGroupOrFranchise").updateValueAndValidity();
     console.log('O FORM ESTÁ VÁLIDO? ', this.form.valid);
   }
 
@@ -788,7 +802,7 @@ export class CountrysComponent implements OnInit {
       }
       if (this.client?.businessGroup?.type == "Franchising") {
         this.setAssociatedWith(true);
-        this.form.get("NIPCGroup").setValue(this.client.businessGroup.branch);
+        this.form.get("franchiseName").setValue(this.client.businessGroup.branch);
       }
 
       this.formCountrysReady.emit(this.form);

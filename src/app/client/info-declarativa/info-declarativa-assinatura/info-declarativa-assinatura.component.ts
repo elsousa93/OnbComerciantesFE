@@ -85,7 +85,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     });
 
     this.submissionStakeholders.forEach((stake, index) => {
-     this.form.addControl(index + "", new FormControl(""), Validators.required);
+      this.form.addControl(index + "", new FormControl("", Validators.required));
     });
 
     this.form.statusChanges.pipe(distinctUntilChanged()).subscribe(val => {

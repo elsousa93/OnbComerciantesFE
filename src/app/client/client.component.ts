@@ -360,6 +360,8 @@ export class ClientComponent implements OnInit {
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
 
+  potentialClientIds: string[] = [];
+
   constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
@@ -483,6 +485,7 @@ export class ClientComponent implements OnInit {
 
     context.clientsToShow = [];
     context.clientsMat.data = context.clientsToShow;
+    context.potentialClientIds = [];
 
     if (this.canSearch) {
       this.canSearch = false;
@@ -725,7 +728,8 @@ export class ClientComponent implements OnInit {
         clientId: this.clientId,
         dataCC: this.dataCC,
         isClient: this.isClient,
-        isFromSearch: true
+        isFromSearch: true,
+        potentialClientIds: this.potentialClientIds
       }
     };
 
@@ -834,6 +838,11 @@ export class ClientComponent implements OnInit {
       this.showSeguinte = true
       this.clientId = clientId;
       this.isClient = isClient;
+      this.clientsToShow.forEach(val => {
+        if (clientId != val.client.clientId) {
+          this.potentialClientIds.push(val.client.clientId);
+        }
+      }, this);
     } else {
       this.showSeguinte = false
     }
@@ -862,7 +871,18 @@ export class ClientComponent implements OnInit {
 
     if (this.dataCCcontents == null || this.dataCCcontents == undefined) {
       let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? '';
-      localStorage.setItem("clientName", clientName);
+      if (clientName != '') {
+        var nameArray = clientName.split(" ").filter(element => element);
+        var fullName = "";
+        nameArray.forEach((val, index) => {
+          if (index == 0) {
+            fullName = val;
+          } else { 
+            fullName = fullName + " " + val;
+          }
+        });
+      }
+      localStorage.setItem("clientName", fullName);
     }
 
     this.data.changeCurrentDataCC(this.dataCC);

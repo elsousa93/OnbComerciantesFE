@@ -165,6 +165,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   historyStream: boolean;
   updateClient: boolean;
 
+  potentialClientIds: string[] = [];
+  shortName: string;
+
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
     //this.subs.push(this.tableInfo.GetAllLegalNatures().subscribe(result => {
@@ -187,7 +190,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.logger.debug("intializeeniform");
     this.form = new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : this.socialDenomination, Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -232,7 +235,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : localStorage.getItem("clientName"), disabled: localStorage.getItem("clientName") !== null }, Validators.required), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : this.socialDenomination, disabled: this.socialDenomination !== null }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
@@ -356,7 +359,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService) {
 
     //Gets Tipologia from the Client component 
-    if (this.route.getCurrentNavigation().extras.state) {
+    if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
       this.clientExists = this.route.getCurrentNavigation().extras.state["clientExists"];
       this.NIFNIPC = this.route.getCurrentNavigation().extras.state["NIFNIPC"];
@@ -365,9 +368,15 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
       this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
       this.isFromSearch = this.route.getCurrentNavigation().extras.state["isFromSearch"];
+      this.potentialClientIds = this.route.getCurrentNavigation().extras.state["potentialClientIds"];
     }
 
-    this.socialDenomination = localStorage.getItem("clientName");
+    if (localStorage.getItem("clientName") != null) {
+      this.socialDenomination = localStorage.getItem("clientName");
+      var nameArray = this.socialDenomination.split(" ").filter(element => element);
+      this.shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : this.socialDenomination;
+    }
+
 
     this.returned = localStorage.getItem("returned");
 
@@ -632,9 +641,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert.shareCapital = client.shareCapital;
               clientToInsert.byLaws = client.bylaws;
               clientToInsert.incorporationDate = client.incorporationDate;
-              clientToInsert.mainTaxCode = client.principalTaxCode;
+              clientToInsert.mainTaxCode = client.principalTaxCode; //
               clientToInsert.otherTaxCodes = client.otherTaxCodes;
-              clientToInsert.mainEconomicActivity = client.principalEconomicActivity;
+              clientToInsert.mainEconomicActivity = client.principalEconomicActivity; //
               clientToInsert.otherEconomicActivities = client.otherEconomicActivities;
               clientToInsert.billingEmail = client.billingEmail;
 
@@ -657,6 +666,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 type: client.context,
                 branch: client.contextId
               }
+
+              //clientToInsert.potentialClientIds = this.potentialClientIds;
 
               clientToInsert.merchantType = client.merchantType;
 
@@ -695,6 +706,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             clientToInsert.fiscalId = this.NIFNIPC;
             clientToInsert.legalName = this.socialDenomination;
             clientToInsert.commercialName = this.socialDenomination;
+            clientToInsert.shortName = this.shortName ?? this.socialDenomination;
             clientToInsert.knowYourSales = {
               servicesOrProductsDestinations: [],
               servicesOrProductsSold: []
@@ -1008,6 +1020,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       var newSubmission = this.clientContext.newSubmission;
       newSubmission.startedAt = new Date().toISOString();
       newSubmission.merchant = this.clientContext.getClient();
+      newSubmission.merchant.potentialClientIds = this.potentialClientIds;
 
       var loginUser = this.authService.GetCurrentUser();
 

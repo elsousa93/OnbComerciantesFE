@@ -58,6 +58,7 @@ export interface AcquiringClientPost {
   documentationDeliveryMethod?: string,
   billingEmail?: string,
   merchantRegistrationId?: string
+  potentialClientIds?: string[]
 }
 
 export interface Client {

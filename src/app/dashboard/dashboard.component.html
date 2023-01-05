@@ -317,7 +317,7 @@
                           &nbsp;&nbsp;<img src="assets/images/delete_blue.svg" title="Delete">
                         </span>
                       </a>
-                      <a [routerLink]="['/app-devolucao/', row.processId]">
+                      <a (click)="redirectToProcessStart(row)"> <!--[routerLink]="['/app-devolucao/', row.processId]"-->
                         <span class="material-symbols-rounded edit-icon">
                           <img src="assets/images/edit_square.svg" title="Edit">
                         </span>
