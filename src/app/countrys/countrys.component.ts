@@ -160,7 +160,7 @@ export class CountrysComponent implements OnInit {
       if (!this.clientContext.clientExists && this.map.get(2) == undefined) { // garantir que só adicionamos Portugal por default, se o cliente não existir E se o tabulador dos intervenientes ainda não foi visitado
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
           var index = this.contPais.findIndex(elem => elem.code == result.code);
-          if (index == -1) { 
+          if (index == -1) {
             this.contPais.push(result);
             this.inserirText(null);
           }
@@ -772,8 +772,11 @@ export class CountrysComponent implements OnInit {
 
       if (this.client?.knowYourSales?.servicesOrProductsDestinations?.length == 0) {
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
-          this.contPais.push(result);
-          this.inserirText(null);
+          var index = this.contPais.findIndex(elem => elem.code == result.code);
+          if (index == -1) {
+            this.contPais.push(result);
+            this.inserirText(null);
+          }
         }));
       }
 

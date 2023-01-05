@@ -1,9 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { Configuration, configurationToken } from '../configuration';
+import { HttpMethod } from '../enums/enum-data';
 import { ISubmission, SimplifiedReference } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
@@ -16,7 +18,7 @@ export class ProcessService {
 
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService) {
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
       this.urlOutbound = configuration.getConfig().outboundUrl;
   }
@@ -106,6 +108,12 @@ export class ProcessService {
 
   getProcessIssuesById(processId: string) {
     return this.http.get<BusinessIssueViewModel>(this.baseUrl + 'process/' + processId + '/issue');
+  }
+
+  getProcessHistory(processId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/History';
+
+    return this.API.callAPIAcquiring(HttpMethod.GET, url);
   }
 }
 
@@ -227,4 +235,20 @@ interface Pagination {
 interface Merchant {
   fiscalId: string
   name: string
+}
+
+export interface SearchProcessHistory {
+  items?: ProcessHistory[]
+}
+
+export interface ProcessHistory{
+  idProcess?: number
+  processState?: string
+  historyGuid?: string
+  whenStarted?: string
+  whoStarted?: string
+  whenFinished?: string
+  whoFinished?: string
+  observations?: string
+  externalState?: string
 }

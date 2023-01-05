@@ -184,40 +184,12 @@
                </tr>
               </thead>
               <tbody>
-               <tr>
-                 <td class="text-primary text-center">228060</td>
-                 <td class="text-primary text-center">Envio para o Backoffice</td>
-                 <td class="text-primary text-center">29-12-2021 07:50:21</td>
-                 <td class="text-primary text-center">UNICRE</td>
-                 <td class="text-primary text-center"></td>
-               </tr>
-               <tr>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">228060</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">29-12-2021 09:50:21</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-10"></td>
-               </tr>
-               <tr>
-                 <td class="text-primary text-center">228060</td>
-                 <td class="text-primary text-center">Validação DO</td>
-                 <td class="text-primary text-center">30-12-2021 11:50:21</td>
-                 <td class="text-primary text-center">UNICRE</td>
-                 <td class="text-primary text-start">Apesar do gerente&nbsp; Bujal de Canela constar na CRC como Gerente, na inscrição 3 verifica-se que a sua nomeação é provisória, podemos aceitar o documento?</td>
-               </tr>
-               <tr>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">228060</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">Envio para o Backoffice</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">31-12-2021 12:50:21</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-10">UNICRE</td>
-                 <td class="text-primary bg-primary bg-opacity-10 text-start">Devolver a solicitar a CRC devidamente atualizada com a nomeação do gerente defenitiva.</td>
-               </tr>
-               <tr>
-                 <td class="text-primary text-center bg-primary bg-opacity-25">228060</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-25">Devolvido do Backoffice</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-25">29-12-2021 10:50:21</td>
-                 <td class="text-primary text-center bg-primary bg-opacity-25">UNICRE</td>
-                 <td class="text-primary bg-primary bg-opacity-25 text-start">Queiram enviar CRC devidamente&nbsp; atualizada visto que na inscrição nº3 verifica-se que a nomeação de gerente Bukjal de Canela&nbsp; é provisória.&nbsp;</td>
+               <tr *ngFor="let history of processHistoryItems?.items">
+                 <td class="text-primary text-center">{{history.idProcess}}</td>
+                 <td class="text-primary text-center">{{history.processState}}</td>
+                 <td class="text-primary text-center">{{history.whenStarted}}</td>
+                 <td class="text-primary text-center">{{history.whoStarted}}</td>
+                 <td class="text-primary text-center">{{history.observations}}</td>
                </tr>
               </tbody>
             </table>
