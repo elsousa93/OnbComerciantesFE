@@ -313,7 +313,7 @@ export class CountrysComponent implements OnInit {
         this.form.get("NIPCGroup").setValidators(Validators.required);
 
         if (this.incorrectNIPC || this.incorrectNIPCSize){
-          this.form.get("NIPCGroup").setErrors({'incorrect': true});
+          this.form.get("NIPCGroup").setErrors({ 'incorrect': true });
         } else {
           this.form.get("NIPCGroup").setErrors(null);
         }
