@@ -52,23 +52,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.tableInfoService.GetContractualPackLanguage().subscribe(result => {
       this.contractLanguage = result;
     });
-
-
-    this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-
-      var stakeholders = result.result;
-
-      stakeholders.forEach(function (value, index) {
-        context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
-          console.log("stakeholder adicionado com sucesso");
-          context.form.addControl(index + "", new FormControl(null, Validators.required));
-          context.submissionStakeholders.push(res);
-        }, error => {
-          console.log("Erro a adicionar stakeholder");
-        });
-      });
-    }, error => {
-    });
   }
 
   ngOnInit(): void {
@@ -124,6 +107,25 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
   choosePaper(paper: boolean) {
     this.isVisible = paper;
+    var context = this;
+
+    if (!paper) {
+      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+
+        var stakeholders = result.result;
+  
+        stakeholders.forEach(function (value, index) {
+          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
+            console.log("stakeholder adicionado com sucesso");
+            context.form.addControl(index + "", new FormControl(null, Validators.required));
+            context.submissionStakeholders.push(res);
+          }, error => {
+            console.log("Erro a adicionar stakeholder");
+          });
+        });
+      }, error => {
+      });
+    }
   }
 
   sendFinalSubmission() {
