@@ -637,7 +637,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert.legalNature = client.legalNature;
               clientToInsert.legalNature2 = client.legalNature2;
 
-              clientToInsert.incorporationStatement = client.incorporationStatement;
+              clientToInsert.incorporationStatement = {
+                code: client.incorporationStatement.code,
+                validUntil: client.incorporationStatement.validUntil
+              } 
+
               clientToInsert.shareCapital = client.shareCapital;
               clientToInsert.byLaws = client.bylaws;
               clientToInsert.incorporationDate = client.incorporationDate;
