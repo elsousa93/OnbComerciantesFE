@@ -1268,7 +1268,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.formClientIsValid = true;
     }
 
-    formCharact.statusChanges.subscribe(res => {
+    formCharact.valueChanges.subscribe(res => {
       console.log("Client Characterization estado: ", res);
       if (res === 'VALID') {
         console.log("client charac estado valido");
