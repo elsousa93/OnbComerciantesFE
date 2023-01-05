@@ -16,7 +16,7 @@ import { AuthService } from '../services/auth.service';
 import { ClientContext } from '../client/clientById/clientById.model';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { AcquiringClientPost } from '../client/Client.interface';
-import { threadId } from 'worker_threads';
+
 
 @Component({
   selector: 'app-countrys',

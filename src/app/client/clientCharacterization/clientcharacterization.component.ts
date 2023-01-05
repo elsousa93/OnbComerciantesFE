@@ -685,7 +685,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
       //this.client.crc.code = this.form.value["crcCode"];
       this.client.incorporationStatement = {
-        code: this.form.value["crcCode"]
+        code: this.form.value["crcCode"],
+        validUntil: this.client?.incorporationStatement?.validUntil
       }
       //this.client.legalNature = this.form.value["natJuridicaN1"];
 
