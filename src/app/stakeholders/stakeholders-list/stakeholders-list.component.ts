@@ -94,6 +94,11 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.submissionClient = client;
       });
     }
+    if (changes["canSelect"].currentValue == true && changes["canSelect"].previousValue == false) {
+      if (this.submissionStakeholders.length > 0) {
+        this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);  
+      }
+    }
   }
  
   stakesMat = new MatTableDataSource<StakeholdersCompleteInformation>();
