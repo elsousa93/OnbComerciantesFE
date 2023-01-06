@@ -511,6 +511,7 @@ export class ClientCharacterizationComponent implements OnInit {
     } else {
       if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
         this.processClient.stakeholders = [];
+        this.clientContext.setStakeholdersToInsert([]);
         this.initializeFormControlOther();
       }
       else
@@ -870,6 +871,7 @@ export class ClientCharacterizationComponent implements OnInit {
     if (value == false) {
       this.crcFound = false;
       this.processClient.stakeholders = [];
+      this.clientContext.setStakeholdersToInsert([]);
       this.initializeFormControlOther();
     }
     else
