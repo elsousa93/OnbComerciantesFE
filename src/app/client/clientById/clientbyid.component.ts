@@ -1047,7 +1047,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         //stakeholderToShow.fiscalId = client.fiscalId;
         //stakeholderToShow.name = client.legalName;
 
-        //newSubmission.stakeholders.push(stakeholder);
+        newSubmission.stakeholders.push(stakeholder);
         //this.clientContext.newSubmission = newSubmission;
       }
 
