@@ -33,7 +33,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   //storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
   storeEquipMat = new MatTableDataSource<ShopEquipment>();
-  @ViewChild('paginator') set paginator(pager: MatPaginator) {
+  @ViewChild('storeEquipPaginator') set paginator(pager: MatPaginator) {
     if (pager) {
       this.storeEquipMat.paginator = pager;
       this.storeEquipMat.paginator._intl = new MatPaginatorIntl();
