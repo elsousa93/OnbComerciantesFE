@@ -364,6 +364,7 @@ export class CountrysComponent implements OnInit {
       } else {
         this.isAssociatedWithFranchise = undefined;
       }
+
       this.form.get("franchiseName").updateValueAndValidity();
       this.form.get("NIPCGroup").updateValueAndValidity();
     });

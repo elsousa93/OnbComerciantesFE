@@ -293,6 +293,7 @@ export class StakeholdersComponent implements OnInit {
     var stakeForm = this.editStakes.get("stake");
     stakeForm.get("contractAssociation").setValue('true');
     stakeForm.get("proxy").setValue(this.currentStakeholder.stakeholderAcquiring.isProxy + '');
+    stakeForm.get("contractAssociation").setValue(this.currentStakeholder.stakeholderAcquiring.signType === 'CitizenCard' ? 'true' : 'false');
 
     if (stakeForm.get("documentType") == null) {
       stakeForm.get("flagRecolhaEletronica").setValue(false);
@@ -341,6 +342,12 @@ export class StakeholdersComponent implements OnInit {
       if (this.editStakes.controls["stake"].valid) {
 
         this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
+
+        if (stakeForm.get("contractAssociation").value === 'true') {
+          this.currentStakeholder.stakeholderAcquiring.signType = 'CitizenCard';
+        } else {
+          this.currentStakeholder.stakeholderAcquiring.signType = 'NotSign';
+        }
 
         if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
