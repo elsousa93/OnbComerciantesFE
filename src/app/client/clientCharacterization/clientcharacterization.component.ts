@@ -509,8 +509,10 @@ export class ClientCharacterizationComponent implements OnInit {
       this.isCommercialSociety = true;
       this.form.get("commercialSociety").setValue(true);
     } else {
-      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01')
+      if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
+        this.processClient.stakeholders = [];
         this.initializeFormControlOther();
+      }
       else
         this.initializeENI();
       this.isCommercialSociety = false;
@@ -867,6 +869,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcMatchNIF = false;
     if (value == false) {
       this.crcFound = false;
+      this.processClient.stakeholders = [];
       this.initializeFormControlOther();
     }
     else
