@@ -773,6 +773,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.countriesComponent.getClientContextValues();
           }
           this.clientCharacterizationComponent.getClientContextValues();
+          this.createSubmission();
         });
       }
     } else {
