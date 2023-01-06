@@ -7,7 +7,7 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
@@ -20,6 +20,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { ClientService } from '../../client/client.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -32,11 +33,16 @@ export class CommercialOfferListComponent implements OnInit {
 
   //storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
   storeEquipMat = new MatTableDataSource<ShopEquipment>();
+  @ViewChild('paginator') set paginator(pager: MatPaginator) {
+    if (pager) {
+      this.storeEquipMat.paginator = pager;
+      this.storeEquipMat.paginator._intl = new MatPaginatorIntl();
+      this.storeEquipMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
 
   form: FormGroup;
   private baseUrl: string;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild('storeEquipPaginator') storeEquipPaginator: MatPaginator;
@@ -126,7 +132,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
 
-  constructor(private logger: LoggerService, http: HttpClient, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder, private tableInfo: TableInfoService) {
+  constructor(private logger: LoggerService, private translate: TranslateService, http: HttpClient, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder, private tableInfo: TableInfoService) {
     
     this.ngOnInit();
     this.loadReferenceData();
