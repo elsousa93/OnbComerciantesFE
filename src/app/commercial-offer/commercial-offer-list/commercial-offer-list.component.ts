@@ -131,10 +131,10 @@ export class CommercialOfferListComponent implements OnInit {
     this.ngOnInit();
     this.loadReferenceData();
 
-    if (this.route.getCurrentNavigation()?.extras?.state) {
-      this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
-      this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"];
-    }
+    // if (this.route.getCurrentNavigation()?.extras?.state) {
+    //   this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
+    //   this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"];
+    // }
 
     authService.currentUser.subscribe(user => this.currentUser = user);
 
@@ -243,7 +243,7 @@ export class CommercialOfferListComponent implements OnInit {
       replicateProducts: new FormControl(this.replicate, [Validators.required]),
       store: new FormControl(''),
       isUnicre: new FormControl(this.isUnicre, [Validators.required]),
-      terminalRegistrationNumber: new FormControl(this.currentStore.registrationId!='' ? this.currentStore.registrationId : ''),
+      terminalRegistrationNumber: new FormControl(''),
       productPackKind: new FormControl('', [Validators.required]),
     });
   }
@@ -478,6 +478,7 @@ export class CommercialOfferListComponent implements OnInit {
     //setValue(null) - são valores que ainda não conseguimos ir buscar
     this.form.get("replicateProducts").setValue(null);
     this.form.get("isUnicre").setValue(this.currentStore.supportEntity.toLowerCase() == 'acquirer' ? true : false);
+    this.form.get("terminalRegistrationNumber").setValue(this.currentStore.registrationId!='' ? this.currentStore.registrationId : '');
 
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
