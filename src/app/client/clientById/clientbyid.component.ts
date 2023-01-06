@@ -986,6 +986,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       newSubmission.merchant.potentialClientIds = this.potentialClientIds;
 
       var loginUser = this.authService.GetCurrentUser();
+      var stakeholder: IStakeholders = {} as IStakeholders;
 
       newSubmission.submissionUser = {
         user: loginUser.userName,
@@ -1014,7 +1015,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         newSubmission.merchant.merchantType = 'Entrepeneur';
         var client = this.clientContext.getClient();
 
-        var stakeholder: IStakeholders = {} as IStakeholders; //Formato a ser enviado à API
+        //var stakeholder: IStakeholders = {} as IStakeholders; //Formato a ser enviado à API
         stakeholder.fiscalId = client.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
@@ -1047,7 +1048,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         //stakeholderToShow.fiscalId = client.fiscalId;
         //stakeholderToShow.name = client.legalName;
 
-        newSubmission.stakeholders.push(stakeholder);
+
         //this.clientContext.newSubmission = newSubmission;
       }
 
@@ -1061,6 +1062,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.processNrService.changeProcessNumber(result.processNumber);
         });
       }
+
+      //adicionar o stakeholder após criar a submissão para que este não seja imediatamente criado
+      newSubmission.stakeholders.push(stakeholder);
+
     }
   }
 

@@ -286,7 +286,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
             context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(result => {
               if ((result.result.stakeholderId == null || result.result.stakeholderId == "") && result.result.fiscalId != "" ) {
-                context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "1010", "por mudar", "por mudar").then(stake => {
+                context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "0501", "por mudar", "por mudar").then(stake => {
                   var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
                 });
