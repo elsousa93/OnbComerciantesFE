@@ -18,7 +18,7 @@
     </ng-container>
     <ng-container matColumnDef="elegible">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.elegible'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{stakeholder.stakeholderAcquiring.signType ? 'generalKeywords.yes' : 'generalKeywords.no' |translate}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{stakeholder.stakeholderAcquiring.isProxy}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stakeholderAcquiring.stakeholderId">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate|uppercase}} </mat-header-cell>
@@ -26,7 +26,7 @@
     </ng-container>
     <ng-container matColumnDef="stakeholderAcquiring.isProxy">
       <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white"> {{'stakeholder.signature'|translate|uppercase}} </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{stakeholder.stakeholderAcquiring.isProxy}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{(stakeholder.stakeholderAcquiring.signType ? 'generalKeywords.yes' : 'generalKeywords.no' ) | translate}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="delete" class="small-cell"> 
       <mat-header-cell *matHeaderCellDef [hidden]="canDelete == false" class="small-cell">  </mat-header-cell>

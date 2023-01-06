@@ -918,7 +918,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   submit() {
-    if (this.returned != 'consult' && !this.updateClient) {
+    if (this.returned != 'consult') {
       this.clientCharacterizationComponent.submit();
 
       if (!this.clientContext.isClient)
@@ -1110,7 +1110,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
     if (this.returned != 'consult') {
 
-      this.data.changeUpdatedClient(true);
+
 
       let navigationExtras: NavigationExtras = {
         state: {
@@ -1127,6 +1127,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         newSubmission.processNumber = localStorage.getItem("processNumber");
 
       this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
+        this.data.changeUpdatedClient(true);
         this.data.updateData(true, 1);
         this.route.navigateByUrl('/stakeholders', navigationExtras);
       });
@@ -1140,82 +1141,84 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("resultado: ", res);
       });
 
-      var stakeholders = this.clientContext.newSubmission.stakeholders;
+      if (!this.updateClient) {
+        var stakeholders = this.clientContext.newSubmission.stakeholders;
 
-
-      stakeholders.forEach(function (value, idx) {
-        var cont = this;
-        if (context.clientContext.tipologia === 'ENI') {
-          if (value.fiscalId === client.fiscalId) {
-            var stakeholder: IStakeholders = {}; //Formato a ser enviado à API
-            stakeholder.fiscalId = client.fiscalIdentification?.fiscalId;
-            stakeholder.fullName = client.legalName;
-            stakeholder.contactName = client.commercialName;
-            stakeholder.shortName = client.shortName;
-            stakeholder.fiscalAddress = client.headquartersAddress;
-            stakeholder.clientId = client.clientId;
-            //stakeholder.stakeholderId = client.clientId;
-            context.stakeholderService.UpdateStakeholder(submissionID, value.id, stakeholder);
+        stakeholders.forEach(function (value, idx) {
+          var cont = this;
+          if (context.clientContext.tipologia === 'ENI') {
+            if (value.fiscalId === client.fiscalId) {
+              var stakeholder: IStakeholders = {}; //Formato a ser enviado à API
+              value.fiscalId = client.fiscalIdentification?.fiscalId;
+              value.fullName = client.legalName;
+              value.contactName = client.commercialName;
+              value.shortName = client.shortName;
+              value.fiscalAddress = client.headquartersAddress;
+              value.clientId = client.clientId;
+              //stakeholder.stakeholderId = client.clientId;
+              context.stakeholderService.UpdateStakeholder(submissionID, value.id, value);
+            } else {
+              context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+              });
+            }
           } else {
             context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
             });
           }
-        } else {
-          context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+        });
+
+        if (newSubmission.documents.length > 0) {
+          newSubmission.documents.forEach(doc => {
+            context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
+              console.log('documento adicionado: ', result);
+            });
           });
         }
-      });
 
-      if (newSubmission.documents.length > 0) { 
-        newSubmission.documents.forEach(doc => {
-          context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
-            console.log('documento adicionado: ', result);
+        // var documents = this.clientContext.newSubmission.documents;
+        if (context.clientDocs != null) {
+          context.clientDocs.forEach(function (value, idx) {
+            context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
+              console.log("adicionou documento: ", result);
+            });
           });
-        });
-      }
-
-      // var documents = this.clientContext.newSubmission.documents;
-      if (context.clientDocs != null) { 
-        context.clientDocs.forEach(function (value, idx) {
-          context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-            console.log("adicionou documento: ", result);
-          });
-        });
-      }
+        }
 
 
 
 
-      if (this.clientContext.isClient) {
-        this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
-          res.forEach(value => {
-            this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
-              var storeToAdd: ShopDetailsAcquiring = {
-                activity: r.result.activity,
-                subActivity: r.result.secondaryActivity,
-                address: {
-                  address: r.result.address.address,
-                  isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
-                  shoppingCenter: r.result.address.shoppingCenter,
-                  useMerchantAddress: r.result.address.sameAsMerchantAddress
-                },
-                bank: {
-                  bank: r.result.bankingInformation
-                },
-                name: r.result.name,
-                //productCode: r.product,
-                //subproductCode: r.subproduct,
-                website: r.result.url,
-                equipments: []
-              }
+        if (this.clientContext.isClient) {
+          this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
+            res.forEach(value => {
+              this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
+                var storeToAdd: ShopDetailsAcquiring = {
+                  activity: r.result.activity,
+                  subActivity: r.result.secondaryActivity,
+                  address: {
+                    address: r.result.address.address,
+                    isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
+                    shoppingCenter: r.result.address.shoppingCenter,
+                    useMerchantAddress: r.result.address.sameAsMerchantAddress
+                  },
+                  bank: {
+                    bank: r.result.bankingInformation
+                  },
+                  name: r.result.name,
+                  //productCode: r.product,
+                  //subproductCode: r.subproduct,
+                  website: r.result.url,
+                  equipments: []
+                }
 
-              context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
+                context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
 
+                });
               });
             });
           });
-        });
+        }
       }
+
 
     } else {
       this.data.updateData(true, 1);
