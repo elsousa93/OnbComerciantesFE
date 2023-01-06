@@ -161,6 +161,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   clientDocs: OutboundDocument[] = null;
 
   submissionExists: boolean = false;
+  submissionStakeholders: IStakeholders[] = [];
   isFromSearch: boolean = false;
   historyStream: boolean;
   updateClient: boolean;
@@ -340,6 +341,24 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.isFromSearch = this.route.getCurrentNavigation().extras.state["isFromSearch"];
       this.potentialClientIds = this.route.getCurrentNavigation().extras.state["potentialClientIds"];
     }
+
+    // check if, in return, there are changes in stakeholders list
+
+    this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
+
+      var stakeholders = result.result;
+
+      stakeholders.forEach(function (value, index) {
+        context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+          console.log("stakeholder adicionado com sucesso");
+          context.form.addControl(index + "", new FormControl(null, Validators.required));
+          context.submissionStakeholders.push(res);
+        }, error => {
+          console.log("Erro a adicionar stakeholder");
+        });
+      });
+    }, error => {
+    });
 
     if (localStorage.getItem("clientName") != null) {
       this.socialDenomination = localStorage.getItem("clientName");
@@ -1095,7 +1114,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         }
       })
 
-      if (!this.updateClient) {
+      if (!this.compareArrays(context.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
 
         stakeholders.forEach(function (value, idx) {
@@ -1169,6 +1188,15 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.route.navigate(['/stakeholders']);
     }
   }
+  compareArrays(a1, a2) {
+    var l = Math.min(a1.length, a2.length);
+    for (var i = 0; i < l; i++) {
+        if (a1[i] !== a2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
