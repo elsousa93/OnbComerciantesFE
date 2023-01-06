@@ -660,7 +660,7 @@ export class CommercialOfferListComponent implements OnInit {
         otherPackDetails: list
       }
       console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
-      this.currentStore.registrationId = this.form.get("terminalRegistrationNumber").value.toString();
+      this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
         console.log('Loja atualizada ', this.currentStore);
         if (this.currentIdx < (this.storesLength - 1)) {
