@@ -197,30 +197,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   }
 
-  initializeBasicCRCFormControl() {
-    this.logger.debug("intializebasiccrcform");
-    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
-    this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
-      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement != undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC)
-    });
-  }
-
-  initializeBasicFormControl() {
-    this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC, [Validators.required])
-      //crcCode: new FormControl((this.returned != null && this.merchantInfo.incorporationStatement !== undefined) ? this.merchantInfo.incorporationStatement.code : '', [Validators.required]), //sim
-    });
-
-    if (this.tipologia === 'ENI') {
-      this.setCommercialSociety(false);
-    }
-  }
-
   searchBranch(code) {
     return this.tableInfo.GetCAEByCode(code).toPromise();
   }
@@ -346,12 +322,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     });
 
   }
-
-  initializeFormControls() {
-    this.logger.debug("inicializar form controls");
-    this.initializeBasicFormControl();
-  }
-
 
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
@@ -797,27 +767,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
-  setCommercialSociety(id: boolean) {
-    this.crcFound = false;
-    this.collectCRC = undefined;
-    this.crcIncorrect = false;
-    this.crcNotExists = false;
-    this.form.get('collectCRC').setValue(undefined);
-    if (id == true) {
-      this.initializeBasicCRCFormControl();
-      this.isCommercialSociety = true;
-      this.form.get("commercialSociety").setValue(true);
-    } else {
-      if (this.tipologia === 'Company')
-        this.initializeFormControlOther();
-      else
-        this.initializeENI();
-      this.isCommercialSociety = false;
-      this.form.get("commercialSociety").setValue(false);
-      this.logger.debug("entrou no false");
-    }
-  }
-
   getCommercialSociety() {
     return this.isCommercialSociety;
   }
@@ -998,16 +947,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       }
     });
     return legalNature.description;
-  }
-
-  setCollectCRC(value: boolean) {
-    this.collectCRC = value;
-    this.crcIncorrect = false;
-    this.crcNotExists = false;
-    if (value == false)
-      this.initializeFormControlOther();
-    else
-      this.initializeBasicCRCFormControl();
   }
 
   canChangeCommercialSociety() {
