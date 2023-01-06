@@ -1190,12 +1190,20 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
   compareArrays(a1, a2) {
     var l = Math.min(a1.length, a2.length);
-    for (var i = 0; i < l; i++) {
+    if (l!=0) {
+      for (var i = 0; i < l; i++) {
         if (a1[i] !== a2[i]) {
             return false;
         }
     }
     return true;
+    }
+    else if (a1.length == 0 && a2.length == 0) {
+      return true;
+    } 
+    else {
+      return false;
+    }
 }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
