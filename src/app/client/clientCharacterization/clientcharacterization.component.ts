@@ -606,9 +606,9 @@ export class ClientCharacterizationComponent implements OnInit {
         this.errorMsg = '';
         this.processClient.legalNature = clientByCRC.legalNature;
         this.processClient.mainEconomicActivity = economicActivity;
-        this.processClient.secondaryEconomicActivity[0] = clientByCRC.economicActivity.secondary[0].split('-')[0];
-        this.processClient.secondaryEconomicActivity[1] = clientByCRC.economicActivity.secondary[1].split('-')[0];
-        this.processClient.secondaryEconomicActivity[2] = clientByCRC.economicActivity.secondary[2].split('-')[0];
+        this.processClient.secondaryEconomicActivity[0] = clientByCRC.economicActivity?.secondary[0]?.split('-')[0];
+        this.processClient.secondaryEconomicActivity[1] = clientByCRC.economicActivity?.secondary[1]?.split('-')[0];
+        this.processClient.secondaryEconomicActivity[2] = clientByCRC.economicActivity?.secondary[2]?.split('-')[0];
 
         this.processClient.fiscalId = clientByCRC.fiscalId;
         this.processClient.companyName = clientByCRC.companyName;
