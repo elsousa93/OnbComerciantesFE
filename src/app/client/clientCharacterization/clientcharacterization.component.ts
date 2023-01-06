@@ -143,6 +143,8 @@ export class ClientCharacterizationComponent implements OnInit {
 
   @Output() formClientCharacterizationReady: EventEmitter<AbstractControl> = new EventEmitter();
 
+  updatedClient: boolean;
+
   changeFormStructure(newForm: FormGroup) {
     this.rootForm.setControl("clientCharacterizationForm", newForm);
     this.form = this.rootForm.get("clientCharacterizationForm");
@@ -381,6 +383,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.rootForm = this.rootFormDirective.form;
     this.form = this.rootForm.get("clientCharacterizationForm");
     this.initializeTableInfo();
+    this.subscription = this.data.updatedClient.subscribe(updatedClient => this.updatedClient = updatedClient);
   }
 
   ngOnInit(): void {
@@ -745,7 +748,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.crc = (this.crcFound) ? this.processClient : null;
     this.clientContext.comprovativoCC = this.comprovativoCC;
 
-
+     
     //Intervenientes do processo
     var newSubmission = this.clientContext.newSubmission;
     var stakeholdersToInsert = this.clientContext.getStakeholdersToInsert();
@@ -810,6 +813,7 @@ export class ClientCharacterizationComponent implements OnInit {
         data: null
       })
     }
+
     this.clientContext.newSubmission = newSubmission;
   }
 
