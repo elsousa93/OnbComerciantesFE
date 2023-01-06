@@ -1103,13 +1103,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       stakeholder.forEach(function (value, idx) {
         if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
           if (value.fiscalId === client.fiscalId) {
-            //value.fiscalId = client.fiscalIdentification?.fiscalId;
-            //value.fullName = client.legalName;
-            //value.contactName = client.commercialName;
-            //value.shortName = client.shortName;
-            //value.fiscalAddress = client.headquartersAddress;
-            //value.clientId = client.clientId;
-            context.stakeholderService.UpdateStakeholder(submissionID, value.id, value);
+            context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+              value.id = result.id;
+            });
           }
         }
       })
