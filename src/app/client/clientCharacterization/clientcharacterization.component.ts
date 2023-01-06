@@ -756,32 +756,36 @@ export class ClientCharacterizationComponent implements OnInit {
     var crc = this.clientContext.crc;
 
     var context = this;
+    var client = this.clientContext.getClient();
 
     newSubmission.stakeholders = [];
     stakeholdersToInsert.forEach(function (value, idx) {
-      console.log("stakeholder: ", value);
-      var fiscalID = value.fiscalId;
+      if (client.fiscalId !== value.fiscalId) {
+        console.log("stakeholder: ", value);
+        var fiscalID = value.fiscalId;
 
-      //value["address"]["district"]
-      //value["address"]["city"]
-      //value["address"]["parish"]
+        //value["address"]["district"]
+        //value["address"]["city"]
+        //value["address"]["parish"]
 
-      var stakeholderToInsert = {
-        "fiscalId": (fiscalID != null && fiscalID != undefined) ? fiscalID : '',
-        "shortName": value.name,
-        "fiscalAddress": {
-          "postalCode": value["address"] != null ? value["address"]["postalCode"] : null,
-          "postalArea": value["address"] != null ? value["address"]["postalArea"] : null,
-          "country": value["address"] != null ? value["address"]["country"] : null,
-          "address": value["address"] != null ? value["address"]["fullAddress"]: null
-        },
-        "capitalHeldPercentage": value.capitalHeldPercentage,
-        "isBeneficiary": value.isBeneficiary,
-        "role": value.role
-      } as IStakeholders;
+        var stakeholderToInsert = {
+          "fiscalId": (fiscalID != null && fiscalID != undefined) ? fiscalID : '',
+          "shortName": value.name,
+          "fiscalAddress": {
+            "postalCode": value["address"] != null ? value["address"]["postalCode"] : null,
+            "postalArea": value["address"] != null ? value["address"]["postalArea"] : null,
+            "country": value["address"] != null ? value["address"]["country"] : null,
+            "address": value["address"] != null ? value["address"]["fullAddress"] : null
+          },
+          "capitalHeldPercentage": value.capitalHeldPercentage,
+          "isBeneficiary": value.isBeneficiary,
+          "role": value.role
+        } as IStakeholders;
 
-      newSubmission.stakeholders.push(stakeholderToInsert);
-
+        newSubmission.stakeholders.push(stakeholderToInsert);
+      } else {
+        newSubmission.stakeholders.push(value);
+      }
     });
 
     newSubmission.documents = [];

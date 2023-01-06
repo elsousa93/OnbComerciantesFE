@@ -1040,14 +1040,14 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             number: this.clientContext.dataCC.cardNumberCC,
             expirationDate: this.clientContext.dataCC.expiryDate
           }
-          this.clientContext.setStakeholdersToInsert([stakeholder]);
-        }
 
+        }
+        this.clientContext.setStakeholdersToInsert([stakeholder]);
         //var stakeholderToShow: StakeholdersProcess = {} as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
         //stakeholderToShow.fiscalId = client.fiscalId;
         //stakeholderToShow.name = client.legalName;
 
-        newSubmission.stakeholders.push(stakeholder);
+        //newSubmission.stakeholders.push(stakeholder);
         //this.clientContext.newSubmission = newSubmission;
       }
 
@@ -1103,13 +1103,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       stakeholder.forEach(function (value, idx) {
         if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
           if (value.fiscalId === client.fiscalId) {
-            value.fiscalId = client.fiscalIdentification?.fiscalId;
-            value.fullName = client.legalName;
-            value.contactName = client.commercialName;
-            value.shortName = client.shortName;
-            value.fiscalAddress = client.headquartersAddress;
-            value.clientId = client.clientId;
-            context.stakeholderService.UpdateStakeholder(submissionID, value.id, value).subscribe(result => { });
+            //value.fiscalId = client.fiscalIdentification?.fiscalId;
+            //value.fullName = client.legalName;
+            //value.contactName = client.commercialName;
+            //value.shortName = client.shortName;
+            //value.fiscalAddress = client.headquartersAddress;
+            //value.clientId = client.clientId;
+            context.stakeholderService.UpdateStakeholder(submissionID, value.id, value);
           }
         }
       })
