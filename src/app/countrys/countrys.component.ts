@@ -310,13 +310,20 @@ export class CountrysComponent implements OnInit {
     this.form.get("NIPCGroup").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
         this.isAssociatedWithFranchise = false;
-        this.form.get("NIPCGroup").setValidators(Validators.required);        
+        this.form.get("NIPCGroup").setValidators(Validators.required);
         this.form.get("franchiseName").setValidators(null);
+        if (this.incorrectNIPC || this.incorrectNIPCSize) {
+          this.form.get("NIPCGroup").setErrors({ 'incorrect': true });
+        } else {
+          if (this.form.get("NIPCGroup").hasError("incorrect")) { 
+            this.form.get("NIPCGroup").setErrors(null);
+          }
+        }
       } else {
         this.isAssociatedWithFranchise = undefined;
       }
-      this.form.get("franchiseName").updateValueAndValidity();
-      this.form.get("NIPCGroup").updateValueAndValidity();
+      this.form.get("franchiseName").updateValueAndValidity({ emitEvent: false });
+      this.form.get("NIPCGroup").updateValueAndValidity({ emitEvent: false });
     });
 
 
@@ -365,7 +372,7 @@ export class CountrysComponent implements OnInit {
         this.isAssociatedWithFranchise = undefined;
       }
 
-      this.form.get("franchiseName").updateValueAndValidity({ emitEvent: false });
+      this.form.get("franchiseName").updateValueAndValidity({emitEvent: false });
       this.form.get("NIPCGroup").updateValueAndValidity({ emitEvent: false });
     });
 
