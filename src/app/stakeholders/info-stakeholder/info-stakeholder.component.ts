@@ -27,6 +27,7 @@ export class InfoStakeholderComponent implements OnInit {
   public subscription: Subscription;
   public map: Map<number, boolean>;
   public currentPage: number;
+  public emailRegex: string;
 
   //Informação de campos/tabelas
   internationalCallingCodes: CountryInformation[];
@@ -65,12 +66,13 @@ export class InfoStakeholderComponent implements OnInit {
   }
 
   initializeForm() {
+    this.emailRegex = '^(([^<>()\\[\\]\\\.,;:\\s@"]+(\.[^<>()\\[\\]\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$';
     this.formContactos = new FormGroup({
       phone: new FormGroup({
         countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : '', Validators.required),
         phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : '', Validators.required)
       }, { validators: [validPhoneNumber, Validators.required] }),
-      email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', Validators.email)
+      email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', Validators.pattern(this.emailRegex))
     })
     this.rootFormGroup.form.setControl('contacts', this.formContactos);
     this.phone = this.formContactos.get("phone");
