@@ -40,7 +40,7 @@
                            <td class="text-primary text-center">{{comp.status}}</td>
                            <td></td>
                            <td class="text-center text-primary">
-                              <span *ngIf="!(comp.documentType === '0001' || comp.documentPurpose === 'Identification' || comp.documentPurpose === 'CompanyIdentification')">
+                              <span *ngIf="!(comp.documentType === '0018' || comp.documentPurpose === 'Identification' || comp.documentPurpose === 'CompanyIdentification')">
                                  <img src="assets/images/delete_blue.svg"
                                     (click)="onDelete(comp.file, comp.id)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
