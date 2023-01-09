@@ -221,7 +221,7 @@ export class StoreComponent implements AfterViewInit {
 
       if (!this.currentStore.bank.useMerchantBank) {
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
-        this.documentService.GetDocumentImage(this.submissionId, this.currentStore.bank.bank.iban).then(async (res) => {
+        this.documentService.GetDocumentImage(this.submissionId, this.currentStore.bank.bank.iban).subscribe(async (res) => {
           console.log("imagem de um documento ", res);
           var file = await res.blob();
 
@@ -440,15 +440,17 @@ export class StoreComponent implements AfterViewInit {
           "validUntil": "2022-07-20T11:03:13.001Z",
           "data": {}
         }
-        this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-          store.bank.bank.iban = result.id;
 
-          context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
-            console.log('LOJA ATUALIZADA ', res);
-          });
-        });
         context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
           console.log("Adicionei um documento à submissão: ", res);
+          store.bank.bank.iban = res.id;
+          this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
+            //store.bank.bank.iban = result.id;
+            context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
+              console.log('LOJA ATUALIZADA ', res);
+            });
+          });
+
         })
       })
     }

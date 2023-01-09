@@ -266,7 +266,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
                   var index = context.compsToShow.findIndex(value => value.id == document.id);
                   if (index == -1) {
-                    var shopName = context.shopList?.find(shop => shop.documents.id === document.id)?.name;
+                    var shopName = context.shopList?.find(shop => shop.bank.bank.iban === document.id)?.name;
                     context.compsToShow.push({
                       id: val.id,
                       type: "pdf",
