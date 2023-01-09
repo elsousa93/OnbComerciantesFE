@@ -244,7 +244,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature : this.client.legalNature, Validators.required), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature2 : this.client.legalNature2), //sim
-      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo?.legalName : localStorage.getItem("clientName") ?? this.client.commercialName ?? this.client.legalName, disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '')) }, Validators.required), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo?.legalName : localStorage.getItem("clientName") ?? this.client.commercialName ?? this.client.legalName, disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '') || (this.client.legalName != null && this.client.legalName != '')) }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(false)
     }));
@@ -753,7 +753,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.crc = (this.crcFound) ? this.processClient : null;
     this.clientContext.comprovativoCC = this.comprovativoCC;
 
-     
+
     //Intervenientes do processo
     var newSubmission = this.clientContext.newSubmission;
     var stakeholdersToInsert = this.clientContext.getStakeholdersToInsert();
@@ -794,10 +794,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
     newSubmission.documents = [];
 
-
     if (crc != null && crc != undefined) {
       newSubmission.documents.push({
-        documentType: "0034", 
+        documentType: "0034",
         documentPurpose: 'CompanyIdentification',
         file: {
           fileType: 'PDF',
@@ -812,16 +811,17 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (comprovativoCC !== null && comprovativoCC !== undefined) {
       newSubmission.documents.push({
-        documentType: "0018", 
+        documentType: "0018",
         documentPurpose: 'Identification',
         file: {
           fileType: 'PDF',
           binary: comprovativoCC.file
         },
-        validUntil: new Date(comprovativoCC.expirationDate).toISOString(), 
+        validUntil: new Date(comprovativoCC.expirationDate).toISOString(),
         data: null
       })
     }
+    
 
     this.clientContext.newSubmission = newSubmission;
   }

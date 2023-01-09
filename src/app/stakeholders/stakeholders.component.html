@@ -208,5 +208,5 @@
     </div>
 </div>
 <ng-container [formGroup]="editStakes">
-  <app-create-stakeholder *ngIf="editStakeInfo == false" [parentFormGroup]="editStakes.get('searchAddStakes')" [sameNIFStake]="sameNIFStake" (insertedStakeSubject)="emitInsertedStake($event)" (canceledSearch)="emitCanceledSearch($event)" (sameNIF)="emitStakeNIF($event)"></app-create-stakeholder>
+  <app-create-stakeholder *ngIf="editStakeInfo == false" [parentFormGroup]="editStakes.get('searchAddStakes')" [sameNIFStake]="sameNIFStake" [submissionClient]="submissionClient" (insertedStakeSubject)="emitInsertedStake($event)" (canceledSearch)="emitCanceledSearch($event)" (sameNIF)="emitStakeNIF($event)"></app-create-stakeholder>
 </ng-container>

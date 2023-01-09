@@ -33,7 +33,7 @@
                      </thead>
                      <tbody>
                         <tr *ngFor="let comp of compsToShow">
-                           <td class="text-primary text-center text-primary">{{comp.type}}</td>
+                          <td class="text-primary text-center text-primary">{{getDocumentDescription(comp.documentType)}}</td>
                            <td class="text-primary text-center">{{comp.stakeholder}}</td>
                            <td class="text-primary text-center">{{comp.expirationDate}}</td>
                            <td class="text-primary text-center">{{comp.uploadDate}}</td>
@@ -50,7 +50,7 @@
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                               </span>
                               <span>
-                                 <img src="assets/images/file_download.svg" (click)="download(comp.file)"
+                                 <img src="assets/images/file_download.svg" (click)="download(comp.file, comp.type)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                               </span>
                            <td></td>

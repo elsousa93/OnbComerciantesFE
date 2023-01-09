@@ -63,6 +63,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
   @Input() parentFormGroup: FormGroup;
   @Input() sameNIFStake: boolean;
+  @Input() submissionClient: Client;
 
   modalRef: BsModalRef;
   showSameNIFError: boolean = false;
@@ -297,7 +298,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   incorrectCCSize: boolean = false;
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
-  submissionClient: Client;
   sameNIPC: boolean = false;
 
   stakesList: [] = [];
@@ -473,9 +473,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       }
     }
 
-    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
-      this.submissionClient = client;
-    });
+
   }
 
   ngOnDestroy(): void {

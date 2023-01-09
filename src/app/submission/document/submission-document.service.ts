@@ -81,4 +81,8 @@ export class SubmissionDocumentService {
   SubmissionPostDocumentToShop(submissionID: string, shopId: string, newDoc: PostDocument) {
     return this.http.post<SimplifiedDocument>(this.baseUrl + 'submission/' + submissionID + '/merchant/' + 'shop/' + shopId + '/document', newDoc);
   }
+
+  DeleteDocumentFromSubmission(submissionID: string, docId: string) {
+    return this.http.delete(this.baseUrl + 'submission/' + submissionID + '/document/' + docId);
+  }
 }

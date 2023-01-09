@@ -277,7 +277,7 @@ export class StoreComponent implements AfterViewInit {
           this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
           this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
           this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-          this.currentStore.address.useMerchantAddress = true;
+          this.currentStore.address.useMerchantAddress = true; //
         }
       }
 
@@ -296,14 +296,17 @@ export class StoreComponent implements AfterViewInit {
 
       var bankStores = this.editStores.controls["bankStores"];
 
-      this.currentStore.bank = new ShopBank();
-      this.currentStore.bank.bank = new ShopBankingInformation();
-      this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
-      this.currentStore.bank.useMerchantBank = bankStores.get("bankInformation").value;
+      this.currentStore.bank = {
+        bank: {
+          bank: bankStores.get("supportBank").value
+        },
+        useMerchantBank: bankStores.get("bankInformation").value
+      }
 
-      //if (!this.currentStore.bank.useMerchantBank) {
-      //  this.currentStore.bank.bank.iban = bankStores.get("bankIban").value;
-      //}
+      //this.currentStore.bank = new ShopBank();
+      //this.currentStore.bank.bank = new ShopBankingInformation();
+      //this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
+      //this.currentStore.bank.useMerchantBank = bankStores.get("bankInformation").value;
 
       var productStores = this.editStores.controls["productStores"];
 
@@ -425,6 +428,7 @@ export class StoreComponent implements AfterViewInit {
 
   addDocumentToShop(storeId: string) {
     if (this.ibansToShow != null) { 
+      var context = this;
       this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
         var docToSend: PostDocument = {
           "documentType": "0071",
@@ -437,12 +441,13 @@ export class StoreComponent implements AfterViewInit {
           "data": {}
         }
         this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-          this.currentStore.bank.bank.iban = result.id;
-          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, this.currentStore).subscribe(res => {
+          context.currentStore.bank.bank.iban = result.id;
+
+          context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, context.currentStore).subscribe(res => {
             console.log('LOJA ATUALIZADA ', res);
           });
         });
-        this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
+        context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
           console.log("Adicionei um documento à submissão: ", res);
         })
       })

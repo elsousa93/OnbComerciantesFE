@@ -25,8 +25,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
 import { DatePipe } from '@angular/common';
-import { LegalNature } from '../table-info/ITable-info.interface';
+import { DocumentSearchType, LegalNature } from '../table-info/ITable-info.interface';
 import { StoreService } from '../store/store.service';
+import { ShopDetailsAcquiring } from '../store/IStore.interface';
 
 
 @Component({
@@ -175,6 +176,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   submission: SubmissionGetTemplate = {};
   submissionClient: any = {};
   stakeholdersList: any[] = [];
+  shopList: ShopDetailsAcquiring[] = [];
 
   public returned: string;
   updatedComps: boolean;
@@ -184,8 +186,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   legalNatures: LegalNature[];
   legalNature: string;
   mandatoryDocs: string;
+  documents: DocumentSearchType[];
 
-  b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
+  b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
@@ -203,18 +206,29 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     const blob = new Blob(byteArrays, { type: contentType });
     const blobUrl = window.URL.createObjectURL(blob);
-    window.open(blobUrl, '_blank',
-      `margin: auto;
+    if (download) {
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'comprovativo';
+      link.click();
+    } else {
+      window.open(blobUrl, '_blank',
+        `margin: auto;
       width: 50%;
       padding: 10px;
       text-align: center;
       border: 3px solid green;` );
+    }
   }
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
     private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService) {
     this.ngOnInit();
     var context = this;
+
+    this.tableInfo.GetDocumentsDescription().subscribe(result => {
+      this.documents = result;
+    });
 
     this.tableInfo.GetAllLegalNatures().then(result => {
       this.legalNatures = result.result;
@@ -233,36 +247,44 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.getLegalNatureDescription();
         this.logger.debug('Cliente ' + c);
 
-
-        this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
-          var documents = res;
-          if (documents.length != 0) {
-            documents.forEach(function (value, index) {
-              var document = value;
-
-              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
-                const now = new Date();
-                var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
-
-                var index = context.compsToShow.findIndex(value => value.id == document.id);
-                if (index == -1) {
-                  context.compsToShow.push({
-                    id: val.id,
-                    type: "pdf",
-                    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                    stakeholder: context.submissionClient.legalName,
-                    status: "não definido",
-                    uploadDate: latest_date,
-                    file: val?.id,
-                    documentPurpose: val.documentPurpose,
-                    documentType: val.documentType
-                  });
-                }
-                console.log("Lista de comprovativos ", context.compsToShow);
-              });
+        context.shopService.getSubmissionShopsList(context.submissionId).then(shops => {
+          shops.result.forEach(function (value, index) {
+            context.shopService.getSubmissionShopDetails(context.submissionId, value.id).then(shop => {
+              context.shopList.push(shop.result);
             });
-          }
+          });
+       
+          this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
+            var documents = res;
+            if (documents.length != 0) {
+              documents.forEach(function (value, index) {
+                var document = value;
 
+                context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+                  const now = new Date();
+                  var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
+
+                  var index = context.compsToShow.findIndex(value => value.id == document.id);
+                  if (index == -1) {
+                    var shopName = context.shopList?.find(shop => shop.documents.id === document.id)?.name;
+                    context.compsToShow.push({
+                      id: val.id,
+                      type: "pdf",
+                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                      stakeholder: shopName ?? context.submissionClient.legalName,
+                      status: "não definido",
+                      uploadDate: latest_date,
+                      file: val?.id,
+                      documentPurpose: val.documentPurpose,
+                      documentType: val.documentType
+                    });
+                  }
+                  console.log("Lista de comprovativos ", context.compsToShow);
+                });
+              });
+            }
+
+          });
         });
       });
     });
@@ -317,11 +339,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (this.submission.stakeholders != null) { 
       if (this.submission.stakeholders.length != 0) {
         this.submission.stakeholders.forEach(stake => {
-          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-            this.logger.debug('Stakeholder ' + result);
-            var index = this.stakeholdersList.findIndex(s => s.id == result.id);
+          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(result => {
+            var stake = result.result;
+            var index = this.stakeholdersList.findIndex(s => s.id == stake.id);
             if (index == -1)
-              this.stakeholdersList.push(result);
+              this.stakeholdersList.push(stake);
           }, error => {
             this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
           });
@@ -533,13 +555,20 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   //mandar como parametro o ficheiro ou o nome do ficheiro
-  download(/*imgName: any*/ file: File) {
-    let blob = new Blob([file], { type: file.type });
-    let url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = file.name;
-    link.click();
+  download(file: any, format?: any) {
+    if (file instanceof File) {
+      let blob = new Blob([file], { type: file.type });
+      let url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.name;
+      link.click();
+    } else {
+      this.documentService.GetDocumentImageOutbound(file, "por mudar", "por mudar", format).subscribe(result => {
+        this.b64toBlob(result.binary, 'application/pdf', 512, true);
+      });
+    }
+
   }
 
   onDelete(file: any, documentID) {
@@ -643,6 +672,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       this.route.navigate(['/commercial-offert-list']);
     });
 
+  }
+
+  getDocumentDescription(documentType: string) {
+    return this.documents?.find(doc => doc.code === documentType).description;
   }
 
   back() {

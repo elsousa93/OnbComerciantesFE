@@ -169,6 +169,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   potentialClientIds: string[] = [];
   shortName: string;
+  submissionDocs: ISubmissionDocument[] = [];
 
   initializeTableInfo() {
     //Chamada à API para obter as naturezas juridicas
@@ -359,6 +360,16 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         });
       });
     }, error => {
+    });
+
+    this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
+      if (result.length > 0) { 
+        result.forEach(doc => {
+          this.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
+            this.submissionDocs.push(res);
+          });
+        });
+      }
     });
 
     if (localStorage.getItem("clientName") != null) {
@@ -1106,26 +1117,28 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("resultado: ", res);
       });
 
-      var stakeholder = this.clientContext.newSubmission.stakeholders;
-      stakeholder.forEach(function (value, idx) {
-        if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
-          if (value.fiscalId === client.fiscalId) {
-            context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-              value.id = result.id;
-            });
+      if (!this.updateClient) { 
+        var stakeholder = this.clientContext.newSubmission.stakeholders;
+        stakeholder.forEach(function (value, idx) {
+          if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
+            if (value.fiscalId === client.fiscalId) {
+              context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                value.id = result.id;
+              });
+            }
           }
-        }
-      })
+        });
+      }
 
       if (!this.compareArrays(context.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
         if (stakeholders.length == 0) {
           this.submissionStakeholders.forEach((val, index) => {
-            context.stakeholderService.DeleteStakeholder(submissionID, val.id).subscribe(result => {  });  
+            context.stakeholderService.DeleteStakeholder(submissionID, val.id).subscribe(result => { });
           });
           this.submissionStakeholders = [];
           this.clientContext.setStakeholdersToInsert([]);
-          this.processClient.stakeholders= [];
+          this.processClient.stakeholders = [];
         }
 
         stakeholders.forEach(function (value, idx) {
@@ -1140,16 +1153,24 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             });
           }
         });
+      }
 
-        if (newSubmission.documents.length > 0) {
-          newSubmission.documents.forEach(doc => {
+      if (!this.compareArrays(this.submissionDocs, this.clientContext.newSubmission.documents)) {
+        var documents = this.clientContext.newSubmission.documents;
+        if (documents.length == 0) {
+          this.submissionDocs.forEach((val, index) => {
+            context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
+          });
+        }
+
+        if (documents.length > 0) {
+          documents.forEach(doc => {
             context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
               console.log('documento adicionado: ', result);
             });
           });
         }
 
-        // var documents = this.clientContext.newSubmission.documents;
         if (context.clientDocs != null) {
           context.clientDocs.forEach(function (value, idx) {
             context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
@@ -1157,10 +1178,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             });
           });
         }
+        
+      }
 
-
-
-
+      if (!this.updateClient) { 
         if (this.clientContext.isClient) {
           this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
             res.forEach(value => {
@@ -1192,7 +1213,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           });
         }
       }
-
 
     } else {
       this.data.updateData(true, 1);
