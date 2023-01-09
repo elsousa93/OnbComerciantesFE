@@ -39,6 +39,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   submissionId: string;
   processNumber: string;
   public subscription: Subscription;
+  returned: string; //variável para saber se estamos a editar um processo
   public submissionAnswer: SubmissionGetTemplate;
   public contractLanguage: ContractPackLanguage[];
 
@@ -48,6 +49,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
     var context = this;
     this.initializeForm();
+
+    this.returned = localStorage.getItem("returned");
 
     this.tableInfoService.GetContractualPackLanguage().subscribe(result => {
       this.contractLanguage = result;
