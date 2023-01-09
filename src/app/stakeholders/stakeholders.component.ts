@@ -15,6 +15,8 @@ import { ComprovativosService } from '../comprovativos/services/comprovativos.se
 import { DatePipe } from '@angular/common';
 import { TableInfoService } from '../table-info/table-info.service';
 import { DocumentSearchType } from '../table-info/ITable-info.interface';
+import { Client } from '../client/Client.interface';
+import { ClientService } from '../client/client.service';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -43,6 +45,7 @@ export class StakeholdersComponent implements OnInit {
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
   previousStakeholderEvent: Observable<number>;
   sameNIFEvent: Observable<string>;
+  submissionClient: Client;
 
   emitUpdatedStakeholder(info) {
     this.updatedStakeholderEvent = info;
@@ -61,6 +64,7 @@ export class StakeholdersComponent implements OnInit {
   emitStakeNIF(nif) {
     this.sameNIFEvent = nif;
   }
+
 
   currentStakeholder: StakeholdersCompleteInformation = {};
   currentIdx: number;
@@ -129,12 +133,16 @@ export class StakeholdersComponent implements OnInit {
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
-    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService) {
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
       this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
     }
+
+    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+      this.submissionClient = client;
+    });
 
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
 
@@ -358,6 +366,16 @@ export class StakeholdersComponent implements OnInit {
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality = stakeForm.get("Locality").value;
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = stakeForm.get("ZIPCode").value;
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = stakeForm.get("Locality").value;
+
+          if (this.submissionClient.merchantType.toLocaleLowerCase() === 'entrepeneur' || this.submissionClient.merchantType === '02') {
+            this.submissionClient.headquartersAddress.address = stakeForm.get("Address").value;
+            this.submissionClient.headquartersAddress.country = stakeForm.get("Country").value;
+            this.submissionClient.headquartersAddress.locality = stakeForm.get("Locality").value;
+            this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+            this.submissionClient.headquartersAddress.postalArea = stakeForm.get("Locality").value;
+
+            this.clientService.EditClient(this.submissionId, this.submissionClient).subscribe(result => { });
+          }
         }
 
         if (stakeForm.get("Country") == null) {
