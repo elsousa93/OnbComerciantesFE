@@ -325,7 +325,7 @@ export class StoreComponent implements AfterViewInit {
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
           console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
-          this.addDocumentToShop(result["id"]);
+          this.addDocumentToShop(result["id"], this.currentStore);
           this.emitInsertedStore(this.currentStore);
           this.resetForm();
           this.currentStore = null;
@@ -335,17 +335,17 @@ export class StoreComponent implements AfterViewInit {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
           console.log('LOJA EDITADA', result);
           if (isEditButton) {
-            this.addDocumentToShop(this.currentStore.id);
+            this.addDocumentToShop(this.currentStore.id, this.currentStore);
             this.resetForm();
             this.currentStore = null;
             this.currentIdx = -2;
           } else { 
             if (this.currentIdx < (this.storesLength - 1)) {
-              this.addDocumentToShop(this.currentStore.id);
+              this.addDocumentToShop(this.currentStore.id, this.currentStore);
               this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
               this.resetForm();
             } else {
-              this.addDocumentToShop(this.currentStore.id);
+              this.addDocumentToShop(this.currentStore.id, this.currentStore);
               this.resetForm();
               this.currentStore = null;
               this.currentIdx = -2;
@@ -426,7 +426,7 @@ export class StoreComponent implements AfterViewInit {
     this.ibansToShow = info;
   }
 
-  addDocumentToShop(storeId: string) {
+  addDocumentToShop(storeId: string, store: ShopDetailsAcquiring) {
     if (this.ibansToShow != null) { 
       var context = this;
       this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
@@ -441,9 +441,9 @@ export class StoreComponent implements AfterViewInit {
           "data": {}
         }
         this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-          context.currentStore.bank.bank.iban = result.id;
+          store.bank.bank.iban = result.id;
 
-          context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, context.currentStore).subscribe(res => {
+          context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
             console.log('LOJA ATUALIZADA ', res);
           });
         });
