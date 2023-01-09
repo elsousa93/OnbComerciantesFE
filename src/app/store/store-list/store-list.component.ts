@@ -428,6 +428,7 @@ export class StoreComponent implements AfterViewInit {
 
   addDocumentToShop(storeId: string) {
     if (this.ibansToShow != null) { 
+      var context = this;
       this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
         var docToSend: PostDocument = {
           "documentType": "0071",
@@ -440,18 +441,13 @@ export class StoreComponent implements AfterViewInit {
           "data": {}
         }
         this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-          this.currentStore.bank = {
-            bank: {
-              iban: result.id
-            }
-          }
-          //this.currentStore.bank.bank.iban = result.id;
+          context.currentStore.bank.bank.iban = result.id;
 
-          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, this.currentStore).subscribe(res => {
+          context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, context.currentStore).subscribe(res => {
             console.log('LOJA ATUALIZADA ', res);
           });
         });
-        this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
+        context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
           console.log("Adicionei um documento à submissão: ", res);
         })
       })
