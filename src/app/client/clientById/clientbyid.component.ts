@@ -433,7 +433,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       return new Promise((resolve, reject) => {
         context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
           console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
-          this.submissionType = result.submissionType;
+          this.submissionType = result.result[0].submissionType;
           return result;
         }).then(function (resul) {
           context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
