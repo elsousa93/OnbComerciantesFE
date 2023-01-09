@@ -1118,6 +1118,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       if (!this.compareArrays(context.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
         if (stakeholders.length == 0) {
+          this.submissionStakeholders.forEach((val, index) => {
+            context.stakeholderService.DeleteStakeholder(submissionID, val.id).subscribe(result => {  });  
+          });
           this.submissionStakeholders = [];
           this.clientContext.setStakeholdersToInsert([]);
           this.processClient.stakeholders= [];

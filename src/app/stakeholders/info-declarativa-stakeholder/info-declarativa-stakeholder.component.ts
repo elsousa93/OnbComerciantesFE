@@ -192,6 +192,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
         this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
         this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+      } else if (pep.get("pepPoliticalPublicJobs").value == 'false') {
+        this.currentStakeholder.stakeholderAcquiring.pep = null;
       }
 
       console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
