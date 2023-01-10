@@ -686,6 +686,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         },
         "phone1": {},
         "phone2": {},
+        "fiscalAddress": null,
         "fullName": fullName,
         "shortName": shortName,
         "contactName": shortName 
