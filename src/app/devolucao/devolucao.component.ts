@@ -86,8 +86,10 @@ export class DevolucaoComponent implements OnInit{
       localStorage.setItem('processNumber', this.processNumber);
       this.data.updateData(true, 0);  
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
-        console.log('ISSUES ', res);
-        this.issues = res;
+        if (res != null) { // no caso em que as issues vêm a null está a entrar num erro infinito
+          console.log('ISSUES ', res);
+          this.issues = res;
+        }
       });
     });
 
