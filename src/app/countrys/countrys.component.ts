@@ -168,7 +168,7 @@ export class CountrysComponent implements OnInit {
         }));
       }
     } else {
-      if (!this.clientContext?.isClient) {
+      if (this.clientContext?.isClient == false) { // !
         this.getMerchantInfoAsync().then(res => {
           this.getClientContextValues();
         });

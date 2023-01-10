@@ -447,34 +447,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
     this.data.updateData(false, 1, 2);
 
-    // check if, in return, there are changes in stakeholders list
-
-    this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
-
-      var stakeholders = result.result;
-
-      stakeholders.forEach(function (value, index) {
-        context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-          console.log("stakeholder adicionado com sucesso");
-          context.form.addControl(index + "", new FormControl(null, Validators.required));
-          context.submissionStakeholders.push(res);
-        }, error => {
-          console.log("Erro a adicionar stakeholder");
-        });
-      });
-    }, error => {
-    });
-
-    this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
-      if (result.length > 0) {
-        result.forEach(doc => {
-          this.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
-            this.submissionDocs.push(res);
-          });
-        });
-      }
-    });
-
     //if (this.updateClient)
     //  this.clientId = localStorage.getItem("documentNumber");
 
@@ -487,6 +459,38 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.dataCC,
       this.isClient
     );
+
+    // check if, in return, there are changes in stakeholders list
+
+    this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
+
+      var stakeholders = result.result;
+
+      stakeholders.forEach(function (value, index) {
+        context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+          context.submissionStakeholders.push(res);
+          if (context.returned == 'edit') {
+            context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
+          }
+        }, error => {
+          console.log("Erro a adicionar stakeholder");
+        });
+      });
+      if (context.returned == 'edit') {
+        
+      }
+    }, error => {
+    });
+
+    this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
+      if (result.length > 0) {
+        result.forEach(doc => {
+          this.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
+            this.submissionDocs.push(res);
+          });
+        });
+      }
+    });
 
     console.log('VALOR DO IS CLIENT NO CLIENT CONTEXT ', this.clientContext.isClient);
 
@@ -642,7 +646,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert.legalNature = client.legalNature;
               clientToInsert.legalNature2 = client.legalNature2;
 
-              if (clientToInsert.incorporationStatement!=null){
+              if (client.incorporationStatement!=null){
                 clientToInsert.incorporationStatement = {
                   code: client.incorporationStatement.code,
                   validUntil: client.incorporationStatement.validUntil
@@ -915,7 +919,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       if (this.clientContext.isClient == false) // !
         this.countriesComponent.submit();
 
-      if (this.returned === 'edit')
+      if (this.submissionType === 'DigitalComplete')
         this.representationPowerComponent.submit();
       this.updateSubmission();
     } else {
@@ -1126,7 +1130,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("resultado: ", res);
       });
 
-      if (!this.updateClient) { 
+      if (!this.updateClient || this.returned == null) { 
         var stakeholder = this.clientContext.newSubmission.stakeholders;
         stakeholder.forEach(function (value, idx) {
           if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
