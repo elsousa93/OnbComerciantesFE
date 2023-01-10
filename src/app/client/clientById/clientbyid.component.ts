@@ -793,6 +793,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     } else {
       //this.clientContext.clientExists = false;
       this.clientContext.isClient = this.isClient;
+      if (this.clientContext.isClient) {
+        this.formCountryIsValid = true;
+      }
       this.clientContext.setMerchantInfo(this.merchantInfo);
       this.clientContext.setClient(this.merchantInfo);
       this.clientContext.setNIFNIPC(this.merchantInfo.fiscalId);
@@ -1130,7 +1133,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("resultado: ", res);
       });
 
-      if (!this.updateClient || this.returned == null) { 
+      if (!this.updateClient && this.returned == null) { 
         var stakeholder = this.clientContext.newSubmission.stakeholders;
         stakeholder.forEach(function (value, idx) {
           if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {

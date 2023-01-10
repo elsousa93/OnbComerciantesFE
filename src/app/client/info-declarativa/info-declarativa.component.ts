@@ -112,12 +112,10 @@ export class InfoDeclarativaComponent implements OnInit {
 
     if (!this.newClient) {
       if (this.returned != null) {
-        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-          this.logger.debug('Submissão retornada quando pesquisada pelo número de processo' + result);
-          this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-            this.logger.debug('Submissão com detalhes mais especificos ' + resul);
-            this.clientService.GetClientByIdAcquiring(resul.id).then(res => {
-              this.setForm(res); // n sei se aqui é res.res
+        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
+          this.submissionService.GetSubmissionByID(result.result[0].submissionId).then(resul => {
+            this.clientService.GetClientByIdAcquiring(resul.result.id).then(res => {
+              this.setForm(res);
             });
           });
         });

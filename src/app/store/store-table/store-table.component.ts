@@ -193,7 +193,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
             var shops = resul.result;
             var totalLength = shops.length;
             shops.forEach(val => {
-              this.storeService.getSubmissionShopDetails(result[0].submissionId, val.id).then(res => {
+              this.storeService.getSubmissionShopDetails(result.result[0].submissionId, val.id).then(res => {
                 var shop = res.result;
                 var index = this.storesList.findIndex(store => store.shopId == shop.shopId);
                 if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista

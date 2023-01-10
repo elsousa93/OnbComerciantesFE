@@ -89,7 +89,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         }
       });
     }
-    if (!changes["isInfoDeclarativa"].currentValue) {
+    if (!changes["isInfoDeclarativa"]?.currentValue) {
       this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
         this.submissionClient = client;
       });
