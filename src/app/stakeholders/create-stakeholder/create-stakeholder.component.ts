@@ -596,11 +596,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.selected = true;
     this.currentStakeholder = emittedStakeholder.stakeholder;
     this.stakesList.forEach(val => {
-      if (val["stakeholderNumber"] != emittedStakeholder.stakeholder.stakeholderId) {
-        this.potentialClientIds.push(emittedStakeholder.stakeholder.stakeholderId);
+      if (val["stakeholderNumber"] != emittedStakeholder.stakeholder.address.stakeholderNumber) {
+        this.potentialClientIds.push(emittedStakeholder.stakeholder.address.stakeholderNumber);
       }
     });
-    ;
+    
     console.log("current stakeholder: ", this.currentStakeholder);
   }
 
@@ -633,14 +633,13 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
         stakeholderToInsert["stakeholderId"] = "";
         stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
-
         stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
         stakeholderToInsert["phone1"] = {
           countryCode: stakeholderToInsert["contacts"]["phone1"]["countryCode"],
           phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
         }
         stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
-
+        stakeholderToInsert["contacts"] = null;
         stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
 
         if (stakeholderToInsert["identificationDocument"] != null) { 
@@ -686,6 +685,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         },
         "phone1": {},
         "phone2": {},
+        "fiscalAddress": null,
         "fullName": fullName,
         "shortName": shortName,
         "contactName": shortName 

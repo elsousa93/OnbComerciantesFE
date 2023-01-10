@@ -642,10 +642,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert.legalNature = client.legalNature;
               clientToInsert.legalNature2 = client.legalNature2;
 
-              clientToInsert.incorporationStatement = {
-                code: client.incorporationStatement.code,
-                validUntil: client.incorporationStatement.validUntil
-              } 
+              if (clientToInsert.incorporationStatement!=null){
+                clientToInsert.incorporationStatement = {
+                  code: client.incorporationStatement.code,
+                  validUntil: client.incorporationStatement.validUntil
+                } 
+              }
+
 
               clientToInsert.shareCapital = client.shareCapital;
               clientToInsert.byLaws = client.bylaws;
@@ -760,7 +763,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 if (doc.type === '0018') { 
                   context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
                     var file = {
-                      documentType: 'Cartão do Cidadão',
+                      documentType: '0018',
                       receivedAt: this.datepipe.transform(r.receivedAt, "yyyy-MM-dd"),
                       validUntil: this.datepipe.transform(r.validUntil, "yyyy-MM-dd"),
                       uniqueReference: r.id,

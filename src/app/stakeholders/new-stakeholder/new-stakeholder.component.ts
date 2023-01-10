@@ -276,8 +276,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   changeValueCC(){
     if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018') {
-      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = 'Cartão do Cidadão';
-      this.formNewStakeholder.get('documentType').setValue('Cartão do Cidadão');
+      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = '0018';
+      this.formNewStakeholder.get('documentType').setValue('0018');
 
     }
   }
@@ -414,9 +414,12 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       }
     } else {
       this.lockLocality = false;
-      this.formNewStakeholder.get('Address').setValidators(null);
-      this.formNewStakeholder.get('ZIPCode').setValidators(null);
-      this.formNewStakeholder.get('Locality').setValidators(null);
+      if (currentCountry != "") {
+        this.formNewStakeholder.get('Address').setValidators(null);
+        this.formNewStakeholder.get('ZIPCode').setValidators(null);
+        this.formNewStakeholder.get('Locality').setValidators(null);
+      }
+      
     }
     console.log('Valor do form no new-stakeholder ', this.formNewStakeholder);
   }
