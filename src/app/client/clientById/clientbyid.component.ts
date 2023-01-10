@@ -344,33 +344,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.potentialClientIds = this.route.getCurrentNavigation().extras.state["potentialClientIds"];
     }
 
-    // check if, in return, there are changes in stakeholders list
 
-    this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
-
-      var stakeholders = result.result;
-
-      stakeholders.forEach(function (value, index) {
-        context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-          console.log("stakeholder adicionado com sucesso");
-          context.form.addControl(index + "", new FormControl(null, Validators.required));
-          context.submissionStakeholders.push(res);
-        }, error => {
-          console.log("Erro a adicionar stakeholder");
-        });
-      });
-    }, error => {
-    });
-
-    this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
-      if (result.length > 0) { 
-        result.forEach(doc => {
-          this.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
-            this.submissionDocs.push(res);
-          });
-        });
-      }
-    });
 
     if (localStorage.getItem("clientName") != null) {
       this.socialDenomination = localStorage.getItem("clientName");
@@ -434,6 +408,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
           console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
           context.submissionType = result.result[0].submissionType;
+          localStorage.setItem("submissionId", result.result[0].submissionId);
           return result;
         }).then(function (resul) {
           context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
@@ -471,6 +446,34 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
     this.data.updateData(false, 1, 2);
+
+    // check if, in return, there are changes in stakeholders list
+
+    this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
+
+      var stakeholders = result.result;
+
+      stakeholders.forEach(function (value, index) {
+        context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+          console.log("stakeholder adicionado com sucesso");
+          context.form.addControl(index + "", new FormControl(null, Validators.required));
+          context.submissionStakeholders.push(res);
+        }, error => {
+          console.log("Erro a adicionar stakeholder");
+        });
+      });
+    }, error => {
+    });
+
+    this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
+      if (result.length > 0) {
+        result.forEach(doc => {
+          this.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
+            this.submissionDocs.push(res);
+          });
+        });
+      }
+    });
 
     //if (this.updateClient)
     //  this.clientId = localStorage.getItem("documentNumber");
@@ -601,7 +604,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.NIFNIPC = this.dataCC.nifCC;
             this.clientContext.setNIFNIPC(this.dataCC.nifCC);
           }).then(val => {
-            if (!this.clientContext.isClient) {
+            if (this.clientContext.isClient == false) { // !
               this.countriesComponent.getClientContextValues();
             }
             this.clientCharacterizationComponent.getClientContextValues();
@@ -698,7 +701,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               this.updateBasicForm();
 
             }).then(result => {
-              if (!this.clientContext.isClient) {
+              if (this.clientContext.isClient == false) {
                 this.countriesComponent.getClientContextValues();
               }
               this.clientCharacterizationComponent.getClientContextValues();
@@ -731,6 +734,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             clientToInsert.merchantType = this.tipologia;
             clientToInsert.documentationDeliveryMethod = 'Portal';
 
+            this.clientContext.isClient = false;
             this.clientContext.setNIFNIPC(this.NIFNIPC);
             this.clientContext.setClient(clientToInsert);
             this.createSubmission();
@@ -743,6 +747,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.clientContext.setNIFNIPC(result.fiscalId);
           this.clientContext.submissionID = localStorage.getItem("submissionId");
           this.clientContext.setClient(result);
+          this.clientContext.isClient = this.isClient;
           
           //dados necessários para a pesquisa feita anteriormente
           this.tipologia = result.merchantType;
@@ -771,7 +776,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
 
         }).then(result => {
-          if (!this.clientContext.isClient) {
+          if (this.clientContext.isClient == false) { // !
             this.countriesComponent.getClientContextValues();
           }
           this.clientCharacterizationComponent.getClientContextValues();
@@ -785,6 +790,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.clientContext.setClient(this.merchantInfo);
       this.clientContext.setNIFNIPC(this.merchantInfo.fiscalId);
       this.clientContext.tipologia = this.merchantInfo.merchantType;
+      this.clientContext.submissionID = localStorage.getItem("submissionId");
       console.log('CLIENT CONTEXT ', this.clientContext.isClient);
       //if (!this.clientContext.isClient) {
       //  this.countriesComponent.getClientContextValues();
@@ -903,7 +909,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     if (this.returned != 'consult') {
       this.clientCharacterizationComponent.submit();
 
-      if (!this.clientContext.isClient)
+      if (this.clientContext.isClient == false) // !
         this.countriesComponent.submit();
 
       if (this.returned === 'edit')
@@ -923,7 +929,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           tipologia: this.tipologia,
           clientExists: this.clientExists,
           dataCC: this.dataCC,
-          isClient: this.isClient,
+          isClient: this.clientContext.isClient,
           comprovativoCC: this.comprovativoCC,
         }
       };
@@ -1090,7 +1096,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       let navigationExtras: NavigationExtras = {
         state: {
-          isClient: this.isClient
+          isClient: this.clientContext.isClient
         }
       };
 
