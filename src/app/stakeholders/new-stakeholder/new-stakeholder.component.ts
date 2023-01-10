@@ -414,9 +414,12 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       }
     } else {
       this.lockLocality = false;
-      // this.formNewStakeholder.get('Address').setValidators(null);
-      // this.formNewStakeholder.get('ZIPCode').setValidators(null);
-      // this.formNewStakeholder.get('Locality').setValidators(null);
+      if (currentCountry != null || currentCountry!='') {
+        this.formNewStakeholder.get('Address').setValidators(null);
+        this.formNewStakeholder.get('ZIPCode').setValidators(null);
+        this.formNewStakeholder.get('Locality').setValidators(null);
+      }
+      
     }
     console.log('Valor do form no new-stakeholder ', this.formNewStakeholder);
   }

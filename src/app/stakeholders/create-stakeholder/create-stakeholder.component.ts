@@ -633,7 +633,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
         stakeholderToInsert["stakeholderId"] = "";
         stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
-
+        stakeholderToInsert["contacts"] = null;
         stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
         stakeholderToInsert["phone1"] = {
           countryCode: stakeholderToInsert["contacts"]["phone1"]["countryCode"],
