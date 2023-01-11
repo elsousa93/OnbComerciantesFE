@@ -114,7 +114,7 @@ export class StakeholdersComponent implements OnInit {
   public isParticular: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
-
+  public visitedStakes: string[] = [];
   public returned: string;
   public subs: Subscription[] = [];
 
@@ -346,7 +346,6 @@ export class StakeholdersComponent implements OnInit {
   submit() {
     this.clickButton = null;
     var stakeForm = this.editStakes.controls["stake"];
-    var visitedStakes = [];
     if (this.returned != 'consult') {
       if (this.editStakes.controls["stake"].valid) {
 
@@ -389,9 +388,9 @@ export class StakeholdersComponent implements OnInit {
         }
 
         this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-          visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
-          visitedStakes = Array.from(new Set(visitedStakes));
-          if (visitedStakes.length < (this.stakesLength)) {
+          this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+          this.visitedStakes = Array.from(new Set(this.visitedStakes));
+          if (this.visitedStakes.length < (this.stakesLength)) {
             this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
           } else {
             this.data.updateData(true, 2);
