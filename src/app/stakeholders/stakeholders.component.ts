@@ -346,6 +346,7 @@ export class StakeholdersComponent implements OnInit {
   submit() {
     this.clickButton = null;
     var stakeForm = this.editStakes.controls["stake"];
+    var visitedStakes = [];
     if (this.returned != 'consult') {
       if (this.editStakes.controls["stake"].valid) {
 
@@ -388,7 +389,9 @@ export class StakeholdersComponent implements OnInit {
         }
 
         this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-          if (this.currentIdx < (this.stakesLength - 1)) {
+          visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+          visitedStakes = Array.from(new Set(visitedStakes));
+          if (visitedStakes.length < (this.stakesLength)) {
             this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
           } else {
             this.data.updateData(true, 2);
