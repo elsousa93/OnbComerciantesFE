@@ -49,11 +49,10 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }
     if (changes["updatedStakeholderEvent"]) {
       this.updatedStakeholderEvent?.subscribe(result => {
-        var nextIdx = result.idx;
-        if (nextIdx > this.submissionStakeholders.length) {
+        var nextIdx = result.idx + 1;
+        if (nextIdx >= this.submissionStakeholders.length) {
           nextIdx = 0;
         } else {
-          nextIdx = nextIdx + 1;
           if (nextIdx >= (this.stakesMat.paginator.pageSize * (this.stakesMat.paginator.pageIndex + 1) )) {
             this.stakesMat.paginator.pageIndex = this.stakesMat.paginator.pageIndex + 1;
             const event: PageEvent = {
