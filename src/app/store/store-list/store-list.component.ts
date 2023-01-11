@@ -192,7 +192,8 @@ export class StoreComponent implements AfterViewInit {
   }
 
   setFormData() {
-    if (this.currentStore != null) { 
+    if (this.currentStore != null) {
+      var context = this;
       var infoStores = this.editStores.controls["infoStores"];
       console.log("FORM INFO STORES AO SELECIONAR UMA LOJA ", this.editStores);
       infoStores.get("storeName").setValue(this.currentStore.name);
@@ -221,21 +222,24 @@ export class StoreComponent implements AfterViewInit {
 
       if (!this.currentStore.bank.useMerchantBank) {
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
-        this.documentService.GetDocumentImage(this.submissionId, this.currentStore.bank.bank.iban).subscribe(async (res) => {
-          console.log("imagem de um documento ", res);
-          var file = await res.blob();
+        this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
+          context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).subscribe(res => {
+            console.log("imagem de um documento ", res);
+            var file = res.blob();
 
-          file.lastModifiedDate = new Date();
-          file.name = this.translate.instant('supportingDocuments.checklistModal.IBAN');
+            file.lastModifiedDate = new Date();
+            file.name = this.translate.instant('supportingDocuments.checklistModal.IBAN');
 
-          this.ibansToShow = {
-            dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-            file: file,
-            id: this.currentStore.bank.bank.iban,
-            tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN')
-          };
+            context.ibansToShow = {
+              dataDocumento: context.datePipe.transform(val.validUntil, 'dd-MM-yyyy'),
+              file: file,
+              id: context.currentStore.bank.bank.iban,
+              tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
+            };
 
+          });
         });
+
       }
 
 
@@ -446,7 +450,6 @@ export class StoreComponent implements AfterViewInit {
           console.log("Adicionei um documento à submissão: ", res);
           store.bank.bank.iban = res.id;
           this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-            //store.bank.bank.iban = result.id;
             context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
               console.log('LOJA ATUALIZADA ', res);
             });
