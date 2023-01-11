@@ -364,7 +364,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.packId = packId;
     context.groupsList=[];
     context.paymentSchemes=null;
-    this.form.get("productPackKind").setValue(packId);
+
     if (this.currentStore.pack == null) {
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
         context.paymentSchemes = res.result.paymentSchemes;
@@ -418,6 +418,7 @@ export class CommercialOfferListComponent implements OnInit {
         context.addFormGroups();
       });
     }
+    this.form.get("productPackKind").setValue(packId);
     this.getCommissionsList();
   }
 
