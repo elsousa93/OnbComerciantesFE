@@ -168,6 +168,7 @@
             <select class="form-select campo_form" formControlName="franchiseName" name="franchiseName"
               id="franchiseName"
               [attr.disabled]="returned == 'consult' || isAssociatedWithFranchise == false ? 'disabled' :  null ">
+              <option value=""></option>
               <option *ngFor="let franchise of franchises" value={{franchise.description}}>{{franchise.description}} </option>
             </select>
             <div class="alert alert-danger"
