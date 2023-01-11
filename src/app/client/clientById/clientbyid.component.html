@@ -87,7 +87,7 @@
                         </thead>
                         <tbody>
                           <tr *ngFor="let docum of clientDocs">
-                            <td class="text-primary text-center">{{docum.documentType}}</td>
+                            <td class="text-primary text-center">{{getDocumentDescription(docum.documentType)}}</td>
                             <td class="text-primary text-center">{{docum.receivedAt}}</td>
                             <!--Não sei o que equivale a este campo nos documents-->
                             <td class="text-primary text-center">{{docum.validUntil}}</td>
