@@ -47,9 +47,6 @@ export class ClientComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  //UUID
-  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658"
-
   public canSearch: boolean = true;
 
   public clients: Client[] = [];
