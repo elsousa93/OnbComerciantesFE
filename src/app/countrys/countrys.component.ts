@@ -769,10 +769,10 @@ export class CountrysComponent implements OnInit {
   }
 
   numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number
-    const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
+    var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
       return false;
-    }
     return true;
 
   }
