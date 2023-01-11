@@ -546,7 +546,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
               });
 
-              this.getDocumentDescription(this.clientDocs);
+              //this.getDocumentDescription(this.clientDocs);
 
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
@@ -700,7 +700,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
               });
 
-              this.getDocumentDescription(this.clientDocs);
+              //this.getDocumentDescription(this.clientDocs);
 
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
@@ -842,15 +842,15 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getDocumentDescription(docs: OutboundDocument[]) {
-    this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
-      this.documents = result;
-      this.documents.forEach(doc => {
-        if (docs[0].documentType === doc.code) {
-          docs[0].documentType = doc.description;
-        }
-      });
-    }))
+  getDocumentDescription(documentType: string) {
+    var desc = "";
+    if (documentType != null) {
+      this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
+        this.documents = result;
+        desc = this.documents.find(document => document.code == documentType).description;
+      }));
+    }
+    return desc;
   }
 
 
