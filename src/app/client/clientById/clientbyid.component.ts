@@ -547,7 +547,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               });
 
               //this.getDocumentDescription(this.clientDocs);
-
+              this.fetchDocumentDescriptions();
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
               this.clientContext.clientExists = true;
@@ -701,7 +701,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               });
 
               //this.getDocumentDescription(this.clientDocs);
-
+              this.fetchDocumentDescriptions();
               console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
               this.clientContext.clientExists = true;
@@ -769,10 +769,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
             if (res.length > 0) {
               res.forEach(doc => {
-                if (doc.type === '0018') { 
+                if (doc.type === '0001') { 
                   context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
                     var file = {
-                      documentType: '0018',
+                      documentType: '0001',
                       receivedAt: this.datepipe.transform(r.receivedAt, "yyyy-MM-dd"),
                       validUntil: this.datepipe.transform(r.validUntil, "yyyy-MM-dd"),
                       uniqueReference: r.id,
@@ -780,6 +780,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     } as OutboundDocument;
                     this.clientDocs = [];
                     this.clientDocs.push(file);
+                    this.fetchDocumentDescriptions();
                   });
                 }
               });
@@ -845,11 +846,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   getDocumentDescription(documentType: string) {
     var desc = "";
     if (documentType != null) {
-      this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
-        this.documents = result;
         desc = this.documents.find(document => document.code == documentType).description;
-      }));
-    }
+      }
     return desc;
   }
 
@@ -1391,4 +1389,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     }, 16);
   }
 
+  fetchDocumentDescriptions() {
+    this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
+      this.documents = result;
+    }));
+  }
 }
