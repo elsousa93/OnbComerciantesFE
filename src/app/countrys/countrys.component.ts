@@ -309,6 +309,7 @@ export class CountrysComponent implements OnInit {
 
     this.form.get("NIPCGroup").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
+        this.validateNIPC(v);
         this.isAssociatedWithFranchise = false;
         this.form.get("NIPCGroup").setValidators(Validators.required);
         this.form.get("franchiseName").setValidators(null);
@@ -361,6 +362,7 @@ export class CountrysComponent implements OnInit {
 
     this.form.get("NIPCGroup").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
+        this.validateNIPC(v);
         this.isAssociatedWithFranchise = false;
         this.form.get("NIPCGroup").setValidators(Validators.required);
         this.form.get("franchiseName").setValidators(null);
