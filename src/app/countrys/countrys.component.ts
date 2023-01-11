@@ -312,6 +312,8 @@ export class CountrysComponent implements OnInit {
         this.isAssociatedWithFranchise = false;
         this.form.get("NIPCGroup").setValidators(Validators.required);
         this.form.get("franchiseName").setValidators(null);
+        this.form.get("franchiseName").updateValueAndValidity({ emitEvent: false });
+        this.form.get("NIPCGroup").updateValueAndValidity({ emitEvent: false });
         if (this.incorrectNIPC || this.incorrectNIPCSize) {
           this.form.get("NIPCGroup").setErrors({ 'incorrect': true });
         } else {
@@ -322,8 +324,7 @@ export class CountrysComponent implements OnInit {
       } else {
         this.isAssociatedWithFranchise = undefined;
       }
-      this.form.get("franchiseName").updateValueAndValidity({ emitEvent: false });
-      this.form.get("NIPCGroup").updateValueAndValidity({ emitEvent: false });
+
     });
 
 
@@ -363,17 +364,19 @@ export class CountrysComponent implements OnInit {
         this.isAssociatedWithFranchise = false;
         this.form.get("NIPCGroup").setValidators(Validators.required);
         this.form.get("franchiseName").setValidators(null);
-        if (this.incorrectNIPC || this.incorrectNIPCSize){
+        this.form.get("franchiseName").updateValueAndValidity({ emitEvent: false });
+        this.form.get("NIPCGroup").updateValueAndValidity({ emitEvent: false });
+        if (this.incorrectNIPC || this.incorrectNIPCSize) {
           this.form.get("NIPCGroup").setErrors({ 'incorrect': true });
         } else {
-          this.form.get("NIPCGroup").setErrors(null);
+          if (this.form.get("NIPCGroup").hasError("incorrect")) {
+            this.form.get("NIPCGroup").setErrors(null);
+          }
         }
       } else {
         this.isAssociatedWithFranchise = undefined;
       }
-
-      this.form.get("franchiseName").updateValueAndValidity({emitEvent: false });
-      this.form.get("NIPCGroup").updateValueAndValidity({ emitEvent: false });
+      
     });
 
     this.formCountrysReady.emit(this.form);
