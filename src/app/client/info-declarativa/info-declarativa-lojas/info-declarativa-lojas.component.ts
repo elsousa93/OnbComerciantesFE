@@ -76,8 +76,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
     this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
       this.client = result;
-      this.getCountryInternationalCallingCode1();
-      this.getCountryInternationalCallingCode2();
     });
 
 
@@ -91,11 +89,11 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
     this.listValue = this.formBuilder.group({
       cellphone: this.formBuilder.group({
-        countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode), 
+        countryCode: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneIndicative : this.client?.contacts?.phone1?.phoneIndicative), 
         phoneNumber: new FormControl(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber, Validators.required)
       }, {validators: [validPhoneNumber]}),
       telephone: this.formBuilder.group({
-        countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode), //telefone
+        countryCode: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneIndicative : this.client?.contacts?.phone2?.phoneIndicative), //telefone
         phoneNumber: new FormControl(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber, Validators.required)
       }, {validators: [validPhoneAndMobileNumber]}),
       email: new FormControl(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email, [Validators.required, Validators.email]),
@@ -149,26 +147,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   selectStore(info) {
     this.selectedStore = info.store;
     this.currentIdx = info.idx;
-    this.getCountryInternationalCallingCode(this.selectedStore?.phone1?.countryCode).then(result => {
-      this.getCountryInternationalCallingCode(this.selectedStore?.phone2?.countryCode).then(result => {
-        setTimeout(() => this.setForm(), 500);
-      }).then(res => { });
-    });
-  }
-
-  getCountryInternationalCallingCode(countryCode: string) {
-    return new Promise(resolve => {
-      if (countryCode != null && !countryCode.startsWith("+")) {
-        this.tableInfo.GetCountryById(countryCode).subscribe(result => {
-          if (result != null) {
-            countryCode = result.internationalCallingCode;
-          }
-          resolve(true);
-        }, error => resolve(false));
-      } else {
-        resolve(false);
-      }
-    });
+    setTimeout(() => this.setForm(), 500);
   }
 
   submit() {
@@ -204,33 +183,14 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   setForm() {
-    this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.countryCode : this.client?.contacts?.phone1?.countryCode); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
+    this.listValue.get("cellphone").get("countryCode").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneIndicative : this.client?.contacts?.phone1?.phoneIndicative); //eventualmente as '' vão passar a ser o valor dos contactos das Lojas
     this.listValue.get("cellphone").get("phoneNumber").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber);
-    this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode);
+    this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneIndicative : this.client?.contacts?.phone2?.phoneIndicative);
     this.listValue.get("telephone").get("phoneNumber").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber);
     this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
     if (this.returned == 'consult')
       this.listValue.disable();
-  }
-
-  // na api é alterado o indicativo para o país e nós precisamos aqui do indicativo
-  getCountryInternationalCallingCode1(){
-    if (this.client?.contacts?.phone1?.countryCode != null) {
-      this.tableInfo.GetCountryById(this.client?.contacts?.phone1?.countryCode).subscribe(result => {
-       this.client.contacts.phone1.countryCode = result.internationalCallingCode;
-      }, error => this.logger.debug(error));
-    }
-    
-  }
-
-  getCountryInternationalCallingCode2(){
-    if (this.client?.contacts?.phone2?.countryCode != null) {
-      this.tableInfo.GetCountryById(this.client?.contacts?.phone2?.countryCode).subscribe(result => {
-        this.client.contacts.phone2.countryCode = result.internationalCallingCode;
-      }, error => this.logger.debug(error));
-    }
-  }
-  
+  }  
 
   onActivate() {
     let scrollToTop = window.setInterval(() => {

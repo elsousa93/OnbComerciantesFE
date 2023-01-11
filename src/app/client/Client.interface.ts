@@ -179,6 +179,7 @@ export interface PreferredPeriod {
 export class Phone {
   countryCode?: string
   phoneNumber?: string
+  phoneIndicative?: string
 }
 
 export interface Phone2 {
