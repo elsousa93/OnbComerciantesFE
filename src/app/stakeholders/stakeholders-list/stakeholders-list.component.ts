@@ -100,8 +100,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.submissionClient = client;
       });
     }
-    if (changes["canSelect"].currentValue == true) {
-      console.log("ENTROU NO IF ", changes["canSelect"]);
+    if (changes["canSelect"]?.currentValue == true) {
       if (this.submissionStakeholders.length > 0) {
         this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);  
       }
