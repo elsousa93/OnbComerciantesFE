@@ -150,7 +150,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.dataCCcontents.expiricyDateCC = expiryDate;
     this.dataCCcontents.documentType = documentType;
     this.dataCCcontents.nifCC = nif;
-    // this.dataCCcontents.localityCC = postalCode.split(" ").pop();
+    this.dataCCcontents.localityCC = postalCode.split(" ").pop();
 
     this.emitSameNIF(of(this.dataCCcontents.nifCC));
 
