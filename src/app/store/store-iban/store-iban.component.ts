@@ -14,6 +14,7 @@ import { TableInfoService } from 'src/app/table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
 
 
 @Component({
@@ -99,7 +100,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   @Output() fileEmitter = new EventEmitter<{ tipo: string, dataDocumento: string, file: File, id: string }>();
 
-  constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService) {
+  constructor(private logger: LoggerService, private translate: TranslateService,private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private http: HttpClient, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService, private docService: SubmissionDocumentService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
     this.initializeForm();
@@ -179,34 +180,19 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     this.route.navigate(['add-store-product'], navigationExtras);
   }
 
-  onDelete(file: File) {
-    if (this.IBANToShow.id != "0") {
-      this.tableInfo.deleteDocument(this.submissionId, this.IBANToShow.id).then(sucess => {
-        console.log("Sucesso a apagar um documento: ", sucess.msg);
-        
-      }, error => {
-        console.log("Erro a apagar um ficheiro: ", error.msg);
-      });
+  onDelete(id: string) {
+    if (id != "0") {
+      this.docService.DeleteDocumentFromSubmission(this.submissionId, id).subscribe(result => {});
     }
-    this.fileToDelete = file;
     this.IBANToShow = null;
-
-    // const index1 = this.ibansToShow.findIndex(value => value.file == this.fileToDelete);
-    // if (index1 > -1)
-    //   this.ibansToShow.splice(index1, 1);
-
-    //const index = this.files.indexOf(this.fileToDelete);
-    //if (index > -1) {
-    //  this.files.splice(index, 1);
-    //}
-
     this.fileToDelete = null;
     this.formStores.get('bankIban').setValue('');
-    // console.log('LISTA DE FILES DEPOIS ELIMINAR ', this.ibansToShow);
-    // this.fileEmitter.emit({ ibansToShow: this.ibansToShow });
   }
   
   selectFile(event: any) {
+    if (this.IBANToShow != null) {
+      this.onDelete(this.IBANToShow.id);
+    }
     this.files = [];
     this.newStore.id = 1;
     this.newStore.iban = "teste";
