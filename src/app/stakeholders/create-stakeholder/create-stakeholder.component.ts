@@ -533,6 +533,27 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   resetSearchStakeholder() {
+    this.dataCCcontents = {
+      cardNumberCC: null,
+      nameCC: null,
+      sexCC: null,
+      heightCC: null,
+      nationalityCC: null,
+      birthdateCC: null,
+      expiricyDateCC: null,
+      localOfEmissionCC: null,
+      fathersNameCC: null,
+      mothersNameCC: null,
+      nifCC: null,
+      socialSecurityCC: null,
+      healthNumberCC: null,
+      signatureCC: null,
+      addressCC: null,
+      postalCodeCC: null,
+      localityCC: null,
+      countryCC: null,
+      documentType: null
+    }
     this.isShown = false;
     this.foundStakeholders = null;
     this.incorrectCC = false;
@@ -757,7 +778,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         "country": this.dataCCcontents.countryCC,
       },
       "phone1": {},
-      "phone2": {}
+      "phone2": {},
+      "signType": "DigitalCitizenCard"
     }
     
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {

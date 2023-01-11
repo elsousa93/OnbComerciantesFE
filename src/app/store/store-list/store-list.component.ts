@@ -242,7 +242,7 @@ export class StoreComponent implements AfterViewInit {
       var productStores = this.editStores.controls["productStores"];
       productStores.get("solutionType").setValue(this.currentStore.productCode);
       this.productSelectionComponent.chooseSolutionAPI(this.currentStore.productCode);
-      setTimeout(() => productStores.get("subProduct").setValue(this.currentStore.subproductCode), 500);
+      productStores.get("subProduct").setValue(this.currentStore.subproductCode);
       
 
       productStores.get("url").setValue(this.currentStore.website);
