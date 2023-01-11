@@ -55,6 +55,12 @@ export class ProductSelectionComponent implements OnInit {
     private storeService: StoreService, private rootFormGroup: FormGroupDirective, private COService: CommercialOfferService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
+    this.COService.OutboundGetProductsAvailable().then(result => {
+      this.logger.debug(result);
+      this.products = result.result;
+    }, error => {
+      this.logger.debug("Erro");
+    }).then(res => { });
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
@@ -77,23 +83,15 @@ export class ProductSelectionComponent implements OnInit {
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
 
-
-    this.COService.OutboundGetProductsAvailable().then(result => {
-      this.logger.debug(result);
-      this.products = result.result;
-    }, error => {
-      this.logger.debug("Erro");
-    });
   }
 
-  chooseSolutionAPI(productDescription: any, subDescription: any = '') {
+  chooseSolutionAPI(productDescription: any) {
     this.formStores.get('subProduct').setValue('');
     this.products?.forEach(Prod => {
       var subProductToSearch = productDescription;
       if (subProductToSearch == Prod.name) {
         this.subProducts = Prod.subProducts;
         this.exists = true;
-        this.formStores.get('subProduct').setValue(subDescription);
       }
     })
     if (!this.exists) {
@@ -101,12 +99,8 @@ export class ProductSelectionComponent implements OnInit {
     }
   }
 
-  //Returns picked SubProduct by the User --
   chooseSubSolutionAPI(subproduct: any) {
-   //Add to store to be Submitted
-
-  //  this.store.product.subProducts = this.subProducts; //Todos
-
+    this.formStores.get('subProduct').setValue(subproduct);
   }
 
   URLFilled(filled: boolean) {

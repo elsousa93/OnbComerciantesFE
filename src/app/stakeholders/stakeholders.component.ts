@@ -300,7 +300,8 @@ export class StakeholdersComponent implements OnInit {
   setFormData() {
     var stakeForm = this.editStakes.get("stake");
     stakeForm.get("contractAssociation").setValue('true');
-    stakeForm.get("proxy").setValue(this.currentStakeholder.stakeholderAcquiring.isProxy + '');
+    var proxy = this.currentStakeholder.stakeholderAcquiring.isProxy != null ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : 'false';
+    stakeForm.get("proxy").setValue(proxy);
     stakeForm.get("contractAssociation").setValue(this.currentStakeholder.stakeholderAcquiring.signType === 'CitizenCard' ? 'true' : 'false');
 
     if (stakeForm.get("documentType") == null) {

@@ -715,7 +715,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         "fiscalAddress": null,
         "fullName": fullName,
         "shortName": shortName,
-        "contactName": shortName 
+        "contactName": shortName,
+        "isProxy": false
       }
       if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
