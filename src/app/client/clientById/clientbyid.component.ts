@@ -445,6 +445,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
+    if (this.dataCC == null) {
+      this.subscription = this.data.currentDataCC.subscribe(dataCC => this.dataCC = dataCC);
+    }
     this.data.updateData(false, 1, 2);
 
     //if (this.updateClient)
@@ -934,7 +937,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   redirectBeginningClient() {
-    this.data.changeCurrentDataCC(this.dataCC);
+    //this.data.changeCurrentDataCC(this.dataCC);
     if (!this.historyStream) {
       let navigationExtras: NavigationExtras = {
         state: {
