@@ -28,6 +28,7 @@ import { DatePipe } from '@angular/common';
 import { DocumentSearchType, LegalNature } from '../table-info/ITable-info.interface';
 import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
+import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 
 
 @Component({
@@ -175,7 +176,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   submission: SubmissionGetTemplate = {};
   submissionClient: any = {};
-  stakeholdersList: any[] = [];
+  stakeholdersList: IStakeholders[] = [];
   shopList: ShopDetailsAcquiring[] = [];
 
   public returned: string;
