@@ -736,6 +736,14 @@ export class ClientCharacterizationComponent implements OnInit {
         this.client.fiscalId = this.dataCC.nifCC;
         this.client.commercialName = this.dataCC.nameCC;
         this.client.legalName = this.dataCC.nameCC;
+
+        if (this.dataCC.countryCC != null) {
+          this.client.headquartersAddress.address = this.dataCC.addressCC;
+          this.client.headquartersAddress.country = this.dataCC.countryCC;
+          this.client.headquartersAddress.locality = this.dataCC.localityCC;
+          this.client.headquartersAddress.postalArea = this.dataCC.localityCC;
+          this.client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
+        }
       }
 
     }
