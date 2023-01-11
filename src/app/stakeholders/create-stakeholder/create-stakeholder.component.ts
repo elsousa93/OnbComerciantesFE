@@ -645,6 +645,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   addStakeholder() {
+    var fiscalId = this.formNewStakeholder.get("nif")?.value ?? this.formNewStakeholder.get("nipc")?.value;
+    this.emitSameNIF(of(fiscalId));
+    if (this.submissionClient.fiscalId === fiscalId) {
+      this.sameNIPC = true;
+      return false;
+    }
     this.sameNIPC = false;
     this.showSameNIFError = false;
     console.log("por adicionar: ", this.currentStakeholder);

@@ -86,13 +86,14 @@ export class ProductSelectionComponent implements OnInit {
     });
   }
 
-  chooseSolutionAPI(productDescription: any) {
+  chooseSolutionAPI(productDescription: any, subDescription: any = '') {
     this.formStores.get('subProduct').setValue('');
     this.products?.forEach(Prod => {
       var subProductToSearch = productDescription;
       if (subProductToSearch == Prod.name) {
         this.subProducts = Prod.subProducts;
         this.exists = true;
+        this.formStores.get('subProduct').setValue(subDescription);
       }
     })
     if (!this.exists) {
