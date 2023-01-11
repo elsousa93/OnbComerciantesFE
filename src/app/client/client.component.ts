@@ -91,6 +91,7 @@ export class ClientComponent implements OnInit {
   }
   callreadCCAddress() {
     readCCAddress(this.SetNewCCData.bind(this));
+    this.addressReading = true;
     this.setOkCC();
   }
   closeModal() {
