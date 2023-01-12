@@ -1,5 +1,3 @@
-import { Country, IdentificationDocument } from "../stakeholders/IStakeholders.interface";
-
 export class IPep {
   kind: KindPep
   pepType?: string

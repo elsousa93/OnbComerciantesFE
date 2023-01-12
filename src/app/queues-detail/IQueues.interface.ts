@@ -1,7 +1,7 @@
 export interface EligibilityAssessment {
     type: StateResultDiscriminatorEnum,
     userObservations?: string,
-    merchantAssessment : MerchantEligibilityAssessment,
+    merchantAssessment: MerchantEligibilityAssessment,
     stakeholderAssessment?: StakeholderEligibilityAssessment[]
 }
 
@@ -18,7 +18,7 @@ export interface StakeholderEligibilityAssessment {
 export interface RiskAssessment {
     type: StateResultDiscriminatorEnum,
     userObservations?: string,
-    merchantAssessment : MerchantRiskAssessment,
+    merchantAssessment: MerchantRiskAssessment,
     stakeholderAssessment?: StakeholderRiskAssessment[]
 }
 export interface MerchantRiskAssessment {
@@ -33,24 +33,24 @@ export interface StakeholderRiskAssessment {
 
 export interface ContractAcceptance {
     type: StateResultDiscriminatorEnum,
-    userObservations?:string,
+    userObservations?: string,
     accepted: boolean
 }
 
 export interface StandardIndustryClassificationChoice {
     type: StateResultDiscriminatorEnum,
-    userObservations?:string,
-    shopsClassification?:ShopClassifications
+    userObservations?: string,
+    shopsClassification?: ShopClassifications
 }
 
 export interface ShopClassifications {
-    shopId?:string
+    shopId?: string
     schemaClassifications?: PaymentSchemaClassification[]
 }
 
-export interface PaymentSchemaClassification{
-    paymentSchemaId?:string
-    classification?:string
+export interface PaymentSchemaClassification {
+    paymentSchemaId?: string
+    classification?: string
 }
 
 export interface ExternalState {

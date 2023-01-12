@@ -1,16 +1,14 @@
 import { AcquiringClientPost, Client } from "../client/Client.interface"
 import { IStakeholders, OutboundDocument } from "../stakeholders/IStakeholders.interface"
 import { SimplifiedDocument } from "./document/ISubmission-document"
-
-
 export interface ISubmission {
-      processNumber: string
-      submissionId: string
-      submissionType: string
-      state: string
-      processKind: string
-      processType: string
-      merchant: Merchant
+  processNumber: string
+  submissionId: string
+  submissionType: string
+  state: string
+  processKind: string
+  processType: string
+  merchant: Merchant
 }
 
 export interface SubmissionPostTemplate {
@@ -28,7 +26,6 @@ export interface SubmissionPostTemplate {
   documents?: SubmissionPostDocumentTemplate[],
   startedAt?: string
 }
-
 export interface SubmissionPostDocumentTemplate {
   documentType?: string
   documentPurpose?: string
@@ -57,7 +54,6 @@ export interface SubmissionPostResponse {
   submissionUser?: SubmissionUser
   isComplete?: boolean,
 }
-
 export interface SubmissionPutTemplate {
   submissionType?: string
   processNumber?: string
@@ -70,7 +66,6 @@ export interface SubmissionPutTemplate {
   startedAt?: string
   state?: string
 }
-
 export interface SubmissionGetTemplate {
   id?: string
   state?: string
@@ -86,23 +81,19 @@ export interface SubmissionGetTemplate {
   submissionUser?: SubmissionUser
   isComplete?: boolean
 }
-
 export interface SimplifiedReference {
   id?: string
   href?: string
 }
-
 interface SubmissionUser {
   user?: string
   branch?: string
   partner?: string
 }
-
 export interface Merchant {
   fiscalId: string
   name: string
 }
-
 export interface Document {
   documentType?: string
   purpose?: string
@@ -111,12 +102,10 @@ export interface Document {
   receivedAt?: string
   archiveSource?: string
 }
-
-interface DocumentFile{
+interface DocumentFile {
   fileType?: string
   binary?: string
 }
-
 export interface SubmissionGet {
   processNumber: string
   submissionId: string

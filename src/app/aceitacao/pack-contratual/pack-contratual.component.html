@@ -52,7 +52,8 @@
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.signature.language'|translate}}:
                             *</p>
                           <select class="form-select">
-                            <option *ngFor="let lang of contractLanguage" value={{lang.code}}>{{lang.description}}</option>
+                            <option *ngFor="let lang of contractLanguage" value={{lang.code}}>{{lang.description}}
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -122,10 +123,6 @@
                         wappler-command="editContent">{{'acceptance.contratualPack.getContratualPack'|translate|uppercase}}&nbsp;
                         <img src="assets/images/widgets.svg"
                           style="height: 30px !important; vertical-align: bottom;"></button>
-                      <!-- <button id="btn5a3" class="btn botao_azul btn-lg ms-0" style="margin-left: 15px !important;"
-                        wappler-command="editContent">ANEXAR&nbsp;
-                        <img src="assets/images/file_upload.svg"
-                          style="height: 30px !important; vertical-align: bottom;"></button> -->
                     </span>
                   </nav>
                   <div *ngIf="isPaper == false" class="row-buttons" style="padding-left: 0px">
@@ -149,18 +146,10 @@
                           style="height: 30px !important; vertical-align: bottom;">
                       </button></div>
                   </div>
-                  <!-- <nav *ngIf="isPaper == false" style="padding-left: 0px;" class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-0 mb-4 pt-0">
-                <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-                  <button *ngIf="isPaper == false" (click)="openAssinaturaDigitalModal()" id="btn5a3" class="btn botao_azul btn-lg mt-5 ms-0" wappler-command="editContent">PLATAFORMA DE ASSINATURA DIGITAL&nbsp;
-                    <img src="assets/images/border_color.svg"
-                  style="height: 30px !important; vertical-align: bottom;"></button></span></nav> -->
-
                   <p *ngIf="showObservations" style="margin-top: 0px !important;" class="titulo-form-simples mt-5 pt-2">
                     {{'acceptance.comments'|translate}}:</p>
                   <div class="col pb-4" style="padding-left: 0px !important;"><textarea *ngIf="showObservations"
                       id="text1" class="form-control"></textarea>
-
-
                     <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)" style="display: none"
                       accept=".pdf" multiple>
                   </div>

@@ -1,19 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators,  AbstractControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Client, Contacts, Phone } from '../Client.interface'
 import { FormBuilder } from '@angular/forms';
-import { codes } from './indicativo';
 import { EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { debounceTime, distinctUntilChanged, Subscription, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ClientService } from '../client.service';
-import { XhrFactory } from '@angular/common';
-import { Configuration, configurationToken } from 'src/app/configuration';
-import { infoDeclarativaForm, validPhoneNumber, validEmail, validPhoneAndMobileNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
+import { infoDeclarativaForm, validPhoneNumber, validPhoneAndMobileNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 
 @Component({
@@ -26,7 +23,6 @@ export class InfoDeclarativaComponent implements OnInit {
   public oferta = "";
   e: any;
 
-  ListaInd = codes;
   listValue!: FormGroup;
   phone1: AbstractControl;
   phone2: AbstractControl;
@@ -46,7 +42,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public map: Map<number, boolean>;
   public currentPage: number;
-  public subscription: Subscription; 
+  public subscription: Subscription;
 
   public returned: string;
   public merchantInfo: any;
@@ -57,13 +53,12 @@ export class InfoDeclarativaComponent implements OnInit {
     this.nameEmitter.emit(this.displayValueSearch);
   }
 
-
   getValueSearch(val: string) {
     console.warn("component recebeu: ", val)
     this.displayValueSearch = val;
   }
 
-  setForm(client : Client){
+  setForm(client: Client) {
     this.newClient = client;
     this.listValue.get("comercialName").setValue(client?.commercialName);
     this.listValue.get("phone1").get("countryCode").setValue(client?.contacts?.phone1?.countryCode)
@@ -80,10 +75,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger : LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
-    this.ngOnInit();
-
-
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
       this.internationalCallingCodes = this.internationalCallingCodes.sort(function (a, b) {
@@ -98,15 +90,15 @@ export class InfoDeclarativaComponent implements OnInit {
       phone1: this.formBuilder.group({
         countryCode: new FormControl(this.newClient?.contacts?.phone1?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone1?.phoneNumber),
-      },{validators: [validPhoneNumber]}),
+      }, { validators: [validPhoneNumber] }),
       phone2: this.formBuilder.group({
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
-      },{validators: [validPhoneAndMobileNumber]}),
+      }, { validators: [validPhoneAndMobileNumber] }),
       email: new FormControl(this.newClient?.contacts?.email, [Validators.required, Validators.pattern(this.emailRegex)]),
       billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, [Validators.pattern(this.emailRegex)])
     });
-    
+
     this.phone1 = this.listValue.get("phone1");
     this.phone2 = this.listValue.get("phone2");
 
@@ -120,16 +112,15 @@ export class InfoDeclarativaComponent implements OnInit {
           });
         });
       } else {
-          this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(res => {
-              this.logger.debug("Foi buscar o merchant da submission " + res);
-              this.setForm(res);
-          });
-        }
+        this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(res => {
+          this.logger.debug("Foi buscar o merchant da submission " + res);
+          this.setForm(res);
+        });
+      }
     } else {
       this.logger.debug("Foi buscar o merchant da localStorage " + this.newClient);
     }
-
-}
+  }
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -142,7 +133,6 @@ export class InfoDeclarativaComponent implements OnInit {
     return this.listValue.get('email');
   }
 
-  
   get billingEmailValid() {
     return this.listValue.get('billingEmail');
   }
@@ -151,7 +141,7 @@ export class InfoDeclarativaComponent implements OnInit {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
-  changeListElement(variavel:string, e: any) {
+  changeListElement(variavel: string, e: any) {
     if (e.target.id == 'phone1CountryCode') {
       this.listValue.get("phone1").get("countryCode").setValue(e.target.value);
     }

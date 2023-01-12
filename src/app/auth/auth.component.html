@@ -20,56 +20,46 @@
           </span>&nbsp;{{'auth.identification'|translate|uppercase}}<br>
         </h2>
         <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
-
-
         <div class="row">
           <div class="col-xxl col-6">
             <div>
               <p class="titulo-form-simples" for="userName">{{'auth.username'|translate}}: *</p>
               <input type="text" formControlName="userName" name="userName" id="userName"
-                     class="form-control campo_form" />
+                class="form-control campo_form" />
             </div>
             <div>
               <p class="titulo-form-simples" for="bankName">{{'auth.bankName'|translate}}: *</p>
               <select class="form-select campo_form" formControlName="bankName" id="bankName" name="bankName">
                 <option *ngFor="let bank of banks" value={{bank.code}}>{{bank.description}}</option>
               </select>
-              <!--<input type="text" formControlName="bankName" name="bankName" id="bankName"
-                     class="form-control campo_form" />-->
             </div>
             <div>
               <p class="titulo-form-simples" for="bankLocation">{{'auth.bankLocation'|translate}}: *</p>
               <input type="text" formControlName="bankLocation" name="bankLocation" id="bankLocation"
-                     class="form-control campo_form" />
+                class="form-control campo_form" />
             </div>
             <div>
               <p class="titulo-form-simples" for="role">{{'auth.role'|translate}}: *</p>
-              <select formControlName="role" name="role" id="role"
-                      class="form-control campo_form">
-                      <option value="">{{'generalKeywords.select'|translate}}</option>
+              <select formControlName="role" name="role" id="role" class="form-control campo_form">
+                <option value="">{{'generalKeywords.select'|translate}}</option>
                 <option *ngFor="let role of roles" value={{role.code}}>{{role.name}}</option>
               </select>
-              <!--<input type="text" formControlName="role" name="role" id="role"
-               class="form-control campo_form" />-->
             </div>
           </div>
         </div>
         <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                type="submit">
+          type="submit">
           &nbsp;{{'auth.submit'|translate}}
         </button>
         <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                type="button" (click)="noToken()">
+          type="button" (click)="noToken()">
           &nbsp;Entrar sem token
         </button>
       </form>
     </div>
     <div *ngIf="openDiv">
-      Token: 
+      Token:
       {{getsToken}}
     </div>
   </div>
 </div>
-
-
-

@@ -33,16 +33,17 @@
                      </thead>
                      <tbody>
                         <tr *ngFor="let comp of compsToShow">
-                          <td class="text-primary text-center text-primary">{{getDocumentDescription(comp.documentType)}}</td>
+                           <td class="text-primary text-center text-primary">
+                              {{getDocumentDescription(comp.documentType)}}</td>
                            <td class="text-primary text-center">{{comp.stakeholder}}</td>
                            <td class="text-primary text-center">{{comp.expirationDate}}</td>
                            <td class="text-primary text-center">{{comp.uploadDate}}</td>
                            <td class="text-primary text-center">{{comp.status}}</td>
                            <td></td>
                            <td class="text-center text-primary">
-                              <span *ngIf="!(comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071')">
-                                 <img src="assets/images/delete_blue.svg"
-                                    (click)="onDelete(comp.file, comp.id)"
+                              <span
+                                 *ngIf="!(comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071')">
+                                 <img src="assets/images/delete_blue.svg" (click)="onDelete(comp.file, comp.id)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                               </span>
                               <span>
@@ -70,18 +71,15 @@
                         wappler-command="editContent">{{'supportingDocuments.consultChecklist'|translate|uppercase}}&nbsp;<img
                            src="assets/images/checklist.svg"
                            style="height: 25px !important; vertical-align: sub;"></button>
-
-
                      <label for="arquivo"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3">
                         {{'supportingDocuments.attachDocuments'|translate|uppercase}}&nbsp;
                         <img src="assets/images/file_upload.svg"
                            style="height: 25px !important; vertical-align: sub;" />
-
                      </label>
-                     <input type="file" #fileUpload name="arquivo" id="arquivo" (change)="selectFile($event,client); fileUpload.value='';"
-                        style="display: none" accept=".pdf" multiple [disabled]="returned === 'consult'">
-
+                     <input type="file" #fileUpload name="arquivo" id="arquivo"
+                        (change)="selectFile($event,client); fileUpload.value='';" style="display: none" accept=".pdf"
+                        multiple [disabled]="returned === 'consult'">
                   </span>
                </nav>
                <p class="titulo-form-simples ms-2" for="observacoes">
@@ -180,53 +178,64 @@
                   <p class="ps-0">{{'supportingDocuments.checklistModal.documentsOnboarding'|translate}}</p>
                </div>
                <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0">
-                 <p class="titulo-form-simples mt-0 pb-1 ps-3">
-                   <img src="assets/images/file-lines-solid.svg"
+                  <p class="titulo-form-simples mt-0 pb-1 ps-3">
+                     <img src="assets/images/file-lines-solid.svg"
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toMerchant'|translate}}
-                 </p>
-                 <form #contactForm="ngForm">
-                   <div class="table-responsive me-2 ps-3">
-                     <table class="table table-success align-middle" *ngFor="let requiredMerchantDocs of requiredDocuments?.requiredDocumentPurposesMerchants">
-                       <thead class="table-primary align-middle text-primary">
-                         <tr class="text-center text-primary align-middle table-primary">
-                           <th scope="col" class="align-baseline text-primary table-white">
-                             {{'supportingDocuments.checklistModal.name'|translate}}
-                           </th>
-                           <ng-container *ngFor="let merchantDocPurpose of requiredMerchantDocs?.documentPurposes; let i = index">
-                             <th scope="col" *ngIf="merchantDocPurpose?.documentState !== 'NotApplicable'">{{getDocumentPurposeDescription(merchantDocPurpose.purpose)}}</th>
-                           </ng-container>
-                         </tr>
-                       </thead>
-                       <tbody class="table-light text-primary">
-                         <tr class="table-white text-primary" >
-                           <td scope="row" class="text-center text-dark" >{{requiredMerchantDocs.entityName}}</td>
+                  </p>
+                  <form #contactForm="ngForm">
+                     <div class="table-responsive me-2 ps-3">
+                        <table class="table table-success align-middle"
+                           *ngFor="let requiredMerchantDocs of requiredDocuments?.requiredDocumentPurposesMerchants">
+                           <thead class="table-primary align-middle text-primary">
+                              <tr class="text-center text-primary align-middle table-primary">
+                                 <th scope="col" class="align-baseline text-primary table-white">
+                                    {{'supportingDocuments.checklistModal.name'|translate}}
+                                 </th>
+                                 <ng-container
+                                    *ngFor="let merchantDocPurpose of requiredMerchantDocs?.documentPurposes; let i = index">
+                                    <th scope="col" *ngIf="merchantDocPurpose?.documentState !== 'NotApplicable'">
+                                       {{getDocumentPurposeDescription(merchantDocPurpose.purpose)}}</th>
+                                 </ng-container>
+                              </tr>
+                           </thead>
+                           <tbody class="table-light text-primary">
+                              <tr class="table-white text-primary">
+                                 <td scope="row" class="text-center text-dark">{{requiredMerchantDocs.entityName}}</td>
 
-                           <ng-container *ngFor="let merchantPurposes of requiredMerchantDocs?.documentPurposes; let length1 = index">
-                             <td class="text-center text-dark" *ngIf="merchantPurposes?.documentState !== 'NotApplicable'">
-                               <img *ngIf="merchantPurposes?.documentState === 'Exists'" src="assets/images/check-solid-comps.svg"
-                                    style="height: 20px !important; vertical-align: sub;">
+                                 <ng-container
+                                    *ngFor="let merchantPurposes of requiredMerchantDocs?.documentPurposes; let length1 = index">
+                                    <td class="text-center text-dark"
+                                       *ngIf="merchantPurposes?.documentState !== 'NotApplicable'">
+                                       <img *ngIf="merchantPurposes?.documentState === 'Exists'"
+                                          src="assets/images/check-solid-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
 
-                               <img *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === true" src="assets/images/check-solid-comps.svg"
-                                    style="height: 20px !important; vertical-align: sub;">
+                                       <img
+                                          *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === true"
+                                          src="assets/images/check-solid-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
 
-                               <img *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === false" src="assets/images/close-comps.svg"
-                                    style="height: 20px !important; vertical-align: sub;">
-                             </td>
-                           </ng-container>
-                         </tr>
-                       </tbody>
-                     </table>
-                   </div>
-                 </form>
+                                       <img
+                                          *ngIf="merchantPurposes?.documentState === 'NotExists' && merchantPurposes['existsOutbound'] === false"
+                                          src="assets/images/close-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
+                                    </td>
+                                 </ng-container>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </form>
                </div>
-               <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0" *ngIf="submissionClient?.merchantType == '01' || submissionClient?.merchantType == 'corporation' || submissionClient?.merchantType == 'Corporate' || submissionClient?.merchantType == 'Company'">
-                 <p class="titulo-form-simples mt-0 pb-1 ps-3">
-                   {{'supportingDocuments.checklistModal.selectedLegalNature'|translate}}
-                   {{ legalNature }}
-                   {{'supportingDocuments.checklistModal.mandatoryDocuments'|translate}}:&nbsp;
-                 </p>
+               <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0"
+                  *ngIf="submissionClient?.merchantType == '01' || submissionClient?.merchantType == 'corporation' || submissionClient?.merchantType == 'Corporate' || submissionClient?.merchantType == 'Company'">
+                  <p class="titulo-form-simples mt-0 pb-1 ps-3">
+                     {{'supportingDocuments.checklistModal.selectedLegalNature'|translate}}
+                     {{ legalNature }}
+                     {{'supportingDocuments.checklistModal.mandatoryDocuments'|translate}}:&nbsp;
+                  </p>
                   <p class="mt-0 pb-1 ps-3 caixa_azul" style="font-size: 16px;">
-                    {{mandatoryDocs}}
+                     {{mandatoryDocs}}
                   </p>
                </div>
                <div class="offset-1 bg-white align-self-center col-10 mt-3 pt-2 ps-0">
@@ -234,94 +243,119 @@
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStakes'|translate}}
                   </p>
                   <div class="table-responsive me-2 ps-3">
-                     <table class="table table-success align-middle" >
+                     <table class="table table-success align-middle">
                         <thead class="table-primary align-middle text-primary">
                            <tr class="text-center text-primary align-middle table-primary">
-                              <th scope="col" class="align-baseline text-primary table-white" >{{'supportingDocuments.checklistModal.name'|translate}}</th>
-                              <ng-container *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders; let length1 = index">
-                                <ng-container *ngFor="let stakeholderDocPurpose of requiredStakeholderDocs?.documentPurposes; let length2 = index">
-                                  <th scope="col" *ngIf="length1 == 0 && stakeholderDocPurpose?.documentState !== 'NotApplicable'"> {{getDocumentPurposeDescription(stakeholderDocPurpose.purpose)}}</th>
-                                </ng-container>
+                              <th scope="col" class="align-baseline text-primary table-white">
+                                 {{'supportingDocuments.checklistModal.name'|translate}}</th>
+                              <ng-container
+                                 *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders; let length1 = index">
+                                 <ng-container
+                                    *ngFor="let stakeholderDocPurpose of requiredStakeholderDocs?.documentPurposes; let length2 = index">
+                                    <th scope="col"
+                                       *ngIf="length1 == 0 && stakeholderDocPurpose?.documentState !== 'NotApplicable'">
+                                       {{getDocumentPurposeDescription(stakeholderDocPurpose.purpose)}}</th>
+                                 </ng-container>
                               </ng-container>
                            </tr>
                         </thead>
                         <tbody class="table-light text-primary">
-                          <ng-container *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
-                            <tr class="table-white text-primary" >
-                              <td scope="row" class="text-center text-dark">{{requiredStakeholderDocs.entityName}}</td>
-                              <ng-container *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
-                                <td class="text-center text-dark" *ngIf="stakeholderPurposes?.documentState !== 'NotApplicable'">
-                                  <img *ngIf="stakeholderPurposes?.documentState === 'Exists'" src="assets/images/check-solid-comps.svg"
-                                       style="height: 20px !important; vertical-align: sub;">
+                           <ng-container
+                              *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
+                              <tr class="table-white text-primary">
+                                 <td scope="row" class="text-center text-dark">{{requiredStakeholderDocs.entityName}}
+                                 </td>
+                                 <ng-container
+                                    *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
+                                    <td class="text-center text-dark"
+                                       *ngIf="stakeholderPurposes?.documentState !== 'NotApplicable'">
+                                       <img *ngIf="stakeholderPurposes?.documentState === 'Exists'"
+                                          src="assets/images/check-solid-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
 
-                                  <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === true" src="assets/images/check-solid-comps.svg"
-                                       style="height: 20px !important; vertical-align: sub;">
+                                       <img
+                                          *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === true"
+                                          src="assets/images/check-solid-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
 
-                                  <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false" src="assets/images/close-comps.svg"
-                                       style="height: 20px !important; vertical-align: sub;">
-                                </td>
-                              </ng-container>
-                            </tr>
-                          </ng-container>
+                                       <img
+                                          *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false"
+                                          src="assets/images/close-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
+                                    </td>
+                                 </ng-container>
+                              </tr>
+                           </ng-container>
                         </tbody>
                      </table>
                   </div>
                </div>
                <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-5">
-                 <p class="titulo-form-simples mt-0 pb-1 ps-3">
-                   <img src="assets/images/file-lines-solid.svg"
+                  <p class="titulo-form-simples mt-0 pb-1 ps-3">
+                     <img src="assets/images/file-lines-solid.svg"
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.toStores'|translate}}
-                 </p>
-                 <div class="table-responsive me-2 ps-3">
-                   <table class="table table-success align-middle">
-                     <thead class="table-primary align-middle text-primary">
-                       <tr class="text-center text-primary align-middle table-primary">
-                         <th scope="col" class="align-baseline text-primary table-white">{{'supportingDocuments.checklistModal.name'|translate}}</th>
-                         <ng-container *ngFor="let requiredStoreDocs of requiredDocuments?.requiredDocumentPurposesShops; let length1 = index">
-                           <ng-container *ngFor="let storeDocPurpose of requiredStoreDocs?.documentPurposes; let length2 = index">
-                             <th scope="col" *ngIf="length1 == 0 && storeDocPurpose?.documentState !== 'NotApplicable'"> {{getDocumentPurposeDescription(storeDocPurpose.purpose)}}</th>
-                           </ng-container>
-                         </ng-container>
-                       </tr>
-                     </thead>
-                     <tbody class="table-light text-primary">
-                       <ng-container *ngFor="let requiredStoreDocs of requiredDocuments?.requiredDocumentPurposesShops">
-                         <tr class="table-white text-primary">
-                           <td scope="row" class="text-center text-dark">{{requiredStoreDocs.entityName}}</td>
-                           <ng-container *ngFor="let storePurposes of requiredStoreDocs?.documentPurposes; let length3 = index">
-                             <td class="text-center text-dark" *ngIf="storePurposes?.documentState !== 'NotApplicable'">
-                               <img *ngIf="storePurposes?.documentState === 'Exists'" src="assets/images/check-solid-comps.svg"
-                                    style="height: 20px !important; vertical-align: sub;">
+                  </p>
+                  <div class="table-responsive me-2 ps-3">
+                     <table class="table table-success align-middle">
+                        <thead class="table-primary align-middle text-primary">
+                           <tr class="text-center text-primary align-middle table-primary">
+                              <th scope="col" class="align-baseline text-primary table-white">
+                                 {{'supportingDocuments.checklistModal.name'|translate}}</th>
+                              <ng-container
+                                 *ngFor="let requiredStoreDocs of requiredDocuments?.requiredDocumentPurposesShops; let length1 = index">
+                                 <ng-container
+                                    *ngFor="let storeDocPurpose of requiredStoreDocs?.documentPurposes; let length2 = index">
+                                    <th scope="col"
+                                       *ngIf="length1 == 0 && storeDocPurpose?.documentState !== 'NotApplicable'">
+                                       {{getDocumentPurposeDescription(storeDocPurpose.purpose)}}</th>
+                                 </ng-container>
+                              </ng-container>
+                           </tr>
+                        </thead>
+                        <tbody class="table-light text-primary">
+                           <ng-container
+                              *ngFor="let requiredStoreDocs of requiredDocuments?.requiredDocumentPurposesShops">
+                              <tr class="table-white text-primary">
+                                 <td scope="row" class="text-center text-dark">{{requiredStoreDocs.entityName}}</td>
+                                 <ng-container
+                                    *ngFor="let storePurposes of requiredStoreDocs?.documentPurposes; let length3 = index">
+                                    <td class="text-center text-dark"
+                                       *ngIf="storePurposes?.documentState !== 'NotApplicable'">
+                                       <img *ngIf="storePurposes?.documentState === 'Exists'"
+                                          src="assets/images/check-solid-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
 
-                               <img *ngIf="storePurposes?.documentState === 'NotExists' && storePurposes['existsOutbound'] === true" src="assets/images/check-solid-comps.svg"
-                                    style="height: 20px !important; vertical-align: sub;">
+                                       <img
+                                          *ngIf="storePurposes?.documentState === 'NotExists' && storePurposes['existsOutbound'] === true"
+                                          src="assets/images/check-solid-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
 
-                               <img *ngIf="storePurposes?.documentState === 'NotExists' && storePurposes['existsOutbound'] === false" src="assets/images/close-comps.svg"
-                                    style="height: 20px !important; vertical-align: sub;">
-                             </td>
+                                       <img
+                                          *ngIf="storePurposes?.documentState === 'NotExists' && storePurposes['existsOutbound'] === false"
+                                          src="assets/images/close-comps.svg"
+                                          style="height: 20px !important; vertical-align: sub;">
+                                    </td>
+                                 </ng-container>
+                              </tr>
                            </ng-container>
-                         </tr>
-                       </ng-container>
-                     </tbody>
-                   </table>
-                 </div>
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
-         
             <div class="row">
-              <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-9">
-                <p class="titulo-form-simples mt-0 pb-1 ps-3">
-                  <img src="assets/images/circle-info-solid.svg"
+               <div class="offset-1 bg-white align-self-center mt-3 pt-2 ps-0 col-9">
+                  <p class="titulo-form-simples mt-0 pb-1 ps-3">
+                     <img src="assets/images/circle-info-solid.svg"
                         style="height: 20px !important; vertical-align: sub;">&nbsp;{{'supportingDocuments.checklistModal.subtitles.title'|translate|uppercase}}:<br />
-                </p>
-                <p class="mt-0 pb-1 ps-3" style="margin-bottom: 100px; font-size: 16px;">
-                  <img src="assets/images/check-solid.svg"
+                  </p>
+                  <p class="mt-0 pb-1 ps-3" style="margin-bottom: 100px; font-size: 16px;">
+                     <img src="assets/images/check-solid.svg"
                         style="height: 20px !important;">&nbsp;&nbsp;{{'supportingDocuments.checklistModal.subtitles.archive'|translate}}<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;X</b>&nbsp;&nbsp;{{'supportingDocuments.checklistModal.subtitles.noArchive'|translate}}<b>&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;N/A</b>&nbsp;&nbsp;{{'supportingDocuments.checklistModal.subtitles.unapplicable'|translate}}
-                </p>
-              </div>
+                  </p>
+               </div>
             </div>
-          </div>
-         
+         </div>
       </ng-template>
       <ng-template #firstSubmissionModal>
          <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
@@ -370,41 +404,41 @@
          <div class="row">
             <div class="col ms-0 ps-0">
                <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-                 <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                   <button id="btn5a" style="margin-left: 0px;"
-                           class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                           [routerLink]="['/']" wappler-command="editContent">
-                     {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                     <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-                   </button>
-                   <button id="btn5a" *ngIf="returned == 'consult'"
-                           class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                           wappler-command="editContent">
-                     {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
-                     <img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">
-                   </button>
-                   <button id="btn5a"
-                           class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
-                           wappler-command="editContent" [routerLink]="['/store-comp']">
-                     <img src="assets/images/arrow_back_ios_white.svg"
-                          style="height: 25px !important; vertical-align: sub;">
-                     {{'generalKeywords.back'|translate|uppercase}}&nbsp;
-                   </button>
-                   <button *ngIf="validatedDocuments && !updatedComps" id="btn5a" (click)="firstSubmission()"
-                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                           wappler-command="editContent">
-                     {{'generalButtons.submit'|translate|uppercase}}&nbsp;
-                     <img src="assets/images/arrow_forward_ios.svg"
-                          style="height: 25px !important; vertical-align: sub;">
-                   </button>
-                   <button *ngIf="validatedDocuments && updatedComps" id="btn5a" (click)="firstSubmission()"
-                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                           wappler-command="editContent">
-                     {{'generalKeywords.next'|translate|uppercase}}&nbsp;
-                     <img src="assets/images/arrow_forward_ios.svg"
-                          style="height: 25px !important; vertical-align: sub;">
-                   </button>
-                 </span>
+                  <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                     <button id="btn5a" style="margin-left: 0px;"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                        [routerLink]="['/']" wappler-command="editContent">
+                        {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                        <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                     </button>
+                     <button id="btn5a" *ngIf="returned == 'consult'"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent">
+                        {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                        <img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">
+                     </button>
+                     <button id="btn5a"
+                        class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                        wappler-command="editContent" [routerLink]="['/store-comp']">
+                        <img src="assets/images/arrow_back_ios_white.svg"
+                           style="height: 25px !important; vertical-align: sub;">
+                        {{'generalKeywords.back'|translate|uppercase}}&nbsp;
+                     </button>
+                     <button *ngIf="validatedDocuments && !updatedComps" id="btn5a" (click)="firstSubmission()"
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                        wappler-command="editContent">
+                        {{'generalButtons.submit'|translate|uppercase}}&nbsp;
+                        <img src="assets/images/arrow_forward_ios.svg"
+                           style="height: 25px !important; vertical-align: sub;">
+                     </button>
+                     <button *ngIf="validatedDocuments && updatedComps" id="btn5a" (click)="firstSubmission()"
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                        wappler-command="editContent">
+                        {{'generalKeywords.next'|translate|uppercase}}&nbsp;
+                        <img src="assets/images/arrow_forward_ios.svg"
+                           style="height: 25px !important; vertical-align: sub;">
+                     </button>
+                  </span>
                </nav>
             </div>
          </div>

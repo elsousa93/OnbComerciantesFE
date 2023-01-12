@@ -1,14 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of, Subscription } from 'rxjs';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
-import { LoggerService } from 'src/app/logger.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
@@ -16,7 +13,6 @@ import { UserPermissions } from '../../userPermissions/user-permissions';
 import { MerchantCatalog, Product, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
-import { SubmissionService } from '../../submission/service/submission-service.service';
 import { ClientService } from '../../client/client.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
@@ -31,7 +27,6 @@ export class CommercialOfferListComponent implements OnInit {
 
   selectedPack: ShopProductPack = null;
 
-  //storesOfferMat!: MatTableDataSource<ShopDetailsAcquiring>;
   storeEquipMat = new MatTableDataSource<ShopEquipment>();
   @ViewChild('storeEquipPaginator') set paginator(pager: MatPaginator) {
     if (pager) {
@@ -44,20 +39,17 @@ export class CommercialOfferListComponent implements OnInit {
   form: FormGroup;
   private baseUrl: string;
   @ViewChild(MatSort) sort: MatSort;
-
   @ViewChild('storeEquipPaginator') storeEquipPaginator: MatPaginator;
   @ViewChild('storeEquipSort') storeEquipSort: MatSort;
 
   public stores: Istore[] = [];
 
-  /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
-  /*Default case*/
   selectedOption = 'Não';
 
   public subscription: Subscription;
   public map: Map<number, boolean>;
-  public currentPage : number;
+  public currentPage: number;
   public currentStore: ShopDetailsAcquiring = null;
   public currentIdx: number = 0;
   public commissionId: string = "";
@@ -126,30 +118,17 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //this.storesOfferMat.paginator = this.paginator;
-    //this.storeEquipMat.paginator = this.storeEquipPaginator;
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService) {
 
-  constructor(private logger: LoggerService, private translate: TranslateService, http: HttpClient, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private submissionService: SubmissionService, private clientService: ClientService, private formBuilder: FormBuilder, private tableInfo: TableInfoService) {
-    
     this.ngOnInit();
     this.loadReferenceData();
-
-    // if (this.route.getCurrentNavigation()?.extras?.state) {
-    //   this.currentStore = this.route.getCurrentNavigation().extras.state["store"];
-    //   this.storeEquip = this.route.getCurrentNavigation().extras.state["storeEquip"];
-    // }
 
     authService.currentUser.subscribe(user => this.currentUser = user);
 
     this.initializeForm();
-
-
-    //this.COService.OutboundGetProductsAvailable().then(result => {
-    //  this.products = result.result;
-    //});
 
     this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
       this.merchantCatalog = {
@@ -161,7 +140,6 @@ export class CommercialOfferListComponent implements OnInit {
         }
       }
     });
-
     this.data.updateData(false, 5, 1);
   }
 
@@ -177,7 +155,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipList = [];
     if (this.returned != null) {
       this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.shopId).subscribe(result => {
-        if (result != null){
+        if (result != null) {
           this.storeEquipList.push(result);
         }
       });
@@ -213,7 +191,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.groupsList = [];
     this.commissionId = "";
     this.commissionOptions = []
-
     this.currentStore = info.store;
     this.currentIdx = info.idx;
 
@@ -223,7 +200,6 @@ export class CommercialOfferListComponent implements OnInit {
     setTimeout(() => this.setFormData(), 500);
 
     this.getStoreEquipsFromSubmission();
-
     this.getPackDetails();
     this.resetValues();
 
@@ -280,7 +256,7 @@ export class CommercialOfferListComponent implements OnInit {
 
           bundle.forEach(function (value, idx) {
             var bundleAttributes = value.attributes;
-            
+
             bundleAttributes.forEach(function (value, idx) {
               attributeGroup.addControl("formControlBundle" + value.id, new FormControl(value.isSelected));
             });
@@ -291,7 +267,6 @@ export class CommercialOfferListComponent implements OnInit {
       context.form.addControl("formGroup" + value.id, group);
     });
     this.isPackSelected = true;
-    console.log("form com os checkboxes: ", this.form);
   }
 
   numericOnly(event): boolean {
@@ -301,14 +276,13 @@ export class CommercialOfferListComponent implements OnInit {
       return false;
     return true;
   }
-  
-  decimalOnly(event): boolean { // restrict e,+,-,E characters in  input type number
+
+  decimalOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
       return false;
     }
     return true;
-
   }
 
   addCommissionFormGroups() {
@@ -332,12 +306,9 @@ export class CommercialOfferListComponent implements OnInit {
   getPackDetails() {
     this.paymentSchemes = null;
     this.groupsList = [];
-
     this.productPack.productCode = this.currentStore.productCode;
     this.productPack.subproductCode = this.currentStore.subproductCode;
-
     this.productPack.merchant = this.merchantCatalog;
-
     this.productPack.store = {
       activity: this.currentStore.activity,
       subActivity: this.currentStore.subActivity,
@@ -349,21 +320,19 @@ export class CommercialOfferListComponent implements OnInit {
     this.COService.OutboundGetPacks(this.productPack).then(result => {
       this.packs = result.result;
       if (this.packs.length === 1) {
-        //this.form.get("productPackKind").setValue(this.packs[0].id);
-        console.log('SO EXISTE 1 PACK COM O ID', this.packs);
         this.selectCommercialPack(this.packs[0].id);
       } else if (this.currentStore.pack != null) {
         this.selectCommercialPack(this.currentStore.pack.packId);
       }
     });
-  
+
   }
 
   selectCommercialPack(packId: string) {
     var context = this;
     this.packId = packId;
-    context.groupsList=[];
-    context.paymentSchemes=null;
+    context.groupsList = [];
+    context.paymentSchemes = null;
 
     if (this.currentStore.pack == null) {
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
@@ -457,7 +426,7 @@ export class CommercialOfferListComponent implements OnInit {
         this.chooseCommission(this.currentStore.pack.commission.commissionId);
       }
     });
-    
+
   }
 
   chooseCommission(commisionId: string) {
@@ -482,10 +451,9 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   setFormData() {
-    //setValue(null) - são valores que ainda não conseguimos ir buscar
     this.form.get("replicateProducts").setValue(null);
     this.form.get("isUnicre").setValue(this.currentStore.supportEntity.toLowerCase() == 'acquirer' ? true : false);
-    this.form.get("terminalRegistrationNumber").setValue(this.currentStore.registrationId!='' ? this.currentStore.registrationId : '');
+    this.form.get("terminalRegistrationNumber").setValue(this.currentStore.registrationId != '' ? this.currentStore.registrationId : '');
 
     if (this.form.get("replicateProducts").value)
       this.form.get("store").setValue(null);
@@ -500,14 +468,6 @@ export class CommercialOfferListComponent implements OnInit {
       this.form.get("isUnicre").setValue(true);
       this.changeUnicre(true);
     }
-
-    // if (!this.form.get("isUnicre").value) {
-    //   this.form.get("terminalRegistrationNumber").setValue(null);
-    //   this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
-    //   this.form.get("terminalRegistrationNumber").updateValueAndValidity();
-    //   this.disableNewConfiguration = true;
-    // }
-
     this.form.get("productPackKind").setValue(this.currentStore.pack?.packId);
   }
 
@@ -515,7 +475,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.route.navigate(['commercial-offert-tariff']);
   }
 
-  changeUnicre(bool: boolean){
+  changeUnicre(bool: boolean) {
     this.isUnicre = bool;
     this.disableNewConfiguration = !bool;
     this.isNewConfig = null;
@@ -566,16 +526,15 @@ export class CommercialOfferListComponent implements OnInit {
         } else {
           attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
         }
-          if (attr.value && (attr.bundles != null || attr.bundles.length > 0 )) { // se tiver sido selecionado
-            attr.bundles.forEach((bundle) => {
-              bundle.attributes.forEach((bundleAttr) => { 
-                bundleAttr.value = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
-              });
+        if (attr.value && (attr.bundles != null || attr.bundles.length > 0)) { // se tiver sido selecionado
+          attr.bundles.forEach((bundle) => {
+            bundle.attributes.forEach((bundleAttr) => {
+              bundleAttr.value = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
             });
-          }
+          });
+        }
       });
     });
-
 
     var finalGroupsList = this.groupsList.filter(group => group.attributes.filter(attr => {
       if (attr.value) {
@@ -587,9 +546,6 @@ export class CommercialOfferListComponent implements OnInit {
         return false;
       }
     }));
-
-    console.log("GROUPS LIST COM FILTER ", finalGroupsList);
-
 
     this.groupsList.forEach(group => {
       var groupList = group.attributes.filter(attr => attr.value == true || (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "" && attr.value == this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value));
@@ -605,38 +561,24 @@ export class CommercialOfferListComponent implements OnInit {
 
     var list = this.finalList.filter(group => group.attributes.length > 0);
 
-    console.log("FINAL LIST ", this.finalList);
-
     //remover da lista dos pacotes comerciais, os grupos que não foram selecionados
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr, ind) => {
         if (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "") {
           if (attr.value !== this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
-            //console.log("AGGREGATOR VALOR ERA FALSO GROUP INDEX: ", ind);
-            //console.log("AGGREGATOR LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
             var removedGroup = group.attributes.splice(ind, 1);
-            //console.log("AGGREGATOR ELEMENTO RETIRADO ", removedGroup);
-            //console.log("AGGREGATOR LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
             return;
           }
-        } else { 
+        } else {
           if (attr.value === false || attr.value == undefined) {
-            ////console.log("VALOR ERA FALSO GROUP INDEX: ", ind);
-            ////console.log("LISTA ANTES DE RETIRAR O ELEMENTO ", group.attributes);
             var removedGroup = group.attributes.splice(ind, 1);
-            //console.log("ELEMENTO RETIRADO ", removedGroup);
-            //console.log("LISTA DEPOIS DE RETIRAR O ELEMENTO ", group.attributes);
             return;
           } else {
             if (attr.bundles != null || attr.bundles != undefined || attr.bundles.length > 0) {
               attr.bundles.forEach((bundle, index) => {
                 bundle.attributes.forEach((bundleAttr, i) => {
                   if (bundleAttr.value === false) {
-                    //console.log('VALOR ERA FALSO BUNDLE INDEX: ', i);
-                    //console.log("BUNDLES ANTES DE RETIRAR O ELEMENTO ", bundle.attributes);
                     var removedBundle = bundle.attributes.splice(i, 1);
-                    //console.log("BUNDLES DEPOIS DE RETIRAR O ELEMENTO ", bundle.attributes);
-                    //console.log("ELEMENTO RETIRADO ", removedBundle);
                     return;
                   }
                 });
@@ -646,8 +588,6 @@ export class CommercialOfferListComponent implements OnInit {
         }
       });
     });
-
-
 
     if (this.returned != 'consult') {
       this.currentStore.equipments = this.storeEquipList;
@@ -660,10 +600,8 @@ export class CommercialOfferListComponent implements OnInit {
         paymentSchemes: this.paymentSchemes,
         otherPackDetails: list
       }
-      console.log("ESTRUTURA DE DADOS DA LOJA QUE VAI SER ATUALIZADA ", this.currentStore);
       this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
-        console.log('Loja atualizada ', this.currentStore);
         if (this.currentIdx < (this.storesLength - 1)) {
           this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
           this.closeAccordion();
@@ -671,10 +609,8 @@ export class CommercialOfferListComponent implements OnInit {
           this.data.updateData(true, 5);
           this.route.navigate(['info-declarativa']);
         }
-
       });
     }
-
     this.onActivate();
   }
 
@@ -698,18 +634,18 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   loadStoresWithSameBank(bank: string) {
-    
+
   }
 
   deleteConfiguration(shopEquipment: ShopEquipment) {
     if (this.returned != 'consult') {
-    //CHAMADA À API QUE REMOVE UMA CONFUGURAÇÃO DE UM TERMINAL
+      //CHAMADA À API QUE REMOVE UMA CONFUGURAÇÃO DE UM TERMINAL
     }
   }
 
   editConfiguration(shopEquipment: ShopEquipment) {
     if (this.returned != 'consult') {
-      if (this.isNewConfig || this.isNewConfig == false) { 
+      if (this.isNewConfig || this.isNewConfig == false) {
         this.isNewConfig = null;
       }
       this.isNewConfig = false;
@@ -729,7 +665,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   changedStoreEvent(value) {
-    if (value) 
+    if (value)
       this.isNewConfig = null;
   }
 

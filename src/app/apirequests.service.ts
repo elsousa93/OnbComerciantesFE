@@ -1,14 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpMethod } from './enums/enum-data';
 import { RequestResponse } from './table-info/ITable-info.interface';
-import { HttpClient, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoggerService } from './logger.service';
-import { Configuration, configurationToken } from './configuration';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { AppConfigService } from './app-config.service';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +13,10 @@ export class APIRequestsService {
 
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
-  constructor(private logger: LoggerService, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, public translate: TranslateService) {
+  constructor(private http: HttpClient, public translate: TranslateService) {
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
-
   }
 
   callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
@@ -83,7 +77,6 @@ export class APIRequestsService {
           reject(requestResponse);
         });
       }
-      
     });
   }
 }

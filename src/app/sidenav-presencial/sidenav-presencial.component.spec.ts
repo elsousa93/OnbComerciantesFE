@@ -8,9 +8,9 @@ describe('SidenavPresencialComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SidenavPresencialComponent ]
+      declarations: [SidenavPresencialComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

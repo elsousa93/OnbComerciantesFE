@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { distinctUntilChanged, Subscription } from 'rxjs';
@@ -9,7 +9,6 @@ import * as $ from 'jquery';
 import { SubmissionPostTemplate } from '../submission/ISubmission.interface';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { StakeholdersProcess } from '../stakeholders/IStakeholders.interface';
-import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { AuthService } from '../services/auth.service';
@@ -24,14 +23,14 @@ import { AcquiringClientPost } from '../client/Client.interface';
 })
 export class CountrysComponent implements OnInit {
   continente = '';
-  @Input() inline : boolean;
+  @Input() inline: boolean;
   @Input() clientContext: ClientContext;
 
   lstCountry: CountryInformation[] = [];
-  lstCountry1 : CountryInformation[] = [];
+  lstCountry1: CountryInformation[] = [];
   lstCountry2: CountryInformation[] = [];
   lstCountry3: CountryInformation[] = [];
-  contPais : CountryInformation[] = [];
+  contPais: CountryInformation[] = [];
 
   continenteName: string;
 
@@ -129,31 +128,30 @@ export class CountrysComponent implements OnInit {
 
     this.client = {
       clientId: '',
-        fiscalId: '',
-          legalName: '',
-            shortName: '',
-              headquartersAddress: { },
+      fiscalId: '',
+      legalName: '',
+      shortName: '',
+      headquartersAddress: {},
       merchantType: '',
-        commercialName: '',
-          legalNature: '',
-            legalNature2: '',
-              incorporationStatement: { },
-      shareCapital: { },
+      commercialName: '',
+      legalNature: '',
+      legalNature2: '',
+      incorporationStatement: {},
+      shareCapital: {},
       byLaws: '',
-        mainEconomicActivity: '',
-          otherEconomicActivities: [],
-            mainTaxCode: '',
-              otherTaxCodes: [],
-                incorporationDate: null,
-                  businessGroup: { },
-      knowYourSales: { },
-      bankInformation: { },
-      contacts: { },
+      mainEconomicActivity: '',
+      otherEconomicActivities: [],
+      mainTaxCode: '',
+      otherTaxCodes: [],
+      incorporationDate: null,
+      businessGroup: {},
+      knowYourSales: {},
+      bankInformation: {},
+      contacts: {},
       documentationDeliveryMethod: '',
-        billingEmail: '',
-          merchantRegistrationId: ''
+      billingEmail: '',
+      merchantRegistrationId: ''
     };
-
 
     this.initializeForm();
 
@@ -190,7 +188,6 @@ export class CountrysComponent implements OnInit {
     var context = this;
     this.clientExists = this.clientContext.clientExists;
     this.tipologia = this.clientContext.tipologia;
-    //this.NIFNIPC = this.clientContext.getNIFNIPC();
     this.clientId = this.clientContext.clientId;
     this.processId = this.clientContext.processId;
     this.comprovativoCC = this.clientContext.comprovativoCC;
@@ -201,7 +198,6 @@ export class CountrysComponent implements OnInit {
           this.newSubmission.merchant = result;
           this.merchantInfo = result;
 
-          console.log("Form: ", this.form);
         }
       })
 
@@ -223,20 +219,19 @@ export class CountrysComponent implements OnInit {
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private authService: AuthService,
-    private route: Router, private tableInfo: TableInfoService, private data: DataService, 
+    private route: Router, private tableInfo: TableInfoService, private data: DataService,
     private router: ActivatedRoute, private processNrService: ProcessNumberService,
     private rootFormDirective: FormGroupDirective, private comprovativoService: ComprovativosService) {
-    
+
     var auth = authService.GetCurrentUser();
     this.newSubmission.submissionUser.user = auth.userName;
     this.newSubmission.submissionUser.branch = auth.bankName;
     this.newSubmission.submissionUser.partner = "SIBS";
     this.rootForm = this.rootFormDirective.form;
-    //this.form = this.rootForm.get("countrysForm");
 
     this.subs.push(this.tableInfo.GetAllFranchises().subscribe(result => {
       this.franchises = result;
-      this.franchises = this.franchises.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.franchises = this.franchises.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));
 
     //Chamada à API para receber todos os Paises
@@ -247,7 +242,7 @@ export class CountrysComponent implements OnInit {
 
   }
 
-  changeFormStructure(newForm: FormGroup){
+  changeFormStructure(newForm: FormGroup) {
     this.rootForm.setControl("countrysForm", newForm);
     this.form = this.rootForm.get("countrysForm");
   }
@@ -256,7 +251,7 @@ export class CountrysComponent implements OnInit {
 
     if (this.clientExists) {
       this.changeFormStructure(new FormGroup({
-        expectableAnualInvoicing: new FormControl(this.client.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/ , Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
+        expectableAnualInvoicing: new FormControl(this.client.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
         services: new FormControl(this.client?.knowYourSales?.servicesOrProductsSold[0]/*, disabled: true */, Validators.required),
         transactionsAverage: new FormControl(this.client.knowYourSales.transactionsAverage/*, disabled: true */, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
@@ -293,8 +288,6 @@ export class CountrysComponent implements OnInit {
       }
     }
 
-    
-
     this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
         this.isAssociatedWithFranchise = true;
@@ -318,21 +311,17 @@ export class CountrysComponent implements OnInit {
         if (this.incorrectNIPC || this.incorrectNIPCSize) {
           this.form.get("NIPCGroup").setErrors({ 'incorrect': true });
         } else {
-          if (this.form.get("NIPCGroup").hasError("incorrect")) { 
+          if (this.form.get("NIPCGroup").hasError("incorrect")) {
             this.form.get("NIPCGroup").setErrors(null);
           }
         }
       } else {
         this.isAssociatedWithFranchise = undefined;
       }
-
     });
-
-
   }
 
   initializeForm() {
-    console.log("form inicializado");
     this.changeFormStructure(new FormGroup({
       expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
       services: new FormControl('', Validators.required),
@@ -346,7 +335,7 @@ export class CountrysComponent implements OnInit {
       inputAsia: new FormControl(this.inputTypeAsia),
       franchiseName: new FormControl(null),
       NIPCGroup: new FormControl('')
-    }));    
+    }));
 
     this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
@@ -378,11 +367,8 @@ export class CountrysComponent implements OnInit {
       } else {
         this.isAssociatedWithFranchise = undefined;
       }
-      
     });
-
     this.formCountrysReady.emit(this.form);
-    console.log('FORM DOS COUNTRIES INICIALIZADO ', this.form);
   }
 
   newSubmission: SubmissionPostTemplate = {
@@ -423,22 +409,7 @@ export class CountrysComponent implements OnInit {
         client.businessGroup.branch = this.form.get("NIPCGroup").value;
       }
     }
-
-
     this.clientContext.setClient(client);
-    //var navigationExtras: NavigationExtras = {
-    //  state: {
-    //    clientExists: this.clientExists,
-    //    tipologia: this.tipologia,
-    //    NIFNIPC: this.NIFNIPC,
-    //    client: this.client,
-    //    clientId: this.clientId,
-    //    processId: this.processId,
-    //    stakeholdersToInsert: this.stakeholdersToInsert,
-    //    merchantInfo: this.merchantInfo,
-    //    crc: this.crc
-    //  }
-    //}
   }
 
   validateNIPC(nipc: string): boolean {
@@ -473,7 +444,6 @@ export class CountrysComponent implements OnInit {
 
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-
       const byteNumbers = new Array(slice.length);
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
@@ -508,7 +478,6 @@ export class CountrysComponent implements OnInit {
     this.form.get("franchiseName").updateValueAndValidity();
     this.form.get("NIPCGroup").updateValueAndValidity();
     this.form.get("associatedWithGroupOrFranchise").updateValueAndValidity();
-    console.log('O FORM ESTÁ VÁLIDO? ', this.form.valid);
   }
 
   onCountryChange(country) {
@@ -659,7 +628,6 @@ export class CountrysComponent implements OnInit {
               count++;
             }
           });
-
         } else {
           this.inputAsia = false;
         }
@@ -793,11 +761,9 @@ export class CountrysComponent implements OnInit {
   }
 
   getClientContextValues() {
-
     if (this.returned != 'consult') {
       this.clientExists = this.clientContext?.clientExists;
     } else {
-      console.log('CLIENT CONTEXT ', this.clientContext);
       this.clientExists = false;
     }
 
@@ -825,8 +791,6 @@ export class CountrysComponent implements OnInit {
       }
 
       this.formCountrysReady.emit(this.form);
-      console.log('FORM EMITIDO DO GET CLIENT CONTEXT ', this.form);
     });
-
   }
 }

@@ -1,12 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { APIRequestsService } from '../../apirequests.service';
 import { AppConfigService } from '../../app-config.service';
 import { HttpMethod } from '../../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../../table-info/ITable-info.interface';
-import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, SubmissionGetTemplate, SubmissionGet } from '../ISubmission.interface'
+import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, SubmissionGetTemplate } from '../ISubmission.interface'
 
 @Injectable({
   providedIn: 'root'
@@ -14,20 +13,18 @@ import { SubmissionPostTemplate, SubmissionPostResponse, SubmissionPutTemplate, 
 export class SubmissionService {
   private baseUrl;
   currentLanguage: string;
-  languageStream$ = new BehaviorSubject<string>(''); 
+  languageStream$ = new BehaviorSubject<string>('');
 
   constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
-
   }
 
   GetSubmissionByID(submissionID: string): any {
 
     var url = this.baseUrl + 'submission/' + submissionID;
-
     var response: TreatedResponse<SubmissionGetTemplate> = {};
 
     return new Promise<TreatedResponse<SubmissionGetTemplate>>((resolve, reject) => {
@@ -47,8 +44,6 @@ export class SubmissionService {
         reject(response);
       })
     });
-
-
   }
 
   InsertSubmission(submissionToInsert: SubmissionPostTemplate): any {
@@ -60,7 +55,6 @@ export class SubmissionService {
   }
 
   GetSubmissionByProcessNumber(processNumber: string): any {
-
     var url = this.baseUrl + 'submission?ProcessNumber=' + processNumber;
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
@@ -69,27 +63,7 @@ export class SubmissionService {
       }),
     };
     return this.API.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS);
-    //var response: TreatedResponse<SubmissionGet[]> = {};
-
-    //return new Promise<TreatedResponse<SubmissionGet[]>>((resolve, reject) => {
-    //  var HTTP_OPTIONS = {
-    //    headers: new HttpHeaders({
-    //      'Accept-Language': this.currentLanguage,
-
-    //    }),
-    //  }
-    //  this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
-    //    response.result = success.result;
-    //    response.msg = "Sucesso";
-    //    resolve(response);
-    //  }, error => {
-    //    response.result = null;
-    //    response.msg = "Sem stakeholders";
-    //    reject(response);
-    //  })
-    //});
   }
-
 
   //PROVISORIO
   callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
@@ -116,7 +90,4 @@ export class SubmissionService {
       });
     });
   }
-
-
-
 }

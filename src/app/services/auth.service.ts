@@ -1,8 +1,7 @@
-import { DataSource } from '@angular/cdk/collections';
+
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { ILogin } from 'src/app/login/ILogin.interface';
 import { User } from '../userPermissions/user';
 
 
@@ -30,7 +29,6 @@ export class AuthService implements OnDestroy {
   changeUser(user: User) {
     this.dataSource.next(user);
     this.authenticated.next(true);
-    console.log("user template: ", this.user);
   }
 
   GetToken() {
@@ -41,7 +39,7 @@ export class AuthService implements OnDestroy {
     return this.dataSource.getValue();
   }
 
-  GetBankLocation(){
+  GetBankLocation() {
     return this.bankLocation.getValue();
   }
 
@@ -61,7 +59,6 @@ export class AuthService implements OnDestroy {
   constructor(private router: Router) {
     var auth = localStorage.getItem("auth");
 
-    console.log("auth: ", auth);
 
     if (auth !== undefined && auth !== null && auth !== '') {
       var user = JSON.parse(auth);
@@ -74,7 +71,6 @@ export class AuthService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log("destruido");
     localStorage.setItem("auth", JSON.stringify(this.GetCurrentUser()));
   }
 

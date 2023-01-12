@@ -1,120 +1,61 @@
 <p><b>{{'stakeholder.edit'|translate}}</b></p>
-
 <div>
   <form [formGroup]="formUpdateStakeholder" (ngSubmit)="submit(formUpdateStakeholder.value)">
 
     <div class="form-group">
       <label for="fullName">{{'stakeholder.clientName'|translate}}</label>
-      <input type="text" formControlName="fullName"
-             id="fullName" class="form-control" [(ngModel)]="newStake.fullName">
-      <!--<div class="alert alert-danger" *ngIf="fullName.touched && !fullName.valid">
-      <div *ngIf="clientName.errors && clientName.errors['required']">Client Name is required.</div>
-      <div *ngIf="clientName.errors && clientName.errors['minlength']">
-        Client Name must have at least 2 characters.
-      </div>
-      <div *ngIf="clientName.errors && clientName.errors['maxlength']">
-        Clients Name has a maximum of 100 characters.
-      </div>
-    </div>-->
+      <input type="text" formControlName="fullName" id="fullName" class="form-control" [(ngModel)]="newStake.fullName">
     </div>
 
     <div class="form-group">
       <label for="documentType">
         {{'citizenCard.identificationDocumentType'|translate}}:*
       </label>
-      <input name="identificationDocumentType" formControlName="documentType"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.type">
-      <!--<div class="alert alert-danger" *ngIf="documentType.touched && !documentType.valid">
-      documentType is required.
-    </div>-->
+      <input name="identificationDocumentType" formControlName="documentType" class="form-control"
+        [(ngModel)]="newStake.identificationDocument.type">
     </div>
 
     <div class="form-group">
       <label for="documentCountry">
         {{'citizenCard.identificationDocumentCountry'|translate}}:*
       </label>
-      <input name="documentCountry" formControlName="documentCountry"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.country">
-      <!--<div class="alert alert-danger" *ngIf="documentCountry.touched && !documentCountry.valid">
-      documentCountry is required.
-    </div>-->
+      <input name="documentCountry" formControlName="documentCountry" class="form-control"
+        [(ngModel)]="newStake.identificationDocument.country">
     </div>
-
     <div class="form-group">
       <label for="identificationDocumentId">
         {{'citizenCard.identificationDocumentNumber'|translate}}:*
       </label>
-      <input name="identificationDocumentId" formControlName="identificationDocumentId"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.number">
-      <!--<div class="alert alert-danger" *ngIf="identificationDocumentId.touched && !identificationDocumentId.valid">
-      nrDocumentoID is required.
-    </div>-->
+      <input name="identificationDocumentId" formControlName="identificationDocumentId" class="form-control"
+        [(ngModel)]="newStake.identificationDocument.number">
     </div>
-
     <div class="form-group">
       <label for="identificationDocumentValidUntil">
         {{'citizenCard.identificationDocumentDate'|translate}}:*
       </label>
-      <input name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil" cols="30" rows="10"
-             class="form-control" [(ngModel)]="newStake.identificationDocument.expirationDate">
-      <!--<div class="alert alert-danger" *ngIf="dateDocumentID.touched && !dateDocumentID.valid">
-      dataDocumentoID is required.
-    </div>-->
+      <input name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil" cols="30"
+        rows="10" class="form-control" [(ngModel)]="newStake.identificationDocument.expirationDate">
     </div>
-
-
-
-
-
     <p><b>{{'stakeholder.identification2'|translate}}</b></p>
     <div class="form-group">
       <label for="fiscalId">{{'stakeholder.fiscalID'|translate}}: </label>
-      <input name="fiscalId" formControlName="fiscalId" class="form-control"
-             [(ngModel)]="newStake.fiscalId">
-      <!--<div class="alert alert-danger" *ngIf="fiscalId.touched && !fiscalId.valid">
-      O parâmetro "NIF" é obrigatório.
-    </div>-->
-
+      <input name="fiscalId" formControlName="fiscalId" class="form-control" [(ngModel)]="newStake.fiscalId">
       <label for="roleStakeholder">{{'stakeholder.role'|translate}}</label>
-      <input name="roleStakeholder" formControlName="roleStakeholder"
-             class="form-control"> <!--Nao esta no YAML-->
-      <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-      O parâmetro "Cargo" é obrigatório.
-    </div>-->
-
+      <input name="roleStakeholder" formControlName="roleStakeholder" class="form-control"> <!--Nao esta no YAML-->
       <label for="address">{{'stakeholder.address'|translate}}</label>
-      <input name="address"
-             formControlName="streetAdressStakeholder" class="form-control" [(ngModel)]="newStake.fiscalAddress.address">
-      <!--<div class="alert alert-danger" *ngIf="roleStakeholder.touched && !roleStakeholder.valid">
-      O parâmetro "Morada Fiscal" é obrigatório.
-    </div>-->
-
+      <input name="address" formControlName="streetAdressStakeholder" class="form-control"
+        [(ngModel)]="newStake.fiscalAddress.address">
       <label for="postalCode">{{'stakeholder.postalCode'|translate}}</label>
-      <input name="postalCode"
-             id="postCodeAdressStakeholder" class="form-control" [(ngModel)]="newStake.fiscalAddress.postalCode">
-      <!--<div class="alert alert-danger" *ngIf="postalCode.touched && !postalCode.valid">
-      O parâmetro "Código postal" é obrigatório.
-    </div>-->
+      <input name="postalCode" id="postCodeAdressStakeholder" class="form-control"
+        [(ngModel)]="newStake.fiscalAddress.postalCode">
       <label for="postalArea">{{'stakeholder.area'|translate}}</label>
-      <input name="postalArea"
-             id="areaBillingAdressStakeholder" class="form-control" [(ngModel)]="newStake.fiscalAddress.postalArea">
-      <!--<div class="alert alert-danger"
-      *ngIf="postalArea.touched && !postalArea.valid">
-      O parâmetro "Código postal" é obrigatório.
-    </div>-->
+      <input name="postalArea" id="areaBillingAdressStakeholder" class="form-control"
+        [(ngModel)]="newStake.fiscalAddress.postalArea">
       <label for="country">{{'stakeholder.country'|translate}}</label>
-      <input name="country"
-             id="countryBillingAdressStakeholder" class="form-control"
-             [(ngModel)]="newStake.fiscalAddress.country">
-      <!--<div class="alert alert-danger"
-      *ngIf="countryBillingAdressStakeholder.touched && !countryBillingAdressStakeholder.valid">
-      O parâmetro "Código postal" é obrigatório.
-    </div>-->
-
+      <input name="country" id="countryBillingAdressStakeholder" class="form-control"
+        [(ngModel)]="newStake.fiscalAddress.country">
     </div>
     <button class="btn btn-primary" (click)="submit(formUpdateStakeholder.value)">{{'auth.submit'|translate}}
     </button>
   </form>
 </div>
-
-

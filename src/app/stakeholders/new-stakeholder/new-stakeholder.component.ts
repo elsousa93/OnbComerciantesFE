@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, FormGroupDirective } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
@@ -8,7 +8,6 @@ import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
 import { CountryInformation, StakeholderRole } from '../../table-info/ITable-info.interface';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
@@ -143,9 +142,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var context = this;
 
     this.getProcessStakeholders();
-    
-    console.log("submissionId: ", this.submissionId);
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -421,7 +417,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       }
       
     }
-    console.log('Valor do form no new-stakeholder ', this.formNewStakeholder);
   }
 
   goToStores() {

@@ -48,6 +48,4 @@ export interface newClient {
   callingCodeFaxClient: String,
   faxClient: String,
   billingEmail: String
-
 }
- 

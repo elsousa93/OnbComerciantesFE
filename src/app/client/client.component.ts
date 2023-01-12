@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Client } from './Client.interface';
-import { FormBuilder, Validators,FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
@@ -9,12 +9,10 @@ import { ClientService } from './client.service';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Configuration, configurationToken } from '../configuration';
 
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../citizencard/ICCInfo.interface';
-import { dataCC } from '../citizencard/dataCC.interface';
 import { ReadcardService } from '../readcard/readcard.service';
 
 import { SubmissionService } from '../submission/service/submission-service.service';
@@ -27,7 +25,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { localizedString } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-client',
@@ -182,21 +179,17 @@ export class ClientComponent implements OnInit {
     }
   }
 
-
-
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
   SearchDone: boolean;
   ShowAddManual: boolean;
   ValidadeSearchAddIntervenient: boolean;
-  // IntervenientsTableSearch: Array<IClientResult>;
   HasInsolventIntervenients: boolean;
   BlockClientName: boolean;
   BlockNIF: boolean;
   Validations: boolean;
   DisableButtons: boolean;
   BlockDocumentNumber: boolean = true; //if you want to read the CC NEW
-  //  DocumentTypes: Array<IRefData>;
   IsInsolventCantPass: boolean;
   CCReaderPresent: boolean;
   CCReaderCCID: number;
@@ -208,8 +201,6 @@ export class ClientComponent implements OnInit {
   clientIdNew;
   ccInfo;
   newId;
-  // ListaDocType = docType;
-  // ListaDocTypeENI = docTypeENI;
 
   ListaDocType;
   ListaDocTypeENI;
@@ -224,7 +215,7 @@ export class ClientComponent implements OnInit {
   isClient: boolean;
 
   //Pesquisa 
-  showFoundClient: boolean = false;     //sem backend: true // antigo nome: showWarning
+  showFoundClient: boolean = false;
   idToSeacrh: number;
   searchDone: boolean = false;
 
@@ -319,11 +310,7 @@ export class ClientComponent implements OnInit {
 
   @Output() nameEmitter = new EventEmitter<string>();
   @Output() urlEmitter: EventEmitter<string> = new EventEmitter<string>();
-  
-  
-
   @ViewChild(MatSort) sort: MatSort;
-
 
   displayedColumns: string[] = ['select', 'clientNumber', 'commercialName', 'address', 'ZIPCode', 'locale', 'country'];
 
@@ -360,10 +347,10 @@ export class ClientComponent implements OnInit {
 
   potentialClientIds: string[] = [];
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
+  constructor(private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
-    private submissionService: SubmissionService, private readCardService: ReadcardService, private snackBar: MatSnackBar) {
+    private readCardService: ReadcardService, private snackBar: MatSnackBar) {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListaDocType = result;
@@ -380,14 +367,12 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     if (localStorage.getItem("submissionId") != null) {
-      //if (this.route.getCurrentNavigation().extras.state) {
       this.data.currentTipologia.subscribe(tipologia => this.tipologia = tipologia);//this.route.getCurrentNavigation().extras.state["tipologia"];
       this.searchedDocument = localStorage.getItem("documentType");
       this.clientId = localStorage.getItem("documentNumber");
       this.data.currentComprovativoCC.subscribe(cc => this.prettyPDF = cc);//this.route.getCurrentNavigation().extras.state["comprovativoCC"];
       this.data.currentDataCC.subscribe(data => this.dataCCcontents = data);//this.route.getCurrentNavigation().extras.state["dataCC"];
       this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);//this.route.getCurrentNavigation().extras.state["isClient"];
-      //}
 
       if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
         this.setClientData(true);
@@ -404,7 +389,6 @@ export class ClientComponent implements OnInit {
           this.setOkCC();
         }
       }
-
     }
   }
 
@@ -432,12 +416,10 @@ export class ClientComponent implements OnInit {
   }
 
   receiveSearchValue(box: string) {
-    // this.searchParameter.push(box);
     this.searchParameter = (box);
   }
 
   getValueENI() {
-    // this.activateButtons(true);
     this.logger.debug("chamar a funcao de leitura do cartao: ");
     this.http.get(this.neyondBackUrl + 'CitizenCard/searchCC').subscribe(result => {
       if (result == null) {
@@ -453,7 +435,6 @@ export class ClientComponent implements OnInit {
     if (this.newClient.documentationDeliveryMethod === '0502' || this.newClient.documentationDeliveryMethod === '0501') {
       return this.newClient.clientId;
     }
-
     if (this.newClient.documentationDeliveryMethod === '1001') {
       this.dataCC = {
         nameCC: this.nameCC,
@@ -464,18 +445,14 @@ export class ClientComponent implements OnInit {
       };
       return this.nifCC;
     }
-
     if ((this.newClientForm?.get("nif")?.value != '' && this.newClientForm?.get("nif")?.value != null) || (this.newClientForm?.get("nipc")?.value != '' && this.newClientForm?.get("nipc")?.value != null)) {
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
     }
-
     return '';
   }
 
   searchClient() {
-
     this.logger.debug(this.newClient.clientId);
-    //this.clientId = '';
     this.showSeguinte = false;
 
     var context = this;
@@ -490,9 +467,7 @@ export class ClientComponent implements OnInit {
       this.clientService.SearchClientByQuery(this.newClient.clientId, this.searchType, "por mudar", "por mudar").subscribe(o => {
         this.showFoundClient = true;
         var clients = o;
-
         var context2 = this;
-
         this.logger.debug(context.clientsToShow);
         context.clientsToShow = [];
         context.clientsMat.data = context.clientsToShow;
@@ -529,7 +504,6 @@ export class ClientComponent implements OnInit {
                 "ZIPCode": c.result.headquartersAddress.postalCode,
                 "postalArea": c.result.headquartersAddress.postalArea,
                 "country": c.result.headquartersAddress.country,
-                //"fiscalId": c.fiscalId
               }
               clientToShow.client = client;
               context.clientsToShow.push(clientToShow);
@@ -540,7 +514,6 @@ export class ClientComponent implements OnInit {
               context.notFound = false;
               context.canSearch = true;
             });
-
           });
         } else {
           this.showFoundClient = false;
@@ -559,8 +532,6 @@ export class ClientComponent implements OnInit {
         this.resetLocalStorage();
       });
     }
-
-
   }
 
   resetLocalStorage() {
@@ -611,7 +582,6 @@ export class ClientComponent implements OnInit {
   }
 
   toggleShowFoundClient(value: boolean) {
-    //There is no client
     if (value == true) {
       this.showFoundClient = true
       this.hasNewClient = true;
@@ -629,34 +599,11 @@ export class ClientComponent implements OnInit {
       this.logger.debug('close' + this.modalService);
     });
     this.returned = localStorage.getItem("returned");
-
     var context = this;
-
-    //var processToInsert = {
-    //  "processNumber": "5",
-    //  "goal": "merchantOnboarding",
-    //  "startedByUsername": "string",
-    //  "startedByBranch": "string",
-    //  "startedByPartner": "string",
-    //  "startedAt": "2022-05-05"
-    //} as Process;
-
-    //this.processService.startProcess(processToInsert, "por mudar", "1").subscribe(o => {
-    //  this.logger.debug("começou um processo");
-    //  this.logger.debug(o);
-
-    //  context.process = o;
-
-    //  this.logger.debug(context.process);
-    //});
   }
 
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub?.unsubscribe);
-  }
-
-
-  submit(form: any) {
   }
 
   changeListElementDocType(docType, e: any) {
@@ -697,9 +644,7 @@ export class ClientComponent implements OnInit {
     this.documentType = true;
   }
 
-
   obterSelecionado() {
-    //ONDE ESTAVA fiscalId passei para clientId
     this.logger.debug(this.clientId);
     var selectedClient = this.newClient;
     var NIFNIPC = null;
@@ -721,7 +666,6 @@ export class ClientComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
-        //NIFNIPC: selectedClient.fiscalId,
         clientExists: true,
         clientId: this.clientId,
         dataCC: this.dataCC,
@@ -741,7 +685,6 @@ export class ClientComponent implements OnInit {
     this.logger.debug("a passar para a proxima pagina");
     this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
 
-    //isto nao esta a aparecer na versao mais nova.
   }
   /**
    *
@@ -772,7 +715,7 @@ export class ClientComponent implements OnInit {
         this.Window.readCC();
         this.newModal.hide();
       }
-    }); // }.bind(this));
+    });
   }
 
   activateButtons(id: boolean) {
@@ -826,7 +769,6 @@ export class ClientComponent implements OnInit {
         this.changeListElementDocType(null, { target: { value: this.newClient.documentationDeliveryMethod } });
       }
     }
-
   }
 
   clientId: string
@@ -875,7 +817,7 @@ export class ClientComponent implements OnInit {
         nameArray.forEach((val, index) => {
           if (index == 0) {
             fullName = val;
-          } else { 
+          } else {
             fullName = fullName + " " + val;
           }
         });
@@ -891,7 +833,6 @@ export class ClientComponent implements OnInit {
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
     else
       this.route.navigate(['/clientbyid', 9999], navigationExtras);
-    //this.route.navigate(['client-additional-info/88dab4e9-3818-4491-addb-f518ae649e5a']);
   }
 
   close() {
@@ -899,11 +840,9 @@ export class ClientComponent implements OnInit {
   }
 
   newSearch() {
-    // location.reload();
     this.route.navigate(['/client'])
   }
 
-  //PARA O NOVO COMPONENTE
   selectClient(clientEmitted) {
     this.selectedClient.client = clientEmitted.client;
     this.selectedClient.idx = clientEmitted.idx;
@@ -922,7 +861,6 @@ export class ClientComponent implements OnInit {
         return false;
       return true;
     }
-    //return true;
   }
 
   checkValidationType(str: string) {
@@ -934,7 +872,6 @@ export class ClientComponent implements OnInit {
 
     if (this.docType === '0502')
       this.validateNIPC(str)
-
   }
 
   validateNIF(nif: string): boolean {
@@ -958,7 +895,6 @@ export class ClientComponent implements OnInit {
         this.incorrectNIF = true;
         return false;
       }
-
       return Number(nif[8]) === comparador;
     }
   }
@@ -993,10 +929,10 @@ export class ClientComponent implements OnInit {
     this.incorrectCC = false;
     this.incorrectCCSize = false;
     this.incorrectCCFormat = false;
-    var sum = 0; 
+    var sum = 0;
     var secondDigit = false;
 
-    if (numeroDocumento.length != 12) { 
+    if (numeroDocumento.length != 12) {
       this.incorrectCCSize = true;
       return false;
     }
@@ -1007,7 +943,7 @@ export class ClientComponent implements OnInit {
       return false;
     }
 
-    for (var i = numeroDocumento.length - 1; i >= 0; --i){ 
+    for (var i = numeroDocumento.length - 1; i >= 0; --i) {
       var valor = this.GetNumberFromChar(numeroDocumento[i]);
       if (secondDigit) {
         valor *= 2;

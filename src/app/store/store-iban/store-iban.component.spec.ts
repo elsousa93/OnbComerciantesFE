@@ -8,9 +8,9 @@ describe('StoreIbanComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StoreIbanComponent ]
+      declarations: [StoreIbanComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
 <app-nav-menu-interna></app-nav-menu-interna>
 
-<form [formGroup]="form" name="form" >
+<form [formGroup]="form" name="form">
   <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
     <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
@@ -16,63 +16,71 @@
         </nav>
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mt-0 pt-0 ps-0" style="padding-right: 0px;">
-        <ng-container >
+        <ng-container>
           <div class="mb-3 mt-4">
             <div class="accordion1 accordion-flush mb-3" id="accordionFlushExample">
               <div class="accordion1-item">
                 <h2 class="accordion1-header" id="flush-headingOne">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                     <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/filter.svg" class="img_add"
-              style="height: 33px;">
+                      <img src="assets/images/filter.svg" class="img_add" style="height: 33px;">
                     </span>
                     &nbsp;&nbsp;{{'client.companyCaracterization'|translate|uppercase}}&nbsp;&nbsp;
-                      <img src="assets/images/triangle-exclamation-solid.svg" *ngIf="touchedTabs[0] && !form.get('clientCharacterizationForm').valid" class="img_add"
-              style="height: 33px;">
+                    <img src="assets/images/triangle-exclamation-solid.svg"
+                      *ngIf="touchedTabs[0] && !form.get('clientCharacterizationForm').valid" class="img_add"
+                      style="height: 33px;">
                   </button>
                 </h2>
                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlushExample">
+                  data-bs-parent="#accordionFlushExample">
                   <div *ngIf="clientContext">
-                    <app-client-characterization (formClientCharacterizationReady)="formClientCharacterizationIsValid($event)" [clientContext]="clientContext"></app-client-characterization>
+                    <app-client-characterization
+                      (formClientCharacterizationReady)="formClientCharacterizationIsValid($event)"
+                      [clientContext]="clientContext"></app-client-characterization>
                   </div>
                 </div>
               </div>
-              <div class="accordion1-item" *ngIf="clientContext?.isClient == false" > <!-- adicionar um ! -->
+              <div class="accordion1-item" *ngIf="clientContext?.isClient == false"> <!-- adicionar um ! -->
                 <h2 class="accordion-header" id="flush-headingTwo">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" (click)="onActivate()"
-                          data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                    (click)="onActivate()" data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                    aria-controls="flush-collapseTwo">
                     <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/manage_accounts.svg"/>
+                      <img src="assets/images/manage_accounts.svg" />
                     </span>
                     &nbsp;&nbsp;{{'client.companyInformation'|translate|uppercase}}&nbsp;&nbsp;
-                      <img src="assets/images/triangle-exclamation-solid.svg" *ngIf="touchedTabs[1] && !form.get('countrysForm').valid" class="img_add"
-              style="height: 33px;">
+                    <img src="assets/images/triangle-exclamation-solid.svg"
+                      *ngIf="touchedTabs[1] && !form.get('countrysForm').valid" class="img_add" style="height: 33px;">
                   </button>
                 </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                    data-bs-parent="#accordionFlushExample">
-                  <div >
-                    <app-countrys (formCountrysReady)="formClientCountryIsValid($event)" (countryIsValid)="countryListValidator($event)" [clientContext]="clientContext" [inline]="true"></app-countrys>
+                  data-bs-parent="#accordionFlushExample">
+                  <div>
+                    <app-countrys (formCountrysReady)="formClientCountryIsValid($event)"
+                      (countryIsValid)="countryListValidator($event)" [clientContext]="clientContext"
+                      [inline]="true"></app-countrys>
                   </div>
                 </div>
               </div>
 
-              <div class="accordion1-item" *ngIf="clientContext?.isClient || (clientDocs != null && clientDocs.length > 0)">
+              <div class="accordion1-item"
+                *ngIf="clientContext?.isClient || (clientDocs != null && clientDocs.length > 0)">
                 <h2 class="accordion-header" id="flush-headingFour">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" (click)="onActivate()"
-                          data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                    (click)="onActivate()" data-bs-target="#flush-collapseFour" aria-expanded="false"
+                    aria-controls="flush-collapseFour">
                     <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/contact_page.svg" style="height: 33px;"/>
+                      <img src="assets/images/contact_page.svg" style="height: 33px;" />
                     </span>
                     &nbsp;&nbsp;{{'client.documents'|translate|uppercase}}&nbsp;&nbsp;
                   </button>
                 </h2>
                 <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
-                    data-bs-parent="#accordionFlushExample">
+                  data-bs-parent="#accordionFlushExample">
                   <div class="offset-1 col-12 mt-5 ms-0 me-0 ps-0 pe-0">
-                    <p class="titulo-form-simples" *ngIf="clientDocs == null || clientDocs.length == 0">{{'supportingDocuments.documentsListEmpty'|translate}}</p>
+                    <p class="titulo-form-simples" *ngIf="clientDocs == null || clientDocs.length == 0">
+                      {{'supportingDocuments.documentsListEmpty'|translate}}</p>
                     <div class="table-responsive mt-5 mb-5 pb-5" *ngIf="clientDocs != null && clientDocs.length > 0">
                       <table class="table">
                         <thead class="text-primary table-primary">
@@ -80,8 +88,10 @@
                             <th scope="col" class="text-center text-primary bg-light table-white">
                               {{'supportingDocuments.type'|translate}}
                             </th>
-                            <th scope="col" class="text-center bg-light">{{'supportingDocuments.receptionDate'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}</th>
+                            <th scope="col" class="text-center bg-light">
+                              {{'supportingDocuments.receptionDate'|translate}}</th>
+                            <th scope="col" class="text-center bg-white">{{'generalKeywords.expirationDate'|translate}}
+                            </th>
                             <th scope="col" class="text-center bg-white"></th>
                           </tr>
                         </thead>
@@ -89,13 +99,12 @@
                           <tr *ngFor="let docum of clientDocs">
                             <td class="text-primary text-center">{{getDocumentDescription(docum.documentType)}}</td>
                             <td class="text-primary text-center">{{docum.receivedAt}}</td>
-                            <!--Não sei o que equivale a este campo nos documents-->
                             <td class="text-primary text-center">{{docum.validUntil}}</td>
                             <td>
                               <span>
                                 <img src="assets/images/search_blue.svg"
-                                     (click)="getClientDocumentImage(docum.uniqueReference, docum.format, docum.archiveSource)"
-                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                                  (click)="getClientDocumentImage(docum.uniqueReference, docum.format, docum.archiveSource)"
+                                  style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                               </span>
                             </td>
                           </tr>
@@ -111,53 +120,54 @@
               <div class="accordion1-item" *ngIf="submissionType === 'DigitalComplete'">
                 <h2 class="accordion-header" id="flush-headingThree">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                     <span class="material-symbols-outlined icon-accordion">
                       <img src="assets/images/supervisor_account.svg" />
                     </span>
                     &nbsp;&nbsp;{{'client.companyPower'|translate|uppercase}}&nbsp;&nbsp;
-                      <img src="assets/images/triangle-exclamation-solid.svg" *ngIf="touchedTabs[2] && !form.get('powerRepresentationForm').valid" class="img_add"
-              style="height: 33px;">
+                    <img src="assets/images/triangle-exclamation-solid.svg"
+                      *ngIf="touchedTabs[2] && !form.get('powerRepresentationForm').valid" class="img_add"
+                      style="height: 33px;">
                   </button>
                 </h2>
                 <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-                    data-bs-parent="#accordionFlushExample">
-                  <app-representation-power [clientContext]="clientContext" ></app-representation-power>
+                  data-bs-parent="#accordionFlushExample">
+                  <app-representation-power [clientContext]="clientContext"></app-representation-power>
                 </div>
               </div>
             </div>
 
           </div>
         </ng-container>
- 
+
         <div class="col-10">
           <div class="row">
             <div class="col">
               <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                 <span class="navbar-text align-self-center ms-0 me-0">
                   <button id="btn5a1"
-                          class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
-                          wappler-command="editContent" [routerLink]="['/']">
+                    class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
+                    wappler-command="editContent" [routerLink]="['/']">
                     {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                       <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
                     </span>
                   </button>
                   <button *ngIf="returned == 'consult'" id="btn5a3" [routerLink]="['/']"
-                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                      wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
-                        src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                    class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                    wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
+                      src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
                 </span>
                 <button id="btn5a3"
-                        class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
-                        wappler-command="editContent" [disabled]="returned === 'consult'" (click)="redirectBeginningClient()">
+                  class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
+                  wappler-command="editContent" [disabled]="returned === 'consult'" (click)="redirectBeginningClient()">
                   <span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
                   </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
                 </button>
-                <!-- [disabled]="!form.valid" -->
                 <button id="btn5a2"
-                        class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                        wappler-command="editContent" (click)="submit()" [disabled]="!formClientIsValid || !formCountryIsValid || !countriesListValid">
+                  class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                  wappler-command="editContent" (click)="submit()"
+                  [disabled]="!formClientIsValid || !formCountryIsValid || !countriesListValid">
                   {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                   </span>

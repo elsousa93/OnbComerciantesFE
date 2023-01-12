@@ -1,17 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { utf8Encode } from '@angular/compiler/src/util';
-import { AfterViewInit, Renderer2 } from '@angular/core';
-import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { buffer, Subscription, take } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
+import { Subscription } from 'rxjs';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
-import { Configuration, configurationToken } from '../configuration';
-import { CRCService } from '../CRC/crcservice.service';
 import { DataService } from '../nav-menu-interna/data.service';
-import { ProcessService } from '../process/process.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
@@ -37,9 +32,6 @@ import { IStakeholders } from '../stakeholders/IStakeholders.interface';
   providers: [DatePipe]
 })
 export class ComprovativosComponent implements OnInit, AfterViewInit {
-  private baseUrl: string;
-
-
   public comprovativos: IComprovativos[] = [];
 
   public newComp: IComprovativos = {
@@ -49,7 +41,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "url": ""
   };
 
-  //SO PARA MOSTRAR, DEPOIS ATUALIZAR COM A API
   public compToShow: { tipo: string, interveniente: string, dataValidade: string, dataEntrada: string, status: string };
   public compsToShow: ComprovativosTemplate[] = [];
 
@@ -134,7 +125,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public result: any;
   public id: number = 0;
   public clientNr: number = 0;
-  //submissionId: string = "";
   submissionId: string = '83199e44-f089-471c-9588-f2a68e24b9ab';
 
   crcCode: string = "";
@@ -142,7 +132,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public subscription: Subscription;
   public currentPage: number;
   public map: Map<number, boolean>;
-
 
   pageName = "";
   file?: File;
@@ -222,8 +211,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute, private compService: ComprovativosService, private renderer: Renderer2,
-    private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private crcService: CRCService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService) {
+  constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute,
+    private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService) {
     this.ngOnInit();
     var context = this;
 
@@ -254,17 +243,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               context.shopList.push(shop.result);
             });
           });
-       
+
           this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
             var documents = res;
             if (documents.length != 0) {
               documents.forEach(function (value, index) {
                 var document = value;
-
                 context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
                   const now = new Date();
                   var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
-
                   var index = context.compsToShow.findIndex(value => value.id == document.id);
                   if (index == -1) {
                     var shopName = context.shopList?.find(shop => shop.bank.bank.iban === document.id)?.name;
@@ -280,11 +267,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                       documentType: val.documentType
                     });
                   }
-                  console.log("Lista de comprovativos ", context.compsToShow);
                 });
               });
             }
-
           });
         });
       });
@@ -292,7 +277,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     this.comprovativoService.getRequiredDocuments(this.submissionId).then(result => {
       context.requiredDocuments = result.result;
-
       context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
         merchant.documentPurposes.forEach(merchantDocPurposes => {
           if (merchantDocPurposes.documentState === 'NotExists') {
@@ -308,7 +292,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
             context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(result => {
-              if ((result.result.stakeholderId == null || result.result.stakeholderId == "") && result.result.fiscalId != "" ) {
+              if ((result.result.stakeholderId == null || result.result.stakeholderId == "") && result.result.fiscalId != "") {
                 context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "0501", "por mudar", "por mudar").then(stake => {
                   var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
@@ -336,8 +320,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       console.log('Terminou');
     });
 
-
-    if (this.submission.stakeholders != null) { 
+    if (this.submission.stakeholders != null) {
       if (this.submission.stakeholders.length != 0) {
         this.submission.stakeholders.forEach(stake => {
           this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(result => {
@@ -351,61 +334,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         });
       }
     }
-
-
-    //if (this.returned != null) {
-    //  this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-    //    this.submissionService.GetSubmissionByID(result[0].submissionId).then(resul => {
-    //      this.documentService.GetSubmissionDocuments(resul.id).subscribe(res => {
-    //        var documents = res;
-    //        if (documents.length != 0) {
-    //          documents.forEach(function (value, index) {
-    //            var document = value;
-    //            context.documentService.GetDocumentImage(context.submissionId, document.id).then(async (res) => {
-    //              var teste = await res.blob();
-    //              teste.lastModifiedDate = new Date();
-    //              teste.name = "nome";
-
-    //              context.file = <File>teste;
-    //              console.log("Ficheiro encontrado ", context.file);
-
-    //              context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
-    //                context.compsToShow.push({
-    //                  id: document.id,
-    //                  type: "pdf",
-    //                  expirationDate: "2024-10-10",
-    //                  stakeholder: "Manuel",
-    //                  status: "não definido",
-    //                  uploadDate: "2020-10-10",
-    //                  file: context.file,
-    //                  documentPurpose: val.documentPurpose
-    //                })
-    //                console.log("Lista de comprovativos ", context.compsToShow);
-    //              });
-    //            });
-
-    //          });
-    //        }
-
-    //      });
-
-    //      this.clientService.getClientByID(resul.merchant.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(c => {
-    //        this.submissionClient = c.result;
-    //        this.logger.debug('Cliente ' + c.result);
-    //      });
-
-    //      this.submission.stakeholders.forEach(stake => {
-    //        this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-    //          this.logger.debug('Stakeholder ' + result);
-    //          this.stakeholdersList.push(result);
-    //        }, error => {
-    //          this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
-    //        });
-    //      });
-    //    });
-    //  });
-    //}
-
   }
 
   getDocumentPurposeDescription(purpose: string) {
@@ -414,7 +342,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   checkDocumentExists(entityId: string, purpose: DocumentPurpose, type: string) {
     var context = this;
-    if (type === 'merchant') { 
+    if (type === 'merchant') {
       var docMerchantExists = false;
       context.clientService.GetClientByIdOutbound(entityId).then(client => {
         if (client.documents != null && client.documents.length > 0) {
@@ -436,7 +364,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     if (type === 'stakeholder') {
       var docStakeholderExists = false;
-      if (entityId != undefined) { 
+      if (entityId != undefined) {
         context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
           var client = stake.result;
           if (client.documents != null && client.documents.length > 0) {
@@ -477,7 +405,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       return docShopExists;
     }
   }
-  
+
 
   ngOnInit(): void {
     this.clientNr = Number(this.router.snapshot.params['id']);
@@ -526,7 +454,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         }
       }
     }
-
     this.logger.debug(this.files);
   }
 
@@ -569,7 +496,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.b64toBlob(result.binary, 'application/pdf', 512, true);
       });
     }
-
   }
 
   onDelete(file: any, documentID) {
@@ -583,9 +509,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   firstSubmission() {
-    if (!this.updatedComps) { 
+    if (!this.updatedComps) {
       this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
-    } else { 
+    } else {
       this.data.updateData(true, 4);
       this.route.navigate(['/commercial-offert-list']);
     }
@@ -605,8 +531,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.files.splice(index, 1);
 
     } else {
-      this.tableInfo.deleteDocument(this.submissionId, this.documentID).then(sucess => {
-        console.log("Sucesso a apagar um documento: ", sucess.msg);
+      this.documentService.DeleteDocumentFromSubmission(this.submissionId, this.documentID).subscribe(sucess => {
+        console.log("Sucesso a apagar um documento: ", sucess);
       }, error => {
         console.log("Erro a apagar um ficheiro: ", error.msg);
       });
@@ -638,7 +564,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   continue() {
     this.firstSubmissionModalRef?.hide();
     this.files.forEach(doc => {
-
       this.comprovativoService.readBase64(doc).then((data) => {
         var docToSend: PostDocument = {
           "documentType": "0000", //antes estava "1001"
@@ -657,22 +582,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     });
 
     var loginUser = this.authService.GetCurrentUser();
-
     this.submissionPutTeste.submissionUser = {
       user: loginUser.userName,
       branch: loginUser.bankLocation,
-      partner: loginUser.bankName 
+      partner: loginUser.bankName
     }
 
     this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
-
     this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
       this.logger.debug('Editar sub ' + result);
       this.data.updateData(true, 4);
       this.data.changeUpdatedComprovativos(true);
       this.route.navigate(['/commercial-offert-list']);
     });
-
   }
 
   getDocumentDescription(documentType: string) {
@@ -702,7 +624,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   validatedDocumentsChange(value: boolean) {
     this.validatedDocuments = value;
   }
-
 
   private readBase64(file): Promise<any> {
     const reader = new FileReader();

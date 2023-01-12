@@ -1,19 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Configuration, configurationToken } from '../configuration';
+import { Injectable } from '@angular/core';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
-import { TableInfoService } from '../table-info/table-info.service';
-import { Product, Subproduct } from '../commercial-offer/ICommercialOffer.interface';
+import { Product } from '../commercial-offer/ICommercialOffer.interface';
 
 
 
-import { ShopActivities, ShopDetailsAcquiring, ShopDetailsOutbound, ShopEquipment, ShopsListOutbound, ShopBankingInformation } from './IStore.interface';
+import { ShopActivities, ShopDetailsAcquiring, ShopEquipment, ShopsListOutbound } from './IStore.interface';
 import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
 import { AppConfigService } from '../app-config.service';
-import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +23,8 @@ export class StoreService {
 
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
-  constructor(private router: ActivatedRoute,
-    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService,
-    private route: Router, private tableinfo: TableInfoService, private APIService: APIRequestsService) {
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService,
+    private APIService: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
 
@@ -65,7 +60,7 @@ export class StoreService {
     return this.http.get<ShopsListOutbound[]>(URI, HTTP_OPTIONS);
   }
 
-  getShopInfoOutbound(merchantId: string, shopId: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?){
+  getShopInfoOutbound(merchantId: string, shopId: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
 
     var URI = this.urlOutbound + 'api/v1/merchant/' + merchantId + '/shop/' + shopId;
 
@@ -76,7 +71,7 @@ export class StoreService {
   /////////////
   //ACQUIRING//
   /////////////
-  GetAllShopActivities(): any{
+  GetAllShopActivities(): any {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Accept-Language': this.currentLanguage,
@@ -96,22 +91,13 @@ export class StoreService {
     return this.http.get<Product[]>(this.baseUrl + 'product', HTTP_OPTIONS);
   }
 
-  getProcessShopsList(processId: string) {
-    return this.http.get<SimplifiedReference[]>(this.baseUrl + 'process/' + processId + '/merchant/shop');
-  }
-
   getProcessShopDetails(processId: string, shopId: string) {
     return this.http.get<ShopDetailsAcquiring>(this.baseUrl + 'process/' + processId + '/merchant/' + 'shop/' + shopId);
   }
 
   getSubmissionShopsList(submissionId: string) {
-    //tentar alterar o url para o do Mockaco
-    //return this.http.get<SimplifiedReference[]>(this.acquiringUrl + 'submission/' + submissionId + '/merchant/shop');
     var url = this.baseUrl + 'submission/' + submissionId + '/merchant/shop';
-
-
     return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
-
   }
 
   addShopToSubmission(submissionId: string, newShop: ShopDetailsAcquiring) {
@@ -162,8 +148,6 @@ export class StoreService {
     return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId, newShopEquipment);
   }
 
-  addDocumentToShop(submissionId: string, shopId: string, ) {
-
+  addDocumentToShop(submissionId: string, shopId: string,) {
   }
-
 }

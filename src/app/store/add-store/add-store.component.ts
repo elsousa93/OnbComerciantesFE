@@ -1,23 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
-import { Activity, CountryInformation, ShopActivity, ShoppingCenter, SubActivity } from '../../table-info/ITable-info.interface';
+import { CountryInformation, ShoppingCenter, SubActivity } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { SubmissionService } from '../../submission/service/submission-service.service';
 import { SubmissionGetTemplate } from '../../submission/ISubmission.interface';
 import { Client } from '../../client/Client.interface';
-import { ClientService } from '../../client/client.service';
 import { LoggerService } from 'src/app/logger.service';
-import { StoreService } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../commercial-offer/ICommercialOffer.interface';
-import { event } from 'jquery';
+import { StoreService } from '../store.service';
 
 
 @Component({
@@ -55,9 +50,6 @@ export class AddStoreComponent implements OnInit {
   public replicateAddress: boolean = true;
   formStores!: FormGroup;
   edit: boolean = false;
-
-  teste: boolean = false;
-
 
   /*Variable declaration*/
   public stroreId: number = 0;
@@ -254,11 +246,10 @@ export class AddStoreComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient,
-    private tableData: TableInfoService,
-    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService,
-    private data: DataService, private submissionService: SubmissionService, private clientService: ClientService,
-    private rootFormGroup: FormGroupDirective, private storeService: StoreService) {
+  constructor(private logger: LoggerService, private router: ActivatedRoute,
+    private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private storeService: StoreService,
+    private data: DataService,
+    private rootFormGroup: FormGroupDirective) {
 
     this.submissionId = localStorage.getItem("submissionId");
     //this.ngOnInit();
@@ -295,7 +286,7 @@ export class AddStoreComponent implements OnInit {
       var code = this.submissionClient?.mainEconomicActivity.split('-')[0];
       this.clientHasCAE = true;
       this.subs.push(this.tableInfo.FilterStoreByCAE(code).subscribe(result => {
-      this.logger.debug(result);
+        this.logger.debug(result);
         this.activity = result;
         this.activity = this.activity.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
 
@@ -304,16 +295,16 @@ export class AddStoreComponent implements OnInit {
       }));
     } else {
       this.clientHasCAE = false;
-      this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
+      this.subs.push(this.storeService.GetAllShopActivities().subscribe(result => {
         this.logger.debug(result);
         this.activities = result;
         this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
       }, error => {
         this.logger.debug("Deu erro");
       }));
-     }
+    }
 
-    this.tableData.GetAllCountries().subscribe(result => {
+    this.tableInfo.GetAllCountries().subscribe(result => {
       this.countries = result;
     })
   }
@@ -366,28 +357,9 @@ export class AddStoreComponent implements OnInit {
   radioContactChangehandler(event: any) {
     this.selectedContactOption = event.target.value;
     if (this.selectedContactOption == "Sim") {
-      ///*Update Email according to the default from Client*/
-      //this.auxEmail = this.store..emailContact;
-      //this.store.emailContact = this.commEmail;
-      ///*Update Indicative according to the default from Client*/
-      //this.auxInd = this.store.cellphoneIndic;
-      //this.store.cellphoneIndic = this.commInd;
-      ///*Update Cellphone number according to the default from Client*/
-      //this.auxCellNumber = this.store.cellphoneNumber;
-      //this.store.cellphoneNumber = this.commCellNumber;
 
-      ///*Disable the fields from the address*/
-      //this.idisabledContact = true;
     } else {
-      ///*Update Email according to the previous value selected*/
-      //this.store.emailContact = this.auxEmail;
-      ///*Update Indicative according to the previous value selected*/
-      //this.store.cellphoneIndic = this.auxInd;
-      ///*Update Indicative according to the previous value selected*/
-      //this.store.cellphoneNumber = this.auxCellNumber;
 
-      ///*Enable the fields from the address*/
-      //this.idisabledContact = false;
     }
   }
 
@@ -406,19 +378,16 @@ export class AddStoreComponent implements OnInit {
       this.store.address.address.postalArea = this.formStores.get("localeStore").value;
       this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
       this.store.address.useMerchantAddress = false;
-      console.log('Valor do replicateAddress ', this.formStores.get("replicate").value);
     } else {
       this.store.address.address.address = this.submissionClient.headquartersAddress.address;
       this.store.address.address.country = this.submissionClient.headquartersAddress.country;
       this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
       this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
       this.store.address.useMerchantAddress = true;
-      console.log('Valor do replicateAddress ', this.formStores.get("replicate").value);
     }
 
     if (this.isComercialCentreStore) {
       this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value;
-      console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
     } else {
       console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
     }
@@ -468,12 +437,12 @@ export class AddStoreComponent implements OnInit {
   numericOnly(event): boolean {
     var ASCIICode = (event.which) ? event.which : event.keyCode;
 
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode!=45)
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 45)
       return false;
     return true;
   }
 
-  GetCountryByZipCodeTest() {
+  GetCountryByZipCode() {
     this.subzonesShopping = null;
     var currentCountry = this.formStores.get('countryStore').value;
     this.logger.debug("Pais escolhido atual");
@@ -487,21 +456,13 @@ export class AddStoreComponent implements OnInit {
       if (zipcode.length === 8) {
         var zipCode = zipcode.split('-');
 
-        this.tableData.GetAddressByZipCodeTeste(zipCode[0], zipCode[1]).then(success => {
+        this.tableInfo.GetAddressByZipCodeShops(zipCode[0], zipCode[1]).then(success => {
           var address = success.result;
           var addressToShow = address[0];
 
           this.formStores.get('addressStore').setValue(addressToShow.address);
           this.formStores.get('countryStore').setValue(addressToShow.country);
           this.formStores.get('localeStore').setValue(addressToShow.postalArea);
-
-          //this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
-          //  console.log("sucesso subzones nearby: ", result);
-          //  this.subzonesShopping = result;
-          //  this.formStores.updateValueAndValidity();
-          //}, error => {
-          //  console.log("erro na subzone: ", error);
-          //})
 
         }, error => {
           console.log("error no codigo postal: ", error);
@@ -521,7 +482,7 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').setValidators(null);
       this.formStores.get('zipCodeStore').setValidators(null);
       this.formStores.get('localeStore').setValidators(null);
-  
+
       this.formStores.get('addressStore').setValue('');
       this.formStores.get('zipCodeStore').setValue('');
       this.formStores.get('localeStore').setValue('');
@@ -543,36 +504,6 @@ export class AddStoreComponent implements OnInit {
     if (this.lockLocality)
       return false;
     return true;
-  }
-
-  GetCountryByZipCode() {
-    var currentCountry = this.formStores.get('countryStore').value;
-    this.logger.debug("Pais escolhido atual");
-
-    if (currentCountry === 'PT') {
-      this.lockLocality = true;
-      var zipcode = this.formStores.value['zipCodeStore'];
-      if (zipcode.length === 8) {
-        var zipCode = zipcode.split('-');
-
-        this.tableData.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
-
-          var addressToShow = address[0];
-
-          this.formStores.get('addressStore').setValue(addressToShow.address);
-          this.formStores.get('countryStore').setValue(addressToShow.country);
-          this.formStores.get('localeStore').setValue(addressToShow.postalArea);
-
-          //this.storeService.subzonesNearby(zipCode[0]).subscribe(result => {
-          //  this.subzones = result;
-          //})
-
-          this.formStores.updateValueAndValidity();
-        });
-      }
-    } else {
-      this.lockLocality = false;
-    }
   }
 
   initializeForm() {
@@ -601,7 +532,7 @@ export class AddStoreComponent implements OnInit {
 
   comercialCentre(isCentre: boolean) {
     this.isComercialCentreStore = isCentre;
-    if (isCentre) { 
+    if (isCentre) {
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
       if (!this.replicateAddress) {
         this.formStores.get('replicate').setValue(false);
@@ -625,11 +556,10 @@ export class AddStoreComponent implements OnInit {
           }));
         }
       }
-  } else{ 
+    } else {
       this.formStores.get('subZoneStore').setValidators(null);
     }
     this.formStores.get('subZoneStore').updateValueAndValidity();
-
   }
 
   onActivitiesSelected() {
@@ -673,7 +603,4 @@ export class AddStoreComponent implements OnInit {
       this.subProducts = [];
     }
   }
-
-
-
 }

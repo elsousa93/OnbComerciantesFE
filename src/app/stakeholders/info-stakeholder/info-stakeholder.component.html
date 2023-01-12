@@ -20,8 +20,9 @@
                             <p class="titulo-form-simples mt-0">
                                 {{'declarativeInformation.cellPhone'|translate|uppercase}}:*
                             </p>
-                            <input (keypress)="numericOnly($event)" #phone1 name="phoneNumber" type="text" id="phoneNumber" class="form-control" 
-                                formControlName="phoneNumber" [readonly]="returned === 'consult'">
+                            <input (keypress)="numericOnly($event)" #phone1 name="phoneNumber" type="text"
+                                id="phoneNumber" class="form-control" formControlName="phoneNumber"
+                                [readonly]="returned === 'consult'">
                             <div class="alert alert-danger"
                                 *ngIf="(phone.touched || phone.dirty) && !phone.valid && phone.errors.hasOwnProperty('invalidNumber')">
                                 {{'errorMessages.invalidPhone'|translate}}
@@ -36,16 +37,15 @@
                 <div class="row">
                     <div class="col-12">
                         <p class="titulo-form-simples mt-0">EMAIL</p>
-                        <input [pattern]="emailRegex" #emailClient name="emailClient" type="text" id="emailClient" class="form-control"
-                            formControlName="email" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger"
-                            *ngIf="(emailClient.touched || emailClient.dirty)">
+                        <input [pattern]="emailRegex" #emailClient name="emailClient" type="text" id="emailClient"
+                            class="form-control" formControlName="email" [readonly]="returned === 'consult'">
+                        <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty)">
                             {{'errorMessages.isRequired'|translate}}
                         </div>
                     </div>
                     <div class="alert alert-danger" *ngIf="emailValid.errors?.['pattern']">
                         {{'errorMessages.invalidEmail'|translate}}
-                      </div>
+                    </div>
                 </div>
             </form>
         </div>

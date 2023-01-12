@@ -46,7 +46,7 @@ export class DataService {
 
   historyStream = this.historyStream$.asObservable();
 
-  constructor(private logger : LoggerService, ) { }
+  constructor(private logger: LoggerService,) { }
 
   //mudar valores do map
   changeData(values: Map<number, boolean>) {
@@ -64,12 +64,12 @@ export class DataService {
 
   //mudar o valor da página atual
   changeCurrentPage(value: number) {
-    this.logger.debug("Page change "+value);
+    this.logger.debug("Page change " + value);
     this.dataPage.next(value);
     this.dataSubPage.next(1);
   }
   changeCurrentSubPage(value: number) {
-    this.logger.debug("SubPage change "+value);
+    this.logger.debug("SubPage change " + value);
     this.dataSubPage.next(value);
   }
 
@@ -103,12 +103,12 @@ export class DataService {
 
   reset() {
     this.dataSource = new BehaviorSubject(new Map().set(0, undefined)
-    .set(1, undefined)
-    .set(2, undefined)
-    .set(3, undefined)
-    .set(4, undefined)
-    .set(5, undefined)
-    .set(6, undefined));
+      .set(1, undefined)
+      .set(2, undefined)
+      .set(3, undefined)
+      .set(4, undefined)
+      .set(5, undefined)
+      .set(6, undefined));
     this.currentData = this.dataSource.asObservable();
     this.currentPage = this.dataPage.asObservable();
     this.currentSubPage = this.dataSubPage.asObservable();
@@ -122,7 +122,7 @@ export class DataService {
     this.historyStream$.next(false);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.historyStream$?.complete();
   }
 }

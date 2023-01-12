@@ -3,6 +3,7 @@
   width: 2% !important;
   padding: 0px !important;
 }
+
 .mat-sort-header-content {
   flex-wrap: nowrap !important;
   font-weight: bold;
@@ -40,7 +41,7 @@
 
 .mat-cell {
   padding-left: 11px;
-  text-align: match-parent!important;
+  text-align: match-parent !important;
 
 }
 
@@ -49,7 +50,9 @@
   width: auto !important;
 }
 
-.mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+.mat-cell:first-of-type,
+mat-header-cell:first-of-type,
+mat-footer-cell:first-of-type {
   padding-left: 0px !important;
   text-align: match-parent !important;
 }

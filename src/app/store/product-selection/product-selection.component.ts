@@ -1,16 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
-import { Configuration, configurationToken } from '../../configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { ShopDetailsAcquiring } from '../IStore.interface';
 import { StoreService } from '../store.service';
 import { } from '../store.service';
-import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, Product, ProductOutbound } from '../../commercial-offer/ICommercialOffer.interface';
-import { SubProduct } from '../../table-info/ITable-info.interface';
+import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductOutbound } from '../../commercial-offer/ICommercialOffer.interface';
 import { CommercialOfferService } from '../../commercial-offer/commercial-offer.service';
 
 
@@ -20,7 +17,7 @@ import { CommercialOfferService } from '../../commercial-offer/commercial-offer.
   styleUrls: ['./product-selection.component.css']
 })
 export class ProductSelectionComponent implements OnInit {
-  @Input() parentFormGroup : FormGroup;
+  @Input() parentFormGroup: FormGroup;
 
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
@@ -51,7 +48,7 @@ export class ProductSelectionComponent implements OnInit {
   public cardNotPresent;
   public combinedOffer;
 
-  constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private route: Router, private data: DataService,
+  constructor(private logger: LoggerService, private router: ActivatedRoute, private route: Router, private data: DataService,
     private storeService: StoreService, private rootFormGroup: FormGroupDirective, private COService: CommercialOfferService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
@@ -71,7 +68,6 @@ export class ProductSelectionComponent implements OnInit {
     this.returned = localStorage.getItem("returned");
     this.initializeForm();
 
-
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('productStores', this.formStores);
       this.edit = true;
@@ -82,7 +78,6 @@ export class ProductSelectionComponent implements OnInit {
       this.subscription = this.data.currentData.subscribe(map => this.map = map);
       this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     }
-
   }
 
   chooseSolutionAPI(productDescription: any) {
@@ -117,7 +112,7 @@ export class ProductSelectionComponent implements OnInit {
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
     this.urlRegex = '((^(http|https):\\/\\/)?((www\\.)[a-zA-Z0-9]*\\.[a-z]{2,6}))\\b([-a-zA-Z0-9@:%_\\+.~#?&\\/=]*)$([-a-zA-Z0-9@:%._\\+~#?&\\/=]*)';
     this.formStores.get("solutionType").valueChanges.subscribe(val => {
-      if (val==='cardNotPresent' || val==='CARD NOT PRESENT' || val==='Card Not Present') {
+      if (val === 'cardNotPresent' || val === 'CARD NOT PRESENT' || val === 'Card Not Present') {
         this.formStores.get('url').setValidators([Validators.required, Validators.pattern(this.urlRegex)]);
       } else
         this.formStores.get('url').setValidators(Validators.pattern(this.urlRegex));
@@ -128,7 +123,7 @@ export class ProductSelectionComponent implements OnInit {
   get urlValid() {
     return this.formStores.get('url');
   }
-  
+
   submit() {
     this.store.productCode = this.formStores.get("solutionType").value;
     this.store.subproductCode = this.formStores.get("subProduct").value;

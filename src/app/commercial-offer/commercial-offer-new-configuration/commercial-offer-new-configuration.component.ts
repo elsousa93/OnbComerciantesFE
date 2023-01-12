@@ -1,20 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, HostListener, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { distinctUntilChanged, Subscription } from 'rxjs';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Istore, ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
+import { ShopDetailsAcquiring, ShopEquipment } from '../../store/IStore.interface';
 import { LoggerService } from 'src/app/logger.service';
-import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StoreService } from '../../store/store.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductPackPricingFilter, TerminalSupportEntityEnum, MerchantCatalog, ProductPackRootAttributeProductPackKind, ProductPackPricingEntry, ProductPackPricingAttribute, ProductPackEntry } from '../../commercial-offer/ICommercialOffer.interface';
 import { CommercialOfferService } from '../commercial-offer.service';
-import { createViewChild } from '@angular/compiler/src/core';
-
-
 
 @Component({
   selector: 'app-commercial-offer-new-configuration',
@@ -27,22 +21,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
-
   //public storeEquip: ShopEquipment = { };
   public store: ShopDetailsAcquiring;
   public clientID: number = 12345678;
 
-  /////////////////////////////////////////
-  //Informação proveniente de reference data
   allCommunications: TenantCommunication[] = [];
   allTerminals: TenantTerminal[] = [];
 
-  //////////////////////////////////////////
-
-
   /*Is it supposed to relicate the Commercial offert from another store?*/
   selectionsReplicate = ['Não', 'Sim'];
-  /*Default case*/
   selectedOption = 'Não';
 
   public subscription: Subscription;
@@ -82,24 +69,21 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
       this.allCommunications = result;
-      this.allCommunications = this.allCommunications.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.allCommunications = this.allCommunications.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }), this.tableInfo.GetTenantTerminals().subscribe(result => {
       this.allTerminals = result;
-      this.allTerminals = this.allTerminals.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.allTerminals = this.allTerminals.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));
   }
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, http: HttpClient, private route: Router, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private rootFormGroup: FormGroupDirective) {
-
-    
+  constructor(private logger: LoggerService, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService) {
     this.data.updateData(false, 5, 2);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["currentStore"]) {
-      //this.changedStoreEvent.emit(true);
       this.currentStore = changes["currentStore"].currentValue;
     }
     if (changes["isNewConfig"]) {
@@ -107,7 +91,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     }
     if (changes["storeEquip"]) {
       if (changes["storeEquip"].previousValue != null) {
-        //this.updateFormData();
       }
     }
   }
@@ -137,7 +120,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.submissionId = localStorage.getItem("submissionId");
     this.returned = localStorage.getItem("returned");
-    console.log('VALOR DA LOJA SELECIONADA NAS CONFIGURAÇÕES ', this.currentStore);
     this.loadReferenceData();
     this.initializeForm();
     if (this.isNewConfig == false) {
@@ -204,15 +186,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.loadMensalidades();
       this.firstTime = false;
     }
-    //this.formConfig.get("name").setValue(this.storeEquip.shopEquipmentId, {emitEvent: false});
-    //this.formConfig.get("terminalProperty").setValue(this.storeEquip.equipmentOwnership, { emitEvent: false });
-    //this.formConfig.get("communicationOwnership").setValue(this.storeEquip.communicationOwnership, { emitEvent: false });
-    //this.formConfig.get("terminalType").setValue(this.storeEquip.equipmentType, { emitEvent: false });
-    //this.formConfig.get("communicationType").setValue(this.storeEquip.communicationType, { emitEvent: false });
-    //this.formConfig.get("terminalAmount").setValue(this.storeEquip.quantity, { emitEvent: false });
-    //this.pricingOptions = [];
-    //this.pricingAttributeList = [];
-    //this.loadMensalidades();
   }
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
@@ -261,8 +234,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       }
     });
   }
-
-
 
   //ao escolher uma mensalidade, é carregado os valores associados a essa mensalidade escolhida
   chooseMensalidade(id: string) {
@@ -329,7 +300,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         var group = this.pricingForm.controls["formGroupPricing" + attr.id];
         if (!attr.isReadOnly) {
           attr.originalValue = group.get("formControlPricingOriginal" + attr.id).value;
-          attr.value = group.get("formControlPricingDiscount" + attr.id).value; 
+          attr.value = group.get("formControlPricingDiscount" + attr.id).value;
           attr.finalValue = group.get("formControlPricingFinal" + attr.id).value;
         }
       });
@@ -338,10 +309,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.storeEquip.pricing.id = this.selectedMensalidadeId;
       this.storeEquip.pricing.attribute = this.pricingAttributeList[0];
 
-      console.log('Valor do store equip ', this.storeEquip);
 
       if (this.isNewConfig == false) {
-        console.log('EDITAR STORE EQUIP');
         //chamada à API para editar uma configuração
         this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip.id, this.storeEquip).subscribe(result => {
           this.changedStoreEvent.emit(true);
@@ -363,10 +332,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   onActivate() {
     document.getElementById("btn5a4").addEventListener("click", () => {
-      document.getElementById("btn5a2").focus({preventScroll:false});  // default: {preventScroll:false}
+      document.getElementById("btn5a2").focus({ preventScroll: false });  // default: {preventScroll:false}
     });
   }
-  
+
   cancelConfig() {
     this.pricingOptions = [];
     this.pricingAttributeList = [];
@@ -383,7 +352,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     } else {
       this.isInvalidNumber = false;
     }
-
   }
 
   decimalOnly(event): boolean { // restrict e,+,-,E characters in  input type number
@@ -400,9 +368,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     }
 
     this.isInvalidNumber = false;
-
     return true;
-
   }
-
 }

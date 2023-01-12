@@ -1,16 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { NavigationExtras, Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Client } from '../../client/Client.interface';
-import { SubmissionService } from '../../submission/service/submission-service.service';
 import { MatSort } from '@angular/material/sort';
 import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
 import { StoreTableComponent } from '../store-table/store-table.component';
@@ -22,7 +19,6 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { StoreIbanComponent } from '../store-iban/store-iban.component';
 import { PostDocument } from '../../submission/document/ISubmission-document';
-import { ComprovativosComponent } from '../../comprovativos/comprovativos.component';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { DatePipe } from '@angular/common';
@@ -41,7 +37,6 @@ export class StoreComponent implements AfterViewInit {
   storesMat: MatTableDataSource<ShopDetailsAcquiring>;
 
   private baseUrl: string;
-
   public edit: string = "true";
 
   /*variable declaration*/
@@ -52,7 +47,6 @@ export class StoreComponent implements AfterViewInit {
   public subscription: Subscription;
 
   displayedColumns: string[] = ['name', 'activity', 'subActivity', 'address'];
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(StoreTableComponent) viewChild!: StoreTableComponent;
@@ -73,9 +67,7 @@ export class StoreComponent implements AfterViewInit {
   storesLength: number = 0;
 
   ngAfterViewInit() {
-    //this.storesMat = new MatTableDataSource();
-    //this.storesMat.paginator = this.paginator;
-    //this.storesMat.sort = this.sort;
+
   }
 
   removedStoreSubject: Subject<ShopDetailsAcquiring> = new Subject<ShopDetailsAcquiring>();
@@ -100,14 +92,14 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(http: HttpClient, private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private submissionService: SubmissionService, private ref: ChangeDetectorRef, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
 
     this.data.updateData(false, 3, 1);
   }
 
-  initializeForm(){
+  initializeForm() {
     this.editStores = this.formBuilder.group({
       infoStores: this.formBuilder.group({
         "storeName": [''],
@@ -155,7 +147,6 @@ export class StoreComponent implements AfterViewInit {
     }
   }
 
-
   addStore() {
     if (this.storesLength > 0 && this.currentStore != null) {
       this.resetForm();
@@ -195,7 +186,6 @@ export class StoreComponent implements AfterViewInit {
     if (this.currentStore != null) {
       var context = this;
       var infoStores = this.editStores.controls["infoStores"];
-      console.log("FORM INFO STORES AO SELECIONAR UMA LOJA ", this.editStores);
       infoStores.get("storeName").setValue(this.currentStore.name);
       infoStores.get("activityStores").setValue(this.currentStore.activity);
       infoStores.get("contactPoint").setValue(this.currentStore.contactPerson);
@@ -224,7 +214,6 @@ export class StoreComponent implements AfterViewInit {
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
         this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
           context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).subscribe(res => {
-            console.log("imagem de um documento ", res);
             var file = res.blob();
 
             file.lastModifiedDate = new Date();
@@ -241,8 +230,6 @@ export class StoreComponent implements AfterViewInit {
         });
 
       }
-
-
       var productStores = this.editStores.controls["productStores"];
       productStores.get("solutionType").setValue(this.currentStore.productCode);
       this.productSelectionComponent.chooseSolutionAPI(this.currentStore.productCode);
@@ -255,7 +242,6 @@ export class StoreComponent implements AfterViewInit {
   deleteStore() {
     if (this.currentStore != null) {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
-        console.log("Valor retornado após a loja ter sido eliminada da submissão ", result);
         this.resetForm();
         this.emitRemovedStore(this.currentStore);
         this.currentStore = null;
@@ -307,11 +293,6 @@ export class StoreComponent implements AfterViewInit {
         useMerchantBank: bankStores.get("bankInformation").value
       }
 
-      //this.currentStore.bank = new ShopBank();
-      //this.currentStore.bank.bank = new ShopBankingInformation();
-      //this.currentStore.bank.bank.bank = bankStores.get("supportBank").value;
-      //this.currentStore.bank.useMerchantBank = bankStores.get("bankInformation").value;
-
       var productStores = this.editStores.controls["productStores"];
 
       this.currentStore.productCode = productStores.get("solutionType").value;
@@ -324,10 +305,8 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER;
       }
 
-      console.log("ESTRUTURA DE DADOS DA LOJA ANTES DE SER ADICIONADA ", this.currentStore);
       if (addStore) {
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
-          console.log('LOJA ADICIONADA ', result);
           this.currentStore.id = result["id"];
           this.addDocumentToShop(result["id"], this.currentStore);
           this.emitInsertedStore(this.currentStore);
@@ -337,13 +316,12 @@ export class StoreComponent implements AfterViewInit {
         });
       } else {
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-          console.log('LOJA EDITADA', result);
           if (isEditButton) {
             this.addDocumentToShop(this.currentStore.id, this.currentStore);
             this.resetForm();
             this.currentStore = null;
             this.currentIdx = -2;
-          } else { 
+          } else {
             if (this.currentIdx < (this.storesLength - 1)) {
               this.addDocumentToShop(this.currentStore.id, this.currentStore);
               this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
@@ -389,7 +367,6 @@ export class StoreComponent implements AfterViewInit {
   fetchStartingInfo() {
     this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
       this.submissionClient = client;
-      console.log("cliente da submissao: ", this.submissionClient);
     });
   }
 
@@ -431,7 +408,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   addDocumentToShop(storeId: string, store: ShopDetailsAcquiring) {
-    if (this.ibansToShow != null) { 
+    if (this.ibansToShow != null) {
       var context = this;
       this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
         var docToSend: PostDocument = {
@@ -446,14 +423,12 @@ export class StoreComponent implements AfterViewInit {
         }
 
         context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
-          console.log("Adicionei um documento à submissão: ", res);
           store.bank.bank.iban = res.id;
           this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
             context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
-              console.log('LOJA ATUALIZADA ', res);
+              console.log('Loja Atualizada ', res);
             });
           });
-
         })
       })
     }

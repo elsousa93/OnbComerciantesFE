@@ -1,11 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Process } from './process.interface';
-import { FormGroup, FormControl, NgForm } from '@angular/forms';
 import { ProcessService } from './process.service';
-import { Configuration, configurationToken } from '../configuration';
-import { LoggerService } from 'src/app/logger.service';
 
 
 @Component({
@@ -20,13 +17,8 @@ export class ProcessComponent implements OnInit {
   public allSuccessProcesses: Process[] = [];
   public allIncompletedProcesses: Process[] = [];
 
-  constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient,
-    private route: Router,
+  constructor(private route: Router,
     private ProcessService: ProcessService) {
-
-
-    this.ngOnInit();
 
     ProcessService.getAllProcessSubmissions("1").subscribe(result => {
       this.allProcesses = result;
@@ -39,21 +31,12 @@ export class ProcessComponent implements OnInit {
     ProcessService.getAllIncompletedSubmissions("2").subscribe(result => {
       this.allIncompletedProcesses = result;
     });
-
-    //http.get<Process[]>(baseUrl + 'BEProcess/GetAllProcesses/ghjkl').subscribe(result => {
-    //  this.allProcesses = result;
-    //  this.logger.debug(this.allProcesses);
-    //  }, error => console.error(error));
-    
   }
 
   redirectToMoreInformation(id) {
-
     this.route.navigate(['/acceptance/', id]);
-
   }
 
   ngOnInit(): void {
   }
-
 }

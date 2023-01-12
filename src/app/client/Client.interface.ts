@@ -126,67 +126,54 @@ export interface MainOfficeAddress {
   postalArea?: string,
   locality?: string,
   country?: string
-  
-}
 
+}
 export interface BusinessGroup {
   type?: string,
   branch?: string,
 }
-
 export interface SalesOutbound {
   annualEstimatedRevenue?: Number,
   transactionsAverage?: Number,
   productsOrServicesSold?: string[],
   productsOrServicesCountries?: string[],
 }
-
 export interface Sales {
   estimatedAnualRevenue?: Number,
   transactionsAverage?: Number,
   servicesOrProductsSold?: string[],
   servicesOrProductsDestinations?: string[],
 }
-
 export interface ForeignFiscalInformation {
   issuerCountry?: string,
   issuanceIndicator?: string,
   fiscalId?: string,
   issuanceReason?: string,
 }
-
 export interface BankInformation {
   bank?: string,
   branch?: string,
   iban?: string,
   accountOpenedAt?: string,
 }
-
 export class Contacts {
-  //preferredMethod?: string
-  //preferredPeriod?: PreferredPeriod
   phone1?: Phone
   phone2?: Phone
-/*  fax?: Phone*/
   email?: string
 }
-
 export interface PreferredPeriod {
   startsAt: string,
   endsAt: string,
 }
-
 export class Phone {
   countryCode?: string
   phoneNumber?: string
   phoneIndicative?: string
 }
-
 export interface Phone2 {
   countryCode: string,
   phoneNumber: string,
 }
-
 export interface Fax {
   countryCode: string,
   phoneNumber: string,

@@ -4,14 +4,13 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { AppRoutingModule } from './app-routing.module';
 import { ComprovativosService } from './comprovativos/services/comprovativos.services';
 import { HttpUtilService } from './comprovativos/services/http.services';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroupDirective } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroupDirective } from '@angular/forms';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-
 import { AppComponent } from './app.component';
 import { ComprovativosComponent } from './comprovativos/comprovativos.component';
 import { ClientComponent } from './client/client.component';
@@ -75,14 +74,12 @@ import { SearchStakeholdersComponent } from './stakeholders/search-stakeholders/
 import { StoreTableComponent } from './store/store-table/store-table.component';
 import { LoggingInterceptor } from 'src/logger/loggerInterceptor';
 import { ClientCharacterizationComponent } from './client/clientCharacterization/clientcharacterization.component';
-import { RepresentationPowerListComponent } from './client/representation-power/representation-power-list/representation-power-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { InterceptorModule } from './interceptor/interceptor.module';
 import { AppConfigService } from './app-config.service';
 
 registerLocaleData(localePT);
-
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/');
@@ -141,8 +138,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     StakeholdersListComponent,
     ClientSearchComponent,
     SearchStakeholdersComponent,
-    StoreTableComponent,
-    RepresentationPowerListComponent,
+    StoreTableComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -181,8 +177,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'app-consultas', component: ConsultasComponent },
       { path: 'app-consultas-ft', component: ConsultasFTComponent },
       { path: 'app-consultas/:id', component: ConsultasComponent },
-      { path: 'app-pack-contratual', component: PackContratualComponent},
-      { path: 'app-obter-pack-contratual', component: ObterPackContratualComponent},
+      { path: 'app-pack-contratual', component: PackContratualComponent },
+      { path: 'app-obter-pack-contratual', component: ObterPackContratualComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'comprovativos/:id', component: ComprovativosComponent },
       { path: 'app-comprovativos/:id', component: ComprovativosComponent },
@@ -199,7 +195,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'logout', component: LogoutComponent },
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'support-contacts', component: SupportContactsComponent },
-      { path: 'dashboard', component: DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent },
 
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
 
@@ -225,18 +221,18 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       }
     }),
     LoggerModule.forRoot({
-      level : environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
+      level: environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
       enableSourceMaps: true,
-      serverLoggingUrl:"BELogging",
-      serverLogLevel:NgxLoggerLevel.DEBUG
-      
-    },{
-      writerProvider : {
-          provide: TOKEN_LOGGER_WRITER_SERVICE, useClass: WriterCustomService
-        },
-      serverProvider : {
-          provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: ServerCustomService
-        }
+      serverLoggingUrl: "BELogging",
+      serverLogLevel: NgxLoggerLevel.DEBUG
+
+    }, {
+      writerProvider: {
+        provide: TOKEN_LOGGER_WRITER_SERVICE, useClass: WriterCustomService
+      },
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: ServerCustomService
+      }
     }),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }, ComprovativosService, HttpUtilService, AuthGuard, CookieService, BsModalService, StakeholderService, TableInfoService, DatePipe, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }, FormGroupDirective, AppComponent, AppConfigService, { provide: APP_INITIALIZER, useFactory: appInitializerFn, multi: true, deps: [AppConfigService] }],

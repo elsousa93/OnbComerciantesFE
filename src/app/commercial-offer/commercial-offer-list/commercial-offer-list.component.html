@@ -14,22 +14,18 @@
         </nav>
       </div>
       <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
-        <!--ANTES offset-1 bg-white align-self-center col-10 mt-0 pt-2 ps-0-->
         <h2 class="text-primary mt-5 pb-2 ps-0 m-align">
-          <!--ps-2-->
           <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.titleOffer'|translate}}
         </h2>
-        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true [updatedStoreEvent]="updatedStoreEvent"
-          [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"
-          [previousStoreEvent]="previousStoreEvent" (listLengthEmitter)="getStoresListLength($event)"></app-store-table>
+        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true
+          [updatedStoreEvent]="updatedStoreEvent" [currentStore]="currentStore" [currentIdx]="currentIdx"
+          (selectedStoreEmitter)="selectStore($event)" [previousStoreEvent]="previousStoreEvent"
+          (listLengthEmitter)="getStoresListLength($event)"></app-store-table>
       </div>
-
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
       </div>
-
       <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
-        <!-- accordion -->
         <div class="accordion1 accordion-flush" id="accordionFlushExample">
           <div class="accordion1-item">
             <h2 class="accordion1-header" id="flush-headingOne">
@@ -77,7 +73,6 @@
                   </select>
                   <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                 </div>
-
                 <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
                   <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                   <p class="titulo-form-simples mb-3" wappler-command="editContent">
@@ -111,7 +106,6 @@
               </div>
             </div>
           </div>
-
           <div class="accordion1-item">
             <h2 class="accordion-header" id="flush-headingTwo">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton2"
@@ -124,21 +118,6 @@
             </h2>
             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
               data-bs-parent="#accordionFlushExample">
-              <!--<div class="row ps-2" *ngFor="let product of products">
-    <div class="ms-0 me-0 pt-2 ps-3 pe-0 col-12">
-      <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 pb-3">
-        <span class="navbar-text">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value={{product.code}} id="radio3" formControlName="productPackKind" name="productPackKind" (click)="getPackDetails()">
-            <label class="form-check-label radio pe-5" for="radio3"
-                   wappler-command="editContent">{{product.name}}</label>
-          </div>
-        </span>
-      </nav>
-    </div>
-   </div>
-   <hr>-->
               <p class="titulo-form-simples pb-4" wappler-command="editContent">
                 {{'commercialOffer.commercialPackType'|translate}}*:</p>
               <ng-container *ngIf="packs != null && packs?.length > 0">
@@ -149,79 +128,75 @@
                         (click)="selectCommercialPack(pack.id)" value={{pack.id}} name="productPackKind" />
                       <label class="form-check-label radio pe-5" for={{pack.id}}>{{pack.description}}</label>
                     </div>
-
                   </span>
                 </nav>
               </ng-container>
-
-
               <div class="row" *ngIf="isPackSelected">
-                <!-- PAYMENT SCHEMES -->
                 <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0"
-                     *ngIf="paymentSchemes?.kind == 'simple'">
+                  *ngIf="paymentSchemes?.kind == 'simple'">
                   <div class="row">
                     <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                       {{paymentSchemes.description}}
                     </p>
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
-                         *ngFor="let attribute of paymentSchemes.attributes"
-                         formGroupName="{{'formGroupPayment' + paymentSchemes.id}}">
+                    <nav
+                      class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
+                      *ngFor="let attribute of paymentSchemes.attributes"
+                      formGroupName="{{'formGroupPayment' + paymentSchemes.id}}">
                       <span class="navbar-text text-start align-self-start">
                         <div class="form-check" *ngIf="attribute.isVisible">
                           <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}"
-                                 name="{{'formControlPayment' + attribute.id}}"
-                                 formControlName="{{'formControlPayment' + attribute.id}}"
-                                 [attr.disabled]="attribute.isReadOnly ? true : null">
+                            name="{{'formControlPayment' + attribute.id}}"
+                            formControlName="{{'formControlPayment' + attribute.id}}"
+                            [attr.disabled]="attribute.isReadOnly ? true : null">
                           <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                         </div>
                       </span>
                     </nav>
                   </div>
                 </div>
-
-                <!-- ATRIBUTOS DO PACOTE -->
                 <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngFor="let group of groupsList"
-                     formGroupName="{{'formGroup' + group.id}}">
+                  formGroupName="{{'formGroup' + group.id}}">
                   <div class="row">
                     <div class="row" *ngIf="group.kind == 'simple'">
                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                         {{group.description}}
                       </p>
                       <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0"
-                           *ngFor="let attribute of group.attributes">
+                        *ngFor="let attribute of group.attributes">
                         <span class="navbar-text text-start align-self-start">
                           <div class="form-check" *ngIf="attribute.isVisible">
-                            <input *ngIf="attribute.aggregatorId!==null" class="form-check-input"
-                                   type="radio" id="{{'formControl' + attribute.aggregatorId}}" name="{{'formControl' + attribute.aggregatorId}}" value="{{attribute.description}}"
-                                   formControlName="{{'formControl' + attribute.aggregatorId}}"
-                                   [attr.disabled]="attribute.isReadOnly ? true : null">
-                            <input *ngIf="attribute.aggregatorId===null" [value]="attribute.isSelected" class="form-check-input"
-                                   type="checkbox" id="{{'formControl' + attribute.id}}"
-                                   name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}"
-                                   [attr.disabled]="attribute.isReadOnly ? true : null">
+                            <input *ngIf="attribute.aggregatorId!==null" class="form-check-input" type="radio"
+                              id="{{'formControl' + attribute.aggregatorId}}"
+                              name="{{'formControl' + attribute.aggregatorId}}" value="{{attribute.description}}"
+                              formControlName="{{'formControl' + attribute.aggregatorId}}"
+                              [attr.disabled]="attribute.isReadOnly ? true : null">
+                            <input *ngIf="attribute.aggregatorId===null" [value]="attribute.isSelected"
+                              class="form-check-input" type="checkbox" id="{{'formControl' + attribute.id}}"
+                              name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}"
+                              [attr.disabled]="attribute.isReadOnly ? true : null">
                             <label class="form-check-label texto_check_box"
-                                   for="input1">{{attribute.description}}</label>
-                            <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
+                              for="input1">{{attribute.description}}</label>
+                            <div
+                              *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                               <ng-container *ngIf="attribute.bundles.length > 0">
                                 <div *ngFor="let bundle of attribute.bundles"
-                                     formGroupName="{{'formGroupBundle' + bundle.id}}">
-                                  <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
+                                  formGroupName="{{'formGroupBundle' + bundle.id}}">
                                   <div *ngIf="bundle.kind == 'simple'">
                                     <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                                       {{bundle.description}}
                                     </p>
-                                    <!--{{bundle.description}}-->
-                                    <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0"
-                                         *ngFor="let bundleAttr of bundle.attributes">
+                                    <nav
+                                      class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0"
+                                      *ngFor="let bundleAttr of bundle.attributes">
                                       <span class="navbar-text text-start align-self-start">
                                         <div class="form-check" *ngIf="bundleAttr.isVisible">
                                           <input class="form-check-input" type="checkbox"
-                                                 id="{{'formControl' + bundleAttr.id}}"
-                                                 formControlName="{{'formControlBundle' + bundleAttr.id}}"
-                                                 name="{{'formControl' + bundleAttr.id}}"
-                                                 [attr.disabled]="bundleAttr.isReadOnly ? true : null">
+                                            id="{{'formControl' + bundleAttr.id}}"
+                                            formControlName="{{'formControlBundle' + bundleAttr.id}}"
+                                            name="{{'formControl' + bundleAttr.id}}"
+                                            [attr.disabled]="bundleAttr.isReadOnly ? true : null">
                                           <label class="form-check-label texto_check_box"
-                                                 for="input1">{{bundleAttr.description}}</label>
+                                            for="input1">{{bundleAttr.description}}</label>
                                         </div>
                                       </span>
                                     </nav>
@@ -235,92 +210,82 @@
                     </div>
                   </div>
                 </div>
-                <!-- MAIS DETALHES -->
                 <div class="row">
                   <div class="ms-0 me-0 pt-2 ps-3 pe-0 align-self-start col-3" *ngIf="paymentSchemes != null">
                     <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                      <!--*ngIf="paymentSchemes?.kind == 'advanced'"-->
                       <button id="btn5a" style="margin-bottom: 10px !important"
-                              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                              wappler-command="editContent" (click)="changeShowMore()">
-                        <img [src]="showMore ? 'assets/images/angle-up-solid.svg' : 'assets/images/angle-down-solid.svg'"
-                             style="height: 25px !important; vertical-align: sub;" />
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                        wappler-command="editContent" (click)="changeShowMore()">
+                        <img
+                          [src]="showMore ? 'assets/images/angle-up-solid.svg' : 'assets/images/angle-down-solid.svg'"
+                          style="height: 25px !important; vertical-align: sub;" />
                         {{showMore ? 'MENOS DETALHE' : 'MAIS DETALHE'}}
                       </button>
                     </span>
                   </div>
                 </div>
-                <ng-container *ngIf="showMore"> <!--ANTES ERA ng-container sem a class row-->
-                  <ng-container 
-                       *ngIf="paymentSchemes?.kind == 'advanced'">
-                    <!--<div class="row">-->
-                      <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
-                        {{paymentSchemes.description}}
-                      </p>
-                      <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
-                           *ngFor="let attribute of paymentSchemes.attributes"
-                           formGroupName="{{'formGroupPayment' + paymentSchemes.id}}">
-                        <!-- LISTAR OS ATRIBUTOS-->
-                        <span class="navbar-text text-start align-self-start">
-                          <div class="form-check" *ngIf="attribute.isVisible">
-                            <input class="form-check-input" type="checkbox"
-                                   id="{{'formControlPayment' + attribute.id}}"
-                                   name="{{'formControlPayment' + attribute.id}}"
-                                   formControlName="{{'formControlPayment' + attribute.id}}"
-                                   [attr.disabled]="attribute.isReadOnly ? true : null">
-                            <label class="form-check-label texto_check_box"
-                                   for="input1">{{attribute.description}}</label>
-                          </div>
-                        </span>
-                      </nav>
-                    <!--</div>-->
+                <ng-container *ngIf="showMore">
+                  <ng-container *ngIf="paymentSchemes?.kind == 'advanced'">
+                    <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
+                      {{paymentSchemes.description}}
+                    </p>
+                    <nav
+                      class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
+                      *ngFor="let attribute of paymentSchemes.attributes"
+                      formGroupName="{{'formGroupPayment' + paymentSchemes.id}}">
+                      <span class="navbar-text text-start align-self-start">
+                        <div class="form-check" *ngIf="attribute.isVisible">
+                          <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}"
+                            name="{{'formControlPayment' + attribute.id}}"
+                            formControlName="{{'formControlPayment' + attribute.id}}"
+                            [attr.disabled]="attribute.isReadOnly ? true : null">
+                          <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
+                        </div>
+                      </span>
+                    </nav>
                   </ng-container>
-
-                  <ng-container *ngFor="let group of groupsList"
-                       formGroupName="{{'formGroup' + group.id}}">
-                    <!--<div class="row">-->
-                      <ng-container *ngIf="group.kind == 'advanced'">
-                        <div class="col-3">
+                  <ng-container *ngFor="let group of groupsList" formGroupName="{{'formGroup' + group.id}}">
+                    <ng-container *ngIf="group.kind == 'advanced'">
+                      <div class="col-3">
                         <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                           {{group.description}}
                         </p>
-                        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
-                             *ngFor="let attribute of group.attributes">
-                          <!-- LISTAR OS ATRIBUTOS -->
+                        <nav
+                          class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
+                          *ngFor="let attribute of group.attributes">
                           <span class="navbar-text text-start align-self-start">
                             <div class="form-check" *ngIf="attribute.isVisible">
-                              <input *ngIf="attribute.aggregatorId!==null" class="form-check-input"
-                                     type="radio" id="{{'formControl' + attribute.aggregatorId}}"
-                                     name="{{'formControl' + attribute.aggregatorId}}"
-                                     value="{{attribute.description}}"
-                                     formControlName="{{'formControl' + attribute.aggregatorId}}"
-                                     [attr.disabled]="attribute.isReadOnly ? true : null">
-                              <input *ngIf="attribute.aggregatorId===null" class="form-check-input"
-                                     type="checkbox" id="{{'formControl' + attribute.id}}"
-                                     name="{{'formControl' + attribute.id}}"
-                                     formControlName="{{'formControl' + attribute.id}}"
-                                     [attr.disabled]="attribute.isReadOnly ? true : null">
+                              <input *ngIf="attribute.aggregatorId!==null" class="form-check-input" type="radio"
+                                id="{{'formControl' + attribute.aggregatorId}}"
+                                name="{{'formControl' + attribute.aggregatorId}}" value="{{attribute.description}}"
+                                formControlName="{{'formControl' + attribute.aggregatorId}}"
+                                [attr.disabled]="attribute.isReadOnly ? true : null">
+                              <input *ngIf="attribute.aggregatorId===null" class="form-check-input" type="checkbox"
+                                id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}"
+                                formControlName="{{'formControl' + attribute.id}}"
+                                [attr.disabled]="attribute.isReadOnly ? true : null">
                               <label class="form-check-label texto_check_box"
-                                     for="input1">{{attribute.description}}</label>
-                              <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
+                                for="input1">{{attribute.description}}</label>
+                              <div
+                                *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                 <ng-container *ngIf="attribute.bundles.length > 0">
                                   <div *ngFor="let bundle of attribute.bundles"
-                                       formGroupName="{{'formGroupBundle' + bundle.id}}">
-                                    <!-- LISTAR OS BUNDLES DOS ATRIBUTOS -->
+                                    formGroupName="{{'formGroupBundle' + bundle.id}}">
                                     <div *ngIf="bundle.kind == 'advanced'">
                                       <p class="titulo-form-simples align-self-start mb-1"
-                                         wappler-command="editContent">{{bundle.description}}</p>
-                                      <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
-                                           *ngFor="let bundleAttr of bundle.attributes">
+                                        wappler-command="editContent">{{bundle.description}}</p>
+                                      <nav
+                                        class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
+                                        *ngFor="let bundleAttr of bundle.attributes">
                                         <span class="navbar-text text-start align-self-start">
                                           <div class="form-check" *ngIf="bundleAttr.isVisible">
                                             <input class="form-check-input" type="checkbox"
-                                                   id="{{'formControl' + bundleAttr.id}}"
-                                                   formControlName="{{'formControlBundle' + bundleAttr.id}}"
-                                                   name="{{'formControl' + bundleAttr.id}}"
-                                                   [attr.disabled]="bundleAttr.isReadOnly ? true : null">
+                                              id="{{'formControl' + bundleAttr.id}}"
+                                              formControlName="{{'formControlBundle' + bundleAttr.id}}"
+                                              name="{{'formControl' + bundleAttr.id}}"
+                                              [attr.disabled]="bundleAttr.isReadOnly ? true : null">
                                             <label class="form-check-label texto_check_box"
-                                                   for="input1">{{bundleAttr.description}}</label>
+                                              for="input1">{{bundleAttr.description}}</label>
                                           </div>
                                         </span>
                                       </nav>
@@ -331,20 +296,13 @@
                             </div>
                           </span>
                         </nav>
-                        </div>
-                      </ng-container>
-                    <!--</div>-->
+                      </div>
+                    </ng-container>
                   </ng-container>
-
-
                 </ng-container>
-                <!-- </div> -->
-
               </div>
             </div>
           </div>
-
-
           <div class="accordion1-item">
             <h2 class="accordion-header" id="flush-headingThree">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton3"
@@ -426,7 +384,6 @@
               </ng-container>
             </div>
           </div>
-
           <div class="accordion1-item">
             <h2 class="accordion-header" id="flush-headingFour">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton4"
@@ -439,7 +396,6 @@
             </h2>
             <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
               data-bs-parent="#accordionFlushExample">
-
               <div class="table-responsive mb-2 ps-2 pe-3"
                 *ngIf="commissionOptions.length > 1 && commissionAttributeList.length == 0">
                 <table class="table table-success">
@@ -465,7 +421,6 @@
                   </tbody>
                 </table>
               </div>
-
               <div class="table-responsive mb-2 ps-2 pe-3"
                 *ngIf="commissionAttributeList != null && commissionAttributeList.length > 0">
                 <table class="table table-success">
@@ -492,13 +447,13 @@
                         <input type="number" [attr.disabled]="commission.minValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="{{'commissionMin' + commission.id}}"  />
+                          formControlName="{{'commissionMin' + commission.id}}" />
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.maxValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
-                          formControlName="{{'commissionMax' + commission.id}}"/>
+                          formControlName="{{'commissionMax' + commission.id}}" />
                       </td>
                       <td class="text-primary text-center">
                         <input type="number" [attr.disabled]="commission.fixedValue.isReadOnly ? true : null"
@@ -545,7 +500,8 @@
                 class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                 wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
                   style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-              <button [disabled]="!form.valid || (storeEquipList.length == 0  && !userBanca && isUnicre) || this.commissionId === ''"
+              <button
+                [disabled]="!form.valid || (storeEquipList.length == 0  && !userBanca && isUnicre) || this.commissionId === ''"
                 (click)="submit()" id="btn5a1"
                 class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                 wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
@@ -555,7 +511,6 @@
           </nav>
         </div>
       </div>
-
     </div>
   </form>
 </div>

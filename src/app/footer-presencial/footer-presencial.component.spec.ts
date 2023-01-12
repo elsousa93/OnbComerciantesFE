@@ -8,9 +8,9 @@ describe('FooterPresencialComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FooterPresencialComponent ]
+      declarations: [FooterPresencialComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

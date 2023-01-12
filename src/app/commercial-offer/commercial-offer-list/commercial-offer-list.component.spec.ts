@@ -8,9 +8,9 @@ describe('CommercialOfferListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommercialOfferListComponent ]
+      declarations: [CommercialOfferListComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

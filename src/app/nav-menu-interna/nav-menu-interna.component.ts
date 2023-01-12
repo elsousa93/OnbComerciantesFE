@@ -1,17 +1,11 @@
 import { EventEmitter, Output, ViewChild } from '@angular/core';
-import { ElementRef } from '@angular/core';
-import { QueryList } from '@angular/core';
 import { ViewChildren } from '@angular/core';
-
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from './data.service';
 import { Router } from '@angular/router';
 import { AutoHideSidenavAdjustBarraTopo } from '../animation';
 import { LoggerService } from 'src/app/logger.service';
-import { AuthService } from '../services/auth.service';
-import { User } from '../userPermissions/user';
-
 
 @Component({
   selector: 'app-nav-menu-interna',
@@ -40,15 +34,10 @@ export class NavMenuInternaComponent implements OnInit {
   //subscription para os valores do map e da currentPage que vêm do dataService
   public subscription: Subscription;
   public historySubscription: Subscription;
-
   public isActive: boolean;
-
   public startedEditing: boolean; //preciso de ter associado a página
-
   prevScrollpos: number = window.pageYOffset;
-
   public isHistory: boolean = false;
-
 
   constructor(private logger: LoggerService, private data: DataService, private route: Router) {
   }
@@ -82,21 +71,6 @@ export class NavMenuInternaComponent implements OnInit {
     }
   }
 
-  //setI(page: number) {
-  //  if (page == this.currentPage) {
-  //    return 'fas fa-circle icone-menu-secundario';
-  //  } else {
-  //    if (this.map.get(page)) { //value do map (undefined, true ou false)
-  //      return 'far fa-check-circle icone-menu-secundario'; // por a aparecer o certo 
-  //    } else {
-  //      if (this.map.get(page) == false) {
-  //        return 'fas fa-exclamation-triangle icone-menu-secundario-incompleto'; //laranja
-  //      }
-  //      return 'far fa-circle icone-menu-secundario-inactivo';  //desativo
-  //    }
-  //  }
-  //}
-
   setAnchor(page: number) {
     if (page == this.currentPage) {
       return 'active text-white texto-menu-secundario'; // página atual -> atualizado
@@ -112,8 +86,7 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   setImage(page: number) {
-    if (page == this.currentPage) 
-    {
+    if (page == this.currentPage) {
       return 'icone-menu-secundario'; //caso seja a página atual
     }
   }
@@ -130,7 +103,6 @@ export class NavMenuInternaComponent implements OnInit {
       }
       return 'assets/images/circle-regular.svg'; //caso ainda n tenha sido visitado;
     }
-
   }
 
   onClick(e) {
@@ -160,7 +132,7 @@ export class NavMenuInternaComponent implements OnInit {
     if (this.currentPage > 3 || this.map.get(3) != undefined) {
       this.route.navigate(['store-comp']);
     }
-    
+
   }
 
   goToComprovativos() {
@@ -193,9 +165,7 @@ export class NavMenuInternaComponent implements OnInit {
     this.prevScrollpos = currentScrollPos;
   }
 
-  ngOnDestroy(){
-    //this.historySubscription?.unsubscribe();
-    //this.data.updateData(false,0,0);
+  ngOnDestroy() {
+
   }
 }
-

@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { merge, Observable, switchMap } from 'rxjs';
-import { Configuration, configurationToken } from './configuration';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { AppConfigService } from './app-config.service';
 
@@ -16,7 +12,7 @@ export class TokenService {
   private neyondBackURL: string;
   docasURL: string = "DOCAS/";
 
-  constructor(private router: ActivatedRoute, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private route: Router, private authService: AuthService) {
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private authService: AuthService) {
     this.DOCASUrl = configuration.getConfig().DOCASUrl;
     this.authTokenUrl = configuration.getConfig().authTokenUrl;
     this.neyondBackURL = configuration.getConfig().neyondBackUrl;
@@ -34,7 +30,7 @@ export class TokenService {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic ' + secret
       })
-    }; 
+    };
     return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
   }
 
@@ -57,7 +53,6 @@ export class TokenService {
     var URI = this.authTokenUrl + "?delegated_token=true";
     var clientID = this.configuration.getConfig().clientID;
     var clientSecret = this.configuration.getConfig().clientSecret;
-
     var secret = btoa(clientID + ":" + clientSecret);
 
     const HTTP_OPTIONS_AUTH = {
@@ -77,5 +72,4 @@ export class TokenService {
     var URI = this.neyondBackURL + 'BEToken/GetToken';
     return this.http.post(URI, object).toPromise();
   }
-
 }

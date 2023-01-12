@@ -1,5 +1,4 @@
-import { Injectable, ViewChild, ElementRef } from '@angular/core';
-import { dataCC } from '../citizencard/dataCC.interface';
+import { Injectable } from '@angular/core';
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
 import { DatePipe } from '@angular/common';
@@ -29,7 +28,6 @@ export class ReadcardService {
       doc.setFontSize(10);
       doc.text("Ficheiro gerado a: " + dateHelper, 20, 820)
 
-
       var config = {
         autoSize: true,
         margin: { right: 305 },
@@ -38,9 +36,6 @@ export class ReadcardService {
         autoSize: true,
         margin: { left: 305 },
       };
-
-      //Cor Unicre: [30, 102, 176]
-      //Cor background das celulas: [190, 217, 243]
 
       autoTable(doc,
         {
@@ -277,19 +272,16 @@ export class ReadcardService {
         var date = expireDate[1] + "/" + expireDate[0] + "/" + expireDate[2];
 
         //novo objecto a enviar 
-         let objectCCsend: FileAndDetailsCC = {
-             lastModifiedDate: new Date(), 
-              expirationDate: new Date(date).toISOString(), // A confirmar com a equipa de produto
-             name: 'comprovativoCC',
-             file: result_clean
-         }
+        let objectCCsend: FileAndDetailsCC = {
+          lastModifiedDate: new Date(),
+          expirationDate: new Date(date).toISOString(), // A confirmar com a equipa de produto
+          name: 'comprovativoCC',
+          file: result_clean
+        }
         resolve(objectCCsend);
       }, error => {
         reject(null);
       })
     })
-
-
-
   }
 }

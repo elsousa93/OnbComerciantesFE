@@ -19,7 +19,6 @@
         <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
       </div>
       <div>
-        <!--<form [formGroup]="formStores" (ngSubmit)="submit()">-->
         <div class="row ps-2">
           <div class="col-12 ms-0 me-0 ps-5 pe-0">
             <div class="row">
@@ -27,19 +26,20 @@
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.name'|translate}}*</p>
                 <input formControlName="storeName" id="text2" name="text2" type="text" class="form-control campo_form">
                 <div class="alert alert-danger"
-                     *ngIf="this.formStores.get('storeName').touched && !this.formStores.get('storeName').valid">
-                  <div *ngIf="this.formStores.get('storeName').errors && this.formStores.get('storeName').errors?.['required']">
+                  *ngIf="this.formStores.get('storeName').touched && !this.formStores.get('storeName').valid">
+                  <div
+                    *ngIf="this.formStores.get('storeName').errors && this.formStores.get('storeName').errors?.['required']">
                     {{'generalKeywords.mandatoryParameter'|translate}}
                   </div>
                 </div>
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.contactPointName'|translate}}*</p>
+                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.contactPointName'|translate}}*
+                </p>
                 <input formControlName="contactPoint" id="text5" name="contactPoint" type="text"
-                       class="form-control campo_form">
+                  class="form-control campo_form">
               </div>
             </div>
-
             <div class="row" *ngIf="!clientHasCAE">
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}*</p>
@@ -51,16 +51,13 @@
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
-                <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
                 <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
                   <option *ngFor="let subActivity of subActivities" value={{subActivity.subActivityCode}}>
                     {{subActivity.subActivityDescription}}
                   </option>
                 </select>
-
               </div>
             </div>
-
             <div class="row" *ngIf="clientHasCAE">
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}*</p>
@@ -72,35 +69,32 @@
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
-                <!--<input formControlName="subactivityStore" style="margin-bottom: 111px;" select="" id="select2" class="form-select  campo_form">-->
                 <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
                   <option *ngFor="let subActivity of subActivity" value={{subActivity.subActivityCode}}>
                     {{subActivity.subActivityDescription}}
                   </option>
                 </select>
-
               </div>
             </div>
-
-
             <div class="row">
               <div class="col-5">
-
                 <p class="titulo-form-simples mb-3">
                   {{'stores.replicateAddress'|translate}}*
                 </p>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                   <span class="navbar-text">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" formControlName="replicate"
-                             [value]=true id="replicate" name="replicate" (click)="chooseAddress(true)"><label class="form-check-label radio pe-5"
-                                                                                                               for="replicateAddress">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                      <input class="form-check-input" type="radio" formControlName="replicate" [value]=true
+                        id="replicate" name="replicate" (click)="chooseAddress(true)"><label
+                        class="form-check-label radio pe-5"
+                        for="replicateAddress">{{'generalKeywords.yes'|translate|uppercase}}</label>
                     </div>
                   </span><span class="navbar-text">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" formControlName="replicate"
-                             [value]=false id="replicate" name="replicate" (click)="chooseAddress(false)"><label class="form-check-label radio"
-                                                                                                                 for="replicateAddress">{{'generalKeywords.no'|translate|uppercase}}</label>
+                      <input class="form-check-input" type="radio" formControlName="replicate" [value]=false
+                        id="replicate" name="replicate" (click)="chooseAddress(false)"><label
+                        class="form-check-label radio"
+                        for="replicateAddress">{{'generalKeywords.no'|translate|uppercase}}</label>
                     </div>
                   </span>
                 </nav>
@@ -112,7 +106,7 @@
                   {{'stores.country'|translate}} *
                 </p>
                 <select class="form-select campo-form-select" id="countryStore" formControlName="countryStore"
-                        (click)="clean()">
+                  (click)="clean()">
                   <option *ngFor="let country of countries" value={{country.code}}>
                     {{country.description}}
                   </option>
@@ -123,10 +117,9 @@
                   {{'stores.postalCode'|translate}} *
                 </p>
                 <input formControlName="zipCodeStore" id="text4" name="text3" type="text"
-                       class="form-control campo_form" maxlength="8" (keyup)="GetCountryByZipCodeTest()"
-                       (keypress)="numericOnly($event)">
+                  class="form-control campo_form" maxlength="8" (keyup)="GetCountryByZipCode()"
+                  (keypress)="numericOnly($event)">
               </div>
-
             </div>
             <div class="row" *ngIf="!replicateAddress">
               <div class="col-5">
@@ -134,14 +127,14 @@
                   {{'stores.address'|translate}} *
                 </p>
                 <input formControlName="addressStore" id="text5" name="text4" type="text"
-                       class="form-control campo_form">
+                  class="form-control campo_form">
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.locale'|translate}} *
                 </p>
                 <input formControlName="localeStore" id="text5" name="text4" type="text" class="form-control campo_form"
-                       [readonly]="canEditLocality() === false">
+                  [readonly]="canEditLocality() === false">
               </div>
             </div>
             <div class="row">
@@ -152,17 +145,17 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                   <span class="navbar-text">
                     <div class="form-check">
-                      <input formControlName="commercialCenter" (click)="comercialCentre(true)"
-                             class="form-check-input" type="radio" [value]=true id="radio2" name="commercialCenter">
+                      <input formControlName="commercialCenter" (click)="comercialCentre(true)" class="form-check-input"
+                        type="radio" [value]=true id="radio2" name="commercialCenter">
                       <label class="form-check-label radio pe-5" for="radio2"
-                             wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                        wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                     </div>
                   </span><span class="navbar-text">
                     <div class="form-check">
                       <input formControlName="commercialCenter" (click)="comercialCentre(false)"
-                             class="form-check-input" type="radio" [value]=false id="radio2" name="commercialCenter">
+                        class="form-check-input" type="radio" [value]=false id="radio2" name="commercialCenter">
                       <label class="form-check-label radio" for="radio2"
-                             wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
+                        wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                     </div>
                   </span>
                 </nav>
@@ -170,12 +163,10 @@
             </div>
             <div class="row" *ngIf="isComercialCentreStore">
               <div class="col-5">
-                <p class="titulo-form-simples"
-                   wappler-command="editContent">
+                <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.subZone'|translate}}*
                 </p>
-                <select class="form-select campo-form-select"
-                        id="subZoneStore" formControlName="subZoneStore">
+                <select class="form-select campo-form-select" id="subZoneStore" formControlName="subZoneStore">
                   <option hidden selected></option>
                   <option *ngFor="let subzone of subzonesShopping" value={{subzone.code}}>
                     {{subzone.description}}
@@ -185,8 +176,6 @@
             </div>
           </div>
         </div>
-
-
         <div class="offset-1 ms-0 me-0 ps-0 pe-0 col-12">
           <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3">
             <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0"></span>
@@ -194,7 +183,6 @@
           </nav>
         </div>
       </div>
-      <!--</form>-->
     </div>
     <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0" *ngIf="!edit">
       <div class="col ms-0 ps-0">

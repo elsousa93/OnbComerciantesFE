@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CommercialOfferNewConfigurationComponent } from './commercial-offer-new-configuration.component';
 
 describe('CommercialOfferListComponent', () => {
@@ -8,9 +7,9 @@ describe('CommercialOfferListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommercialOfferNewConfigurationComponent ]
+      declarations: [CommercialOfferNewConfigurationComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

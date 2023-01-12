@@ -1,9 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IPep, KindPep } from './IPep.interface';
 import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
 import { TableInfoService } from '../table-info/table-info.service';
 import { CorporateRelations, CountryInformation, Kinship, PEPTypes } from '../table-info/ITable-info.interface';
-import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
@@ -30,34 +29,31 @@ export class PepComponent implements OnInit {
 
   date: string;
 
-  constructor(private logger : LoggerService, private data: DataService, private datePipe: DatePipe, 
-    private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {      
-      this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-
-      //this.ngOnInit();
-
-      this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
-        this.Countries = result;
-        this.Countries = this.Countries.sort(function (a, b) {
-          return a.description.localeCompare(b.description, 'pt-PT');
-        }); //ordenar resposta
-      }),this.tableInfo.GetAllPEPTypes().subscribe(result => {
-        result.forEach(element => {
-          if (element.code.startsWith('P')){
-            this.PEPTypesP.push(element);
-          } else if (element.code.startsWith('C')){
-            this.PEPTypesC.push(element);
-          }
-        });
-        this.PEPTypesP = this.PEPTypesP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-        this.PEPTypesC = this.PEPTypesC.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-      }),this.tableInfo.GetAllCorporateRelations().subscribe(result => {
-        this.corporateRelations = result;
-        this.corporateRelations = this.corporateRelations.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-      }), this.tableInfo.GetAllKinships().subscribe(result => {
-        this.stakeholdersKinships = result;
-        this.stakeholdersKinships = this.stakeholdersKinships.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-      }));
+  constructor(private logger: LoggerService, private data: DataService, private datePipe: DatePipe,
+    private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
+    this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
+      this.Countries = result;
+      this.Countries = this.Countries.sort(function (a, b) {
+        return a.description.localeCompare(b.description, 'pt-PT');
+      }); //ordenar resposta
+    }), this.tableInfo.GetAllPEPTypes().subscribe(result => {
+      result.forEach(element => {
+        if (element.code.startsWith('P')) {
+          this.PEPTypesP.push(element);
+        } else if (element.code.startsWith('C')) {
+          this.PEPTypesC.push(element);
+        }
+      });
+      this.PEPTypesP = this.PEPTypesP.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+      this.PEPTypesC = this.PEPTypesC.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    }), this.tableInfo.GetAllCorporateRelations().subscribe(result => {
+      this.corporateRelations = result;
+      this.corporateRelations = this.corporateRelations.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    }), this.tableInfo.GetAllKinships().subscribe(result => {
+      this.stakeholdersKinships = result;
+      this.stakeholdersKinships = this.stakeholdersKinships.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    }));
   }
 
   newPep: IPep = {
@@ -67,7 +63,7 @@ export class PepComponent implements OnInit {
     pepSince: "",
     degreeOfRelatedness: "",
     businessPartnership: ""
-  } as IPep; 
+  } as IPep;
 
   //Varibales for divs in HTML, when selected 
   isVisiblePep12months: any;
@@ -120,7 +116,7 @@ export class PepComponent implements OnInit {
   }
 
   //Altera os valores das variaveis de acordo com o que é selecionado em cada checkbox
-  onChangeValues(event: any) {  
+  onChangeValues(event: any) {
     var stringToBool = (event.target.value === 'true' ? true : false);
     if (event.target.name == 'pep12months') {
       this.form.get("pep12months").setValue(event.target.value);
@@ -133,7 +129,7 @@ export class PepComponent implements OnInit {
         this.isPEPTypeSelected = false;
         this.isPEPSinceSelected = false;
         this.isPEPCountrySelected = false;
-        
+
         if (this.isVisiblePepFamiliarOf) {
           this.form.removeControl('pepFamilyRelation');
         }
@@ -183,7 +179,7 @@ export class PepComponent implements OnInit {
         this.form.removeControl('pepPoliticalPublicJobs');
         this.form.addControl('pepFamilyRelation', new FormControl('', [Validators.required]));
 
-        
+
       } else {
         this.form.addControl('pepRelations', new FormControl('', [Validators.required]));
         this.form.removeControl('pepFamilyRelation');
@@ -219,12 +215,6 @@ export class PepComponent implements OnInit {
       }
     }
     this.logger.debug(this.form);
-    console.log("PEP form: ", this.form);
-    console.log("Visivel 12 meses ", this.isVisiblePep12months);
-    console.log("Visivel familiar ", this.isVisiblePepFamiliarOf);
-    console.log("Visivel empregos ", this.isVisiblePepPoliticalPublicJobs);
-    console.log("Visivel relacao ", this.isVisiblePepRelations);
-
   }
 
   // check selected on 1st question
@@ -237,7 +227,7 @@ export class PepComponent implements OnInit {
     var pepType = (<HTMLInputElement>document.getElementById("pepType")).value;
     var pepCountry = (<HTMLInputElement>document.getElementById("pepCountry")).value;
     var pepSince = (<HTMLInputElement>document.getElementById("pepSinceWhen")).value;
-    
+
     if (pepType != "") {
       this.isPEPTypeSelected = true;
     }
@@ -266,34 +256,14 @@ export class PepComponent implements OnInit {
     if (pepRelationType != "") {
       this.isPEPRelationSelected = true;
     }
-    this.logger.debug(this.form);    
+    this.logger.debug(this.form);
   }
 
   resetForm() {
-    //if (this.isVisiblePep12months) {
-    //  this.form.removeControl('pepCountry');
-    //  this.form.removeControl('pepSinceWhen');
-    //  this.form.removeControl('pepType');
-    //}
-    //if (this.isVisiblePepFamiliarOf) {
-    //  this.form.removeControl('pepFamilyRelation');
-    //}
-    //if (this.isVisiblePepRelations) {
-    //  this.form.removeControl('pepTypeOfRelation');
-    //}
-    //if (this.isVisiblePepPoliticalPublicJobs) {
-    //  this.form.removeControl('pepType');
-    //}
-
-    //this.form.removeControl('pepFamiliarOf');
-    //this.form.removeControl('pepRelations');
-    //this.form.removeControl('pepPoliticalPublicJobs');
     this.initForm();
-
     this.isVisiblePep12months = undefined;
     this.isVisiblePepFamiliarOf = undefined;
     this.isVisiblePepRelations = undefined;
     this.isVisiblePepPoliticalPublicJobs = undefined;
-
   }
 }

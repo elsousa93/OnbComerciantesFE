@@ -2,137 +2,178 @@
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
-		  <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
-			 <span class="navbar-text text-light">
-			 <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
-			 </span>
-			 <span class="navbar-text">
-				<h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'declarativeInformation.title'|translate|uppercase}}</h5>
-			 </span>
-		  </nav>
-	   </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <span class="navbar-text text-light">
+          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
+        </span>
+        <span class="navbar-text">
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+            {{'declarativeInformation.title'|translate|uppercase}}</h5>
+        </span>
+      </nav>
+    </div>
     <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
-
       <ul class="nav nav-tabs" id="navTabs1_tabs" role="tablist">
         <li class="nav-item">
-         <a class="nav-link disabled active btn-primary activo_tabs activo-tabd" id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">{{'client.title'|translate}}</a>
+          <a class="nav-link disabled active btn-primary activo_tabs activo-tabd" id="navTabs1_1_tab"
+            data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1"
+            aria-selected="true">{{'client.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-         <a class="nav-link disabled btn-outline-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">{{'stakeholder.title'|translate}}</a>
+          <a class="nav-link disabled btn-outline-primary" id="navTabs1_2_tab" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
+            aria-selected="false">{{'stakeholder.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-         <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">{{'stores.title'|translate}}</a>
+          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+            aria-selected="false">{{'stores.title'|translate}}</a>
         </li>
         <li class="nav-item_x">
-         <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3" aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
+          <a class="nav-link disabled btn-outline-primary" id="navTabs1_3_tab1" data-bs-toggle="tab" href="#"
+            data-bs-target="#navTabs1_3" role="tab" aria-controls="navTabs1_3"
+            aria-selected="false">{{'declarativeInformation.packSignature'|translate}}</a>
         </li>
-       </ul>
-       <div class="tab-content" id="navTabs1_content">
+      </ul>
+      <div class="tab-content" id="navTabs1_content">
         <div class="tab-pane fade show active" id="navTabs1_1" role="tabpanel">
-         <div class="container-fluid mt-0 ps-3 pe-3" style="padding-left: 0.75rem !important;">
+          <div class="container-fluid mt-0 ps-3 pe-3" style="padding-left: 0.75rem !important;">
             <div class="row">
-             <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-              <h2 class="text-primary mt-3 ps-0"><img src="assets/images/manage_accounts.svg" class="img_add">&nbsp;{{'client.data'|translate|uppercase}}
-              </h2>
-              <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
-              <div class="row ms-0 me-0" style="margin-bottom: 50px;">
-                <form [formGroup]="listValue" (ngSubmit)="submit()" name="listValue">
-                  <div class="col">
-                    <div class="ms-0 me-0 ps-0 pe-0 col-7">
-                      <p class="titulo-form-simples mt-0">{{'declarativeInformation.client.name'|translate|uppercase}}*</p>
-                      <input #contactName name="contactName" type="text" id="contactName" class="form-control" formControlName="comercialName" [readonly]="returned === 'consult'">
-                      <div class="alert alert-danger" *ngIf="contactName.touched && !contactName.valid">
-                        {{'errorMessages.isRequired'|translate}}
-                      </div>
-                    </div>
-                  </div>
-
-
-
-                  <div class="ms-0 me-0 ps-0 pe-0 col-7">
-                    <div class="row" formGroupName = "phone1">
-                      <div class="col-4">
-                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate|uppercase}}:</p>
-                        <select class="form-select" #phone1CountryCode formControlName="countryCode" (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
-                          <option></option>
-                          <option *ngFor="let country of internationalCallingCodes" [value]='country.code' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone1?.countryCode != undefined && merchantInfo.contacts?.phone1?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
-                        </select>
-                        <!-- <div class="alert alert-danger" *ngIf="phone1CountryCode.value && !phone1CountryCode.value">
-                          is required.
-                        </div> -->
-                      </div>
-                      <div class="col">
-                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.cellPhone'|translate|uppercase}} 1:</p>
-                        <input (keypress)="numericOnly($event)" #phone1PhoneNumber name="phone1PhoneNumber" type="text" id="phone1PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('invalidNumber')">
-                          {{'errorMessages.invalidPhone'|translate}}
-                        </div>
-                      </div>
-                      <div class="alert alert-danger" *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('missingValue')">
-                        {{'errorMessages.bothFieldsPhone'|translate}}
-                      </div>
-                    </div>
-
-                    <div class="row" formGroupName = "phone2">
-                      <div class="col-4">
-                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.indicative'|translate|uppercase}}:</p>
-                        <select class="form-select" #phone2CountryCode formControlName="countryCode" (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode" [attr.disabled]="returned === 'consult' ? true : null">
-                          <option></option>
-                          <option *ngFor="let country of internationalCallingCodes" [value]='country.code' [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone2?.countryCode != undefined && merchantInfo.contacts?.phone2?.countryCode == country.internationalCallingCode) ? true : null">{{country.description}} ({{country.internationalCallingCode}}) </option>
-                        </select>
-                        <!-- <div class="alert alert-danger" *ngIf="phone2PhoneNumber.value && !phone2CountryCode.value">
-                          is required.
-                        </div> -->
-                      </div>
-                      <div class="col">
-                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}}:</p>
-                        <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="mobilePhoneClient" type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('invalidNumber')">
-                          {{'errorMessages.invalidPhone'|translate}}
-                        </div>
-                      </div>
-                      <div class="alert alert-danger" *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('missingValue')">
-                        {{'errorMessages.bothFieldsPhone'|translate}}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <p class="titulo-form-simples mt-0">EMAIL*</p>
-                        <input #emailClient [pattern]="emailRegex" name="emailClient" type="text" id="emailClient" class="form-control" formControlName="email" [readonly]="returned === 'consult'" (focusout)="focusOutEvent($event)">
-                        <div class="alert alert-danger" *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid">
+              <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
+                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/manage_accounts.svg"
+                    class="img_add">&nbsp;{{'client.data'|translate|uppercase}}
+                </h2>
+                <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
+                <div class="row ms-0 me-0" style="margin-bottom: 50px;">
+                  <form [formGroup]="listValue" (ngSubmit)="submit()" name="listValue">
+                    <div class="col">
+                      <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                        <p class="titulo-form-simples mt-0">
+                          {{'declarativeInformation.client.name'|translate|uppercase}}*</p>
+                        <input #contactName name="contactName" type="text" id="contactName" class="form-control"
+                          formControlName="comercialName" [readonly]="returned === 'consult'">
+                        <div class="alert alert-danger" *ngIf="contactName.touched && !contactName.valid">
                           {{'errorMessages.isRequired'|translate}}
                         </div>
-                        <div class="alert alert-danger" *ngIf="emailValid.errors?.['pattern']">
-                          {{'errorMessages.invalidEmail'|translate}}
-                        </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <p class="titulo-form-simples mt-0">{{'declarativeInformation.invoicingEmail'|translate|uppercase}}</p>
-                        <input #billingEmail [pattern]="emailRegex" name="billingEmail" type="text" id="billingEmail" class="form-control" formControlName="billingEmail" [readonly]="returned === 'consult'">
-                        <div class="alert alert-danger" *ngIf="billingEmailValid.errors?.['pattern']">
-                          {{'errorMessages.invalidEmail'|translate}}
+                    <div class="ms-0 me-0 ps-0 pe-0 col-7">
+                      <div class="row" formGroupName="phone1">
+                        <div class="col-4">
+                          <p class="titulo-form-simples mt-0">
+                            {{'declarativeInformation.indicative'|translate|uppercase}}:</p>
+                          <select class="form-select" #phone1CountryCode formControlName="countryCode"
+                            (click)="changeListElement(phone1CountryCode, $event)" id="phone1CountryCode"
+                            [attr.disabled]="returned === 'consult' ? true : null">
+                            <option></option>
+                            <option *ngFor="let country of internationalCallingCodes" [value]='country.code'
+                              [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone1?.countryCode != undefined && merchantInfo.contacts?.phone1?.countryCode == country.internationalCallingCode) ? true : null">
+                              {{country.description}} ({{country.internationalCallingCode}}) </option>
+                          </select>
+                        </div>
+                        <div class="col">
+                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.cellPhone'|translate|uppercase}}
+                            1:</p>
+                          <input (keypress)="numericOnly($event)" #phone1PhoneNumber name="phone1PhoneNumber"
+                            type="text" id="phone1PhoneNumber" class="form-control" formControlName="phoneNumber"
+                            [readonly]="returned === 'consult'">
+                          <div class="alert alert-danger"
+                            *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('invalidNumber')">
+                            {{'errorMessages.invalidPhone'|translate}}
+                          </div>
+                        </div>
+                        <div class="alert alert-danger"
+                          *ngIf="(phone1.touched || phone1.dirty) && !phone1.valid && phone1.errors.hasOwnProperty('missingValue')">
+                          {{'errorMessages.bothFieldsPhone'|translate}}
                         </div>
                       </div>
+                      <div class="row" formGroupName="phone2">
+                        <div class="col-4">
+                          <p class="titulo-form-simples mt-0">
+                            {{'declarativeInformation.indicative'|translate|uppercase}}:</p>
+                          <select class="form-select" #phone2CountryCode formControlName="countryCode"
+                            (click)="changeListElement(phone2CountryCode,$event)" id="phone2CountryCode"
+                            [attr.disabled]="returned === 'consult' ? true : null">
+                            <option></option>
+                            <option *ngFor="let country of internationalCallingCodes" [value]='country.code'
+                              [attr.selected]="(merchantInfo != null && merchantInfo.contacts?.phone2?.countryCode != undefined && merchantInfo.contacts?.phone2?.countryCode == country.internationalCallingCode) ? true : null">
+                              {{country.description}} ({{country.internationalCallingCode}}) </option>
+                          </select>
+                        </div>
+                        <div class="col">
+                          <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}}:
+                          </p>
+                          <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="mobilePhoneClient"
+                            type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber"
+                            [readonly]="returned === 'consult'">
+                          <div class="alert alert-danger"
+                            *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('invalidNumber')">
+                            {{'errorMessages.invalidPhone'|translate}}
+                          </div>
+                        </div>
+                        <div class="alert alert-danger"
+                          *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('missingValue')">
+                          {{'errorMessages.bothFieldsPhone'|translate}}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="titulo-form-simples mt-0">EMAIL*</p>
+                          <input #emailClient [pattern]="emailRegex" name="emailClient" type="text" id="emailClient"
+                            class="form-control" formControlName="email" [readonly]="returned === 'consult'"
+                            (focusout)="focusOutEvent($event)">
+                          <div class="alert alert-danger"
+                            *ngIf="(emailClient.touched || emailClient.dirty) && !emailClient.valid">
+                            {{'errorMessages.isRequired'|translate}}
+                          </div>
+                          <div class="alert alert-danger" *ngIf="emailValid.errors?.['pattern']">
+                            {{'errorMessages.invalidEmail'|translate}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="titulo-form-simples mt-0">
+                            {{'declarativeInformation.invoicingEmail'|translate|uppercase}}</p>
+                          <input #billingEmail [pattern]="emailRegex" name="billingEmail" type="text" id="billingEmail"
+                            class="form-control" formControlName="billingEmail" [readonly]="returned === 'consult'">
+                          <div class="alert alert-danger" *ngIf="billingEmailValid.errors?.['pattern']">
+                            {{'errorMessages.invalidEmail'|translate}}
+                          </div>
+                        </div>
+                      </div>
+                      <p class="titulo-form-simples"></p>
                     </div>
-                    <p class="titulo-form-simples"></p>
-                  </div>
-                </form>
+                  </form>
+                </div>
+                <div class="col ms-0 ps-0">
+                  <hr>
+                  <nav
+                    class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+                    <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                      <button id="btn5a1" [routerLink]="['/']"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img
+                          src="assets/images/exit_to_app.svg"
+                          style="height: 25px !important; vertical-align: sub;"></button>
+                      <button *ngIf="returned == 'consult'" id="btn5a3" [routerLink]="['/']"
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
+                          src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                      <button id="btn5a4" [routerLink]="['/commercial-offert-list']"
+                        class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                        wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
+                          style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
+                      <button id="btn5a2" (click)="submit()"
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                        [disabled]="!listValue.valid"
+                        wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
+                          src="assets/images/arrow_forward_ios.svg"
+                          style="height: 25px !important; vertical-align: sub;"></button>
+                    </span>
+                  </nav>
+                </div>
               </div>
-
-          <div class="col ms-0 ps-0">
-            <hr>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-               <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                <button id="btn5a1" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
-                <button *ngIf="returned == 'consult'" id="btn5a3" [routerLink]="['/']" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
-                <button id="btn5a4" [routerLink]="['/commercial-offert-list']" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-                <button id="btn5a2" (click)="submit()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" [disabled]="!listValue.valid" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;"></button>
-              </span>
-            </nav>
-           </div>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
-      </div>

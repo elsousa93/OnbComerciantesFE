@@ -1,8 +1,8 @@
 export interface IComprovativos {
-    id: Number,
-    clientId: String,
-    filename: String,
-    url: String
+  id: Number,
+  clientId: String,
+  filename: String,
+  url: String
 }
 
 export interface ComprovativosTemplate {

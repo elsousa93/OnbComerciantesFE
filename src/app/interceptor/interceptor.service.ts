@@ -33,7 +33,7 @@ export class Interceptor implements HttpInterceptor {
 
         return throwError(() => error);
       })
-      );
+    );
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
@@ -46,5 +46,3 @@ export class Interceptor implements HttpInterceptor {
     return next.handle(request);
   }
 }
-
-

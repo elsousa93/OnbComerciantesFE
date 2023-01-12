@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,22 +19,19 @@ import { TableInfoService } from '../../table-info/table-info.service';
 
 export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
- 
   @ViewChild(MatSort) sort: MatSort;
 
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
-  displayedColumns: string[] = ['name', 'activity', 'subActivity' ,'bank', 'terminalNumber', 'product'];
+  displayedColumns: string[] = ['name', 'activity', 'subActivity', 'bank', 'terminalNumber', 'product'];
 
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;
   @Input() processNumber?: string;
   @Input() isCommercialOffer?: boolean = false;
-  @Input() currentStore?: ShopDetailsAcquiring = {
-      equipments: []
-  };
+  @Input() currentStore?: ShopDetailsAcquiring = { equipments: [] };
   @Input() currentIdx?: number;
   @Input() previousStoreEvent?: Observable<number>;
 
@@ -45,7 +42,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }>();
 
   selectedStore: ShopDetailsAcquiring = {
-      equipments: []
+    equipments: []
   };
   returned: string;
   storesList: ShopDetailsAcquiring[] = [];
@@ -56,19 +53,18 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Output() listLengthEmitter = new EventEmitter<number>();
 
-
   public subs: Subscription[] = [];
   activities: ShopActivities[];
   subActivities: ShopSubActivities[];
 
   banks: Bank[];
 
-  constructor(private submissionService: SubmissionService, private storeService: StoreService, private ref: ChangeDetectorRef, private translate: TranslateService, private tableInfo: TableInfoService) {
+  constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService) {
     this.fetchActivities();
   }
 
   fetchActivities() {
-    this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
+    this.subs.push(this.storeService.GetAllShopActivities().subscribe(result => {
       this.activities = result;
     }, error => {
 
@@ -98,7 +94,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   storesMat = new MatTableDataSource<ShopDetailsAcquiring>();
-  @ViewChild('paginator') set paginator(pager:MatPaginator) {
+  @ViewChild('paginator') set paginator(pager: MatPaginator) {
     if (pager) {
       this.storesMat.paginator = pager;
       this.storesMat.paginator._intl = new MatPaginatorIntl();
@@ -109,8 +105,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["updatedStoreEvent"] && this.updatedStoreEvent != null) {
       this.updatedStoreEvent.subscribe(result => {
-          var nextIdx = result.idx + 1;
-          this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
+        var nextIdx = result.idx + 1;
+        this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
       });
     }
     if (changes["previousStoreEvent"] && this.previousStoreEvent != null) {
@@ -127,7 +123,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.returned = localStorage.getItem("returned");
     this.getStoreList();
 
-    if (this.deleteStoreEvent != null) { 
+    if (this.deleteStoreEvent != null) {
       this.deleteStoreEvent.subscribe(result => {
         var storeToRemove = result;
 
@@ -141,7 +137,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
       });
     }
 
-    if (this.insertStoreEvent != null) { 
+    if (this.insertStoreEvent != null) {
       this.insertStoreEvent.subscribe(result => {
         var storeToInsert = result;
 
@@ -155,14 +151,11 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    // this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;
-    
   }
 
   getStoreListFromSubmission() {
     var length = 0;
-    
 
     return new Promise((resolve, reject) => {
       this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
@@ -184,9 +177,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   getStoreListFromProcess() {
     var length = 0;
 
-
     return new Promise((resolve, reject) => {
-      //Caso seja DEVOLUÇÃO OU CONSULTA - Vamos buscar as lojas que foram inseridas na ultima submissão.
       if (this.returned != null) {
         this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
           this.storeService.getSubmissionShopsList(result.result[0].submissionId).then(resul => {
@@ -203,7 +194,6 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
                   resolve(null);
               });
             });
-            //this.loadStores(this.storesList);
           })
         });
       } else {
@@ -222,20 +212,16 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
           this.emitSelectedStore(this.storesList[0], 0);
       })
     });
-    //this.loadStores(this.storesList);
   }
 
   emitSelectedStore(store, idx) {
     this.selectedStoreEmitter.emit({ store: store, idx: idx });
     this.selectedStore = store;
     this.currentIdx = idx;
-    console.log('Current store ', this.selectedStore);
-    console.log('Index ', this.currentIdx);
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[]) {
     this.storesMat.data = storesValues;
-    // this.storesMat.paginator = this.paginator;
     this.storesMat.sort = this.sort;
   }
 }

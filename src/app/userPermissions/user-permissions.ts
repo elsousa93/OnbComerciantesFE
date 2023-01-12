@@ -71,30 +71,30 @@ export function getMenuPermissions(user: any) {
   }
 }
 
-export function getFTPermissions(user: any){ 
+export function getFTPermissions(user: any) {
   var permissions: FTPermissions;
 
   switch (user) {
     case UserPermissions.BANCA:
-      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true};
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true };
       return permissions;
     case UserPermissions.UNICRE:
-      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true}
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true }
       return permissions;
     case UserPermissions.CALLCENTER:
-      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true}
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true }
       return permissions;
     case UserPermissions.DO:
-      permissions = {multipleClientes: true, DOValidation: true, negotiationAproval: true, MCCTreatment: true, validationSIBS: true};
+      permissions = { multipleClientes: true, DOValidation: true, negotiationAproval: true, MCCTreatment: true, validationSIBS: true };
       return permissions;
     case UserPermissions.COMPLIANCEOFFICE:
-      permissions = { riskOpinion: true, complianceDoubts: true};
+      permissions = { riskOpinion: true, complianceDoubts: true };
       return permissions;
     case UserPermissions.COMERCIAL:
-      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true, pendingEligibility: true};
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true, pendingEligibility: true };
       return permissions;
     case UserPermissions.ADMIN:
-      permissions = {pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true};
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true };
       return permissions;
   }
 }

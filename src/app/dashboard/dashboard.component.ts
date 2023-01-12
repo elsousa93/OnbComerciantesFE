@@ -1,9 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, HostBinding, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { CookieService } from 'ngx-cookie-service'
 import { MediaMatcher } from '@angular/cdk/layout';
-import { HttpClient } from '@angular/common/http';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,15 +9,13 @@ import { onSideNavChange, AutoHideSidenavAdjust } from '../animation';
 import { UserPermissions, FTPermissions, getFTPermissions } from '../userPermissions/user-permissions';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessGet, ProcessList, ProcessService, UpdateProcess } from '../process/process.service';
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { LoggerService } from 'src/app/logger.service';
 import { User } from '../userPermissions/user';
 import { TranslateService } from '@ngx-translate/core';
 import { State } from '../queues-detail/IQueues.interface';
 import { AppComponent } from '../app.component';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
-import { each } from 'jquery';
-import { TokenService } from '../token.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -129,9 +125,6 @@ export class DashboardComponent implements OnInit {
   displayedColumns = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt', 'state', 'buttons'];
   displayedColumnsQueues = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt', 'state', 'assigned', 'buttons'];
 
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-
   pageSizes = [10, 25, 100];
 
   mobileQuery: MediaQueryList;
@@ -175,10 +168,9 @@ export class DashboardComponent implements OnInit {
   nipc: string;
   name: string;
 
-
-  constructor(private logger: LoggerService, private http: HttpClient, private cookie: CookieService, private router: Router,
+  constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService, private tokenService: TokenService) {
+    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -222,7 +214,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //Arquivo Fisico
-    if (this.FTPermissions?.pendingSent) { 
+    if (this.FTPermissions?.pendingSent) {
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
         this.logger.debug('Completos ' + result);
         this.pendingSentCount = result.pagination.total;
@@ -230,7 +222,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //Pareceres de Eligibilidade
-    if (this.FTPermissions?.pendingEligibility) { 
+    if (this.FTPermissions?.pendingEligibility) {
       this.processService.searchProcessByState('EligibilityAssessment', 0, 1).subscribe(result => {
         this.logger.debug('EligibilityAssessment ' + result);
         this.pendingEligibilityCount = result.pagination.total;
@@ -238,7 +230,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //Múltiplos Clientes
-    if (this.FTPermissions?.multipleClientes) { 
+    if (this.FTPermissions?.multipleClientes) {
       this.processService.searchProcessByState('ClientChoice', 0, 1).subscribe(result => {
         this.logger.debug('ClientChoice ' + result);
         this.multipleClientesCount = result.pagination.total;
@@ -246,7 +238,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //Valida DO
-    if (this.FTPermissions?.DOValidation) { 
+    if (this.FTPermissions?.DOValidation) {
       this.processService.searchProcessByState('OperationsEvaluation', 0, 1).subscribe(result => {
         this.logger.debug('OperationsEvaluation ' + result);
         this.DOValidationCount = result.pagination.total;
@@ -254,7 +246,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //Aprovação de Negociação
-    if (this.FTPermissions?.negotiationAproval) { 
+    if (this.FTPermissions?.negotiationAproval) {
       this.processService.searchProcessByState('NegotiationApproval', 0, 1).subscribe(result => {
         this.logger.debug('NegotiationApproval ' + result);
         this.negotiationAprovalCount = result.pagination.total;
@@ -262,7 +254,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //MCC
-    if (this.FTPermissions?.MCCTreatment) { 
+    if (this.FTPermissions?.MCCTreatment) {
       this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, 1).subscribe(result => {
         this.logger.debug('StandardIndustryClassificationChoice ' + result);
         this.MCCTreatmentCount = result.pagination.total;
@@ -277,7 +269,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //Parecer de Risco
-    if (this.FTPermissions?.riskOpinion) { 
+    if (this.FTPermissions?.riskOpinion) {
       this.processService.searchProcessByState('RiskAssessment', 0, 1).subscribe(result => {
         this.logger.debug('RiskAssessment ' + result);
         this.riskOpinionCount = result.pagination.total;
@@ -285,7 +277,7 @@ export class DashboardComponent implements OnInit {
     }
 
     //Dúvidas Compliance
-    if (this.FTPermissions?.complianceDoubts) { 
+    if (this.FTPermissions?.complianceDoubts) {
       this.processService.searchProcessByState('ComplianceEvaluation', 0, 1).subscribe(result => {
         this.logger.debug('ComplianceEvaluation ' + result);
         this.complianceDoubtsCount = result.pagination.total;
@@ -294,12 +286,11 @@ export class DashboardComponent implements OnInit {
   }
 
   callIncompleteCount() {
-    if (this.incompleteCount > 0){
+    if (this.incompleteCount > 0) {
       this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
         this.incompleteProcessess = resul;
         this.incompleteProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete') {
             process.state = this.translate.instant('searches.incompleted');
@@ -316,7 +307,7 @@ export class DashboardComponent implements OnInit {
         this.ongoingProcessess = resul;
         this.ongoingProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Ongoing') {
             process.state = this.translate.instant('searches.running');
@@ -333,7 +324,7 @@ export class DashboardComponent implements OnInit {
         this.returnedProcessess = resul;
         this.returnedProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Returned') {
             process.state = this.translate.instant('searches.returned');
@@ -350,7 +341,6 @@ export class DashboardComponent implements OnInit {
         this.contractAcceptanceProcessess = resul;
         this.contractAcceptanceProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'ContractAcceptance') {
             process.state = this.translate.instant('searches.contractAcceptance')
@@ -358,7 +348,7 @@ export class DashboardComponent implements OnInit {
         });
         this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
       });
-    }   
+    }
   }
 
   callPendingSentCount() {
@@ -367,11 +357,11 @@ export class DashboardComponent implements OnInit {
         this.pendingSentProcessess = resul;
         this.pendingSentProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Completed') {
             process.state = this.translate.instant('searches.completed');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent, this.pendingSentProcessess);
       });
@@ -384,7 +374,7 @@ export class DashboardComponent implements OnInit {
         this.pendingEligibilityProcessess = resul;
         this.pendingEligibilityProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'EligibilityAssessment') {
             process.state = this.translate.instant('searches.eligibility');
@@ -401,11 +391,11 @@ export class DashboardComponent implements OnInit {
         this.multipleClientesProcessess = resul;
         this.multipleClientesProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'ClientChoice') {
             process.state = this.translate.instant('searches.multipleClients');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients, this.multipleClientesProcessess);
       });
@@ -418,11 +408,11 @@ export class DashboardComponent implements OnInit {
         this.DOValidationProcessess = resul;
         this.DOValidationProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'OperationsEvaluation') {
             process.state = this.translate.instant('searches.DOValidation');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation, this.DOValidationProcessess);
       });
@@ -435,15 +425,15 @@ export class DashboardComponent implements OnInit {
         this.negotiationAprovalProcessess = resul;
         this.negotiationAprovalProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'NegotiationApproval') {
             process.state = this.translate.instant('searches.negotiationApproval');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval, this.negotiationAprovalProcessess);
       });
-    }  
+    }
   }
 
   callMCCTreatmentCount() {
@@ -452,11 +442,11 @@ export class DashboardComponent implements OnInit {
         this.MCCTreatmentProcessess = resul;
         this.MCCTreatmentProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'StandardIndustryClassificationChoice') {
             process.state = this.translate.instant('searches.MCCTreatment');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment, this.MCCTreatmentProcessess);
       });
@@ -469,11 +459,11 @@ export class DashboardComponent implements OnInit {
         this.validationSIBSProcessess = resul;
         this.validationSIBSProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'MerchantRegistration') {
             process.state = this.translate.instant('searches.validationSIBS');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS, this.validationSIBSProcessess);
       });
@@ -486,28 +476,28 @@ export class DashboardComponent implements OnInit {
         this.riskOpinionProcessess = resul;
         this.riskOpinionProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'RiskAssessment') {
             process.state = this.translate.instant('searches.riskOpinion');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion, this.riskOpinionProcessess);
       });
     }
   }
 
-  callComplianceDoubtsCount(){
+  callComplianceDoubtsCount() {
     if (this.complianceDoubtsCount > 0) {
       this.processService.searchProcessByState('ComplianceEvaluation', 0, this.complianceDoubtsCount).subscribe(resul => {
         this.complianceDoubtsProcessess = resul;
         this.complianceDoubtsProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-  
+
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'ComplianceEvaluation') {
             process.state = this.translate.instant('searches.complianceDoubts');
-          } 
+          }
         });
         this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts, this.complianceDoubtsProcessess);
       });
@@ -577,9 +567,6 @@ export class DashboardComponent implements OnInit {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
 
-      console.log("permissões: ", this.currentUser.permissions);
-      console.log("userPermission tratada: ", a);
-
       this.FTPermissions = getFTPermissions(a);
 
     });
@@ -642,13 +629,7 @@ export class DashboardComponent implements OnInit {
     this.dataSourceComplianceDoubts.filterPredicate = function (record, filterValue) {
       return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
     }
-
-    console.log("VALORES DO USER ", this.currentUser);
-    //this.tokenService.getLoginTokenInfo(this.currentUser.token).then(result => {
-    //  console.log('RESULTADO DA CHAMADA AO NOSSO BACKEND PARA OBTER OS DADOS DO TOKEN ', result);
-    //});
   }
-
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -713,6 +694,4 @@ export class DashboardComponent implements OnInit {
   applyFilterComplianceDoubts(filterValue: string) {
     this.dataSourceComplianceDoubts.filter = filterValue;
   }
-
 }
-

@@ -8,9 +8,9 @@ describe('InfoDeclarativaAssinaturaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfoDeclarativaAssinaturaComponent ]
+      declarations: [InfoDeclarativaAssinaturaComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -42,19 +42,10 @@
     </mat-header-cell>
     <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.address?.country}} </mat-cell>
   </ng-container>
-  <!--<ng-container matColumnDef="stakeNIF">
-    <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
-      {{'stakeholder.fiscalID'|translate}}
-    </mat-header-cell>
-    <mat-cell *matCellDef="let stake" style="display: inline-grid;"> {{stake.stakeholderNIF}} </mat-cell>
-  </ng-container>-->
-
-
   <mat-header-row *matHeaderRowDef="displayedColumnsFound" class="text-primary table-primary"></mat-header-row>
   <mat-row *matRowDef="let stake; let idx = index; columns: displayedColumnsFound;"
-           [ngClass]="{'row-selected': idx === currentIdx}">
+    [ngClass]="{'row-selected': idx === currentIdx}">
   </mat-row>
 </mat-table>
-
 <mat-paginator #paginatorFound [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons [hidden]="!foundStakeholders">
 </mat-paginator>

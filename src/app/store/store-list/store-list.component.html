@@ -8,7 +8,8 @@
             <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
           </span>
           <span class="navbar-text">
-            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">{{'stores.title'|translate|uppercase}}</h5>
+            <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
+              {{'stores.title'|translate|uppercase}}</h5>
           </span>
         </nav>
       </div>
@@ -17,22 +18,29 @@
           <img src="assets/images/storefront.svg" class="img_add">&nbsp;{{'stores.identification'|translate|uppercase}}
         </h2>
         <p>{{'stores.validateStores'|translate}}</p>
-        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="currentStore" [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)" [deleteStoreEvent]="removedStoreSubject.asObservable()" [insertStoreEvent]="insertedStoreSubject.asObservable()" [updatedStoreEvent]="updatedStoreEvent" (listLengthEmitter)="getStoresListLength($event)" [previousStoreEvent]="previousStoreEvent" (fileEmitter)="getUploadedFiles($event)"></app-store-table>
+        <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="currentStore"
+          [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"
+          [deleteStoreEvent]="removedStoreSubject.asObservable()"
+          [insertStoreEvent]="insertedStoreSubject.asObservable()" [updatedStoreEvent]="updatedStoreEvent"
+          (listLengthEmitter)="getStoresListLength($event)" [previousStoreEvent]="previousStoreEvent"
+          (fileEmitter)="getUploadedFiles($event)"></app-store-table>
       </div>
-
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
-     </div>
-
+      </div>
       <div class="offset-1 bg-white align-self-center col-10 mb-3 ps-0">
         <div class="col ms-0 ps-0">
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-5">
             <span class="navbar-text align-self-center mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
-              <button id="btn4a" [disabled]="returned === 'consult'" (click)="deleteStore()" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
+              <button id="btn4a" [disabled]="returned === 'consult'" (click)="deleteStore()"
+                class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-2 pt-3 pb-3 ps-3"
+                wappler-command="editContent">
                 {{'stores.remove'|translate|uppercase}}&nbsp;
                 <img src="assets/images/store.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
-              <button id="btn5a" [disabled]="returned === 'consult'" (click)="addStore()" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
+              <button id="btn5a" [disabled]="returned === 'consult'" (click)="addStore()"
+                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                wappler-command="editContent">
                 {{'stores.insert'|translate|uppercase}}&nbsp;
                 <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
@@ -40,29 +48,31 @@
           </nav>
         </div>
       </div>
-      <ng-container  *ngIf="currentStore != null || currentIdx === -1" [formGroup]="editStores">
+      <ng-container *ngIf="currentStore != null || currentIdx === -1" [formGroup]="editStores">
         <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
           <div class="accordion1 accordion-flush" id="accordionFlushExample">
             <div class="accordion1-item">
               <h2 class="accordion1-header" id="flush-headingOne">
-                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton1"
-                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  id="accordionButton1" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                  aria-controls="flush-collapseOne">
                   <span class="material-symbols-outlined icon-accordion">
-                    <img src="assets/images/storefront.svg"/>
+                    <img src="assets/images/storefront.svg" />
                   </span>
                   &nbsp;&nbsp;{{'stores.information'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                   data-bs-parent="#accordionFlushExample">
-                <app-add-store [parentFormGroup] = "editStores.get['infoStores']" [submissionClient]="submissionClient"></app-add-store>
+                data-bs-parent="#accordionFlushExample">
+                <app-add-store [parentFormGroup]="editStores.get['infoStores']"
+                  [submissionClient]="submissionClient"></app-add-store>
               </div>
             </div>
-
             <div class="accordion1-item">
               <h2 class="accordion-header" id="flush-headingTwo">
-                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton2"
-                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  id="accordionButton2" data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                  aria-controls="flush-collapseTwo">
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/account_balance.svg" />
                   </span>
@@ -70,15 +80,16 @@
                 </button>
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                   data-bs-parent="#accordionFlushExample">
-                <app-store-iban [parentFormGroup] = "editStores.get('bankStores')" [IBANToShow]="ibansToShow" (fileEmitter)="getFile($event)"></app-store-iban>
+                data-bs-parent="#accordionFlushExample">
+                <app-store-iban [parentFormGroup]="editStores.get('bankStores')" [IBANToShow]="ibansToShow"
+                  (fileEmitter)="getFile($event)"></app-store-iban>
               </div>
             </div>
-
             <div class="accordion1-item">
               <h2 class="accordion-header" id="flush-headingThree">
-                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton3"
-                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  id="accordionButton3" data-bs-target="#flush-collapseThree" aria-expanded="false"
+                  aria-controls="flush-collapseThree">
                   <span class="material-symbols-outlined icon-accordion">
                     <img src="assets/images/add_card.svg" />
                   </span>
@@ -86,23 +97,25 @@
                 </button>
               </h2>
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-                   data-bs-parent="#accordionFlushExample">
-                <app-product-selection [parentFormGroup] = "editStores.get('productStores')"></app-product-selection>
+                data-bs-parent="#accordionFlushExample">
+                <app-product-selection [parentFormGroup]="editStores.get('productStores')"></app-product-selection>
               </div>
             </div>
-
           </div>
           <div style="margin-top: 30px;">
-          <button id="btn5a" [disabled]="!editStores.valid" (click)="submit((currentIdx === -1 ) ? true : false, true)" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">
-            {{(currentIdx === -1 ? 'stores.add' : 'stores.edit')|translate|uppercase}}&nbsp;
-            <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
-          </button>
-            <button id="btn5a6"
-                    class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent" (click)="close()">&nbsp;
-              {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg"
-              class="img_btn">
+            <button id="btn5a" [disabled]="!editStores.valid"
+              (click)="submit((currentIdx === -1 ) ? true : false, true)"
+              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
+              wappler-command="editContent">
+              {{(currentIdx === -1 ? 'stores.add' : 'stores.edit')|translate|uppercase}}&nbsp;
+              <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
             </button>
-         </div>
+            <button id="btn5a6"
+              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+              wappler-command="editContent" (click)="close()">&nbsp;
+              {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg" class="img_btn">
+            </button>
+          </div>
         </div>
       </ng-container>
       <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0">
@@ -110,16 +123,26 @@
           <hr>
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
-              <button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">
-                {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              <button [routerLink]="['/']" id="btn5a5"
+                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                wappler-command="editContent">
+                {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
+                  style="height: 25px !important; vertical-align: sub;">
               </button>
-              <button [routerLink]="['/']" id="btn5a5" class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3" wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+              <button [routerLink]="['/']" id="btn5a5"
+                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                 <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;"></button>
-              <button (click)="goToStakeholders()" id="btn5a5" class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3" wappler-command="editContent">
+              <button (click)="goToStakeholders()" id="btn5a5"
+                class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                wappler-command="editContent">
                 <img src="assets/images/arrow_back_ios_white.svg"
-                     style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
+                  style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
-              <button [disabled]="storesLength == 0 || (!editStores.valid && currentStore != null)" (click)="submit(false)" id="btn5a5" class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3" wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
+              <button [disabled]="storesLength == 0 || (!editStores.valid && currentStore != null)"
+                (click)="submit(false)" id="btn5a5"
+                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
                 <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
             </span>
@@ -127,6 +150,5 @@
         </div>
       </div>
     </div>
-</form>
+  </form>
 </div>
-

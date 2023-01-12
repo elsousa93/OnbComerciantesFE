@@ -1,14 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { PurposeDocument } from '../comprovativos/IComprovativos.interface';
-import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
-import { Bank, ShopBankingInformation } from '../store/IStore.interface';
-import { Activity, Address, ContractPackLanguage, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, LegalNature, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
+import { Bank } from '../store/IStore.interface';
+import { Address, ContractPackLanguage, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +52,7 @@ export class TableInfoService {
       });
     });
   }
-  
+
   GetAllCountries(): any {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
@@ -73,16 +72,6 @@ export class TableInfoService {
       }),
     }
     return this.http.get<CountryInformation>(this.acquiringUrl + 'country/' + code, HTTP_OPTIONS);
-  }
-
-  GetAllCAEs() {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-    return this.http.get<EconomicActivityInformation[]>(this.acquiringUrl + 'merchant/economicactivity', HTTP_OPTIONS);
   }
 
   GetCAEByCode(code: string) {
@@ -126,17 +115,7 @@ export class TableInfoService {
     return this.http.get<StakeholderRole[]>(this.acquiringUrl + 'stakeholder/role', HTTP_OPTIONS);
   }
 
-  GetAllShopActivities() {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-    return this.http.get<ShopActivity[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
-  }
-
-    GetBanks(): any{
+  GetBanks(): any {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Accept-Language': this.currentLanguage,
@@ -186,7 +165,7 @@ export class TableInfoService {
     return this.http.get<Franchise[]>(this.acquiringUrl + 'franchise', HTTP_OPTIONS);
   }
 
-  GetAllDocumentTypes(){
+  GetAllDocumentTypes() {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Accept-Language': this.currentLanguage,
@@ -194,16 +173,6 @@ export class TableInfoService {
       }),
     }
     return this.http.get<DocTypes[]>(this.acquiringUrl + 'identificationdocument', HTTP_OPTIONS);
-  }
-
-  GetAllPOS() {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-    return this.http.get<POS[]>(this.acquiringUrl + 'pos', HTTP_OPTIONS);
   }
 
   GetAllProducts() {
@@ -236,7 +205,7 @@ export class TableInfoService {
     return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'address/' + cp + '/shoppingcenter', HTTP_OPTIONS);
   }
 
-  GetAddressByZipCodeTeste(cp4: number, cp3: number): Promise<TreatedResponse<Address>> {
+  GetAddressByZipCodeShops(cp4: number, cp3: number): Promise<TreatedResponse<Address>> {
 
     var url = this.acquiringUrl + 'address/pt/' + cp4 + '/' + cp3;
 
@@ -254,37 +223,12 @@ export class TableInfoService {
         response.msg = "Sucesso";
         resolve(response);
       }, error => {
-        console.log("erro que deu: ", error);
         response.result = null;
         response.msg = "Código Postal inválido";
         reject(response);
       })
     });
   }
-
-  ////////////////////////////////////////////////////////////
-  //delete (remover daqui)
-    deleteDocument(submissionID, documentID) {
-    var url = this.acquiringUrl + 'submission/' + submissionID + '/document/' + documentID;
-    var response: TreatedResponse<any> = {};
-
-
-    return new Promise<TreatedResponse<any>>((resolve, reject) => {
-      this.callAPIAcquiring(HttpMethod.DELETE, url).then(success => {
-        console.log("Apagou o documento");
-        response.result = success.result;
-        response.msg = "Sucesso";
-        resolve(response);
-      }, error => {
-        console.log("Não apagou o documento (erro)");
-        response.result = null;
-        response.msg = "Não foi possível remover o documento";
-        reject(response);
-      });
-    })
-  }
-
-  ////////////////////////////////////////////////////////
 
   GetAllShoppingCenters(postalCode: string) {
     var HTTP_OPTIONS = {
@@ -326,31 +270,24 @@ export class TableInfoService {
     }
 
     return this.http.get<TenantCommunication[]>(this.acquiringUrl + 'tenant/communication', HTTP_OPTIONS);
-    }
+  }
 
   GetTenantTerminals() {
-
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Accept-Language': this.currentLanguage,
 
       }),
     }
-
     return this.http.get<TenantTerminal[]>(this.acquiringUrl + 'tenant/terminal', HTTP_OPTIONS);
-
-
   }
 
   GetContractualPackLanguage() {
-
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Accept-Language': this.currentLanguage,
-
       }),
     }
-
     return this.http.get<ContractPackLanguage[]>(this.acquiringUrl + 'contratualpacklanguage', HTTP_OPTIONS);
   }
 

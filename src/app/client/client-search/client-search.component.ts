@@ -1,9 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Input, Output, OnInit, Inject, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { LoggerService } from 'src/app/logger.service';
-import { Configuration, configurationToken } from '../../configuration';
-import { AuthService } from '../../services/auth.service';
 import { Client } from '../Client.interface';
 import { ClientService } from '../client.service';
 
@@ -17,7 +13,6 @@ export class ClientSearchComponent implements OnInit {
   @Input() clientID: string = "";
   @Input() searchType?: string;
   @Input() requestID?: string = "por mudar";
-  //@Input() canEdit?: boolean = false; Pode vir a ser preciso
   @Input() canSelect?: boolean = true;
 
   //Output
@@ -29,9 +24,8 @@ export class ClientSearchComponent implements OnInit {
 
   //Variáveis locais
   clientsToShow: Client[] = [];
-  
-  constructor(private router: ActivatedRoute, private http: HttpClient, private logger: LoggerService,
-    private route: Router, private clientService: ClientService, private authService: AuthService) { }
+
+  constructor(private logger: LoggerService, private clientService: ClientService) { }
 
   ngOnInit(): void {
   }
@@ -64,15 +58,9 @@ export class ClientSearchComponent implements OnInit {
         })
       } else {
         context.foundClients = false;
-        //this.showFoundClient = false;
-        //context.resultError = "Não existe Comerciante com esse número.";
-        //this.searchDone = true;
       }
     }, error => {
       context.foundClients = false;
-      //context.showFoundClient = false;
-      //context.resultError = "Não existe Comerciante com esse número.";
-      //this.searchDone = true;
 
     });
   }

@@ -39,7 +39,7 @@ export interface SubproductOutbound {
   name?: string
 }
 
-export interface Subproduct{
+export interface Subproduct {
   subProductCode?: string
   subProductName?: string
 }
@@ -56,7 +56,6 @@ export interface MerchantCatalog {
   context?: MerchantContextEnum
   contextId?: string
 }
-
 interface StoreCatalog {
   activity?: string
   subActivity?: string
@@ -64,7 +63,6 @@ interface StoreCatalog {
   referenceStore?: string
   supportEntity?: TerminalSupportEntityEnum
 }
-
 interface EquipmentCatalog {
   equipmentOwnership?: EquipmentOwnershipTypeEnum
   communicationOwnership?: CommunicationOwnershipTypeEnum
@@ -72,30 +70,25 @@ interface EquipmentCatalog {
   communicationType?: string
   quantity?: number
 }
-
 interface FiscalIdentification {
   fiscalId?: string
   issuerCountry?: string
 }
-
 export interface ProductPackEntry {
   id?: string
   description?: string
   processors?: [string]
 }
-
 export interface ProductPack {
   paymentSchemes?: ProductPackAttributeProductPackKind
   otherGroups?: ProductPackRootAttributeProductPackKind[]
 }
-
 export interface ProductPackRootAttributeProductPackKind {
   id?: string
   description?: string
   kind?: string //  ProductPackKindEnum
   attributes?: ProductPackRootAttribute[]
 }
-
 interface ProductPackRootAttribute {
   id?: string
   description?: string
@@ -108,14 +101,12 @@ interface ProductPackRootAttribute {
   order?: number
   bundles?: ProductPackAttributeProductPackKind[]
 }
-
-export interface ProductPackAttributeProductPackKind{
+export interface ProductPackAttributeProductPackKind {
   id?: string
   description?: string
   kind?: ProductPackKindEnum
   attributes?: ProductPackAttribute[]
 }
-
 export interface ProductPackAttribute {
   id?: string
   description?: string
@@ -128,7 +119,6 @@ export interface ProductPackAttribute {
   aggregatorId?: string
   order?: number
 }
-
 export class ProductPackPricingFilter {
   productCode?: string
   subproductCode?: string
@@ -138,7 +128,6 @@ export class ProductPackPricingFilter {
   equipment?: EquipmentCatalog
   packAttributes?: ProductPackRootAttributeProductPackKind[]
 }
-
 export interface ProductPackPricingEntry {
   id?: string
   description?: string
@@ -148,7 +137,6 @@ export interface ProductPackPricing {
   id?: string
   attributes?: ProductPackPricingAttribute[]
 }
-
 export interface ProductPackPricingAttribute {
   id?: string
   description?: string
@@ -158,7 +146,6 @@ export interface ProductPackPricingAttribute {
   isReadOnly?: boolean
   isVisible?: boolean
 }
-
 export interface ProductPackCommissionFilter {
   productCode?: string
   subproductCode?: string
@@ -167,16 +154,13 @@ export interface ProductPackCommissionFilter {
   store?: StoreCatalog
   packAttributes?: ProductPackRootAttributeProductPackKind[]
 }
-
 export interface ProductPackCommissionEntry {
   id?: string
   description?: string
 }
-
 export interface ProductPackCommission {
   attributes?: ProductPackCommissionAttribute[]
 }
-
 export interface ProductPackCommissionAttribute {
   id?: string
   description?: string
@@ -185,7 +169,6 @@ export interface ProductPackCommissionAttribute {
   minValue?: ProductPackCommissionAttributeValue
   percentageValue?: ProductPackCommissionAttributeValue
 }
-
 interface ProductPackCommissionAttributeValue {
   value?: number
   originalValue?: number
@@ -193,7 +176,6 @@ interface ProductPackCommissionAttributeValue {
   isReadOnly?: boolean
   isVisible?: boolean
 }
-
 export interface ProductPackPaymentSchemes {
   id?: string
   description?: string

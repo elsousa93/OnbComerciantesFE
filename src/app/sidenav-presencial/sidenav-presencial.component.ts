@@ -27,7 +27,7 @@ export class SidenavPresencialComponent implements OnInit {
 
   currentUser: User = {};
 
-  constructor( private router: Router,
+  constructor(private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
     private dataService: DataService, private authService: AuthService, private processNrService: ProcessNumberService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
@@ -40,16 +40,11 @@ export class SidenavPresencialComponent implements OnInit {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
 
-      console.log("permissões: ", this.currentUser.permissions);
-      console.log("userPermission tratada: ", a);
-
       this.userPermissions = getMenuPermissions(a);
-
     });
   }
 
   hideHistoryTab() {
-    //this.dataService.historyStream$.next(false);
     localStorage.clear();
     this.dataService.reset();
     this.processNrService.changeProcessNumber(null);
@@ -73,10 +68,5 @@ export class SidenavPresencialComponent implements OnInit {
     this.router.navigate(["/"]).then(() => {
       this.router.navigate(["/app-consultas-ft"], navigationExtras);
     });
-  }
-
-  testeAuth() {
-    console.log(this.currentUser);
-    console.log(this.userPermissions);
   }
 }

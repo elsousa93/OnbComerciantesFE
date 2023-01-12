@@ -6,7 +6,7 @@ import { LoggerService } from 'src/app/logger.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private logger : LoggerService, private router: Router, private cookie: CookieService) { }
+  constructor(private logger: LoggerService, private router: Router, private cookie: CookieService) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.isLoggedIn()) {
       return true;

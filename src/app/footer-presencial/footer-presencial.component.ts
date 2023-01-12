@@ -11,5 +11,4 @@ export class FooterPresencialComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
