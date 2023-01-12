@@ -462,13 +462,13 @@ export class StakeholdersComponent implements OnInit {
   }
 
   goToClientById() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        isClient: this.isClient
-      }
-    };
+    //let navigationExtras: NavigationExtras = {
+    //  state: {
+    //    isClient: this.isClient
+    //  }
+    //};
 
-    this.route.navigate(['/clientbyid/'], navigationExtras);
+    this.route.navigate(['/clientbyid/']);
   }
 }
 

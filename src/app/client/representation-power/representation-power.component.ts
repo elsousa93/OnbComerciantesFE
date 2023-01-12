@@ -47,46 +47,16 @@ export class RepresentationPowerComponent implements OnInit, OnChanges{
   constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private submissionService: SubmissionService, private stakeholderService: StakeholderService) {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
-
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.loadStakeholders();
-
-    this.clientExists = this.clientContext.clientExists;
-    this.tipologia = this.clientContext.tipologia;
-    this.NIFNIPC = this.clientContext.getNIFNIPC();
-    this.client = this.clientContext.getClient();
-    this.clientId = this.clientContext.clientId;
-    this.processId = this.clientContext.processId;
-    this.merchantInfo = this.clientContext.getMerchantInfo();
-    this.crc = this.clientContext.crc;
     }
 
   ngOnInit(): void {
     console.log("contexto dentro do representation: ", this.clientContext);
   }
 
-  goToNextPage() {
-    this.data.updateData(true, 1);
-    this.router.navigate(['stakeholders']);
-  }
-
-  goToPreviousPage() {
-    var navigationExtras: NavigationExtras = {
-      state: {
-        clientExists: this.clientExists,
-        tipologia: this.tipologia,
-        NIFNIPC: this.NIFNIPC,
-        client: this.client,
-        clientId: this.clientId,
-        processId: this.processId,
-        stakeholdersToInsert: this.stakeholdersToInsert,
-        merchantInfo: this.merchantInfo,
-        crc: this.crc
-      }
-    }
-    this.router.navigate(['client-additional-info', this.route.snapshot.paramMap.get('id')], navigationExtras);
-  }
 
   submit() {
     //var stakeholdersLength = this.stakeholdersToInsert.length;

@@ -27,6 +27,7 @@ import { ShopDetailsAcquiring } from '../../store/IStore.interface';
 import { IStakeholders, OutboundDocument, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
 import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
+import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -445,13 +446,14 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
+    if (this.isClient == null) {
+      this.subscription = this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);
+    }
     if (this.dataCC == null) {
       this.subscription = this.data.currentDataCC.subscribe(dataCC => this.dataCC = dataCC);
     }
-    this.data.updateData(false, 1, 2);
 
-    //if (this.updateClient)
-    //  this.clientId = localStorage.getItem("documentNumber");
+    this.data.updateData(false, 1, 2);
 
     this.clientContext = new ClientContext(
       this.tipologia,
@@ -803,6 +805,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     } as OutboundDocument;
                     this.clientDocs = [];
                     this.clientDocs.push(file);
+
+                    var acquiringFile = {
+                      documentType: "0001",
+                      data: null,
+                      validUntil: r.validUntil
+                    } as SubmissionPostDocumentTemplate;
+                    this.clientContext.newSubmission.documents.push(acquiringFile);
                     this.fetchDocumentDescriptions();
                   });
                 }
@@ -871,7 +880,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   getDocumentDescription(documentType: string) {
     var desc = "";
     if (documentType != null) {
-        desc = this.documents.find(document => document.code == documentType).description;
+        desc = this.documents?.find(document => document.code == documentType)?.description;
       }
     return desc;
   }
@@ -1130,13 +1139,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
     if (this.returned != 'consult') {
 
-
-
       let navigationExtras: NavigationExtras = {
         state: {
           isClient: this.clientContext.isClient
         }
       };
+
+      this.data.changeCurrentIsClient(this.clientContext.isClient);
 
       var context = this;
       var submissionID = this.clientContext.submissionID ?? localStorage.getItem("submissionId");
@@ -1174,7 +1183,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         });
       }
 
-      if (!this.compareArrays(context.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
+      if (!this.compareArraysStakes(context.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
         if (stakeholders.length == 0) {
           this.submissionStakeholders.forEach((val, index) => {
@@ -1183,23 +1192,23 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.submissionStakeholders = [];
           this.clientContext.setStakeholdersToInsert([]);
           this.processClient.stakeholders = [];
-        }
-
-        stakeholders.forEach(function (value, idx) {
-          var cont = this;
-          if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
-            if (value.fiscalId !== client.fiscalId) {
+        } else { 
+          stakeholders.forEach(function (value, idx) {
+            var cont = this;
+            if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
+              if (value.fiscalId !== client.fiscalId) {
+                context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                });
+              }
+            } else {
               context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
               });
             }
-          } else {
-            context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-            });
-          }
-        });
+          });
+        }
       }
 
-      if (!this.compareArrays(this.submissionDocs, this.clientContext.newSubmission.documents)) {
+      if (!this.compareArraysDocs(this.submissionDocs, this.clientContext.newSubmission.documents)) {
         var documents = this.clientContext.newSubmission.documents;
         if (documents.length == 0) {
           this.submissionDocs.forEach((val, index) => {
@@ -1263,23 +1272,40 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.route.navigate(['/stakeholders']);
     }
   }
-  compareArrays(a1, a2) {
-    var l = Math.min(a1.length, a2.length);
-    if (l!=0) {
-      for (var i = 0; i < l; i++) {
-        if (a1[i] !== a2[i]) {
-            return false;
-        }
+
+  compareArraysStakes(a1, a2) {
+    if (a1.length !== a2.length) return false;
+    var arr1 = a1.map(function (item) {
+      return item.fiscalId;
+    });
+    var arr2 = a2.map(function (item) {
+      return item.fiscalId;
+    });
+    const elements = new Set([...arr1, ...arr2]);
+    for (const x of elements) {
+      const count1 = a1.filter(e => e.fiscalId === x).length;
+      const count2 = a2.filter(e => e.fiscalId === x).length;
+      if (count1 !== count2) return false;
     }
     return true;
+  }
+
+  compareArraysDocs(a1, a2) {
+    if (a1.length !== a2.length) return false;
+    var arr1 = a1.map(function (item) {
+      return item.documentType;
+    });
+    var arr2 = a2.map(function (item) {
+      return item.documentType;
+    });
+    const elements = new Set([...arr1, ...arr2]);
+    for (const x of elements) {
+      const count1 = a1.filter(e => e.documentType === x).length;
+      const count2 = a2.filter(e => e.documentType === x).length;
+      if (count1 !== count2) return false;
     }
-    else if (a1.length == 0 && a2.length == 0) {
-      return true;
-    } 
-    else {
-      return false;
-    }
-}
+    return true;
+  }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
@@ -1313,7 +1339,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.b64toBlob(result.binary, 'application/pdf', 512);
       });
     } else {
-      this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).then(result => {
+      this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
         //this.b64toBlob(result.binary, 'application/pdf', 512);
       })
     }

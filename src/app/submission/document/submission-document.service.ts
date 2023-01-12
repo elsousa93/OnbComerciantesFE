@@ -26,7 +26,7 @@ export class SubmissionDocumentService {
     return this.http.get<ISubmissionDocument>(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID);
   }
 
-  GetDocumentImage(submissionID: string, documentID: string) {
+  GetDocumentImage(submissionID: string, documentID: string): any {
 
     var URI = this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image';
     //return fetch(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
@@ -45,7 +45,15 @@ export class SubmissionDocumentService {
     //}); //n sei qual o tipo
 
     //return this.http.get<any>(URI);
-    return fetch(URI);
+    return fetch(URI, {
+      headers: {
+        Authorization: 'Bearer ' + this.authService.GetToken(),
+        responseType: 'blob',
+        observe: 'response',
+        "Accept": "application/pdf",
+        "Content-Type": "application/pdf"
+      }
+    });
   }
 
   SubmissionPostDocument(submissionID: string, document: PostDocument): any {
