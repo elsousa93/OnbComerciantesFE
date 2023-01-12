@@ -223,12 +223,12 @@ export class StoreComponent implements AfterViewInit {
       if (!this.currentStore.bank.useMerchantBank) {
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
         this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
-          context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).subscribe(res => {
+          context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).then(async res => {
             console.log("imagem de um documento ", res);
-            var file = res.blob();
-
-            file.lastModifiedDate = new Date();
-            file.name = this.translate.instant('supportingDocuments.checklistModal.IBAN');
+            var blob = await res.blob();
+            var file = new File([blob], "name");
+            //file.lastModified = new Date();
+            //file.name = this.translate.instant('supportingDocuments.checklistModal.IBAN');
 
             context.ibansToShow = {
               dataDocumento: context.datePipe.transform(val.validUntil, 'dd-MM-yyyy'),

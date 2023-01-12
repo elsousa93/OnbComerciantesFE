@@ -463,9 +463,32 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.isClient
     );
 
+    if (this.submissionExists) {
+      this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
+        var stakeholders = result.result;
+        stakeholders.forEach(function (value, index) {
+          context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+            context.submissionStakeholders.push(res);
+            if (context.submissionType == 'DigitalComplete') {
+              context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
+            }
+          }, error => {
+            console.log("Erro a adicionar stakeholder");
+          });
+        });
+      }, error => {
+      });
 
-
-    console.log('VALOR DO IS CLIENT NO CLIENT CONTEXT ', this.clientContext.isClient);
+      this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
+        if (result.length > 0) {
+          result.forEach(doc => {
+            this.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
+              this.submissionDocs.push(res);
+            });
+          });
+        }
+      });
+    }
 
     if (this.returned == null) {
       if (!this.submissionExists || this.isFromSearch) {
@@ -807,6 +830,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.clientContext.setNIFNIPC(this.merchantInfo.fiscalId);
       this.clientContext.tipologia = this.merchantInfo.merchantType;
       this.clientContext.submissionID = localStorage.getItem("submissionId");
+
+
       console.log('CLIENT CONTEXT ', this.clientContext.isClient);
       //if (!this.clientContext.isClient) {
       //  this.countriesComponent.getClientContextValues();
@@ -1288,8 +1313,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.b64toBlob(result.binary, 'application/pdf', 512);
       });
     } else {
-      this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
-        this.b64toBlob(result.binary, 'application/pdf', 512);
+      this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).then(result => {
+        //this.b64toBlob(result.binary, 'application/pdf', 512);
       })
     }
   }
