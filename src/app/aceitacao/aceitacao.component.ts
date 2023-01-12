@@ -26,7 +26,6 @@ export class AceitacaoComponent implements OnInit {
 
     this.appComponent.toggleSideNav(false);
 
-    this.ngOnInit();
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
     });

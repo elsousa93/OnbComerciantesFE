@@ -178,9 +178,7 @@ export class DashboardComponent implements OnInit {
     this.date = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
     this.appComponent.toggleSideNav(true);
-
-    this.ngOnInit(); //para obter inicialmente as permissões
-
+    
     //Pendentes de envio
     if (this.FTPermissions?.pending) {
       this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {

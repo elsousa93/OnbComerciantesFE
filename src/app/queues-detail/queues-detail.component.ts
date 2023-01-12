@@ -70,7 +70,6 @@ export class QueuesDetailComponent implements OnInit {
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
     }
 
-    this.ngOnInit();
     this.logger.debug('Process Id ' + this.processId);
 
     // Preencher os dados da fila de trabalho consoante o processId recebido

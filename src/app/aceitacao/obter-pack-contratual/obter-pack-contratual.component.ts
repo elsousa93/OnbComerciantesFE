@@ -44,8 +44,6 @@ export class ObterPackContratualComponent implements OnInit {
   constructor(private logger: LoggerService, private http: HttpClient,
     private router: Router, private translate: TranslateService, private snackBar: MatSnackBar, private modalService: BsModalService, private processService: ProcessService, public aceitacao: AceitacaoService) {
 
-    this.ngOnInit();
-
   }
 
   ngOnInit(): void {
