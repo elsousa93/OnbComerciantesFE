@@ -60,7 +60,7 @@ export class ProductSelectionComponent implements OnInit {
       this.products = result.result;
     }, error => {
       this.logger.debug("Erro");
-    }).then(res => { });
+    }).then(res => { console.log('PRODUTOS ', this.products); });
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
