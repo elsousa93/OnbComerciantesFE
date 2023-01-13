@@ -756,8 +756,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             var found = stakeholders.find(val => val.fiscalId === stake.fiscalId);
             if (found == undefined) {
               context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => { });
+            } else {
+              stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
             }
-          });
+          }); 
 
           stakeholders.forEach(function (value, idx) {
             if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
@@ -785,6 +787,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             var found = documents.find(doc => doc.documentType === val.documentType);
             if (found == undefined) {
               context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
+            } else {
+              documents = documents.filter(item => item.documentType !== found.documentType);
             }
           });
 
