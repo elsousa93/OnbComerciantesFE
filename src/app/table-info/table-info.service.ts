@@ -6,7 +6,7 @@ import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { PurposeDocument } from '../comprovativos/IComprovativos.interface';
 import { HttpMethod } from '../enums/enum-data';
-import { Bank } from '../store/IStore.interface';
+import { Bank, ShopActivities } from '../store/IStore.interface';
 import { Address, ContractPackLanguage, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, PEPTypes, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
