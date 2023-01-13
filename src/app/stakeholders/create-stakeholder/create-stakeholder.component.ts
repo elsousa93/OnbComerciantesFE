@@ -268,6 +268,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
   stakesList: [] = [];
   potentialClientIds: string[] = [];
+  showSameNIFErrorForm: boolean = false;
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService,
@@ -283,13 +284,14 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     })));
 
     this.showSameNIFError = false;
+    this.showSameNIFErrorForm = false;
     this.initializeForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['sameNIFStake'].currentValue === true) {
       if (this.isParticular && !this.isClientNrSelected) {
-        this.showSameNIFError = true;
+        this.showSameNIFErrorForm = true;
       } else {
         this.isShown = false;
         this.foundStakeholders = null;
@@ -298,9 +300,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.okCC = false;
         this.isNoDataReadable = true;
         this.selected = false;
+        this.showSameNIFErrorForm = false;
       }
     } else {
       this.showSameNIFError = false;
+      this.showSameNIFErrorForm = false;
     }
   }
 
@@ -599,6 +603,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   addStakeholder() {
     this.sameNIPC = false;
     this.showSameNIFError = false;
+    this.showSameNIFErrorForm = false;
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
@@ -782,6 +787,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectNIF = false;
     this.sameNIPC = false;
     this.showSameNIFError = false;
+    this.showSameNIFErrorForm = false;
     if (nif != '') {
       if (nif.length != 9) {
         this.incorrectNIFSize = true;
@@ -812,6 +818,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectNIPC = false;
     this.sameNIPC = false;
     this.showSameNIFError = false;
+    this.showSameNIFErrorForm = false;
     if (nipc != '') {
       if (nipc.length != 9) {
         this.incorrectNIPCSize = true;
@@ -845,6 +852,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectCCSize = false;
     this.incorrectCCFormat = false;
     this.showSameNIFError = false;
+    this.showSameNIFErrorForm = false;
     this.sameNIPC = false;
     var sum = 0;
     var secondDigit = false;
