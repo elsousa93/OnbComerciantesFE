@@ -133,44 +133,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
   }
 
-  initializeENI() {
-
-    this.logger.debug("-------- NIFNIPC --------");
-    this.logger.debug("intializeeniform");
-    this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo.legalName : this.socialDenomination, Validators.required), //sim,
-      commercialSociety: new FormControl(false, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC)
-    });
-  }
-
-  initializeFormControlOther() {
-    this.logger.debug("-------- NIFNIPC --------");
-    this.logger.debug("initializeformcontrolother");
-    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
-
-    this.form = new FormGroup({
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
-      natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : ''), //sim
-      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo.legalName : this.socialDenomination, disabled: this.socialDenomination !== null }, Validators.required), //sim
-      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC)
-    });
-
-    this.form.get("natJuridicaN1").valueChanges.subscribe(data => {
-
-      this.onLegalNatureSelected();
-
-      if (this.legalNatureList2.length > 0)
-        this.form.controls["natJuridicaN2"].setValidators([Validators.required]);
-      else
-        this.form.controls["natJuridicaN2"].clearValidators();
-      this.form.controls["natJuridicaN2"].updateValueAndValidity();
-    });
-  }
-
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
@@ -301,11 +263,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
         var stakeholders = result.result;
         stakeholders.forEach(function (value, index) {
-          context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
-            context.submissionStakeholders.push(res.result);
-            //if (context.submissionType == 'DigitalComplete') {
-            //  context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
-            //}
+          context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
+            context.submissionStakeholders.push(res);
           }, error => {
             console.log("Erro a adicionar stakeholder");
           });
@@ -622,44 +581,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
-  getCommercialSociety() {
-    return this.isCommercialSociety;
-  }
-
-  onLegalNatureSelected() {
-    var exists = false;
-    this.logger.debug("entrou no legalnatureselected");
-
-    this.logger.debug(this.legalNatureList);
-    this.legalNatureList.forEach(legalNat => {
-      var legalNatureToSearch = this.form.get('natJuridicaN1').value;
-      if (legalNatureToSearch == legalNat.code) {
-        exists = true;
-        this.legalNatureList2 = legalNat.secondaryNatures;
-        this.legalNatureList2 = this.legalNatureList2.sort((a, b) => a.description > b.description ? 1 : -1);
-      }
-    })
-    if (!exists) {
-      this.legalNatureList2 = [];
-    }
-  }
-
   getDocumentDescription(documentType: string) {
     var desc = "";
     if (documentType != null) {
         desc = this.documents?.find(document => document.code == documentType)?.description;
       }
     return desc;
-  }
-
-  onExpand(index: number) {
-    this.data.updateData(false, 1, index + 2);
-    if (this.lastExpandedTab !== undefined) {
-      this.touchedTabs[this.lastExpandedTab] = true;
-      if (this.lastExpandedTab === 0)
-        this.clientCharacterizationComponent.submit(); //updates the client context when leaving the first tab
-    }
-    this.lastExpandedTab = index;
   }
 
   submit() {
@@ -692,37 +619,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     } else {
       this.route.navigate(["/app-devolucao/"]);
     }
-  }
-
-  redirectHomePage() {
-    this.route.navigate(["/"]);
-  }
-
-  setAssociatedWith(value: boolean) {
-    if (value == true) {
-      this.associatedWithGroupOrFranchise = true;
-    } else {
-      this.associatedWithGroupOrFranchise = false;
-    }
-  }
-
-  GetLegalNatureByCode(code: string) {
-    var legalNature = this.legalNatureList.find(element => {
-      if (element.code == code) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return legalNature.description;
-  }
-
-  canChangeCommercialSociety() {
-    if (this.returned === 'consult')
-      return false;
-    if (this.tipologia === 'ENI')
-      return false;
-    return true;
   }
 
   createSubmission() {

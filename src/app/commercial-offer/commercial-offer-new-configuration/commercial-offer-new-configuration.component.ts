@@ -172,13 +172,6 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
   }
 
-  checkFormValid() {
-    if (this.formConfig.get("terminalProperty").value != "" && this.formConfig.get("communicationOwnership").value != "" && this.formConfig.get("terminalType").value != "" && this.formConfig.get("communicationType").value != "" && this.formConfig.get("terminalAmount").value != null /*&& this.formConfig.get("name").value != ""*/)
-      return true;
-    else
-      return false;
-  }
-
   updateFormData() {
     if (this.formConfig.valid) {
       this.pricingOptions = [];

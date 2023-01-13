@@ -330,10 +330,6 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  receiveSearchValue(box: string) {
-    this.searchParameter = (box);
-  }
-
   getValueENI() {
     this.logger.debug("chamar a funcao de leitura do cartao: ");
     this.http.get(this.neyondBackUrl + 'CitizenCard/searchCC').subscribe(result => {
@@ -490,10 +486,6 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  sendToParent() {
-    this.nameEmitter.emit(this.displayValueSearch);
-  }
-
   toggleShowFoundClient(value: boolean) {
     if (value == true) {
       this.showFoundClient = true
@@ -548,10 +540,6 @@ export class ClientComponent implements OnInit {
     this.okCC = false;
     this.notFound = false;
     this.showSeguinte = false;
-  }
-
-  changeDocType() {
-    this.documentType = true;
   }
 
   obterSelecionado() {
@@ -612,19 +600,6 @@ export class ClientComponent implements OnInit {
     }
     this.toShowReadCC = readable;
     this.BlockDocumentNumber = readable;
-  }
-
-  //Modal que questiona se tem o PIN da Morada 
-  launchNewModal() {
-    this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
-    this.newModal.result.then(function (result: boolean): void {
-      if (result) {
-        this.Window.readCCAddress();
-      } else {
-        this.Window.readCC();
-        this.newModal.hide();
-      }
-    });
   }
 
   activateButtons(id: boolean) {
@@ -746,15 +721,6 @@ export class ClientComponent implements OnInit {
 
   close() {
     this.route.navigate(['/']);
-  }
-
-  newSearch() {
-    this.route.navigate(['/client'])
-  }
-
-  selectClient(clientEmitted) {
-    this.selectedClient.client = clientEmitted.client;
-    this.selectedClient.idx = clientEmitted.idx;
   }
 
   clearNewForm() {

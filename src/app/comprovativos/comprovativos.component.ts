@@ -410,11 +410,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.fileToDelete = file;
     this.documentID = documentID;
   }
-
-  obterOfertaComercial() {
-    this.route.navigate(['/commercial-offert-list']);
-  }
-
+  
   firstSubmission() {
     if (!this.updatedComps) {
       this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });

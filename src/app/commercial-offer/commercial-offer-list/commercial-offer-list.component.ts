@@ -112,10 +112,6 @@ export class CommercialOfferListComponent implements OnInit {
     this.previousStoreEvent = idx;
   }
 
-  getPacoteComercial() {
-    console.log("loja selecionada: ", this.currentStore);
-  }
-
   ngAfterViewInit() {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
@@ -463,10 +459,6 @@ export class CommercialOfferListComponent implements OnInit {
       this.changeUnicre(true);
     }
     this.form.get("productPackKind").setValue(this.currentStore.pack?.packId);
-  }
-
-  onCickContinue() {
-    this.route.navigate(['commercial-offert-tariff']);
   }
 
   changeUnicre(bool: boolean) {

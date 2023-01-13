@@ -49,10 +49,6 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public emailRegex: string;
 
-  sendToParent() {
-    this.nameEmitter.emit(this.displayValueSearch);
-  }
-
   setForm(client: Client) {
     this.newClient = client;
     this.listValue.get("comercialName").setValue(client?.commercialName);

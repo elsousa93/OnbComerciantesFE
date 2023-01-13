@@ -691,11 +691,6 @@ export class CountrysComponent implements OnInit {
     this.emitteCountrySize();
   }
 
-  loadClientDocument(documentReference) {
-
-    this.comprovativoService.viewDocument(documentReference);
-  }
-
   numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number
     var ASCIICode = (event.which) ? event.which : event.keyCode;
 

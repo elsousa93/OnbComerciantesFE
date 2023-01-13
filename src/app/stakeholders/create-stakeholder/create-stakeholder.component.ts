@@ -380,9 +380,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     });
   }
 
-  redirectInfoStakeholder() {
-    this.route.navigate(['/add-stakeholder/']);
-  }
   /**
    * Recolha Automatica dos Dados do Cartão de Cidadão?
    * @param readable
@@ -397,19 +394,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.okCC = readable; //W
     }
 
-  }
-
-  //Modal que pergunta se tem o PIN da Morada
-  launchNewModal() {
-    this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
-    this.newModal.result.then(function (result: boolean): void {
-      if (result) {
-        this.Window.readCCAddress();
-      } else {
-        this.Window.readCC();
-        this.newModal.hide();
-      }
-    });
   }
 
   ngOnInit(): void {
@@ -527,11 +511,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.searchEvent.next(this.stakeholderNumber);
       this.isSearch = true;
     });
-  }
-
-  refreshDiv() {
-    location.reload();
-    this.ngOnInit();
   }
 
   selectNewStakeholder(emittedStakeholder) {
