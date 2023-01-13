@@ -28,17 +28,7 @@ import { ClientService } from '../client/client.service';
 })
 export class StakeholdersComponent implements OnInit {
 
-  UUIDAPI: string = "";
-
-  newStake: IStakeholders = {
-    "fiscalId": "",
-    "identificationDocument": {
-      "type": "",
-      "number": "",
-      "country": "",
-      "expirationDate": "",
-    }
-  }
+  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
   @ViewChild('newModal') newModal;
 
   insertStakeholderEvent: Observable<IStakeholders>;
@@ -92,7 +82,6 @@ export class StakeholdersComponent implements OnInit {
   public clientNr: number = 8875;
   public totalUrl: string = "";
   public auxUrl: string = "";
-  public stakeSearch: IStakeholders[] = [this.newStake];
   isShown: boolean = false;
   isFoundStakeholderShown: boolean = false;
   public flagRecolhaEletronica: boolean = true;

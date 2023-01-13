@@ -593,7 +593,7 @@ export class ClientComponent implements OnInit {
     localStorage.setItem("documentNumber", selectedClient.clientId);
 
     this.logger.debug("a passar para a proxima pagina");
-    this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
+    this.route.navigate(['/clientbyid', this.clientId], navigationExtras);
   }
   /**
    *
