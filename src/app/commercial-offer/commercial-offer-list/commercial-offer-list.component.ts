@@ -122,7 +122,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService) {
-
+    this.ngOnInit();
     this.loadReferenceData();
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();

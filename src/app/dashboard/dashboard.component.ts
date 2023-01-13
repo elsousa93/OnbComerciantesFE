@@ -179,6 +179,8 @@ export class DashboardComponent implements OnInit {
 
     this.appComponent.toggleSideNav(true);
     
+    this.ngOnInit(); //para obter inicialmente as permissões
+
     //Pendentes de envio
     if (this.FTPermissions?.pending) {
       this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
