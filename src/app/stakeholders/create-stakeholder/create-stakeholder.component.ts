@@ -593,17 +593,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   addStakeholder() {
-    var fiscalId = this.formNewStakeholder.get("nif")?.value ?? this.formNewStakeholder.get("nipc")?.value;
-    this.emitSameNIF(of(fiscalId));
-    if (this.submissionClient.fiscalId === fiscalId) {
-      this.sameNIPC = true;
-      return false;
-    }
     this.sameNIPC = false;
     this.showSameNIFError = false;
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
+        console.log("Stakeholder to insert: ", stakeholderToInsert);
         stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
         stakeholderToInsert["stakeholderId"] = "";
         stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
@@ -627,6 +622,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         }
 
         stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
+
+        console.log("Stakeholder to insert atualizado: ", stakeholderToInsert);
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           stakeholderToInsert.id = result["id"];
@@ -803,6 +800,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         return false;
       }
 
+      this.emitSameNIF(of(nif));
+
       return Number(nif[8]) === comparador;
     }
   }
@@ -830,6 +829,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.incorrectNIPC = true;
         return false;
       }
+
+      if (this.submissionClient.fiscalId === nipc) {
+        this.sameNIPC = true;
+        return false;
+      } 
 
       return Number(nipc[8]) === comparador;
     }

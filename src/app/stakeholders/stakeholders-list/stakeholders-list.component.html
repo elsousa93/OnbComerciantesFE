@@ -32,8 +32,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.clientNumber'|translate|uppercase}}
       </mat-header-cell>
       <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;">
-        {{(stakeholder.stakeholderAcquiring["stakeholderId"] != '' && stakeholder.stakeholderAcquiring["stakeholderId"]
-        != null) ? stakeholder.stakeholderAcquiring["stakeholderId"] : stakeholder.stakeholderAcquiring.clientId }}
+        {{ stakeholder.stakeholderAcquiring.clientId }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stakeholderAcquiring.isProxy">
